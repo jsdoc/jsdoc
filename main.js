@@ -1,4 +1,14 @@
+/**
+ *	@overview JSDoc Toolkit Version 3
+ *	@copyright 2010 (c) Michael Mathews <micmath@gmail.com>
+ *	@license See LICENSE.md file included in this distribution.
+ */
+
 //// bootstrap
+	const BASEDIR = arguments[0].split(/([\/\\])/g).slice(0, -1).join(RegExp.$1); // jsdoc.jar sets argument[0] to the abspath to main.js
+	var args = arguments.slice(1);
+	
+	/** Follow the commonjs modules convention. */
 	function require(id) {
 		var path = require.base + id + '.js',
 			source = '';
@@ -19,31 +29,29 @@
 		
 		return exports;
 	}
-	require.base = 'modules/';
+	require.base = BASEDIR + '/modules/';
 	require.cache = {};
 	
 	function print(msg) {
 		java.lang.System.out.println(msg);
 	}
-	
-	const BASE = arguments[0]; // path to application base folder
-	var args = arguments.slice(1);
 ////
 
-(function() {
-	var jsdoc = {
-			parser: require('jsdoc/parser'),
-			opts: require('jsdoc/opts'),
-			src: require('jsdoc/src')
-		},
-		opts,
-		sourceFiles,
-		fs = require('common/fs');
-		
-	opts = jsdoc.opts.set(args);
-	sourceFiles = jsdoc.src.getFilePaths(opts._);
-
-	jsdoc.parser.parseFiles(sourceFiles);
+//// main
+	(function() {
+		var jsdoc = {
+				parser: require('jsdoc/parser'),
+				opts: require('jsdoc/opts'),
+				src: require('jsdoc/src')
+			},
+			opts,
+			sourceFiles;
+			
+		opts = jsdoc.opts.set(args);
+		sourceFiles = jsdoc.src.getFilePaths(opts._);
 	
-	print( jsdoc.parser.result.asString(opts.destination) );
-})();
+		jsdoc.parser.parseFiles(sourceFiles);
+		
+		print( jsdoc.parser.result.asString(opts.destination) );
+	})();
+////
