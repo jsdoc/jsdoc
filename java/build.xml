@@ -1,0 +1,25 @@
+<project default="clean-build">
+   <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac 
+         srcdir="src" destdir="build/classes"
+         classpath="./classes/js.jar"
+        />
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/jsdoc.jar" basedir="build/classes">
+            <manifest>
+               <attribute name="Main-Class" value="Run"/>
+               <attribute name="Class-Path" value="./java/classes/js.jar"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean-build" depends="clean,compile,jar"/>
+</project>
