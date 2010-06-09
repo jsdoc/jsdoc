@@ -87,5 +87,16 @@ jsUnity
 jsUnity is Copyright (c) 2009 Ates Goral
 Universal JavaScript Testing Framework v0.6 http://jsunity.com/
 
+http://github.com/atesgoral/jsunity
+
 Licensed under the MIT license
 http://www.opensource.org/licenses/mit-license.php
+
+JSONSchema Validator
+--------------------
+
+JSONSchema is copyright (c) 2007 Kris Zyp SitePen (www.sitepen.com)
+Licensed under the MIT (MIT-LICENSE.txt) license.
+
+http://github.com/kriszyp/commonjs-utils/blob/master/lib/json-schema.js
+http://www.sitepen.com/blog/2010/03/02/commonjs-utilities/

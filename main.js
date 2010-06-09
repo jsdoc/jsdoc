@@ -63,7 +63,7 @@
 		jsdoc.parser.parseFiles(sourceFiles);
 		
 		if (opts.validate) {
-			var jsonSchema  = require('sitepen/jsonSchema').JSONSchema;
+			var jsonSchema  = require('sitepen/jsonSchema');
 			var jsdocSchema = require('jsdoc/schema').jsdocSchema;
 			var validation = jsonSchema.validate(jsdoc.parser.result.toObject(), jsdocSchema);
 			print('Validation: ' + validation.toSource());

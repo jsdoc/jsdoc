@@ -19,22 +19,30 @@ jsdoc.schema.jsdocSchema = {
 					"name": {
 						"type": "string"
 					},
-					"path": {
-						"type": "string"
-					},
 					"memberof": {
 						"type": "string",
 						"optional": true
 					},
 					"kind": {
-						"type": "string"
+						"type": "string",
+						"enum": ["constructor", "module", "event", "namespace", "method", "property", "function", "variable", "enum"]
 					},
+					"meta": {
+						"file": {
+							"type": "string"
+						},
+						"line": {
+							"type": "string"
+						}
+					}
 				}
 			}
+		},
+		"meta": {
+			"optional": true,
+			"date": {
+				"type": "string"
+			}
 		}
-	},
-	"meta": {
-		"type": "string",
-		"optional": true
 	}
 };

@@ -14,8 +14,17 @@ empty list will be returned. A validation error will have two properties:
 "message" which indicates what the error was
  */
 
-var JSONSchema = {
-	validate : function(/*Any*/instance,/*Object*/schema) {
+// setup primitive classes to be JSON Schema types
+String.type = "string";
+Boolean.type = "boolean";
+Number.type = "number";
+exports.Integer = {type:"integer"};
+Object.type = "object";
+Array.type = "array";
+Date.type = "string";
+Date.format = "date-time";
+
+exports.validate = function(/*Any*/instance,/*Object*/schema) {
 		// Summary:
 		//  	To use the validator call JSONSchema.validate with an instance object and an optional schema object.
 		// 		If a schema is provided, it will be used to validate. If the instance object refers to a schema (self-validating), 
@@ -28,9 +37,9 @@ var JSONSchema = {
 		// 						property: which indicates which property had the error
 		// 						message: which indicates what the error was
 		//
-		return this._validate(instance,schema,false);
-	},
-	checkPropertyChange : function(/*Any*/value,/*Object*/schema, /*String*/ property) {
+		return validate(instance,schema,false);
+	};
+exports.checkPropertyChange = function(/*Any*/value,/*Object*/schema, /*String*/ property) {
 		// Summary:
 		// 		The checkPropertyChange method will check to see if an value can legally be in property with the given schema
 		// 		This is slightly different than the validate method in that it will fail if the schema is readonly and it will
@@ -38,9 +47,9 @@ var JSONSchema = {
 		// 		The checkPropertyChange method will return the same object type as validate, see JSONSchema.validate for 
 		// 		information.
 		//
-		return this._validate(value,schema, property || "property");
-	},
-	_validate : function(/*Any*/instance,/*Object*/schema,/*Boolean*/ _changing) {
+		return validate(value,schema, property || "property");
+	};
+var validate = exports._validate = function(/*Any*/instance,/*Object*/schema,/*Boolean*/ _changing) {
 	
 	var errors = [];
 		// validate a value against a property definition
@@ -51,7 +60,7 @@ var JSONSchema = {
 			errors.push({property:path,message:message});
 		}
 		
-		if((typeof schema != 'object' || schema instanceof Array) && (path || typeof schema != 'function')){
+		if((typeof schema != 'object' || schema instanceof Array) && (path || typeof schema != 'function') && !(schema && schema.type)){
 			if(typeof schema == 'function'){
 				if(!(value instanceof schema)){
 					addError("is not an instance of the class/constructor " + schema.name);
@@ -98,7 +107,7 @@ var JSONSchema = {
 			return [];
 		}
 		if(value === undefined){
-			if(!schema.optional){  
+			if(!schema.optional && !schema.get){  
 				addError("is missing and it is not optional");
 			}
 		}else{
@@ -125,8 +134,8 @@ var JSONSchema = {
 					if(schema.maxItems && value.length > schema.maxItems){
 						addError("There must be a maximum of " + schema.maxItems + " in the array");
 					}
-				}else if(schema.properties){
-					errors.concat(checkObj(value,schema.properties,path,schema.additionalProperties));
+				}else if(schema.properties || schema.additionalProperties){
+					errors.concat(checkObj(value, schema.properties, path, schema.additionalProperties));
 				}
 				if(schema.pattern && typeof value == 'string' && !value.match(schema.pattern)){
 					addError("does not match the regex pattern " + schema.pattern);
@@ -193,7 +202,7 @@ var JSONSchema = {
 				errors.push({property:path,message:"the presence of the property " + i + " requires that " + requires + " also be present"});
 			}
 			value = instance[i];
-			if(objTypeDef && typeof objTypeDef == 'object' && !(i in objTypeDef)){
+			if(additionalProp && (!(objTypeDef && typeof objTypeDef == 'object') || !(i in objTypeDef))){
 				checkProp(value,additionalProp,path,i); 
 			}
 			if(!_changing && value && value.$schema){
@@ -209,12 +218,16 @@ var JSONSchema = {
 		checkProp(instance,instance.$schema,'','');
 	}
 	return {valid:!errors.length,errors:errors};
-	},
+};
+exports.mustBeValid = function(result){
+	//	summary:
+	//		This checks to ensure that the result is valid and will throw an appropriate error message if it is not
+	// result: the result returned from checkPropertyChange or validate
+	if(!result.valid){
+		throw new TypeError(result.errors.map(function(error){return "for property " + error.property + ': ' + error.message;}).join(", \n"));
+	}	
+}
 	/* will add this later
 	newFromSchema : function() {
 	}
 */
-}
-
-// Added
-if (exports) exports.JSONSchema = JSONSchema;
