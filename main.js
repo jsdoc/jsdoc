@@ -5,7 +5,7 @@
  */
 
 //// bootstrap
-	const BASEDIR = arguments[0].split(/([\/\\])/g).slice(0, -1).join(RegExp.$1); // jsdoc.jar sets argument[0] to the abspath to main.js
+	const BASEDIR = arguments[0].replace(/([\/\\])main\.js$/, '$1'); // jsdoc.jar sets argument[0] to the abspath to main.js
 	var args = arguments.slice(1);
 	
 	/** Follow the commonjs modules convention. */
@@ -15,7 +15,7 @@
 			
 		try {
 			var file = new java.io.File(path),
-				scanner = new java.util.Scanner(file).useDelimiter('\Z'),
+				scanner = new java.util.Scanner(file).useDelimiter("\\Z"),
 				source = String( scanner.next() );
 		}
 		catch (e) { print(e); }
@@ -48,9 +48,26 @@
 			sourceFiles;
 			
 		opts = jsdoc.opts.set(args);
+		
+		if (opts.help) {
+			print( jsdoc.opts.help() );
+			java.lang.System.exit(0);
+		}
+		else if (opts.test) {
+			require('jsdoc/test').runAll();
+			java.lang.System.exit(0);
+		}
+		
 		sourceFiles = jsdoc.src.getFilePaths(opts._);
 	
 		jsdoc.parser.parseFiles(sourceFiles);
+		
+		if (opts.validate) {
+			var jsonSchema  = require('sitepen/jsonSchema').JSONSchema;
+			var jsdocSchema = require('jsdoc/schema').jsdocSchema;
+			var validation = jsonSchema.validate(jsdoc.parser.result.toObject(), jsdocSchema);
+			print('Validation: ' + validation.toSource());
+		}
 		
 		print( jsdoc.parser.result.asString(opts.destination) );
 	})();

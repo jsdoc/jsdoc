@@ -6,7 +6,7 @@ JSDoc Toolkit Version 3 is free software.
 Copyright 2010 (c) Michael Mathews <micmath@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
-may not use this file except in compliance with the License. You may
+may not use this software except in compliance with the License. You may
 obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
@@ -20,9 +20,9 @@ permissions and limitations under the License.
 In Addition
 ===========
 
-Third party software is included, used by or distributed
+Third party software is included, used-by or distributed along
 with JSDoc Toolkit Version 3. Each is provided under its own license
-and/or has source available from other locations.
+and has source available from other locations.
 
 Rhino
 -----
@@ -67,7 +67,8 @@ jsDump
 
 jsDump is copyright (c) 2008 Ariel Flesler, aflesler(at)gmail(dot)com
 
-Licensed under BSD http://www.opensource.org/licenses/bsd-license.php
+Licensed under the BSD license
+http://www.opensource.org/licenses/bsd-license.php
 
 json2xml
 --------
@@ -79,3 +80,12 @@ http://creativecommons.org/licenses/LGPL/2.1/
 
 http://goessner.net/
 http://goessner.net/download/prj/jsonxml/
+
+jsUnity
+-------
+
+jsUnity is Copyright (c) 2009 Ates Goral
+Universal JavaScript Testing Framework v0.6 http://jsunity.com/
+
+Licensed under the MIT license
+http://www.opensource.org/licenses/mit-license.php

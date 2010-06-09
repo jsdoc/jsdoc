@@ -9,7 +9,7 @@
 	resources via relative filepaths.
 
 	AUTHOR: Michael Mathews <micmath@gmail.com>
-	LICENSE: Apache License 2.0 - See file 'LICENSE.markdown' in this project.
+	LICENSE: Apache License 2.0 - See file 'LICENSE.md' in this project.
 	USAGE: java -jar run.jar <args>
  */
 

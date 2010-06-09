@@ -3,7 +3,7 @@
 		doclet = require('jsdoc/doclet'),
 		doclets = require('jsdoc/docset').doclets,
 		Token  = Packages.org.mozilla.javascript.Token;
-	
+		
 	exports.result = doclets;
 	
 	/**
@@ -106,7 +106,7 @@
 		return true;
 	}
 	
-	currentSourceName = '';
+	var currentSourceName = '';
 	
 	/**
 	 */

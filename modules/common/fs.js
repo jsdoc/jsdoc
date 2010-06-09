@@ -1,7 +1,7 @@
 /**
 	@overview File system stuff.
 	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.markdown' in this project.
+	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 (function() {

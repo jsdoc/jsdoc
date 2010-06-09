@@ -3,10 +3,11 @@
 <project name="JSDoc Toolkit" default="about">
 	<property file="build/build.properties" />
 	<property name="build.templates" location="build/templates" />
+	
 	<tstamp>
 		<format property="NOW" pattern="yyyy-MM-dd-HHmm" locale="en,UK"/>
 	</tstamp>
-	  
+	
 	<target name="about">
 		<delete file="about.json" quiet="true"/>
 		<copy file="${build.templates}/about.json" tofile="about.json" >
@@ -19,4 +20,5 @@
 			</filterchain>
 		</copy>
 	</target>
+
 </project>

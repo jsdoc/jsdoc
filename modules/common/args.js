@@ -1,7 +1,7 @@
 /**
 	@overview Parse command line options.
 	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.markdown' in this project.
+	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
@@ -55,7 +55,7 @@
  		var help = 'OPTIONS:\n',
  			option;
  		
- 		for (var i = this._options.length; i--;) {
+ 		for (var i = 0, leni = this._options.length; i < leni; i++) {
  			option = this._options[i];
  			
  			if (option.shortName) {
