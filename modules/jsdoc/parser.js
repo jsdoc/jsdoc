@@ -125,17 +125,17 @@
 	
 	/**
 	 */
-	exports.parseFiles = function(sourceFiles) {
+	exports.parseFiles = function(sourceFiles, encoding) {
 		var ast = getParser(),
 			fs = require('common/fs'),
 			source = '';
 		
 		for (i = 0, leni = sourceFiles.length; i < leni; i++) {
 			try {
-				source = fs.read(sourceFiles[i]);
+				source = fs.read(sourceFiles[i], encoding);
 			}
 			catch(e) {
-				print('ERROR: ' + e);
+				print('FILE READ ERROR: ' + e);
 				continue;
 			}
 			

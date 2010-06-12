@@ -60,7 +60,7 @@
 		
 		sourceFiles = jsdoc.src.getFilePaths(opts._);
 	
-		jsdoc.parser.parseFiles(sourceFiles);
+		jsdoc.parser.parseFiles(sourceFiles, opts.encoding);
 		
 		if (opts.validate) {
 			var jsonSchema  = require('sitepen/jsonSchema');

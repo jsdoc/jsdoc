@@ -6,31 +6,37 @@
 
 (function() {
 	var slash = java.lang.System.getProperty('file.separator') || '/',
-		File = Packages.java.io.File,
+		File = java.io.File,
 		defaultEncoding = java.lang.System.getProperty('file.encoding');
 	
-	exports.read = function(path, options) {
+	exports.read = function(path, encoding) {
 		var options = options || {},
-			encoding = options.encoding || defaultEncoding;
-
-		return readFile(path, encoding);
+			encoding = encoding || defaultEncoding,
+			input;
+print('encoding is '+encoding);
+		input = new java.util.Scanner(
+			new File(path),
+			encoding
+		).useDelimiter("\\Z");
+		
+		return String( input.next() );
 	}
 	
-	exports.write = function(path, content, options) {
+	exports.write = function(path, content, encoding) {
 		var options = options || {},
-			encoding = options.encoding || defaultEncoding,
-			out;
+			encoding = encoding || defaultEncoding,
+			output;
 		
-		out = new Packages.java.io.PrintWriter(
-			new Packages.java.io.OutputStreamWriter(
-				new Packages.java.io.FileOutputStream(path),
+		output = new java.io.PrintWriter(
+			new java.io.OutputStreamWriter(
+				new java.io.FileOutputStream(path),
 				encoding
 			)
 		);
 		
-		out.write(content);
-		out.flush();
-		out.close();
+		output.write(content);
+		output.flush();
+		output.close();
 	}
 	
 	/**
