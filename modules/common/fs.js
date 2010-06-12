@@ -13,7 +13,7 @@
 		var options = options || {},
 			encoding = encoding || defaultEncoding,
 			input;
-print('encoding is '+encoding);
+
 		input = new java.util.Scanner(
 			new File(path),
 			encoding

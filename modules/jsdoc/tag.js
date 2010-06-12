@@ -36,6 +36,7 @@
 		return new Tag(tagText);
 	}
 	
+	var longTags = ['param', 'constructor', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum'];
 	/**
 		@private
 		@constructor Tag
@@ -68,7 +69,7 @@
 
 			this.text = trim(typeText.text);
 			
-			if (this.name === 'param') { // is a parameter w/ long format
+			if (longTags.indexOf(this.name) > -1) { // is a tag that uses the long format
 				var [pname, pdesc] = splitPname(this.text);
 				this.pname = pname;
 				this.pdesc = pdesc;

@@ -69,6 +69,6 @@
 			print('Validation: ' + validation.toSource());
 		}
 		
-		print( jsdoc.parser.result.asString(opts.destination) );
+		print( jsdoc.parser.result.toString(opts.destination) );
 	})();
 ////

@@ -1,7 +1,7 @@
 (function() {
 	var jsdoc = { opts: require('jsdoc/opts') };
 	
-	testSuite = {
+	var testSuite = {
 		suiteName: 'jsdoc/opts',
 	
 		setUp: function() {
@@ -30,4 +30,6 @@
 			assertEqual(opts.destination, 'mydestination.json');
 		}
 	};
+	
+	testSuites.push(testSuite);
 })();

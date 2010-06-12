@@ -23,9 +23,9 @@ jsdoc.schema.jsdocSchema = {
 						"type": "string",
 						"optional": true
 					},
-					"kind": {
+					"denom": {
 						"type": "string",
-						"enum": ["constructor", "module", "event", "namespace", "method", "property", "function", "variable", "enum"]
+						"enum": ["constructor", "module", "event", "namespace", "method", "member", "function", "variable", "enum"]
 					},
 					"meta": {
 						"file": {

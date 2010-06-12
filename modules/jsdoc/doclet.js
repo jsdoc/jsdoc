@@ -34,11 +34,9 @@
 		postprocess(doclet);
 
 		name.resolve(doclet);
-
-		doclet.meta = {
-			line: node.getLineno(),
-			file: sourceName
-		};
+		
+		doclet.meta = { file: sourceName };
+		if (node) { doclet.meta.line = node.getLineno(); }
 		
 		return doclet
 	}
@@ -52,7 +50,7 @@
 		/**
 			An array of Objects representing tags.
 			@type Array.<Tag>
-			@property Doclet#tags
+			@member Doclet#tags
 		 */
 		this.tags = tags;
 	}
@@ -109,7 +107,7 @@
 	}
 	
 	// safe to export to JSON
-	var exportTags = ['name', 'path', 'kind', 'desc', 'type', 'param', 'returns', 'exports', 'requires', 'memberof', 'access', 'attribute'];
+	var exportTags = ['name', 'path', 'denom', 'desc', 'type', 'param', 'returns', 'exports', 'requires', 'memberof', 'access', 'attribute'];
 	
 	/**
 		Get a JSON-compatible object representing this Doclet.
@@ -206,9 +204,9 @@
 	}
 	
 	// other tags that can provide the memberof
-	var memberofs = {methodof: 'method', propertyof: 'property', eventof: 'event'};
+	var memberofs = {methodof: 'method', eventof: 'event'};
 	// other tags that can provide the symbol name
-	var nameables = ['constructor', 'module', 'event', 'namespace', 'method', 'property', 'function', 'variable', 'enum'];
+	var nameables = ['constructor', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum'];
 	
 	/**
 		Expand some shortcut tags. Modifies the tags argument in-place.
@@ -220,7 +218,7 @@
 	function preprocess(tags) {
 		var name = '',
 			taggedName = '',
-			kind = '',
+			denom = '',
 			taggedKind = '',
 			memberof = '',
 			taggedMemberof = '';
@@ -244,9 +242,9 @@
 				if (name && name !== tags[i].text) { tooManyNames(name, tags[i].text); }
 				taggedName = name = tags[i].text;
 			}
-			else if (tags[i].name === 'kind') {
-				if (kind && kind !== tags[i].text) { tooManyKinds(kind, tags[i].text); }
-				taggedKind = kind = tags[i].text;
+			else if (tags[i].name === 'denom') {
+				if (denom && denom !== tags[i].text) { tooManyKinds(denom, tags[i].text); }
+				taggedKind = denom = tags[i].text;
 			}
 			else if (tags[i].name === 'memberof') {
 				if (memberof) { tooManyTags('memberof'); }
@@ -259,12 +257,17 @@
 					name = tags[i].text;
 				}
 				
+				if (tags[i].pdesc) {
+					tags[tags.length] = tag.fromTagText('desc ' + tags[i].pdesc);
+				}
+				
 				if (tags[i].type) {
 					tags[tags.length] = tag.fromTagText('type ' + tags[i].type);
 				}
 				
-				if (kind && kind !== tags[i].name) { tooManyKinds(kind, tags[i].name); }
-				kind = tags[i].name;
+				if (denom && denom !== tags[i].name) { tooManyKinds(denom, tags[i].name); }
+				denom = tags[i].name;
+				if (denom === 'const') { denom = 'member'; } // an exception to the namebale rule
 			}
 			
 			if ( memberofs.hasOwnProperty(tags[i].name) ) {
@@ -273,8 +276,8 @@
 					memberof = tags[i].text;
 				}
 				
-				if (kind && kind !== memberofs[tags[i].name]) { tooManyKinds(kind, memberofs[tags[i].name]); }
-				kind = memberofs[tags[i].name];
+				if (denom && denom !== memberofs[tags[i].name]) { tooManyKinds(denom, memberofs[tags[i].name]); }
+				denom = memberofs[tags[i].name];
 			}
 		}
 		
@@ -282,8 +285,8 @@
 			tags[tags.length] = tag.fromTagText('name ' + name);
 		}
 		
-		if (kind && !taggedKind) {
-			tags[tags.length] = tag.fromTagText('kind ' + kind);
+		if (denom && !taggedKind) {
+			tags[tags.length] = tag.fromTagText('denom ' + denom);
 		}
 		
 		if (memberof && !taggedMemberof) {
@@ -293,7 +296,7 @@
 	
 	function postprocess(doclet) {
 		if ( doclet.hasTag('class') && !doclet.hasTag('constructor') ) {
-			doclet.tags[doclet.tags.length] = tag.fromTagText('kind constructor');
+			doclet.tags[doclet.tags.length] = tag.fromTagText('denom constructor');
 		}
 		
 		if ( doclet.hasTag('enum')) {
@@ -307,8 +310,8 @@
 		}
 		
 		if ( doclet.hasTag('const')) {
-			if (!doclet.hasTag('kind')) {
-				doclet.tags[doclet.tags.length] = tag.fromTagText('kind property');
+			if (!doclet.hasTag('denom')) {
+				doclet.tags[doclet.tags.length] = tag.fromTagText('denom member');
 			}
 			
 			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {

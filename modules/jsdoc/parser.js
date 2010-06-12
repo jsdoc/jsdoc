@@ -20,10 +20,10 @@
 					commentSrc = '' + comment.toSource();
 
 					if (commentSrc) {
-						thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
+						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
 						if ( thisDoclet.hasTag('name') ) {
 							doclets.push(thisDoclet);
-							if (thisDoclet.tagText('kind') === 'module') {
+							if (thisDoclet.tagText('denom') === 'module') {
 								name.setCurrentModule( thisDoclet.tagText('path') );
 							}
 						}
@@ -64,7 +64,7 @@
 
 				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagText('name');
-				nodeKind = thisDoclet.tagText('kind');
+				nodeKind = thisDoclet.tagText('denom');
 
 				if (!thisDocletName) {
 					nodeName = name.resolveThis( nodeName, node, thisDoclet );
@@ -89,7 +89,7 @@
 					if (commentSrc) {
 						thisDoclet = doclet.makeDoclet('' + commentSrc, node, currentSourceName);
 						thisDocletName = thisDoclet.tagText('path');
-						nodeKind = thisDoclet.tagText('kind');
+						nodeKind = thisDoclet.tagText('denom');
 						
 						if ( !thisDocletName ) {
 							thisDocletName = n.target.string;
@@ -129,6 +129,12 @@
 		var ast = getParser(),
 			fs = require('common/fs'),
 			source = '';
+		
+		if (arguments.length === 0) {
+			throw 'module:jsdoc/parser.parseFiles requires argument sourceFiles(none provided).';
+		}
+		
+		if (typeof sourceFiles[0] === 'string') { sourceFiles = [sourceFiles]; }
 		
 		for (i = 0, leni = sourceFiles.length; i < leni; i++) {
 			try {

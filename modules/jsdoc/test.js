@@ -12,23 +12,36 @@
 	
 	exports.runAll = function() {
 		load(BASEDIR + 'lib/jsunity.js');
+		
+		testSuites = [];
 		load(BASEDIR + 'tests/opts.js');
+		load(BASEDIR + 'tests/tag_namespace.js');
+		load(BASEDIR + 'tests/tag_constructor.js');
+		load(BASEDIR + 'tests/tag_const.js');
+		load(BASEDIR + 'tests/tag_enum.js');
 		
 		jsUnity.attachAssertions();
 		jsUnity.log = function (s) { print(s); };
-		var results = jsUnity.run(testSuite);
+		var results = jsUnity.run.apply(jsUnity, testSuites);
 		summarize(results);
 	}
 	
 	function summarize(results) {
-		var colorStart = '\033[1;37;42m', // green
+		var colorStart,
 			colorEnd = '\033[m';
 			
-		print('--------');
-		if (results.failed !== 0) {
-			colorStart = '\033[1;37;41m'; // red
+		print('------------------');
+		print('Total: ' + results.total + ' tests');
+		
+		if (results.failed === 0) {
+			colorStart = '\033[1;37;42m', // green
+			print(colorStart + 'ALL PASS' + colorEnd);
 		}
-		print(colorStart + 'Total: ' + results.total + ', Pass: ' + results.passed + ', Fail: ' + results.failed + colorEnd);
+		else {
+			colorStart = '\033[1;37;41m'; // red
+			print(colorStart + results.failed + 'FAILED' + colorEnd);
+		}
+		print('');
 	}
 	
 })();

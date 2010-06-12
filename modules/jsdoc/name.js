@@ -22,7 +22,7 @@
 		@param {Doclet} doclet
 	 */
 	exports.resolve = function(doclet) {
-		var kind = doclet.tagText('kind'),
+		var denom = doclet.tagText('denom'),
 			name = doclet.tagText('name'),
 			memberof = doclet.tagText('memberof'),
 			path,
@@ -40,9 +40,9 @@
 		name = name.replace(/\.prototype\.?/g, '#');
 		
 		// if name doesn't already have a doc-namespace and needs one
-		if (!/^[a-z_$-]+:\S+/i.test(name) && supportedNamespaces.indexOf(kind) > -1) {
+		if (!/^[a-z_$-]+:\S+/i.test(name) && supportedNamespaces.indexOf(denom) > -1) {
 			// add doc-namespace to path
-			name = kind + '(' + name + ')';
+			name = denom + ':' + name;
 		}
 		
 		path = shortname = name;
@@ -122,7 +122,7 @@
 
 				if (memberof || !enclosing) {
 					// `this` refers to nearest instance in the name path
-					if (enclosingDoc && enclosingDoc.tagText('kind') !== 'constructor') {
+					if (enclosingDoc && enclosingDoc.tagText('denom') !== 'constructor') {
 						var parts = memberof.split('#');
 						parts.pop();
 						memberof = parts.join('#');

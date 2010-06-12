@@ -3,7 +3,7 @@
 		xml     = require('goessner/json2xml'),
 		doclets = exports.doclets = [];
 	
-	doclets.getDocsByName = function getDocsByName(docName) {
+	doclets.getDocsByPath = function(docName) {
 		var foundDocs = [],
 			i = doclets.length;
 		
@@ -16,7 +16,7 @@
 		return foundDocs;
 	}
 	
-	doclets.toObject = function toObject() {
+	doclets.toObject = function() {
 		var docsObjects = [],
 			i = doclets.length;
 	
@@ -27,7 +27,7 @@
 		return { doc: docsObjects };
 	}
 	
-	doclets.asString = function asString(destinationName) {
+	doclets.toString = function(destinationName) {
 		if ( /xml$/i.test(destinationName) ) {
 			return doclets.toXML();
 		}
@@ -36,11 +36,11 @@
 		}
 	}
 	
-	doclets.toJSON = function toJSON() {
+	doclets.toJSON = function() {
 		return dumper.jsDump.parse( doclets.toObject() );
 	}
 	
-	doclets.toXML = function toXML() {
+	doclets.toXML = function() {
 		var o = doclets.toObject();
 		
 		// make `id` an attribute of the doc tag
