@@ -18,15 +18,19 @@
 				scanner = new java.util.Scanner(file).useDelimiter("\\Z"),
 				source = String( scanner.next() );
 		}
-		catch (e) { print(e); }
+		catch(e) { print(e); }
 		
-		var f = new Function('require', 'exports', 'module', source),
-			exports = require.cache[path] || {},
-			module = { id: id, uri: path };
-			
-		require.cache[path] = exports;
-		f.call({}, require, exports, module);
-		
+		try {
+			var f = new Function('require', 'exports', 'module', source),
+				exports = require.cache[path] || {},
+				module = { id: id, uri: path };
+				
+			require.cache[path] = exports;
+			f.call({}, require, exports, module);
+		}
+		catch(e) {
+			print('Unable to require source code from '+source+': '+e);
+		}
 		return exports;
 	}
 	require.base = BASEDIR + '/modules/';

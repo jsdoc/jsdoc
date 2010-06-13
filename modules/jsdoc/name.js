@@ -39,12 +39,6 @@
 		
 		name = name.replace(/\.prototype\.?/g, '#');
 		
-		// if name doesn't already have a doc-namespace and needs one
-		if (!/^[a-z_$-]+:\S+/i.test(name) && supportedNamespaces.indexOf(denom) > -1) {
-			// add doc-namespace to path
-			name = denom + ':' + name;
-		}
-		
 		path = shortname = name;
 		
 		doclet.tagText('name', shortname);
@@ -57,9 +51,15 @@
 			}
 		}
 		else {
-			[prefix, shortname] = exports.shorten(name);
-			doclet.tagText('memberof', prefix);
-			doclet.tagText('name', shortname);
+			[memberof, name] = exports.shorten(name);
+			doclet.tagText('memberof', memberof);
+			doclet.tagText('name', name);
+		}
+
+		// if name doesn't already have a doc-namespace and needs one
+		if (!/^[a-z_$-]+:\S+/i.test(name) && supportedNamespaces.indexOf(denom) > -1) {
+			// add doc-namespace to path
+			name = denom + ':' + name;
 		}
 		
 		// overlapping member of, like @name foo.Bar, @memberof foo

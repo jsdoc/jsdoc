@@ -21,22 +21,34 @@
 	 */
 	exports.makeDoclet = function(commentSrc, node, sourceName) {
 		var tags = [],
+			meta = {},
 			doclet;
+		
+		meta.file = sourceName;
+		meta.line = node? node.getLineno() : '';
 		
 		commentSrc = unwrapComment(commentSrc);
 		commentSrc = fixDesc(commentSrc);
 		
 		tags = parseTags(commentSrc);
-		preprocess(tags);
+		
+		try {
+			preprocess(tags);
+		}
+		catch(e) {
+			e.message = 'Cannot make doclet from JSDoc comment found at '+ meta.file + ' ' + meta.line
+			+ ': ' + e.message
+			+ '\n "' + commentSrc.replace(/\n\s+/g, '\n  ') + '"';
+			throw e;
+		}
 		
 		doclet = new Doclet(tags);
 		
-		postprocess(doclet);
-
-		name.resolve(doclet);
+		doclet.meta = meta;
 		
-		doclet.meta = { file: sourceName };
-		if (node) { doclet.meta.line = node.getLineno(); }
+		postprocess(doclet);
+		
+		name.resolve(doclet);
 		
 		return doclet
 	}
@@ -219,7 +231,7 @@
 		var name = '',
 			taggedName = '',
 			denom = '',
-			taggedKind = '',
+			taggedDenom = '',
 			memberof = '',
 			taggedMemberof = '';
 		
@@ -239,21 +251,29 @@
  				tags[tags.length] = tag.fromTagText('attribute readonly');
  			}
 			else if (tags[i].name === 'name') {
-				if (name && name !== tags[i].text) { tooManyNames(name, tags[i].text); }
+				if (name && name !== tags[i].text) {
+					throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].text);
+				}
 				taggedName = name = tags[i].text;
 			}
 			else if (tags[i].name === 'denom') {
-				if (denom && denom !== tags[i].text) { tooManyKinds(denom, tags[i].text); }
-				taggedKind = denom = tags[i].text;
+				if (denom && denom !== tags[i].text) {
+					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + denom + ' and ' + tags[i].text);
+				}
+				taggedDenom = denom = tags[i].text;
 			}
 			else if (tags[i].name === 'memberof') {
-				if (memberof) { tooManyTags('memberof'); }
+				if (memberof) {
+					throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
+				}
 				taggedMemberof = memberof = tags[i].text;
 			}
 			
 			if ( nameables.indexOf(tags[i].name) > -1 ) {
 				if (tags[i].text) {
-					if (name && name !== tags[i].text) { tooManyNames(name, tags[i].text); }
+					if (name && name !== tags[i].text) {
+						throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].text);
+					}
 					name = tags[i].text;
 				}
 				
@@ -265,18 +285,24 @@
 					tags[tags.length] = tag.fromTagText('type ' + tags[i].type);
 				}
 				
-				if (denom && denom !== tags[i].name) { tooManyKinds(denom, tags[i].name); }
+				if (denom && denom !== tags[i].name) {
+					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + denom + ' and ' + tags[i].name);
+				}
 				denom = tags[i].name;
 				if (denom === 'const') { denom = 'member'; } // an exception to the namebale rule
 			}
 			
 			if ( memberofs.hasOwnProperty(tags[i].name) ) {
 				if (tags[i].text) {
-					if (memberof) { tooManyTags(tags[i].name); }
+					if (memberof) {
+						throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
+					}
 					memberof = tags[i].text;
 				}
 				
-				if (denom && denom !== memberofs[tags[i].name]) { tooManyKinds(denom, memberofs[tags[i].name]); }
+				if (denom && denom !== memberofs[tags[i].name]) {
+					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + denom + ' and ' + tags[i].name);
+				}
 				denom = memberofs[tags[i].name];
 			}
 		}
@@ -285,7 +311,7 @@
 			tags[tags.length] = tag.fromTagText('name ' + name);
 		}
 		
-		if (denom && !taggedKind) {
+		if (denom && !taggedDenom) {
 			tags[tags.length] = tag.fromTagText('denom ' + denom);
 		}
 		
@@ -320,30 +346,10 @@
 		}
 	}
 	
-	/**
-		Throw error when two conflicting names are defined in the same doc.
-	 	@private
-		@function tooManyNames
-	 */
-	function tooManyNames(name1, name2) {
-		throw new Error('Conflicting names in documentation: '+name1+', '+name2);
+	function DocTagConflictError(message) {
+		this.name = "DocTagConflictError";
+		this.message = (message || "");
 	}
-	
-	/**
-		Throw error when two conflicting kinds are defined in the same doc.
-	 	@private
-		@function tooManyKinds
-	 */
-	function tooManyKinds(kind1, kind2) {
-		throw new Error('Conflicting kinds in documentation: '+kind1+', '+kind2);
-	}
-	
-	/**
-		Throw error when conflicting tags are found.
-		@private
-		@function tooManyTags
-	 */
-	function tooManyTags(tagName) {
-		throw new Error('Symbol has too many tags of type: @'+tagName);
-	}
+	DocTagConflictError.prototype = Error.prototype;
+
 })();

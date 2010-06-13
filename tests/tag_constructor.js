@@ -86,6 +86,7 @@ function sample() {
 
 	/**@constructor Triangle A three-sided polygon.*/
 	/**
+	 * A four-sided polygon having equal-length sides meeting at right angles.
 	 * @constructor
 	 * @name Square
 	 */

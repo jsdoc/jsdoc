@@ -43,6 +43,7 @@
 		@param {string} tagText
 	 */
 	function Tag(tagText) {
+		this.raw = tagText;
 		this.name = '';
 		this.type = '';
 		this.text = '';
@@ -75,6 +76,10 @@
 				this.pdesc = pdesc;
 			}
 		}
+	}
+	
+	Tag.prototype.toString = function() {
+		return '@'+this.raw;
 	}
 	
 	/**
