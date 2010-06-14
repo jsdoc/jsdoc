@@ -9,6 +9,7 @@
 	@module jsdoc/tag
  */
 (function() {
+	var jsdoc_type = require('jsdoc/type');
 	
 	exports.fromCommentText = function(commentText) {
 		var tag,
@@ -45,7 +46,7 @@
 	function Tag(tagText) {
 		this.raw = tagText;
 		this.name = '';
-		this.type = '';
+		this.type = [];
 		this.text = '';
 		this.pname = '';
 		this.pdesc = '';
@@ -54,24 +55,29 @@
 		var bits = tagText.match(/^(\S+)(?:\s+([\s\S]*))?$/);
 	
 		if (bits) {
-
-			this.name = (bits[1] || '').toLowerCase();
-			this.text = bits[2] || '';
+			this.name = (bits[1] || '').toLowerCase(); // like @name
+			this.name = synonym(this.name);
 			
-			var typeText = splitType(this.text);
+			this.text = bits[2] || ''; // all the rest of the tag
+			
+			var type, text, optional, nullable;
+			[type, text, optional, nullable] = jsdoc_type.parse(this.text);
 			
 			// @type tags are the only tag that is not allowed to have a {type}!
 			if (this.name === 'type') {
-				typeText.text = typeText.text || typeText.type;
-				delete typeText.type;
+				text = text || type.join('|');
+				type = [];
 			}
 			
-			this.type = typeText.type;
-
-			this.text = trim(typeText.text);
+			if (type && type.length) {
+				this.type = type;
+			}
+			if (optional !== null) { this.poptional = optional; }
+			if (nullable !== null) { this.pnullable = nullable; }
 			
+			this.text = text;
 			if (longTags.indexOf(this.name) > -1) { // is a tag that uses the long format
-				var [pname, pdesc] = splitPname(this.text);
+				var [pname, pdesc] = parsePname(this.text);
 				this.pname = pname;
 				this.pdesc = pdesc;
 			}
@@ -85,55 +91,28 @@
 	/**
 		Split the parameter name and parameter desc from the tag text.
 		@private
-		@method splitPname
+		@method parsePname
 		@param {string} tagText
 		@returns Array.<string> The pname and the pdesc.
 	 */
-	function splitPname(tagText) {
+	function parsePname(tagText) {
 		tagText.match(/^(\S+)(\s+(\S.*))?$/);
 		
 		return [RegExp.$1, RegExp.$3];
 	}
 	
-	/**
-		Split the tag type and remaining tag text from the tag text.
-		@private
-		@method splitType
-		@param {string} tagText
-		@returns Object Like {type: tagType, text: tagText}
-	 */
-	function splitType(tagText) {
-		var type = '',
-			text = tagText,
-			count = 0;
-		
-		// I reserve the right to use {@whatever ...} for something unrelated to type
-		if (tagText[0] === '{' && tagText[1] !== '@') {
-			count++;
-			
-			for (var i = 1, leni = tagText.length; i < leni; i++) {
-				if (tagText[i] === '{') { count++; }
-				if (tagText[i] === '}') { count--; }
-				if (count === 0) {
-					type = trim(tagText.slice(1, i));
-					text = trim(tagText.slice(i+1));
-					break;
-				}
-			}
+	function synonym(name) {
+		if ( synonym.map.hasOwnProperty(name) ) {
+			return synonym.map[name];
 		}
-		
-		return { type: type, text: text };
+		else {
+			return name;
+		}
 	}
-	
-	/**
-		Remove leading and trailing whitespace.
-		@private
-		@method trim
-		@param {string} text
-		@returns {string}
-	 */
-	function trim(text) {
-		return text.replace(/^\s+|\s+$/g, '');
+	synonym.map = {
+		'description': 'desc',
+		'function': 'method',
+		'variable': 'member'
 	}
 	
 })();

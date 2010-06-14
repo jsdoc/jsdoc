@@ -18,15 +18,15 @@
 		},
 	
 		testConstCompactTag: function() {
-			var doc = docset.getDocsByPath('pi');
-			assertEqual(doc.length, 1, '1 doclet by that name is found.');
+			var docs = docset.getDocsByPath('pi');
+			assertEqual(docs.length, 1, '1 doclet by that name is found.');
 			
-			doc = doc[0];
-			
+			var doc = docs[0].toObject();
+
 			assertEqual(typeof doc, 'object', 'The found doclet is an object.');
-			assertEqual(doc.tagText('path'), 'pi', 'The found doclet has the expected path.');
- 			assertEqual(doc.tagText('type'), 'number', 'The found doclet has the expected type.');
- 			assertEqual(doc.tagText('desc'), "The ratio of any circle's circumference to its diameter.", 'The found doclet has the expected desc.');
+			assertEqual(doc.path, 'pi', 'The found doclet has the expected path.');
+ 			assertEqual(doc.type, 'number', 'The found doclet has the expected type.');
+ 			assertEqual(doc.desc, "The ratio of any circle's circumference to its diameter.", 'The found doclet has the expected desc.');
 		},
 	
 		testConstCompactVerbose: function() {
@@ -65,9 +65,7 @@ function sample() {
 	
 	/**
 	 * Euler's number.
-	 * @const
-	 * @name e
-	 * @type number
+	 * @const {number} e
 	 */
 	
 	/**

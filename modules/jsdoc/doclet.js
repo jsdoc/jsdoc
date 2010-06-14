@@ -131,27 +131,48 @@
 			o = {};
 		
 		for (var i = 0, leni = this.tags.length; i < leni; i++) {
-			if (exportTags.indexOf(this.tags[i].name) === -1) { continue; }
-		
 			tag = this.tags[i];
+			
+			if ( exportTags.indexOf(tag.name) === -1 ) { continue; }
+		
 			tagName = tag.name;
 			tagValue = {};
-			 
-			if (tag.type) {
-				tagValue.type = tag.type;
-				// not a long tag
-				if (!tag.pname && tag.text) { tagValue.text = tag.text; }
-			}
+
+// 			if (tag.type && tag.type.length) {
+// 				tagValue.type = tag.type;
+// 				// not a long tag
+// 				if (!tag.pname && tag.text) { tagValue.text = tag.text; }
+//			}
+			
 			// a long tag
-			if (tag.pname) { tagValue.name = tag.pname; }
+			if (tag.pname) {
+				
+				if ( /^\[(.+)\]$/.test(tag.pname) ) {
+					tagValue.name = RegExp.$1;
+					tag.poptional = true;
+				}
+				else {
+					tagValue.name = tag.pname;
+				}
+				tagValue.type = tag.type;
+//				print('```` name is '+tagName+': '+tagValue);
+			}
 			if (tag.pdesc) { tagValue.desc = tag.pdesc; }
+			if (typeof tag.poptional === 'boolean') { tagValue.optional = tag.poptional; }
+			if (typeof tag.pnullable === 'boolean') { tagValue.nullable = tag.pnullable; }
 			
 			// tag value is not an object, it's just a simple string
-			if (!tag.pname && !tag.type) { tagValue = tag.text; }
-			
-			if (!o[tagName]) { o[tagName] = tagValue; }
-			else if (o[tagName].push) { o[tagName].push(tagValue); }
-			else {
+			if (!tag.pname) {
+				tagValue = tag.text;
+			}
+
+			if (typeof o[tagName] === 'undefined') { // not defined
+				o[tagName] = tagValue;
+			}
+			else if (o[tagName].push) { // is an array
+				o[tagName].push(tagValue);
+			}
+			else { // is a string, but needs to be an array
 				o[tagName] = [ o[tagName] ];
 				o[tagName].push(tagValue);
 			}
@@ -266,7 +287,7 @@
 				if (memberof) {
 					throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
 				}
-				taggedMemberof = memberof = tags[i].text;
+				taggedMemberof = memberof = tags[i].text+'ZZZ_0';
 			}
 			
 			if ( nameables.indexOf(tags[i].name) > -1 ) {
@@ -282,7 +303,7 @@
 				}
 				
 				if (tags[i].type) {
-					tags[tags.length] = tag.fromTagText('type ' + tags[i].type);
+					tags[tags.length] = tag.fromTagText('type ' + tags[i].type.join('|'));
 				}
 				
 				if (denom && denom !== tags[i].name) {
@@ -297,7 +318,7 @@
 					if (memberof) {
 						throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
 					}
-					memberof = tags[i].text;
+					memberof = tags[i].text+'ZZZ_1';
 				}
 				
 				if (denom && denom !== memberofs[tags[i].name]) {
@@ -316,7 +337,7 @@
 		}
 		
 		if (memberof && !taggedMemberof) {
-			tags[tags.length] = tag.fromTagText('memberof ' + memberof);
+			tags[tags.length] = tag.fromTagText('memberof ' + memberof+'ZZZ_2');
 		}
 	}
 	

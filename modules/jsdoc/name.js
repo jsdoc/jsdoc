@@ -76,7 +76,7 @@
 		var shortname = path.split(/([#.-])/).pop(),
 			splitOn = RegExp.$1,
 			splitAt = path.lastIndexOf(splitOn),
-			prefix = (splitAt === -1)? '' : path.slice(0, splitAt);
+			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
 		
 		if (splitOn === '#') { prefix = prefix + splitOn; }
 		return [prefix, shortname];
