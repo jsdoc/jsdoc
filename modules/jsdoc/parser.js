@@ -134,7 +134,7 @@
 			throw 'module:jsdoc/parser.parseFiles requires argument sourceFiles(none provided).';
 		}
 		
-		if (typeof sourceFiles[0] === 'string') { sourceFiles = [sourceFiles]; }
+		if (typeof sourceFiles === 'string') { sourceFiles = [sourceFiles]; }
 		
 		for (i = 0, leni = sourceFiles.length; i < leni; i++) {
 			try {

@@ -17,7 +17,6 @@
 	exports.parse = function(tagText) {
 		if (typeof tagText !== 'string') { tagText = ''; }
 		var type = '',
-			types = [],
 			text = '',
 			count = 0;
 		
@@ -43,9 +42,9 @@
 		[type, optional] = parseOptional(type);
 		[type, nullable] = parseNullable(type);
 		
-		types = parseTypes(type); // make it into an array
-		
-		return [types, text, optional, nullable];
+		type = parseTypes(type); // make it into an array
+
+		return [type, text, optional, nullable];
 	}
 	
 	function parseOptional(type) {

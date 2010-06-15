@@ -137,49 +137,48 @@
 		
 			tagName = tag.name;
 			tagValue = {};
-
-// 			if (tag.type && tag.type.length) {
-// 				tagValue.type = tag.type;
-// 				// not a long tag
-// 				if (!tag.pname && tag.text) { tagValue.text = tag.text; }
-//			}
 			
 			// a long tag
-			if (tag.pname) {
+			if (tag.pname || tag.pdesc) { // TODO: should check the list instead?
 				
-				if ( /^\[(.+)\]$/.test(tag.pname) ) {
-					tagValue.name = RegExp.$1;
-					tag.poptional = true;
+				if (tag.pname) {
+					if ( /^\[(.+)\]$/.test(tag.pname) ) {
+						tagValue.name = RegExp.$1;
+						tag.poptional = true;
+					}
+					else {
+						tagValue.name = tag.pname;
+					}
 				}
-				else {
-					tagValue.name = tag.pname;
+				
+				if (tag.type && tag.type.length) {
+					tagValue.type = tag.type;
 				}
-				tagValue.type = tag.type;
-//				print('```` name is '+tagName+': '+tagValue);
 			}
 			if (tag.pdesc) { tagValue.desc = tag.pdesc; }
 			if (typeof tag.poptional === 'boolean') { tagValue.optional = tag.poptional; }
 			if (typeof tag.pnullable === 'boolean') { tagValue.nullable = tag.pnullable; }
 			
 			// tag value is not an object, it's just a simple string
-			if (!tag.pname) {
+			if (!tag.pname && !tag.pdesc) { // TODO: should check the list instead?
 				tagValue = tag.text;
 			}
-
-			if (typeof o[tagName] === 'undefined') { // not defined
-				o[tagName] = tagValue;
-			}
-			else if (o[tagName].push) { // is an array
-				o[tagName].push(tagValue);
-			}
-			else { // is a string, but needs to be an array
-				o[tagName] = [ o[tagName] ];
-				o[tagName].push(tagValue);
+			
+			if (tagValue) {
+				if (typeof o[tagName] === 'undefined') { // not defined
+					o[tagName] = tagValue;
+				}
+				else if (o[tagName].push) { // is an array
+					o[tagName].push(tagValue);
+				}
+				else { // is a string, but needs to be an array
+					o[tagName] = [ o[tagName] ];
+					o[tagName].push(tagValue);
+				}
 			}
 			
 			o.meta = this.meta;
 		}
-		
 		return o;
 	}
 	
@@ -264,6 +263,9 @@
  			}
  			else if (tags[i].name === 'protected') {
  				tags[tags.length] = tag.fromTagText('access protected');
+ 			}
+ 			else if (tags[i].name === 'public') {
+ 				tags[tags.length] = tag.fromTagText('access public');
  			}
  			else if (tags[i].name === 'const') {
  				tags[tags.length] = tag.fromTagText('attribute constant');

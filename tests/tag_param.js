@@ -78,6 +78,23 @@
 			assertEqual(params[1].name, 'axis', 'The found parameter has the correct name.');
 			assertEqual(params[1].optional, true, 'The found parameter has the correct optional.');
 
+		},
+	
+		testParamDesc: function() {
+			var docs = docset.getDocsByPath('resize');
+			
+			assertEqual(docs.length, 1, 'All doclets by that path name are found.');
+			
+			var doc = docs[0].toObject(),
+				param = doc.param;
+				
+			assertEqual(typeof param, 'object', 'The found parameter has the expected type.');
+			assertEqual(param.name, 'ratio', 'The found parameter has the correct name.');
+ 			assertEqual(typeof param.type, 'object', 'The found parameter has types.');
+			assertEqual(param.type.length, 2, 'The found parameter has the correct number of types.');
+ 			assertEqual(param.type[0], 'Function', 'The found parameter has the correct type[0] value.');
+ 			assertEqual(param.type[1], 'number', 'The found parameter has the correct type[1] value.');
+			assertEqual(param.desc, 'A number\n		or a function.', 'The found parameter has the expected description.');
 		}
 	};
 	
@@ -100,6 +117,14 @@ function sample() {
 		@param [axis]
 	 */
 	function rotate(deg, axis) {
+	
+	}
+	
+	/** @method
+		@param {Function|number} ratio A number
+		or a function.
+	 */
+	function resize(ratio) {
 	
 	}
 }

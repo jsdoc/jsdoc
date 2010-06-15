@@ -37,7 +37,8 @@
 		return new Tag(tagText);
 	}
 	
-	var longTags = ['param', 'constructor', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum'];
+	var longTags = ['param', 'constructor', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum', 'returns'];
+	var anonTags = ['returns'];
 	/**
 		@private
 		@constructor Tag
@@ -56,11 +57,14 @@
 	
 		if (bits) {
 			this.name = (bits[1] || '').toLowerCase(); // like @name
-			this.name = synonym(this.name);
+			this.name = trim( resolveSynonyms(this.name) );
 			
-			this.text = bits[2] || ''; // all the rest of the tag
+			this.text = trim( bits[2] ) || ''; // all the rest of the tag
 			
-			var type, text, optional, nullable;
+			var /*Array.<string>*/ type,
+				/*string*/         text,
+				/*?boolean*/       optional,
+				/*?boolean*/       nullable;
 			[type, text, optional, nullable] = jsdoc_type.parse(this.text);
 			
 			// @type tags are the only tag that is not allowed to have a {type}!
@@ -69,17 +73,21 @@
 				type = [];
 			}
 			
-			if (type && type.length) {
-				this.type = type;
-			}
+			// don't add an empty type or null attributes
+			if (type && type.length) { this.type = type; }
 			if (optional !== null) { this.poptional = optional; }
 			if (nullable !== null) { this.pnullable = nullable; }
 			
 			this.text = text;
 			if (longTags.indexOf(this.name) > -1) { // is a tag that uses the long format
-				var [pname, pdesc] = parsePname(this.text);
-				this.pname = pname;
-				this.pdesc = pdesc;
+				if (anonTags.indexOf(this.name) > -1) {
+					this.pdesc = this.text;
+				}
+				else {
+					var [pname, pdesc] = parsePname(this.text);
+					this.pname = pname;
+					this.pdesc = pdesc;
+				}
 			}
 		}
 	}
@@ -96,23 +104,31 @@
 		@returns Array.<string> The pname and the pdesc.
 	 */
 	function parsePname(tagText) {
-		tagText.match(/^(\S+)(\s+(\S.*))?$/);
+		tagText.match(/^(\S+)(\s+(\S[\s\S]*))?$/);
 		
 		return [RegExp.$1, RegExp.$3];
 	}
 	
-	function synonym(name) {
-		if ( synonym.map.hasOwnProperty(name) ) {
-			return synonym.map[name];
+	function resolveSynonyms(name) {
+		if ( exports.synonyms.hasOwnProperty(name) ) {
+			return exports.synonyms[name];
 		}
 		else {
 			return name;
 		}
 	}
-	synonym.map = {
+	exports.synonyms = {
 		'description': 'desc',
-		'function': 'method',
-		'variable': 'member'
+		'function':    'method',
+		'variable':    'member',
+		'return':      'returns'
+	}
+	
+	//TODO: move into a shared module?
+	/** @private */
+	function trim(text) {
+		if (!text) { return ''; }
+		return text.replace(/^\s+|\s+$/g, '');
 	}
 	
 })();
