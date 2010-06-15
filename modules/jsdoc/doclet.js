@@ -10,7 +10,7 @@
  */
 (function() {	
 	var name = require('jsdoc/name'),
-		tag = require('jsdoc/tag');
+		parse_tag = require('jsdoc/tag');
 	
 	/**
 		Factory that builds a Doclet object.
@@ -30,8 +30,8 @@
 		commentSrc = unwrapComment(commentSrc);
 		commentSrc = fixDesc(commentSrc);
 		
-		tags = parseTags(commentSrc);
-		
+		tags = parse_tag.parse(commentSrc);
+
 		try {
 			preprocess(tags);
 		}
@@ -95,7 +95,7 @@
 		
 		// still here?
 		if (text) {
-			this.tags.push( tag.fromTagText(tagName + ' ' + text) );
+			this.tags.push( parse_tag.fromTagText(tagName + ' ' + text) );
 			return text;
 		}
 		
@@ -119,7 +119,7 @@
 	}
 	
 	// safe to export to JSON
-	var exportTags = ['name', 'path', 'denom', 'desc', 'type', 'param', 'returns', 'exports', 'requires', 'memberof', 'access', 'attribute'];
+	var exportTags = ['name', 'path', 'denom', 'desc', 'type', 'param', 'returns', 'exports', 'requires', 'memberof', 'access', 'attribute', 'example', 'see'];
 	
 	/**
 		Get a JSON-compatible object representing this Doclet.
@@ -132,7 +132,7 @@
 		
 		for (var i = 0, leni = this.tags.length; i < leni; i++) {
 			tag = this.tags[i];
-			
+
 			if ( exportTags.indexOf(tag.name) === -1 ) { continue; }
 		
 			tagName = tag.name;
@@ -150,20 +150,20 @@
 						tagValue.name = tag.pname;
 					}
 				}
-				
-				if (tag.type && tag.type.length) {
-					tagValue.type = tag.type;
-				}
 			}
+			if (tag.type && tag.type.length) {
+				tagValue.type = tag.type;
+			}
+
 			if (tag.pdesc) { tagValue.desc = tag.pdesc; }
 			if (typeof tag.poptional === 'boolean') { tagValue.optional = tag.poptional; }
 			if (typeof tag.pnullable === 'boolean') { tagValue.nullable = tag.pnullable; }
 			
 			// tag value is not an object, it's just a simple string
-			if (!tag.pname && !tag.pdesc) { // TODO: should check the list instead?
+			if (!tag.pname && !tag.pdesc && !(tag.type && tag.type.length)) { // TODO: should check the list instead?
 				tagValue = tag.text;
 			}
-			
+
 			if (tagValue) {
 				if (typeof o[tagName] === 'undefined') { // not defined
 					o[tagName] = tagValue;
@@ -192,8 +192,10 @@
 	function unwrapComment(commentSrc) {
 		if (!commentSrc) { return ''; }
 	
-		// TODO keep leading white space for @examples
-		return commentSrc ? commentSrc.replace(/(^\/\*\*+\s*|\s*\**\*\/$)/g, "").replace(/^\s*\* ?/gm, "") : "";
+		// note: keep trailing whitespace for @examples
+		// extra opening/closing stars are ignored
+		// left margin is considered a star and a space
+		return commentSrc ? commentSrc.replace(/^\/\*\*+/, "").replace(/\**\*\/$/, "\\Z").replace(/^\s*(\* ?|\\Z)/gm, "") : "";
 	}
 	
 	/**
@@ -208,31 +210,6 @@
 			commentSrc = '@desc ' + commentSrc;
 		}
 		return commentSrc;
-	}
-	
-	/**
-		Given the source of a jsdoc comment, finds the tags.
-		@private
-		@function parseTags
-		@param {string} commentSrc Unwrapped.
-		@returns Array.<Object>
-	 */
-	function parseTags(commentSrc) {
-		var tags = [];
-
-		// split out the basic tags
-		commentSrc
-		.split(/(^|[\r\n])\s*@/)
-		.filter( function($){ return $.match(/\S/); } )
-		.forEach(function($) {
-			var newTag = tag.fromTagText($);
-
-			if (newTag.name) {
-				tags.push(newTag);
-			}
-		});
-		
-		return tags;
 	}
 	
 	// other tags that can provide the memberof
@@ -259,19 +236,19 @@
 		while(i--) {
 		
  			if (tags[i].name === 'private') {
- 				tags[tags.length] = tag.fromTagText('access private');
+ 				tags[tags.length] = parse_tag.fromTagText('access private');
  			}
  			else if (tags[i].name === 'protected') {
- 				tags[tags.length] = tag.fromTagText('access protected');
+ 				tags[tags.length] = parse_tag.fromTagText('access protected');
  			}
  			else if (tags[i].name === 'public') {
- 				tags[tags.length] = tag.fromTagText('access public');
+ 				tags[tags.length] = parse_tag.fromTagText('access public');
  			}
  			else if (tags[i].name === 'const') {
- 				tags[tags.length] = tag.fromTagText('attribute constant');
+ 				tags[tags.length] = parse_tag.fromTagText('attribute constant');
  			}
  			else if (tags[i].name === 'readonly') {
- 				tags[tags.length] = tag.fromTagText('attribute readonly');
+ 				tags[tags.length] = parse_tag.fromTagText('attribute readonly');
  			}
 			else if (tags[i].name === 'name') {
 				if (name && name !== tags[i].text) {
@@ -289,7 +266,7 @@
 				if (memberof) {
 					throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
 				}
-				taggedMemberof = memberof = tags[i].text+'ZZZ_0';
+				taggedMemberof = memberof = tags[i].text;
 			}
 			
 			if ( nameables.indexOf(tags[i].name) > -1 ) {
@@ -301,11 +278,11 @@
 				}
 				
 				if (tags[i].pdesc) {
-					tags[tags.length] = tag.fromTagText('desc ' + tags[i].pdesc);
+					tags[tags.length] = parse_tag.fromTagText('desc ' + tags[i].pdesc);
 				}
 				
 				if (tags[i].type) {
-					tags[tags.length] = tag.fromTagText('type ' + tags[i].type.join('|'));
+					tags[tags.length] = parse_tag.fromTagText('type ' + tags[i].type.join('|'));
 				}
 				
 				if (denom && denom !== tags[i].name) {
@@ -320,7 +297,7 @@
 					if (memberof) {
 						throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
 					}
-					memberof = tags[i].text+'ZZZ_1';
+					memberof = tags[i].text;
 				}
 				
 				if (denom && denom !== memberofs[tags[i].name]) {
@@ -331,40 +308,40 @@
 		}
 		
 		if (name && !taggedName) {
-			tags[tags.length] = tag.fromTagText('name ' + name);
+			tags[tags.length] = parse_tag.fromTagText('name ' + name);
 		}
 		
 		if (denom && !taggedDenom) {
-			tags[tags.length] = tag.fromTagText('denom ' + denom);
+			tags[tags.length] = parse_tag.fromTagText('denom ' + denom);
 		}
 		
 		if (memberof && !taggedMemberof) {
-			tags[tags.length] = tag.fromTagText('memberof ' + memberof+'ZZZ_2');
+			tags[tags.length] = parse_tag.fromTagText('memberof ' + memberof);
 		}
 	}
 	
 	function postprocess(doclet) {
 		if ( doclet.hasTag('class') && !doclet.hasTag('constructor') ) {
-			doclet.tags[doclet.tags.length] = tag.fromTagText('denom constructor');
+			doclet.tags[doclet.tags.length] = parse_tag.fromTagText('denom constructor');
 		}
 		
 		if ( doclet.hasTag('enum')) {
 			if (!doclet.hasTag('type')) {
-				doclet.tags[doclet.tags.length] = tag.fromTagText('type number');
+				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('type number');
 			}
 			
 			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {
-				doclet.tags[doclet.tags.length] = tag.fromTagText('attribute constant');
+				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('attribute constant');
 			}
 		}
 		
 		if ( doclet.hasTag('const')) {
 			if (!doclet.hasTag('denom')) {
-				doclet.tags[doclet.tags.length] = tag.fromTagText('denom member');
+				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('denom member');
 			}
 			
 			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {
-				doclet.tags[doclet.tags.length] = tag.fromTagText('attribute constant');
+				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('attribute constant');
 			}
 		}
 	}

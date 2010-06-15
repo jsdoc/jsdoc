@@ -11,34 +11,15 @@
 (function() {
 	var jsdoc_type = require('jsdoc/type');
 	
-	exports.fromCommentText = function(commentText) {
-		var tag,
-			tags = [];
-
-		// split out the basic tags
-		commentText
-		.split(/(^|[\r\n])\s*@/)
-		.filter( function($){ return $.match(/\S/); } )
-		.forEach(function($) {
-			tag = fromTagText($);
-
-			if (tag.name) {
-				tags.push(tag);
-			}
-			else {
-				// TODO: warn about tag with no name?
-			}
-		});
-		
-		return tags;
-	}
-	
 	exports.fromTagText = function(tagText) {
 		return new Tag(tagText);
 	}
 	
+	// tags that have {type} (name desc|text)
 	var longTags = ['param', 'constructor', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum', 'returns'];
+	// tags that have {type} text
 	var anonTags = ['returns'];
+	
 	/**
 		@private
 		@constructor Tag
@@ -53,33 +34,38 @@
 		this.pdesc = '';
 		
 		// tagText is like: "tagname tag text"
-		var bits = tagText.match(/^(\S+)(?:\s+([\s\S]*))?$/);
+		var bits = tagText.match(/^\s*(\S+)(?:\s([\s\S]*))?$/);
 	
 		if (bits) {
 			this.name = (bits[1] || '').toLowerCase(); // like @name
 			this.name = trim( resolveSynonyms(this.name) );
 			
-			this.text = trim( bits[2] ) || ''; // all the rest of the tag
-			
-			var /*Array.<string>*/ type,
-				/*string*/         text,
-				/*?boolean*/       optional,
-				/*?boolean*/       nullable;
-			[type, text, optional, nullable] = jsdoc_type.parse(this.text);
-			
-			// @type tags are the only tag that is not allowed to have a {type}!
-			if (this.name === 'type') {
-				text = text || type.join('|');
-				type = [];
+			this.text = bits[2] || ''; // all the rest of the tag
+
+			if (this.name !== 'example') { // example is the only tag that preserves whitespace
+				this.text = trim( this.text );
 			}
 			
-			// don't add an empty type or null attributes
-			if (type && type.length) { this.type = type; }
-			if (optional !== null) { this.poptional = optional; }
-			if (nullable !== null) { this.pnullable = nullable; }
-			
-			this.text = text;
 			if (longTags.indexOf(this.name) > -1) { // is a tag that uses the long format
+				var /*Array.<string>*/ type,
+					/*string*/         text,
+					/*?boolean*/       optional,
+					/*?boolean*/       nullable;
+				[type, text, optional, nullable] = jsdoc_type.parse(this.text);
+				
+				// @type tags are the only tag that is not allowed to have a {type}!
+				if (this.name === 'type') {
+					text = text || type.join('|');
+					type = [];
+				}
+
+				// don't add an empty type or null attributes
+				if (type && type.length) { this.type = type; }
+				if (optional !== null) { this.poptional = optional; }
+				if (nullable !== null) { this.pnullable = nullable; }
+				
+				this.text = text;
+			
 				if (anonTags.indexOf(this.name) > -1) {
 					this.pdesc = this.text;
 				}
@@ -90,6 +76,29 @@
 				}
 			}
 		}
+	}
+	
+	/**
+		Given the source of a jsdoc comment, finds the tags.
+		@private
+		@function parse
+		@param {string} commentSrc Unwrapped.
+		@returns Array.<Object>
+	 */
+	exports.parse = function(commentSrc) {
+		var tags = [];
+
+		// split out the basic tags, keep surrounding whitespace
+		commentSrc
+		.replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence (unicode_recordseperator+@)
+		.split('\\@')                        // then split on that arbitrary sequence
+		.forEach(function($) {
+			var newTag = exports.fromTagText($);
+
+			if (newTag.name) { tags.push(newTag); }
+		});
+		
+		return tags;
 	}
 	
 	Tag.prototype.toString = function() {

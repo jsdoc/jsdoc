@@ -14,13 +14,14 @@
 		load(BASEDIR + 'lib/jsunity.js');
 		
 		testSuites = [];
- 		load(BASEDIR + 'tests/opts.js');
- 		load(BASEDIR + 'tests/docset.js');
- 		load(BASEDIR + 'tests/tag_namespace.js');
+		load(BASEDIR + 'tests/opts.js');
+		load(BASEDIR + 'tests/docset.js');
+		load(BASEDIR + 'tests/tag_namespace.js');
 		load(BASEDIR + 'tests/tag_constructor.js');
- 		load(BASEDIR + 'tests/tag_const.js');
- 		load(BASEDIR + 'tests/tag_enum.js');
- 		load(BASEDIR + 'tests/tag_param.js');
+		load(BASEDIR + 'tests/tag_const.js');
+		load(BASEDIR + 'tests/tag_enum.js');
+		load(BASEDIR + 'tests/tag_param.js');
+		load(BASEDIR + 'tests/tag_example.js');
 		
 		jsUnity.attachAssertions();
 		jsUnity.log = function (s) { print(s); };

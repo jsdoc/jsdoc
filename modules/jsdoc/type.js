@@ -36,7 +36,7 @@
 				}
 			}
 		}
-		
+
 		if (type === '') { text = tagText; }
 		
 		[type, optional] = parseOptional(type);
