@@ -1,12 +1,17 @@
+/** @module jsdoc/docset */
+
 (function() {
-	var dumper  = require('flesler/jsdump'),
-		xml     = require('goessner/json2xml'),
-		doclets = exports.doclets = [];
+	var dumper = require('flesler/jsdump'),
+		xml = require('goessner/json2xml'),
+		doclets;
+		
+	doclets = exports.doclets = [];
 	
+	/** @method */
 	doclets.getDocsByPath = function(docName) {
 		var foundDocs = [],
 			i = doclets.length;
-		
+
 		while (i--) {
 			if (doclets[i].tagText('path') === docName) {
 				foundDocs.unshift( doclets[i] );
@@ -16,17 +21,19 @@
 		return foundDocs;
 	}
 	
-	doclets.toObject = function() {
+	/** @method */
+	doclets.toObject = function(flavor) {
 		var docsObjects = [],
 			i = doclets.length;
 	
 		while (i--) {
-			docsObjects.unshift( doclets[i].toObject() );
+			docsObjects.unshift( doclets[i].toObject(flavor) );
 		}
 		
 		return { doc: docsObjects };
 	}
 	
+	/** @method */
 	doclets.toString = function(destinationName) {
 		if ( /xml$/i.test(destinationName) ) {
 			return doclets.toXML();
@@ -36,12 +43,14 @@
 		}
 	}
 	
+	/** @method */
 	doclets.toJSON = function() {
-		return dumper.jsDump.parse( doclets.toObject() );
+		return dumper.jsDump.parse( doclets.toObject('json') );
 	}
 	
+	/** @method */
 	doclets.toXML = function() {
-		var o = doclets.toObject();
+		var o = doclets.toObject('xml');
 		
 		// make `id` an attribute of the doc tag
 		for (var i = 0, leni = o.doc.length; i < leni; i++) {

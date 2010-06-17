@@ -81,7 +81,7 @@
 		},
 	
 		testParamDesc: function() {
-			var docs = docset.getDocsByPath('resize');
+			var docs = docset.getDocsByPath('label');
 			
 			assertEqual(docs.length, 1, 'All doclets by that path name are found.');
 			
@@ -89,12 +89,13 @@
 				param = doc.param;
 				
 			assertEqual(typeof param, 'object', 'The found parameter has the expected type.');
-			assertEqual(param.name, 'ratio', 'The found parameter has the correct name.');
+			assertEqual(param.name, 'labelText', 'The found parameter has the correct name.');
  			assertEqual(typeof param.type, 'object', 'The found parameter has types.');
 			assertEqual(param.type.length, 2, 'The found parameter has the correct number of types.');
  			assertEqual(param.type[0], 'Function', 'The found parameter has the correct type[0] value.');
- 			assertEqual(param.type[1], 'number', 'The found parameter has the correct type[1] value.');
+ 			assertEqual(param.type[1], 'string', 'The found parameter has the correct type[1] value.');
 			assertEqual(param.desc, 'A number\n		or a function.', 'The found parameter has the expected description.');
+			assertEqual(param.defaultvalue, '"hello world"', 'The found parameter has the expected defaultvalue.');
 		}
 	};
 	
@@ -121,10 +122,10 @@ function sample() {
 	}
 	
 	/** @method
-		@param {Function|number} ratio A number
+		@param { Function | string } [ labelText = "hello world" ] A number
 		or a function.
 	 */
-	function resize(ratio) {
+	function label(labelText) {
 	
 	}
 }

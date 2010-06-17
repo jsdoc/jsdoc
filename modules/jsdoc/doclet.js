@@ -124,9 +124,10 @@
 	/**
 		Get a JSON-compatible object representing this Doclet.
 		@method Doclet#toObject
+		@param {string} [flavor='json'] Either: jason or xml.
 		@returns {Object}
 	 */
-	Doclet.prototype.toObject = function() {
+	Doclet.prototype.toObject = function(/*todo*/flavor) {
 		var tag, tagName, tagValue,
 			o = {};
 		
@@ -137,31 +138,27 @@
 		
 			tagName = tag.name;
 			tagValue = {};
-			
-			// a long tag
-			if (tag.pname || tag.pdesc) { // TODO: should check the list instead?
-				
-				if (tag.pname) {
-					if ( /^\[(.+)\]$/.test(tag.pname) ) {
-						tagValue.name = RegExp.$1;
-						tag.poptional = true;
-					}
-					else {
-						tagValue.name = tag.pname;
-					}
-				}
+
+			// a long tag, like a @param
+			if (tag.pname) {
+				tagValue.name = tag.pname; // the parameter name
 			}
 			if (tag.type && tag.type.length) {
 				tagValue.type = tag.type;
 			}
-
 			if (tag.pdesc) { tagValue.desc = tag.pdesc; }
 			if (typeof tag.poptional === 'boolean') { tagValue.optional = tag.poptional; }
 			if (typeof tag.pnullable === 'boolean') { tagValue.nullable = tag.pnullable; }
+			if (typeof tag.pdefault !== 'undefined') { tagValue.defaultvalue = tag.pdefault; }
 			
 			// tag value is not an object, it's just a simple string
 			if (!tag.pname && !tag.pdesc && !(tag.type && tag.type.length)) { // TODO: should check the list instead?
-				tagValue = tag.text;
+				if (flavor === 'xml' && tagName === 'example') {
+					tagValue['#cdata'] = tag.text; // TODO this is only meaningful to XML, move to a tag.format(style) method?
+				}
+				else {
+					tagValue = tag.text;
+				}
 			}
 
 			if (tagValue) {
@@ -195,7 +192,14 @@
 		// note: keep trailing whitespace for @examples
 		// extra opening/closing stars are ignored
 		// left margin is considered a star and a space
-		return commentSrc ? commentSrc.replace(/^\/\*\*+/, "").replace(/\**\*\/$/, "\\Z").replace(/^\s*(\* ?|\\Z)/gm, "") : "";
+		// use the /m flag on regex to avoid having to guess what this platform's newline is
+		commentSrc =
+			commentSrc.replace(/^\/\*\*+/, '') // remove opening slash+stars
+			.replace(/\**\*\/$/, "\\Z")        // replace closing star slash with end-marker
+			.replace(/^\s*(\* ?|\\Z)/gm, '')   // remove left margin like: spaces+star or spaces+end-marker
+			.replace(/\s*\\Z$/g, '');          // remove end-marker
+
+		return commentSrc;
 	}
 	
 	/**

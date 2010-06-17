@@ -39,8 +39,8 @@ var json2xml = (typeof exports === 'undefined')? {} : exports; // like commonjs
 				xml += (xml.charAt(xml.length-1)=="\n"?ind:"") + "</" + name + ">\n";
 			 }
 		  }
-		  else {
-			 xml += ind + "<" + name + ">" + v.toString().replace(/</g, '&lt;') +  "</" + name + ">\n";
+		  else { // added special-character transform, but this needs to be better handled [micmath]
+			 xml += ind + "<" + name + ">" + v.toString().replace(/</g, '&lt;').replace(/&/g, '&amp;') +  "</" + name + ">\n";
 		  }
 		  return xml;
 	   },

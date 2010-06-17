@@ -70,9 +70,12 @@
 					this.pdesc = this.text;
 				}
 				else {
-					var [pname, pdesc] = parsePname(this.text);
+					
+					var [pname, pdesc, poptional, pdefault] = parsePname(this.text);
 					this.pname = pname;
 					this.pdesc = pdesc;
+					if (typeof poptional !== 'undefined') this.poptional = poptional;
+					this.pdefault = pdefault;
 				}
 			}
 		}
@@ -113,9 +116,22 @@
 		@returns Array.<string> The pname and the pdesc.
 	 */
 	function parsePname(tagText) {
-		tagText.match(/^(\S+)(\s+(\S[\s\S]*))?$/);
+		var pname, pdesc, poptional, pdefault;
 		
-		return [RegExp.$1, RegExp.$3];
+		tagText.match(/^(\[[^\]]+\]|\S+)(\s+(\S[\s\S]*))?$/);
+		pname = RegExp.$1;
+		pdesc = RegExp.$3;
+		
+		if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
+			pname = RegExp.$1;
+			poptional = true;
+			
+			if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
+				pname = RegExp.$1;
+				pdefault = RegExp.$2;
+			}
+		}
+		return [pname, pdesc, poptional, pdefault];
 	}
 	
 	function resolveSynonyms(name) {
