@@ -26,7 +26,7 @@
 			assertEqual(typeof doc, 'object', 'The found doclet is an object.');
 			assertEqual(doc.tagText('name'), 'Triangle', 'The found doclet has the expected name.');
  			assertEqual(doc.tagText('path'), 'Triangle', 'The found doclet has the expected path.');
- 			assertEqual(doc.tagText('denom'), 'constructor', 'The found doclet has the expected denom.');
+ 			assertEqual(doc.tagText('isa'), 'constructor', 'The found doclet has the expected isa.');
  			assertEqual(doc.tagText('desc'), 'A three-sided polygon.', 'The found doclet has the expected desc.');
 		},
 	
@@ -66,7 +66,7 @@
 			assertEqual(doc.tagText('path'), 'Polygon#Rhombus', 'The found doclet has the expected path.');
 			assertEqual(doc.tagText('name'), 'Rhombus', 'The found doclet has the expected name.');
 			assertEqual(doc.tagText('memberof'), 'Polygon#', 'The found doclet has the expected memberof.');
-			assertEqual(doc.tagText('denom'), 'constructor', 'The found doclet has the expected denom.');
+			assertEqual(doc.tagText('isa'), 'constructor', 'The found doclet has the expected isa.');
 		},
 		
 		testConstructorInVarList: function() {

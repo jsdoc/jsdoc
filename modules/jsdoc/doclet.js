@@ -119,7 +119,7 @@
 	}
 	
 	// safe to export to JSON
-	var exportTags = ['name', 'path', 'denom', 'desc', 'type', 'param', 'returns', 'exports', 'requires', 'memberof', 'access', 'attribute', 'example', 'see'];
+	var exportTags = ['name', 'path', 'isa', 'desc', 'type', 'param', 'returns', 'exports', 'requires', 'memberof', 'access', 'attribute', 'example', 'see'];
 	
 	/**
 		Get a JSON-compatible object representing this Doclet.
@@ -231,7 +231,7 @@
 	function preprocess(tags) {
 		var name = '',
 			taggedName = '',
-			denom = '',
+			isa = '',
 			taggedDenom = '',
 			memberof = '',
 			taggedMemberof = '';
@@ -260,11 +260,11 @@
 				}
 				taggedName = name = tags[i].text;
 			}
-			else if (tags[i].name === 'denom') {
-				if (denom && denom !== tags[i].text) {
-					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + denom + ' and ' + tags[i].text);
+			else if (tags[i].name === 'isa') {
+				if (isa && isa !== tags[i].text) {
+					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].text);
 				}
-				taggedDenom = denom = tags[i].text;
+				taggedDenom = isa = tags[i].text;
 			}
 			else if (tags[i].name === 'memberof') {
 				if (memberof) {
@@ -289,11 +289,11 @@
 					tags[tags.length] = parse_tag.fromTagText('type ' + tags[i].type.join('|'));
 				}
 				
-				if (denom && denom !== tags[i].name) {
-					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + denom + ' and ' + tags[i].name);
+				if (isa && isa !== tags[i].name) {
+					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].name);
 				}
-				denom = tags[i].name;
-				if (denom === 'const') { denom = 'member'; } // an exception to the namebale rule
+				isa = tags[i].name;
+				if (isa === 'const') { isa = 'member'; } // an exception to the namebale rule
 			}
 			
 			if ( memberofs.hasOwnProperty(tags[i].name) ) {
@@ -304,10 +304,10 @@
 					memberof = tags[i].text;
 				}
 				
-				if (denom && denom !== memberofs[tags[i].name]) {
-					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + denom + ' and ' + tags[i].name);
+				if (isa && isa !== memberofs[tags[i].name]) {
+					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].name);
 				}
-				denom = memberofs[tags[i].name];
+				isa = memberofs[tags[i].name];
 			}
 		}
 		
@@ -315,8 +315,8 @@
 			tags[tags.length] = parse_tag.fromTagText('name ' + name);
 		}
 		
-		if (denom && !taggedDenom) {
-			tags[tags.length] = parse_tag.fromTagText('denom ' + denom);
+		if (isa && !taggedDenom) {
+			tags[tags.length] = parse_tag.fromTagText('isa ' + isa);
 		}
 		
 		if (memberof && !taggedMemberof) {
@@ -326,7 +326,7 @@
 	
 	function postprocess(doclet) {
 		if ( doclet.hasTag('class') && !doclet.hasTag('constructor') ) {
-			doclet.tags[doclet.tags.length] = parse_tag.fromTagText('denom constructor');
+			doclet.tags[doclet.tags.length] = parse_tag.fromTagText('isa constructor');
 		}
 		
 		if ( doclet.hasTag('enum')) {
@@ -340,8 +340,8 @@
 		}
 		
 		if ( doclet.hasTag('const')) {
-			if (!doclet.hasTag('denom')) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('denom member');
+			if (!doclet.hasTag('isa')) {
+				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('isa member');
 			}
 			
 			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {

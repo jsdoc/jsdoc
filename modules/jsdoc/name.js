@@ -18,11 +18,13 @@
 	}
 	
 	/**
+		Calculates the path, memberof and name values.
 		@method resolve
 		@param {Doclet} doclet
 	 */
 	exports.resolve = function(doclet) {
-		var denom = doclet.tagText('denom'),
+		var isa = doclet.tagText('isa'),
+			ns = '',
 			name = doclet.tagText('name'),
 			memberof = doclet.tagText('memberof'),
 			path,
@@ -30,8 +32,8 @@
 			prefix,
 			supportedNamespaces = ['module', 'event'];
 			
-		// only keep the first word of the tagged name
-		name = doclet.tagText('name', name.split(/\s+/g)[0]);
+		// only keep the first word of the first tagged name
+		name = name.split(/\s+/g)[0];
 
 		if (currentModule) {
 			name = name.replace(/^exports\.(?=.+$)/, currentModule + '.');
@@ -41,33 +43,41 @@
 		
 		path = shortname = name;
 		
-		doclet.tagText('name', shortname);
+		
 		
 		if (memberof) {
+			// like @name foo.bar, @memberof foo
 			if (name.indexOf(memberof) === 0) {
 				path = name;
-				[prefix, shortname] = exports.shorten(name);
-				doclet.tagText('name', shortname);
+				[prefix, name] = exports.shorten(name);
 			}
 		}
 		else {
 			[memberof, name] = exports.shorten(name);
 			doclet.tagText('memberof', memberof);
-			doclet.tagText('name', name);
 		}
-
+		
 		// if name doesn't already have a doc-namespace and needs one
-		if (!/^[a-z_$-]+:\S+/i.test(name) && supportedNamespaces.indexOf(denom) > -1) {
+		// the namespace should appear in the path but not the name
+		if (supportedNamespaces.indexOf(isa) > -1) {
+			if ( /^[a-z_$-]+:(\S+)/i.test(name) ) {
+				name = RegExp.$1;
+			}
+			
 			// add doc-namespace to path
-			name = denom + ':' + name;
+			ns = isa + ':';
 		}
 		
-		// overlapping member of, like @name foo.Bar, @memberof foo
+		doclet.tagText('name', name);
+		
 		if (memberof && name.indexOf(memberof) !== 0) {
-			path = memberof + (/#$/.test(memberof)? '' : '.') + name;
+			path = memberof + (/#$/.test(memberof)? '' : '.') + ns + name;
 		}
 		
-		if (path) doclet.tagText('path', path);
+		
+		if (path) {
+			doclet.tagText('path', path);
+		}
 		
 		return path;
 	}
@@ -122,7 +132,7 @@
 
 				if (memberof || !enclosing) {
 					// `this` refers to nearest instance in the name path
-					if (enclosingDoc && enclosingDoc.tagText('denom') !== 'constructor') {
+					if (enclosingDoc && enclosingDoc.tagText('isa') !== 'constructor') {
 						var parts = memberof.split('#');
 						parts.pop();
 						memberof = parts.join('#');

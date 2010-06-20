@@ -23,7 +23,7 @@
 						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
 						if ( thisDoclet.hasTag('name') ) {
 							doclets.push(thisDoclet);
-							if (thisDoclet.tagText('denom') === 'module') {
+							if (thisDoclet.tagText('isa') === 'module') {
 								name.setCurrentModule( thisDoclet.tagText('path') );
 							}
 						}
@@ -64,7 +64,7 @@
 
 				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagText('name');
-				nodeKind = thisDoclet.tagText('denom');
+				nodeKind = thisDoclet.tagText('isa');
 
 				if (!thisDocletName) {
 					nodeName = name.resolveThis( nodeName, node, thisDoclet );
@@ -89,7 +89,7 @@
 					if (commentSrc) {
 						thisDoclet = doclet.makeDoclet('' + commentSrc, node, currentSourceName);
 						thisDocletName = thisDoclet.tagText('path');
-						nodeKind = thisDoclet.tagText('denom');
+						nodeKind = thisDoclet.tagText('isa');
 						
 						if ( !thisDocletName ) {
 							thisDocletName = n.target.string;

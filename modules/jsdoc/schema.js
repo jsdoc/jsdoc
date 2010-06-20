@@ -27,7 +27,7 @@ jsdoc.schema.jsdocSchema = {
 						"optional": true,
 						"maxItems": 1
 					},
-					"denom": {
+					"isa": {
 						"type": "string",
 						"maxItems": 1,
 						"enum": ["constructor", "module", "event", "namespace", "method", "member", "enum"]
