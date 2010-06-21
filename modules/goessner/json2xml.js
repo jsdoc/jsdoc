@@ -30,9 +30,9 @@ var json2xml = (typeof exports === 'undefined')? {} : exports; // like commonjs
 			 if (hasChild) {
 				for (var m in v) {
 				   if (m == "#text")
-					  xml += v[m];
+					  xml += lines(v[m]);
 				   else if (m == "#cdata")
-					  xml += "<![CDATA[" + v[m] + "]]>";
+					  xml += "<![CDATA[" + lines(v[m]) + "]]>";
 				   else if (m.charAt(0) != "@")
 					  xml += toXml(v[m], m, ind+"\t");
 				}
@@ -40,7 +40,7 @@ var json2xml = (typeof exports === 'undefined')? {} : exports; // like commonjs
 			 }
 		  }
 		  else { // added special-character transform, but this needs to be better handled [micmath]
-			 xml += ind + "<" + name + ">" + v.toString().replace(/</g, '&lt;').replace(/&/g, '&amp;') +  "</" + name + ">\n";
+			 xml += ind + "<" + name + ">" + makeSafe(lines(v.toString())) +  "</" + name + ">\n";
 		  }
 		  return xml;
 	   },
@@ -51,6 +51,20 @@ var json2xml = (typeof exports === 'undefined')? {} : exports; // like commonjs
 		}
 		  
 	   return xml;
+	}
+	
+	function lines(str) {
+		// normalise line endings, all in file will be unixy
+		str = str.replace(/\r\n/g, '\n');
+		
+		return str;
+	}
+	
+	function makeSafe(str) {
+		// xml special charaters
+		str = str.replace(/</g, '&lt;').replace(/&/g, '&amp;');
+		
+		return str;
 	}
 
 })();
