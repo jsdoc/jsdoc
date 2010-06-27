@@ -24,6 +24,11 @@
 				expect(doclet).to(respond_to, 'toObject');
 			});
 			
+			it('should have a `tags` property which is an array', function() {
+				expect(doclet).to(have_property, 'tags');
+				expect(doclet.tags).to(be_an, Array);
+			});
+			
 			it('should have a `meta` property which is an object', function() {
 				expect(doclet).to(have_property, 'meta');
 				expect(doclet.meta).to(be_an, Object);

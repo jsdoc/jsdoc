@@ -79,7 +79,7 @@
 	}
 	
 	/**
-		Return the text of the first tag with the given name.
+		Return the text of the last tag with the given name.
 		@method Doclet#tagText
 		@param {String} tagName
 		@returns {String} The text of the found tag.
