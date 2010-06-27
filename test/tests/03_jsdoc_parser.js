@@ -28,11 +28,6 @@
 				expect(jsdoc.parser.result).to(be_an, Array);
 				expect(jsdoc.parser.result).to(have_length, 1);
 			});
-			
-			it('should be populated by doclets', function() {
-				jsdoc.parser.parseFiles(BASEDIR + 'test/tests/03_jsdoc_parser.js');
-				expect(jsdoc.parser.result[0].constructor.name).to(eql, 'Doclet');
-			});
 		});
 	});
 })();
