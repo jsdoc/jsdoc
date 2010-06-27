@@ -1,5 +1,6 @@
 load(BASEDIR + '/test/tests/01_jsdoc_opts.js');
 load(BASEDIR + '/test/tests/02_jsdoc_src.js');
+load(BASEDIR + '/test/tests/03_jsdoc_parser.js');
 
 // see http://visionmedia.github.com/jspec/
 JSpec.run({
