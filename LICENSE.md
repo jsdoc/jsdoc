@@ -1,7 +1,7 @@
 License
 =======
 
-JSDoc Toolkit Version 3 is free software.
+JSDoc 3 is free software.
 
 Copyright 2010 (c) Michael Mathews <micmath@gmail.com>
 
@@ -21,7 +21,7 @@ In Addition
 ===========
 
 Third party software is included, used-by or distributed along
-with JSDoc Toolkit Version 3. Each is provided under its own license
+with JSDoc 3. Each is provided under its own license
 and has source available from other locations.
 
 Rhino
@@ -81,22 +81,40 @@ http://creativecommons.org/licenses/LGPL/2.1/
 http://goessner.net/
 http://goessner.net/download/prj/jsonxml/
 
-jsUnity
+JSpec
 -------
 
-jsUnity is Copyright (c) 2009 Ates Goral
-Universal JavaScript Testing Framework v0.6 http://jsunity.com/
+JSpec is copyright (c) 2008 - 2010 TJ Holowaychuk tj@vision-media.ca
 
-http://github.com/atesgoral/jsunity
+http://github.com/visionmedia/jspec
 
-Licensed under the MIT license
-http://www.opensource.org/licenses/mit-license.php
+Licensed under the MIT license.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 JSONSchema Validator
 --------------------
 
 JSONSchema is copyright (c) 2007 Kris Zyp SitePen (www.sitepen.com)
-Licensed under the MIT (MIT-LICENSE.txt) license.
 
 http://github.com/kriszyp/commonjs-utils/blob/master/lib/json-schema.js
 http://www.sitepen.com/blog/2010/03/02/commonjs-utilities/
+
+Licensed under the MIT license.

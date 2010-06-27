@@ -30,7 +30,7 @@ var json2xml = (typeof exports === 'undefined')? {} : exports; // like commonjs
 			 if (hasChild) {
 				for (var m in v) {
 				   if (m == "#text")
-					  xml += lines(v[m]);
+					  xml += makeSafe(v[m]);
 				   else if (m == "#cdata")
 					  xml += "<![CDATA[" + lines(v[m]) + "]]>";
 				   else if (m.charAt(0) != "@")
@@ -40,7 +40,7 @@ var json2xml = (typeof exports === 'undefined')? {} : exports; // like commonjs
 			 }
 		  }
 		  else { // added special-character transform, but this needs to be better handled [micmath]
-			 xml += ind + "<" + name + ">" + makeSafe(lines(v.toString())) +  "</" + name + ">\n";
+			 xml += ind + "<" + name + ">" + makeSafe(v.toString()) +  "</" + name + ">\n";
 		  }
 		  return xml;
 	   },
@@ -64,7 +64,7 @@ var json2xml = (typeof exports === 'undefined')? {} : exports; // like commonjs
 		// xml special charaters
 		str = str.replace(/</g, '&lt;').replace(/&/g, '&amp;');
 		
-		return str;
+		return lines(str);
 	}
 
 })();
