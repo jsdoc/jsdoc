@@ -23,10 +23,10 @@ jsdoc.src = (typeof exports === 'undefined')? {} : exports; // like commonjs
 	 */
 	jsdoc.src.getFilePaths = function(searchPaths, depth) {
 		var filePaths = [];
-		
+
 		searchPaths = searchPaths || [];
 		depth = depth || 1;
-		
+
 		searchPaths.forEach(function($) {
 			filePaths = filePaths.concat(fs.ls($, depth));
 		});

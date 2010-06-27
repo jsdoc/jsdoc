@@ -1,5 +1,5 @@
 /**
- *	@overview JSDoc Toolkit Version 3
+ *	@overview JSDoc 3
  *	@copyright 2010 (c) Michael Mathews <micmath@gmail.com>
  *	@license See LICENSE.md file included in this distribution.
  */
@@ -64,17 +64,20 @@
 			java.lang.System.exit(0);
 		}
 		
-		sourceFiles = jsdoc.src.getFilePaths(opts._);
+		if (opts._.length > 0) {
+			sourceFiles = jsdoc.src.getFilePaths(opts._);
 	
-		jsdoc.parser.parseFiles(sourceFiles, opts.encoding);
-		
-		if (opts.validate) {
-			var jsonSchema  = require('sitepen/jsonSchema');
-			var jsdocSchema = require('jsdoc/schema').jsdocSchema;
-			var validation = jsonSchema.validate(jsdoc.parser.result.toObject(), jsdocSchema);
-			print('Validation: ' + validation.toSource());
+			jsdoc.parser.parseFiles(sourceFiles, opts.encoding);
+			
+			if (opts.validate) {
+				var jsonSchema  = require('sitepen/jsonSchema');
+				var jsdocSchema = require('jsdoc/schema').jsdocSchema;
+				var validation = jsonSchema.validate(jsdoc.parser.result.toObject(), jsdocSchema);
+				print('Validation: ' + validation.toSource());
+			}
+			
+			print( jsdoc.parser.result.toString(opts.destination) );
 		}
 		
-		print( jsdoc.parser.result.toString(opts.destination) );
 	})();
 ////

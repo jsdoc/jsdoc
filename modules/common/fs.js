@@ -70,7 +70,7 @@
 	exports.ls = function(dir, recurse, _allFiles, _path) {
 		var files,
 			file;
-	
+
 		if (typeof _path === 'undefined') { // initially
 			_allFiles = [];
 			_path = [dir];
@@ -90,7 +90,7 @@
 	
 			if ((new File(_path.join(slash) + slash + file)).list()) { // it's a directory
 				_path.push(file);
-				
+
 				if (_path.length - 1 < recurse) {
 					exports.ls(_path.join(slash), recurse, _allFiles, _path);
 				}

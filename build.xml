@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
  
-<project name="JSDoc Toolkit" default="about">
+<project name="JSDoc-3" default="about">
 	<property file="build/build.properties" />
 	<property name="build.templates" location="build/templates" />
 	
@@ -9,6 +9,19 @@
 	</tstamp>
 	
 	<target name="about">
+		<delete file="about.json" quiet="true"/>
+		<copy file="${build.templates}/about.json" tofile="about.json" >
+			<filterchain>
+				<replacetokens>
+					<token key="app.name" value="${app.name}" />
+					<token key="app.version" value="${app.version}" />
+					<token key="timestamp" value="${NOW}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+	</target>
+	
+	<target name="jar">
 		<delete file="about.json" quiet="true"/>
 		<copy file="${build.templates}/about.json" tofile="about.json" >
 			<filterchain>
