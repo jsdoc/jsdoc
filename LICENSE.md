@@ -3,7 +3,7 @@ License
 
 JSDoc 3 is free software.
 
-Copyright 2010 (c) Michael Mathews <micmath@gmail.com>
+Copyright (c) 2010 Michael Mathews <micmath@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
 may not use this software except in compliance with the License. You may
