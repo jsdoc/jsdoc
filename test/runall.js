@@ -6,6 +6,7 @@ load(BASEDIR + '/test/tests/05_jsdoc_doclet.js');
 load(BASEDIR + '/test/tests/06_jsdoc_tag.js');
 
 load(BASEDIR + '/test/tests/10_tag_constructor.js');
+load(BASEDIR + '/test/tests/11_tag_namespace.js');
 
 // see http://visionmedia.github.com/jspec/
 JSpec.run({
