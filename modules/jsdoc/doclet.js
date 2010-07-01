@@ -217,9 +217,9 @@
 	}
 	
 	// other tags that can provide the memberof
-	var memberofs = {methodof: 'method', eventof: 'event'};
+	var memberofs = {methodof: 'method', propertyof: 'property', eventof: 'event'};
 	// other tags that can provide the symbol name
-	var nameables = ['constructor', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum'];
+	var nameables = ['constructor', 'const', 'module', 'event', 'namespace', 'method', 'property', 'function', 'variable', 'enum'];
 	
 	/**
 		Expand some shortcut tags. Modifies the tags argument in-place.
@@ -236,8 +236,7 @@
 			memberof = '',
 			taggedMemberof = '';
 		
-		var i = tags.length;
-		while(i--) {
+		for (var i = 0, leni = tags.length; i < leni; i++) {
 		
  			if (tags[i].name === 'private') {
  				tags[tags.length] = parse_tag.fromTagText('access private');
@@ -274,26 +273,31 @@
 			}
 			
 			if ( nameables.indexOf(tags[i].name) > -1 ) {
-				if (tags[i].text) {
-					if (name && name !== tags[i].text) {
-						throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].text);
+				if (tags[i].name === 'property' && (isa === 'constructor')) {
+					// for backwards compatability we ignore a @property in a doclet after a @constructor
+				}
+				else {
+					if (tags[i].text) {
+						if (name && name !== tags[i].text) {
+							throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].text);
+						}
+						name = tags[i].text;
 					}
-					name = tags[i].text;
-				}
 				
-				if (tags[i].pdesc) {
-					tags[tags.length] = parse_tag.fromTagText('desc ' + tags[i].pdesc);
-				}
+					if (tags[i].pdesc) {
+						tags[tags.length] = parse_tag.fromTagText('desc ' + tags[i].pdesc);
+					}
 				
-				if (tags[i].type) {
-					tags[tags.length] = parse_tag.fromTagText('type ' + tags[i].type.join('|'));
-				}
+					if (tags[i].type) {
+						tags[tags.length] = parse_tag.fromTagText('type ' + tags[i].type.join('|'));
+					}
 				
-				if (isa && isa !== tags[i].name) {
-					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].name);
+					if (isa && isa !== tags[i].name) {
+						throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].name);
+					}
+					isa = tags[i].name;
+					if (isa === 'const') { isa = 'property'; } // an exception to the namebale rule
 				}
-				isa = tags[i].name;
-				if (isa === 'const') { isa = 'member'; } // an exception to the namebale rule
 			}
 			
 			if ( memberofs.hasOwnProperty(tags[i].name) ) {
@@ -341,7 +345,7 @@
 		
 		if ( doclet.hasTag('const')) {
 			if (!doclet.hasTag('isa')) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('isa member');
+				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('isa property');
 			}
 			
 			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {
