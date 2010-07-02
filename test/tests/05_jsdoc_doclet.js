@@ -4,7 +4,7 @@
 	
 	JSpec.describe('jsdoc/doclet.js', function() {
 	
-		before_each(function() {
+		before(function() {
 			// docsets can only be created by parsers
 			jsdoc = { parser: require('jsdoc/parser') };
 			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/05_jsdoc_doclet.js');

@@ -219,7 +219,7 @@
 	// other tags that can provide the memberof
 	var memberofs = {methodof: 'method', propertyof: 'property', eventof: 'event'};
 	// other tags that can provide the symbol name
-	var nameables = ['constructor', 'const', 'module', 'event', 'namespace', 'method', 'property', 'function', 'variable', 'enum'];
+	var nameables = ['constructor', 'const', 'module', 'event', 'namespace', 'method', 'property', 'enum'];
 	
 	/**
 		Expand some shortcut tags. Modifies the tags argument in-place.

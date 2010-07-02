@@ -4,7 +4,7 @@
 	
 	JSpec.describe('jsdoc/tag.js', function() {
 	
-		before_each(function() {
+		before(function() {
 			// docsets can only be created by parsers
 			jsdoc = {
 				tag: require('jsdoc/tag'),

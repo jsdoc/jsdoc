@@ -2,7 +2,7 @@
 	var jsdoc,
 		doclets;
 	
-	JSpec.describe('@property', function() {
+	JSpec.describe('@member', function() {
 	
 		before(function() {
 			// docsets can only be created by parsers
@@ -10,15 +10,15 @@
 				tag: require('jsdoc/tag'),
 				parser: require('jsdoc/parser')
 			};
-			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/12_tag_property.js');
+			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/14_tag_member.js');
 			doclets = jsdoc.parser.result;
 		});
 		
-		describe('A doclet with a named property tag attached to a namespace', function() {
-			it('should have an `isa` property set to "property"', function() {
+		describe('A doclet with a method tag and a memberof tag', function() {
+			it('should have an `isa` property set to "method"', function() {
 				var doclet = doclets[2].toObject();
 				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet.isa).to(eql, 'method');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -27,14 +27,14 @@
 				expect(doclet.name).to(eql, 'fah');
 			});
 			
-			it('should have a `memberof` property set to the parent object name', function() {
+			it('should have a `memberof` property set to the given member name', function() {
 				var doclet = doclets[2].toObject();
 				expect(doclet).to(have_property, 'memberof');
 				expect(doclet.memberof).to(eql, 'foo');
 			});
 		});
 		
-		describe('A doclet with a named property tag attached to a constructor', function() {
+		describe('A doclet with a property tag and a member tag', function() {
 			it('should have an `isa` property set to "property"', function() {
 				var doclet = doclets[3].toObject();
 				expect(doclet).to(have_property, 'isa');
@@ -47,18 +47,10 @@
 				expect(doclet.name).to(eql, 'bah');
 			});
 			
-			it('should have a `memberof` property set to the parent object name', function() {
+			it('should have a `memberof` property set to the given member name', function() {
 				var doclet = doclets[3].toObject();
 				expect(doclet).to(have_property, 'memberof');
 				expect(doclet.memberof).to(eql, 'bar');
-			});
-		});
-		
-		describe('A doclet with a named property tag after to a constructor tag', function() {
-			it('should be a constructor', function() {
-				var doclet = doclets[4].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'constructor');
 			});
 		});
 		
@@ -71,12 +63,14 @@
 	
 	/** @constructor bar */
 	
-	/** @property foo.fah */
+	/**
+		@method fah
+		@memberof foo
+	 */
 	
-	/** @property bar.bah */
-	
-	/** @constructor Zub
-		@property {string} zip 
+	/**
+		@property bah
+		@member bar
 	 */
 	
 })();

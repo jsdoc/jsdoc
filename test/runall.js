@@ -8,6 +8,8 @@ load(BASEDIR + '/test/tests/06_jsdoc_tag.js');
 load(BASEDIR + '/test/tests/10_tag_constructor.js');
 load(BASEDIR + '/test/tests/11_tag_namespace.js');
 load(BASEDIR + '/test/tests/12_tag_property.js');
+load(BASEDIR + '/test/tests/13_tag_method.js');
+load(BASEDIR + '/test/tests/14_tag_member.js');
 
 // see http://visionmedia.github.com/jspec/
 JSpec.run({

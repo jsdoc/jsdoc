@@ -145,8 +145,9 @@
 	exports.synonyms = {
 		'description': 'desc',
 		'function':    'method',
-		'variable':    'member',
-		'return':      'returns'
+		'variable':    'property',
+		'return':      'returns',
+		'member':      'memberof'
 	}
 	
 	//TODO: move into a shared module?

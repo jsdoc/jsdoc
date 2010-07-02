@@ -3,7 +3,7 @@
 	
 	JSpec.describe('jsdoc/opts.js', function() {
 	
-		before_each(function() {
+		before(function() {
 			jsdoc = { opts: require('jsdoc/opts') };
 		});
 		

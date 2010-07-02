@@ -2,7 +2,7 @@
 	var jsdoc,
 		doclets;
 	
-	JSpec.describe('@property', function() {
+	JSpec.describe('@method', function() {
 	
 		before(function() {
 			// docsets can only be created by parsers
@@ -10,15 +10,15 @@
 				tag: require('jsdoc/tag'),
 				parser: require('jsdoc/parser')
 			};
-			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/12_tag_property.js');
+			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/13_tag_method.js');
 			doclets = jsdoc.parser.result;
 		});
 		
-		describe('A doclet with a named property tag attached to a namespace', function() {
-			it('should have an `isa` property set to "property"', function() {
+		describe('A doclet with a named method tag attached to a namespace', function() {
+			it('should have an `isa` property set to "method"', function() {
 				var doclet = doclets[2].toObject();
 				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet.isa).to(eql, 'method');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -34,11 +34,11 @@
 			});
 		});
 		
-		describe('A doclet with a named property tag attached to a constructor', function() {
-			it('should have an `isa` property set to "property"', function() {
+		describe('A doclet with a named method tag attached to a constructor', function() {
+			it('should have an `isa` property set to "method"', function() {
 				var doclet = doclets[3].toObject();
 				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet.isa).to(eql, 'method');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -54,14 +54,6 @@
 			});
 		});
 		
-		describe('A doclet with a named property tag after to a constructor tag', function() {
-			it('should be a constructor', function() {
-				var doclet = doclets[4].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'constructor');
-			});
-		});
-		
 	});
 })();
 
@@ -71,12 +63,8 @@
 	
 	/** @constructor bar */
 	
-	/** @property foo.fah */
+	/** @method foo.fah */
 	
-	/** @property bar.bah */
-	
-	/** @constructor Zub
-		@property {string} zip 
-	 */
+	/** @method bar.bah */
 	
 })();

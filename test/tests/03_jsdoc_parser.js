@@ -3,7 +3,7 @@
 	
 	JSpec.describe('jsdoc/parser.js', function() {
 	
-		before_each(function() {
+		before(function() {
 			jsdoc = { parser: require('jsdoc/parser') };
 		});
 		
