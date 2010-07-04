@@ -33,7 +33,7 @@
 		tags = parse_tag.parse(commentSrc);
 
 		try {
-			preprocess(tags);
+			preprocess(tags, meta);
 		}
 		catch(e) {
 			e.message = 'Cannot make doclet from JSDoc comment found at '+ meta.file + ' ' + meta.line
@@ -45,7 +45,7 @@
 		doclet = new Doclet(tags);
 		
 		doclet.meta = meta;
-		
+	
 		postprocess(doclet);
 		
 		name.resolve(doclet);
@@ -73,33 +73,44 @@
 		@param {string name
 	 */
 	Doclet.prototype.setName = function(nameToSet) {
-		this.tagText('name', nameToSet);
+		this.setTag('name', nameToSet);
 
 		nameToSet = name.resolve(this);
 	}
 	
 	/**
-		Return the text of the last tag with the given name.
-		@method Doclet#tagText
+		Return the value of the last tag with the given name.
+		@method Doclet#tagValue
 		@param {String} tagName
-		@returns {String} The text of the found tag.
+		@returns {*} The value of the found tag.
 	 */
-	Doclet.prototype.tagText = function(tagName, text) {
-		var i = this.tags.length;
-		while(i--) {
+	Doclet.prototype.tagValue = function(tagName) {
+		for (var i = 0, leni = this.tags.length; i < leni; i++) {
 			if (this.tags[i].name === tagName) {
-				if (text) { this.tags[i].text = text; }
-				return this.tags[i].text;
+				return this.tags[i].value;
 			}
 		}
 		
-		// still here?
-		if (text) {
-			this.tags.push( parse_tag.fromTagText(tagName + ' ' + text) );
-			return text;
+		return null;
+	}
+	
+	
+	/**
+		Return the value of the last tag with the given name.
+		@method Doclet#setTag
+		@param {String} tagName
+		@returns {*} The value of the found tag.
+	 */
+	Doclet.prototype.setTag = function(tagName, tagValue) {
+
+		for (var i = 0, leni = this.tags.length; i < leni; i++) {
+			if (this.tags[i].name === tagName) {
+				this.tags[i].value = tagValue;
+				return ;
+			}
 		}
-		
-		return '';
+
+		this.tags[this.tags.length] = parse_tag.fromText(tagName + ' ' + tagValue);
 	}
 	
 	/**
@@ -154,10 +165,10 @@
 			// tag value is not an object, it's just a simple string
 			if (!tag.pname && !tag.pdesc && !(tag.type && tag.type.length)) { // TODO: should check the list instead?
 				if (flavor === 'xml' && tagName === 'example') {
-					tagValue['#cdata'] = tag.text; // TODO this is only meaningful to XML, move to a tag.format(style) method?
+					tagValue['#cdata'] = tag.value; // TODO this is only meaningful to XML, move to a tag.format(style) method?
 				}
 				else {
-					tagValue = tag.text;
+					tagValue = tag.value;
 				}
 			}
 
@@ -176,6 +187,7 @@
 			
 			o.meta = this.meta;
 		}
+		
 		return o;
 	}
 	
@@ -228,48 +240,49 @@
 		@param {Array.<Object>} tags
 		@returns undefined
 	 */
-	function preprocess(tags) {
+	function preprocess(tags, meta) {
 		var name = '',
 			taggedName = '',
 			isa = '',
-			taggedDenom = '',
+			taggedIsa = '',
 			memberof = '',
-			taggedMemberof = '';
+			taggedMemberof = '',
+			isFile = false;
 		
 		for (var i = 0, leni = tags.length; i < leni; i++) {
 		
  			if (tags[i].name === 'private') {
- 				tags[tags.length] = parse_tag.fromTagText('access private');
+ 				tags[tags.length] = parse_tag.fromText('access private');
  			}
  			else if (tags[i].name === 'protected') {
- 				tags[tags.length] = parse_tag.fromTagText('access protected');
+ 				tags[tags.length] = parse_tag.fromText('access protected');
  			}
  			else if (tags[i].name === 'public') {
- 				tags[tags.length] = parse_tag.fromTagText('access public');
+ 				tags[tags.length] = parse_tag.fromText('access public');
  			}
  			else if (tags[i].name === 'const') {
- 				tags[tags.length] = parse_tag.fromTagText('attribute constant');
+ 				tags[tags.length] = parse_tag.fromText('attribute constant');
  			}
  			else if (tags[i].name === 'readonly') {
- 				tags[tags.length] = parse_tag.fromTagText('attribute readonly');
+ 				tags[tags.length] = parse_tag.fromText('attribute readonly');
  			}
 			else if (tags[i].name === 'name') {
-				if (name && name !== tags[i].text) {
-					throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].text);
+				if (name && name !== tags[i].value) {
+					throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].value);
 				}
-				taggedName = name = tags[i].text;
+				taggedName = name = tags[i].value;
 			}
 			else if (tags[i].name === 'isa') {
-				if (isa && isa !== tags[i].text) {
-					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].text);
+				if (isa && isa !== tags[i].value) {
+					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].value);
 				}
-				taggedDenom = isa = tags[i].text;
+				taggedIsa = isa = tags[i].value;
 			}
 			else if (tags[i].name === 'memberof') {
 				if (memberof) {
 					throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
 				}
-				taggedMemberof = memberof = tags[i].text;
+				taggedMemberof = memberof = tags[i].value;
 			}
 			
 			if ( nameables.indexOf(tags[i].name) > -1 ) {
@@ -277,19 +290,15 @@
 					// for backwards compatability we ignore a @property in a doclet after a @constructor
 				}
 				else {
-					if (tags[i].text) {
-						if (name && name !== tags[i].text) {
-							throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].text);
+					if (tags[i].value) {
+						if (name && name !== tags[i].value) {
+							throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].value);
 						}
-						name = tags[i].text;
+						name = tags[i].value;
 					}
 				
 					if (tags[i].pdesc) {
-						tags[tags.length] = parse_tag.fromTagText('desc ' + tags[i].pdesc);
-					}
-				
-					if (tags[i].type) {
-						tags[tags.length] = parse_tag.fromTagText('type ' + tags[i].type.join('|'));
+						tags[tags.length] = parse_tag.fromText('desc ' + tags[i].pdesc);
 					}
 				
 					if (isa && isa !== tags[i].name) {
@@ -299,13 +308,17 @@
 					if (isa === 'const') { isa = 'property'; } // an exception to the namebale rule
 				}
 			}
+			else if (tags[i].name === 'file') { // the only isa which cannot have a name after @file
+ 				isFile = true;
+ 				isa = 'file';
+ 			}
 			
 			if ( memberofs.hasOwnProperty(tags[i].name) ) {
-				if (tags[i].text) {
+				if (tags[i].value) {
 					if (memberof) {
 						throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
 					}
-					memberof = tags[i].text;
+					memberof = tags[i].value;
 				}
 				
 				if (isa && isa !== memberofs[tags[i].name]) {
@@ -316,47 +329,51 @@
 		}
 		
 		if (name && !taggedName) {
-			tags[tags.length] = parse_tag.fromTagText('name ' + name);
+			tags[tags.length] = parse_tag.fromText('name ' + name);
 		}
 		
-		if (isa && !taggedDenom) {
-			tags[tags.length] = parse_tag.fromTagText('isa ' + isa);
+		if ( isFile && !(name || taggedName) ) {
+			tags[tags.length] = parse_tag.fromText('name file:'+meta.file+'');
+		}
+		
+		if (isa && !taggedIsa) {
+			tags[tags.length] = parse_tag.fromText('isa ' + isa);
 		}
 		
 		if (memberof && !taggedMemberof) {
-			tags[tags.length] = parse_tag.fromTagText('memberof ' + memberof);
+			tags[tags.length] = parse_tag.fromText('memberof ' + memberof);
 		}
 	}
 	
 	function postprocess(doclet) {
 		if ( doclet.hasTag('class') && !doclet.hasTag('constructor') ) {
-			doclet.tags[doclet.tags.length] = parse_tag.fromTagText('isa constructor');
+			doclet.tags[doclet.tags.length] = parse_tag.fromText('isa constructor');
 		}
 		
-		if ( doclet.hasTag('enum')) {
-			if (!doclet.hasTag('type')) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('type number');
+		if ( doclet.hasTag('enum') ) {
+			if ( !doclet.hasTag('type') ) {
+				doclet.tags[doclet.tags.length] = parse_tag.fromText('type number');
+			}
+			
+			if ( !doclet.hasTag('readonly') && !doclet.hasTag('const') ) {
+				doclet.tags[doclet.tags.length] = parse_tag.fromText('attribute constant');
+			}
+		}
+		
+		if ( doclet.hasTag('const') ) {
+			if ( !doclet.hasTag('isa') ) {
+				doclet.tags[doclet.tags.length] = parse_tag.fromText('isa property');
 			}
 			
 			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('attribute constant');
-			}
-		}
-		
-		if ( doclet.hasTag('const')) {
-			if (!doclet.hasTag('isa')) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('isa property');
-			}
-			
-			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromTagText('attribute constant');
+				doclet.tags[doclet.tags.length] = parse_tag.fromText('attribute constant');
 			}
 		}
 	}
 	
 	function DocTagConflictError(message) {
-		this.name = "DocTagConflictError";
-		this.message = (message || "");
+		this.name = 'DocTagConflictError';
+		this.message = (message || '');
 	}
 	DocTagConflictError.prototype = Error.prototype;
 

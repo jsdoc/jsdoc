@@ -19,8 +19,8 @@
 				expect(jsdoc.tag).to(be_an, Object);
 			});
 			
-			it('should have a `fromTagText` method', function() {
-				expect(jsdoc.tag).to(respond_to, 'fromTagText');
+			it('should have a `fromText` method', function() {
+				expect(jsdoc.tag).to(respond_to, 'fromText');
 			});
 			
 			it('should have a `parse` method', function() {
@@ -48,8 +48,7 @@
  			
  			it('should have a `text` property which is an string', function() {
  				var tag = tags[0];
-				expect(tag).to(have_property, 'text');
- 				expect(tag.text).to(be_an, String);
+				expect(tag).to(have_property, 'value');
  			});
  			
  			it('should have a `type` property which is an array', function() {
@@ -73,10 +72,10 @@
  			});
 		});
 		
-		describe('The tag#text property', function() {
+		describe('The tag#value property', function() {
 			it('should be set to the text after the @name', function() {
  				var tag = tags[0];
-				expect(tag.text).to(eql, 'Hello world');
+				expect(tag.value).to(eql, 'Hello world');
  			});
 		});
 

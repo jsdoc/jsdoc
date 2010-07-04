@@ -23,15 +23,15 @@
 		@param {Doclet} doclet
 	 */
 	exports.resolve = function(doclet) {
-		var isa = doclet.tagText('isa'),
+		var isa = doclet.tagValue('isa'),
 			ns = '',
-			name = doclet.tagText('name'),
-			memberof = doclet.tagText('memberof'),
+			name = doclet.tagValue('name') || '',
+			memberof = doclet.tagValue('memberof') || '',
 			path,
 			shortname,
 			prefix,
-			supportedNamespaces = ['module', 'event'];
-			
+			supportedNamespaces = ['module', 'event', 'file'];
+
 		// only keep the first word of the first tagged name
 		name = name.split(/\s+/g)[0];
 
@@ -42,9 +42,7 @@
 		name = name.replace(/\.prototype\.?/g, '#');
 		
 		path = shortname = name;
-		
-		
-		
+
 		if (memberof) {
 			// like @name foo.bar, @memberof foo
 			if (name.indexOf(memberof) === 0) {
@@ -52,9 +50,9 @@
 				[prefix, name] = exports.shorten(name);
 			}
 		}
-		else {
+		else if (isa !== 'file') {
 			[memberof, name] = exports.shorten(name);
-			doclet.tagText('memberof', memberof);
+			if (memberof) { doclet.setTag('memberof', memberof); }
 		}
 		
 		// if name doesn't already have a doc-namespace and needs one
@@ -67,28 +65,43 @@
 			// add doc-namespace to path
 			ns = isa + ':';
 		}
-		
-		doclet.tagText('name', name);
+
+		if (name) doclet.setTag('name', name);
 		
 		if (memberof && name.indexOf(memberof) !== 0) {
 			path = memberof + (/#$/.test(memberof)? '' : '.') + ns + name;
 		}
 		
-		
 		if (path) {
-			doclet.tagText('path', path);
+			doclet.setTag('path', path);
 		}
 		
 		return path;
 	}
 	
 	exports.shorten = function(path) {
+		// quoted strings in a path are atomic
+		var atoms = [],
+			cursor = 0;
+		path = path.replace(/(".+?")/g, function($) {
+			var token = '@' + atoms.length + '@';
+			atoms.push($);
+			return token;
+		});
+
 		var shortname = path.split(/([#.-])/).pop(),
 			splitOn = RegExp.$1,
 			splitAt = path.lastIndexOf(splitOn),
 			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
 		
 		if (splitOn === '#') { prefix = prefix + splitOn; }
+		
+		// restore quoted strings back again
+		for (var i = 0, leni = atoms.length; i < leni; i++) {
+			prefix = prefix.replace('@'+i+'@', atoms[i]);
+			shortname = shortname.replace('@'+i+'@', atoms[i]);
+		}
+		
 		return [prefix, shortname];
 	}
 	
@@ -98,12 +111,12 @@
 	exports.resolveThis = function(name, node, doclet) {
 		var enclosing,
 			enclosingDoc,
-			memberof = (doclet.tagText('memberof') || '').replace(/\.prototype\.?/g, '#');
+			memberof = (doclet.tagValue('memberof') || '').replace(/\.prototype\.?/g, '#');
 
 		if (node.parent && node.parent.type === Token.OBJECTLIT) {
 			if (enclosing = node.parent) {
 				enclosingDoc = exports.docFromNode(enclosing) || {};
-				memberof = (enclosingDoc.tagText('path') || '').replace(/\.prototype\.?/g, '#');
+				memberof = (enclosingDoc.tagValue('path') || '').replace(/\.prototype\.?/g, '#');
 			
 				if (!memberof) {
 					memberof = enclosingDoc.path;
@@ -120,7 +133,7 @@
 				enclosing = node.getEnclosingFunction()
 				
 				enclosingDoc = exports.docFromNode(enclosing);
-				memberof = enclosingDoc? enclosingDoc.tagText('path') : '';
+				memberof = enclosingDoc? enclosingDoc.tagValue('path') : '';
 
 				if (enclosing && !memberof) {
 					memberof = ''; //[[anonymousFunction]]
@@ -132,7 +145,7 @@
 
 				if (memberof || !enclosing) {
 					// `this` refers to nearest instance in the name path
-					if (enclosingDoc && enclosingDoc.tagText('isa') !== 'constructor') {
+					if (enclosingDoc && enclosingDoc.tagValue('isa') !== 'constructor') {
 						var parts = memberof.split('#');
 						parts.pop();
 						memberof = parts.join('#');

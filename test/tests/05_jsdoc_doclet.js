@@ -16,7 +16,7 @@
 				expect(doclet.constructor.name).to(eql, 'Doclet');
 			});
 			
-			it('should have a `tagText` method', function() {
+			it('should have a `tagValue` method', function() {
 				expect(doclet).to(respond_to, 'toObject');
 			});
 			
@@ -35,20 +35,20 @@
 			});
 		});
 		
-		describe('The returned value of jsdoc.Doclet#tagText', function() {
+		describe('The returned value of jsdoc.Doclet#tagValue', function() {
 			it('should be a string', function() {
-				var returnedValue = doclet.tagText('name');
+				var returnedValue = doclet.tagValue('name');
 				expect(returnedValue).to(be_a, String);
 			});
 			
 			it('should be the text of the tag that matches the given tag name', function() {
-				var returnedValue = doclet.tagText('name');
+				var returnedValue = doclet.tagValue('name');
 				expect(returnedValue).to(eql, 'Foo');
 			});
 			
-			it('should be the text of the last tag that matches the given tag name if there are more than 1', function() {
-				var returnedValue = doclet.tagText('param');
-				expect(returnedValue).to(eql, 'b');
+			it('should be the text of the first tag that matches the given tag name if there are more than 1', function() {
+				var returnedValue = doclet.tagValue('param');
+				expect(returnedValue).to(eql, 'a');
 			});
 		});
 		

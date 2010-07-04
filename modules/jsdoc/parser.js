@@ -12,37 +12,40 @@
 		var commentSrc = '',
 			thisDoclet = null,
 			thisDocletName = '';
-		
-		// look for all comments that have names provided
-		if (node.type === Token.SCRIPT && node.comments) { 			
-			for each (var comment in node.comments.toArray()) {
-				if (comment.commentType === Token.CommentType.JSDOC) {
-					commentSrc = '' + comment.toSource();
 
-					if (commentSrc) {
-						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
-						if ( thisDoclet.hasTag('name') ) {
-							doclets.push(thisDoclet);
-							if (thisDoclet.tagText('isa') === 'module') {
-								name.setCurrentModule( thisDoclet.tagText('path') );
-							}
-						}
-					}
-				}
-			}
-		}
-		
+ 
+ 		// look for all comments that have names provided
+ 		if (node.type === Token.SCRIPT && node.comments) { 			
+ 			for each (var comment in node.comments.toArray()) {
+ 				if (comment.commentType === Token.CommentType.JSDOC) {
+ 					commentSrc = '' + comment.toSource();
+ 					if (commentSrc) {
+ 						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
+
+ 						if ( thisDoclet.hasTag('name') ) {
+ 							doclets.push(thisDoclet);
+ 							if (thisDoclet.tagValue('isa') === 'module') {
+ 								name.setCurrentModule( thisDoclet.tagValue('path') );
+ 							}
+ 						}
+ 					}
+ 				}
+ 			}
+ 		}
+ 		
 		// like function foo() {}
 		if (node.type == Token.FUNCTION) {
+
 			if (node.jsDoc) {
 				commentSrc = '' + node.jsDoc;
-				
+
 				if (commentSrc) {
 					thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
-					thisDocletName = thisDoclet.tagText('path');
-					
+					thisDocletName = thisDoclet.tagValue('path');
+
 					if (!thisDocletName) {
 						thisDoclet.setName('' + node.name);
+
 						doclets.push(thisDoclet);
 					}
 					
@@ -63,8 +66,8 @@
 				commentSrc = '' + commentSrc;
 
 				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
-				thisDocletName = thisDoclet.tagText('name');
-				nodeKind = thisDoclet.tagText('isa');
+				thisDocletName = thisDoclet.tagValue('name');
+				nodeKind = thisDoclet.tagValue('isa');
 
 				if (!thisDocletName) {
 					nodeName = name.resolveThis( nodeName, node, thisDoclet );
@@ -88,8 +91,8 @@
 					commentSrc = (counter++ === 0 && !n.jsDoc)? node.jsDoc : n.jsDoc;
 					if (commentSrc) {
 						thisDoclet = doclet.makeDoclet('' + commentSrc, node, currentSourceName);
-						thisDocletName = thisDoclet.tagText('path');
-						nodeKind = thisDoclet.tagText('isa');
+						thisDocletName = thisDoclet.tagValue('path');
+						nodeKind = thisDoclet.tagValue('isa');
 						
 						if ( !thisDocletName ) {
 							thisDocletName = n.target.string;

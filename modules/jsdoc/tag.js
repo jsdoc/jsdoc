@@ -9,73 +9,95 @@
 	@module jsdoc/tag
  */
 (function() {
-	var jsdoc_type = require('jsdoc/type');
+	var jsdoc_type = require('jsdoc/type'),
+		tagz = require('jsdoc/tagdictionary').TagDictionary;
 	
-	exports.fromTagText = function(tagText) {
-		return new Tag(tagText);
+	exports.fromText = function(tagText) {
+		var tag = new Tag(tagText);
+		return tag;
 	}
 	
 	// tags that have {type} (name desc|text)
-	var longTags = ['param', 'constructor', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum', 'returns'];
+	var longTags = ['param', 'constructor', 'type', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum', 'returns'];
 	// tags that have {type} text
 	var anonTags = ['returns'];
 	
 	/**
 		@private
-		@constructor Tag
+		@constructor module:jsdoc/tag.Tag
 		@param {string} tagText
 	 */
 	function Tag(tagText) {
+		/** @property {string} - The raw text of this tag, include everything after the @. */
 		this.raw = tagText;
+		
+		/** @property {string} - The name of this tag, the word adjacent to the @. */
 		this.name = '';
+		
+		/** @property {Array} - Zero or more type specifiers. */
 		this.type = [];
-		this.text = '';
+		
+		/** @property {*} - The value of this tag. */
+		this.value = null;
+		
+		/** @property {string} - If this is a long tag, then this will be the parameter name. */
 		this.pname = '';
+		
+		/** @property {string} - If this is a long tag, then this will be the parameter description. */
 		this.pdesc = '';
 		
-		// tagText is like: "tagname tag text"
-		var bits = tagText.match(/^\s*(\S+)(?:\s([\s\S]*))?$/);
-	
-		if (bits) {
-			this.name = (bits[1] || '').toLowerCase(); // like @name
-			this.name = trim( resolveSynonyms(this.name) );
-			
-			this.text = bits[2] || ''; // all the rest of the tag
+		// raw is like: "tagname andsometagtext"
+		var parts = this.raw.match(/^\s*(\S+)(?:\s+([\s\S]*))?$/);
 
-			if (this.name !== 'example') { // example is the only tag that preserves whitespace
-				this.text = trim( this.text );
+		if (parts) {
+			this.name = (parts[1] || '').toLowerCase(); // like @name
+			this.name = resolveSynonyms(this.name);
+
+			tagText = parts[2] || ''; // all the rest of the tag
+
+			if (tagz.lookUp(this.name).keepsWhitespace) {
+				this.value = tagText;
+			}
+			else {
+				this.value = trim(tagText);
 			}
 			
 			if (longTags.indexOf(this.name) > -1) { // is a tag that uses the long format
+
 				var /*Array.<string>*/ type,
-					/*string*/         text,
+					/*any*/            value,
 					/*?boolean*/       optional,
 					/*?boolean*/       nullable;
-				[type, text, optional, nullable] = jsdoc_type.parse(this.text);
 				
-				// @type tags are the only tag that is not allowed to have a {type}!
-				if (this.name === 'type') {
-					text = text || type.join('|');
-					type = [];
-				}
-
+				[type, value, optional, nullable] = jsdoc_type.parse(this.value);
+				
 				// don't add an empty type or null attributes
 				if (type && type.length) { this.type = type; }
+				
+				// @type tags are special: the only tag that is not allowed to have a {type}
+				// their type becomes their value
+				if (this.name === 'type') {
+					value = (this.type[0] === '')? this.value.split(/\s*\|\s*/g) : this.type;
+					if (value.length === 1) value = value[0]; // single values don't need to be arrays
+					this.type = [];
+				}
+
 				if (optional !== null) { this.poptional = optional; }
 				if (nullable !== null) { this.pnullable = nullable; }
 				
-				this.text = text;
-			
-				if (anonTags.indexOf(this.name) > -1) {
-					this.pdesc = this.text;
+// TODO protect @example from being overwritten?
+				this.value = value;
+				if (tagz.lookUp(this.name).canHavePname && tagz.lookUp(this.name).canHavePdesc) { // some tags just have {type} desc
+					if (typeof this.value === 'string') {
+						var [pname, pdesc, poptional, pdefault] = parsePname(this.value);
+						this.pname = pname;
+						this.pdesc = pdesc;
+						if (typeof poptional !== 'undefined') this.poptional = poptional;
+						this.pdefault = pdefault;
+					}
 				}
-				else {
-					
-					var [pname, pdesc, poptional, pdefault] = parsePname(this.text);
-					this.pname = pname;
-					this.pdesc = pdesc;
-					if (typeof poptional !== 'undefined') this.poptional = poptional;
-					this.pdefault = pdefault;
+				else if (tagz.lookUp(this.name).canHavePdesc) {
+					this.pdesc = this.value;
 				}
 			}
 		}
@@ -85,8 +107,8 @@
 		Given the source of a jsdoc comment, finds the tags.
 		@private
 		@function parse
-		@param {string} commentSrc Unwrapped.
-		@returns Array.<Object>
+		@param {string} commentSrc Unwrapped raw source of the doc comment.
+		@returns {Array.<module:jsdoc/tag.Tag>}
 	 */
 	exports.parse = function(commentSrc) {
 		var tags = [];
@@ -96,7 +118,7 @@
 		.replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence (unicode_recordseperator+@)
 		.split('\\@')                        // then split on that arbitrary sequence
 		.forEach(function($) {
-			var newTag = exports.fromTagText($);
+			var newTag = exports.fromText($);
 
 			if (newTag.name) { tags.push(newTag); }
 		});
@@ -109,19 +131,20 @@
 	}
 	
 	/**
-		Split the parameter name and parameter desc from the tag text.
+		Parse the parameter name and parameter desc from the tag text.
 		@private
 		@method parsePname
 		@param {string} tagText
-		@returns Array.<string> The pname and the pdesc.
+		@returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
 	 */
 	function parsePname(tagText) {
 		var pname, pdesc, poptional, pdefault;
 		
-		tagText.match(/^(\[[^\]]+\]|\S+)(\s+(\S[\s\S]*))?$/);
+		// like: pname, pname pdesc, or name - pdesc
+		tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
 		pname = RegExp.$1;
 		pdesc = RegExp.$3;
-		
+
 		if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
 			pname = RegExp.$1;
 			poptional = true;
@@ -143,11 +166,14 @@
 		}
 	}
 	exports.synonyms = {
+		/*synonym*/    /*canonical*/
 		'description': 'desc',
 		'function':    'method',
 		'variable':    'property',
 		'return':      'returns',
-		'member':      'memberof'
+		'member':      'memberof',
+		'overview':    'file',
+		'fileoverview':'file'
 	}
 	
 	//TODO: move into a shared module?

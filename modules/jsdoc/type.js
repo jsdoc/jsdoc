@@ -11,37 +11,37 @@
 (function() {
 	
 	/**
-		@param {string} tagText
+		@param {string} tagValue
 		@returns {Array.<string>}
 	 */
-	exports.parse = function(tagText) {
-		if (typeof tagText !== 'string') { tagText = ''; }
+	exports.parse = function(tagValue) {
+		if (typeof tagValue !== 'string') { tagValue = ''; }
 		var type = '',
 			text = '',
 			count = 0;
 		
 		// type expressions start with '{'
-		if (tagText[0] === '{') {
+		if (tagValue[0] === '{') {
 			count++;
 			
 			// find matching closer '}'
-			for (var i = 1, leni = tagText.length; i < leni; i++) {
-				if (tagText[i] === '{') { count++; }
-				else if (tagText[i] === '}') { count--; }
+			for (var i = 1, leni = tagValue.length; i < leni; i++) {
+				if (tagValue[i] === '{') { count++; }
+				else if (tagValue[i] === '}') { count--; }
 				
 				if (count === 0) {
-					type = trim(tagText.slice(1, i));
-					text = trim(tagText.slice(i+1));
+					type = trim(tagValue.slice(1, i));
+					text = trim(tagValue.slice(i+1));
 					break;
 				}
 			}
 		}
 
-		if (type === '') { text = tagText; }
+		if (type === '') { text = tagValue; }
 		
 		[type, optional] = parseOptional(type);
 		[type, nullable] = parseNullable(type);
-		
+	
 		type = parseTypes(type); // make it into an array
 
 		return [type, text, optional, nullable];
@@ -87,7 +87,7 @@
 		
 		return types;
 	}
-	
+
 	/** @private */
 	function trim(text) {
 		return text.replace(/^\s+|\s+$/g, '');

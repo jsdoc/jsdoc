@@ -13,7 +13,7 @@
 			i = doclets.length;
 
 		while (i--) {
-			if (doclets[i].tagText('path') === docName) {
+			if (doclets[i].tagValue('path') === docName) {
 				foundDocs.unshift( doclets[i] );
 			}
 		}

@@ -10,6 +10,10 @@ load(BASEDIR + '/test/tests/11_tag_namespace.js');
 load(BASEDIR + '/test/tests/12_tag_property.js');
 load(BASEDIR + '/test/tests/13_tag_method.js');
 load(BASEDIR + '/test/tests/14_tag_member.js');
+load(BASEDIR + '/test/tests/15_tag_type.js');
+load(BASEDIR + '/test/tests/16_tag_return.js');
+
+load(BASEDIR + '/test/tests/20_tag_file.js');
 
 // see http://visionmedia.github.com/jspec/
 JSpec.run({
