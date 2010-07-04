@@ -11,7 +11,8 @@
 (function() {
 
 	var Token  = Packages.org.mozilla.javascript.Token,
-		currentModule = '';
+		currentModule = '',
+		tagDictionary = require('jsdoc/tagdictionary');
 	
 	exports.setCurrentModule = function(moduleName) {
 		currentModule = moduleName;
@@ -29,8 +30,9 @@
 			memberof = doclet.tagValue('memberof') || '',
 			path,
 			shortname,
-			prefix,
-			supportedNamespaces = ['module', 'event', 'file'];
+			prefix;
+			//,
+			//supportedNamespaces = ['module', 'event', 'file'];
 
 		// only keep the first word of the first tagged name
 		name = name.split(/\s+/g)[0];
@@ -55,9 +57,9 @@
 			if (memberof) { doclet.setTag('memberof', memberof); }
 		}
 		
-		// if name doesn't already have a doc-namespace and needs one
+		// if name doesn't already have a docspace and needs one
 		// the namespace should appear in the path but not the name
-		if (supportedNamespaces.indexOf(isa) > -1) {
+		if (tagDictionary.lookUp(isa).isDocspace) {
 			if ( /^[a-z_$-]+:(\S+)/i.test(name) ) {
 				name = RegExp.$1;
 			}

@@ -246,15 +246,9 @@
 		for (var i = 0, leni = tags.length; i < leni; i++) {
 			tagAbout = tagDictionary.lookUp(tags[i].name);
 			
- 			if (tags[i].name === 'private') {
- 				tags[tags.length] = parse_tag.fromText('access private');
- 			}
- 			else if (tags[i].name === 'protected') {
- 				tags[tags.length] = parse_tag.fromText('access protected');
- 			}
- 			else if (tags[i].name === 'public') {
- 				tags[tags.length] = parse_tag.fromText('access public');
- 			}
+			if (tagAbout.setsDocletAccess) {
+				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
+			}
  			else if (tags[i].name === 'const') {
  				tags[tags.length] = parse_tag.fromText('attribute constant');
  			}
@@ -280,7 +274,7 @@
 				taggedMemberof = memberof = tags[i].value;
 			}
 			
-			if ( tagAbout.canProvideName/*nameables.indexOf(tags[i].name) > -1*/ ) {
+			if ( tagAbout.setsDocletName/*nameables.indexOf(tags[i].name) > -1*/ ) {
 				if (tags[i].name === 'property' && (isa === 'constructor')) {
 					// to avoid backwards compatability conflicts we just ignore a @property in a doclet after a @constructor
 				}

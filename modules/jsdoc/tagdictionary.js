@@ -46,8 +46,9 @@
 //// default properties of all tags
 	TagDefinition.prototype = {
 		isExported     : false, // this tag should appear as a top level property in the doclet?
-		canProvideIsa  : false, // the name of this tag is used to define the doclet's isa property
-		canProvideName : false, // this tag can be used to name the doclet
+		setsDocletIsa  : false, // the name of this tag is used to define the doclet's isa property
+		setsDocletName : false, // this tag can be used to name the doclet
+		setsDocletAccess: false,
 		isDocspace     : false, // the name of this tag becomes the docspace for the doclet name, like "event:"
 		canHaveType    : false, // this tag can have a {type}
 		canHavePname   : false, // this tag can have a parameter-type name
@@ -57,14 +58,14 @@
 	
 //// default event handlers?
 // 	TagDefinition.prototype.onAddTagToDoclet = function(tag, doclet) {
-// 		if (this.canProvideIsa) {
+// 		if (this.setsDocletIsa) {
 // 			if (doclet.isa) {
 // 				throw 'Overwriting existing isa in doclet: was "'+doclet.isa+'", now "'+this.title+'"';
 // 			}
 // 			doclet.isa = this.title;
 // 		}
 // 		
-// 		if (this.canProvideName) {
+// 		if (this.setsDocletName) {
 // 			if (doclet.name) {
 // 				throw 'Overwriting existing name in doclet: was "'+doclet.name+'", now "'+this.title+'"';
 // 			}
@@ -99,32 +100,32 @@
 	
 	// @namespace <docletName>
 	new TagDefinition('namespace', {
-		canProvideIsa: true,
-		canProvideName: true
+		setsDocletIsa: true,
+		setsDocletName: true
 	});
 	
 	// @constructor <docletName>
 	new TagDefinition('constructor', {
-		canProvideIsa: true,
-		canProvideName: true
+		setsDocletIsa: true,
+		setsDocletName: true
 	});
 	
 	// @const <docletName>
 	new TagDefinition('const', {
-		canProvideIsa: true,
-		canProvideName: true
+		setsDocletIsa: true,
+		setsDocletName: true
 	});
 	
 	// @enum <docletName>
 	new TagDefinition('enum', {
-		canProvideIsa: true,
-		canProvideName: true
+		setsDocletIsa: true,
+		setsDocletName: true
 	});
 	
 	// @file|overview|fileoverview <docletName>
 	new TagDefinition('file', {
-		canProvideIsa: true,
-		canProvideName: true,
+		setsDocletIsa: true,
+		setsDocletName: true,
 		isDocspace: true
 	});
 	
@@ -133,7 +134,7 @@
 		canHaveType: true,
 		canHavePname: true,
 		canHavePdesc: true,
-		canProvideName: true
+		setsDocletName: true
 	});
 	
 	// @property <docletType> <docletName> <docletDesc>
@@ -141,20 +142,20 @@
 		canHaveType: true,
 		canHavePname: true,
 		canHavePdesc: true,
-		canProvideName: true
+		setsDocletName: true
 	});
 	
 	// @event <docletName>
 	new TagDefinition('event', {
-		canProvideIsa: true,
-		canProvideName: true,
+		setsDocletIsa: true,
+		setsDocletName: true,
 		isDocspace: true
 	});
 	
 	// @module <docletName>
 	new TagDefinition('module', {
-		canProvideIsa: true,
-		canProvideName: true,
+		setsDocletIsa: true,
+		setsDocletName: true,
 		isDocspace: true
 	});
 	
@@ -184,5 +185,22 @@
 		canHaveType: true,
 		canHavePdesc: true
 	});
+	
+	// @private <docletAccess>
+	new TagDefinition('private', {
+		setsDocletAccess: true
+	});
+	
+	// @protected <docletAccess>
+	new TagDefinition('protected', {
+		setsDocletAccess: true
+	});
+	
+	// @public <docletAccess>
+	new TagDefinition('public', {
+		setsDocletAccess: true
+	});
+	
+	
 	
 })();
