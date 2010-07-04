@@ -10,17 +10,12 @@
  */
 (function() {
 	var jsdoc_type = require('jsdoc/type'),
-		tagz = require('jsdoc/tagdictionary').TagDictionary;
+		tagDictionary = require('jsdoc/tagdictionary');
 	
 	exports.fromText = function(tagText) {
 		var tag = new Tag(tagText);
 		return tag;
 	}
-	
-	// tags that have {type} (name desc|text)
-	var longTags = ['param', 'constructor', 'type', 'const', 'module', 'event', 'namespace', 'method', 'member', 'function', 'variable', 'enum', 'returns'];
-	// tags that have {type} text
-	var anonTags = ['returns'];
 	
 	/**
 		@private
@@ -51,54 +46,56 @@
 
 		if (parts) {
 			this.name = (parts[1] || '').toLowerCase(); // like @name
-			this.name = resolveSynonyms(this.name);
+			this.name = tagDictionary.resolveSynonyms(this.name);
 
 			tagText = parts[2] || ''; // all the rest of the tag
-
-			if (tagz.lookUp(this.name).keepsWhitespace) {
-				this.value = tagText;
-			}
-			else {
+			
+			// now that we know who you are, tell us a little about yourself...
+			var tagAbout = tagDictionary.lookUp(this.name);
+			
+			if (!tagAbout.keepsWhitespace) {
 				this.value = trim(tagText);
 			}
+			else {
+				this.value = tagText;
+			}
 			
-			if (longTags.indexOf(this.name) > -1) { // is a tag that uses the long format
-
-				var /*Array.<string>*/ type,
-					/*any*/            value,
-					/*?boolean*/       optional,
-					/*?boolean*/       nullable;
+			if (tagAbout.canHaveType) {
+				var [
+					/*Array.<string>*/ type,
+					/*any*/ value,
+					/*?boolean*/ optional,
+					/*?boolean*/ nullable
+				] = jsdoc_type.parse(this.value);
 				
-				[type, value, optional, nullable] = jsdoc_type.parse(this.value);
-				
-				// don't add an empty type or null attributes
 				if (type && type.length) { this.type = type; }
 				
-				// @type tags are special: the only tag that is not allowed to have a {type}
-				// their type becomes their value
+				// @type tags are special: their type *is* their value
 				if (this.name === 'type') {
 					value = (this.type[0] === '')? this.value.split(/\s*\|\s*/g) : this.type;
 					if (value.length === 1) value = value[0]; // single values don't need to be arrays
 					this.type = [];
 				}
-
+				
+				if (typeof value !== 'undefined') { this.value = value; }
 				if (optional !== null) { this.poptional = optional; }
 				if (nullable !== null) { this.pnullable = nullable; }
-				
-// TODO protect @example from being overwritten?
-				this.value = value;
-				if (tagz.lookUp(this.name).canHavePname && tagz.lookUp(this.name).canHavePdesc) { // some tags just have {type} desc
-					if (typeof this.value === 'string') {
-						var [pname, pdesc, poptional, pdefault] = parsePname(this.value);
-						this.pname = pname;
-						this.pdesc = pdesc;
-						if (typeof poptional !== 'undefined') this.poptional = poptional;
-						this.pdefault = pdefault;
-					}
+			}
+			
+			if (tagAbout.canHavePname && tagAbout.canHavePdesc) { // both
+				if (typeof this.value === 'string') {
+					var [pname, pdesc, poptional, pdefault] = parsePname(this.value);
+					this.pname = pname;
+					this.pdesc = pdesc;
+					if (typeof poptional !== 'undefined') this.poptional = poptional;
+					this.pdefault = pdefault;
 				}
-				else if (tagz.lookUp(this.name).canHavePdesc) {
-					this.pdesc = this.value;
-				}
+			}
+			else if (tagAbout.canHavePname) { // only
+				this.pname = String(this.value);
+			}
+			else if (tagAbout.canHavePdesc) { // only
+				this.pdesc = String(this.value);
 			}
 		}
 	}
@@ -156,26 +153,7 @@
 		}
 		return [pname, pdesc, poptional, pdefault];
 	}
-	
-	function resolveSynonyms(name) {
-		if ( exports.synonyms.hasOwnProperty(name) ) {
-			return exports.synonyms[name];
-		}
-		else {
-			return name;
-		}
-	}
-	exports.synonyms = {
-		/*synonym*/    /*canonical*/
-		'description': 'desc',
-		'function':    'method',
-		'variable':    'property',
-		'return':      'returns',
-		'member':      'memberof',
-		'overview':    'file',
-		'fileoverview':'file'
-	}
-	
+
 	//TODO: move into a shared module?
 	/** @private */
 	function trim(text) {

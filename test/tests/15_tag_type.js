@@ -16,7 +16,7 @@
 		});
 		
 		describe('A doclet with a type tag whose value is a simple string like "number"', function() {
-			it('should have an `type` property set to string "number"', function() {
+			it('should have an `type` property set to that string', function() {
 				var doclet = doclets[2];
 				expect(doclet).to(have_property, 'type');
 				expect(doclet.type).to(eql, 'number');
@@ -24,7 +24,7 @@
 		});
 		
 		describe('A doclet with a type tag whose value is a series of piped strings like "number | Array.<number>"', function() {
-			it('should have an `type` property set to [number, Array.<number>]', function() {
+			it('should have an `type` property set to an array of those types', function() {
 				var doclet = doclets[3];
 				expect(doclet).to(have_property, 'type');
 
@@ -32,8 +32,8 @@
 			});
 		});
 		
-		describe('A doclet with a type tag whose value contains braces like "{number|function(string:a, string:b){}:number}"', function() {
-			it('should have an `type` property set to [number, Array.<number>]', function() {
+		describe('A doclet with a type tag whose value contains inner braces like "{number|function(string:a, string:b){}:number}"', function() {
+			it('should have an `type` property set to those types, regardless of the inner braces', function() {
 				var doclet = doclets[4];
 				expect(doclet).to(have_property, 'type');
 

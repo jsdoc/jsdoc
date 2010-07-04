@@ -10,7 +10,8 @@
  */
 (function() {	
 	var name = require('jsdoc/name'),
-		parse_tag = require('jsdoc/tag');
+		parse_tag = require('jsdoc/tag'),
+		tagDictionary = require('jsdoc/tagdictionary');
 	
 	/**
 		Factory that builds a Doclet object.
@@ -129,9 +130,6 @@
 		return false;
 	}
 	
-	// safe to export to JSON
-	var exportTags = ['name', 'path', 'isa', 'desc', 'type', 'param', 'returns', 'exports', 'requires', 'memberof', 'access', 'attribute', 'example', 'see'];
-	
 	/**
 		Get a JSON-compatible object representing this Doclet.
 		@method Doclet#toObject
@@ -139,16 +137,16 @@
 		@returns {Object}
 	 */
 	Doclet.prototype.toObject = function(/*todo*/flavor) {
-		var tag, tagName, tagValue,
+		var tag, tagName, tagValue, tagAbout,
 			o = {};
 		
 		for (var i = 0, leni = this.tags.length; i < leni; i++) {
 			tag = this.tags[i];
-
-			if ( exportTags.indexOf(tag.name) === -1 ) { continue; }
-		
 			tagName = tag.name;
 			tagValue = {};
+			tagAbout = tagDictionary.lookUp(tagName);
+			
+			if (!tagAbout.isExported) { continue; }
 
 			// a long tag, like a @param
 			if (tag.pname) {
@@ -228,11 +226,6 @@
 		return commentSrc;
 	}
 	
-	// other tags that can provide the memberof
-	var memberofs = {methodof: 'method', propertyof: 'property', eventof: 'event'};
-	// other tags that can provide the symbol name
-	var nameables = ['constructor', 'const', 'module', 'event', 'namespace', 'method', 'property', 'enum'];
-	
 	/**
 		Expand some shortcut tags. Modifies the tags argument in-place.
 		@private
@@ -247,10 +240,12 @@
 			taggedIsa = '',
 			memberof = '',
 			taggedMemberof = '',
-			isFile = false;
+			isFile = false, // TODO this should be handled by an event handler in tag dictionary
+			tagAbout;
 		
 		for (var i = 0, leni = tags.length; i < leni; i++) {
-		
+			tagAbout = tagDictionary.lookUp(tags[i].name);
+			
  			if (tags[i].name === 'private') {
  				tags[tags.length] = parse_tag.fromText('access private');
  			}
@@ -285,9 +280,13 @@
 				taggedMemberof = memberof = tags[i].value;
 			}
 			
-			if ( nameables.indexOf(tags[i].name) > -1 ) {
+			if ( tagAbout.canProvideName/*nameables.indexOf(tags[i].name) > -1*/ ) {
 				if (tags[i].name === 'property' && (isa === 'constructor')) {
-					// for backwards compatability we ignore a @property in a doclet after a @constructor
+					// to avoid backwards compatability conflicts we just ignore a @property in a doclet after a @constructor
+				}
+				else if (tags[i].name === 'file') {
+					isFile = true;
+ 					isa = 'file';
 				}
 				else {
 					if (tags[i].value) {
@@ -307,24 +306,6 @@
 					isa = tags[i].name;
 					if (isa === 'const') { isa = 'property'; } // an exception to the namebale rule
 				}
-			}
-			else if (tags[i].name === 'file') { // the only isa which cannot have a name after @file
- 				isFile = true;
- 				isa = 'file';
- 			}
-			
-			if ( memberofs.hasOwnProperty(tags[i].name) ) {
-				if (tags[i].value) {
-					if (memberof) {
-						throw new DocTagConflictError('doclet has too many tags of type: @memberof.');
-					}
-					memberof = tags[i].value;
-				}
-				
-				if (isa && isa !== memberofs[tags[i].name]) {
-					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].name);
-				}
-				isa = memberofs[tags[i].name];
 			}
 		}
 		
