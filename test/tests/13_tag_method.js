@@ -14,7 +14,7 @@
 			doclets = jsdoc.parser.result;
 		});
 		
-		describe('A doclet with a named method tag attached to a namespace', function() {
+		describe('A doclet with a named @method attached to a namespace', function() {
 			it('should have an `isa` property set to "method"', function() {
 				var doclet = doclets[2].toObject();
 				expect(doclet).to(have_property, 'isa');
@@ -34,7 +34,7 @@
 			});
 		});
 		
-		describe('A doclet with a named method tag attached to a constructor', function() {
+		describe('A doclet with a named @method attached to a constructor', function() {
 			it('should have an `isa` property set to "method"', function() {
 				var doclet = doclets[3].toObject();
 				expect(doclet).to(have_property, 'isa');
@@ -54,6 +54,20 @@
 			});
 		});
 		
+		describe('A doclet with a named @function tag', function() {
+			it('should have an `isa` property set to "method"', function() {
+				var doclet = doclets[4].toObject();
+				expect(doclet).to(have_property, 'isa');
+				expect(doclet.isa).to(eql, 'method');
+			});
+			
+			it('should have a `name` property set to the given name"', function() {
+				var doclet = doclets[4].toObject();
+				expect(doclet).to(have_property, 'name');
+				expect(doclet.name).to(eql, 'zub');
+			});
+		});
+		
 	});
 })();
 
@@ -66,5 +80,7 @@
 	/** @method foo.fah */
 	
 	/** @method bar.bah */
+	
+	/** @function zub */
 	
 })();

@@ -5,6 +5,7 @@ load(BASEDIR + '/test/tests/04_jsdoc_docset.js');
 load(BASEDIR + '/test/tests/05_jsdoc_doclet.js');
 load(BASEDIR + '/test/tests/06_jsdoc_tag.js');
 
+load(BASEDIR + '/test/tests/08_tag_name.js');
 load(BASEDIR + '/test/tests/09_tag_desc.js');
 load(BASEDIR + '/test/tests/10_tag_constructor.js');
 load(BASEDIR + '/test/tests/11_tag_namespace.js');
@@ -13,6 +14,7 @@ load(BASEDIR + '/test/tests/13_tag_method.js');
 load(BASEDIR + '/test/tests/14_tag_member.js');
 load(BASEDIR + '/test/tests/15_tag_type.js');
 load(BASEDIR + '/test/tests/16_tag_return.js');
+load(BASEDIR + '/test/tests/17_tag_example.js');
 
 load(BASEDIR + '/test/tests/20_tag_file.js');
 

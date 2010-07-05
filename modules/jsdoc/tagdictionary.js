@@ -48,8 +48,9 @@
 		isExported     : false, // this tag should appear as a top level property in the doclet?
 		setsDocletIsa  : false, // the name of this tag is used to define the doclet's isa property
 		setsDocletName : false, // this tag can be used to name the doclet
-		setsDocletAccess: false,
-		isDocspace     : false, // the name of this tag becomes the docspace for the doclet name, like "event:"
+		setsDocletAccess: false, // the name of this tag becomes the access of the doclet
+		setsDocletType : false, // the type of this tag becomes th type of the doclet
+		setsDocletDocspace     : false, // the name of this tag becomes the docspace for the doclet name, like "event:"
 		canHaveType    : false, // this tag can have a {type}
 		canHavePname   : false, // this tag can have a parameter-type name
 		canHavePdesc   : false, // this tag can have a parameter-type desc
@@ -74,7 +75,7 @@
 // 	}
 
 	// @desc <text>
-	new TagDefinition('desc', {
+	new TagDefinition('desc', { // t
 		isExported: true
 	});
 	
@@ -94,18 +95,18 @@
 	});
 	
 	// @memberof <text>
-	new TagDefinition('memberof', {
+	new TagDefinition('memberof', { //t
 		isExported: true
 	});
 	
 	// @namespace <docletName>
-	new TagDefinition('namespace', {
+	new TagDefinition('namespace', { //t
 		setsDocletIsa: true,
 		setsDocletName: true
 	});
 	
 	// @constructor <docletName>
-	new TagDefinition('constructor', {
+	new TagDefinition('constructor', { //t
 		setsDocletIsa: true,
 		setsDocletName: true
 	});
@@ -123,14 +124,14 @@
 	});
 	
 	// @file|overview|fileoverview <docletName>
-	new TagDefinition('file', {
+	new TagDefinition('file', { //t
 		setsDocletIsa: true,
 		setsDocletName: true,
-		isDocspace: true
+		setsDocletDocspace: true
 	});
 	
 	// @method <docletType> <docletName> <docletDesc>
-	new TagDefinition('method', {
+	new TagDefinition('method', { //t
 		canHaveType: true,
 		canHavePname: true,
 		canHavePdesc: true,
@@ -138,25 +139,26 @@
 	});
 	
 	// @property <docletType> <docletName> <docletDesc>
-	new TagDefinition('property', {
+	new TagDefinition('property', { //t
 		canHaveType: true,
 		canHavePname: true,
 		canHavePdesc: true,
-		setsDocletName: true
+		setsDocletName: true,
+		setsDocletType: true
 	});
 	
 	// @event <docletName>
 	new TagDefinition('event', {
 		setsDocletIsa: true,
 		setsDocletName: true,
-		isDocspace: true
+		setsDocletDocspace: true
 	});
 	
 	// @module <docletName>
 	new TagDefinition('module', {
 		setsDocletIsa: true,
 		setsDocletName: true,
-		isDocspace: true
+		setsDocletDocspace: true
 	});
 	
 	// @example <text>

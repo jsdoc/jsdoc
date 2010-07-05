@@ -59,7 +59,7 @@
 		
 		// if name doesn't already have a docspace and needs one
 		// the namespace should appear in the path but not the name
-		if (tagDictionary.lookUp(isa).isDocspace) {
+		if (tagDictionary.lookUp(isa).setsDocletDocspace) {
 			if ( /^[a-z_$-]+:(\S+)/i.test(name) ) {
 				name = RegExp.$1;
 			}
@@ -86,6 +86,8 @@
 		var atoms = [],
 			cursor = 0;
 		path = path.replace(/(".+?")/g, function($) {
+			$ = $.slice(1, -1);
+
 			var token = '@' + atoms.length + '@';
 			atoms.push($);
 			return token;
@@ -102,6 +104,10 @@
 		for (var i = 0, leni = atoms.length; i < leni; i++) {
 			prefix = prefix.replace('@'+i+'@', atoms[i]);
 			shortname = shortname.replace('@'+i+'@', atoms[i]);
+			
+			// remove quotes from shortnames
+			///^"(.+)"$/.test(shortname);
+			//if (RegExp.$1) { shortname = RegExp.$1; }
 		}
 		
 		return [prefix, shortname];

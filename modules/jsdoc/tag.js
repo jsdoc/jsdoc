@@ -42,7 +42,7 @@
 		this.pdesc = '';
 		
 		// raw is like: "tagname andsometagtext"
-		var parts = this.raw.match(/^\s*(\S+)(?:\s+([\s\S]*))?$/);
+		var parts = this.raw.match(/^\s*(\S+)(?:\s([\s\S]*))?$/);
 
 		if (parts) {
 			this.name = (parts[1] || '').toLowerCase(); // like @name
@@ -54,11 +54,9 @@
 			var tagAbout = tagDictionary.lookUp(this.name);
 			
 			if (!tagAbout.keepsWhitespace) {
-				this.value = trim(tagText);
+				tagText = trim(tagText);
 			}
-			else {
-				this.value = tagText;
-			}
+			this.value = tagText;
 			
 			if (tagAbout.canHaveType) {
 				var [

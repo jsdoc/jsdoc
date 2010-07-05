@@ -115,6 +115,22 @@
 	}
 	
 	/**
+		Return the first tag with the given name.
+		@method Doclet#getTag
+		@param {String} tagName
+		@returns {Tag} The irst found tag with that name.
+	 */
+	Doclet.prototype.getTag = function(tagName) {
+		for (var i = 0, leni = this.tags.length; i < leni; i++) {
+			if (this.tags[i].name === tagName) {
+				return this.tags[i];
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 		Does a tag with the given name exist in this doclet?
 		@method Doclet#hasTag
 		@param {String} tagName
@@ -249,7 +265,8 @@
 			if (tagAbout.setsDocletAccess) {
 				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
 			}
- 			else if (tags[i].name === 'const') {
+ 			
+ 			if (tags[i].name === 'const') {
  				tags[tags.length] = parse_tag.fromText('attribute constant');
  			}
  			else if (tags[i].name === 'readonly') {
@@ -319,7 +336,11 @@
 			tags[tags.length] = parse_tag.fromText('memberof ' + memberof);
 		}
 	}
+
+// TODO should iterate over the tags here rather than letting doclet decide
+// which ones to pick and choose from. the tag dictionary should tell us what to do
 	
+	// now that we have a doclet object we can do some final  adjustments
 	function postprocess(doclet) {
 		if ( doclet.hasTag('class') && !doclet.hasTag('constructor') ) {
 			doclet.tags[doclet.tags.length] = parse_tag.fromText('isa constructor');
@@ -342,6 +363,21 @@
 			
 			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {
 				doclet.tags[doclet.tags.length] = parse_tag.fromText('attribute constant');
+			}
+		}
+		
+		if ( doclet.hasTag('property') ) {
+			if ( !doclet.hasTag('type') ) {
+				var propertyTag = doclet.getTag('property'),
+					types = [];
+				if (propertyTag.type) {
+					if (typeof propertyTag.type === 'string') types = [propertyTag.type];
+					else types = propertyTag.type;
+					
+					for (var i = 0, leni = types.length; i < leni; i++) {
+						doclet.tags[doclet.tags.length] = parse_tag.fromText('type '+types[i]);
+					}
+				}
 			}
 		}
 	}
