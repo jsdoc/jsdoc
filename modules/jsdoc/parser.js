@@ -22,7 +22,7 @@
  					if (commentSrc) {
  						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
 
- 						if ( thisDoclet.hasTag('name') ) {
+ 						if ( thisDoclet.hasTag('name') && thisDoclet.hasTag('isa') ) {
  							doclets.push(thisDoclet);
  							if (thisDoclet.tagValue('isa') === 'module') {
  								name.setCurrentModule( thisDoclet.tagValue('path') );
@@ -43,7 +43,7 @@
 					thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
 					thisDocletName = thisDoclet.tagValue('path');
 
-					if (!thisDocletName) {
+					if (thisDoclet.hasTag('isa') && !thisDocletName) {
 						thisDoclet.setName('' + node.name);
 
 						doclets.push(thisDoclet);
@@ -69,7 +69,7 @@
 				thisDocletName = thisDoclet.tagValue('name');
 				nodeKind = thisDoclet.tagValue('isa');
 
-				if (!thisDocletName) {
+				if (thisDoclet.hasTag('isa') && !thisDocletName) {
 					nodeName = name.resolveThis( nodeName, node, thisDoclet );
 					thisDoclet.setName(nodeName);
 					doclets.push(thisDoclet);
@@ -94,7 +94,7 @@
 						thisDocletName = thisDoclet.tagValue('path');
 						nodeKind = thisDoclet.tagValue('isa');
 						
-						if ( !thisDocletName ) {
+						if (thisDoclet.hasTag('isa') && !thisDocletName ) {
 							thisDocletName = n.target.string;
 							thisDoclet.setName(thisDocletName);
 							doclets.push(thisDoclet);

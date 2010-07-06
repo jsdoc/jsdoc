@@ -266,10 +266,7 @@
 				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
 			}
  			
- 			if (tags[i].name === 'const') {
- 				tags[tags.length] = parse_tag.fromText('attribute constant');
- 			}
- 			else if (tags[i].name === 'readonly') {
+ 			if (tags[i].name === 'readonly') {
  				tags[tags.length] = parse_tag.fromText('attribute readonly');
  			}
 			else if (tags[i].name === 'name') {
@@ -315,7 +312,6 @@
 						throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].name);
 					}
 					isa = tags[i].name;
-					if (isa === 'const') { isa = 'property'; } // an exception to the namebale rule
 				}
 			}
 		}

@@ -18,7 +18,8 @@
 		'return':      'returns',
 		'member':      'memberof',
 		'overview':    'file',
-		'fileoverview':'file'
+		'fileoverview':'file',
+		'const':       'constant'
 	};
 	
 	TagDictionary.resolveSynonyms = function(name) {
@@ -74,6 +75,11 @@
 // 		}
 // 	}
 
+	// @attribute <text>
+	new TagDefinition('attribute', {
+		isExported: true
+	});
+	
 	// @desc <text>
 	new TagDefinition('desc', { // t
 		isExported: true
@@ -111,8 +117,8 @@
 		setsDocletName: true
 	});
 	
-	// @const <docletName>
-	new TagDefinition('const', {
+	// @constant <docletName>
+	new TagDefinition('constant', {
 		setsDocletIsa: true,
 		setsDocletName: true
 	});

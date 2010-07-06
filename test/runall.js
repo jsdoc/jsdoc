@@ -17,6 +17,8 @@ load(BASEDIR + '/test/tests/16_tag_return.js');
 load(BASEDIR + '/test/tests/17_tag_example.js');
 
 load(BASEDIR + '/test/tests/20_tag_file.js');
+load(BASEDIR + '/test/tests/21_tag_const.js');
+load(BASEDIR + '/test/tests/22_tag_preserve.js');
 
 // see http://visionmedia.github.com/jspec/
 JSpec.run({
