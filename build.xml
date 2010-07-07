@@ -21,17 +21,31 @@
 		</copy>
 	</target>
 	
-	<target name="jar">
-		<delete file="about.json" quiet="true"/>
-		<copy file="${build.templates}/about.json" tofile="about.json" >
-			<filterchain>
-				<replacetokens>
-					<token key="app.name" value="${app.name}" />
-					<token key="app.version" value="${app.version}" />
-					<token key="timestamp" value="${NOW}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
+	<target name="jar-clean">
+        <delete dir="build/java/build" />
+        <delete file="jsdoc.jar" />
+    </target>
+
+    <target name="jar-compile">
+        <mkdir dir="build/java/build/classes" />
+        <javac 
+         srcdir="build/java/src" destdir="build/java/build/classes"
+         classpath="build/java/classes/js.jar"
+        />
+    </target>
+
+    <target name="jar-build" depends="jar-compile">
+        <mkdir dir="build/java/build/jar" />
+        <jar destfile="build/java/build/jar/jsdoc.jar" basedir="build/java/build/classes">
+            <manifest>
+               <attribute name="Main-Class" value="Run" />
+               <attribute name="Class-Path" value="build/java/classes/js.jar" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="jar-install" depends="jar-clean, jar-build">
+    	<copy file="build/java/build/jar/jsdoc.jar" tofile="jsdoc.jar" overwrite="true" />
 	</target>
 
 </project>
