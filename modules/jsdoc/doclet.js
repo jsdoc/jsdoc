@@ -338,40 +338,35 @@
 	
 	// now that we have a doclet object we can do some final  adjustments
 	function postprocess(doclet) {
-		if ( doclet.hasTag('class') && !doclet.hasTag('constructor') ) {
+		var tags = doclet.tags;
+		
+		for (var i = 0, leni = tags.length; i < leni; i++) {
+			tagAbout = tagDictionary.lookUp(tags[i].name);
+			
+			
+		// class tags imply a constructor tag
+		if (tags[i].name === 'class' && !doclet.hasTag('constructor') ) {
 			doclet.tags[doclet.tags.length] = parse_tag.fromText('isa constructor');
 		}
 		
-		if ( doclet.hasTag('enum') ) {
+		// enums have a defualt type of number
+		if (tags[i].name === 'enum') {
 			if ( !doclet.hasTag('type') ) {
 				doclet.tags[doclet.tags.length] = parse_tag.fromText('type number');
 			}
-			
-			if ( !doclet.hasTag('readonly') && !doclet.hasTag('const') ) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromText('attribute constant');
-			}
 		}
-		
-		if ( doclet.hasTag('const') ) {
-			if ( !doclet.hasTag('isa') ) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromText('isa property');
+				
+		if ( tagAbout.setsDocletType ) {
+			if ( doclet.hasTag('type') ) {
+				DocTagConflictError('Cannot set the type of a doclet more than once.')
 			}
-			
-			if (!doclet.hasTag('readonly') && !doclet.hasTag('const')) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromText('attribute constant');
-			}
-		}
-		
-		if ( doclet.hasTag('property') ) {
-			if ( !doclet.hasTag('type') ) {
-				var propertyTag = doclet.getTag('property'),
-					types = [];
-				if (propertyTag.type) {
-					if (typeof propertyTag.type === 'string') types = [propertyTag.type];
-					else types = propertyTag.type;
+				var docletTypes = [];
+				if (tags[i].type) {
+					if (typeof tags[i].type === 'string') docletTypes = [tags[i].type];
+					else docletTypes = tags[i].type;
 					
-					for (var i = 0, leni = types.length; i < leni; i++) {
-						doclet.tags[doclet.tags.length] = parse_tag.fromText('type '+types[i]);
+					for (var i = 0, leni = docletTypes.length; i < leni; i++) {
+						doclet.tags[doclet.tags.length] = parse_tag.fromText('type '+docletTypes[i]);
 					}
 				}
 			}

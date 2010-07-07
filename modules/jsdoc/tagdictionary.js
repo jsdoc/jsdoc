@@ -119,12 +119,16 @@
 	
 	// @constant <docletName>
 	new TagDefinition('constant', {
+		canHaveType: true,
+		setsDocletType: true,
 		setsDocletIsa: true,
 		setsDocletName: true
 	});
 	
 	// @enum <docletName>
 	new TagDefinition('enum', {
+		canHaveType: true,
+		setsDocletType: true,
 		setsDocletIsa: true,
 		setsDocletName: true
 	});

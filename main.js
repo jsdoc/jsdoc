@@ -58,7 +58,6 @@
 			java.lang.System.exit(0);
 		}
 		else if (opts.test) {
-			//require('jsdoc/test').runAll();
 			load(BASEDIR+'/test/lib/jspec.js');
 			load(BASEDIR + '/test/runall.js');
 			java.lang.System.exit(0);

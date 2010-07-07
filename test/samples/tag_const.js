@@ -1,4 +1,4 @@
-/** @const */ var MY_BEER = 'stout';
+/** @const {string} */ var MY_BEER = 'stout';
 
 /**
  * My namespace's favorite kind of beer.
