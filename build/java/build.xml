@@ -3,7 +3,7 @@
 
    <target name="clean">
         <delete dir="build" />
-        <delete file="../jsdoc.jar" />
+        <delete file="../../jsdoc.jar" />
     </target>
 
     <target name="compile">
@@ -25,7 +25,7 @@
     </target>
     
     <target name="install">
-    	<copy file="build/jar/jsdoc.jar" tofile="../jsdoc.jar" overwrite="true" />
+    	<copy file="build/jar/jsdoc.jar" tofile="../../jsdoc.jar" overwrite="true" />
 	</target>
 	
     <target name="clean-install" depends="clean,compile,jar,install" />
