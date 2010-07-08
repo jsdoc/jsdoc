@@ -271,7 +271,7 @@
  			}
 			else if (tags[i].name === 'name') {
 				if (name && name !== tags[i].value) {
-					throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].value);
+					throw new DocTagConflictError('Conflicting names in documentation: "'+name+'", and "'+tags[i].value+'"');
 				}
 				taggedName = name = tags[i].value;
 			}
@@ -299,7 +299,7 @@
 				else {
 					if (tags[i].value) {
 						if (name && name !== tags[i].value) {
-							throw new DocTagConflictError('Conflicting names in documentation: '+name+', '+tags[i].value);
+							throw new DocTagConflictError('Conflicting names in documentation: "'+name+'", and "'+tags[i].value+'"');
 						}
 						name = tags[i].value;
 					}

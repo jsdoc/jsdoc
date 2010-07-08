@@ -19,7 +19,9 @@
 		'member':      'memberof',
 		'overview':    'file',
 		'fileoverview':'file',
-		'const':       'constant'
+		'const':       'constant',
+		'augments':    'extends',
+		'throws':      'exception'
 	};
 	
 	TagDictionary.resolveSynonyms = function(name) {
@@ -44,112 +46,136 @@
 		tagDefinitions['@'+title] = this;
 	}
 	
-//// default properties of all tags
+	// default properties of all tags
 	TagDefinition.prototype = {
 		isExported     : false, // this tag should appear as a top level property in the doclet?
 		setsDocletIsa  : false, // the name of this tag is used to define the doclet's isa property
 		setsDocletName : false, // this tag can be used to name the doclet
 		setsDocletAccess: false, // the name of this tag becomes the access of the doclet
 		setsDocletType : false, // the type of this tag becomes th type of the doclet
-		setsDocletDocspace     : false, // the name of this tag becomes the docspace for the doclet name, like "event:"
+		setsDocletDocspace: false, // the name of this tag becomes the docspace for the doclet name, like "event:"
 		canHaveType    : false, // this tag can have a {type}
 		canHavePname   : false, // this tag can have a parameter-type name
 		canHavePdesc   : false, // this tag can have a parameter-type desc
 		keepsWhitespace: false  // don't try to tidy up the whitespace in this tag?
 	};
-	
-//// default event handlers?
-// 	TagDefinition.prototype.onAddTagToDoclet = function(tag, doclet) {
-// 		if (this.setsDocletIsa) {
-// 			if (doclet.isa) {
-// 				throw 'Overwriting existing isa in doclet: was "'+doclet.isa+'", now "'+this.title+'"';
-// 			}
-// 			doclet.isa = this.title;
-// 		}
-// 		
-// 		if (this.setsDocletName) {
-// 			if (doclet.name) {
-// 				throw 'Overwriting existing name in doclet: was "'+doclet.name+'", now "'+this.title+'"';
-// 			}
-// 			doclet.name = this.title;
-// 		}
-// 	}
 
-	// @attribute <text>
-	new TagDefinition('attribute', {
+	/** Syntax: @attribute <text>
+		@property {TagDefinition} attribute
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('attribute', {
 		isExported: true
 	});
 	
-	// @desc <text>
-	new TagDefinition('desc', { // t
+	/** Syntax: @desc <text>
+		@property {TagDefinition} desc
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('desc', { // t
 		isExported: true
 	});
 	
-	// @isa <docletName>
-	new TagDefinition('isa', {
+	/** Syntax: @isa <text>
+		@property {TagDefinition} isa
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('isa', {
 		isExported: true
 	});
 	
-	// @name <docletName>
-	new TagDefinition('name', {
+	/** Syntax: @name <docletName>
+		@property {TagDefinition} name
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('name', {
 		isExported: true
 	});
 	
-	// @path <text>
-	new TagDefinition('path', {
+	/** Syntax: @path <text>
+		@property {TagDefinition} path
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('path', {
 		isExported: true
 	});
 	
-	// @memberof <text>
-	new TagDefinition('memberof', { //t
+	/** Syntax: @memberOf <text>
+		@property {TagDefinition} memberof
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('memberof', { //t
 		isExported: true
 	});
 	
-	// @namespace <docletName>
-	new TagDefinition('namespace', { //t
-		setsDocletIsa: true,
-		setsDocletName: true
-	});
-	
-	// @constructor <docletName>
-	new TagDefinition('constructor', { //t
-		setsDocletIsa: true,
-		setsDocletName: true
-	});
-	
-	// @constant <docletName>
-	new TagDefinition('constant', {
+	/** Syntax: @namespace <docletType> <docletName>
+		@property {TagDefinition} namespace
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('namespace', { //t
 		canHaveType: true,
 		setsDocletType: true,
 		setsDocletIsa: true,
 		setsDocletName: true
 	});
 	
-	// @enum <docletName>
-	new TagDefinition('enum', {
+	/** Syntax: @constructor <docletName>
+		@property {TagDefinition} constructor
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('constructor', { //t
+		setsDocletIsa: true,
+		setsDocletName: true
+	});
+	
+	/** Syntax: @constant|const <docletType> <docletName>
+		@property {TagDefinition} constant
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('constant', {
 		canHaveType: true,
 		setsDocletType: true,
 		setsDocletIsa: true,
 		setsDocletName: true
 	});
 	
-	// @file|overview|fileoverview <docletName>
-	new TagDefinition('file', { //t
+	/** Syntax: @enum <docletType> <docletName>
+		@property {TagDefinition} enum
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('enum', {
+		canHaveType: true,
+		setsDocletType: true,
+		setsDocletIsa: true,
+		setsDocletName: true
+	});
+	
+	/** Syntax: @file|overview|fileoverview <docletName>
+		@property {TagDefinition} file
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('file', { //t
 		setsDocletIsa: true,
 		setsDocletName: true,
 		setsDocletDocspace: true
 	});
 	
-	// @method <docletType> <docletName> <docletDesc>
-	new TagDefinition('method', { //t
+	/** Syntax: @method|function <returnType> <docletName> <docletDesc>
+		@property {TagDefinition} method
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('method', { //t
 		canHaveType: true,
 		canHavePname: true,
 		canHavePdesc: true,
 		setsDocletName: true
 	});
 	
-	// @property <docletType> <docletName> <docletDesc>
-	new TagDefinition('property', { //t
+	/** Syntax: @property <docletType> <docletName> <docletDesc>
+		@property {TagDefinition} property
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('property', { //t
 		canHaveType: true,
 		canHavePname: true,
 		canHavePdesc: true,
@@ -157,62 +183,110 @@
 		setsDocletType: true
 	});
 	
-	// @event <docletName>
-	new TagDefinition('event', {
+	/** Syntax: @event <docletName>
+		@property {TagDefinition} event
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('event', {
 		setsDocletIsa: true,
 		setsDocletName: true,
 		setsDocletDocspace: true
 	});
 	
-	// @module <docletName>
-	new TagDefinition('module', {
+	/** Syntax: @module <docletName>
+		@property {TagDefinition} module
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('module', {
 		setsDocletIsa: true,
 		setsDocletName: true,
 		setsDocletDocspace: true
 	});
 	
-	// @example <text>
-	new TagDefinition('example', {
+	/** Syntax: @example <text>
+		@property {TagDefinition} example
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('example', {
 		isExported: true,
 		keepsWhitespace: true
 	});
 	
-	// @param <type> <pname> <pdesc>
-	new TagDefinition('param', {
+	/** Syntax: @param <type> <pname> <pdesc>
+		@property {TagDefinition} param
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('param', {
 		isExported: true,
 		canHaveType: true,
 		canHavePname: true,
 		canHavePdesc: true
 	});
 	
-	// @type <type>
-	new TagDefinition('type', {
+	/** Syntax: @type <type>
+		@property {TagDefinition} type
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('type', { //t
 		isExported: true,
 		canHaveType: true
 	});
 	
-	// @returns|return <type> <text>
-	new TagDefinition('returns', {
+	/** Syntax: @returns|return <returnType> <text>
+		@property {TagDefinition} returns
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('returns', { //t
 		isExported: true,
 		canHaveType: true,
 		canHavePdesc: true
 	});
 	
-	// @private <docletAccess>
-	new TagDefinition('private', {
+	/** Syntax: @private <docletAccess>
+		@property {TagDefinition} private
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('private', {
 		setsDocletAccess: true
 	});
 	
-	// @protected <docletAccess>
-	new TagDefinition('protected', {
+	/** Syntax: @protected <docletAccess>
+		@property {TagDefinition} protected
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('protected', {
 		setsDocletAccess: true
 	});
 	
-	// @public <docletAccess>
-	new TagDefinition('public', {
+	/** Syntax: @public <docletAccess>
+		@property {TagDefinition} public
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('public', {
 		setsDocletAccess: true
 	});
 	
+	/** Syntax: @exception|throws <text>
+		@property {TagDefinition} exception
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('exception', {
+		isExported: true
+	});
 	
+	/** Syntax: @fires <text>
+		@property {TagDefinition} fires
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('fires', { //t
+		isExported: true
+	});
 	
+	/** Syntax: @extends|augments <type>
+		@property {TagDefinition} extends
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('extends', {
+		isExported: true
+	});
 })();

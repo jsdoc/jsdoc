@@ -29,7 +29,7 @@
 			});
 		});
 		
-		describe('A doclet with a2  @example tags', function() {
+		describe('A doclet with 2 @example tags', function() {
 			it('should have an `example` property with length of 2', function() {
 				var doclet = doclets[1];
 				expect(doclet).to(have_property, 'example');
