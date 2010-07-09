@@ -16,3 +16,8 @@ function Pez() {
 /** @constructor */
 Qux = function() {
 }
+
+var somevar,
+	/** @constructor */
+	Blap = function(a, b) {
+	};
