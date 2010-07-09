@@ -15,6 +15,7 @@ load(BASEDIR + '/test/tests/14_tag_member.js');
 load(BASEDIR + '/test/tests/15_tag_type.js');
 load(BASEDIR + '/test/tests/16_tag_return.js');
 load(BASEDIR + '/test/tests/17_tag_example.js');
+load(BASEDIR + '/test/tests/18_tag_class.js');
 
 load(BASEDIR + '/test/tests/20_tag_file.js');
 load(BASEDIR + '/test/tests/21_tag_const.js');

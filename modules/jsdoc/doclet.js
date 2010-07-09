@@ -259,12 +259,16 @@
 			isFile = false, // TODO this should be handled by an event handler in tag dictionary
 			tagAbout;
 		
-		for (var i = 0, leni = tags.length; i < leni; i++) {
+		for (var i = 0; i < tags.length; i++) {
 			tagAbout = tagDictionary.lookUp(tags[i].name);
 			
 			if (tagAbout.setsDocletAccess) {
 				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
 			}
+			
+			if (tagAbout.impliesTag) { // TODO allow a template string?
+ 				tags[tags.length] = parse_tag.fromText(tagAbout.impliesTag);
+ 			}
  			
  			if (tags[i].name === 'readonly') {
  				tags[tags.length] = parse_tag.fromText('attribute readonly');

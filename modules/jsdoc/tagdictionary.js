@@ -21,7 +21,8 @@
 		'fileoverview':'file',
 		'const':       'constant',
 		'augments':    'extends',
-		'throws':      'exception'
+		'throws':      'exception',
+		'class':       'classdesc'
 	};
 	
 	TagDictionary.resolveSynonyms = function(name) {
@@ -57,7 +58,8 @@
 		canHaveType    : false, // this tag can have a {type}
 		canHavePname   : false, // this tag can have a parameter-type name
 		canHavePdesc   : false, // this tag can have a parameter-type desc
-		keepsWhitespace: false  // don't try to tidy up the whitespace in this tag?
+		keepsWhitespace: false, // don't try to tidy up the whitespace in this tag?
+		impliesTag     : false  // this tag implies another tag
 	};
 
 	/** Syntax: @attribute <text>
@@ -126,6 +128,15 @@
 	 new TagDefinition('constructor', { //t
 		setsDocletIsa: true,
 		setsDocletName: true
+	});
+	
+	/** Syntax: @classdesc|class <text>
+		@property {TagDefinition} class
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('classdesc', { //t
+		isExported: true,
+		impliesTag: 'constructor'
 	});
 	
 	/** Syntax: @constant|const <docletType> <docletName>
