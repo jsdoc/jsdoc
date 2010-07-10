@@ -300,4 +300,28 @@
 	 new TagDefinition('extends', {
 		isExported: true
 	});
+	
+	/** Syntax: @author <text>
+		@property {TagDefinition} author
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('author', {
+		isExported: true
+	});
+	
+	/** Syntax: @since <text>
+		@property {TagDefinition} since
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('since', {
+		isExported: true
+	});
+	
+	/** Syntax: @version <text>
+		@property {TagDefinition} version
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('version', {
+		isExported: true
+	});
 })();
