@@ -54,7 +54,15 @@
 		}
 		else if (isa !== 'file') {
 			[memberof, name] = exports.shorten(name);
-			if (memberof) { doclet.setTag('memberof', memberof); }
+			
+			if (memberof) {
+				// memberof ends with a ~ means it's an inner symbol
+				/^(.+?)(~)?$/.test(memberof);
+				 var nameImpliesInner = (RegExp.$2 === '~');
+				 
+				if (memberof) { doclet.setTag('memberof', RegExp.$1); } // side effect: modifies RegExp.$2
+				if (nameImpliesInner) { doclet.addTag('access', 'inner'); }
+			}
 		}
 		
 		// if name doesn't already have a docspace and needs one
@@ -98,7 +106,7 @@
 			splitAt = path.lastIndexOf(splitOn),
 			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
 		
-		if ('#~'.indexOf(splitOn) > -1) { prefix = prefix + splitOn; }
+		if (splitOn === '#' || splitOn === '~') { prefix = prefix + splitOn; }
 		
 		// restore quoted strings back again
 		for (var i = 0, leni = atoms.length; i < leni; i++) {

@@ -5,6 +5,7 @@
  * demonstrating the functionality of the 
  * <a href='http://sourceforge.net/projects/jsdoc'>JSDoc</a> parser
  *
+ * @author Michael Mathews micmath@gmail.com
  * @author Gabriel Reid gab_reid@users.sourceforge.net
  * @version 0.1 
  */
@@ -15,7 +16,6 @@
  * @class This is the basic Shape class.  
  * It can be considered an abstract class, even though no such thing
  * really existing in JavaScript
- * @constructor
  * @throws {MemoryException} If there is no more memory 
  * @throws GeneralShapeException rarely (if ever)
  * @return {Shape|Coordinate} A new shape.
@@ -29,7 +29,7 @@ function Shape(){
     * function that acts as a constructor <b>must</b> be denoted with
     * the <b>&#64;constructor</b> tag in its comment.
     * @method
-    * @type String
+    * @returns {String}
     */
    this.getClassName = function(){
       return "Shape";
@@ -37,8 +37,8 @@ function Shape(){
 
    /** 
     * This is an inner method, just used here as an example
-    * @private
     * @method Shape~addReference
+    * @private
     * @since version 0.5
     * @author Sue Smart
     */
@@ -69,6 +69,7 @@ function Hexagon(sideLength) {
 
 /**
  * This is an unattached (static) function that adds two integers together.
+ * @function
  * @param {int} One The first number to add 
  * @param {int} Two The second number to add 
  * @author Gabriel Reid
@@ -81,6 +82,7 @@ function Add(One, Two){
 
 /**
  * The color of this shape
+ * @property
  * @type Color
  */
 Shape.prototype.color = null;
@@ -99,6 +101,7 @@ Shape.prototype.border = function(){return border;};
 /**
  * Get the coordinates of this shape. It is assumed that we're always talking
  * about shapes in a 2D location here.
+ * @method
  * @requires The {@link Shape} class
  * @returns A Coordinate object representing the location of this Shape
  * @type Coordinate[]
@@ -109,6 +112,7 @@ Shape.prototype.getCoords = function(){
 
 /**
  * Get the color of this shape.
+ * @method
  * @see #setColor
  * @see The <a href="http://example.com">Color</a> library.
  * @link Shape
@@ -120,6 +124,7 @@ Shape.prototype.getColor = function(){
 
 /**
  * Set the coordinates for this Shape
+ * @method
  * @param {Coordinate} coordinates The coordinates to set for this Shape
  */
 Shape.prototype.setCoords = function(coordinates){
@@ -128,6 +133,7 @@ Shape.prototype.setCoords = function(coordinates){
 
 /**
  * Set the color for this Shape
+ * @method
  * @param {Color} color The color to set for this Shape
  * @param other There is no other param, but it can still be documented if
  *              optional parameters are used
@@ -140,6 +146,7 @@ Shape.prototype.setColor = function(color){
 
 /**
  * Clone this shape
+ * @method
  * @returns A copy of this shape
  * @type Shape
  * @author Gabriel Reid

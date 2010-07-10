@@ -80,7 +80,7 @@
 	}
 	
 	/**
-		Return the value of the last tag with the given name.
+		Return the value of the first tag with the given name.
 		@method Doclet#tagValue
 		@param {String} tagName
 		@returns {*} The value of the found tag.
@@ -95,9 +95,8 @@
 		return null;
 	}
 	
-	
 	/**
-		Return the value of the last tag with the given name.
+		Set the value of the first tag with the given name.
 		@method Doclet#setTag
 		@param {String} tagName
 		@returns {*} The value of the found tag.
@@ -111,6 +110,17 @@
 			}
 		}
 
+		this.tags[this.tags.length] = parse_tag.fromText(tagName + ' ' + tagValue);
+	}
+	
+	/**
+		Add a new tag.
+		@method Doclet#addTag
+		@param {String} tagName
+		@param {String} tagValue
+		@returns {Tag} The new tag.
+	 */
+	Doclet.prototype.addTag = function(tagName, tagValue) {
 		this.tags[this.tags.length] = parse_tag.fromText(tagName + ' ' + tagValue);
 	}
 	
@@ -190,7 +200,7 @@
 				if (typeof o[tagName] === 'undefined') { // not defined
 					o[tagName] = tagValue;
 				}
-				else if (o[tagName].push) { // is an array
+				else if (typeof o[tagName].push === 'function') { // is an array
 					o[tagName].push(tagValue);
 				}
 				else { // is a string, but needs to be an array
@@ -201,7 +211,6 @@
 			
 			o.meta = this.meta;
 		}
-		
 		return o;
 	}
 	

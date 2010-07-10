@@ -15,6 +15,7 @@
 		'description': 'desc',
 		'function':    'method',
 		'variable':    'property',
+		'field':       'property',
 		'return':      'returns',
 		'member':      'memberof',
 		'overview':    'file',
@@ -22,7 +23,8 @@
 		'const':       'constant',
 		'augments':    'extends',
 		'throws':      'exception',
-		'class':       'classdesc'
+		'class':       'classdesc',
+		'this':        'thisobj'
 	};
 	
 	TagDictionary.resolveSynonyms = function(name) {
@@ -255,6 +257,16 @@
 		canHavePdesc: true
 	});
 	
+	/** Syntax: @thisobj|this <thisobjType> <text>
+		@property {TagDefinition} thisobj
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('thisobj', { //t
+		isExported: true,
+		canHaveType: true,
+		canHavePdesc: true
+	});
+	
 	/** Syntax: @access <docletAccess>
 		@property {TagDefinition} access
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
@@ -284,6 +296,14 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('readonly', {
+		setsDocletAccess: true
+	});
+	
+	/** Syntax: @inner
+		@property {TagDefinition} inner
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('inner', {
 		setsDocletAccess: true
 	});
 	
@@ -360,4 +380,21 @@
 	 new TagDefinition('deprecated', {
 		isExported: true
 	});
+	
+	/** Syntax: @requires <text>
+		@property {TagDefinition} requires
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('requires', {
+		isExported: true
+	});
+	
+	/** Syntax: @see <text>
+		@property {TagDefinition} see
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('see', {
+		isExported: true
+	});
+	
 })();

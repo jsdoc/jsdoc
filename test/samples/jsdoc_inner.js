@@ -17,7 +17,7 @@ function Shape(){
     * function that acts as a constructor <b>must</b> be denoted with
     * the <b>&#64;constructor</b> tag in its comment.
     * @method
-    * @type String
+    * @returns {String}
     */
    this.getClassName = function(){
       return "Shape";
@@ -25,8 +25,8 @@ function Shape(){
 
    /** 
     * This is an inner method, just used here as an example
-    * @private
     * @method Shape~addReference
+    * @private
     * @since version 0.5
     * @author Sue Smart
     */
