@@ -4,7 +4,7 @@ load(BASEDIR + '/test/tests/03_jsdoc_parser.js');
 load(BASEDIR + '/test/tests/04_jsdoc_docset.js');
 load(BASEDIR + '/test/tests/05_jsdoc_doclet.js');
 load(BASEDIR + '/test/tests/06_jsdoc_tag.js');
-
+load(BASEDIR + '/test/tests/07_tag_param.js');
 load(BASEDIR + '/test/tests/08_tag_name.js');
 load(BASEDIR + '/test/tests/09_tag_desc.js');
 load(BASEDIR + '/test/tests/10_tag_constructor.js');

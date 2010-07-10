@@ -144,7 +144,7 @@
 				source = fs.read(sourceFiles[i], encoding);
 			}
 			catch(e) {
-				print('FILE READ ERROR: ' + e);
+				print('FILE READ ERROR: in module:jsdoc/parser.parseFiles: ' + e);
 				continue;
 			}
 			

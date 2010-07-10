@@ -32,12 +32,12 @@
 			});
 		});
 		
-		describe('A doclet with a type tag whose value contains inner braces like "{number|function(string:a, string:b){}:number}"', function() {
+		describe('A doclet with a type tag whose value contains inner braces like "{{myNum: number, myObject}|function(string:a, string:b){}:number}"', function() {
 			it('should have an `type` property set to those types, regardless of the inner braces', function() {
 				var doclet = doclets[4];
 				expect(doclet).to(have_property, 'type');
 
-				expect(doclet.type).to(eql, ['number', 'function(string:a, string:b){}:number']);
+				expect(doclet.type).to(eql, ['{myNum: number, myObject}', 'function(string:a, string:b){}:number']);
 			});
 		});
 	});
@@ -61,7 +61,7 @@
 	
 	/**
 		@property bar.bah
-		@type {number|function(string:a, string:b){}:number}
+		@type {{myNum: number, myObject}|function(string:a, string:b){}:number}
 	 */
 	
 })();

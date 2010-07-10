@@ -83,7 +83,7 @@
 			if (tagAbout.canHavePname && tagAbout.canHavePdesc) { // both
 				if (typeof this.value === 'string') {
 					var [pname, pdesc, poptional, pdefault] = parsePname(this.value);
-					this.pname = pname;
+					if (pname && pname !== '-') this.pname = pname;
 					this.pdesc = pdesc;
 					if (typeof poptional !== 'undefined') this.poptional = poptional;
 					this.pdefault = pdefault;
