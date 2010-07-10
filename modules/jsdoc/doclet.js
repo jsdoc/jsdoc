@@ -271,8 +271,7 @@
  			}
  			
  			if (tagAbout.setsDocletDesc) {
- 				tags[tags.length] = parse_tag.fromText('desc '+tags[i].desc);
- print('>>> tag desc is '+tags[i].toSource());
+ 				tags[tags.length] = parse_tag.fromText('desc '+tags[i].value);
  			}
  			
  			if (tags[i].name === 'name') {

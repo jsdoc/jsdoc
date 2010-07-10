@@ -86,9 +86,9 @@
 		var atoms = [],
 			cursor = 0;
 		path = path.replace(/(".+?")/g, function($) {
-			$ = $.slice(1, -1);
+			//$ = $.slice(1, -1); // trim quotes?
 
-			var token = '@' + atoms.length + '@';
+			var token = '@{' + atoms.length + '}@';
 			atoms.push($);
 			return token;
 		});
@@ -98,16 +98,12 @@
 			splitAt = path.lastIndexOf(splitOn),
 			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
 		
-		if (splitOn === '#' || splitOn === '~') { prefix = prefix + splitOn; }
+		if ('#~'.indexOf(splitOn) > -1) { prefix = prefix + splitOn; }
 		
 		// restore quoted strings back again
 		for (var i = 0, leni = atoms.length; i < leni; i++) {
-			prefix = prefix.replace('@'+i+'@', atoms[i]);
-			shortname = shortname.replace('@'+i+'@', atoms[i]);
-			
-			// remove quotes from shortnames
-			///^"(.+)"$/.test(shortname);
-			//if (RegExp.$1) { shortname = RegExp.$1; }
+			prefix = prefix.replace('@{'+i+'}@', atoms[i]);
+			shortname = shortname.replace('@{'+i+'}@', atoms[i]);
 		}
 		
 		return [prefix, shortname];

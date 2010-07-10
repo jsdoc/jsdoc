@@ -344,4 +344,20 @@
 	 new TagDefinition('version', {
 		isExported: true
 	});
+	
+	/** Syntax: @category <text>
+		@property {TagDefinition} category
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('category', {
+		isExported: true
+	});
+	
+	/** Syntax: @deprecated <text>
+		@property {TagDefinition} deprecated
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('deprecated', {
+		isExported: true
+	});
 })();

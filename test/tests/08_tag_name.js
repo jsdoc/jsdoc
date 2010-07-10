@@ -34,7 +34,7 @@
   			it('should have an `name` property set to the last entire quoted segment of that string', function() {
   				var doclet = doclets[2].toObject();
   				expect(doclet).to(have_property, 'name');
-  				expect(doclet.name).to(eql, 'and.don\'t.forget#Po!');
+  				expect(doclet.name).to(eql, '"and.don\'t.forget#Po!"');
   			});
   		});
   		
