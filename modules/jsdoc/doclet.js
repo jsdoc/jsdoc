@@ -263,12 +263,16 @@
 			tagAbout = tagDictionary.lookUp(tags[i].name);
 			
 			if (tagAbout.setsDocletAccess) {
-print('>>>> set access to '+tags[i].name);
 				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
 			}
 			
 			if (tagAbout.impliesTag) { // TODO allow a template string?
  				tags[tags.length] = parse_tag.fromText(tagAbout.impliesTag);
+ 			}
+ 			
+ 			if (tagAbout.setsDocletDesc) {
+ 				tags[tags.length] = parse_tag.fromText('desc '+tags[i].desc);
+ print('>>> tag desc is '+tags[i].toSource());
  			}
  			
  			if (tags[i].name === 'name') {

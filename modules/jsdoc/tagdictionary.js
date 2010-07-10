@@ -51,6 +51,7 @@
 	TagDefinition.prototype = {
 		isExported     : false, // this tag should appear as a top level property in the doclet?
 		setsDocletIsa  : false, // the name of this tag is used to define the doclet's isa property
+		setsDocletDesc : false,
 		setsDocletName : false, // this tag can be used to name the doclet
 		setsDocletAccess: false, // the name of this tag becomes the access of the doclet
 		setsDocletType : false, // the type of this tag becomes th type of the doclet
@@ -167,6 +168,7 @@
 	 */
 	 new TagDefinition('file', { //t
 		setsDocletIsa: true,
+		setsDocletDesc: true,
 		setsDocletName: true,
 		setsDocletDocspace: true
 	});
