@@ -8,6 +8,13 @@
 	doclets = exports.doclets = [];
 	
 	/** @method */
+	doclets.addDoclet = function(doclet) {
+		if (!doclet.hasTag('ignore')) {
+			this.push(doclet);
+		}
+	}
+	
+	/** @method */
 	doclets.getDocsByPath = function(docName) {
 		var foundDocs = [],
 			i = doclets.length;

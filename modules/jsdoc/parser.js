@@ -23,7 +23,7 @@
  						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
 
  						if ( thisDoclet.hasTag('name') && thisDoclet.hasTag('isa') ) {
- 							doclets.push(thisDoclet);
+ 							doclets.addDoclet(thisDoclet);
  							if (thisDoclet.tagValue('isa') === 'module') {
  								name.setCurrentModule( thisDoclet.tagValue('path') );
  							}
@@ -46,7 +46,7 @@
 					if (thisDoclet.hasTag('isa') && !thisDocletName) {
 						thisDoclet.setName('' + node.name);
 
-						doclets.push(thisDoclet);
+						doclets.addDoclet(thisDoclet);
 					}
 					
 					name.refs.push([node, thisDoclet]);
@@ -72,7 +72,7 @@
 				if (thisDoclet.hasTag('isa') && !thisDocletName) {
 					nodeName = name.resolveThis( nodeName, node, thisDoclet );
 					thisDoclet.setName(nodeName);
-					doclets.push(thisDoclet);
+					doclets.addDoclet(thisDoclet);
 				}
 				name.refs.push([node.right, thisDoclet]);
 			}
@@ -97,7 +97,7 @@
 						if (thisDoclet.hasTag('isa') && !thisDocletName ) {
 							thisDocletName = n.target.string;
 							thisDoclet.setName(thisDocletName);
-							doclets.push(thisDoclet);
+							doclets.addDoclet(thisDoclet);
 						}
 					}
 				}
