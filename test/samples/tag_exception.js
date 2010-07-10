@@ -1,12 +1,12 @@
 /**
  * @function divide
- * @throws divideByZeroError
+ * @throws {divideByZeroError} Denominator param cannot be zero.
  */
 function divide(a, b) {}
 
 /**
  * @function read
- * @throws fileNotFoundError
- * @throws fileTooLargeError
+ * @throws {fileNotFoundError}
+ * @throws {fileTooLargeError}
  */
 function read(filepath) {}

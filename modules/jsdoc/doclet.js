@@ -168,7 +168,7 @@
 			if (tag.pname) {
 				tagValue.name = tag.pname; // the parameter name
 			}
-			if (tag.type && tag.type.length) {
+			if (tag.type && tag.type.length && tag.type[0] !== '') {
 				tagValue.type = tag.type;
 			}
 			if (tag.pdesc) { tagValue.desc = tag.pdesc; }
@@ -263,6 +263,7 @@
 			tagAbout = tagDictionary.lookUp(tags[i].name);
 			
 			if (tagAbout.setsDocletAccess) {
+print('>>>> set access to '+tags[i].name);
 				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
 			}
 			
@@ -270,10 +271,7 @@
  				tags[tags.length] = parse_tag.fromText(tagAbout.impliesTag);
  			}
  			
- 			if (tags[i].name === 'readonly') {
- 				tags[tags.length] = parse_tag.fromText('attribute readonly');
- 			}
-			else if (tags[i].name === 'name') {
+ 			if (tags[i].name === 'name') {
 				if (name && name !== tags[i].value) {
 					throw new DocTagConflictError('Conflicting names in documentation: "'+name+'", and "'+tags[i].value+'"');
 				}

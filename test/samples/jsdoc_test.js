@@ -16,7 +16,7 @@
  * It can be considered an abstract class, even though no such thing
  * really existing in JavaScript
  * @constructor
- * @throws MemoryException if there is no more memory 
+ * @throws {MemoryException} If there is no more memory 
  * @throws GeneralShapeException rarely (if ever)
  * @return {Shape|Coordinate} A new shape.
  */
@@ -28,6 +28,7 @@ function Shape(){
     * For inner functions like this to be picked up by the parser, the
     * function that acts as a constructor <b>must</b> be denoted with
     * the <b>&#64;constructor</b> tag in its comment.
+    * @method
     * @type String
     */
    this.getClassName = function(){
@@ -36,6 +37,8 @@ function Shape(){
 
    /** 
     * This is an inner method, just used here as an example
+    * @private
+    * @method Shape-addReference
     * @since version 0.5
     * @author Sue Smart
     */

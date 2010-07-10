@@ -22,10 +22,17 @@
 			});
 		});
 		
-		describe('The value of the `exception` property', function() {
-			it('should be equal to the given tag value', function() {
+		describe('The type of the `exception` property', function() {
+			it('should be equal to the type of the given tag value', function() {
 				var doclet = doclets[0];
-				expect(doclet.exception).to(eql, 'divideByZeroError');
+				expect(doclet.exception.type).to(eql, ['divideByZeroError']);
+			});
+		});
+		
+		describe('The value of the `exception` property', function() {
+			it('should be equal to the description of the given tag value', function() {
+				var doclet = doclets[0];
+				expect(doclet.exception.desc).to(eql, 'Denominator param cannot be zero.');
 			});
 		});
 		

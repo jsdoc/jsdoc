@@ -71,7 +71,7 @@
 		if (name) doclet.setTag('name', name);
 		
 		if (memberof && name.indexOf(memberof) !== 0) {
-			path = memberof + (/#$/.test(memberof)? '' : '.') + ns + name;
+			path = memberof + (/[#~]$/.test(memberof)? '' : '.') + ns + name;
 		}
 		
 		if (path) {
@@ -93,12 +93,12 @@
 			return token;
 		});
 
-		var shortname = path.split(/([#.-])/).pop(),
+		var shortname = path.split(/([#.~])/).pop(),
 			splitOn = RegExp.$1,
 			splitAt = path.lastIndexOf(splitOn),
 			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
 		
-		if (splitOn === '#') { prefix = prefix + splitOn; }
+		if (splitOn === '#' || splitOn === '~') { prefix = prefix + splitOn; }
 		
 		// restore quoted strings back again
 		for (var i = 0, leni = atoms.length; i < leni; i++) {

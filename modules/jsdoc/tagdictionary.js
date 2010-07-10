@@ -253,7 +253,15 @@
 		canHavePdesc: true
 	});
 	
-	/** Syntax: @private <docletAccess>
+	/** Syntax: @access <docletAccess>
+		@property {TagDefinition} access
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('access', {
+		isExported: true
+	});
+	
+	/** Syntax: @private
 		@property {TagDefinition} private
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
@@ -261,7 +269,7 @@
 		setsDocletAccess: true
 	});
 	
-	/** Syntax: @protected <docletAccess>
+	/** Syntax: @protected
 		@property {TagDefinition} protected
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
@@ -269,7 +277,15 @@
 		setsDocletAccess: true
 	});
 	
-	/** Syntax: @public <docletAccess>
+	/** Syntax: @readonly
+		@property {TagDefinition} readonly
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('readonly', {
+		setsDocletAccess: true
+	});
+	
+	/** Syntax: @public
 		@property {TagDefinition} public
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
@@ -282,7 +298,9 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('exception', {
-		isExported: true
+		isExported: true,
+		canHaveType: true,
+		canHavePdesc: true
 	});
 	
 	/** Syntax: @fires <text>
