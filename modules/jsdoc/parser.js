@@ -34,23 +34,35 @@
  		}
  		
 		// like function foo() {}
-		if (node.type == Token.FUNCTION) {
+		if (node.type == Token.FUNCTION && String(node.name) !== '') {
+			commentSrc = (node.jsDoc)? String(node.jsDoc) : '';
 
-			if (node.jsDoc) {
-				commentSrc = '' + node.jsDoc;
+			if (commentSrc) {
+				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
+				thisDocletName = thisDoclet.tagValue('path');
 
-				if (commentSrc) {
-					thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
-					thisDocletName = thisDoclet.tagValue('path');
-
-					if (thisDoclet.hasTag('isa') && !thisDocletName) {
-						thisDoclet.setName('' + node.name);
-
-						doclets.addDoclet(thisDoclet);
-					}
-					
-					name.refs.push([node, thisDoclet]);
+				if (!thisDoclet.hasTag('isa')) { // guess isa from the source code
+					thisDoclet.addTag('isa', 'method')
 				}
+				
+				if (!thisDocletName) { // guess name from the source code
+					thisDocletName = name.resolveInner(node.name, node, thisDoclet);
+					thisDoclet.setName(thisDocletName);
+
+					doclets.addDoclet(thisDoclet);
+				}
+				name.refs.push([node, thisDoclet]);
+			}
+			else { // an uncommented function?
+				// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
+				thisDoclet = doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
+
+				nodeName = name.resolveThis(node.name, node, thisDoclet);
+				thisDoclet.setName(nodeName);
+				name.refs.push([
+					node, 
+					thisDoclet
+				]);
 			}
 			
 			return true;
@@ -58,50 +70,93 @@
 		
 		// like foo = function(){} or foo: function(){}
 		if (node.type === Token.ASSIGN || node.type === Token.COLON) {
+
 			var nodeName = nodeToString(node.left),
 				nodeKind = '';
 			commentSrc = node.jsDoc || node.left.jsDoc;
 
 			if (commentSrc) {
 				commentSrc = '' + commentSrc;
-
 				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagValue('name');
 				nodeKind = thisDoclet.tagValue('isa');
 
-				if (thisDoclet.hasTag('isa') && !thisDocletName) {
-					nodeName = name.resolveThis( nodeName, node, thisDoclet );
+				if (!thisDoclet.hasTag('isa')) { // guess isa from the source code
+					if (node.right.type == Token.FUNCTION) { // assume it's a method
+						thisDoclet.addTag('isa', 'method');
+					}
+					else {
+						thisDoclet.addTag('isa', 'property');
+					}
+				}
+
+				if (!thisDocletName) { // guess name from the source code
+					nodeName = name.resolveThis(nodeName, node, thisDoclet);
+
 					thisDoclet.setName(nodeName);
 					doclets.addDoclet(thisDoclet);
 				}
 				name.refs.push([node.right, thisDoclet]);
 			}
-			
+			else { // an uncommented objlit or anonymous function?
+				
+				// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
+				thisDoclet = doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
+				nodeName = name.resolveThis(nodeName, node, thisDoclet);
+				
+				thisDoclet.setName(nodeName);
+				name.refs.push([
+					node.right, 
+					thisDoclet
+				]);
+			}
 			return true;
 		}
 		
 		// like var foo = function(){} or var bar = {}
-		if (node.type == Token.VAR || node.type == Token.LET  || node.type == Token.CONST) {
+		if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
 			var counter = 0,
 				nodeKind;
-			
+
 			if (node.variables) for each (var n in node.variables.toArray()) {
 
-				if (n.target.type === Token.NAME && n.initializer) {
+				if (n.target.type === Token.NAME) {
+					var val = n.initializer;
+					
 					commentSrc = (counter++ === 0 && !n.jsDoc)? node.jsDoc : n.jsDoc;
 					if (commentSrc) {
 						thisDoclet = doclet.makeDoclet('' + commentSrc, node, currentSourceName);
 						thisDocletName = thisDoclet.tagValue('path');
 						nodeKind = thisDoclet.tagValue('isa');
-						
-						if (thisDoclet.hasTag('isa') && !thisDocletName ) {
-							thisDocletName = n.target.string;
+						if (!thisDoclet.hasTag('isa') && val) { // guess isa from the source code
+							if (val.type == Token.FUNCTION) {
+								thisDoclet.addTag('isa', 'method');
+							}
+							else {
+								thisDoclet.addTag('isa', 'property');
+							}
+						}
+				
+						if (!thisDocletName ) { // guess name from the source code
+							//thisDocletName = n.target.string;
+							thisDocletName = name.resolveInner(n.target.string, node, thisDoclet);
 							thisDoclet.setName(thisDocletName);
 							doclets.addDoclet(thisDoclet);
 						}
+						
+						if (val) name.refs.push([val, thisDoclet]);
+					}
+					else { // an uncommented objlit or anonymous function?
+						var nodeName = nodeToString(n.target);
+						// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
+						thisDoclet = doclet.makeDoclet('[[undocumented]]', n.target, currentSourceName);
+						nodeName = name.resolveInner(nodeName, n.target, thisDoclet);
+						thisDoclet.setName(nodeName);
+						
+						if (val) name.refs.push([val, thisDoclet]);
 					}
 				}
-				name.refs.push([n.initializer, thisDoclet]);
+				
 			}
 			return true;
 		}

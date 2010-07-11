@@ -50,7 +50,7 @@
 		postprocess(doclet);
 		
 		name.resolve(doclet);
-		
+
 		return doclet
 	}
 	
@@ -212,6 +212,20 @@
 			o.meta = this.meta;
 		}
 		return o;
+	}
+	
+	Doclet.prototype.isInner = function() {
+		var access = this.tagValue('access');
+
+		if (!access) {
+			return false;
+		}
+		else if (typeof access === 'string') {
+			return (access === 'inner');
+		}
+		else {
+			return (access.indexOf('inner') > -1);
+		}
 	}
 	
 	/**

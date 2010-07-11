@@ -24,7 +24,9 @@
 		'augments':    'extends',
 		'throws':      'exception',
 		'class':       'classdesc',
-		'this':        'thisobj'
+		'this':        'thisobj',
+		'preserve':    'ignore',
+		'license':     'ignore'
 	};
 	
 	TagDictionary.resolveSynonyms = function(name) {

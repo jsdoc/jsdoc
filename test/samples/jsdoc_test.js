@@ -37,7 +37,6 @@ function Shape(){
 
    /** 
     * This is an inner method, just used here as an example
-    * @method Shape~addReference
     * @private
     * @since version 0.5
     * @author Sue Smart

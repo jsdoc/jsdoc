@@ -31,8 +31,6 @@
 			path,
 			shortname,
 			prefix;
-			//,
-			//supportedNamespaces = ['module', 'event', 'file'];
 
 		// only keep the first word of the first tagged name
 		name = name.split(/\s+/g)[0];
@@ -121,34 +119,44 @@
 		Resolve how to document the `this.` portion of a symbol name.
 	 */
 	exports.resolveThis = function(name, node, doclet) {
+
 		var enclosing,
 			enclosingDoc,
 			memberof = (doclet.tagValue('memberof') || '').replace(/\.prototype\.?/g, '#');
 
 		if (node.parent && node.parent.type === Token.OBJECTLIT) {
 			if (enclosing = node.parent) {
-				enclosingDoc = exports.docFromNode(enclosing) || {};
-				memberof = (enclosingDoc.tagValue('path') || '').replace(/\.prototype\.?/g, '#');
-			
-				if (!memberof) {
-					memberof = enclosingDoc.path;
-					memberof = memberof || '[[anonymousObject]]';
-				}
-
-				if (memberof) {
-					name = memberof + (memberof[memberof.length-1] === '#'?'':'.') + name;
+				enclosingDoc = exports.docFromNode(enclosing);
+				if (enclosingDoc) {
+					memberof = (enclosingDoc.tagValue('path') || '').replace(/\.prototype\.?/g, '#');
+				
+					if (!memberof) {
+						memberof = enclosingDoc.path;
+						memberof = memberof || '[[anonymousObject]]';
+					}
+	
+					if (memberof) {
+						name = memberof + (memberof[memberof.length-1] === '#'?'':'.') + name;
+					}
 				}
 			}
 		}
-		else if (name.indexOf('this.') === 0) { // assume `this` refers to innermost constructor
+		else if (name.indexOf('this.') === 0) {
 			if (!memberof || memberof === 'this') {
 				enclosing = node.getEnclosingFunction()
 				
 				enclosingDoc = exports.docFromNode(enclosing);
-				memberof = enclosingDoc? enclosingDoc.tagValue('path') : '';
-
+				
+				if (enclosingDoc) {
+					if (enclosingDoc.isInner()) memberof = ''; // inner functions have `this` scope of global
+					else memberof = enclosingDoc.tagValue('path');
+				}
+				else {
+					memberof = '';
+				}
+				
 				if (enclosing && !memberof) {
-					memberof = ''; //[[anonymousFunction]]
+					memberof = ''; // [[anonymousFunction]]
 					name = name.slice(5); // remove `this.`
 				}
 				else if (!enclosing) {
@@ -156,20 +164,42 @@
 				}
 
 				if (memberof || !enclosing) {
-					// `this` refers to nearest instance in the name path
+					// `this` refers to nearest non-inner member in the name path
 					if (enclosingDoc && enclosingDoc.tagValue('isa') !== 'constructor') {
-						var parts = memberof.split('#');
-						parts.pop();
-						memberof = parts.join('#');
+						var parts = memberof.split(/[#~.]/);
+						var suffix = parts.pop();
+						memberof = memberof.slice(0, -suffix.length); // remove suffix from memberof
 					}
 					
-					name = memberof + (memberof? '#':'') + name.slice(5); // replace `this.` with memberof
+					var joiner = (memberof === '')? '' : (/[#~.]$/.test(memberof))? '' : '#'; 
+					name = memberof + joiner + name.slice(5); // replace `this.` with memberof
 				}
 			}
 			else {
-				name = name.slice(5);
+				name = name.slice(5); // this means global?
 			}
 		}
+		return name;
+	}
+	
+	var G = this;
+	/**
+		Resolve how to document the name of an inner symbol.
+	 */
+	exports.resolveInner = function(name, node, doclet) {
+		var enclosing = node.getEnclosingFunction(),
+			enclosingDoc = exports.docFromNode(enclosing);
+		
+		if (enclosingDoc) {
+			memberof = enclosingDoc.tagValue('path');
+		}
+		else {
+			memberof = (enclosing && enclosing.name == '')? '[[anonymous]]' : '';
+		}
+		if (memberof) {
+			name = memberof + '~' + name;
+		}
+		
 		return name;
 	}
 
@@ -187,7 +217,7 @@
 				return exports.refs[i][1];
 			}
 		}
-	
+		
 		return null;
 	}
 	// tuples, like [ [noderef, doclet], [noderef, doclet] ]
