@@ -75,7 +75,10 @@
 				print('Validation: ' + validation.toSource());
 			}
 			
-			if (opts.template) {
+			if (!opts.destination || opts.destination.indexOf('stdout') === 0) {
+				print( jsdoc.parser.result.toString(opts.destination) );
+			}
+			else if (opts.template) {
 				try {
 					load(BASEDIR+'/templates/'+opts.template+'/publish.js');
 				}
@@ -84,9 +87,6 @@
 				}
 				
 				publish(jsdoc.parser.result.toObject(), {});
-			}
-			else {
-				print( jsdoc.parser.result.toString(opts.destination) );
 			}
 		}
 		

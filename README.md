@@ -25,7 +25,7 @@ Usage
 This example assumes your working directory is the JSDoc project
 base directory...
 
-    $ java -jar jsdoc.jar yourSourceCode.js
+    $ java -jar jsdoc.jar -d stdout yourSourceCode.js
 
 For help regarding the supported commandline options use -h.
 

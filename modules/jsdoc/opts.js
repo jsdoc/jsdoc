@@ -21,7 +21,7 @@
 	argsParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
 	argsParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: your system default encoding');
 	argsParser.addOption('T', 'test',        false, 'Run unit tests and quit.');
-	argsParser.addOption('d', 'destination', true,  'The path to output folder. Default: ./jsdocs');
+	argsParser.addOption('d', 'destination', true,  'The path to the output folder. Use "stdout.json" or "stdout.xml" to dump data to the console. Default: ./jsdocs');
 	argsParser.addOption('h', 'help',        false, 'Print help message and quit.');
 	argsParser.addOption('V', 'validate',    false, 'Validate the results produced by parsing the source code.');
 	

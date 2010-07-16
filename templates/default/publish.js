@@ -7,7 +7,7 @@ publish = function(docs, opts) {
 		$.desc = linkify($.desc);
 		$.path = "<a name='"+symbolnameToLinkname($.path)+"'>" + $.path + '</a>';
 	});
-	var template = readFile(BASEDIR + '/templates/vanilla/tmpl/index.html');	
+	var template = readFile(BASEDIR + '/templates/default/tmpl/index.html');	
 	print(Mustache.to_html(template, docs));
 }
 
