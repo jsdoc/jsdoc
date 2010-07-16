@@ -75,8 +75,22 @@
 				print('Validation: ' + validation.toSource());
 			}
 			
-			print( jsdoc.parser.result.toString(opts.destination) );
+			if (opts.template) {
+				try {
+					load(BASEDIR+'/templates/'+opts.template+'/publish.js');
+				}
+				catch (e) {
+					print('Cannot load the specified template: templates/'+opts.template+'/publish.js: '+e);
+				}
+				
+				publish(jsdoc.parser.result.toObject(), {});
+			}
+			else {
+				print( jsdoc.parser.result.toString(opts.destination) );
+			}
 		}
+		
+		
 		
 	})();
 ////

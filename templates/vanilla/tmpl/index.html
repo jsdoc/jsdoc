@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JSDoc Index</title>
+	
+	<script type="text/javascript">
+		route = function() {
+			var url, q = location.search.slice(1);			
+			if ( /^doc=(.+)/.test(q) ) {
+				q = decodeURIComponent(RegExp.$1);
+				if ( (url = route.resolve(q)) ) { window.location = url; }
+			}
+		}
+		
+		route.resolve = function(q) {
+			if ( route.map.hasOwnProperty(q) ) { return route.map[q]; }
+		}
+		
+		route.map = {
+			/* docpath => url */
+		}
+		
+		route();
+	</script>
+</head>
+
+<body>
+
+<h1>All Symbols</h1>
+
+<ul>
+{{#doc}}
+	<li class="symbol">{<i>{{isa}}</i>} {{{path}}} - {{{desc}}}</li>
+{{/doc}}
+</ul>
+
+</body>
+</html>
