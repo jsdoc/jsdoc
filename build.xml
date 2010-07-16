@@ -9,8 +9,8 @@
 	</tstamp>
 	
 	<target name="about">
-		<delete file="about.json" quiet="true"/>
-		<copy file="${build.templates}/about.json" tofile="about.json" >
+		<delete file="package.json" quiet="true"/>
+		<copy file="${build.templates}/package.json" tofile="package.json" >
 			<filterchain>
 				<replacetokens>
 					<token key="app.name" value="${app.name}" />

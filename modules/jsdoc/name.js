@@ -77,8 +77,9 @@
 		if (name) doclet.setTag('name', name);
 		
 		if (memberof && name.indexOf(memberof) !== 0) {
-			path = memberof + (/[#~]$/.test(memberof)? '' : '.') + ns + name;
+			path = memberof + (/[#~]$/.test(memberof)? '' : '.') + ns  + name;
 		}
+		else if (ns) { path = ns + name };
 		
 		if (path) {
 			doclet.setTag('path', path);

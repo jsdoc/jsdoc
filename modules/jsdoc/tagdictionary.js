@@ -53,18 +53,18 @@
 	
 	// default properties of all tags
 	TagDefinition.prototype = {
-		isExported     : false, // this tag should appear as a top level property in the doclet?
-		setsDocletIsa  : false, // the name of this tag is used to define the doclet's isa property
-		setsDocletDesc : false,
-		setsDocletName : false, // this tag can be used to name the doclet
-		setsDocletAccess: false, // the name of this tag becomes the access of the doclet
-		setsDocletType : false, // the type of this tag becomes th type of the doclet
+		isExported        : false, // this tag should appear as a top level property in the doclet?
+		setsDocletIsa     : false, // the name of this tag is used to define the doclet's isa property
+		setsDocletDesc    : false,
+		setsDocletName    : false, // this tag can be used to name the doclet
+		setsDocletAccess  : false, // the name of this tag becomes the access of the doclet
+		setsDocletType    : false, // the type of this tag becomes th type of the doclet
 		setsDocletDocspace: false, // the name of this tag becomes the docspace for the doclet name, like "event:"
-		canHaveType    : false, // this tag can have a {type}
-		canHavePname   : false, // this tag can have a parameter-type name
-		canHavePdesc   : false, // this tag can have a parameter-type desc
-		keepsWhitespace: false, // don't try to tidy up the whitespace in this tag?
-		impliesTag     : false  // this tag implies another tag
+		canHaveType       : false, // this tag can have a {type}
+		canHavePname      : false, // this tag can have a parameter-type name
+		canHavePdesc      : false, // this tag can have a parameter-type desc
+		keepsWhitespace   : false, // don't try to tidy up the whitespace in this tag?
+		impliesTag        : false  // this tag implies another tag
 	};
 
 	/** Syntax: @attribute <text>
@@ -367,11 +367,11 @@
 		isExported: true
 	});
 	
-	/** Syntax: @category <text>
-		@property {TagDefinition} category
+	/** Syntax: @api <text>
+		@property {TagDefinition} api
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
-	 new TagDefinition('category', {
+	 new TagDefinition('api', {
 		isExported: true
 	});
 	
@@ -398,5 +398,4 @@
 	 new TagDefinition('see', {
 		isExported: true
 	});
-	
 })();

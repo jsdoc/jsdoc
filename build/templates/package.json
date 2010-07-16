@@ -1,0 +1,27 @@
+{
+	"name": "@app.name@",
+	"version": "@app.version@",
+	"timestamp": "@timestamp@",
+	"description": "An automatic documentation generator for javascript",
+	"keywords": [ "documentation", "javascript" ],
+	"licenses": [
+		{
+			"type": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0"
+		}
+	],
+	"repositories": [
+		{
+			"type": "git",
+			"url": "http://github.com/micmath/JSDoc"
+		}
+	],
+	"bugs": "http://jsdoc.lighthouseapp.com/",
+	"maintainers": [
+		{
+			"name": "Michael Mathews",
+			"email": "micmath@gmail.com",
+			"web": "http://micmath.ws"
+		}
+    ]
+}

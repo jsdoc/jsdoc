@@ -9,24 +9,27 @@ Install
 
 To build the jar file that runs JSDoc 3 use the ant build tool.
 
-    $ cd ./java
-    $ ant
+    $ cd JSDoc
+    $ ant jar-install
 
 This will create a file name `jsdoc.jar` in the project base
 directory.
 
 To test that the installed app is working, execute the following:
 
-	$ cd ..
-    $ java -jar jsdoc.jar -T
+	$ java -jar jsdoc.jar -T
 
 Usage
 -----
 
-This example assumes your working directory is the JSDoc 3 project
+This example assumes your working directory is the JSDoc project
 base directory...
 
-    $ java -jar jsdoc.jar -d jsdoc.json myscript.js
+    $ java -jar jsdoc.jar yourSourceCode.js
+
+For help regarding the supported commandline options use -h.
+
+	$ java -jar jsdoc.jar -h
 
 See
 ---

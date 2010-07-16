@@ -1,6 +1,0 @@
-{
-	"app": {
-		"name": "@app.name@",
-		"version": "@app.version@+@timestamp@"
-	}
-}

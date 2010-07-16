@@ -305,7 +305,7 @@
 			}
 			else if (tags[i].name === 'isa') {
 				if (isa && isa !== tags[i].value) {
-					throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].value);
+					throw new DocTagConflictError('Symbol has too many isas, cannot be both: ' + isa + ' and ' + tags[i].value);
 				}
 				taggedIsa = isa = tags[i].value;
 			}
@@ -337,7 +337,7 @@
 					}
 				
 					if (isa && isa !== tags[i].name) {
-						throw new DocTagConflictError('Symbol has too many denominations, cannot be both: ' + isa + ' and ' + tags[i].name);
+						throw new DocTagConflictError('Symbol has too many isas, cannot be both: ' + isa + ' and ' + tags[i].name);
 					}
 					isa = tags[i].name;
 				}
