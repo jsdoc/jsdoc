@@ -16,13 +16,13 @@ this.globalprop = {
 })(mylib);
 
 var go = {
-	/** @variable */
+	/** @var */
 	gp: true
 };
 
-/** @variable */
+/** @var */
 var foo,
-	/** @variable */
+	/** @var */
 	bar;
 
 

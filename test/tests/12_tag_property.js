@@ -69,7 +69,7 @@
 			});
 		});
 		
-		describe('A doclet with a named @variable tag and a description', function() {
+		describe('A doclet with a named @var tag and a description', function() {
 			it('should have an `isa` property set to "property"', function() {
 				var doclet = doclets[5].toObject();
 				expect(doclet).to(have_property, 'isa');
@@ -127,7 +127,7 @@
  		@property {string} zip 
  	 */
  	
- 	/** @variable zub - The description here. */
+ 	/** @var zub - The description here. */
  	
  	/** @property {Function} */
  	onShow = callbacks[0];

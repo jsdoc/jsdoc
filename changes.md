@@ -30,3 +30,10 @@ uninterpretted, atomic string in the namepath.
 		@name chat."#channel".open
 	 */
 	chat['#channel'].open = true;
+
+Support For E4X
+---
+
+[new] As a benefit of using Rhino's own JavaScript parser, JSDoc has inherited
+the ability to parse any source code that Rhino can parse, including the latest
+syntax patterns like E4X (ECMAScript for XML).

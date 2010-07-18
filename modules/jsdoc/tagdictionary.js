@@ -14,7 +14,7 @@
 		/*synonym   =>  canonical*/
 		'description': 'desc',
 		'function':    'method',
-		'variable':    'property',
+		'var':         'property',
 		'field':       'property',
 		'return':      'returns',
 		'member':      'memberof',
