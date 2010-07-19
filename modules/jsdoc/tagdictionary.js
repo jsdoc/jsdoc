@@ -335,6 +335,14 @@
 		isExported: true
 	});
 	
+	/** Syntax: @uses <text>
+		@property {TagDefinition} uses
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('uses', {
+		isExported: true
+	});
+	
 	/** Syntax: @extends|augments <type>
 		@property {TagDefinition} extends
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
