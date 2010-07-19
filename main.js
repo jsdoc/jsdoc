@@ -42,6 +42,7 @@
 ////
 
 //// main
+	var app = { }; // global settings for this app
 	(function() {
 		var jsdoc = {
 				parser: require('jsdoc/parser'),
@@ -51,7 +52,7 @@
 			opts,
 			sourceFiles;
 			
-		opts = jsdoc.opts.set(args);
+		app.opts = opts = jsdoc.opts.set(args);
 		
 		if (opts.help) {
 			print( jsdoc.opts.help() );

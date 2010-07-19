@@ -2,6 +2,7 @@
 	var name = require('jsdoc/name'),
 		doclet = require('jsdoc/doclet'),
 		doclets = require('jsdoc/docset').doclets,
+		opts = require('jsdoc/opts'),
 		Token  = Packages.org.mozilla.javascript.Token;
 		
 	exports.result = doclets;
@@ -32,6 +33,8 @@
  				}
  			}
  		}
+
+ 		if (app.opts.nocode) { return true; }
  		
 		// like function foo() {}
 		if (node.type == Token.FUNCTION && String(node.name) !== '') {
