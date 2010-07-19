@@ -67,6 +67,58 @@
 			});
 		});
 		
+		describe('A doclet with a property tag and a member tag and an inner tag', function() {
+			it('should have an `isa` property set to "property"', function() {
+				var doclet = doclets[4];
+				expect(doclet).to(have_property, 'isa');
+				expect(doclet.isa).to(eql, 'property');
+			});
+			
+			it('should have a `name` property set to the given name"', function() {
+				var doclet = doclets[4];
+				expect(doclet).to(have_property, 'name');
+				expect(doclet.name).to(eql, 'bish');
+			});
+			
+			it('should have a `memberof` property set to the given member name', function() {
+				var doclet = doclets[4];
+				expect(doclet).to(have_property, 'memberof');
+				expect(doclet.memberof).to(eql, 'bar');
+			});
+			
+			it('should have a `path` property set to the memberof~name', function() {
+				var doclet = doclets[4];
+				expect(doclet).to(have_property, 'path');
+				expect(doclet.path).to(eql, 'bar~bish');
+			});
+		});
+		
+		describe('A doclet with a property tag and a member tag and an instance access tag', function() {
+			it('should have an `isa` property set to "property"', function() {
+				var doclet = doclets[5];
+				expect(doclet).to(have_property, 'isa');
+				expect(doclet.isa).to(eql, 'property');
+			});
+			
+			it('should have a `name` property set to the given name"', function() {
+				var doclet = doclets[5];
+				expect(doclet).to(have_property, 'name');
+				expect(doclet.name).to(eql, 'bosh');
+			});
+			
+			it('should have a `memberof` property set to the given member name', function() {
+				var doclet = doclets[5];
+				expect(doclet).to(have_property, 'memberof');
+				expect(doclet.memberof).to(eql, 'bar');
+			});
+			
+			it('should have a `path` property set to the memberof~name', function() {
+				var doclet = doclets[5];
+				expect(doclet).to(have_property, 'path');
+				expect(doclet.path).to(eql, 'bar#bosh');
+			});
+		});
+		
 	});
 })();
 
@@ -83,6 +135,18 @@
 	
 	/**
 		@property bah
+		@member bar
+	 */
+	 
+	 /**
+	 	@inner
+		@property bish
+		@member bar
+	 */
+	 
+	 /**
+	 	@attrib instance
+		@property bosh
 		@member bar
 	 */
 	

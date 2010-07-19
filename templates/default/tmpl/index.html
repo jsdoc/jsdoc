@@ -29,11 +29,13 @@
 
 <h1>All Symbols</h1>
 
+<% if (doc.length) { %>
 <ul>
-{{#doc}}
-	<li class="symbol">{<i>{{isa}}</i>} {{{path}}} - {{{desc}}}</li>
-{{/doc}}
+	<% for ( var i = 0; i < doc.length; i++ ) { %>
+	<li class="symbol"><i>{<%= doc[i].isa %>}</i> <%= doc[i].path %> - <%= tmpl.summarize(doc[i].desc) %></li>
+	<% } %>
 </ul>
+<% } %>
 
 </body>
 </html>

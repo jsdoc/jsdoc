@@ -67,7 +67,7 @@ function Hexagon(sideLength) {
 
 
 /**
- * This is an unattached (static) function that adds two integers together.
+ * This is an unattached (static) function that adds two integers together using {@link Shape#getClassName}.
  * @function
  * @param {int} One The first number to add 
  * @param {int} Two The second number to add 

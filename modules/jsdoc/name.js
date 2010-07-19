@@ -18,6 +18,7 @@
 		currentModule = moduleName;
 	}
 	
+	var attribModes = { '.':'static', '~':'inner', '#':'instance' };
 	/**
 		Calculates the path, memberof and name values.
 		@method resolve
@@ -29,37 +30,53 @@
 			name = doclet.tagValue('name') || '',
 			memberof = doclet.tagValue('memberof') || '',
 			path,
-			shortname,
+			attrib,
 			prefix;
 
 		// only keep the first word of the first tagged name
-		name = name.split(/\s+/g)[0];
+		name = name.split(/\s+/g)[0]; // TODO allow spaces in quoted names?
 
 		if (currentModule) {
 			name = name.replace(/^exports\.(?=.+$)/, currentModule + '.');
 		}
 		
-		name = name.replace(/\.prototype\.?/g, '#');
+		path = name = name.replace(/\.prototype\.?/g, '#');
 		
-		path = shortname = name;
-
-		if (memberof) {
+		if (memberof) { // @memberof tag given
 			// like @name foo.bar, @memberof foo
 			if (name.indexOf(memberof) === 0) {
-				path = name;
-				[prefix, name] = exports.shorten(name);
+				[prefix, attrib, name] = exports.shorten(name);
+			}
+			else { // like @name bar, @memberof foo
+				if ( /([.~#])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
+					path = memberof + name;
+					attrib = RegExp.$1;
+					if (name) { doclet.addTag('attrib', attribModes[attrib]); }
+				}
+				else {
+					attrib = doclet.getAccess();
+	
+					if (!attrib) {
+						attrib = 'static'; // default attrib is static
+						if (name) { doclet.addTag('attrib', 'static'); }
+						path = memberof + '.' + name;
+					}
+					else {
+						path = memberof + (attrib === 'inner'? '~':'#') + name;
+					}
+				}
 			}
 		}
 		else if (isa !== 'file') {
-			[memberof, name] = exports.shorten(name);
+			[prefix, attrib, name] = exports.shorten(name);
 			
-			if (memberof) {
-				// memberof ends with a ~ means it's an inner symbol
-				/^(.+?)(~)?$/.test(memberof);
-				 var nameImpliesInner = (RegExp.$2 === '~');
-				 
-				if (memberof) { doclet.setTag('memberof', RegExp.$1); } // side effect: modifies RegExp.$2
-				if (nameImpliesInner) { doclet.addTag('access', 'inner'); }
+			if (prefix) {
+				doclet.setTag('memberof', prefix);
+				if (name) { doclet.addTag('attrib', attribModes[attrib]); }
+			}
+			else if (name) {
+				// global symbol
+				doclet.addTag('attrib', 'global');
 			}
 		}
 		
@@ -76,8 +93,8 @@
 
 		if (name) doclet.setTag('name', name);
 		
-		if (memberof && name.indexOf(memberof) !== 0) {
-			path = memberof + (/[#~]$/.test(memberof)? '' : '.') + ns  + name;
+		if (!path && memberof && name.indexOf(memberof) !== 0) {
+			path = memberof + (attrib? attrib : '') + ns  + name;
 		}
 		else if (ns) { path = ns + name };
 		
@@ -88,24 +105,25 @@
 		return path;
 	}
 	
+	
 	exports.shorten = function(path) {
 		// quoted strings in a path are atomic
 		var atoms = [],
-			cursor = 0;
+			attrib; // ., ~, or #
+			
 		path = path.replace(/(".+?")/g, function($) {
-			//$ = $.slice(1, -1); // trim quotes?
-
 			var token = '@{' + atoms.length + '}@';
 			atoms.push($);
 			return token;
 		});
 
 		var shortname = path.split(/([#.~])/).pop(),
-			splitOn = RegExp.$1,
+			splitOn = RegExp.$1 || '.',
+			attrib = splitOn,
 			splitAt = path.lastIndexOf(splitOn),
 			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
 		
-		if (splitOn === '#' || splitOn === '~') { prefix = prefix + splitOn; }
+		//if (splitOn === '#' || splitOn === '~') { prefix = prefix + splitOn; }
 		
 		// restore quoted strings back again
 		for (var i = 0, leni = atoms.length; i < leni; i++) {
@@ -113,7 +131,7 @@
 			shortname = shortname.replace('@{'+i+'}@', atoms[i]);
 		}
 		
-		return [prefix, shortname];
+		return [prefix, attrib, shortname];
 	}
 	
 	/**
@@ -149,7 +167,7 @@
 				enclosingDoc = exports.docFromNode(enclosing);
 				
 				if (enclosingDoc) {
-					if (enclosingDoc.isInner()) memberof = ''; // inner functions have `this` scope of global
+					if (enclosingDoc.getAccess() === 'inner') memberof = ''; // inner functions have `this` scope of global
 					else memberof = enclosingDoc.tagValue('path');
 				}
 				else {

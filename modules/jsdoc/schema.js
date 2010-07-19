@@ -38,10 +38,10 @@ exports.jsdocSchema = {
 						"maxItems": 1,
 						"enum": ["constructor", "module", "event", "namespace", "method", "property", "enum", "class", "interface", "constant", "file"]
 					},
-					"access": {
+					"attrib": {
 						"type": "string",
 						"maxItems": 1,
-						"enum": ["private", "protected", "public"]
+						"enum": ["private", "protected", "public", "global", "static", "instance", "readonly"]
 					},
 					"type": {
 						"type": "array",

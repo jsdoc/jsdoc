@@ -214,17 +214,19 @@
 		return o;
 	}
 	
-	Doclet.prototype.isInner = function() {
-		var access = this.tagValue('access');
+	Doclet.prototype.getAccess = function() {
+		var attrib = this.tagValue('attrib');
 
-		if (!access) {
-			return false;
+		if (!attrib) {
+			return '';
 		}
-		else if (typeof access === 'string') {
-			return (access === 'inner');
+		else if (typeof attrib === 'string' && ['inner', 'static', 'instance'].indexOf(attrib) > -1) {
+			return attrib;
 		}
 		else {
-			return (access.indexOf('inner') > -1);
+			if (attrib.indexOf('instance') > -1) { return 'instance'; }
+			else if (attrib.indexOf('inner') > -1) { return 'inner'; }
+			else if (attrib.indexOf('static') > -1) { return 'static'; }
 		}
 	}
 	
@@ -285,8 +287,8 @@
 		for (var i = 0; i < tags.length; i++) {
 			tagAbout = tagDictionary.lookUp(tags[i].name);
 			
-			if (tagAbout.setsDocletAccess) {
-				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
+			if (tagAbout.setsDocletAttrib) {
+				tags[tags.length] = parse_tag.fromText('attrib '+tags[i].name);
 			}
 			
 			if (tagAbout.impliesTag) { // TODO allow a template string?

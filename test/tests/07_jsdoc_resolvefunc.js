@@ -67,8 +67,8 @@
   				expect(doclet.name).to(eql, 'inner');
   				expect(doclet).to(have_property, 'path');
   				expect(doclet.path).to(eql, 'Foo~inner');
-  				expect(doclet).to(have_property, 'access');
-  				expect(doclet.access).to(eql, 'inner');
+  				expect(doclet).to(have_property, 'attrib');
+  				expect(doclet.attrib).to(eql, 'inner');
   			});
   		});
   		
@@ -81,8 +81,8 @@
   				expect(doclet.name).to(eql, 'deep');
   				expect(doclet).to(have_property, 'path');
   				expect(doclet.path).to(eql, 'Foo~inner~deep');
-  				expect(doclet).to(have_property, 'access');
-  				expect(doclet.access).to(eql, 'inner');
+  				expect(doclet).to(have_property, 'attrib');
+  				expect(doclet.attrib).to(eql, 'inner');
   			});
   		});
   		

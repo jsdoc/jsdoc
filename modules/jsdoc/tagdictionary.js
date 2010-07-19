@@ -57,7 +57,7 @@
 		setsDocletIsa     : false, // the name of this tag is used to define the doclet's isa property
 		setsDocletDesc    : false,
 		setsDocletName    : false, // this tag can be used to name the doclet
-		setsDocletAccess  : false, // the name of this tag becomes the access of the doclet
+		setsDocletAttrib  : false, // the name of this tag becomes the attribute of the doclet
 		setsDocletType    : false, // the type of this tag becomes th type of the doclet
 		setsDocletDocspace: false, // the name of this tag becomes the docspace for the doclet name, like "event:"
 		canHaveType       : false, // this tag can have a {type}
@@ -269,11 +269,11 @@
 		canHavePdesc: true
 	});
 	
-	/** Syntax: @access <docletAccess>
-		@property {TagDefinition} access
+	/** Syntax: @attrib <docletAttrib>
+		@property {TagDefinition} attrib
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
-	 new TagDefinition('access', {
+	 new TagDefinition('attrib', {
 		isExported: true
 	});
 	
@@ -282,7 +282,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('private', {
-		setsDocletAccess: true
+		setsDocletAttrib: true
 	});
 	
 	/** Syntax: @protected
@@ -290,7 +290,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('protected', {
-		setsDocletAccess: true
+		setsDocletAttrib: true
 	});
 	
 	/** Syntax: @readonly
@@ -298,7 +298,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('readonly', {
-		setsDocletAccess: true
+		setsDocletAttrib: true
 	});
 	
 	/** Syntax: @inner
@@ -306,7 +306,31 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('inner', {
-		setsDocletAccess: true
+		setsDocletAttrib: true
+	});
+	
+	/** Syntax: @static
+		@property {TagDefinition} static
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('static', {
+		setsDocletAttrib: true
+	});
+	
+	/** Syntax: @global
+		@property {TagDefinition} global
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('global', {
+		setsDocletAttrib: true
+	});
+	
+	/** Syntax: @instance
+		@property {TagDefinition} instance
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('instance', {
+		setsDocletAttrib: true
 	});
 	
 	/** Syntax: @public
@@ -314,7 +338,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('public', {
-		setsDocletAccess: true
+		setsDocletAttrib: true
 	});
 	
 	/** Syntax: @exception|throws <text>
