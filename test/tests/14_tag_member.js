@@ -145,7 +145,7 @@
 	 */
 	 
 	 /**
-	 	@attrib instance
+	 	@scope instance
 		@property bosh
 		@member bar
 	 */

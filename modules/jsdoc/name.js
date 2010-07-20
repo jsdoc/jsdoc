@@ -18,7 +18,7 @@
 		currentModule = moduleName;
 	}
 	
-	var attribModes = { '.':'static', '~':'inner', '#':'instance' };
+	var scopeModes = { '.':'static', '~':'inner', '#':'instance' };
 	/**
 		Calculates the path, memberof and name values.
 		@method resolve
@@ -30,7 +30,7 @@
 			name = doclet.tagValue('name') || '',
 			memberof = doclet.tagValue('memberof') || '',
 			path,
-			attrib,
+			scope,
 			prefix;
 
 		// only keep the first word of the first tagged name
@@ -45,38 +45,38 @@
 		if (memberof) { // @memberof tag given
 			// like @name foo.bar, @memberof foo
 			if (name.indexOf(memberof) === 0) {
-				[prefix, attrib, name] = exports.shorten(name);
+				[prefix, scope, name] = exports.shorten(name);
 			}
 			else { // like @name bar, @memberof foo
 				if ( /([.~#])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
 					path = memberof + name;
-					attrib = RegExp.$1;
-					if (name) { doclet.addTag('attrib', attribModes[attrib]); }
+					scope = RegExp.$1;
+					if (name) { doclet.addTag('scope', scopeModes[scope]); }
 				}
 				else {
-					attrib = doclet.getAccess();
+					scope = doclet.getScope();
 	
-					if (!attrib) {
-						attrib = 'static'; // default attrib is static
-						if (name) { doclet.addTag('attrib', 'static'); }
+					if (!scope) {
+						scope = 'static'; // default scope is static
+						if (name) { doclet.addTag('scope', 'static'); }
 						path = memberof + '.' + name;
 					}
 					else {
-						path = memberof + (attrib === 'inner'? '~':'#') + name;
+						path = memberof + (scope === 'inner'? '~':'#') + name;
 					}
 				}
 			}
 		}
 		else if (isa !== 'file') {
-			[prefix, attrib, name] = exports.shorten(name);
+			[prefix, scope, name] = exports.shorten(name);
 			
 			if (prefix) {
 				doclet.setTag('memberof', prefix);
-				if (name) { doclet.addTag('attrib', attribModes[attrib]); }
+				if (name) { doclet.addTag('scope', scopeModes[scope]); }
 			}
 			else if (name) {
 				// global symbol
-				doclet.addTag('attrib', 'global');
+				doclet.addTag('scope', 'global');
 			}
 		}
 		
@@ -94,7 +94,7 @@
 		if (name) doclet.setTag('name', name);
 		
 		if (!path && memberof && name.indexOf(memberof) !== 0) {
-			path = memberof + (attrib? attrib : '') + ns  + name;
+			path = memberof + (scope? scope : '') + ns  + name;
 		}
 		else if (ns) { path = ns + name };
 		
@@ -109,7 +109,7 @@
 	exports.shorten = function(path) {
 		// quoted strings in a path are atomic
 		var atoms = [],
-			attrib; // ., ~, or #
+			scope; // ., ~, or #
 			
 		path = path.replace(/(".+?")/g, function($) {
 			var token = '@{' + atoms.length + '}@';
@@ -119,7 +119,7 @@
 
 		var shortname = path.split(/([#.~])/).pop(),
 			splitOn = RegExp.$1 || '.',
-			attrib = splitOn,
+			scope = splitOn,
 			splitAt = path.lastIndexOf(splitOn),
 			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
 		
@@ -131,7 +131,7 @@
 			shortname = shortname.replace('@{'+i+'}@', atoms[i]);
 		}
 		
-		return [prefix, attrib, shortname];
+		return [prefix, scope, shortname];
 	}
 	
 	/**
@@ -167,7 +167,7 @@
 				enclosingDoc = exports.docFromNode(enclosing);
 				
 				if (enclosingDoc) {
-					if (enclosingDoc.getAccess() === 'inner') memberof = ''; // inner functions have `this` scope of global
+					if (enclosingDoc.getScope() === 'inner') memberof = ''; // inner functions have `this` scope of global
 					else memberof = enclosingDoc.tagValue('path');
 				}
 				else {

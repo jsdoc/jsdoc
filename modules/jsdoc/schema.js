@@ -12,16 +12,13 @@ exports.jsdocSchema = {
 			"items": {
 				"type": "object",
 				"properties": {
-					"id": {
-						"type": "string",
-						"maxItems": 1
-					},
-					"summary": {
+					"path": {
 						"type": "string",
 						"maxItems": 1
 					},
 					"desc": {
 						"type": "string",
+						"optional": true,
 						"maxItems": 1
 					},
 					"name": {
@@ -38,10 +35,24 @@ exports.jsdocSchema = {
 						"maxItems": 1,
 						"enum": ["constructor", "module", "event", "namespace", "method", "property", "enum", "class", "interface", "constant", "file"]
 					},
-					"attrib": {
+					"access": {
+						"type": "string",
+						"optional": true,
+						"maxItems": 1,
+						"enum": ["private", "protected", "public"]
+					},
+					"scope": {
 						"type": "string",
 						"maxItems": 1,
-						"enum": ["private", "protected", "public", "global", "static", "instance", "readonly"]
+						"enum": ["global", "static", "instance", "inner"]
+					},
+					"attrib": {
+						"type": "string",
+						"optional": true,
+					},
+					"api": {
+						"type": "string",
+						"optional": true
 					},
 					"type": {
 						"type": "array",
@@ -86,8 +97,6 @@ exports.jsdocSchema = {
 							}
 						}
 					},
-
-
 					"meta": {
 						"type": "object",
 						"optional": true,

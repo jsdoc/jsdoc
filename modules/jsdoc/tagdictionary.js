@@ -58,20 +58,29 @@
 		setsDocletDesc    : false,
 		setsDocletName    : false, // this tag can be used to name the doclet
 		setsDocletAttrib  : false, // the name of this tag becomes the attribute of the doclet
+		setsDocletScope   : false,
 		setsDocletType    : false, // the type of this tag becomes th type of the doclet
 		setsDocletDocspace: false, // the name of this tag becomes the docspace for the doclet name, like "event:"
 		canHaveType       : false, // this tag can have a {type}
 		canHavePname      : false, // this tag can have a parameter-type name
 		canHavePdesc      : false, // this tag can have a parameter-type desc
 		keepsWhitespace   : false, // don't try to tidy up the whitespace in this tag?
-		impliesTag        : false  // this tag implies another tag
+		impliesTag        : false, // this tag implies another tag
 	};
 
-	/** Syntax: @attribute <text>
-		@property {TagDefinition} attribute
+	/** Syntax: @access <text>
+		@property {TagDefinition} access
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
-	 new TagDefinition('attribute', {
+	 new TagDefinition('access', {
+		isExported: true
+	});
+	
+	/** Syntax: @scope <text>
+		@property {TagDefinition} scope
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('scope', {
 		isExported: true
 	});
 	
@@ -282,7 +291,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('private', {
-		setsDocletAttrib: true
+		setsDocletAccess: true
 	});
 	
 	/** Syntax: @protected
@@ -290,7 +299,15 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('protected', {
-		setsDocletAttrib: true
+		setsDocletAccess: true
+	});
+	
+	/** Syntax: @public
+		@property {TagDefinition} public
+		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+	 */
+	 new TagDefinition('public', {
+		setsDocletAccess: true
 	});
 	
 	/** Syntax: @readonly
@@ -306,7 +323,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('inner', {
-		setsDocletAttrib: true
+		setsDocletScope: true
 	});
 	
 	/** Syntax: @static
@@ -314,7 +331,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('static', {
-		setsDocletAttrib: true
+		setsDocletScope: true
 	});
 	
 	/** Syntax: @global
@@ -322,7 +339,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('global', {
-		setsDocletAttrib: true
+		setsDocletScope: true
 	});
 	
 	/** Syntax: @instance
@@ -330,15 +347,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('instance', {
-		setsDocletAttrib: true
-	});
-	
-	/** Syntax: @public
-		@property {TagDefinition} public
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
-	 */
-	 new TagDefinition('public', {
-		setsDocletAttrib: true
+		setsDocletScope: true
 	});
 	
 	/** Syntax: @exception|throws <text>

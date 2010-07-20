@@ -319,7 +319,7 @@ Circle.prototype.radius = 0;
 
 /** 
  * A very simple class (static) field that is also a constant
- * @final
+ * @const
  * @type float
  */
 Circle.PI = 3.14;
@@ -456,7 +456,6 @@ MySingletonShapeFactory = function(){
 
 }
 
-
 /** 
  * Create a new Foo instance.
  * @class This is the Foo class. It exists to demonstrate 'nested' classes.
@@ -475,6 +474,7 @@ function Bar(){}
 
 /** 
  * Nested class
+ * @public
  * @constructor 
  */
 Foo.Bar = function(){
