@@ -48,7 +48,6 @@
 		doclet.meta = meta;
 	
 		postprocess(doclet);
-		
 		name.resolve(doclet);
 
 		return doclet

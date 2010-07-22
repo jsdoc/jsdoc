@@ -18,7 +18,8 @@
 		currentModule = moduleName;
 	}
 	
-	var scopeModes = { '.':'static', '~':'inner', '#':'instance' };
+	var puncToScope = { '.':'static', '~':'inner', '#':'instance' },
+		scopeToPunc = { 'static':'.', 'inner':'~', 'instance':'#' };
 	/**
 		Calculates the path, memberof and name values.
 		@method resolve
@@ -40,8 +41,8 @@
 			name = name.replace(/^exports\.(?=.+$)/, currentModule + '.');
 		}
 		
-		path = name = name.replace(/\.prototype\.?/g, '#');
-		
+		path = name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
+
 		if (memberof) { // @memberof tag given
 			// like @name foo.bar, @memberof foo
 			if (name.indexOf(memberof) === 0) {
@@ -51,18 +52,18 @@
 				if ( /([.~#])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
 					path = memberof + name;
 					scope = RegExp.$1;
-					if (name) { doclet.addTag('scope', scopeModes[scope]); }
+					if (name) { doclet.addTag('scope', puncToScope[scope]); }
 				}
 				else {
 					scope = doclet.getScope();
-	
+
 					if (!scope) {
 						scope = 'static'; // default scope is static
 						if (name) { doclet.addTag('scope', 'static'); }
 						path = memberof + '.' + name;
 					}
 					else {
-						path = memberof + (scope === 'inner'? '~':'#') + name;
+						path = memberof + (scopeToPunc[scope] || '.') + name;
 					}
 				}
 			}
@@ -72,7 +73,7 @@
 			
 			if (prefix) {
 				doclet.setTag('memberof', prefix);
-				if (name) { doclet.addTag('scope', scopeModes[scope]); }
+				if (name) { doclet.addTag('scope', puncToScope[scope]); }
 			}
 			else if (name) {
 				// global symbol

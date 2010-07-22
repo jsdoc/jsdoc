@@ -12,7 +12,8 @@
 	function visitNode(node) {
 		var commentSrc = '',
 			thisDoclet = null,
-			thisDocletName = '';
+			thisDocletName = '',
+			thisDocletPath = '';
 
  
  		// look for all comments that have names provided
@@ -80,6 +81,7 @@
 
 			if (commentSrc) {
 				commentSrc = '' + commentSrc;
+
 				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagValue('name');
 				nodeKind = thisDoclet.tagValue('isa');
@@ -104,6 +106,7 @@
 			else { // an uncommented objlit or anonymous function?
 				
 				// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
+
 				thisDoclet = doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
 				nodeName = name.resolveThis(nodeName, node, thisDoclet);
 				
@@ -129,8 +132,9 @@
 					commentSrc = (counter++ === 0 && !n.jsDoc)? node.jsDoc : n.jsDoc;
 					if (commentSrc) {
 						thisDoclet = doclet.makeDoclet('' + commentSrc, node, currentSourceName);
-						thisDocletName = thisDoclet.tagValue('path');
-						nodeKind = thisDoclet.tagValue('isa');
+						thisDocletPath = thisDoclet.tagValue('path');
+						thisDocletName = thisDoclet.tagValue('name');
+
 						if (!thisDoclet.hasTag('isa') && val) { // guess isa from the source code
 							if (val.type == Token.FUNCTION) {
 								thisDoclet.addTag('isa', 'method');
@@ -139,20 +143,26 @@
 								thisDoclet.addTag('isa', 'property');
 							}
 						}
-				
-						if (!thisDocletName ) { // guess name from the source code
-							//thisDocletName = n.target.string;
-							thisDocletName = name.resolveInner(n.target.string, node, thisDoclet);
-							thisDoclet.setName(thisDocletName);
+						
+						if (!thisDocletName) {
+							thisDocletName = n.target.string;
+							if (!thisDocletPath) { // guess path from the source code
+								thisDocletPath = name.resolveInner(thisDocletName, node, thisDoclet);
+								thisDoclet.setName(thisDocletPath);
+							}
+							else {
+								thisDoclet.setName(thisDocletName);
+							}
 							doclets.addDoclet(thisDoclet);
 						}
 						
-						if (val) name.refs.push([val, thisDoclet]);
+						if (val) { name.refs.push([val, thisDoclet]); }
 					}
 					else { // an uncommented objlit or anonymous function?
 						var nodeName = nodeToString(n.target);
 						// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
 						thisDoclet = doclet.makeDoclet('[[undocumented]]', n.target, currentSourceName);
+
 						nodeName = name.resolveInner(nodeName, n.target, thisDoclet);
 						thisDoclet.setName(nodeName);
 						

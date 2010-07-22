@@ -118,7 +118,6 @@
  	var foo = {}, onShow, callbacks = [function(){}];
  	/** @constructor bar */
  	
- 	
  	/** @property foo.fah */
 	
 	/** @property {string|number} bar.bah Here is a description. */

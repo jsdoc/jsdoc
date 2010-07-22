@@ -10,7 +10,7 @@
 				tag: require('jsdoc/tag'),
 				parser: require('jsdoc/parser')
 			};
-			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/14_tag_member.js');
+			jsdoc.parser.parseFiles(BASEDIR + 'test/samples/tag_member.js');
 			doclets = jsdoc.parser.result.map(function($){ return $.toObject(); });
 			
 		});
@@ -120,34 +120,4 @@
 		});
 		
 	});
-})();
-
-(function testarea() {
-
-	/** @namespace foo */
-	
-	/** @constructor bar */
-	
-	/**
-		@method fah
-		@memberof foo#
-	 */
-	
-	/**
-		@property bah
-		@member bar
-	 */
-	 
-	 /**
-	 	@inner
-		@property bish
-		@member bar
-	 */
-	 
-	 /**
-	 	@scope instance
-		@property bosh
-		@member bar
-	 */
-	
 })();
