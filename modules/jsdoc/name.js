@@ -201,8 +201,7 @@
 		}
 		return name;
 	}
-	
-	var G = this;
+
 	/**
 		Resolve how to document the name of an inner symbol.
 	 */
