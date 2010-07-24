@@ -26,7 +26,7 @@
 		@param {Doclet} doclet
 	 */
 	exports.resolve = function(doclet) {
-		var isa = doclet.tagValue('isa'),
+		var kind = doclet.tagValue('kind'),
 			ns = '',
 			name = doclet.tagValue('name') || '',
 			memberof = doclet.tagValue('memberof') || '',
@@ -68,7 +68,7 @@
 				}
 			}
 		}
-		else if (isa !== 'file') {
+		else if (kind !== 'file') {
 			[prefix, scope, name] = exports.shorten(name);
 			
 			if (prefix) {
@@ -83,13 +83,13 @@
 		
 		// if name doesn't already have a docspace and needs one
 		// the namespace should appear in the path but not the name
-		if (tagDictionary.lookUp(isa).setsDocletDocspace) {
+		if (tagDictionary.lookUp(kind).setsDocletDocspace) {
 			if ( /^[a-z_$-]+:(\S+)/i.test(name) ) {
 				name = RegExp.$1;
 			}
 			
 			// add doc-namespace to path
-			ns = isa + ':';
+			ns = kind + ':';
 		}
 
 		if (name) doclet.setTag('name', name);
@@ -185,7 +185,7 @@
 
 				if (memberof || !enclosing) {
 					// `this` refers to nearest non-inner member in the name path
-					if (enclosingDoc && enclosingDoc.tagValue('isa') !== 'constructor') {
+					if (enclosingDoc && enclosingDoc.tagValue('kind') !== 'constructor') {
 						var parts = memberof.split(/[#~.]/);
 						var suffix = parts.pop();
 						memberof = memberof.slice(0, -suffix.length); // remove suffix from memberof

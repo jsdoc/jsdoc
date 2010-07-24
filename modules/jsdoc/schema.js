@@ -30,7 +30,7 @@ exports.jsdocSchema = {
 						"optional": true,
 						"maxItems": 1
 					},
-					"isa": {
+					"kind": {
 						"type": "string",
 						"maxItems": 1,
 						"enum": ["constructor", "module", "event", "namespace", "method", "property", "enum", "class", "interface", "constant", "file"]

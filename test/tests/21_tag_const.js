@@ -15,10 +15,10 @@
 		});
 		
 		describe('A doclet with a @const tag having a type and no given name', function() {
-			it('should have an `isa` property set to "constant"', function() {
+			it('should have an `kind` property set to "constant"', function() {
 				var doclet = doclets[0].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'constant');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'constant');
 			});
 			
 			it('should have a `name` property set to the name in the code', function() {
@@ -35,10 +35,10 @@
 		});
 		
 		describe('A doclet with a @const tag and a type', function() {
-			it('should have an `isa` property set to "constant"', function() {
+			it('should have an `kind` property set to "constant"', function() {
 				var doclet = doclets[1].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'constant');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'constant');
 			});
 			
 			it('should have an `type` property set to the given type', function() {

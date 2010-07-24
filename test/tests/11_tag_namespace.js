@@ -15,10 +15,10 @@
 		});
 		
 		describe('A doclet from a namespace tag with a name tag and no code', function() {
-			it('should have an `isa` property set to "namespace"', function() {
+			it('should have an `kind` property set to "namespace"', function() {
 				var doclet = doclets[0].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'namespace');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'namespace');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -29,10 +29,10 @@
 		});
 		
 		describe('A doclet from a named namespace tag and no code', function() {
-			it('should have an `isa` property set to "namespace"', function() {
+			it('should have an `kind` property set to "namespace"', function() {
 				var doclet = doclets[1].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'namespace');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'namespace');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -43,10 +43,10 @@
 		});
 		
 		describe('A doclet from a namespace tag and named code', function() {
-			it('should have an `isa` property set to "namespace"', function() {
+			it('should have an `kind` property set to "namespace"', function() {
 				var doclet = doclets[2].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'namespace');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'namespace');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -57,10 +57,10 @@
 		});
 		
 		describe('A doclet from a namespace tag and named anonymous function', function() {
-			it('should have an `isa` property set to "namespace"', function() {
+			it('should have an `kind` property set to "namespace"', function() {
 				var doclet = doclets[3].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'namespace');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'namespace');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {

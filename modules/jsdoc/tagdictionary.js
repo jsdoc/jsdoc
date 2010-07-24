@@ -65,7 +65,7 @@
 	// default properties of all tags
 	TagDefinition.prototype = {
 		isExported        : false, // this tag should appear as a top level property in the doclet?
-		setsDocletIsa     : false, // the name of this tag is used to define the doclet's isa property
+		setsDocletKind     : false, // the name of this tag is used to define the doclet's kind property
 		setsDocletDesc    : false,
 		setsDocletName    : false, // this tag can be used to name the doclet
 		setsDocletAttrib  : false, // the name of this tag becomes the attribute of the doclet
@@ -108,13 +108,13 @@
 		isExported: true
 	});
 	
-	/** Syntax: @isa <text>
+	/** Syntax: @kind <text>
 		@private
 		@inner
-		@property {TagDefinition} isa
+		@property {TagDefinition} kind
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
-	 new TagDefinition('isa', {
+	 new TagDefinition('kind', {
 		isExported: true
 	});
 	
@@ -154,7 +154,7 @@
 	 new TagDefinition('namespace', { //t
 		canHaveType: true,
 		setsDocletType: true,
-		setsDocletIsa: true,
+		setsDocletKind: true,
 		setsDocletName: true
 	});
 	
@@ -164,7 +164,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('constructor', { //t
-		setsDocletIsa: true,
+		setsDocletKind: true,
 		setsDocletName: true
 	});
 	
@@ -186,7 +186,7 @@
 	 new TagDefinition('constant', {
 		canHaveType: true,
 		setsDocletType: true,
-		setsDocletIsa: true,
+		setsDocletKind: true,
 		setsDocletName: true
 	});
 	
@@ -198,7 +198,7 @@
 	 new TagDefinition('enum', {
 		canHaveType: true,
 		setsDocletType: true,
-		setsDocletIsa: true,
+		setsDocletKind: true,
 		setsDocletName: true
 	});
 	
@@ -208,7 +208,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('file', { //t
-		setsDocletIsa: true,
+		setsDocletKind: true,
 		setsDocletDesc: true,
 		setsDocletName: true,
 		setsDocletDocspace: true
@@ -246,7 +246,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('event', {
-		setsDocletIsa: true,
+		setsDocletKind: true,
 		setsDocletName: true,
 		setsDocletDocspace: true
 	});
@@ -257,7 +257,7 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('module', {
-		setsDocletIsa: true,
+		setsDocletKind: true,
 		setsDocletName: true,
 		setsDocletDocspace: true
 	});

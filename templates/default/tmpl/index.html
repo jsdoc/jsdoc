@@ -32,7 +32,7 @@
 <% if (doc.length) { %>
 <ul>
 	<% for ( var i = 0; i < doc.length; i++ ) { %>
-	<li class="symbol"><i>{<%= doc[i].isa %>}</i> <%= doc[i].path %> - <%= tmpl.summarize(doc[i].desc) %></li>
+	<li class="symbol"><i>{<%= doc[i].kind %>}</i> <%= doc[i].path %> - <%= tmpl.summarize(doc[i].desc) %></li>
 	<% } %>
 </ul>
 <% } %>

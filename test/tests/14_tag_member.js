@@ -16,10 +16,10 @@
 		});
 		
 		describe('A doclet with a method tag and a memberof tag', function() {
-			it('should have an `isa` property set to "method"', function() {
+			it('should have an `kind` property set to "method"', function() {
 				var doclet = doclets[2];
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'method');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'method');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -42,10 +42,10 @@
 		});
 		
 		describe('A doclet with a property tag and a member tag', function() {
-			it('should have an `isa` property set to "property"', function() {
+			it('should have an `kind` property set to "property"', function() {
 				var doclet = doclets[3];
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'property');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -68,10 +68,10 @@
 		});
 		
 		describe('A doclet with a property tag and a member tag and an inner tag', function() {
-			it('should have an `isa` property set to "property"', function() {
+			it('should have an `kind` property set to "property"', function() {
 				var doclet = doclets[4];
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'property');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -94,10 +94,10 @@
 		});
 		
 		describe('A doclet with a property tag and a member tag and an instance access tag', function() {
-			it('should have an `isa` property set to "property"', function() {
+			it('should have an `kind` property set to "property"', function() {
 				var doclet = doclets[5];
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'property');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {

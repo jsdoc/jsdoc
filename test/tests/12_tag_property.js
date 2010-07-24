@@ -15,10 +15,10 @@
 		});
 		
 		describe('A doclet with a named @property attached to a namespace', function() {
-			it('should have an `isa` property set to "property"', function() {
+			it('should have an `kind` property set to "property"', function() {
 				var doclet = doclets[2].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'property');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -35,10 +35,10 @@
 		});
 		
 		describe('A doclet with a named @property and a type and a description', function() {
-			it('should have an `isa` property set to "property"', function() {
+			it('should have an `kind` property set to "property"', function() {
 				var doclet = doclets[3].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'property');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -63,17 +63,17 @@
 		describe('A doclet with a named @property after to a constructor tag', function() {
 			it('should be a constructor', function() {
 				var doclet = doclets[4].toObject();
-				expect(doclet).to(have_property, 'isa');
+				expect(doclet).to(have_property, 'kind');
 
-				expect(doclet.isa).to(eql, 'constructor');
+				expect(doclet.kind).to(eql, 'constructor');
 			});
 		});
 		
 		describe('A doclet with a named @var tag and a description', function() {
-			it('should have an `isa` property set to "property"', function() {
+			it('should have an `kind` property set to "property"', function() {
 				var doclet = doclets[5].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'property');
 			});
 			
 			it('should have a `name` property set to the given name', function() {
@@ -90,10 +90,10 @@
 		});
 		
 		describe('A doclet with no name and a typed @property tag', function() {
-			it('should have an `isa` property set to "property"', function() {
+			it('should have an `kind` property set to "property"', function() {
 				var doclet = doclets[6].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'property');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'property');
 			});
 			
 			it('should have a `type` property set to the given type', function() {

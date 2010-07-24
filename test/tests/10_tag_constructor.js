@@ -17,10 +17,10 @@
 		});
 		
  		describe('A doclet from a constructor tag with a name tag and no code', function() {
- 			it('should have an `isa` property set to "constructor"', function() {
+ 			it('should have an `kind` property set to "constructor"', function() {
  				var doclet = doclets[0];
- 				expect(doclet).to(have_property, 'isa');
- 				expect(doclet.isa).to(eql, 'constructor');
+ 				expect(doclet).to(have_property, 'kind');
+ 				expect(doclet.kind).to(eql, 'constructor');
  			});
  			
  			it('should have a `name` property set to the given name"', function() {
@@ -31,10 +31,10 @@
  		});
  		
  		describe('A doclet from a named constructor tag and no code', function() {
- 			it('should have an `isa` property set to "constructor"', function() {
+ 			it('should have an `kind` property set to "constructor"', function() {
  				var doclet = doclets[1];
- 				expect(doclet).to(have_property, 'isa');
- 				expect(doclet.isa).to(eql, 'constructor');
+ 				expect(doclet).to(have_property, 'kind');
+ 				expect(doclet.kind).to(eql, 'constructor');
  			});
  			
  			it('should have a `name` property set to the given name"', function() {
@@ -45,10 +45,10 @@
  		});
  		
  		describe('A doclet from a constructor tag and named code', function() {
- 			it('should have an `isa` property set to "constructor"', function() {
+ 			it('should have an `kind` property set to "constructor"', function() {
  				var doclet = doclets[2];
- 				expect(doclet).to(have_property, 'isa');
- 				expect(doclet.isa).to(eql, 'constructor');
+ 				expect(doclet).to(have_property, 'kind');
+ 				expect(doclet.kind).to(eql, 'constructor');
  			});
  			
  			it('should have a `name` property set to the given name"', function() {
@@ -59,10 +59,10 @@
  		});
 		
 		describe('A doclet from a constructor tag and named anonymous function', function() {
-			it('should have an `isa` property set to "constructor"', function() {
+			it('should have an `kind` property set to "constructor"', function() {
 				var doclet = doclets[3];
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'constructor');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'constructor');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -73,10 +73,10 @@
 		});
 		
 		describe('A doclet from a constructor tag and named anonymous function part of a var', function() {
-			it('should have an `isa` property set to "constructor"', function() {
+			it('should have an `kind` property set to "constructor"', function() {
 				var doclet = doclets[4];
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'constructor');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'constructor');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {

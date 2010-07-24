@@ -34,11 +34,11 @@
   			});
   		});
   		
-  		describe('A property doclet that has no @name or @isa whose name starts with `this.`, that is scoped to a non-constructor global function', function() {
+  		describe('A property doclet that has no @name or @kind whose name starts with `this.`, that is scoped to a non-constructor global function', function() {
   			it('should correctly resolve to a property of the global scope', function() {
   				var doclet = doclets[2];
-  				expect(doclet).to(have_property, 'isa');
-  				expect(doclet.isa).to(eql, 'property');
+  				expect(doclet).to(have_property, 'kind');
+  				expect(doclet.kind).to(eql, 'property');
   				expect(doclet).to(have_property, 'name');
   				expect(doclet.name).to(eql, 'g');
   				expect(doclet).to(have_property, 'path');
@@ -46,11 +46,11 @@
   			});
   		});
   		
-  		describe('A method doclet that has no @name or @isa whose name starts with `this.`, that is scoped to a constructor function', function() {
+  		describe('A method doclet that has no @name or @kind whose name starts with `this.`, that is scoped to a constructor function', function() {
   			it('should correctly resolve to a method of the constructor', function() {
   				var doclet = doclets[4];
-  				expect(doclet).to(have_property, 'isa');
-  				expect(doclet.isa).to(eql, 'method');
+  				expect(doclet).to(have_property, 'kind');
+  				expect(doclet.kind).to(eql, 'method');
   				expect(doclet).to(have_property, 'name');
   				expect(doclet.name).to(eql, 'bar');
   				expect(doclet).to(have_property, 'path');
@@ -58,11 +58,11 @@
   			});
   		});
   		
-  		describe('An inner method doclet that has no @name or @isa, and is scoped to a constructor function', function() {
+  		describe('An inner method doclet that has no @name or @kind, and is scoped to a constructor function', function() {
   			it('should correctly resolve to an inner method of the constructor', function() {
   				var doclet = doclets[5];
-  				expect(doclet).to(have_property, 'isa');
-  				expect(doclet.isa).to(eql, 'method');
+  				expect(doclet).to(have_property, 'kind');
+  				expect(doclet.kind).to(eql, 'method');
   				expect(doclet).to(have_property, 'name');
   				expect(doclet.name).to(eql, 'inner');
   				expect(doclet).to(have_property, 'path');
@@ -72,11 +72,11 @@
   			});
   		});
   		
-  		describe('A nested inner method doclet that has no @name or @isa, and is scoped to an inner method', function() {
+  		describe('A nested inner method doclet that has no @name or @kind, and is scoped to an inner method', function() {
   			it('should correctly resolve to an inner method of the a inner method', function() {
   				var doclet = doclets[6];
-  				expect(doclet).to(have_property, 'isa');
-  				expect(doclet.isa).to(eql, 'method');
+  				expect(doclet).to(have_property, 'kind');
+  				expect(doclet.kind).to(eql, 'method');
   				expect(doclet).to(have_property, 'name');
   				expect(doclet.name).to(eql, 'deep');
   				expect(doclet).to(have_property, 'path');
@@ -86,11 +86,11 @@
   			});
   		});
   		
-  		describe('A property doclet whose name starts with `this.`, that has no @name or @isa, and is scoped to an inner method', function() {
+  		describe('A property doclet whose name starts with `this.`, that has no @name or @kind, and is scoped to an inner method', function() {
   			it('should correctly resolve to a property of the global scope', function() {
   				var doclet = doclets[7];
-  				expect(doclet).to(have_property, 'isa');
-  				expect(doclet.isa).to(eql, 'property');
+  				expect(doclet).to(have_property, 'kind');
+  				expect(doclet.kind).to(eql, 'property');
   				expect(doclet).to(have_property, 'name');
   				expect(doclet.name).to(eql, 'globalProp');
   				expect(doclet).to(have_property, 'path');
@@ -98,11 +98,11 @@
   			});
   		});
   		
-  		describe('A global method whose name starts with `this.`, that has no @name or @isa', function() {
+  		describe('A global method whose name starts with `this.`, that has no @name or @kind', function() {
   			it('should correctly resolve to a property of the global scope', function() {
   				var doclet = doclets[8];
-  				expect(doclet).to(have_property, 'isa');
-  				expect(doclet.isa).to(eql, 'method');
+  				expect(doclet).to(have_property, 'kind');
+  				expect(doclet.kind).to(eql, 'method');
   				expect(doclet).to(have_property, 'name');
   				expect(doclet.name).to(eql, 'globalFunc');
   				expect(doclet).to(have_property, 'path');

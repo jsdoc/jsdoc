@@ -17,10 +17,10 @@
 		});
 		
  		describe('A doclet from a class tag with a name tag and no code', function() {
- 			it('should have an `isa` property set to "constructor"', function() {
+ 			it('should have an `kind` property set to "constructor"', function() {
  				var doclet = doclets[0];
- 				expect(doclet).to(have_property, 'isa');
- 				expect(doclet.isa).to(eql, 'constructor');
+ 				expect(doclet).to(have_property, 'kind');
+ 				expect(doclet.kind).to(eql, 'constructor');
  			});
  			
  			it('should have a `name` property set to the given name"', function() {

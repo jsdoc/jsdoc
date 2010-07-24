@@ -16,10 +16,10 @@
 		});
 		
 		describe('A doclet with a fileoverview tag and no name tag', function() {
-			it('should have an `isa` property set to "file"', function() {
+			it('should have an `kind` property set to "file"', function() {
 				var doclet = doclets[0];
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'file');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'file');
 			});
 			
 			it('should have an `name` property set to a string equal to the files name', function() {

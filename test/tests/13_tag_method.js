@@ -15,10 +15,10 @@
 		});
 		
 		describe('A doclet with a named @method attached to a namespace', function() {
-			it('should have an `isa` property set to "method"', function() {
+			it('should have an `kind` property set to "method"', function() {
 				var doclet = doclets[2].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'method');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'method');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -35,10 +35,10 @@
 		});
 		
 		describe('A doclet with a named @method attached to a constructor', function() {
-			it('should have an `isa` property set to "method"', function() {
+			it('should have an `kind` property set to "method"', function() {
 				var doclet = doclets[3].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'method');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'method');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {
@@ -55,10 +55,10 @@
 		});
 		
 		describe('A doclet with a named @function tag', function() {
-			it('should have an `isa` property set to "method"', function() {
+			it('should have an `kind` property set to "method"', function() {
 				var doclet = doclets[4].toObject();
-				expect(doclet).to(have_property, 'isa');
-				expect(doclet.isa).to(eql, 'method');
+				expect(doclet).to(have_property, 'kind');
+				expect(doclet.kind).to(eql, 'method');
 			});
 			
 			it('should have a `name` property set to the given name"', function() {

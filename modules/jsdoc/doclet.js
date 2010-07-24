@@ -213,6 +213,7 @@
 		return o;
 	}
 	
+	// TODO need to simplify this string or array business. maybe define some props as scalar?
 	Doclet.prototype.getScope = function() {
 		var scope = this.tagValue('scope');
 
@@ -276,7 +277,7 @@
 	function preprocess(tags, meta) {
 		var name = '',
 			taggedName = '',
-			isa = '',
+			kind = '',
 			taggedIsa = '',
 			memberof = '',
 			taggedMemberof = '',
@@ -312,11 +313,11 @@
 				}
 				taggedName = name = tags[i].value;
 			}
-			else if (tags[i].name === 'isa') {
-				if (isa && isa !== tags[i].value) {
-					throw new DocTagConflictError('Symbol has too many isas, cannot be both: ' + isa + ' and ' + tags[i].value);
+			else if (tags[i].name === 'kind') {
+				if (kind && kind !== tags[i].value) {
+					throw new DocTagConflictError('Symbol has too many isas, cannot be both: ' + kind + ' and ' + tags[i].value);
 				}
-				taggedIsa = isa = tags[i].value;
+				taggedIsa = kind = tags[i].value;
 			}
 			else if (tags[i].name === 'memberof') {
 				if (memberof) {
@@ -326,12 +327,12 @@
 			}
 			
 			if ( tagAbout.setsDocletName/*nameables.indexOf(tags[i].name) > -1*/ ) {
-				if (tags[i].name === 'property' && (isa === 'constructor')) {
+				if (tags[i].name === 'property' && (kind === 'constructor')) {
 					// to avoid backwards compatability conflicts we just ignore a @property in a doclet after a @constructor
 				}
 				else if (tags[i].name === 'file') {
 					isFile = true;
- 					isa = 'file';
+ 					kind = 'file';
 				}
 				else {
 					if (tags[i].value) {
@@ -345,10 +346,10 @@
 						tags[tags.length] = parse_tag.fromText('desc ' + tags[i].pdesc);
 					}
 				
-					if (isa && isa !== tags[i].name) {
-						throw new DocTagConflictError('Symbol has too many isas, cannot be both: ' + isa + ' and ' + tags[i].name);
+					if (kind && kind !== tags[i].name) {
+						throw new DocTagConflictError('Symbol has too many isas, cannot be both: ' + kind + ' and ' + tags[i].name);
 					}
-					isa = tags[i].name;
+					kind = tags[i].name;
 				}
 			}
 		}
@@ -361,8 +362,8 @@
 			tags[tags.length] = parse_tag.fromText('name file:'+meta.file+'');
 		}
 		
-		if (isa && !taggedIsa) {
-			tags[tags.length] = parse_tag.fromText('isa ' + isa);
+		if (kind && !taggedIsa) {
+			tags[tags.length] = parse_tag.fromText('kind ' + kind);
 		}
 		
 		if (memberof && !taggedMemberof) {
@@ -383,7 +384,7 @@
 			
 		// class tags imply a constructor tag
 		if (tags[i].name === 'class' && !doclet.hasTag('constructor') ) {
-			doclet.tags[doclet.tags.length] = parse_tag.fromText('isa constructor');
+			doclet.tags[doclet.tags.length] = parse_tag.fromText('kind constructor');
 		}
 		
 		// enums have a defualt type of number

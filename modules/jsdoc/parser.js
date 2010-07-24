@@ -14,9 +14,8 @@
 			thisDoclet = null,
 			thisDocletName = '',
 			thisDocletPath = '';
-
- 
- 		// look for all comments that have names provided
+		
+		// look for all comments that have names provided
  		if (node.type === Token.SCRIPT && node.comments) { 			
  			for each (var comment in node.comments.toArray()) {
  				if (comment.commentType === Token.CommentType.JSDOC) {
@@ -24,9 +23,9 @@
  					if (commentSrc) {
  						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
 
- 						if ( thisDoclet.hasTag('name') && thisDoclet.hasTag('isa') ) {
+ 						if ( thisDoclet.hasTag('name') && thisDoclet.hasTag('kind') ) {
  							doclets.addDoclet(thisDoclet);
- 							if (thisDoclet.tagValue('isa') === 'module') {
+ 							if (thisDoclet.tagValue('kind') === 'module') {
  								name.setCurrentModule( thisDoclet.tagValue('path') );
  							}
  						}
@@ -34,7 +33,8 @@
  				}
  			}
  		}
-
+		
+		// use the nocode option to shortcut all the following blah blah
  		if (app.opts.nocode) { return true; }
  		
 		// like function foo() {}
@@ -45,8 +45,8 @@
 				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagValue('path');
 
-				if (!thisDoclet.hasTag('isa')) { // guess isa from the source code
-					thisDoclet.addTag('isa', 'method')
+				if (!thisDoclet.hasTag('kind')) { // guess kind from the source code
+					thisDoclet.addTag('kind', 'method')
 				}
 				
 				if (!thisDocletName) { // guess name from the source code
@@ -84,14 +84,14 @@
 
 				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagValue('name');
-				nodeKind = thisDoclet.tagValue('isa');
+				nodeKind = thisDoclet.tagValue('kind');
 
-				if (!thisDoclet.hasTag('isa')) { // guess isa from the source code
+				if (!thisDoclet.hasTag('kind')) { // guess kind from the source code
 					if (node.right.type == Token.FUNCTION) { // assume it's a method
-						thisDoclet.addTag('isa', 'method');
+						thisDoclet.addTag('kind', 'method');
 					}
 					else {
-						thisDoclet.addTag('isa', 'property');
+						thisDoclet.addTag('kind', 'property');
 					}
 				}
 
@@ -135,12 +135,12 @@
 						thisDocletPath = thisDoclet.tagValue('path');
 						thisDocletName = thisDoclet.tagValue('name');
 
-						if (!thisDoclet.hasTag('isa') && val) { // guess isa from the source code
+						if (!thisDoclet.hasTag('kind') && val) { // guess kind from the source code
 							if (val.type == Token.FUNCTION) {
-								thisDoclet.addTag('isa', 'method');
+								thisDoclet.addTag('kind', 'method');
 							}
 							else {
-								thisDoclet.addTag('isa', 'property');
+								thisDoclet.addTag('kind', 'property');
 							}
 						}
 						

@@ -52,22 +52,22 @@
 
 	/**
 		@name Tipsy
-		@isa property
+		@kind property
 	*/
 	
 	/**
 		@name Tubbie.LaLa
-		@isa property
+		@kind property
 	*/
 	
 	/**
 		@name Tubbie."and.don't.forget#Po!"
-		@isa property
+		@kind property
 	*/
 	
 	/**
 		@name Custards.0
-		@isa property
+		@kind property
 	*/
 	
 })();
