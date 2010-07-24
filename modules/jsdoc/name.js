@@ -55,7 +55,7 @@
 					if (name) { doclet.addTag('scope', puncToScope[scope]); }
 				}
 				else {
-					scope = doclet.getScope();
+					scope = doclet.tagValue('scope');
 
 					if (!scope) {
 						scope = 'static'; // default scope is static
@@ -168,7 +168,7 @@
 				enclosingDoc = exports.docFromNode(enclosing);
 				
 				if (enclosingDoc) {
-					if (enclosingDoc.getScope() === 'inner') memberof = ''; // inner functions have `this` scope of global
+					if (enclosingDoc.tagValue('scope') === 'inner') memberof = ''; // inner functions have `this` scope of global
 					else memberof = enclosingDoc.tagValue('path');
 				}
 				else {

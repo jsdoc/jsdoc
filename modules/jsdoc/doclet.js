@@ -85,8 +85,12 @@
 		@returns {*} The value of the found tag.
 	 */
 	Doclet.prototype.tagValue = function(tagName) {
+		var tagAbout = tagDictionary.lookUp(tagName);
 		for (var i = 0, leni = this.tags.length; i < leni; i++) {
 			if (this.tags[i].name === tagName) {
+				if (tagAbout.isScalar && this.tags[i].value.push) {
+					return this.tags[i].value[0];
+				}
 				return this.tags[i].value;
 			}
 		}
@@ -109,7 +113,7 @@
 			}
 		}
 
-		this.tags[this.tags.length] = parse_tag.fromText(tagName + ' ' + tagValue);
+		this.addTag(tagName, tagValue);
 	}
 	
 	/**
@@ -120,7 +124,7 @@
 		@returns {Tag} The new tag.
 	 */
 	Doclet.prototype.addTag = function(tagName, tagValue) {
-		this.tags[this.tags.length] = parse_tag.fromText(tagName + ' ' + tagValue);
+		return this.tags.addTag(tagName, tagValue);
 	}
 	
 	/**
@@ -146,13 +150,7 @@
 		@returns {boolean} True if the tag is found, false otherwise.
 	 */
 	Doclet.prototype.hasTag = function(tagName) {
-		var i = this.tags.length;
-		while(i--) {
-			if (this.tags[i].name === tagName) {
-				return true;
-			}
-		}
-		return false;
+		return this.tags.hasTag(tagName);
 	}
 	
 	/**
@@ -212,23 +210,23 @@
 		}
 		return o;
 	}
-	
-	// TODO need to simplify this string or array business. maybe define some props as scalar?
-	Doclet.prototype.getScope = function() {
-		var scope = this.tagValue('scope');
-
-		if (!scope) {
-			return '';
-		}
-		else if (typeof scope === 'string' && ['inner', 'static', 'instance'].indexOf(scope) > -1) {
-			return scope;
-		}
-		else {
-			if (scope.indexOf('instance') > -1) { return 'instance'; }
-			else if (scope.indexOf('inner') > -1) { return 'inner'; }
-			else if (scope.indexOf('static') > -1) { return 'static'; }
-		}
-	}
+// 	
+// 	// TODO need to simplify this string or array business. maybe define some props as scalar?
+// 	Doclet.prototype.getScope = function() {
+// 		var scope = this.tagValue('scope');
+// 
+// 		if (!scope) {
+// 			return '';
+// 		}
+// 		else if (typeof scope === 'string' && ['inner', 'static', 'instance'].indexOf(scope) > -1) {
+// 			return scope;
+// 		}
+// 		else {
+// 			if (scope.indexOf('instance') > -1) { return 'instance'; }
+// 			else if (scope.indexOf('inner') > -1) { return 'inner'; }
+// 			else if (scope.indexOf('static') > -1) { return 'static'; }
+// 		}
+// 	}
 	
 	/**
 		Remove JsDoc comment slash-stars. Trims white space.
@@ -288,23 +286,23 @@
 			tagAbout = tagDictionary.lookUp(tags[i].name);
 			
 			if (tagAbout.setsDocletAttrib) {
-				tags[tags.length] = parse_tag.fromText('attrib '+tags[i].name);
+				tags.addTag('attrib', tags[i].name);
 			}
 			
 			if (tagAbout.setsDocletAccess) {
-				tags[tags.length] = parse_tag.fromText('access '+tags[i].name);
+				tags.addTag('access', tags[i].name);
 			}
 			
 			if (tagAbout.setsDocletScope) {
-				tags[tags.length] = parse_tag.fromText('scope '+tags[i].name);
+				tags.addTag('scope', tags[i].name);
 			}
 			
 			if (tagAbout.impliesTag) { // TODO allow a template string?
- 				tags[tags.length] = parse_tag.fromText(tagAbout.impliesTag);
+ 				tags.addTag(tagAbout.impliesTag);
  			}
  			
  			if (tagAbout.setsDocletDesc) {
- 				tags[tags.length] = parse_tag.fromText('desc '+tags[i].value);
+ 				tags.addTag('desc', tags[i].value);
  			}
  			
  			if (tags[i].name === 'name') {
@@ -343,7 +341,7 @@
 					}
 				
 					if (tags[i].pdesc) {
-						tags[tags.length] = parse_tag.fromText('desc ' + tags[i].pdesc);
+						tags.addTag('desc', tags[i].pdesc);
 					}
 				
 					if (kind && kind !== tags[i].name) {
@@ -355,19 +353,19 @@
 		}
 		
 		if (name && !taggedName) {
-			tags[tags.length] = parse_tag.fromText('name ' + name);
+			tags.addTag('name', name);
 		}
 		
 		if ( isFile && !(name || taggedName) ) {
-			tags[tags.length] = parse_tag.fromText('name file:'+meta.file+'');
+			tags.addTag('name', 'file:'+meta.file);
 		}
 		
 		if (kind && !taggedIsa) {
-			tags[tags.length] = parse_tag.fromText('kind ' + kind);
+			tags.addTag('kind', kind);
 		}
 		
 		if (memberof && !taggedMemberof) {
-			tags[tags.length] = parse_tag.fromText('memberof ' + memberof);
+			tags.addTag('memberof', memberof);
 		}
 	}
 
@@ -384,13 +382,13 @@
 			
 		// class tags imply a constructor tag
 		if (tags[i].name === 'class' && !doclet.hasTag('constructor') ) {
-			doclet.tags[doclet.tags.length] = parse_tag.fromText('kind constructor');
+			tags.addTag('kind', 'constructor');
 		}
 		
 		// enums have a defualt type of number
 		if (tags[i].name === 'enum') {
 			if ( !doclet.hasTag('type') ) {
-				doclet.tags[doclet.tags.length] = parse_tag.fromText('type number');
+				tags.addTag('type', 'number');
 			}
 		}
 				
@@ -404,7 +402,7 @@
 					else docletTypes = tags[i].type;
 					
 					for (var i = 0, leni = docletTypes.length; i < leni; i++) {
-						doclet.tags[doclet.tags.length] = parse_tag.fromText('type '+docletTypes[i]);
+						tags.addTag('type', docletTypes[i]);
 					}
 				}
 			}

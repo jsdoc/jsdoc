@@ -65,7 +65,7 @@
 	// default properties of all tags
 	TagDefinition.prototype = {
 		isExported        : false, // this tag should appear as a top level property in the doclet?
-		setsDocletKind     : false, // the name of this tag is used to define the doclet's kind property
+		setsDocletKind    : false, // the name of this tag is used to define the doclet's kind property
 		setsDocletDesc    : false,
 		setsDocletName    : false, // this tag can be used to name the doclet
 		setsDocletAttrib  : false, // the name of this tag becomes the attribute of the doclet
@@ -76,7 +76,8 @@
 		canHavePname      : false, // this tag can have a parameter-type name
 		canHavePdesc      : false, // this tag can have a parameter-type desc
 		keepsWhitespace   : false, // don't try to tidy up the whitespace in this tag?
-		impliesTag        : false // this tag implies another tag
+		impliesTag        : false, // this tag implies another tag
+		isScalar          : false  // can only have a single value (first wins)
 	};
 
 	/** Syntax: @access <text> (private|public|protected)
@@ -86,7 +87,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('access', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @scope <text> (global|static|inner|instance)
@@ -96,7 +98,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('scope', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @desc <text>
@@ -105,7 +108,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('desc', { // t
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @kind <text>
@@ -115,7 +119,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('kind', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @name <docletName>
@@ -124,7 +129,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('name', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @path <text>
@@ -134,7 +140,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('path', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @memberOf <text>
@@ -175,7 +182,8 @@
 	 */
 	 new TagDefinition('classdesc', { //t
 		isExported: true,
-		impliesTag: 'constructor'
+		impliesTag: 'constructor',
+		isScalar: true
 	});
 	
 	/** Syntax: @constant|const <docletType> <docletName>
@@ -313,7 +321,8 @@
 	 new TagDefinition('thisobj', { //t
 		isExported: true,
 		canHaveType: true,
-		canHavePdesc: true
+		canHavePdesc: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @attrib <docletAttrib> (readonly)
@@ -442,7 +451,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('since', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @version <text>
@@ -451,7 +461,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('version', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @requires <text>
@@ -480,7 +491,8 @@
 		@memberOf module:jsdoc/tagdictionary.tagDefinitions
 	 */
 	 new TagDefinition('deprecated', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @see <text>

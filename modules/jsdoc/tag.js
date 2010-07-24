@@ -99,6 +99,41 @@
 	}
 	
 	/**
+		@param {string|Tag} tagOrTagName
+		@param {*} [tagValue]
+	 */
+	function addTag(tagName, tagValue) {
+		var tag;
+		if (tagName.name) {
+			tag = tagName;
+			tagName = tagName.name;
+		}
+		
+		var tagAbout = tagDictionary.lookUp(tagName);
+		if (tagAbout.isScalar && this.hasTag(tagName)) {
+			return false;
+		}
+		if (typeof tagValue === 'undefined') {
+			// TODO this could obviously be more efficient
+			this[this.length] = tag || exports.fromText(tagName);
+		}
+		else {
+			this[this.length] = tag || exports.fromText(tagName + ' ' + tagValue);
+		}
+		return true;
+	}
+	
+	function hasTag(tagName, tagValue) {
+		var i = this.length;
+		while(i--) {
+			if (this[i].name === tagName) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 		Given the source of a jsdoc comment, finds the tags.
 		@private
 		@function parse
@@ -107,6 +142,8 @@
 	 */
 	exports.parse = function(commentSrc) {
 		var tags = [];
+		tags.addTag = addTag;
+		tags.hasTag = hasTag;
 
 		// split out the basic tags, keep surrounding whitespace
 		commentSrc
@@ -115,7 +152,7 @@
 		.forEach(function($) {
 			var newTag = exports.fromText($);
 
-			if (newTag.name) { tags.push(newTag); }
+			if (newTag.name) { tags.addTag(newTag); }
 		});
 		
 		return tags;
