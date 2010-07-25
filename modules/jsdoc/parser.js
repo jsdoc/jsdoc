@@ -1,11 +1,13 @@
 (function() {
-	var name = require('jsdoc/name'),
-		doclet = require('jsdoc/doclet'),
-		doclets = require('jsdoc/docset').doclets,
-		opts = require('jsdoc/opts'),
-		Token  = Packages.org.mozilla.javascript.Token;
-		
-	exports.result = doclets;
+	var Token  = Packages.org.mozilla.javascript.Token;
+	
+	var jsdoc = {
+		name: require('jsdoc/name'),
+		doclet: require('jsdoc/doclet'),
+		doclets: require('jsdoc/docset').doclets
+	};
+	
+	exports.result = jsdoc.doclets;
 	
 	/**
 	 */
@@ -16,17 +18,17 @@
 			thisDocletPath = '';
 		
 		// look for all comments that have names provided
- 		if (node.type === Token.SCRIPT && node.comments) { 			
+ 		if (node.type === Token.SCRIPT && node.comments) {
  			for each (var comment in node.comments.toArray()) {
  				if (comment.commentType === Token.CommentType.JSDOC) {
  					commentSrc = '' + comment.toSource();
  					if (commentSrc) {
- 						thisDoclet = doclet.makeDoclet(commentSrc, comment, currentSourceName);
+ 						thisDoclet = jsdoc.doclet.makeDoclet(commentSrc, comment, currentSourceName);
 
  						if ( thisDoclet.hasTag('name') && thisDoclet.hasTag('kind') ) {
- 							doclets.addDoclet(thisDoclet);
+ 							jsdoc.doclets.addDoclet(thisDoclet);
  							if (thisDoclet.tagValue('kind') === 'module') {
- 								name.setCurrentModule( thisDoclet.tagValue('path') );
+ 								jsdoc.name.setCurrentModule( thisDoclet.tagValue('path') );
  							}
  						}
  					}
@@ -42,7 +44,7 @@
 			commentSrc = (node.jsDoc)? String(node.jsDoc) : '';
 
 			if (commentSrc) {
-				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
+				thisDoclet = jsdoc.doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagValue('path');
 
 				if (!thisDoclet.hasTag('kind')) { // guess kind from the source code
@@ -50,20 +52,20 @@
 				}
 				
 				if (!thisDocletName) { // guess name from the source code
-					thisDocletName = name.resolveInner(node.name, node, thisDoclet);
+					thisDocletName = jsdoc.name.resolveInner(node.name, node, thisDoclet);
 					thisDoclet.setName(thisDocletName);
 
-					doclets.addDoclet(thisDoclet);
+					jsdoc.doclets.addDoclet(thisDoclet);
 				}
-				name.refs.push([node, thisDoclet]);
+				jsdoc.name.refs.push([node, thisDoclet]);
 			}
 			else { // an uncommented function?
 				// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
-				thisDoclet = doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
+				thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
 
-				nodeName = name.resolveThis(node.name, node, thisDoclet);
+				nodeName = jsdoc.name.resolveThis(node.name, node, thisDoclet);
 				thisDoclet.setName(nodeName);
-				name.refs.push([
+				jsdoc.name.refs.push([
 					node, 
 					thisDoclet
 				]);
@@ -82,7 +84,7 @@
 			if (commentSrc) {
 				commentSrc = '' + commentSrc;
 
-				thisDoclet = doclet.makeDoclet(commentSrc, node, currentSourceName);
+				thisDoclet = jsdoc.doclet.makeDoclet(commentSrc, node, currentSourceName);
 				thisDocletName = thisDoclet.tagValue('name');
 				nodeKind = thisDoclet.tagValue('kind');
 
@@ -96,22 +98,22 @@
 				}
 
 				if (!thisDocletName) { // guess name from the source code
-					nodeName = name.resolveThis(nodeName, node, thisDoclet);
+					nodeName = jsdoc.name.resolveThis(nodeName, node, thisDoclet);
 
 					thisDoclet.setName(nodeName);
-					doclets.addDoclet(thisDoclet);
+					jsdoc.doclets.addDoclet(thisDoclet);
 				}
-				name.refs.push([node.right, thisDoclet]);
+				jsdoc.name.refs.push([node.right, thisDoclet]);
 			}
 			else { // an uncommented objlit or anonymous function?
 				
 				// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
 
-				thisDoclet = doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
-				nodeName = name.resolveThis(nodeName, node, thisDoclet);
+				thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
+				nodeName = jsdoc.name.resolveThis(nodeName, node, thisDoclet);
 				
 				thisDoclet.setName(nodeName);
-				name.refs.push([
+				jsdoc.name.refs.push([
 					node.right, 
 					thisDoclet
 				]);
@@ -131,7 +133,7 @@
 					
 					commentSrc = (counter++ === 0 && !n.jsDoc)? node.jsDoc : n.jsDoc;
 					if (commentSrc) {
-						thisDoclet = doclet.makeDoclet('' + commentSrc, node, currentSourceName);
+						thisDoclet = jsdoc.doclet.makeDoclet('' + commentSrc, node, currentSourceName);
 						thisDocletPath = thisDoclet.tagValue('path');
 						thisDocletName = thisDoclet.tagValue('name');
 
@@ -147,26 +149,26 @@
 						if (!thisDocletName) {
 							thisDocletName = n.target.string;
 							if (!thisDocletPath) { // guess path from the source code
-								thisDocletPath = name.resolveInner(thisDocletName, node, thisDoclet);
+								thisDocletPath = jsdoc.name.resolveInner(thisDocletName, node, thisDoclet);
 								thisDoclet.setName(thisDocletPath);
 							}
 							else {
 								thisDoclet.setName(thisDocletName);
 							}
-							doclets.addDoclet(thisDoclet);
+							jsdoc.doclets.addDoclet(thisDoclet);
 						}
 						
-						if (val) { name.refs.push([val, thisDoclet]); }
+						if (val) { jsdoc.name.refs.push([val, thisDoclet]); }
 					}
 					else { // an uncommented objlit or anonymous function?
 						var nodeName = nodeToString(n.target);
 						// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
-						thisDoclet = doclet.makeDoclet('[[undocumented]]', n.target, currentSourceName);
+						thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', n.target, currentSourceName);
 
-						nodeName = name.resolveInner(nodeName, n.target, thisDoclet);
+						nodeName = jsdoc.name.resolveInner(nodeName, n.target, thisDoclet);
 						thisDoclet.setName(nodeName);
 						
-						if (val) name.refs.push([val, thisDoclet]);
+						if (val) jsdoc.name.refs.push([val, thisDoclet]);
 					}
 				}
 				

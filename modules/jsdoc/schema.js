@@ -33,7 +33,7 @@ exports.jsdocSchema = {
 					"kind": {
 						"type": "string",
 						"maxItems": 1,
-						"enum": ["constructor", "module", "event", "namespace", "method", "property", "enum", "class", "interface", "constant", "file"]
+						"enum": ["constructor", "module", "event", "namespace", "method", "property", "enum", "class", "interface", "constant", "file", "version"]
 					},
 					"access": {
 						"type": "string",

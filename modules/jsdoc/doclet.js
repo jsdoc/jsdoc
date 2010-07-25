@@ -9,9 +9,11 @@
 	@module jsdoc/doclet
  */
 (function() {	
-	var name = require('jsdoc/name'),
-		parse_tag = require('jsdoc/tag'),
-		tagDictionary = require('jsdoc/tagdictionary');
+	var jsdoc = {
+		name: require('jsdoc/name'),
+		tag: require('jsdoc/tag'),
+		tagDictionary: require('jsdoc/tagdictionary')
+	};
 	
 	/**
 		Factory that builds a Doclet object.
@@ -31,7 +33,7 @@
 		commentSrc = unwrapComment(commentSrc);
 		commentSrc = fixDesc(commentSrc);
 		
-		tags = parse_tag.parse(commentSrc);
+		tags = jsdoc.tag.parse(commentSrc);
 
 		try {
 			preprocess(tags, meta);
@@ -48,7 +50,7 @@
 		doclet.meta = meta;
 	
 		postprocess(doclet);
-		name.resolve(doclet);
+		jsdoc.name.resolve(doclet);
 
 		return doclet
 	}
@@ -70,12 +72,12 @@
 	/**
 		Set the name of the Doclet.
 		@method Doclet#setName
-		@param {string name
+		@param {string} nameToSet
 	 */
 	Doclet.prototype.setName = function(nameToSet) {
 		this.setTag('name', nameToSet);
 
-		nameToSet = name.resolve(this);
+		nameToSet = jsdoc.name.resolve(this);
 	}
 	
 	/**
@@ -85,7 +87,7 @@
 		@returns {*} The value of the found tag.
 	 */
 	Doclet.prototype.tagValue = function(tagName) {
-		var tagAbout = tagDictionary.lookUp(tagName);
+		var tagAbout = jsdoc.tagDictionary.lookUp(tagName);
 		for (var i = 0, leni = this.tags.length; i < leni; i++) {
 			if (this.tags[i].name === tagName) {
 				if (tagAbout.isScalar && this.tags[i].value.push) {
@@ -167,7 +169,7 @@
 			tag = this.tags[i];
 			tagName = tag.name;
 			tagValue = {};
-			tagAbout = tagDictionary.lookUp(tagName);
+			tagAbout = jsdoc.tagDictionary.lookUp(tagName);
 			
 			if (!tagAbout.isExported) { continue; }
 
@@ -283,7 +285,7 @@
 			tagAbout;
 		
 		for (var i = 0; i < tags.length; i++) {
-			tagAbout = tagDictionary.lookUp(tags[i].name);
+			tagAbout = jsdoc.tagDictionary.lookUp(tags[i].name);
 			
 			if (tagAbout.setsDocletAttrib) {
 				tags.addTag('attrib', tags[i].name);
@@ -377,7 +379,7 @@
 		var tags = doclet.tags;
 		
 		for (var i = 0, leni = tags.length; i < leni; i++) {
-			tagAbout = tagDictionary.lookUp(tags[i].name);
+			tagAbout = jsdoc.tagDictionary.lookUp(tags[i].name);
 			
 			
 		// class tags imply a constructor tag

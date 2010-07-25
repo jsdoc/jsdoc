@@ -33,8 +33,7 @@
 		'throws':      'exception',
 		'class':       'classdesc',
 		'this':        'thisobj',
-		'preserve':    'ignore',
-		'license':     'ignore'
+		'preserve':    'ignore'
 	};
 	
 	tagDictionary.resolveSynonyms = function(name) {

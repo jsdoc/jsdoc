@@ -11,8 +11,11 @@
 (function() {
 
 	var Token  = Packages.org.mozilla.javascript.Token,
-		currentModule = '',
-		tagDictionary = require('jsdoc/tagdictionary');
+		currentModule = '';
+	
+	var jsdoc = {
+		tagDictionary: require('jsdoc/tagdictionary')
+	};
 	
 	exports.setCurrentModule = function(moduleName) {
 		currentModule = moduleName;
@@ -83,7 +86,7 @@
 		
 		// if name doesn't already have a docspace and needs one
 		// the namespace should appear in the path but not the name
-		if (tagDictionary.lookUp(kind).setsDocletDocspace) {
+		if (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) {
 			if ( /^[a-z_$-]+:(\S+)/i.test(name) ) {
 				name = RegExp.$1;
 			}

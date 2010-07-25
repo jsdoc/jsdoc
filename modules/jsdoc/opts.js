@@ -9,9 +9,11 @@
 	@requires common/args
  */
 (function() {
-	var args = args || require('common/args');
+	var common = {
+		args: require('common/args')
+	};
 	
-	var argsParser = new args.Parser(),
+	var argsParser = new common.args.Parser(),
 		ourOptions,
 		defaults = {
 			template: 'default',

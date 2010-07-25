@@ -9,8 +9,10 @@
 	@module jsdoc/tag
  */
 (function() {
-	var jsdoc_type = require('jsdoc/type'),
-		tagDictionary = require('jsdoc/tagdictionary');
+	var jsdoc = {
+		type: require('jsdoc/type'),
+		tagDictionary: require('jsdoc/tagdictionary')
+	};
 	
 	exports.fromText = function(tagText) {
 		var tag = new Tag(tagText);
@@ -46,12 +48,12 @@
 
 		if (parts) {
 			this.name = (parts[1] || '').toLowerCase(); // like @name
-			this.name = tagDictionary.resolveSynonyms(this.name);
+			this.name = jsdoc.tagDictionary.resolveSynonyms(this.name);
 
 			tagText = parts[2] || ''; // all the rest of the tag
 			
 			// now that we know who you are, tell us a little about yourself...
-			var tagAbout = tagDictionary.lookUp(this.name);
+			var tagAbout = jsdoc.tagDictionary.lookUp(this.name);
 			
 			if (!tagAbout.keepsWhitespace) {
 				tagText = trim(tagText);
@@ -64,7 +66,7 @@
 					/*any*/ value,
 					/*?boolean*/ optional,
 					/*?boolean*/ nullable
-				] = jsdoc_type.parse(this.value);
+				] = jsdoc.type.parse(this.value);
 				
 				if (type && type.length) { this.type = type; }
 				
@@ -109,7 +111,7 @@
 			tagName = tagName.name;
 		}
 		
-		var tagAbout = tagDictionary.lookUp(tagName);
+		var tagAbout = jsdoc.tagDictionary.lookUp(tagName);
 		if (tagAbout.isScalar && this.hasTag(tagName)) {
 			return false;
 		}

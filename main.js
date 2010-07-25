@@ -51,7 +51,7 @@
 			},
 			opts,
 			sourceFiles;
-			
+		
 		app.opts = opts = jsdoc.opts.set(args);
 		
 		if (opts.help) {
