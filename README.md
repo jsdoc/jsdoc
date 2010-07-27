@@ -7,10 +7,10 @@ intended for general use.
 Install
 -------
 
-To build the jar file that runs JSDoc 3 use the ant build tool.
+To build the jsdoc jar that runs JSDoc 3, use the ant build tool.
 
     $ cd JSDoc
-    $ ant jar-install
+    $ ant
 
 This will create a file name `jsdoc.jar` in the project base
 directory.
