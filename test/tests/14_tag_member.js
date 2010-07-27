@@ -15,7 +15,7 @@
 			
 		});
 		
-		describe('A doclet with a method tag and a memberof tag', function() {
+		describe('A doclet with a method tag and a memberof tag that ends in "prototype"', function() {
 			it('should have an `kind` property set to "method"', function() {
 				var doclet = doclets[2];
 				expect(doclet).to(have_property, 'kind');
@@ -31,7 +31,13 @@
 			it('should have a `memberof` property set to the given member name', function() {
 				var doclet = doclets[2];
 				expect(doclet).to(have_property, 'memberof');
-				expect(doclet.memberof).to(eql, 'foo#');
+				expect(doclet.memberof).to(eql, 'foo');
+			});
+			
+			it('should have a `scope` property set to "instance"', function() {
+				var doclet = doclets[2];
+				expect(doclet).to(have_property, 'scope');
+				expect(doclet.scope).to(eql, 'instance');
 			});
 			
 			it('should have a `path` property set to the parent+member names', function() {
@@ -116,6 +122,26 @@
 				var doclet = doclets[5];
 				expect(doclet).to(have_property, 'path');
 				expect(doclet.path).to(eql, 'bar#bosh');
+			});
+		});
+		
+		describe('A doclet with a property tag and a member tag and an instance access tag', function() {
+			it('should have a `name` property set to the given name"', function() {
+				var doclet = doclets[8];
+				expect(doclet).to(have_property, 'name');
+				expect(doclet.name).to(eql, 'innie');
+			});
+			
+			it('should have a `memberof` property set to the given member name', function() {
+				var doclet = doclets[8];
+				expect(doclet).to(have_property, 'memberof');
+				expect(doclet.memberof).to(eql, 'foo');
+			});
+			
+			it('should have a `path` property set to the memberof~name', function() {
+				var doclet = doclets[8];
+				expect(doclet).to(have_property, 'path');
+				expect(doclet.path).to(eql, 'foo~innie');
 			});
 		});
 		

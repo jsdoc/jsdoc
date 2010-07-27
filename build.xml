@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
  
-<project name="JSDoc-3" default="about">
+<project name="JSDoc-3" default="jar-install">
 	<property file="build/build.properties" />
 	<property name="build.templates" location="build/templates" />
 	

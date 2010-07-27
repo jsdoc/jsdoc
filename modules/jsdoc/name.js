@@ -47,6 +47,8 @@
 		path = name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
 
 		if (memberof) { // @memberof tag given
+			memberof = memberof.replace(/\.prototype\.?/g, '#');
+			
 			// like @name foo.bar, @memberof foo
 			if (name.indexOf(memberof) === 0) {
 				[prefix, scope, name] = exports.shorten(name);
@@ -55,7 +57,9 @@
 				if ( /([.~#])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
 					path = memberof + name;
 					scope = RegExp.$1;
-					if (name) { doclet.addTag('scope', puncToScope[scope]); }
+					doclet.setTag('scope', puncToScope[scope]);
+					memberof = memberof.slice(0, -1);
+					doclet.setTag('memberof', memberof);
 				}
 				else {
 					scope = doclet.tagValue('scope');
@@ -211,7 +215,6 @@
 	exports.resolveInner = function(name, node, doclet) {
 		var enclosing = node.getEnclosingFunction(),
 			enclosingDoc = exports.docFromNode(enclosing);
-		
 		if (enclosingDoc) {
 			memberof = enclosingDoc.tagValue('path');
 		}

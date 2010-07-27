@@ -45,16 +45,15 @@
 
 			if (commentSrc) {
 				thisDoclet = jsdoc.doclet.makeDoclet(commentSrc, node, currentSourceName);
-				thisDocletName = thisDoclet.tagValue('path');
-
+				thisDocletName = thisDoclet.tagValue('name');
+				
 				if (!thisDoclet.hasTag('kind')) { // guess kind from the source code
 					thisDoclet.addTag('kind', 'method')
 				}
 				
 				if (!thisDocletName) { // guess name from the source code
-					thisDocletName = jsdoc.name.resolveInner(node.name, node, thisDoclet);
-					thisDoclet.setName(thisDocletName);
-
+					nodeName = jsdoc.name.resolveInner(node.name, node, thisDoclet);
+					thisDoclet.setName(nodeName);
 					jsdoc.doclets.addDoclet(thisDoclet);
 				}
 				jsdoc.name.refs.push([node, thisDoclet]);

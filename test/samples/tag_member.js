@@ -5,7 +5,7 @@
  	
  	/**
  		@method fah
- 		@memberof foo#
+ 		@memberof foo.prototype
  	 */
  	
  	/**
@@ -42,3 +42,8 @@
 	(function(v) {
 		foz = function() {var baz = v; };
 	})(baz);
+
+	/**
+ 		@memberof foo~
+ 	 */
+ 	 function innie() {}

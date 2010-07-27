@@ -1,3 +1,4 @@
+
 // undocumented
 ShapeFactory.prototype = {
 	// undocumented

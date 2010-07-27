@@ -1,7 +1,7 @@
 {
 	"name": "@app.name@",
 	"version": "@app.version@",
-	"timestamp": "@timestamp@",
+	"revision": "@timestamp@",
 	"description": "An automatic documentation generator for javascript",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
