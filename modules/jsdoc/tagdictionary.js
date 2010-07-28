@@ -6,6 +6,11 @@
 	/**
 		@module jsdoc/tagdictionary
 	 */
+	
+	/** @namespace
+		@inner
+		@member module:jsdoc/tagdictionary
+	 */
 	var tagDefinitions = {};
 	
 	/**
@@ -44,8 +49,8 @@
 		}
 	}
 	
-	/** @inner
-		@constructor
+	/** 
+		@deprecated
 		@memberOf module:jsdoc/tagdictionary
 	*/
 	function TagDefinition(title, opts) {
@@ -80,9 +85,8 @@
 
 	/** Syntax: @access <text> (private|public|protected)
 		@private
-		@inner
-		@property {TagDefinition} access
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} access
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('access', {
 		isExported: true,
@@ -91,9 +95,8 @@
 	
 	/** Syntax: @scope <text> (global|static|inner|instance)
 		@private
-		@inner
-		@property {TagDefinition} scope
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} scope
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('scope', {
 		isExported: true,
@@ -101,9 +104,8 @@
 	});
 	
 	/** Syntax: @desc <text>
-		@inner
-		@property {TagDefinition} desc
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} desc
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('desc', { // t
 		isExported: true,
@@ -112,9 +114,8 @@
 	
 	/** Syntax: @kind <text>
 		@private
-		@inner
-		@property {TagDefinition} kind
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} kind
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('kind', {
 		isExported: true,
@@ -122,9 +123,8 @@
 	});
 	
 	/** Syntax: @name <docletName>
-		@inner
-		@property {TagDefinition} name
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} name
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('name', {
 		isExported: true,
@@ -133,9 +133,8 @@
 	
 	/** Syntax: @path <text>
 		@private
-		@inner
-		@property {TagDefinition} path
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} path
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('path', {
 		isExported: true,
@@ -143,18 +142,16 @@
 	});
 	
 	/** Syntax: @memberOf <text>
-		@inner
-		@property {TagDefinition} memberof
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} memberof
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('memberof', { //t
 		isExported: true
 	});
 	
 	/** Syntax: @namespace <docletType> <docletName>
-		@inner
-		@property {TagDefinition} namespace
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} namespace
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('namespace', { //t
 		canHaveType: true,
@@ -164,9 +161,8 @@
 	});
 	
 	/** Syntax: @constructor <docletName>
-		@inner
-		@property {TagDefinition} constructor
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} constructor
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('constructor', { //t
 		setsDocletKind: true,
@@ -174,9 +170,8 @@
 	});
 	
 	/** Syntax: @classdesc|class <text>
-		@inner
-		@property {TagDefinition} classdesc
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} classdesc
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('classdesc', { //t
 		isExported: true,
@@ -185,9 +180,8 @@
 	});
 	
 	/** Syntax: @constant|const <docletType> <docletName>
-		@inner
-		@property {TagDefinition} constant
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} constant
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('constant', {
 		canHaveType: true,
@@ -197,9 +191,8 @@
 	});
 	
 	/** Syntax: @enum <docletType> <docletName>
-		@inner
-		@property {TagDefinition} enum
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} enum
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('enum', {
 		canHaveType: true,
@@ -209,9 +202,8 @@
 	});
 	
 	/** Syntax: @file|overview|fileoverview <docletName>
-		@inner
-		@property {TagDefinition} file
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} file
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('file', { //t
 		setsDocletKind: true,
@@ -221,9 +213,8 @@
 	});
 	
 	/** Syntax: @method|function <returnType> <docletName> <docletDesc>
-		@inner
-		@property {TagDefinition} method
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} method
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('method', { //t
 		canHaveType: true,
@@ -232,11 +223,10 @@
 		setsDocletName: true
 	});
 	
-	/** Syntax: @inner
+	/** Syntax: @property <type> <pname> <pdesc>
 		@property|field|var <docletType> <docletName> <docletDesc>
-		@inner
-		@property {TagDefinition} property
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} property
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('property', { //t
 		canHaveType: true,
@@ -247,9 +237,8 @@
 	});
 	
 	/** Syntax: @event <docletName>
-		@inner
-		@property {TagDefinition} event
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} event
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('event', {
 		setsDocletKind: true,
@@ -258,9 +247,8 @@
 	});
 	
 	/** Syntax: @module <docletName>
-		@inner
-		@property {TagDefinition} module
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} module
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('module', {
 		setsDocletKind: true,
@@ -269,9 +257,8 @@
 	});
 	
 	/** Syntax: @example <text>
-		@inner
-		@property {TagDefinition} example
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} example
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('example', {
 		isExported: true,
@@ -279,9 +266,8 @@
 	});
 	
 	/** Syntax: @param <type> <pname> <pdesc>
-		@inner
-		@property {TagDefinition} param
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} param
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('param', {
 		isExported: true,
@@ -291,9 +277,8 @@
 	});
 	
 	/** Syntax: @type <type>
-		@inner
-		@property {TagDefinition} type
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} type
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('type', { //t
 		isExported: true,
@@ -301,9 +286,8 @@
 	});
 	
 	/** Syntax: @returns|return <returnType> <text>
-		@inner
-		@property {TagDefinition} returns
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} returns
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('returns', { //t
 		isExported: true,
@@ -312,9 +296,8 @@
 	});
 	
 	/** Syntax: @thisobj|this <thisobjType> <text>
-		@inner
-		@property {TagDefinition} thisobj
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} thisobj
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('thisobj', { //t
 		isExported: true,
@@ -325,90 +308,80 @@
 	
 	/** Syntax: @attrib <docletAttrib> (readonly)
 		@private
-		@inner
-		@property {TagDefinition} attrib
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} attrib
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('attrib', {
 		isExported: true
 	});
 	
 	/** Syntax: @private
-		@inner
-		@property {TagDefinition} private
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} private
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('private', {
 		setsDocletAccess: true
 	});
 	
 	/** Syntax: @protected
-		@inner
-		@property {TagDefinition} protected
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} protected
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('protected', {
 		setsDocletAccess: true
 	});
 	
 	/** Syntax: @public
-		@inner
-		@property {TagDefinition} public
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} public
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('public', {
 		setsDocletAccess: true
 	});
 	
 	/** Syntax: @readonly
-		@inner
-		@property {TagDefinition} readonly
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} readonly
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('readonly', {
 		setsDocletAttrib: true
 	});
 	
 	/** Syntax: @inner
-		@inner
-		@property {TagDefinition} inner
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} inner
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('inner', {
 		setsDocletScope: true
 	});
 	
 	/** Syntax: @static
-		@inner
-		@property {TagDefinition} static
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} static
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('static', {
 		setsDocletScope: true
 	});
 	
 	/** Syntax: @global
-		@inner
-		@property {TagDefinition} global
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} global
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('global', {
 		setsDocletScope: true
 	});
 	
 	/** Syntax: @instance
-		@inner
-		@property {TagDefinition} instance
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} instance
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('instance', {
 		setsDocletScope: true
 	});
 	
 	/** Syntax: @exception|throws {type} <text>
-		@inner
-		@property {TagDefinition} exception
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} exception
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('exception', {
 		isExported: true,
@@ -417,36 +390,32 @@
 	});
 	
 	/** Syntax: @fires <text>
-		@inner
-		@property {TagDefinition} fires <text>
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} fires <text>
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('fires', { //t
 		isExported: true
 	});
 	
 	/** Syntax: @extends|augments <type>
-		@inner
-		@property {TagDefinition} extends
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} extends
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('extends', {
 		isExported: true
 	});
 	
 	/** Syntax: @author <text>
-		@inner
-		@property {TagDefinition} author
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} author
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('author', {
 		isExported: true
 	});
 	
 	/** Syntax: @since <text>
-		@inner
-		@property {TagDefinition} since
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} since
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('since', {
 		isExported: true,
@@ -454,9 +423,9 @@
 	});
 	
 	/** Syntax: @version <text>
-		@inner
-		@property {TagDefinition} version
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		
+		@property {module:jsdoc/tagdictionary~TagDefinition} version
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('version', {
 		isExported: true,
@@ -464,18 +433,16 @@
 	});
 	
 	/** Syntax: @requires <text>
-		@inner
-		@property {TagDefinition} requires
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} requires
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('requires', {
 		isExported: true
 	});
 	
 	/** Syntax: @tag <tagname> <tagtext>
-		@inner
-		@property {TagDefinition} tag
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} tag
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('tag', {
 		isExported: true,
@@ -484,9 +451,8 @@
 	});
 	
 	/** Syntax: @deprecated <text>
-		@inner
-		@property {TagDefinition} deprecated
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} deprecated
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('deprecated', {
 		isExported: true,
@@ -494,9 +460,8 @@
 	});
 	
 	/** Syntax: @see <text>
-		@inner
-		@property {TagDefinition} see
-		@memberOf module:jsdoc/tagdictionary.tagDefinitions
+		@property {module:jsdoc/tagdictionary~TagDefinition} see
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('see', {
 		isExported: true

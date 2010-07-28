@@ -10,7 +10,7 @@
 				tag: require('jsdoc/tag'),
 				parser: require('jsdoc/parser')
 			};
-			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/15_tag_type.js');
+			jsdoc.parser.parseFiles(BASEDIR + 'test/samples/tag_type.js');
 
 			doclets = jsdoc.parser.result.map(function($){ return $.toObject(); });
 		});
@@ -40,28 +40,13 @@
 				expect(doclet.type).to(eql, ['{myNum: number, myObject}', 'function(string:a, string:b){}:number']);
 			});
 		});
+		
+		describe('A doclet with a type tag whose value contains a union of two types, surrounded by parens', function() {
+			it('should have an `type` property set to those two types', function() {
+				var doclet = doclets[5];
+				expect(doclet).to(have_property, 'type');
+				expect(doclet.type).to(eql, ['string', 'number']);
+			});
+		});
 	});
-})();
-
-(function testarea() {
-
-	/** @namespace foo */
-	
-	/** @constructor bar */
-	
-	/**
-		@property foo#fah
-		@type number
-	 */
-	
-	/**
-		@property foo#fahfah
-		@type number | Array.<number>
-	 */
-	
-	/**
-		@property bar.bah
-		@type {{myNum: number, myObject}|function(string:a, string:b){}:number}
-	 */
-	
 })();

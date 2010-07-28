@@ -37,3 +37,15 @@ Support For E4X
 [new] As a benefit of using Rhino's own JavaScript parser, JSDoc has inherited
 the ability to parse any source code that Rhino can parse, including the latest
 syntax patterns like E4X (ECMAScript for XML).
+
+Defining Multiple Types
+---
+
+[change] When writing any type expression that is made up of multiple types in
+version 3 you must use the pipe character as a separator. Pipes or commas were
+allowed in version 2. This change was made to increase compatibility with type
+unions in the Google Closure Compiler.
+
+	/**
+		@type {string|Object.<string, string>}
+	 */
