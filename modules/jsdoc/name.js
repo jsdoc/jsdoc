@@ -214,18 +214,24 @@
 	 */
 	exports.resolveInner = function(name, node, doclet) {
 		var enclosing = node.getEnclosingFunction(),
-			enclosingDoc = exports.docFromNode(enclosing);
-		if (enclosingDoc) {
-			memberof = enclosingDoc.tagValue('path');
-		}
-		else {
-			memberof = (enclosing && enclosing.name == '')? '[[anonymous]]' : '';
-		}
-		if (memberof) {
-			name = memberof + '~' + name;
+			enclosingDoc = exports.docFromNode(enclosing),
+			memberof = doclet.tagValue('memberof'), // may be empty
+			path = name;
+			
+		if (!memberof) {
+			if (enclosingDoc) {
+				memberof = enclosingDoc.tagValue('path');
+			}
+			else {
+				memberof = (enclosing && enclosing.name == '')? '[[anonymous]]' : '';
+			}
 		}
 		
-		return name;
+		if (memberof) {
+			path = memberof + '~' + name;
+		}
+		
+		return path;
 	}
 
 	/**

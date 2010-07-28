@@ -5,6 +5,7 @@ load(BASEDIR + '/test/tests/04_jsdoc_docset.js');
 load(BASEDIR + '/test/tests/05_jsdoc_doclet.js');
 load(BASEDIR + '/test/tests/06_jsdoc_tag.js');
 load(BASEDIR + '/test/tests/07_jsdoc_resolvefunc.js');
+load(BASEDIR + '/test/tests/07_jsdoc_resolvefunc_2.js');
 load(BASEDIR + '/test/tests/07_jsdoc_resolvevar.js');
 load(BASEDIR + '/test/tests/08_tag_name.js');
 load(BASEDIR + '/test/tests/09_tag_desc.js');
