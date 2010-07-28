@@ -6,19 +6,18 @@
 	/**
 		@module jsdoc/tagdictionary
 	 */
-	var tagDictionary = exports,
-		tagDefinitions = {};
+	var tagDefinitions = {};
 	
 	/**
 		@method module:jsdoc/tagdictionary.lookup
 		@param tagTitle Like "param" or "desc"
 		@returns {TagDefinition} The definition for that tag or an empty object.
 	 */
-	tagDictionary.lookUp = function(tagTitle) {
+	exports.lookUp = function(tagTitle) {
 		return tagDefinitions['@'+tagTitle] || {};
 	}
 	
-	tagDictionary.synonyms = {
+	exports.synonyms = {
 		/*synonym   =>  canonical*/
 		'description': 'desc',
 		'function':    'method',
@@ -36,9 +35,9 @@
 		'preserve':    'ignore'
 	};
 	
-	tagDictionary.resolveSynonyms = function(name) {
-		if ( tagDictionary.synonyms.hasOwnProperty(name) ) {
-			return tagDictionary.synonyms[name];
+	exports.resolveSynonyms = function(name) {
+		if ( exports.synonyms.hasOwnProperty(name) ) {
+			return exports.synonyms[name];
 		}
 		else {
 			return name;
