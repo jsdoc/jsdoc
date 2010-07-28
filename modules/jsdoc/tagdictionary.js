@@ -9,7 +9,7 @@
 	var tagDefinitions = {};
 	
 	/**
-		@method module:jsdoc/tagdictionary.lookup
+		Return a tag definition for the tag with the given title.
 		@param tagTitle Like "param" or "desc"
 		@returns {TagDefinition} The definition for that tag or an empty object.
 	 */
@@ -46,7 +46,7 @@
 	
 	/** @inner
 		@constructor
-		@member module:jsdoc/tagdictionary
+		@memberOf module:jsdoc/tagdictionary
 	*/
 	function TagDefinition(title, opts) {
 		this.title = title;
