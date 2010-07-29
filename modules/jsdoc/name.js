@@ -113,31 +113,29 @@
 		return path;
 	}
 	
-	
+	/**
+		Given a path like "a.b#c", slice it up into ["a.b", "#", 'c'].
+	 */
 	exports.shorten = function(path) {
-		// quoted strings in a path are atomic
-		var atoms = [],
-			scope; // ., ~, or #
-			
+		//// quoted strings in a path are atomic
+		var atoms = []; 
 		path = path.replace(/(".+?")/g, function($) {
 			var token = '@{' + atoms.length + '}@';
 			atoms.push($);
 			return token;
 		});
+		////
 
 		var shortname = path.split(/([#.~])/).pop(),
-			splitOn = RegExp.$1 || '.',
-			scope = splitOn,
-			splitAt = path.lastIndexOf(splitOn),
-			prefix = (splitOn && splitAt !== -1)? path.slice(0, splitAt) : '';
+			scope = path[path.length - shortname.length - 1] || '', // ., ~, or #
+			prefix = scope? path.slice(0, path.length - shortname.length - 1) : '';
 		
-		//if (splitOn === '#' || splitOn === '~') { prefix = prefix + splitOn; }
-		
-		// restore quoted strings back again
+		//// restore quoted strings back again
 		for (var i = 0, leni = atoms.length; i < leni; i++) {
 			prefix = prefix.replace('@{'+i+'}@', atoms[i]);
 			shortname = shortname.replace('@{'+i+'}@', atoms[i]);
 		}
+		////
 		
 		return [prefix, scope, shortname];
 	}
