@@ -76,10 +76,19 @@
 			}
 		}
 		else if (kind !== 'file') {
+//print('>>> name is '+name);
 			[prefix, scope, name] = exports.shorten(name);
 			
+			var taggedScope;
+			if ( taggedScope = doclet.tagValue('scope') ) {
+				scope = scopeToPunc[taggedScope];
+				if (prefix) { path = prefix + scope + name; }
+			}
+//print('  > scope is '+scope);
 			if (prefix) {
 				doclet.setTag('memberof', prefix);
+				
+				
 				if (name) { doclet.addTag('scope', puncToScope[scope]); }
 			}
 			else if (name) {
@@ -105,7 +114,7 @@
 			path = memberof + (scope? scope : '') + ns  + name;
 		}
 		else if (ns) { path = ns + name };
-		
+//print('  > path is '+path);
 		if (path) {
 			doclet.setTag('path', path);
 		}
@@ -126,7 +135,7 @@
 		});
 		////
 
-		var shortname = path.split(/([#.~])/).pop(),
+		var shortname = path.split(/[#.~]/).pop(),
 			scope = path[path.length - shortname.length - 1] || '', // ., ~, or #
 			prefix = scope? path.slice(0, path.length - shortname.length - 1) : '';
 		
