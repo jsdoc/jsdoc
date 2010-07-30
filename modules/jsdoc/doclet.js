@@ -261,7 +261,7 @@
 		var name = '',
 			taggedName = '',
 			kind = '',
-			taggedIsa = '',
+			taggedKind = '',
 			memberof = '',
 			taggedMemberof = '',
 			isFile = false, // TODO this should be handled by an event handler in tag dictionary
@@ -300,7 +300,7 @@
 				if (kind && kind !== tags[i].value) {
 					throw new DocTagConflictError('Symbol has too many isas, cannot be both: ' + kind + ' and ' + tags[i].value);
 				}
-				taggedIsa = kind = tags[i].value;
+				taggedKind = kind = tags[i].value;
 			}
 			else if (tags[i].name === 'memberof') {
 				if (memberof) {
@@ -337,6 +337,19 @@
 			}
 		}
 		
+		if ( /^\s*(\S+)\s*=>\s*(\S+)/.test(taggedName) ) {
+			taggedName = RegExp.$1;
+			var refersto = RegExp.$2;
+			
+			tags.setTag('name', taggedName);
+			
+			taggedKind = 'mixin';
+			tags.setTag('kind', taggedKind);
+			
+			tags.addTag('refersto', refersto);
+			
+		}
+		
 		if (name && !taggedName) {
 			tags.addTag('name', name);
 		}
@@ -345,7 +358,7 @@
 			tags.addTag('name', 'file:'+meta.file);
 		}
 		
-		if (kind && !taggedIsa) {
+		if (kind && !taggedKind) {
 			tags.addTag('kind', kind);
 		}
 		
@@ -354,7 +367,7 @@
 		}
 	}
 	
-	// now that we have a doclet object we can do some final  adjustments
+	// now that we have a doclet object we can do some final adjustments
 	function postprocess(doclet) {
 		var tags = doclet.tags;
 		

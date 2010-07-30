@@ -135,6 +135,19 @@
 		return false;
 	}
 	
+	function setTag(tagName, tagValue) {
+		var i = this.length;
+		while(i--) {
+			if (this[i].name === tagName) {
+				this[i].value = tagValue;
+				return true;
+			}
+		}
+		
+		this.addTag(tagName, tagValue);
+		return false;
+	}
+	
 	/**
 		Given the source of a jsdoc comment, finds the tags.
 		@private
@@ -146,6 +159,7 @@
 		var tags = [];
 		tags.addTag = addTag;
 		tags.hasTag = hasTag;
+		tags.setTag = setTag;
 
 		// split out the basic tags, keep surrounding whitespace
 		commentSrc

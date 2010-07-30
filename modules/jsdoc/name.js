@@ -10,12 +10,11 @@
  */
 (function() {
 
-	var Token  = Packages.org.mozilla.javascript.Token,
-		currentModule = '';
-	
-	var jsdoc = {
-		tagDictionary: require('jsdoc/tagdictionary')
-	};
+	var Token = Packages.org.mozilla.javascript.Token,
+		currentModule = '',
+		jsdoc = {
+			tagDictionary: require('jsdoc/tagdictionary')
+		};
 	
 	exports.setCurrentModule = function(moduleName) {
 		currentModule = moduleName;
@@ -54,7 +53,7 @@
 				[prefix, scope, name] = exports.shorten(name);
 			}
 			else { // like @name bar, @memberof foo
-				if ( /([.~#])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
+				if ( /([#.~])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
 					path = memberof + name;
 					scope = RegExp.$1;
 					doclet.setTag('scope', puncToScope[scope]);
@@ -153,77 +152,65 @@
 		return [prefix, scope, name];
 	}
 	
-	/** Given an AST node, return the path to the enclosing node. */
-	function getEnclosingPath(node) {
-		var enclosingNode,
-			enclosingDoc;
-		
-		if (node.parent && node.parent.type === Token.OBJECTLIT) {
-			if (enclosingNode = node.parent) {
-				enclosingDoc = exports.docFromNode(enclosingNode);
-			}
-		}
-		else {
-			if ( enclosingNode = node.getEnclosingFunction() ) {
-				enclosingDoc = exports.docFromNode(enclosingNode);
-			}
-		}
-		
-		if (enclosingDoc) {
-			return (enclosingDoc.tagValue('path') || '').replace(/\.prototype\.?/g, '#');
-		}
+	function docToPath(doclet, tagName) {
+		// TODO protect quoted parts of the path that may contain the string "prototype"
+		return (doclet.tagValue(tagName) || '').replace(/\.prototype\.?/g, '#');
 	}
 	
 	/**
-		Resolve how to document the `this.` portion of a symbol name.
-	 */
-	exports.resolveThis = function(name, node, doclet) {
-
+		Apply information about how nested this AST node is to what we know about
+		the name.
+	*/
+	exports.resolvePath = function(name, node, doclet) {
 		var enclosing,
 			enclosingDoc,
 			enclosingPath,
-			memberof = (doclet.tagValue('memberof') || '').replace(/\.prototype\.?/g, '#');
-
+			memberof;
+		
+		// documented member of an undocumented object literal?
+		// like foo = { /** a bar. */ bar: 1};
 		if (node.parent && node.parent.type === Token.OBJECTLIT) {
-			if ( enclosingPath = getEnclosingPath(node) ) {
-				name = enclosingPath + (/([#.~])$/.test(enclosingPath) ? '' : '.') + name;
+			if ( enclosingDoc = exports.docFromNode(node.parent) ) {
+				if ( enclosingPath = docToPath(enclosingDoc, 'path') ) {
+					name = enclosingPath + (/([#.~])$/.test(enclosingPath) ? '' : '.') + name;
+				}
 			}
 		}
-		else if (name.indexOf('this.') === 0) {
+		// what's all this then?
+		else if ( name.indexOf('this.') === 0 ) {
+			memberof = docToPath(doclet, 'memberof');
+			
+			// need to examine the source code to determine the full path :(
 			if (!memberof || memberof === 'this') {
 				enclosing = node.getEnclosingFunction()
-				
 				enclosingDoc = exports.docFromNode(enclosing);
 				
-				if (enclosingDoc) {
+				if (enclosingDoc) { // documented enclosing symbol
 					if (enclosingDoc.tagValue('scope') === 'inner') {
-						memberof = ''; // inner functions have `this` scope of global
+						memberof = ''; // inner functions always have `this` resolve to the global object
 					}
 					else {
-						memberof = enclosingDoc.tagValue('path');
+						memberof = docToPath(enclosingDoc, 'path');
 					}
 				}
-				else {
-					memberof = '';
-				}
 				
-				if (enclosing && !memberof) {
-					memberof = ''; // [[anonymousFunction]]
+				if (enclosing && !memberof) { // inside an anonymous function, this resolves to the global object
+					memberof = '';
 					name = name.slice(5); // remove `this.`
 				}
 				else if (!enclosing) {
-					memberof = ''; // [[globalObject]]
+					memberof = ''; // no enclosing function, this resolves to the global object
 				}
 
 				if (memberof || !enclosing) {
 					// `this` refers to nearest non-inner member in the name path
 					if (enclosingDoc && enclosingDoc.tagValue('kind') !== 'constructor') {
-						var parts = memberof.split(/[#~.]/);
+						var parts = memberof.split(/[#.~]/);
 						var suffix = parts.pop();
 						memberof = memberof.slice(0, -suffix.length); // remove suffix from memberof
 					}
 					
-					var joiner = (memberof === '')? '' : (/[#~.]$/.test(memberof))? '' : '#'; 
+					var joiner = (memberof === '')? '' : (/[#.~]$/.test(memberof))? '' : '#'; 
 					name = memberof + joiner + name.slice(5); // replace `this.` with memberof
 				}
 			}
@@ -276,7 +263,7 @@
 		
 		return null;
 	}
-	// tuples, like [ [noderef, doclet], [noderef, doclet] ]
+	// a linking map, like [ [noderef, doclet], [noderef, doclet] ]
 	exports.refs = [];
 	
 	function getTypeName(node) {

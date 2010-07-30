@@ -62,7 +62,7 @@
 				// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
 				thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
 
-				nodeName = jsdoc.name.resolveThis(node.name, node, thisDoclet);
+				nodeName = jsdoc.name.resolvePath(node.name, node, thisDoclet);
 				thisDoclet.setName(nodeName);
 				jsdoc.name.refs.push([
 					node, 
@@ -97,7 +97,7 @@
 				}
 
 				if (!thisDocletName) { // guess name from the source code
-					nodeName = jsdoc.name.resolveThis(nodeName, node, thisDoclet);
+					nodeName = jsdoc.name.resolvePath(nodeName, node, thisDoclet);
 
 					thisDoclet.setName(nodeName);
 					jsdoc.doclets.addDoclet(thisDoclet);
@@ -109,7 +109,7 @@
 				// this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
 
 				thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
-				nodeName = jsdoc.name.resolveThis(nodeName, node, thisDoclet);
+				nodeName = jsdoc.name.resolvePath(nodeName, node, thisDoclet);
 				
 				thisDoclet.setName(nodeName);
 				jsdoc.name.refs.push([

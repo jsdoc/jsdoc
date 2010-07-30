@@ -466,4 +466,12 @@
 	 new TagDefinition('see', {
 		isExported: true
 	});
+	
+	/** Syntax: @refersto <text>
+		@property {module:jsdoc/tagdictionary~TagDefinition} refersto
+		@memberOf module:jsdoc/tagdictionary~tagDefinitions
+	 */
+	 new TagDefinition('refersto', {
+		isExported: true
+	});
 })();

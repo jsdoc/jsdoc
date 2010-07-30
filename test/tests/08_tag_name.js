@@ -10,7 +10,7 @@
 				tag: require('jsdoc/tag'),
 				parser: require('jsdoc/parser')
 			};
-			jsdoc.parser.parseFiles(BASEDIR + 'test/tests/08_tag_name.js');
+			jsdoc.parser.parseFiles(BASEDIR + 'test/samples/tag_name.js');
 			doclets = jsdoc.parser.result;
 		});
 		
@@ -46,28 +46,4 @@
   			});
   		});
 	});
-})();
-
-(function testarea() {
-
-	/**
-		@name Tipsy
-		@kind property
-	*/
-	
-	/**
-		@name Tubbie.LaLa
-		@kind property
-	*/
-	
-	/**
-		@name Tubbie."and.don't.forget#Po!"
-		@kind property
-	*/
-	
-	/**
-		@name Custards.0
-		@kind property
-	*/
-	
 })();
