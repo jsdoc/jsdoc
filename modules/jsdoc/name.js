@@ -75,8 +75,7 @@
 				}
 			}
 		}
-		else if (kind !== 'file') {
-//print('>>> name is '+name);
+		else if (kind !== 'file') { // which don't have scopes or memberof
 			[prefix, scope, name] = exports.shorten(name);
 			
 			var taggedScope;
@@ -84,27 +83,28 @@
 				scope = scopeToPunc[taggedScope];
 				if (prefix) { path = prefix + scope + name; }
 			}
-//print('  > scope is '+scope);
+
 			if (prefix) {
 				doclet.setTag('memberof', prefix);
 				
-				
-				if (name) { doclet.addTag('scope', puncToScope[scope]); }
+				if (name) {
+					doclet.addTag('scope', puncToScope[scope]);
+				}
 			}
 			else if (name) {
-				// global symbol
+				// global symbol?
 				doclet.addTag('scope', 'global');
 			}
 		}
 		
 		// if name doesn't already have a docspace and needs one
-		// the namespace should appear in the path but not the name
 		if (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) {
+			// the namespace should appear in the path but not the name
 			if ( /^[a-z_$-]+:(\S+)/i.test(name) ) {
 				name = RegExp.$1;
 			}
 			
-			// add doc-namespace to path
+			// add docspace to path
 			ns = kind + ':';
 		}
 
@@ -113,8 +113,10 @@
 		if (!path && memberof && name.indexOf(memberof) !== 0) {
 			path = memberof + (scope? scope : '') + ns  + name;
 		}
-		else if (ns) { path = ns + name };
-//print('  > path is '+path);
+		else if (ns) {
+			path = ns + name
+		};
+
 		if (path) {
 			doclet.setTag('path', path);
 		}
@@ -123,30 +125,53 @@
 	}
 	
 	/**
-		Given a path like "a.b#c", slice it up into ["a.b", "#", 'c'].
+		Given a path like "a.b#c", slice it up into ["a.b", "#", 'c'],
+		representing the memberof, the scope, and the name.
 	 */
 	exports.shorten = function(path) {
-		//// quoted strings in a path are atomic
-		var atoms = []; 
-		path = path.replace(/(".+?")/g, function($) {
-			var token = '@{' + atoms.length + '}@';
+		//// quoted strings in a path are atomic, convert to tokens
+		var atoms = [], token; 
+		path = path.replace(/(".*?")/g, function($) {
+			token = '@{' + atoms.length + '}@';
 			atoms.push($);
 			return token;
 		});
 		////
 
-		var shortname = path.split(/[#.~]/).pop(),
-			scope = path[path.length - shortname.length - 1] || '', // ., ~, or #
-			prefix = scope? path.slice(0, path.length - shortname.length - 1) : '';
+		var name = path.split(/[#.~]/).pop(),
+			scope = path[path.length - name.length - 1] || '', // ., ~, or #
+			prefix = scope? path.slice(0, path.length - name.length - 1) : '';
 		
 		//// restore quoted strings back again
-		for (var i = 0, leni = atoms.length; i < leni; i++) {
+		var i = atoms.length;
+		while (i--) {
 			prefix = prefix.replace('@{'+i+'}@', atoms[i]);
-			shortname = shortname.replace('@{'+i+'}@', atoms[i]);
+			name   = name.replace('@{'+i+'}@', atoms[i]);
 		}
 		////
 		
-		return [prefix, scope, shortname];
+		return [prefix, scope, name];
+	}
+	
+	/** Given an AST node, return the path to the enclosing node. */
+	function getEnclosingPath(node) {
+		var enclosingNode,
+			enclosingDoc;
+		
+		if (node.parent && node.parent.type === Token.OBJECTLIT) {
+			if (enclosingNode = node.parent) {
+				enclosingDoc = exports.docFromNode(enclosingNode);
+			}
+		}
+		else {
+			if ( enclosingNode = node.getEnclosingFunction() ) {
+				enclosingDoc = exports.docFromNode(enclosingNode);
+			}
+		}
+		
+		if (enclosingDoc) {
+			return (enclosingDoc.tagValue('path') || '').replace(/\.prototype\.?/g, '#');
+		}
 	}
 	
 	/**
@@ -156,23 +181,12 @@
 
 		var enclosing,
 			enclosingDoc,
+			enclosingPath,
 			memberof = (doclet.tagValue('memberof') || '').replace(/\.prototype\.?/g, '#');
 
 		if (node.parent && node.parent.type === Token.OBJECTLIT) {
-			if (enclosing = node.parent) {
-				enclosingDoc = exports.docFromNode(enclosing);
-				if (enclosingDoc) {
-					memberof = (enclosingDoc.tagValue('path') || '').replace(/\.prototype\.?/g, '#');
-				
-					if (!memberof) {
-						memberof = enclosingDoc.path;
-						memberof = memberof || '[[anonymousObject]]';
-					}
-	
-					if (memberof) {
-						name = memberof + (memberof[memberof.length-1] === '#'?'':'.') + name;
-					}
-				}
+			if ( enclosingPath = getEnclosingPath(node) ) {
+				name = enclosingPath + (/([#.~])$/.test(enclosingPath) ? '' : '.') + name;
 			}
 		}
 		else if (name.indexOf('this.') === 0) {
@@ -182,8 +196,12 @@
 				enclosingDoc = exports.docFromNode(enclosing);
 				
 				if (enclosingDoc) {
-					if (enclosingDoc.tagValue('scope') === 'inner') memberof = ''; // inner functions have `this` scope of global
-					else memberof = enclosingDoc.tagValue('path');
+					if (enclosingDoc.tagValue('scope') === 'inner') {
+						memberof = ''; // inner functions have `this` scope of global
+					}
+					else {
+						memberof = enclosingDoc.tagValue('path');
+					}
 				}
 				else {
 					memberof = '';

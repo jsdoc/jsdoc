@@ -19,15 +19,15 @@
 		Factory that builds a Doclet object.
 		@param {string} commentSrc
 		@param {ASTNode} node
-		@param {string} sourceName
+		@param {string} fileName
 		@returns {Doclet}
 	 */
-	exports.makeDoclet = function(commentSrc, node, sourceName) {
+	exports.makeDoclet = function(commentSrc, node, fileName) {
 		var tags = [],
 			meta = {},
 			doclet;
 		
-		meta.file = sourceName;
+		meta.file = fileName;
 		meta.line = node? node.getLineno() : '';
 		
 		commentSrc = unwrapComment(commentSrc);
@@ -212,23 +212,6 @@
 		}
 		return o;
 	}
-// 	
-// 	// TODO need to simplify this string or array business. maybe define some props as scalar?
-// 	Doclet.prototype.getScope = function() {
-// 		var scope = this.tagValue('scope');
-// 
-// 		if (!scope) {
-// 			return '';
-// 		}
-// 		else if (typeof scope === 'string' && ['inner', 'static', 'instance'].indexOf(scope) > -1) {
-// 			return scope;
-// 		}
-// 		else {
-// 			if (scope.indexOf('instance') > -1) { return 'instance'; }
-// 			else if (scope.indexOf('inner') > -1) { return 'inner'; }
-// 			else if (scope.indexOf('static') > -1) { return 'static'; }
-// 		}
-// 	}
 	
 	/**
 		Remove JsDoc comment slash-stars. Trims white space.
@@ -370,9 +353,6 @@
 			tags.addTag('memberof', memberof);
 		}
 	}
-
-// TODO should iterate over the tags here rather than letting doclet decide
-// which ones to pick and choose from. the tag dictionary should tell us what to do
 	
 	// now that we have a doclet object we can do some final  adjustments
 	function postprocess(doclet) {
@@ -381,23 +361,22 @@
 		for (var i = 0, leni = tags.length; i < leni; i++) {
 			tagAbout = jsdoc.tagDictionary.lookUp(tags[i].name);
 			
-			
-		// class tags imply a constructor tag
-		if (tags[i].name === 'class' && !doclet.hasTag('constructor') ) {
-			tags.addTag('kind', 'constructor');
-		}
+			// class tags imply a constructor tag
+			if (tags[i].name === 'class' && !doclet.hasTag('constructor') ) {
+				tags.addTag('kind', 'constructor');
+			}
 		
-		// enums have a defualt type of number
-		if (tags[i].name === 'enum') {
-			if ( !doclet.hasTag('type') ) {
-				tags.addTag('type', 'number');
+			// enums have a defualt type of number
+			if (tags[i].name === 'enum') {
+				if ( !doclet.hasTag('type') ) {
+					tags.addTag('type', 'number');
+				}
 			}
-		}
 				
-		if ( tagAbout.setsDocletType ) {
-			if ( doclet.hasTag('type') ) {
-				DocTagConflictError('Cannot set the type of a doclet more than once.')
-			}
+			if ( tagAbout.setsDocletType ) {
+				if ( doclet.hasTag('type') ) {
+					DocTagConflictError('Cannot set the type of a doclet more than once.')
+				}
 				var docletTypes = [];
 				if (tags[i].type) {
 					if (typeof tags[i].type === 'string') docletTypes = [tags[i].type];
