@@ -80,7 +80,8 @@
 		canHavePdesc      : false, // this tag can have a parameter-type desc
 		keepsWhitespace   : false, // don't try to tidy up the whitespace in this tag?
 		impliesTag        : false, // this tag implies another tag
-		isScalar          : false  // can only have a single value (first wins)
+		isScalar          : false, // can only have a single value (first wins)
+		forceArray        : false  // must always be an array
 	};
 
 	/** Syntax: @access <text> (private|public|protected)
@@ -209,7 +210,8 @@
 		setsDocletKind: true,
 		setsDocletDesc: true,
 		setsDocletName: true,
-		setsDocletDocspace: true
+		setsDocletDocspace: true,
+		impliesTag: 'scope global'
 	});
 	
 	/** Syntax: @method|function <returnType> <docletName> <docletDesc>
@@ -300,7 +302,8 @@
 		isExported: true,
 		canHaveType: true,
 		canHavePname: true,
-		canHavePdesc: true
+		canHavePdesc: true,
+		forceArray: true
 	});
 	
 	/** Syntax: @type <type>
@@ -474,7 +477,8 @@
 	 new TagDefinition('tag', {
 		isExported: true,
 		canHavePname: true,
-		canHavePdesc: true
+		canHavePdesc: true,
+		forceArray: true
 	});
 	
 	/** Syntax: @deprecated <text>

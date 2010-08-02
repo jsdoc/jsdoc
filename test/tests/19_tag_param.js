@@ -55,21 +55,23 @@
  		});
  		
  		describe('A doclet with one param tag', function() {
- 			it('should have a `param` property that is an object', function() {
+ 			it('should have a `param` property that is an array of one object', function() {
  				var doclet = doclets[2];
  				expect(doclet).to(have_property, 'param');
- 				expect(doclet.param).to(be_an, Object);
+ 				expect(doclet.param).to(be_an, Array);
+ 				expect(doclet.param.length).to(be, 1);
+ 				expect(doclet.param[0]).to(be_an, Object);
  			});
  		});
  		
  		describe('A doclet with one param tag having a type and a name', function() {
- 			it('should have a `param` property with a `type` and `name`', function() {
+ 			it('should have a `param` array with a single member with a `type` and `name`', function() {
  				var doclet = doclets[2];
  				expect(doclet).to(have_property, 'param');
- 				expect(doclet.param.type).to(be_an, Array); // types are always arrays
- 				expect(doclet.param.type).to(eql, ['string']);
- 				expect(doclet.param.name).to(be_an, String);
- 				expect(doclet.param.name).to(eql, 'str');
+ 				expect(doclet.param[0].type).to(be_an, Array); // types are always arrays
+ 				expect(doclet.param[0].type).to(eql, ['string']);
+ 				expect(doclet.param[0].name).to(be_an, String);
+ 				expect(doclet.param[0].name).to(eql, 'str');
  			});
  			
  			it('should not have a `desc`', function() {
@@ -79,15 +81,15 @@
  		});
  		
  		describe('A doclet with one param tag having a type, name and a desc', function() {
- 			it('should have a `param` property with a `type`, `name` and `desc`', function() {
+ 			it('should have a `param` array with a single member with a `type`, `name` and `desc`', function() {
  				var doclet = doclets[3];
  				expect(doclet).to(have_property, 'param');
- 				expect(doclet.param.type).to(be_an, Array); // types are always arrays
- 				expect(doclet.param.type).to(eql, ['string']);
- 				expect(doclet.param.name).to(be_an, String);
- 				expect(doclet.param.name).to(eql, 'message');
- 				expect(doclet.param.desc).to(be_an, String);
- 				expect(doclet.param.desc).to(eql, 'the message to encrypt.');
+ 				expect(doclet.param[0].type).to(be_an, Array); // types are always arrays
+ 				expect(doclet.param[0].type).to(eql, ['string']);
+ 				expect(doclet.param[0].name).to(be_an, String);
+ 				expect(doclet.param[0].name).to(eql, 'message');
+ 				expect(doclet.param[0].desc).to(be_an, String);
+ 				expect(doclet.param[0].desc).to(eql, 'the message to encrypt.');
  			});
  		});
 		

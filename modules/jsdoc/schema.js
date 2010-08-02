@@ -7,12 +7,12 @@
 
 exports.jsdocSchema = {
    "properties": {
-		"docnode": {
+		"doc": {
 			"type": "array",
 			"items": {
 				"type": "object",
 				"properties": {
-					"path": { // unique to each documentation
+					"path": { // unique identifier for each doc
 						"type": "string",
 						"maxItems": 1
 					},
@@ -56,7 +56,7 @@ exports.jsdocSchema = {
 						"optional": true,
 					},
 					"type": { // what type is the value that this doc is associated with, like "number"
-						"type": "array",
+						"type": ["string", "array"],
 						"optional": true,
 						"items": {
 							"type": "string"
@@ -99,45 +99,45 @@ exports.jsdocSchema = {
 							}
 						}
 					},
-					"meta": { // information about this documentation
+					"tag": { // arbitrary tags associated with this doc
+						"type": "array",
+						"optional": true,
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": { // the name of a tag
+									"type": "string"
+								},
+								"desc": { // a value associated with that tag name
+									"type": "string",
+									"optional": true
+								}
+							}
+						}
+					},
+					"meta": { // information about this doc
 						"type": "object",
 						"optional": true,
 						"maxItems": 1,
-						"file": { // what is the name of the file this documentation appears in?
+						"file": { // what is the name of the file this doc appears in?
 							"type": "string",
 							"optional": true,
 							"maxItems": 1
 						},
-						"line": {  // on what line of the file does this documentation appear?
+						"line": {  // on what line of the file does this doc appear?
 							"type": "number",
 							"optional": true,
 							"maxItems": 1
-						},
-						"tags": { // arbitrary tags associated with this documentation
-							"type": "array",
-							"optional": true,
-							"items": {
-								"type": "object",
-								"properties": {
-									"tagname": { // the name of a tag
-										"type": "string"
-									},
-									"tagtext": { // a value associated with that tag name
-										"type": "string",
-										"optional": true
-									}
-								}
-							}
 						}
 					}
 				}
 			}
 		},
-		"meta": { // information about the generation for all the documentation
+		"meta": { // information about the generation for all the docs
 			"type": "object",
 			"optional": true,
 			"maxItems": 1,
-			"project": { // to what project does this documentation belong
+			"project": { // to what project does this doc belong
 				"type": "object",
 				"optional": true,
 				"maxItems": 1,
@@ -151,17 +151,17 @@ exports.jsdocSchema = {
 					"format": "uri"
 				}
 			},
-			"generated": { // some information about the running of the documentation generator
+			"generated": { // some information about the running of the doc generator
 				"type": "object",
 				"optional": true,
 				"maxItems": 1,
-				"date": { // on what date and time was the documentation generated?
+				"date": { // on what date and time was the doc generated?
 					"type": "string",
 					"maxItems": 1,
 					"optional": true,
 					"format": "date-time"
 				},
-				"parser": { // what tool was used to generate the documentation
+				"parser": { // what tool was used to generate the doc
 					"type": "string",
 					"maxItems": 1,
 					"optional": true

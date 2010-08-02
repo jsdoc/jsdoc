@@ -197,7 +197,7 @@
 
 			if (tagValue) {
 				if (typeof o[tagName] === 'undefined') { // not defined
-					o[tagName] = tagValue;
+					o[tagName] = tagAbout.forceArray? [tagValue] : tagValue;
 				}
 				else if (typeof o[tagName].push === 'function') { // is an array
 					o[tagName].push(tagValue);

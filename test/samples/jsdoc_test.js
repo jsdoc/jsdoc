@@ -298,7 +298,6 @@ Square.prototype.setHeight = function(height){
  * @class Circle class is another subclass of Shape
  * @extends Shape
  * @param {int} radius The optional radius of this {@link Circle }
- * @mixin Square.prototype.setWidth as this.setDiameter
  */
 function Circle(radius){
    if (radius) {
@@ -341,6 +340,11 @@ Circle.prototype.getRadius = function(){
 Circle.prototype.setRadius = function(radius){
    this.radius = radius;
 }
+
+ /**
+  * @name Circle#setDiameter => Square#setWidth
+  */
+Circle.prototype.setDiameter = Square.prototype.setWidth;
 
 /** 
  * An example of a  class (static) method that acts as a factory for Circle

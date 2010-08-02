@@ -10,7 +10,7 @@ var Animal = Class.extend({
 	
 		/**
 		 * An instance property.
-		 * @property {string} Animal#name
+		 * @property {string|undefined} Animal#name
 		 */
 		this.name = name;
 	},
