@@ -1,4 +1,4 @@
-// Example of how to document code in written in the style of something
+// Example of how to document code written in the style of something
 // like Dean Edwards' base2.js library
 
 

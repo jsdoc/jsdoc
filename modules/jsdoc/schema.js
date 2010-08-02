@@ -12,120 +12,117 @@ exports.jsdocSchema = {
 			"items": {
 				"type": "object",
 				"properties": {
-					"path": {
+					"path": { // unique to each documentation
 						"type": "string",
 						"maxItems": 1
 					},
-					"desc": {
-						"type": "string",
-						"optional": true,
-						"maxItems": 1
-					},
-					"name": {
-						"type": "string",
-						"maxItems": 1
-					},
-					"memberof": {
+					"desc": { // a description
 						"type": "string",
 						"optional": true,
 						"maxItems": 1
 					},
-					"kind": {
+					"name": { // probably a trailing substring of the path
+						"type": "string",
+						"maxItems": 1
+					},
+					"scope": { // how is this symbol attached to it's enclosing scope?
+						"type": "string",
+						"maxItems": 1,
+						"enum": ["global", "static", "instance", "inner"]
+					},
+					"memberof": { // probably a leading substring of the path
+						"type": "string",
+						"optional": true,
+						"maxItems": 1
+					},
+					"kind": { // what kind of symbol is this?
 						"type": "string",
 						"maxItems": 1,
 						"enum": ["constructor", "module", "event", "namespace", "method", "property", "enum", "class", "interface", "constant", "mixin", "file", "version"]
 					},
-					"access": {
+					"refersto": { // the path to another doc: this doc is simply a renamed alias to that
+						"type": "string",
+						"optional": true,
+						"maxItems": 1
+					},
+					"access": { // what access priviledges are allowed
 						"type": "string",
 						"optional": true,
 						"maxItems": 1,
 						"enum": ["private", "protected", "public"]
 					},
-					"scope": {
-						"type": "string",
-						"maxItems": 1,
-						"enum": ["global", "static", "instance", "inner"]
-					},
-					"attrib": {
+					"attrib": { // other attributes, like "readonly"
 						"type": "string",
 						"optional": true,
 					},
-					"api": {
-						"type": "string",
-						"optional": true
-					},
-					"type": {
+					"type": { // what type is the value that this doc is associated with, like "number"
 						"type": "array",
 						"optional": true,
 						"items": {
 							"type": "string"
 						}
 					},
-					"param" : {
+					"param" : { // are there function parameters associated with this doc?
 						"type": "array",
 						"optional": true,
 						"items": {
 							"type": "object",
 							"properties": {
-								"type": {
+								"type": { // what are the types of value expected for this parameter?
 									"type": "array",
 									"optional": true,
 									"items": {
 										"type": "string"
 									}
 								},
-								"isoptional": {
+								"isoptional": { // is a value for this parameter optional?
 									"type": "boolean",
 									"optional": true,
 									"default": true
 								},
-								"isnullable": {
+								"isnullable": { // can the value for this parameter be null?
 									"type": "boolean",
 									"optional": true,
 									"default": true
 								},
-								"defaultvalue": {
+								"defaultvalue": { // what is the default value for this parameter?
+									"type": "string",
 									"optional": true
 								},
-								"name": {
-									"type": "string",
+								"name": { // what name does this parameter have within the function?
+									"type": "string"
 								},
-								"desc": {
+								"desc": { // a description of the parameter
 									"type": "string",
 									"optional": true
 								}
 							}
 						}
 					},
-					"meta": {
+					"meta": { // information about this documentation
 						"type": "object",
 						"optional": true,
 						"maxItems": 1,
-						"file": {
+						"file": { // what is the name of the file this documentation appears in?
 							"type": "string",
 							"optional": true,
 							"maxItems": 1
 						},
-						"line": {
+						"line": {  // on what line of the file does this documentation appear?
 							"type": "number",
 							"optional": true,
 							"maxItems": 1
 						},
-						"category": {
-							"type": "string",
-							"optional": true,
-							"maxItems": 1
-						},
-						"tags": {
+						"tags": { // arbitrary tags associated with this documentation
 							"type": "array",
 							"optional": true,
 							"items": {
 								"type": "object",
 								"properties": {
-									"tagname": {
+									"tagname": { // the name of a tag
 										"type": "string"
 									},
-									"tagtext": {
+									"tagtext": { // a value associated with that tag name
 										"type": "string",
 										"optional": true
 									}
@@ -136,35 +133,35 @@ exports.jsdocSchema = {
 				}
 			}
 		},
-		"meta": {
+		"meta": { // information about the generation for all the documentation
 			"type": "object",
 			"optional": true,
 			"maxItems": 1,
-			"project": {
+			"project": { // to what project does this documentation belong
 				"type": "object",
 				"optional": true,
 				"maxItems": 1,
-				"name": {
+				"name": { // the name of the project
 					"type": "string",
 					"maxItems": 1
 				},
-				"uri": {
+				"uri": { // the URI of the project
 					"type": "string",
 					"maxItems": 1,
 					"format": "uri"
 				}
 			},
-			"generated": {
+			"generated": { // some information about the running of the documentation generator
 				"type": "object",
 				"optional": true,
 				"maxItems": 1,
-				"date": {
+				"date": { // on what date and time was the documentation generated?
 					"type": "string",
 					"maxItems": 1,
 					"optional": true,
 					"format": "date-time"
 				},
-				"parser": {
+				"parser": { // what tool was used to generate the documentation
 					"type": "string",
 					"maxItems": 1,
 					"optional": true
