@@ -71,7 +71,7 @@
 				if (type && type.length) { this.type = type; }
 				
 				// @type tags are special: their type *is* their value
-				if (this.name === 'type') {
+				if (tagAbout.typeIsValue) {
 					value = (this.type[0] === '')? this.value.split(/\s*\|\s*/g) : this.type;
 					if (value.length === 1) value = value[0]; // single values don't need to be arrays
 					this.type = [];

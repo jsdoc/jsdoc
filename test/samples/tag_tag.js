@@ -2,13 +2,13 @@
 		@tag hilited
 	*/
 	
-	/** @namespace bar
-		@tag api developer
+	/** @namespace baz
+		@tag experimental
+		@tag lots of words
 	*/
 	
-	/** @namespace baz
-		@tag support - experimental
-		@tag api internal
+	/** @namespace bar
+		@tag
 	*/
 	
 	/** @namespace zub

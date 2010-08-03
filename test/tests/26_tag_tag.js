@@ -2,7 +2,7 @@
 	var jsdoc,
 		doclets;
 	
-	JSpec.describe('@scope', function() {
+	JSpec.describe('@tag', function() {
 	
 		before(function() {
 			// docsets can only be created by parsers
@@ -18,57 +18,33 @@
 		describe('A doclet with single @tag <name>', function() {
 			it('should have a `tag` property of type array with a single member', function() {
 				var doclet = doclets[0];
-				expect(doclet).to(have_property, 'tag');
-				expect(doclet.tag).to(be_an, Array);
-				expect(doclet.tag.length).to(be, 1);
+				expect(doclet).to(have_property, 'tags');
+				expect(doclet.tags).to(be_an, Array);
+				expect(doclet.tags.length).to(be, 1);
 			});
 			
 			it('that tag should have a name property set to <name>, and no description property', function() {
 				var doclet = doclets[0];
-				expect(doclet.tag[0]).to(have_property, 'name');
-				expect(doclet.tag[0].desc).to(be_undefined);
-				expect(doclet.tag[0].name).to(be_an, String);
-				expect(doclet.tag[0].name).to(be, 'hilited');
+				expect(doclet.tags[0]).to(be_an, String);
+				expect(doclet.tags[0]).to(be, 'hilited');
 			});
 		});
 		
-		describe('A doclet with single @tag <name> <desc>', function() {
+		describe('A doclet with two @tag <name>', function() {
 			it('should have a tag with a name property set to <name>, and description set to <desc>', function() {
 				var doclet = doclets[1];
-				expect(doclet.tag[0]).to(have_property, 'name');
-				expect(doclet.tag[0]).to(have_property, 'desc');
-				expect(doclet.tag[0].name).to(be_an, String);
-				expect(doclet.tag[0].name).to(be, 'api');
+				expect(doclet.tags[0]).to(be_an, String);
+				expect(doclet.tags[0]).to(be, 'experimental');
 				
-				expect(doclet.tag[0].desc).to(be_an, String);
-				expect(doclet.tag[0].desc).to(be, 'developer');
+				expect(doclet.tags[1]).to(be_an, String);
+				expect(doclet.tags[1]).to(be, 'lots of words');
 			});
 		});
 		
-		describe('A doclet with two @tag <name> <desc>', function() {
-			it('should have a tag property set to an array of length 2', function() {
+		describe('A doclet with an empty @tag', function() {
+			it('should have no tag property', function() {
 				var doclet = doclets[2];
-				expect(doclet).to(have_property, 'tag');
-				expect(doclet.tag).to(be_an, Array);
-				expect(doclet.tag.length).to(be, 2);
-			});
-		});
-		
-		describe('A doclet with two @tag <name> - <desc>', function() {
-			it('should have a tag property with a name property set to <name>, and description set to <desc>', function() {
-				var doclet = doclets[2];
-				expect(doclet.tag[0]).to(have_property, 'name');
-				expect(doclet.tag[0]).to(have_property, 'desc');
-				expect(doclet.tag[0].name).to(be, 'support');
-				expect(doclet.tag[0].desc).to(be, 'experimental');
-				
-			});
-		});
-		
-		describe('A doclet with no @tag', function() {
-			it('should not have a tag property', function() {
-				var doclet = doclets[3];
-				expect(doclet.tag).to(be_undefined);
+				expect(doclet.tags).to(be_undefined);
 			});
 		});
 		

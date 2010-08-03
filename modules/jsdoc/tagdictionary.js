@@ -81,7 +81,9 @@
 		keepsWhitespace   : false, // don't try to tidy up the whitespace in this tag?
 		impliesTag        : false, // this tag implies another tag
 		isScalar          : false, // can only have a single value (first wins)
-		forceArray        : false  // must always be an array
+		forceArray        : false, // must always be an array,
+		typeIsValue       : false,
+		exportName        : ''     // what name will this tag be exported as (defaults to tag name)
 	};
 
 	/** Syntax: @access <text> (private|public|protected)
@@ -147,7 +149,8 @@
 		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('memberof', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @namespace <docletType> <docletName>
@@ -312,7 +315,8 @@
 	 */
 	 new TagDefinition('type', {
 		isExported: true,
-		canHaveType: true
+		canHaveType: true,
+		typeIsValue: true
 	});
 	
 	/** Syntax: @returns|return <returnType> <text>
@@ -322,7 +326,8 @@
 	 new TagDefinition('returns', {
 		isExported: true,
 		canHaveType: true,
-		canHavePdesc: true
+		canHavePdesc: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @thisobj|this <thisobjType> <text>
@@ -332,7 +337,7 @@
 	 new TagDefinition('thisobj', {
 		isExported: true,
 		canHaveType: true,
-		canHavePdesc: true,
+		typeIsValue: true,
 		isScalar: true
 	});
 	
@@ -476,8 +481,7 @@
 	 */
 	 new TagDefinition('tag', {
 		isExported: true,
-		canHavePname: true,
-		canHavePdesc: true,
+		exportName: 'tags',
 		forceArray: true
 	});
 	
@@ -503,7 +507,8 @@
 		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('refersto', {
-		isExported: true
+		isExported: true,
+		isScalar: true
 	});
 	
 	/** Syntax: @implements <text>
@@ -511,6 +516,8 @@
 		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
 	 new TagDefinition('implements', {
-		isExported: true
+		isExported: true,
+		canHaveType: true,
+		typeIsValue: true
 	});
 })();

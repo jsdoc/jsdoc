@@ -89,7 +89,7 @@ Shape.prototype.color = null;
 /**
  * The border of this shape. 
  * @field
- * @type int
+ * @type {int}
  */
 Shape.prototype.border = function(){return border;};
 
@@ -133,14 +133,14 @@ Shape.prototype.setCoords = function(coordinates){
 /**
  * Set the color for this Shape
  * @method
- * @param {Color} color The color to set for this Shape
+ * @param {?Color} [color=black] The color to set for this Shape
  * @param other There is no other param, but it can still be documented if
  *              optional parameters are used
  * @throws NonExistantColorException (no, not really!)
  * @see #getColor
  */
 Shape.prototype.setColor = function(color){
-   this.color = color;
+   this.color = color || new Color(0, 0, 0);
 }
 
 /**
@@ -163,7 +163,7 @@ Shape.prototype.clone = function(){
  * @param {int} height Thie optional height for this Rectangle
  * @author Gabriel Reid
  * @see Shape is the base class for this
- * @augments Shape
+ * @extends Shape
  * @hilited
  */
 function Rectangle(width, // This is the width 
@@ -176,7 +176,6 @@ function Rectangle(width, // This is the width
       }
    }
 }
-
 
 /* Inherit from Shape */
 Rectangle.prototype = new Shape();
@@ -259,7 +258,7 @@ Rectangle.prototype.getArea = function(){
  * @class A Square is a subclass of {@link Rectangle}
  * @param {int} width The optional width for this Rectangle
  * @param {int} height The optional height for this Rectangle
- * @augments Rectangle
+ * @extends Rectangle
  */
 function Square(width, height){
    if (width){
@@ -304,6 +303,11 @@ function Circle(radius){
       /** The radius of the this Circle. */
       this.radius = radius;
    }
+   
+   /**
+    * @property
+    */
+   this.area = getArea.call(this);
 }
 
 /* Circle inherits from {@link Shape} */
@@ -434,10 +438,11 @@ function ShapeFactory(){
 ShapeFactory.prototype = {
    /** 
     * Creates a new {@link Shape} instance.
+    * @param {!Object=} opts An options object that is optional but can't be null.
     * @return A new {@link Shape}
     * @type Shape
     */
-   createShape: function(){
+   createShape: function(opts){
       return new Shape();
    }
 }
@@ -488,3 +493,29 @@ Foo.Bar = function(){
 Foo.Bar.prototype = new Bar();
 /** The y. */ 
 Foo.Bar.prototype.y = '3';
+
+// private method, as in the module pattern
+/**
+ * @private
+ * @this {Circle}
+ */
+function getArea() {
+}
+
+// see http://www.integralist.co.uk/javascript/implementing-interfaces-in-javascript/
+/** @interface */
+var threeD = new Interface('threeD');
+/**
+	Getter and setter for the z axis.
+	@instance
+	@method
+	@param {number} v
+ */
+threeD.axisZ = Interface.method('number:v');
+
+/** @class
+	@implements {threeD}
+ */
+function Cube(opts) {
+	Interface.ensureImplements(opts.methods, threeD);
+}

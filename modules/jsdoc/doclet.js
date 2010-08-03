@@ -194,7 +194,11 @@
 					tagValue = tag.value;
 				}
 			}
-
+			
+			if (tagAbout.exportName) {
+				tagName = tagAbout.exportName;
+			}
+			
 			if (tagValue) {
 				if (typeof o[tagName] === 'undefined') { // not defined
 					o[tagName] = tagAbout.forceArray? [tagValue] : tagValue;
