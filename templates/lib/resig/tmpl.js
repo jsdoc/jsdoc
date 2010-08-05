@@ -5,7 +5,7 @@
 (function(){
   var cache = {};
   
-  this.tmpl = function tmpl(/** templatefilename | templatesrc */str, data){ // templatefilename not contain `<`
+  this.tmpl = function tmpl(/** templatefilename | templatesrc */str, data){ // templatefilename must not contain `<`, templatesrc must contain <
     var fn = str.indexOf('<') === -1 ?
       cache[str] = cache[str] || tmpl(readFile(str)) :
       

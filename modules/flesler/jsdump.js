@@ -14,7 +14,14 @@ var jsDump;
 
 (function(){
     function quote( str ){
-        return '"' + str.toString().replace(/"/g, '\\"') + '"';
+        return '"' + str.toString()
+        	.replace(/\\/g, "\\\\")
+			.replace(/"/g, '\\"')
+			.replace(/\f/g, "\\f")
+			.replace(/\n/g, "\\n")
+			.replace(/\r/g, "\\r")
+			.replace(/\t/g, "\\t")
+			+ '"';
     };
     function literal( o ){
         return o + '';  
