@@ -1,73 +1,50 @@
 (function() {
 	var fs = require('common/fs');
 
+	var dumper = require('flesler/jsdump');
+
 	publish = function(docs, opts) { // global
-		var classes;
-		
-		classes = docs.doc.filter(function(element, index, array) {
-			return (element.kind === 'constructor');
-		});
-		
-		// add properties and methods
-		classes.forEach(function(classElement) {
-			classElement.properties = docs.doc.filter(function(memberElement) {
-				return (
-					memberElement.kind === 'property'
-					&& memberElement.memberof === classElement.path
-				);
-			});
-			
-			classElement.methods = docs.doc.filter(function(memberElement) {
-				return (
-					memberElement.kind === 'method'
-					&& memberElement.memberof === classElement.path
-				);
-			});
-			
-			
-		});
-		
-		
-		// templates!
-		var normal   = require('normal/template'),
-			src      = fs.read( BASEDIR + 'templates/haruki/tmpl/docs.json' ),
-			template = normal.compile(src, 
-				{
-					'filters': {
-					'json': function(str) {
-							return str.replace(/\\/g, "\\\\")
-								.replace(/"/g, '\\"')
-								.replace(/\f/g, "\\f")
-								.replace(/\n/g, "\\n")
-								.replace(/\r/g, "\\r")
-								.replace(/\t/g, "\\t");
-						}
-					}
-				}
-			);
-		
-		print( template( {classes: classes} ) );
+
+        function addNamespaces (to, from, parentPath, parentName) {
+            from.filter(function (element) {            
+                return (element.memberof === parentPath);
+            }).forEach(function (element) {
+                if (element.kind === 'namespace') {
+                    if (! to.namespaces) {
+                        to.namespaces = {};
+                    }
+                    var nestedNamespace = to.namespaces[element.name] = {
+                        "name" : element.name,
+                        "description" : element.desc
+                    };
+                    addNamespaces(nestedNamespace, from, element.path, element.name);
+                }
+                else if (element.kind === 'method') {
+                    if (! to.functions) {
+                        to.functions = {};
+                    }
+                    to.functions[element.name] = {
+                        "name" : element.name,
+                        "description" : element.desc
+                    };
+                }
+                else if (element.kind === 'property') {
+                    if (! to.properties) {
+                        to.properties = {};
+                    }
+                    to.properties[element.name] = {
+                        "name" : element.name,
+                        "description" : element.desc
+                    };
+                }
+            });
+        }
+
+        var rootNamespace = {};
+        addNamespaces(rootNamespace, docs.doc, undefined);
+
+        print(dumper.jsDump.parse(rootNamespace));
 	}
-	
-	function getDoc(docpath) {
-		var i, doc;
-		
-		if ( doc = getDoc.cache[docpath] ) {
-			return doc;
-		}
-		
-		i = docs.doc.length;
-		while (i--) {
-			if (docs.doc[i].path === docpath) {
-				return docs.doc[i];
-			}
-		}
-	}
-	getDoc.cache = {};
-	
-	// helpers
-	publish.summarize = function(desc) { // just the first line
-		return /(.*)/.test(desc), RegExp.$1;
-	} 
 
 })();
+
