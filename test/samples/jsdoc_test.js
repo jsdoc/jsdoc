@@ -12,15 +12,44 @@
 
 
 /**
+	@namespace geometry
+ */
+geometry = {};
+
+/**
+	@namespace geometry.util
+ */
+geometry.util = {};
+
+/**
+ * @class This class exists to demonstrate the assignment of a class prototype
+ * as an anonymous block.
+ */
+geometry.util.ShapeFactory = function(){
+}
+
+geometry.util.ShapeFactory.prototype = {
+   /** 
+    * Creates a new {@link geometry.Shape} instance.
+    * @param {!Object=} opts An options object that is optional but can't be null.
+    * @return A new {@link geometry.Shape}
+    * @type geometry.Shape
+    */
+   createShape: function(opts){
+      return new geometry.Shape();
+   }
+}
+
+/**
  * Construct a new Shape object.
  * @class This is the basic Shape class.  
  * It can be considered an abstract class, even though no such thing
  * really existing in JavaScript
  * @throws {MemoryException} If there is no more memory 
  * @throws GeneralShapeException rarely (if ever)
- * @return {Shape|Coordinate} A new shape.
+ * @return {geometry.Shape|geometry.Coordinate} A new shape.
  */
-function Shape(){
+geometry.Shape = function(){
   
    /**
     * This is an example of a function that is not given as a property
@@ -32,7 +61,7 @@ function Shape(){
     * @returns {String}
     */
    this.getClassName = function(){
-      return "Shape";
+      return "geometry.Shape";
    }
 
    /** 
@@ -49,30 +78,30 @@ function Shape(){
 
 /**
  * Create a new Hexagon instance.
- * @extends Shape
+ * @extends geometry.Shape
  * @class Hexagon is a class that is a <i>logical</i> sublcass of 
  * {@link Shape} (thanks to the <code>&#64;extends</code> tag), but in 
  * reality it is completely unrelated to Shape.
  * @param {int} sideLength The length of one side for the new Hexagon
  * @example
- * var h = new Hexagon(2);
+ * var h = new geometry.Hexagon(2);
  * @example
  * if (hasHex) {
- *     hex   = new Hexagon(5);
+ *     hex   = new geometry.Hexagon(5);
  *     color = hex.getColor();
  * }
  */
-function Hexagon(sideLength) {
+geometry.Hexagon = function(sideLength) {
 }
 
 
 /**
- * This is an unattached (static) function that adds two integers together using {@link Shape#getClassName}.
+ * This is an unattached (static) function that adds two integers together using {@link geometry.Shape#getClassName}.
  * @function
  * @param {int} One The first number to add 
  * @param {int} Two The second number to add 
  * @author Gabriel Reid
- * @deprecated So you shouldn't use it anymore! Use {@link Shape#getClassName} instead.
+ * @deprecated So you shouldn't use it anymore! Use {@link geometry.Shape#getClassName} instead.
  */
 function Add(One, Two){
     return One + Two;
@@ -82,16 +111,16 @@ function Add(One, Two){
 /**
  * The color of this shape
  * @property
- * @type Color
+ * @type {string|Color}
  */
-Shape.prototype.color = null;
+geometry.Shape.prototype.color = null;
 
 /**
  * The border of this shape. 
  * @field
  * @type {int}
  */
-Shape.prototype.border = function(){return border;};
+geometry.Shape.prototype.border = function(){return border;};
 
 /*
  * These are all the instance method implementations for Shape
@@ -101,11 +130,11 @@ Shape.prototype.border = function(){return border;};
  * Get the coordinates of this shape. It is assumed that we're always talking
  * about shapes in a 2D location here.
  * @method
- * @requires The {@link Shape} class
+ * @requires The {@link geometry.Shape} class
  * @returns A Coordinate object representing the location of this Shape
- * @type Coordinate[]
+ * @type geometry.Coordinate[]
  */
-Shape.prototype.getCoords = function(){
+geometry.Shape.prototype.getCoords = function(){
    return this.coords;
 }
 
@@ -114,19 +143,19 @@ Shape.prototype.getCoords = function(){
  * @method
  * @see #setColor
  * @see The <a href="http://example.com">Color</a> library.
- * @link Shape
+ * @link geometry.Shape
  * @type Color
  */
-Shape.prototype.getColor = function(){
+geometry.Shape.prototype.getColor = function(){
    return this.color;
 }
 
 /**
  * Set the coordinates for this Shape
  * @method
- * @param {Coordinate} coordinates The coordinates to set for this Shape
+ * @param {geometry.Coordinate} coordinates The coordinates to set for this Shape
  */
-Shape.prototype.setCoords = function(coordinates){
+geometry.Shape.prototype.setCoords = function(coordinates){
    this.coords = coordinates;
 }
 
@@ -139,7 +168,7 @@ Shape.prototype.setCoords = function(coordinates){
  * @throws NonExistantColorException (no, not really!)
  * @see #getColor
  */
-Shape.prototype.setColor = function(color){
+geometry.Shape.prototype.setColor = function(color){
    this.color = color || new Color(0, 0, 0);
 }
 
@@ -147,11 +176,11 @@ Shape.prototype.setColor = function(color){
  * Clone this shape
  * @method
  * @returns A copy of this shape
- * @type Shape
+ * @type geometry.Shape
  * @author Gabriel Reid
  */
-Shape.prototype.clone = function(){
-   return new Shape();
+geometry.Shape.prototype.clone = function(){
+   return new geometry.Shape();
 }
 
 /**
@@ -162,11 +191,11 @@ Shape.prototype.clone = function(){
  * @param {int} width The optional width for this Rectangle
  * @param {int} height Thie optional height for this Rectangle
  * @author Gabriel Reid
- * @see Shape is the base class for this
- * @extends Shape
+ * @see geometry.Shape is the base class for this
+ * @extends geometry.Shape
  * @hilited
  */
-function Rectangle(width, // This is the width 
+geometry.Rectangle = function(width, // This is the width 
                   height // This is the height
                   ){
    if (width){
@@ -178,7 +207,7 @@ function Rectangle(width, // This is the width
 }
 
 /* Inherit from Shape */
-Rectangle.prototype = new Shape();
+geometry.Rectangle.prototype = new geometry.Shape();
 
 /**
  * Value to represent the width of the Rectangle.
@@ -187,41 +216,41 @@ Rectangle.prototype = new Shape();
  * @private
  * @type int
  */
-Rectangle.prototype.width = 0;
+geometry.Rectangle.prototype.width = 0;
 
 /**
  * Value to represent the height of the Rectangle
  * @private
  * @type int
  */
-Rectangle.prototype.height = 0;
+geometry.Rectangle.prototype.height = 0;
 
 /**
  * Get the type of this object. 
  * @type String
  */
-Rectangle.prototype.getClassName= function(){
+geometry.Rectangle.prototype.getClassName= function(){
     return "Rectangle";
 }
 
 /**
  * Get the value of the width for the Rectangle
  * @type int
- * @see Rectangle#setWidth
+ * @see geometry.Rectangle#setWidth
  */
-Rectangle.prototype.getWidth = function(){
+geometry.Rectangle.prototype.getWidth = function(){
    return this.width;
 }
 
 /**
  * Get the value of the height for the Rectangle.
- * Another getter is the {@link Shape#getColor} method in the 
- * {@link Shape} base class.  
+ * Another getter is the {@link geometry.Shape#getColor} method in the 
+ * {@link geometry.Shape} base class.  
  * @return The height of this Rectangle
  * @type int
  * @see Rectangle#setHeight
  */
-Rectangle.prototype.getHeight = function(){
+geometry.Rectangle.prototype.getHeight = function(){
     return this.height;
 }
 
@@ -230,7 +259,7 @@ Rectangle.prototype.getHeight = function(){
  * @param {int} width The width value to be set
  * @see #setWidth
  */
-Rectangle.prototype.setWidth = function(width){
+geometry.Rectangle.prototype.setWidth = function(width){
    this.width = width;
 }
 
@@ -239,7 +268,7 @@ Rectangle.prototype.setWidth = function(width){
  * @param {int} height The height value to be set
  * @see #getHeight
  */
-Rectangle.prototype.setHeight = function(height){
+geometry.Rectangle.prototype.setHeight = function(height){
    this.height = height;
 }
 
@@ -248,19 +277,19 @@ Rectangle.prototype.setHeight = function(height){
  * @return total area of this Rectangle
  * @type int
  */
-Rectangle.prototype.getArea = function(){
+geometry.Rectangle.prototype.getArea = function(){
    return width * height;
 }
 
 
 /**
  * Create a new Square instance.
- * @class A Square is a subclass of {@link Rectangle}
+ * @class A Square is a subclass of {@link geometry.Rectangle}
  * @param {int} width The optional width for this Rectangle
  * @param {int} height The optional height for this Rectangle
- * @extends Rectangle
+ * @extends geometry.Rectangle
  */
-function Square(width, height){
+geometry.Square = function(width, height){
    if (width){
       this.width = width;
       if (height){
@@ -271,23 +300,23 @@ function Square(width, height){
 }
 
 /* Square is a subclass of Rectangle */
-Square.prototype = new Rectangle();
+geometry.Square.prototype = new geometry.Rectangle();
 
 /**
  * Set the width value for this Shape.
  * @param {int} width The width value to be set
  * @see #getWidth
  */
-Square.prototype.setWidth = function(width){
+geometry.Square.prototype.setWidth = function(width){
    this.width = this.height = width;
 }
 
 /**
  * Set the height value for this Shape 
- * Sets the {@link Rectangle#height} attribute in the Rectangle.
+ * Sets the {@link geometry.Rectangle#height} attribute in the Rectangle.
  * @param {int} height The height value to be set
  */
-Square.prototype.setHeight = function(height){
+geometry.Square.prototype.setHeight = function(height){
    this.height = this.width = height;
 }
 
@@ -295,10 +324,10 @@ Square.prototype.setHeight = function(height){
 /**
  * Create a new Circle instance based on a radius.
  * @class Circle class is another subclass of Shape
- * @extends Shape
- * @param {int} radius The optional radius of this {@link Circle }
+ * @extends geometry.Shape
+ * @param {int} radius The optional radius of this {@link geometry.Circle }
  */
-function Circle(radius){
+geometry.Circle = function(radius){
    if (radius) {
       /** The radius of the this Circle. */
       this.radius = radius;
@@ -310,54 +339,54 @@ function Circle(radius){
    this.area = getArea.call(this);
 }
 
-/* Circle inherits from {@link Shape} */
-Circle.prototype = new Shape();
+/* Circle inherits from {@link geometry.Shape} */
+geometry.Circle.prototype = new geometry.Shape();
 
 /** 
  * The radius value for this Circle 
  * @private
  * @type int
  */
-Circle.prototype.radius = 0;
+geometry.Circle.prototype.radius = 0;
 
 /** 
  * A very simple class (static) field that is also a constant
  * @const
  * @type float
  */
-Circle.PI = 3.14;
+geometry.Circle.PI = 3.14;
 
 /**
  * Get the radius value for this Circle
  * @type int
  * @see #setRadius
  */
-Circle.prototype.getRadius = function(){
+geometry.Circle.prototype.getRadius = function(){
    return this.radius;
 }
 
 /** 
  * Set the radius value for this Circle
- * @param {int} radius The {@link Circle#radius} value to set
+ * @param {int} radius The {@link geometry.Circle#radius} value to set
  * @see #getRadius
  */
-Circle.prototype.setRadius = function(radius){
+geometry.Circle.prototype.setRadius = function(radius){
    this.radius = radius;
 }
 
  /**
-  * @name Circle#setDiameter => Square#setWidth
+  * @name geometry.Circle#setDiameter => geometry.Square#setWidth
   */
-Circle.prototype.setDiameter = Square.prototype.setWidth;
+geometry.Circle.prototype.setDiameter = geometry.Square.prototype.setWidth;
 
 /** 
  * An example of a  class (static) method that acts as a factory for Circle
  * objects. Given a radius value, this method creates a new Circle.
  * @param {int} radius The radius value to use for the new Circle.
- * @type Circle
+ * @type geometry.Circle
  */
-Circle.createCircle = function(radius){
-    return new Circle(radius);
+geometry.Circle.createCircle = function(radius){
+    return new geometry.Circle(radius);
 }
 
 
@@ -367,7 +396,7 @@ Circle.createCircle = function(radius){
  * @param {int} [x=0] The optional x portion of the Coordinate
  * @param {int} [y=0] The optinal y portion of the Coordinate
  */
-function Coordinate(x, y){
+geometry.Coordinate = function(x, y){
    if (x){
       this.x = x;
       if (y){
@@ -378,11 +407,11 @@ function Coordinate(x, y){
 
 /** 
  * The x portion of the Coordinate 
- * @type int
+ * @type {int}
  * @see #getX
  * @see #setX
  */
-Coordinate.prototype.x = 0;
+geometry.Coordinate.prototype.x = 0;
 
 /** 
  * The y portion of the Coordinate 
@@ -390,14 +419,14 @@ Coordinate.prototype.x = 0;
  * @see #getY
  * @see #setY
  */
-Coordinate.prototype.y = 0;
+geometry.Coordinate.prototype.y = 0;
 
 /**
  * Gets the x portion of the Coordinate.
  * @type int
  * @see #setX
  */
-Coordinate.prototype.getX = function(){
+geometry.Coordinate.prototype.getX = function(){
    return this.x;
 }
 
@@ -406,7 +435,7 @@ Coordinate.prototype.getX = function(){
  * @type int
  * @see #setY
  */
-Coordinate.prototype.getY = function(){
+geometry.Coordinate.prototype.getY = function(){
    return this.y;
 }
 
@@ -415,7 +444,7 @@ Coordinate.prototype.getY = function(){
  * @param {int} x The x value to set
  * @see #getX
  */
-Coordinate.prototype.setX = function(x){
+geometry.Coordinate.prototype.setX = function(x){
    this.x = x;
 }
 
@@ -424,27 +453,8 @@ Coordinate.prototype.setX = function(x){
  * @param {int} y The y value to set
  * @see #getY
  */
-Coordinate.prototype.setY = function(y){
+geometry.Coordinate.prototype.setY = function(y){
    this.y = y;
-}
-
-/**
- * @class This class exists to demonstrate the assignment of a class prototype
- * as an anonymous block.
- */
-function ShapeFactory(){
-}
-
-ShapeFactory.prototype = {
-   /** 
-    * Creates a new {@link Shape} instance.
-    * @param {!Object=} opts An options object that is optional but can't be null.
-    * @return A new {@link Shape}
-    * @type Shape
-    */
-   createShape: function(opts){
-      return new Shape();
-   }
 }
 
 /**
@@ -455,9 +465,9 @@ ShapeFactory.prototype = {
 MySingletonShapeFactory = function(){
 
    /**
-    * Get the next {@link Shape}
-    * @type Shape
-    * @return A new {@link Shape}
+    * Get the next {@link geometry.Shape}
+    * @type geometry.Shape
+    * @return A new {@link geometry.Shape}
     */
    this.getShape = function(){ 
       return null; 
@@ -472,14 +482,6 @@ MySingletonShapeFactory = function(){
  * @see Foo.Bar
  */
 function Foo(){}
-
-/** 
- * Creates a new instance of Bar.
- * @class This class exists to demonstrate 'nested' classes.
- * @constructor 
- * @see Foo.Bar
- */
-function Bar(){}
 
 /** 
  * Nested class
@@ -497,7 +499,7 @@ Foo.Bar.prototype.y = '3';
 // private method, as in the module pattern
 /**
  * @private
- * @this {Circle}
+ * @this {geometry.Circle}
  */
 function getArea() {
 }
@@ -516,6 +518,6 @@ threeD.axisZ = Interface.method('number:v');
 /** @class
 	@implements {threeD}
  */
-function Cube(opts) {
+geometry.Cube = function(opts) {
 	Interface.ensureImplements(opts.methods, threeD);
 }

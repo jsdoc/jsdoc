@@ -1,11 +1,9 @@
 (function() {
-	var fs = require('common/fs');
-
 	var dumper = require('flesler/jsdump');
 
 	publish = function(docs, opts) { // global
 
-        function addNamespaces (to, from, parentPath, parentName) {
+        function addDocNode(to, from, parentPath, parentName) {
             from.filter(function (element) {            
                 return (element.memberof === parentPath);
             }).forEach(function (element) {
@@ -13,20 +11,33 @@
                     if (! to.namespaces) {
                         to.namespaces = {};
                     }
-                    var nestedNamespace = to.namespaces[element.name] = {
+                    var thisNamespace = to.namespaces[element.name] = {
                         "name" : element.name,
-                        "description" : element.desc
+                        "description" : element.desc || ""
                     };
-                    addNamespaces(nestedNamespace, from, element.path, element.name);
+                    addDocNode(thisNamespace, from, element.path, element.name);
                 }
                 else if (element.kind === 'method') {
                     if (! to.functions) {
                         to.functions = {};
                     }
-                    to.functions[element.name] = {
+                    var thisFunction = to.functions[element.name] = {
                         "name" : element.name,
-                        "description" : element.desc
+                        "description" : element.desc || "",
+                        "parameters": [
+                        ]
                     };
+                    
+                    if (element.param) for (var i = 0, len = element.param.length; i < len; i++) {
+                    	thisFunction.parameters.push({
+                    		"name": element.param[i].name,
+                    		"type": element.param[i].type? (element.param[i].type.length === 1? element.param[i].type[0] : element.param[i].type) : "",
+                    		"description": element.param[i].description || "",
+                    		"default": element.param[i].defaultvalue || "",
+                    		"optional": typeof element.param[i].optional === 'boolean'? element.param[i].optional : "",
+                    		"nullable": typeof element.param[i].nullable === 'boolean'? element.param[i].nullable : ""
+                    	});
+                    }
                 }
                 else if (element.kind === 'property') {
                     if (! to.properties) {
@@ -34,14 +45,25 @@
                     }
                     to.properties[element.name] = {
                         "name" : element.name,
-                        "description" : element.desc
+                        "description" : element.desc || "",
+                        "type": element.type? (element.type.length === 1? element.type[0] : element.type) : ""
                     };
+                }
+                 else if (element.kind === 'constructor') {
+                    if (! to.classes) {
+                        to.classes = {};
+                    }
+                    var thisClass = to.classes[element.name] = {
+                        "name" : element.name,
+                        "description" : element.desc || ""
+                    };
+                    addDocNode(thisClass, from, element.path, element.name);
                 }
             });
         }
 
         var rootNamespace = {};
-        addNamespaces(rootNamespace, docs.doc, undefined);
+        addDocNode(rootNamespace, docs.doc, undefined);
 
         print(dumper.jsDump.parse(rootNamespace));
 	}
