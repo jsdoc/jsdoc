@@ -45,11 +45,12 @@ geometry.util.ShapeFactory.prototype = {
  * @class This is the basic Shape class.  
  * It can be considered an abstract class, even though no such thing
  * really existing in JavaScript
+ * @param {Object} template
  * @throws {MemoryException} If there is no more memory 
  * @throws GeneralShapeException rarely (if ever)
  * @return {geometry.Shape|geometry.Coordinate} A new shape.
  */
-geometry.Shape = function(){
+geometry.Shape = function(template){
   
    /**
     * This is an example of a function that is not given as a property
