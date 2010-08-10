@@ -18,9 +18,10 @@
                     addDocNode(thisNamespace, from, element.path, element.name);
                 }
                 else if (element.kind === 'method') {
-                	//var _to = to;
                 	if (element.scope === 'static') {
-                		to = to.constructor;
+                		if (to.constructo) { // like a class
+                			to = to.constructor;
+                		}
                 	}
                 	
                     if (! to.functions) {
@@ -28,6 +29,7 @@
                     }
                     var thisFunction = to.functions[element.name] = {
                         "name" : element.name,
+                        "access": element.access || "",
                         "description" : element.desc || "",
                         "parameters": [
                         ]
@@ -43,8 +45,6 @@
                     		"nullable": typeof element.param[i].nullable === 'boolean'? element.param[i].nullable : ""
                     	});
                     }
-                    //to = _to;
-                    
                 }
                 else if (element.kind === 'property') {
                     if (! to.properties) {
@@ -52,6 +52,7 @@
                     }
                     to.properties[element.name] = {
                         "name" : element.name,
+                        "access": element.access || "",
                         "description" : element.desc || "",
                         "type": element.type? (element.type.length === 1? element.type[0] : element.type) : ""
                     };
