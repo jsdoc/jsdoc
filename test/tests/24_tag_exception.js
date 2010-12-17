@@ -32,7 +32,7 @@
 		describe('The value of the `exception` property', function() {
 			it('should be equal to the description of the given tag value', function() {
 				var doclet = doclets[0];
-				expect(doclet.exception.desc).to(eql, 'Denominator param cannot be zero.');
+				expect(doclet.exception.description).to(eql, 'Denominator param cannot be zero.');
 			});
 		});
 		

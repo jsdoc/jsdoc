@@ -2,7 +2,7 @@
 	var jsdoc,
 		doclets;
 	
-	JSpec.describe('@desc', function() {
+	JSpec.describe('@description', function() {
 	
 		before(function() {
 			// docsets can only be created by parsers
@@ -15,26 +15,26 @@
 		});
 		
   		describe('A doclet that starts with untagged text', function() {
-  			it('should have an `desc` property set to the text', function() {
+  			it('should have an `description` property set to the text', function() {
   				var doclet = doclets[0].toObject();
-  				expect(doclet).to(have_property, 'desc');
-  				expect(doclet.desc).to(eql, 'Here is Edward Bear, coming downstairs now,\nbump,\n bump,\n  bump');
-  			});
-  		});
-  		
-  		describe('A doclet that has a @desc tag', function() {
-  			it('should have an `desc` property set to the text of that tag', function() {
-  				var doclet = doclets[1].toObject();
-  				expect(doclet).to(have_property, 'desc');
-  				expect(doclet.desc).to(eql, 'Here is Edward Bear, coming downstairs now, bump, bump, bump');
+  				expect(doclet).to(have_property, 'description');
+  				expect(doclet.description).to(eql, 'Here is Edward Bear, coming downstairs now,\nbump,\n bump,\n  bump');
   			});
   		});
   		
   		describe('A doclet that has a @description tag', function() {
-  			it('should have an `desc` property set to the text of that tag', function() {
+  			it('should have an `description` property set to the text of that tag', function() {
+  				var doclet = doclets[1].toObject();
+  				expect(doclet).to(have_property, 'description');
+  				expect(doclet.description).to(eql, 'Here is Edward Bear, coming downstairs now, bump, bump, bump');
+  			});
+  		});
+  		
+  		describe('A doclet that has a @description tag', function() {
+  			it('should have an `description` property set to the text of that tag', function() {
   				var doclet = doclets[2].toObject();
-  				expect(doclet).to(have_property, 'desc');
-  				expect(doclet.desc).to(eql, 'Here is Edward Bear, coming downstairs now, bump, bump, bump');
+  				expect(doclet).to(have_property, 'description');
+  				expect(doclet.description).to(eql, 'Here is Edward Bear, coming downstairs now, bump, bump, bump');
   			});
   		});
 	});
@@ -52,7 +52,7 @@
 	
 	/**
 		@namespace Bear
-		@desc Here is Edward Bear, coming downstairs now, bump, bump, bump
+		@description Here is Edward Bear, coming downstairs now, bump, bump, bump
 	*/
 	
 	/**

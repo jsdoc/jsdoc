@@ -33,12 +33,12 @@
  				expect(doclet.param[1].name).to(eql, 'message');
  			});
  			
- 			it('should not have a `type` or `desc` property ', function() {
+ 			it('should not have a `type` or `description` property ', function() {
  				var doclet = doclets[0];
  				expect(doclet.param[0].type).to(be_undefined);
- 				expect(doclet.param[0].desc).to(be_undefined);
+ 				expect(doclet.param[0].description).to(be_undefined);
  				expect(doclet.param[1].type).to(be_undefined);
- 				expect(doclet.param[1].desc).to(be_undefined);
+ 				expect(doclet.param[1].description).to(be_undefined);
  			});
  		});
  		
@@ -74,54 +74,54 @@
  				expect(doclet.param[0].name).to(eql, 'str');
  			});
  			
- 			it('should not have a `desc`', function() {
+ 			it('should not have a `description`', function() {
  				var doclet = doclets[2];
- 				expect(doclet.param.desc).to(be_undefined);
+ 				expect(doclet.param.description).to(be_undefined);
  			});
  		});
  		
- 		describe('A doclet with one param tag having a type, name and a desc', function() {
- 			it('should have a `param` array with a single member with a `type`, `name` and `desc`', function() {
+ 		describe('A doclet with one param tag having a type, name and a description', function() {
+ 			it('should have a `param` array with a single member with a `type`, `name` and `description`', function() {
  				var doclet = doclets[3];
  				expect(doclet).to(have_property, 'param');
  				expect(doclet.param[0].type).to(be_an, Array); // types are always arrays
  				expect(doclet.param[0].type).to(eql, ['string']);
  				expect(doclet.param[0].name).to(be_an, String);
  				expect(doclet.param[0].name).to(eql, 'message');
- 				expect(doclet.param[0].desc).to(be_an, String);
- 				expect(doclet.param[0].desc).to(eql, 'the message to encrypt.');
+ 				expect(doclet.param[0].description).to(be_an, String);
+ 				expect(doclet.param[0].description).to(eql, 'the message to encrypt.');
  			});
  		});
 		
-		describe('A  param tag using the dash syntax with a `type`, `name` and `desc`', function() {
- 			it('should have a `type`, `name` and `desc`', function() {
+		describe('A  param tag using the dash syntax with a `type`, `name` and `description`', function() {
+ 			it('should have a `type`, `name` and `description`', function() {
  				var param = doclets[4].param[0];
  				expect(param.type).to(be_an, Array); // types are always arrays
  				expect(param.type).to(eql, ['Panel']);
  				expect(param.name).to(be_an, String);
  				expect(param.name).to(eql, 'p');
- 				expect(param.desc).to(be_an, String);
- 				expect(param.desc).to(eql, 'The panel to update.');
+ 				expect(param.description).to(be_an, String);
+ 				expect(param.description).to(eql, 'The panel to update.');
  			});
  		});
  		
- 		describe('A  param tag using the dash syntax with just a `desc`', function() {
- 			it('should have a `desc` but no `type` or `name`', function() {
+ 		describe('A  param tag using the dash syntax with just a `description`', function() {
+ 			it('should have a `description` but no `type` or `name`', function() {
  				var param = doclets[4].param[1];
- 				expect(param.desc).to(be_an, String);
- 				expect(param.desc).to(eql, 'The new content.');
+ 				expect(param.description).to(be_an, String);
+ 				expect(param.description).to(eql, 'The new content.');
  				expect(param.name).to(be_undefined);
  				expect(param.type).to(be_undefined);
  			});
  		});
  		
- 		describe('A  param tag using the dash syntax with a `type` and a `desc`', function() {
- 			it('should have a `desc` and `type` but no `name`', function() {
+ 		describe('A  param tag using the dash syntax with a `type` and a `description`', function() {
+ 			it('should have a `description` and `type` but no `name`', function() {
  				var param = doclets[4].param[2];
  				expect(param.type).to(be_an, Array); // types are always arrays
  				expect(param.type).to(eql, ['boolean']);
- 				expect(param.desc).to(be_an, String);
- 				expect(param.desc).to(eql, 'Don\'t replace existing content.');
+ 				expect(param.description).to(be_an, String);
+ 				expect(param.description).to(eql, 'Don\'t replace existing content.');
  				expect(param.name).to(be_undefined);
  			});
  		});

@@ -53,10 +53,10 @@
 				expect(doclet.type).to(eql, ['string', 'number']);
 			});
 			
-			it('should have a `desc` property set to the given description', function() {
+			it('should have a `description` property set to the given description', function() {
 				var doclet = doclets[3].toObject();
-				expect(doclet).to(have_property, 'desc');
-				expect(doclet.desc).to(eql, 'Here is a description.');
+				expect(doclet).to(have_property, 'description');
+				expect(doclet.description).to(eql, 'Here is a description.');
 			});
 		});
 		
@@ -82,10 +82,10 @@
 				expect(doclet.name).to(eql, 'zub');
 			});
 			
-			it('should have a `desc` property set to the given description', function() {
+			it('should have a `description` property set to the given description', function() {
 				var doclet = doclets[5].toObject();
-				expect(doclet).to(have_property, 'desc');
-				expect(doclet.desc).to(eql, 'The description here.');
+				expect(doclet).to(have_property, 'description');
+				expect(doclet.description).to(eql, 'The description here.');
 			});
 		});
 		

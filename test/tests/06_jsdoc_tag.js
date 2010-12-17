@@ -61,14 +61,14 @@
 		describe('The tag#raw property', function() {
 			it('should be set to all the characters after the leading @', function() {
  				var tag = tags[0];
-				expect(tag.raw).to(include, 'desc Hello world');
+				expect(tag.raw).to(include, 'description Hello world');
  			});
 		});
 		
 		describe('The tag#name property', function() {
 			it('should be set to the text after the leading @', function() {
  				var tag = tags[0];
-				expect(tag.name).to(eql, 'desc');
+				expect(tag.name).to(eql, 'description');
  			});
 		});
 		
@@ -85,7 +85,7 @@
 (function testarea() {
 
 	/**
-		@desc Hello world
+		@description Hello world
 		@name Foo
 		@constructor
 	*/

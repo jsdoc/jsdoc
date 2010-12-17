@@ -31,7 +31,7 @@
 		});
 		
 		describe('A doclet with two @tag <name>', function() {
-			it('should have a tag with a name property set to <name>, and description set to <desc>', function() {
+			it('should have a tag with a name property set to <name>, and description set to <description>', function() {
 				var doclet = doclets[1];
 				expect(doclet.tags[0]).to(be_an, String);
 				expect(doclet.tags[0]).to(be, 'experimental');

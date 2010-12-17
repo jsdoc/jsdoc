@@ -24,7 +24,7 @@
 	
 	exports.synonyms = {
 		/*synonym   =>  canonical*/
-		'description': 'desc',
+		'desc':        'description',
 		'function':    'method',
 		'var':         'property',
 		'field':       'property',
@@ -106,11 +106,11 @@
 		isScalar: true
 	});
 	
-	/** Syntax: @desc <text>
+	/** Syntax: @description <text>
 		@property {module:jsdoc/tagdictionary~TagDefinition} desc
 		@memberOf module:jsdoc/tagdictionary~tagDefinitions
 	 */
-	 new TagDefinition('desc', { // t
+	 new TagDefinition('description', { // t
 		isExported: true,
 		isScalar: true
 	});

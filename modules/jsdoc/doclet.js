@@ -180,7 +180,7 @@
 			if (tag.type && tag.type.length && tag.type[0] !== '') {
 				tagValue.type = tag.type;
 			}
-			if (tag.pdesc) { tagValue.desc = tag.pdesc; }
+			if (tag.pdesc) { tagValue.description = tag.pdesc; }
 			if (typeof tag.poptional === 'boolean') { tagValue.optional = tag.poptional; }
 			if (typeof tag.pnullable === 'boolean') { tagValue.nullable = tag.pnullable; }
 			if (typeof tag.pdefault !== 'undefined') { tagValue.defaultvalue = tag.pdefault; }
@@ -241,15 +241,15 @@
 	}
 	
 	/**
-		Add a @desc tag if none exists on untagged text at start of comment.
+		Add a @description tag if none exists on untagged text at start of comment.
 		@private
 		@function fixDesc
 		@param {string} commentSrc
-		@return {string} With needed @desc tag added.
+		@return {string} With needed @description tag added.
 	 */
 	function fixDesc(commentSrc) {
 		if (!/^\s*@/.test(commentSrc)) {
-			commentSrc = '@desc ' + commentSrc;
+			commentSrc = '@description ' + commentSrc;
 		}
 		return commentSrc;
 	}
@@ -291,7 +291,7 @@
  			}
  			
  			if (tagAbout.setsDocletDesc) {
- 				tags.addTag('desc', tags[i].value);
+ 				tags.addTag('description', tags[i].value);
  			}
  			
  			if (tags[i].name === 'name') {
@@ -330,7 +330,7 @@
 					}
 				
 					if (tags[i].pdesc) {
-						tags.addTag('desc', tags[i].pdesc);
+						tags.addTag('description', tags[i].pdesc);
 					}
 				
 					if (kind && kind !== tags[i].name) {
