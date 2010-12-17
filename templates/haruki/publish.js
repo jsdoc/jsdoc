@@ -45,9 +45,12 @@
                         'access': element.access || '',
                         'description': element.desc || '',
                         'parameters': [
-                        ],
-                        'returns': element.returns
+                        ]
                     };
+                    
+                    if (element.returns !== undefined) {
+                        to.functions[element.name].returns = element.returns;
+                    }
                     
                     if (element.param) for (var i = 0, len = element.param.length; i < len; i++) {
                     	thisFunction.parameters.push({
