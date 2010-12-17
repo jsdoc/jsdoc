@@ -94,9 +94,12 @@
                         'access': element.access || '',
                         'description': element.desc || '',
                         'parameters': [
-                        ],
-                        'returns': element.returns
+                        ]
                     };
+                    
+                    if (element.returns !== undefined) {
+                        to.events[element.name].returns = element.returns;
+                    }
                     
                     if (element.param) for (var i = 0, len = element.param.length; i < len; i++) {
                     	thisEvent.parameters.push({
