@@ -25,7 +25,7 @@
 		describe('The type of the `exception` property', function() {
 			it('should be equal to the type of the given tag value', function() {
 				var doclet = doclets[0];
-				expect(doclet.exception.type).to(eql, ['divideByZeroError']);
+				expect(doclet.exception.type).to(eql, 'divideByZeroError');
 			});
 		});
 		

@@ -23,10 +23,10 @@
 		});
 		
 		describe('The returns value of that doclet', function() {
-			it('should have an `type` property set to the given type', function() {
+			it('should have a single `type` documented as the given type', function() {
 				var returns = doclets[0].returns;
 				expect(returns).to(have_property, 'type');
-				expect(returns.type).to(eql, ['number']);
+				expect(returns.type).to(eql, 'number');
 			});
 			
 			it('should have an `description` property set to the given description', function() {
@@ -51,6 +51,22 @@
 			});
 		});
 		
+		describe('The returns value of a doclet with multiple @returns', function() {
+			it('should only have the first return documented.', function() {
+				var returns = doclets[2].returns;
+				expect(returns).to(have_property, 'description');
+				expect(returns.description).to(eql, 'And so forth.');
+			});
+		});
+		
+		describe('The return with multiple types', function() {
+			it('should document those types as an array.', function() {
+				var returns = doclets[2].returns;
+				expect(returns).to(have_property, 'type');
+				expect(returns.type).to(eql, ['number', 'string']);
+			});
+		});
+		
 	});
 })();
 
@@ -64,6 +80,12 @@
 	 /**
 		@function  bar
 		@return    So a horse walks into a....
+	 */
+	 
+	 /**
+		@function  baz
+		@returns {number|string} And so forth.
+		@returns And so on.
 	 */
 	
 })();

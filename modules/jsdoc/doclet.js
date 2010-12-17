@@ -178,7 +178,8 @@
 				tagValue.name = tag.pname; // the parameter name
 			}
 			if (tag.type && tag.type.length && tag.type[0] !== '') {
-				tagValue.type = tag.type;
+                if (tag.type.length === 1) { tagValue.type = tag.type[0]; } 
+				else { tagValue.type = tag.type; }
 			}
 			if (tag.pdesc) { tagValue.description = tag.pdesc; }
 			if (typeof tag.poptional === 'boolean') { tagValue.optional = tag.poptional; }

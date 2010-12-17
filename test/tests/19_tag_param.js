@@ -48,19 +48,17 @@
  				expect(doclet).to(have_property, 'param');
  				expect(doclet.param).to(have_length, 2);
  				expect(doclet.param[0]).to(have_property, 'type');
- 				expect(doclet.param[0].type).to(eql, ['string']);
+ 				expect(doclet.param[0].type).to(eql, 'string');
  				expect(doclet.param[1]).to(have_property, 'type');
- 				expect(doclet.param[1].type).to(eql, ['string']);
+ 				expect(doclet.param[1].type).to(eql, 'string');
  			});
  		});
  		
  		describe('A doclet with one param tag', function() {
- 			it('should have a `param` property that is an array of one object', function() {
+ 			it('should have a `param` property that is an array', function() {
  				var doclet = doclets[2];
  				expect(doclet).to(have_property, 'param');
  				expect(doclet.param).to(be_an, Array);
- 				expect(doclet.param.length).to(be, 1);
- 				expect(doclet.param[0]).to(be_an, Object);
  			});
  		});
  		
@@ -68,8 +66,8 @@
  			it('should have a `param` array with a single member with a `type` and `name`', function() {
  				var doclet = doclets[2];
  				expect(doclet).to(have_property, 'param');
- 				expect(doclet.param[0].type).to(be_an, Array); // types are always arrays
- 				expect(doclet.param[0].type).to(eql, ['string']);
+ 				expect(doclet.param[0].type.push).to(be_undefined); // types are only arrays when there are many
+ 				expect(doclet.param[0].type).to(eql, 'string');
  				expect(doclet.param[0].name).to(be_an, String);
  				expect(doclet.param[0].name).to(eql, 'str');
  			});
@@ -84,8 +82,7 @@
  			it('should have a `param` array with a single member with a `type`, `name` and `description`', function() {
  				var doclet = doclets[3];
  				expect(doclet).to(have_property, 'param');
- 				expect(doclet.param[0].type).to(be_an, Array); // types are always arrays
- 				expect(doclet.param[0].type).to(eql, ['string']);
+ 				expect(doclet.param[0].type).to(eql, 'string');
  				expect(doclet.param[0].name).to(be_an, String);
  				expect(doclet.param[0].name).to(eql, 'message');
  				expect(doclet.param[0].description).to(be_an, String);
@@ -96,8 +93,7 @@
 		describe('A  param tag using the dash syntax with a `type`, `name` and `description`', function() {
  			it('should have a `type`, `name` and `description`', function() {
  				var param = doclets[4].param[0];
- 				expect(param.type).to(be_an, Array); // types are always arrays
- 				expect(param.type).to(eql, ['Panel']);
+ 				expect(param.type).to(eql, 'Panel');
  				expect(param.name).to(be_an, String);
  				expect(param.name).to(eql, 'p');
  				expect(param.description).to(be_an, String);
@@ -118,8 +114,8 @@
  		describe('A  param tag using the dash syntax with a `type` and a `description`', function() {
  			it('should have a `description` and `type` but no `name`', function() {
  				var param = doclets[4].param[2];
- 				expect(param.type).to(be_an, Array); // types are always arrays
- 				expect(param.type).to(eql, ['boolean']);
+ 				expect(param.type).to(be_an, String);
+ 				expect(param.type).to(eql, 'boolean');
  				expect(param.description).to(be_an, String);
  				expect(param.description).to(eql, 'Don\'t replace existing content.');
  				expect(param.name).to(be_undefined);
