@@ -28,7 +28,7 @@
  						if ( thisDoclet.hasTag('name') && thisDoclet.hasTag('kind') ) {
  							jsdoc.doclets.addDoclet(thisDoclet);
  							if (thisDoclet.tagValue('kind') === 'module') {
- 								jsdoc.name.setCurrentModule( thisDoclet.tagValue('path') );
+  								jsdoc.name.setCurrentModule( thisDoclet.tagValue('path') );
  							}
  						}
  					}

@@ -43,7 +43,9 @@
 			name = name.replace(/^exports\.(?=.+$)/, currentModule + '.');
 		}
 		
-		path = name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
+		name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
+		name = name;
+		path = quoteUnsafe(name, kind);
 
 		if (memberof) { // @memberof tag given
 			memberof = memberof.replace(/\.prototype\.?/g, '#');
@@ -61,6 +63,7 @@
 					doclet.setTag('memberof', memberof);
 				}
 				else {
+				
 					scope = doclet.tagValue('scope');
 
 					if (!scope) {
@@ -74,32 +77,37 @@
 				}
 			}
 		}
-		else if (kind !== 'file') { // which don't have scopes or memberof
-			[prefix, scope, name] = exports.shorten(name);
-			
-			var taggedScope;
-			if ( taggedScope = doclet.tagValue('scope') ) {
-				scope = scopeToPunc[taggedScope];
-				if (prefix) { path = prefix + scope + name; }
-			}
-
-			if (prefix) {
-				doclet.setTag('memberof', prefix);
-				
-				if (name) {
-					doclet.addTag('scope', puncToScope[scope]);
-				}
-			}
-			else if (name) {
-				// global symbol?
-				doclet.addTag('scope', 'global');
-			}
+		else {
+            if (kind !== 'file' && kind !== 'module') { // which don't have scopes or memberof
+                [prefix, scope, name] = exports.shorten(name);
+                
+                var taggedScope;
+                if ( taggedScope = doclet.tagValue('scope') ) {
+                    scope = scopeToPunc[taggedScope];
+                    if (prefix) { path = prefix + scope + name; }
+                }
+    
+                if (prefix) {
+                    doclet.setTag('memberof', prefix);
+                    
+                    if (name) {
+                        doclet.addTag('scope', puncToScope[scope]);
+                    }
+                }
+                else if (name) {
+                    // global symbol?
+                    doclet.addTag('scope', 'global');
+                }
+            }
+            else {
+                
+            }
 		}
 		
 		// if name doesn't already have a docspace and needs one
 		if (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) {
 			// the namespace should appear in the path but not the name
-			if ( /^[a-z_$-]+:(\S+)/i.test(name) ) {
+			if ( /^[a-z_$-\/]+:"?(\S+)"?/i.test(name) ) {
 				name = RegExp.$1;
 			}
 			
@@ -110,10 +118,10 @@
 		if (name) doclet.setTag('name', name);
 		
 		if (!path && memberof && name.indexOf(memberof) !== 0) {
-			path = memberof + (scope? scope : '') + ns  + name;
+			path = memberof + (scope? scope : '') + ns + name;
 		}
 		else if (ns) {
-			path = ns + name
+			path = ns + quoteUnsafe(name, kind)
 		};
 
 		if (path) {
@@ -121,6 +129,16 @@
 		}
 		
 		return path;
+	}
+	
+	function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us
+	    if ( (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) && /[^$_a-zA-Z0-9]/.test(name) ) {
+	        if (!/^[a-z_$-\/]+:\"/i.test(name)) {
+	            return '"' + name.replace(/\"/g, '"') + '"'
+	        }
+	    }
+	    
+	    return name;
 	}
 	
 	/**

@@ -1,5 +1,5 @@
 /**
- * @module webui/utils
+ * @module ./webui/utils.strings
  */
     
 /** @method */
