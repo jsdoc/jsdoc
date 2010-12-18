@@ -24,7 +24,7 @@ exports.jsdocSchema = {
                         "type": "string",
                         "maxItems": 1
                     },
-                    "desc": { // a description
+                    "description": { // a description
                         "type": "string",
                         "optional": true,
                         "maxItems": 1
@@ -70,9 +70,18 @@ exports.jsdocSchema = {
                         "maxItems": 1
                     },
                     "extends": { // the path to another constructor
-                        "type": "string",
+                        "type": ["string", "array"],
                         "optional": true,
-                        "maxItems": 1
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "fires": { // the path to another doc object
+                        "type": ["string", "array"],
+                        "optional": true,
+                        "items": {
+                            "type": "string"
+                        }
                     },
                     "requires": { // the symbol being documented requires another symbol
                         "type": ["string", "array"],
@@ -126,7 +135,7 @@ exports.jsdocSchema = {
 									"type": "string"
 								}
 							},
-							"desc": { // a description of the thrown value
+							"description": { // a description of the thrown value
 								"type": "string",
 								"optional": true
 							}
@@ -138,13 +147,13 @@ exports.jsdocSchema = {
                     	"type": "object",
 						"properties": {
 							"type": { // what is the type of the value returned?
-								"type": "array",
+								"type": ["string", "array"],
 								"optional": true,
 								"items": {
 									"type": "string"
 								}
 							},
-							"desc": { // a description of the returned value
+							"description": { // a description of the returned value
 								"type": "string",
 								"optional": true
 							}
@@ -158,7 +167,7 @@ exports.jsdocSchema = {
                             "type": "object",
                             "properties": {
                                 "type": { // what are the types of value expected for this parameter?
-                                    "type": "array",
+                                    "type": ["string", "array"],
                                     "optional": true,
                                     "items": {
                                         "type": "string"
@@ -181,7 +190,7 @@ exports.jsdocSchema = {
                                 "name": { // what name does this parameter have within the function?
                                     "type": "string"
                                 },
-                                "desc": { // a description of the parameter
+                                "description": { // a description of the parameter
                                     "type": "string",
                                     "optional": true
                                 }
