@@ -11,7 +11,7 @@ Syntax
 
     @module moduleId
 
-* moduleId (required) - The CommonJs module identifer for this module.
+* moduleId (required) - The [CommonJs module identifer][1] for this module.
 
 Example
 -------
@@ -29,4 +29,8 @@ Example
 Creates docs for:
 
 * module:webui/utils
-* module:webui/utils.method:twiddle
+* module:webui/utils.twiddle
+
+
+
+[1]: http://wiki.commonjs.org/wiki/Modules/1.1.1#Module_Identifiers
