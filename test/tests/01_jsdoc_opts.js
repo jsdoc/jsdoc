@@ -57,6 +57,14 @@
       		});
 		});
 		
+		//// setting the recurse option
+		describe('The return value of jsdoc.opts#recurse when called with `-r`', function() {
+			it('should have a property `recurse` set to true', function() {
+				var returnedValue = jsdoc.opts.set(['-r', true]);
+				expect(returnedValue.recurse).to(be, true);
+      		});
+		});
+		
 		describe('The return value of jsdoc.opts#set when called with `["--destination", "flib/flub.json"]`', function() {
 			it('should have a property `destination` set to "flib/flub.json"', function() {
 				var returnedValue = jsdoc.opts.set(['--destination', 'flib/flub.json']);

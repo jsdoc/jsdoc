@@ -65,7 +65,7 @@
 		}
 		
 		if (opts._.length > 0) {
-			sourceFiles = jsdoc.src.getFilePaths(opts._);
+			sourceFiles = jsdoc.src.getFilePaths(opts._, (opts.recurse? 10 : undefined));
 	
 			jsdoc.parser.parseFiles(sourceFiles, opts.encoding);
 			
