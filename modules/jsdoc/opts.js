@@ -25,9 +25,12 @@
 	argsParser.addOption('n', 'nocode',      false, 'Ignore doclets that don\'t explicitly provide a symbol name.');
 	argsParser.addOption('T', 'test',        false, 'Run unit tests and quit.');
 	argsParser.addOption('d', 'destination', true,  'The path to the output folder. Use "stdout.json" or "stdout.xml" to dump data to the console. Default: ./jsdocs');
-	argsParser.addOption('h', 'help',        false, 'Print help message and quit.');
 	argsParser.addOption('V', 'validate',    false, 'Validate the results produced by parsing the source code.');
-	argsParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories to find source files.');
+	argsParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
+    argsParser.addOption('h', 'help',        false, 'Print this message and quit.');
+	
+// TODO [-R, recurseonly] = a number representing the depth to recurse
+// TODO [-f, filter] = a regex to filter on
 
 	/**
 		Set the options for this app.

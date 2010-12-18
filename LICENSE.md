@@ -21,8 +21,8 @@ In Addition
 ===========
 
 Third party software is included, used-by or distributed along
-with JSDoc 3. Each is provided under its own license
-and has source available from other locations.
+with JSDoc 3. Each is provided under its own license and has source
+available from other locations.
 
 Rhino
 -----
