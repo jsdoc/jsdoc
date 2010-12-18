@@ -132,7 +132,7 @@
 	}
 	
 	function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us
-	    if ( (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) && /[^$_a-zA-Z0-9]/.test(name) ) {
+	    if ( (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) && /[^$_a-zA-Z0-9\/]/.test(name) ) {
 	        if (!/^[a-z_$-\/]+:\"/i.test(name)) {
 	            return '"' + name.replace(/\"/g, '"') + '"'
 	        }

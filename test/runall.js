@@ -27,6 +27,7 @@ load(BASEDIR + '/test/tests/24_tag_exception.js');
 load(BASEDIR + '/test/tests/25_tag_scope.js');
 load(BASEDIR + '/test/tests/26_tag_tag.js');
 load(BASEDIR + '/test/tests/27_tag_module.js');
+load(BASEDIR + '/test/tests/28_tag_requires.js');
 
 // see http://visionmedia.github.com/jspec/
 JSpec.run({
