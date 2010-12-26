@@ -1,11 +1,7 @@
 /**
-	@overview Parse command line options.
+	@module common/args
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
- */
-
-/**
-	@module common/args
  */
 (function() {
 

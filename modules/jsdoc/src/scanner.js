@@ -1,12 +1,9 @@
 /**
-	@file Find source files to be parsed for docs.
+	@module jsdoc/src/scanner
+	@requires module:common/fs
+	
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
-*/
-
-/**
-	@module jsdoc/src
-	@requires module:common/fs
  */
 
 (function() {
@@ -19,7 +16,7 @@
 		@param {Array.<string>} searchPaths
 		@param {number} [depth=1]
 	 */
-	exports.getFilePaths = function(searchPaths, depth) {
+	exports.scan = function(searchPaths, depth) {
 		var filePaths = [];
 
 		searchPaths = searchPaths || [];

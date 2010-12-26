@@ -1,12 +1,8 @@
 /**
-	@overview Get or set options for this app.
+	@module jsdoc/opts/parser
+	@requires common/args
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
- */
-
-/**
-	@module jsdoc/opts
-	@requires common/args
  */
 (function() {
 	var common = {
@@ -34,11 +30,11 @@
 
 	/**
 		Set the options for this app.
-		@method set
+		@method parse
 		@throws {Error} Illegal arguments will throw errors.
 		@param {string|String[]} args The command line arguments for this app.
 	 */
-	exports.set = function(args) {
+	exports.parse = function(args) {
 		args = args || [];
 		
 		if (typeof args === 'string' || args.constructor === String) {
@@ -54,7 +50,9 @@
 		Display help message for options.
 		@method help
 	 */
-	exports.help = function() { return argsParser.help(); }
+	exports.help = function() {
+	    return argsParser.help();
+	}
 	
 	/**
 		Get a single option or all the options for this app.

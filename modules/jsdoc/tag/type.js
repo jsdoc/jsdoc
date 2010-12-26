@@ -1,13 +1,10 @@
 /**
-	@overview
+	@module jsdoc/tag/type
+
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
-/**
-	Parse type expressions.
-	@module jsdoc/type
- */
 (function() {
 	
 	/**
@@ -18,7 +15,10 @@
 		if (typeof tagValue !== 'string') { tagValue = ''; }
 		var type = '',
 			text = '',
-			count = 0;
+			count = 0,
+			optional,
+			nullable,
+			variable;
 		
 		// type expressions start with '{'
 		if (tagValue[0] === '{') {
@@ -26,11 +26,15 @@
 			
 			// find matching closer '}'
 			for (var i = 1, leni = tagValue.length; i < leni; i++) {
+			    if (tagValue[i] === '\\') { i++; continue; } // backslash escapes the next character
+			    
 				if (tagValue[i] === '{') { count++; }
 				else if (tagValue[i] === '}') { count--; }
-				
+
 				if (count === 0) {
-					type = trim(tagValue.slice(1, i));
+					type = trim(tagValue.slice(1, i))
+					       .replace(/\\\{/g, '{') // unescape escaped curly braces
+					       .replace(/\\\}/g, '}');
 					text = trim(tagValue.slice(i+1));
 					break;
 				}
@@ -41,10 +45,11 @@
 		
 		[type, optional] = parseOptional(type);
 		[type, nullable] = parseNullable(type);
+		[type, variable] = parseVariable(type);
 	
 		type = parseTypes(type); // make it into an array
 
-		return [type, text, optional, nullable];
+		return [type, text, optional, nullable, variable];
 	}
 	
 	function parseOptional(type) {
@@ -71,17 +76,30 @@
 		return [type, nullable];
 	}
 	
+	function parseVariable(type) {
+		var variable = null;
+		
+		// {...sometype} means variable number of that type
+		if ( /^(\.\.\.)(.+)$/.test(type) ) {
+			type = RegExp.$2;
+			variable = true;
+		}
+		
+		return [type, variable];
+	}
+	
 	function parseTypes(type) {
 		var types = [];
 		
-		if (type.indexOf('|') > -1) {
-			// remove optional parens
+		if ( ~type.indexOf('|') ) {
+			// remove optional parens, like: { ( string | number ) }
+			// see: http://code.google.com/closure/compiler/docs/js-for-compiler.html#types
 			if ( /^\s*\(\s*(.+)\s*\)\s*$/.test(type) ) {
 				type = RegExp.$1;
 			}
 			types = type.split(/\s*\|\s*/g);
 		}
-		else {
+		else if (type) {
 			types = [type];
 		}
 		
