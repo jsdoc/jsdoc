@@ -13,7 +13,7 @@
 		ourOptions,
 		defaults = {
 			template: 'default',
-			destination: 'jsdoc.xml'
+			destination: 'console'
 		};
 	
 	argsParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');

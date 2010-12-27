@@ -38,7 +38,7 @@
         });
         
         dictionary.defineTag('example', {
-            preservesWhitespace: true,
+            keepsWhitespace: true,
             mustHaveValue: true
         });
         

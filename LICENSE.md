@@ -25,7 +25,7 @@ with JSDoc 3. Each is provided under its own license and has source
 available from other locations.
 
 Rhino
------
+----
 
 Rhino is open source and licensed by Mozilla under the MPL 1.1 or
 later/GPL 2.0 or later licenses.
@@ -36,7 +36,7 @@ You can obtain the source code for Rhino from the Mozilla web site at
 http://www.mozilla.org/rhino/download.html
 
 json2xml (modules/goessner/json2xml)
---------
+----
 
 json2xml is copyright (c) Stefan Goessner 2006
 
@@ -47,7 +47,7 @@ http://goessner.net/
 http://goessner.net/download/prj/jsonxml/
 
 Node (modules/common/assert, modules/common/util)
--------
+----
 
 Node is Copyright 2009, 2010 Ryan Lienhart Dahl. All rights reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -71,7 +71,7 @@ IN THE SOFTWARE.
 https://github.com/ry/node
 
 JSONSchema Validator (modules/sitepen/jsonschema)
---------------------
+----
 
 JSONSchema is copyright (c) 2007 Kris Zyp SitePen (www.sitepen.com)
 
@@ -80,8 +80,16 @@ http://www.sitepen.com/blog/2010/03/02/commonjs-utilities/
 
 Licensed under the MIT license.
 
+markdown-js (modules/evilstreak/markdown)
+----
+
+markdown-js is released under the MIT license.
+http://www.opensource.org/licenses/mit-license.php
+
+http://github.com/evilstreak/markdown-js
+
 Mustache (templates/lib/janl/mustache.js)
--------------------
+----
 
 Mustache is 
 Copyright (c) 2009 Chris Wanstrath (Ruby)

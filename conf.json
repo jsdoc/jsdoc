@@ -1,3 +1,11 @@
 {
-    "permitUnknownTags": false
+    "tags": {
+        "allowUnknownTags": false
+    },
+    "source": {
+        "includePattern": ".+\\.js(doc)?$"
+    },
+    "plugins": [
+        "plugins/markdown.js"
+    ]
 }

@@ -17,7 +17,7 @@ directory.
 
 To test that the installed app is working, execute the following:
 
-	$ java -jar jsdoc.jar -T
+	$ java -jar jsdoc.jar --test
 
 Usage
 -----
@@ -25,11 +25,11 @@ Usage
 This example assumes your working directory is the JSDoc project
 base directory...
 
-    $ java -jar jsdoc.jar -d stdout yourSourceCode.js
+    $ java -jar jsdoc.jar yourSourceCodeFile.js
 
 For help regarding the supported commandline options use -h.
 
-	$ java -jar jsdoc.jar -h
+	$ java -jar jsdoc.jar --help
 
 See
 ---

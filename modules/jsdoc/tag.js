@@ -9,19 +9,23 @@
  */
 (function() {
 	
-	var dictionary = require('jsdoc/tag/dictionary'),
-	    validator = require('jsdoc/tag/validator'),
-	    tagType = require('jsdoc/tag/type');
+	var jsdoc = {
+	    tag: {
+	        dictionary: require('jsdoc/tag/dictionary'),
+	        validator: require('jsdoc/tag/validator'),
+	        type: require('jsdoc/tag/type')
+	    }
+	};
 	
 	/**
 	    @constructor Tag
 	 */
 	exports.Tag = function(tagTitle, tagBody, meta) {
-	    var tagDef = dictionary.lookUp(tagTitle),
+	    var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle),
 	        meta = meta  || {};
 	    	
-	    this.title = dictionary.normalise( trim(tagTitle) );
-	    this.text = trim(tagBody, tagDef.preservesWhitespace);
+	    this.title = jsdoc.tag.dictionary.normalise( trim(tagTitle) );
+	    this.text = trim(tagBody, tagDef.keepsWhitespace);
 	    
 	    if (this.text) {
             if (tagDef.canHaveType) {
@@ -33,9 +37,7 @@
                     /*?boolean*/ optional,
                     /*?boolean*/ nullable,
                     /*?boolean*/ variable
-                ] = tagType.parse(this.text);
-                
-                
+                ] = jsdoc.tag.type.parse(this.text);
                 
                 if (typeNames.length) {
                     this.value.type = {
@@ -45,6 +47,7 @@
                         variable: variable
                     };
                 }
+                
                 if (remainingText) {
                     if (tagDef.canHaveName) {
                         var [tagName, tagDesc, tagOptional, tagDefault] = parseTagText(remainingText);
@@ -64,7 +67,7 @@
             }
 	    }
 	    
-	    validator.validate(this, meta);
+	    jsdoc.tag.validator.validate(this, meta);
 	}
 	
 	function trim(text, newlines) {

@@ -15,7 +15,7 @@
 	exports.validate = function(tag, meta) {
 	    var tagDef = dictionary.lookUp(tag.title);
 	    
-	    if (!tagDef && !env.conf.permitUnknownTags) {
+	    if (!tagDef && !env.conf.tags.allowUnknownTags) {
 	        throw new UnknownTagError(tag.title, meta);
 	    }
 	    

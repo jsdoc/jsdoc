@@ -12,12 +12,21 @@
 	};
 	
 	/**
+	    @constructor
+	 */
+	exports.Scanner = function() {
+	}
+	require('common/events').mixin(exports.Scanner.prototype);
+	
+	/**
 		Recursively searches the given searchPaths for js files.
 		@param {Array.<string>} searchPaths
 		@param {number} [depth=1]
+		@fires sourceFileFound
 	 */
-	exports.scan = function(searchPaths, depth) {
-		var filePaths = [];
+	exports.Scanner.prototype.scan = function(searchPaths, depth) {
+		var filePaths = [],
+		    that = this;
 
 		searchPaths = searchPaths || [];
 		depth = depth || 1;
@@ -26,9 +35,11 @@
 			filePaths = filePaths.concat(common.fs.ls($, depth));
 		});
 		
-		// TODO: allow user-defined filtering of files
 		filePaths = filePaths.filter(function($) {
-			return /.+\.js(doc)?$/i.test($);
+		    var e = { fileName: $ };
+            that.fire('sourceFileFound', e);
+		    
+		    return !e.defaultPrevented;
 		});
 
 		return filePaths;

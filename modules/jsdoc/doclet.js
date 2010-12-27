@@ -6,8 +6,12 @@
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 (function() {
-	var Tag = require('jsdoc/tag').Tag,
-	    tagDictionary = require('jsdoc/tag/dictionary');
+	var jsdoc = {
+	    tag: {
+	        Tag: require('jsdoc/tag').Tag,
+	        dictionary: require('jsdoc/tag/dictionary')
+	    }
+	};
 	
 	/**
 	    @constructor
@@ -27,13 +31,11 @@
 	    for (var i = 0, leni = newTags.length; i < leni; i++) {
 	        this.addTag(newTags[i].title, newTags[i].text);
 	    }
-	    
-	    this.applyTags(this.tags);
 	}
 	
 	exports.Doclet.prototype.addTag = function(title, text) {
-        var tagDef = tagDictionary.lookUp(title),
-	        newTag = new Tag(title, text, {});
+        var tagDef = jsdoc.tag.dictionary.lookUp(title),
+	        newTag = new jsdoc.tag.Tag(title, text, {});
 	    
 	    if (tagDef.onTagged) {
 	        if (tagDef.onTagged(this, newTag) !== false) { // onTagged handler prevents tag being added bt returning false
@@ -43,26 +45,22 @@
 	    else {
 	        this.tags.push(newTag);
 	    }
+	    
+	    applyTag.call(this, newTag);
 	}
 	
-	exports.Doclet.prototype.applyTags = function(tags) {
-	    var tag;
-	    
-	    for (var i = 0, leni = tags.length; i < leni; i++) {
-	        tag = tags[i];
-
-	        if (tag.title === 'name') {
-	            this.name = tag.value;
-	        }
-	        
-	        if (tag.title === 'kind') {
-	            this.kind = tag.value;
-	        }
-	        
-	        if (tag.title === 'description') {
-	            this.description = tag.value;
-	        }
-	    }
+	function applyTag(tag) {
+	    if (tag.title === 'name') {
+            this.name = tag.value;
+        }
+        
+        if (tag.title === 'kind') {
+            this.kind = tag.value;
+        }
+        
+        if (tag.title === 'description') {
+            this.description = tag.value;
+        }
 	}
 	
 	/**
@@ -75,7 +73,6 @@
 	    
 	    docletSrc = unwrap(docletSrc);
 	    tagSrcs = split(docletSrc);
-//dump('tagSrcs', tagSrcs);
 	    
 	    for each(tagSrc in tagSrcs) {
 	        tags.push( {title: tagSrc.title, text: tagSrc.text} );
