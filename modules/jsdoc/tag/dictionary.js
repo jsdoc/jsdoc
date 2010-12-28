@@ -23,6 +23,8 @@
     
     exports.defineTag = function(title, opts) {
         _definitions[title] = new TagDefinition(title, opts);
+        
+        return _definitions[title];
     }
     
     exports.lookUp = function(title) {
@@ -35,11 +37,9 @@
 	    return false;
 	}
     
-    exports.defineSynonym = function(canonicalName, synonymName /*...*/) {
-        var canonicalName = canonicalName.toLowerCase()
-        for (var i = 1, leni = arguments.length; i < leni; i++) {
-            _synonyms[arguments[i].toLowerCase()] = canonicalName;
-        }
+    TagDefinition.prototype.synonym = function(synonymName) {
+        _synonyms[synonymName.toLowerCase()] = this.title;
+        return this; // chainable
     }
     
     exports.normalise = function(title) {

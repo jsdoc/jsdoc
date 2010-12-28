@@ -21,31 +21,31 @@
 	    
 	    if (!tag.text) {
 	        if (tagDef.mustHaveValue) {
-	            throw new TagValueRequiredError(tag.title, tag.text, meta);
+	            throw new TagValueRequiredError(tag.title, meta);
 	        }
 	    }
 	    else {
 	        if (tagDef.mustNotHaveValue) {
-	            throw new TagValueNotPermittedError(tag.title, tag.text, meta);
+	            throw new TagValueNotPermittedError(tag.title, meta);
 	        }
 	    }
 	}
 	
 	function UnknownTagError(tagName, meta) {
         this.name = 'UnknownTagError';
-        this.message = '@' + tagName + ' is not a known tag. In file: ' + meta.file;
+        this.message = 'The @' + tagName + ' tag is not a known tag. File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
     }
     UnknownTagError.prototype = Error.prototype;
 	
 	function TagValueRequiredError(tagName, meta) {
         this.name = 'TagValueRequiredError';
-        this.message = '@' + tagName + ' requires a value. In file: ' + meta.file;
+        this.message = 'The @' + tagName + ' tag requires a value. File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
     }
     TagValueRequiredError.prototype = Error.prototype;
 	
 	function TagValueNotPermittedError(tagName, message, meta) {
         this.name = 'TagValueNotPermittedError';
-        this.message = '@' + tagName + ' does not permit a value: "' + message + '". In file: ' + meta.file;
+        this.message = 'The @' + tagName + ' tag does not permit a value: "' + message + '". File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
     }
     TagValueNotPermittedError.prototype = Error.prototype;
     	

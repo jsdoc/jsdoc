@@ -9,7 +9,12 @@
  * @author Gabriel Reid gab_reid@users.sourceforge.net
  * @version 0.1 
  */
-
+ 
+/*************************** 
+ *   This is not
+ *   a jsdoc comment.
+ ****************************/
+var errors = [];
 
 /**
 	@namespace geometry
@@ -56,8 +61,8 @@ geometry.Shape = function(template){
     * This is an example of a function that is not given as a property
     * of a prototype, but instead it is assigned within a constructor.
     * For inner functions like this to be picked up by the parser, the
-    * function that acts as a constructor <b>must</b> be denoted with
-    * the <b>&#64;constructor</b> tag in its comment.
+    * function that acts as a constructor *must* be denoted with
+    * the `@constructor` tag in its comment.
     * @method
     * @returns {String}
     */
@@ -300,7 +305,7 @@ geometry.Square = function(width, height){
    
 }
 
-/* Square is a subclass of Rectangle */
+/** Square is a subclass of Rectangle */
 geometry.Square.prototype = new geometry.Rectangle();
 
 /**
@@ -376,7 +381,7 @@ geometry.Circle.prototype.setRadius = function(radius){
 }
 
  /**
-  * @name geometry.Circle#setDiameter => geometry.Square#setWidth
+  * @method geometry.Circle#setDiameter
   */
 geometry.Circle.prototype.setDiameter = geometry.Square.prototype.setWidth;
 
@@ -506,11 +511,11 @@ function getArea() {
 }
 
 // see http://www.integralist.co.uk/javascript/implementing-interfaces-in-javascript/
-/** @interface */
+/** @var */
 var threeD = new Interface('threeD');
+
 /**
 	Getter and setter for the z axis.
-	@instance
 	@method
 	@param {number} v
  */

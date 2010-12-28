@@ -153,8 +153,7 @@ function main() {
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
 
-//dump(docs);
-//exit(0);
+//dump(docs); exit(0);
 
         env.opts.template = env.opts.template || 'default';
         

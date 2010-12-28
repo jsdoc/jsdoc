@@ -8,7 +8,9 @@
     var Token  = Packages.org.mozilla.javascript.Token,
         Doclet = require('jsdoc/doclet').Doclet,
         currentParser = null,
-        currentSourceName = '';
+        currentSourceName = '',
+        seen = {},
+        pragmas = {};
         
     /** 
         @constructor module:jsdoc/src/parser.Parser
@@ -43,16 +45,14 @@
         @param {Array<string>} sourceFiles
         @param {string} [encoding=utf8]
         @fires jsdocCommentFound
+        @fires documentedCodeFound
+        @fires jsdocPragma
 	    @fires newDoclet
      */
     Parser.prototype.parse = function(sourceFiles, encoding) {
         var sourceCode = '',
             filename = '',
             jsUriScheme = 'javascript:';
-        
-        if (arguments.length === 0) {
-            throw 'module:jsdoc/parser.parseFiles requires argument sourceFiles(none provided).';
-        }
         
         if (typeof sourceFiles === 'string') { sourceFiles = [sourceFiles]; }
         
@@ -75,6 +75,7 @@
             currentParser = this;
             parseSource(sourceCode, filename);
             currentParser = null;
+            pragmas = {}; // always resets at end of file
         }
         
         return this._resultBuffer;
@@ -99,7 +100,10 @@
         @method module:jsdoc/src/parser.Parser#clearResults
         @desc Empty any accumulated results of calls to parse.
      */
-    Parser.prototype.clearResults = function() {
+    Parser.prototype.clear = function() {
+        currentParser = null;
+        currentSourceName = '';
+        seen = {};
         this._resultBuffer = [];
     }
     
@@ -112,11 +116,18 @@
         
         var ast = parserFactory().parse(source, sourceName, 1);
         
-        ast.visit(
-            new Packages.org.mozilla.javascript.ast.NodeVisitor({
-                visit: visitNode
-            })
-        );
+        var e = {filename: currentSourceName};
+        currentParser.fire('fileBegin', e);
+        
+        if (!e.defaultPrevented) {
+            ast.visit(
+                new Packages.org.mozilla.javascript.ast.NodeVisitor({
+                    visit: visitNode
+                })
+            );
+        }
+        
+        currentParser.fire('fileComplete', e);
         
         currentSourceName = '';
     }
@@ -126,174 +137,81 @@
         @function visitNode
      */
     function visitNode(node) {
-        var commentSrc = '',
-            thisDoclet = null;//,
-            //thisDocletName = '',
-            //thisDocletPath = '';
+        var e;
         
-        // look for all comments that have names provided
+        // look for stand-alone doc comments
         if (node.type === Token.SCRIPT && node.comments) {
+            // note: ALL comments are seen in this block...
             for each(var comment in node.comments.toArray()) {
-                if (comment.commentType === Token.CommentType.JSDOC) {
-                    if (commentSrc = '' + comment.toSource()) {
-                        var e = {
-                            comment: commentSrc,
-                            filename: currentSourceName,
-                            node: node
-                        };
+                if (comment.commentType !== Token.CommentType.JSDOC) {
+                    continue;
+                }
+                
+                if (commentSrc = '' + comment.toSource()) {
+                    var e = {
+                        id: 'comment'+comment.hashCode(),
+                        comment: commentSrc,
+                        lineno: comment.getLineno(),
+                        filename: currentSourceName
+                    };
+                    
+                    // comments like this affect parsing: /**#blahblah*/
+                    var m = /^\/\*\*#([\s\S]+?)\*\//.exec(commentSrc);
+                    if (m && m[1]) {
+                        pragmas[m[1]] = true;
+                        e.pragma = m[1];
+                        currentParser.fire('jsdocPragma', e, currentParser);
+                    }
+                    else {
                         currentParser.fire('jsdocCommentFound', e, currentParser);
-
-//                          if ( thisDoclet.hasTag('name') && thisDoclet.hasTag('kind') ) {
-//                              jsdoc.doclets.addDoclet(thisDoclet);
-//                              if (thisDoclet.tagValue('kind') === 'module') {
-//                                  jsdoc.name.setCurrentModule( thisDoclet.tagValue('path') );
-//                              }
-//                          }
                     }
                 }
             }
         }
+        // look for things being assigned to documented symbols
+        else if ((node.type === Token.COLON || node.type === Token.ASSIGN) && node.left.jsDoc) {
+            // this clause allows us to grab some more info: the {type} of the assigned value
+            e = new DocumentationEvent(node.left, {name: nodeToString(node.left), type: getTypeName(node.right)});
+            
+            if (!seen[e.id]) {
+                seen[e.id] = true;
+                
+                currentParser.fire('documentedCodeFound', e, currentParser);
+            }
+        }
+        // look for documented but unassigned symbols
+        else if (node.jsDoc) {
+            // a symbol is documented but has no value assigned to it yet
+            e = new DocumentationEvent(node, aboutNode(node));
+            
+            if (!seen[e.id]) { // wasn't already handled above?
+                seen[e.id] = true;
+                currentParser.fire('documentedCodeFound', e, currentParser);
+            }
+        }
         
-        // use the nocode option to shortcut all the following blah blah
-        if (env.opts.nocode) { return true; }
-//          
-//      // like function foo() {}
-//      if (node.type == Token.FUNCTION && String(node.name) !== '') {
-//          commentSrc = (node.jsDoc)? String(node.jsDoc) : '';
-// 
-//          if (commentSrc) {
-//              thisDoclet = jsdoc.doclet.makeDoclet(commentSrc, node, currentSourceName);
-//              thisDocletName = thisDoclet.tagValue('name');
-//              
-//              if (!thisDoclet.hasTag('kind')) { // guess kind from the source code
-//                  thisDoclet.addTag('kind', 'method')
-//              }
-//              
-//              if (!thisDocletName) { // guess name from the source code
-//                  nodeName = jsdoc.name.resolveInner(node.name, node, thisDoclet);
-//                  thisDoclet.setName(nodeName);
-//                  jsdoc.doclets.addDoclet(thisDoclet);
-//              }
-//              jsdoc.name.refs.push([node, thisDoclet]);
-//          }
-//          else { // an uncommented function?
-//              // this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
-//              thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
-// 
-//              nodeName = jsdoc.name.resolvePath(node.name, node, thisDoclet);
-//              thisDoclet.setName(nodeName);
-//              jsdoc.name.refs.push([
-//                  node, 
-//                  thisDoclet
-//              ]);
-//          }
-//          
-//          return true;
-//      }
-//      
-//      // like foo = function(){} or foo: function(){}
-//      if (node.type === Token.ASSIGN || node.type === Token.COLON) {
-// 
-//          var nodeName = nodeToString(node.left),
-//              nodeKind = '';
-//          commentSrc = node.jsDoc || node.left.jsDoc;
-// 
-//          if (commentSrc) {
-//              commentSrc = '' + commentSrc;
-// 
-//              thisDoclet = jsdoc.doclet.makeDoclet(commentSrc, node, currentSourceName);
-//              thisDocletName = thisDoclet.tagValue('name');
-//              nodeKind = thisDoclet.tagValue('kind');
-// 
-//              if (!thisDoclet.hasTag('kind')) { // guess kind from the source code
-//                  if (node.right.type == Token.FUNCTION) { // assume it's a method
-//                      thisDoclet.addTag('kind', 'method');
-//                  }
-//                  else {
-//                      thisDoclet.addTag('kind', 'property');
-//                  }
-//              }
-// 
-//              if (!thisDocletName) { // guess name from the source code
-//                  nodeName = jsdoc.name.resolvePath(nodeName, node, thisDoclet);
-// 
-//                  thisDoclet.setName(nodeName);
-//                  jsdoc.doclets.addDoclet(thisDoclet);
-//              }
-//              jsdoc.name.refs.push([node.right, thisDoclet]);
-//          }
-//          else { // an uncommented objlit or anonymous function?
-//              
-//              // this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
-// 
-//              thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', node, currentSourceName);
-//              nodeName = jsdoc.name.resolvePath(nodeName, node, thisDoclet);
-//              
-//              thisDoclet.setName(nodeName);
-//              jsdoc.name.refs.push([
-//                  node.right, 
-//                  thisDoclet
-//              ]);
-//          }
-//          return true;
-//      }
-//      
-//      // like var foo = function(){} or var bar = {}
-//      if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
-//          var counter = 0,
-//              nodeKind;
-// 
-//          if (node.variables) for each (var n in node.variables.toArray()) {
-// 
-//              if (n.target.type === Token.NAME) {
-//                  var val = n.initializer;
-//                  
-//                  commentSrc = (counter++ === 0 && !n.jsDoc)? node.jsDoc : n.jsDoc;
-//                  if (commentSrc) {
-//                      thisDoclet = jsdoc.doclet.makeDoclet('' + commentSrc, node, currentSourceName);
-//                      thisDocletPath = thisDoclet.tagValue('path');
-//                      thisDocletName = thisDoclet.tagValue('name');
-// 
-//                      if (!thisDoclet.hasTag('kind') && val) { // guess kind from the source code
-//                          if (val.type == Token.FUNCTION) {
-//                              thisDoclet.addTag('kind', 'method');
-//                          }
-//                          else {
-//                              thisDoclet.addTag('kind', 'property');
-//                          }
-//                      }
-//                      
-//                      if (!thisDocletName) {
-//                          thisDocletName = n.target.string;
-//                          if (!thisDocletPath) { // guess path from the source code
-//                              thisDocletPath = jsdoc.name.resolveInner(thisDocletName, node, thisDoclet);
-//                              thisDoclet.setName(thisDocletPath);
-//                          }
-//                          else {
-//                              thisDoclet.setName(thisDocletName);
-//                          }
-//                          jsdoc.doclets.addDoclet(thisDoclet);
-//                      }
-//                      
-//                      if (val) { jsdoc.name.refs.push([val, thisDoclet]); }
-//                  }
-//                  else { // an uncommented objlit or anonymous function?
-//                      var nodeName = nodeToString(n.target);
-//                      // this thing may have commented members, so keep a ref to the thing but don't add it to the doclets list
-//                      thisDoclet = jsdoc.doclet.makeDoclet('[[undocumented]]', n.target, currentSourceName);
-// 
-//                      nodeName = jsdoc.name.resolveInner(nodeName, n.target, thisDoclet);
-//                      thisDoclet.setName(nodeName);
-//                      
-//                      if (val) jsdoc.name.refs.push([val, thisDoclet]);
-//                  }
-//              }
-//              
-//          }
-//          return true;
-//      }
-//      
+        // Notice that, due to the way the AST is walked, an assignment node
+        // like {ASSIGN: x = 1} will be visited before its individual parts
+        // like {NAME: x}, and {NUMBER: 1} will be visited. In such a case the  
+        // jsdoc will be seen twice, once for both the assignment node and again
+        // for the name node and could therefore end up being documented twice.
+        // We track which nodes have been handled in the `seen` hash to prevent
+        // that.
+        
         return true;
+    }
+    
+    /**
+        @private
+        @event DocumentationEvent
+     */
+    function DocumentationEvent(node, codeInfo) {
+        this.id = 'node' + node.jsDoc.hashCode();
+        this.comment = '' + node.jsDoc;
+        this.lineno = node.getLineno();
+        this.filename = currentSourceName;
+        this.code = codeInfo;
+        this.node = node;
     }
     
     /**
@@ -306,22 +224,69 @@
         var ce = new Packages.org.mozilla.javascript.CompilerEnvirons();
         ce.setRecordingComments(true);
         ce.setRecordingLocalJsDocComments(true);
+        ce.setLanguageVersion(180);
+        
         ce.initFromContext(cx);
         return new Packages.org.mozilla.javascript.Parser(ce, ce.getErrorReporter());
     }
     
     /**
+        Attempts to find the name and type of the given node.
         @private
-        @function nodeToString
-        @param {org.mozilla.javascript.ast.AstNode} node
-        @returns {string}
+        @function aboutNode
      */
-    // credit: ringojs ninjas
+    function aboutNode(node) {
+        about = {};
+        
+        if (node.type == Token.FUNCTION && String(node.name) !== '') {
+            about.name = '' + node.name;
+            about.type = 'function';
+            
+            return about;
+        }
+        
+        if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
+            if (node.variables) {
+                for each (var n in node.variables.toArray()) {
+                    about.name = String(n.target.string);
+                    if (n.initializer) { about.type = getTypeName(n.initializer); }
+                    return about;
+                }
+            }
+            else {
+                about.name = nodeToString(node);
+                if (node.initializer) { about.type = getTypeName(node.initializer); }
+                
+                return about;
+            }
+        }
+         
+         if (node.type === Token.ASSIGN || node.type === Token.COLON) {
+             about.name = nodeToString(node.left);
+             about.type = getTypeName(node.right);
+             return about;
+         }
+        
+        // type 39 (NAME)
+        var string = nodeToString(node);
+        if (string) {
+            about.name = string;
+            return about;
+        }
+        
+        return about;
+    }
+    
     function nodeToString(node) {
         var str;
         
+        if (!node) return;
+        
         if (node.type === Token.GETPROP) {
             str = [nodeToString(node.target), node.property.string].join('.');
+        }
+        else if (node.type === Token.VAR) {
+            str = nodeToString(node.target)
         }
         else if (node.type === Token.NAME) {
             str = node.string;
@@ -342,15 +307,14 @@
         return '' + str;
     };
     
-    /**
-        @private
-        @function getTypeName
-        @param {org.mozilla.javascript.ast.AstNode} node
-        @returns {string}
-     */
-    // credit: ringojs ninjas
     function getTypeName(node) {
-        return node ? ''+Packages.org.mozilla.javascript.Token.typeToName(node.getType()) : '' ;
+        var type = '';
+        
+        if (node) {
+            type = ''+ Packages.org.mozilla.javascript.Token.typeToName(node.getType());
+        }
+        
+        return type;
     }
     
 })();

@@ -14,6 +14,16 @@
             }
         });
         
+        dictionary.defineTag('constant', {
+            onTagged: function(doclet, tag) {
+                setDocletKindToTitle(doclet, tag);
+                setDocletNameToValue(doclet, tag);
+                
+                return false;
+            }
+        })
+        .synonym('const');
+        
         dictionary.defineTag('constructor', {
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
@@ -23,15 +33,16 @@
             }
         });
         
-        dictionary.defineSynonym('description', 'desc');
         dictionary.defineTag('description', {
             mustHaveValue: true
-        });
+        })
+        .synonym('desc');
         
         dictionary.defineTag('event', {
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
+                applyNamespace(doclet, tag);
                 
                 return false;
             }
@@ -42,11 +53,24 @@
             mustHaveValue: true
         });
         
+        dictionary.defineTag('file', {
+            keepsWhitespace: true,
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                setNameToFile(doclet, tag);
+                setDocletKindToTitle(doclet, tag);
+                applyNamespace(doclet, tag);
+                
+                return false;
+            }
+        })
+        .synonym('fileoverview')
+        .synonym('overview');
+        
         dictionary.defineTag('fires', {
             mustHaveValue: true
         });
         
-        dictionary.defineSynonym('function', 'method');
         dictionary.defineTag('function', {
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
@@ -54,14 +78,34 @@
                 
                 return false;
             }
-        });
+        })
+        .synonym('method');
         
         dictionary.defineTag('kind', {
             mustHaveValue: true
         });
         
+        dictionary.defineTag('module', {
+            onTagged: function(doclet, tag) {
+                setDocletKindToTitle(doclet, tag);
+                setDocletNameToValue(doclet, tag);
+                applyNamespace(doclet, tag);
+                
+                return false;
+            }
+        });
+        
         dictionary.defineTag('name', {
             mustHaveValue: true
+        });
+        
+        dictionary.defineTag('namespace', {
+            onTagged: function(doclet, tag) {
+                setDocletKindToTitle(doclet, tag);
+                setDocletNameToValue(doclet, tag);
+                
+                return false;
+            }
         });
         
         dictionary.defineTag('param', {
@@ -74,24 +118,22 @@
             mustNotHaveValue: true
         });
         
-        dictionary.defineSynonym('returns', 'return');
-        dictionary.defineTag('returns', {
-            mustHaveValue: true,
-            canHaveType: true
-        });
-        
-        dictionary.defineTag('uri', {
-            mustHaveValue: true
-        });
-        
-        dictionary.defineTag('var', {
+        dictionary.defineTag('property', {
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
                 
                 return false;
             }
-        });
+        })
+        .synonym('field')
+        .synonym('var');
+        
+        dictionary.defineTag('returns', {
+            mustHaveValue: true,
+            canHaveType: true
+        })
+        .synonym('return');
     }
     
     /** @private */
@@ -100,7 +142,23 @@
 	}
 	
 	function setDocletNameToValue(doclet, tag) {
-	    doclet.addTag( 'name', tag.text );
+	    if (tag.text) {
+	        doclet.addTag( 'name', tag.text );
+	    }
+	}
+	
+	function setNameToFile(doclet, tag) {
+	    if (doclet.meta.filename) { doclet.addTag( 'name', 'file:'+doclet.meta.filename ); }
+	}
+	
+	function applyNamespace(doclet, tag) {
+	    if (!doclet.name) return; // error?
+	    
+	    var m = /^([a-zA-Z]+)\:.+/.exec(doclet.name);
+	    if (!(m && m[1] == tag.title)) {
+	        doclet.name = tag.title + ':'+doclet.name;
+
+	    }
 	}
 	
 })();

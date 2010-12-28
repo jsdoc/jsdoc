@@ -35,7 +35,7 @@
 	
 	exports.Doclet.prototype.addTag = function(title, text) {
         var tagDef = jsdoc.tag.dictionary.lookUp(title),
-	        newTag = new jsdoc.tag.Tag(title, text, {});
+	        newTag = new jsdoc.tag.Tag(title, text, this.meta);
 	    
 	    if (tagDef.onTagged) {
 	        if (tagDef.onTagged(this, newTag) !== false) { // onTagged handler prevents tag being added bt returning false
