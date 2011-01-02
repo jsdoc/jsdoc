@@ -98,3 +98,13 @@ exports.inherits = function(ctor, superCtor) {
     constructor: { value: ctor, enumerable: false }
   });
 };
+
+exports.mixin = function(source, target){
+    var property, empty = {};
+
+    for (property in source) {
+        if( !(property in empty) ) {
+            target[property] = source[property];
+        }
+    }
+};

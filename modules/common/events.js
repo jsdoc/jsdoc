@@ -5,21 +5,11 @@
  */
 (function() { 
     /**
-        @function module:common/events.mixin
-        @param {*} o The object to recieve the EventEmitter members.
-     */
-    exports.mixin = function(o) {
-        for ( var p in EventEmitter ) {
-            o[p] = EventEmitter[p];
-        }
-    }
-    
-    /**
-        @mixin module:common/events.EventEmitter
+        @mixin module:common/events.Eventful
     */
-    var EventEmitter = {
+    var Eventful = exports.Eventful = {
         /**
-            @function module:common/events.EventEmitter.on
+            @function module:common/events.Eventful.on
             @param {string} type
             @param {function} handler
             @returns this
@@ -43,7 +33,7 @@
         },
         
         /**
-            @function module:common/events.EventEmitter.fire
+            @function module:common/events.Eventful.fire
             @param {string} type
             @param {object} [eventData]
             @returns this
@@ -64,7 +54,7 @@
         },
         
         /**
-            @function module:common/events.EventEmitter.removeListener
+            @function module:common/events.Eventful.removeListener
             @param {string} type
             @param {function} handler
         */

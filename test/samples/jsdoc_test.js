@@ -305,7 +305,7 @@ geometry.Square = function(width, height){
    
 }
 
-/** Square is a subclass of Rectangle */
+/* Square is a subclass of Rectangle */
 geometry.Square.prototype = new geometry.Rectangle();
 
 /**

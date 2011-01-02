@@ -41,8 +41,19 @@
         else if (closingBrace) output += pad(indentBy) + closingBrace + ',\n';
     }
     
+    var seen = [];
+    seen.has = function(object) {
+        for (var i = 0, l = seen.length; i < l; i++) {
+            if (seen[i] === object) { return true; }
+        }
+        return false;
+    }
+    
     function walk(object) {
         var value;
+        
+        
+        
         if ( value = getValue(object) ) {
             output += value + ',\n';
         }
@@ -59,6 +70,14 @@
             output += '<Function' + (object.name? ' '+ object.name : '') + '>,\n';
         }
         else if ( isArray(object) ) {
+            if ( seen.has(object) ) {
+                output += '<CircularRef>,\n';
+                return;
+            }
+            else {
+                seen.push(object);
+            }
+            
             indent('[');
             for (var i = 0, leni = object.length; i < leni; i++) {
                 output += pad(indentBy); // + i + ': ';
@@ -67,6 +86,14 @@
             outdent(']');
         }
         else if ( isObject(object) ) {
+            if ( seen.has(object) ) {
+                output += '<CircularRef>,\n';
+                return;
+            }
+            else {
+                seen.push(object);
+            }
+        
             indent('{');
             for (var p in object) {
                 if ( object.hasOwnProperty(p) ) {

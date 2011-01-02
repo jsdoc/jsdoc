@@ -10,7 +10,8 @@
 	    tag: {
 	        Tag: require('jsdoc/tag').Tag,
 	        dictionary: require('jsdoc/tag/dictionary')
-	    }
+	    },
+	    name: require('jsdoc/name')
 	};
 	
 	/**
@@ -20,7 +21,7 @@
 	    var newTags = [];
 	    
 	    this.src = docletSrc;
-	    this.meta = meta;
+	    addMeta.call(this, meta);
 	    this.tags = [];
 	    
 	    docletSrc = unwrap(docletSrc);
@@ -31,6 +32,27 @@
 	    for (var i = 0, leni = newTags.length; i < leni; i++) {
 	        this.addTag(newTags[i].title, newTags[i].text);
 	    }
+	    
+	    this.postProcess();
+	    
+	}
+	
+	function addMeta(meta) {
+	    if (!this.meta) { this.meta = {}; }
+	    
+	    if (meta.lineno) this.meta.lineno = meta.lineno;
+	    if (meta.lineno) this.meta.filename = meta.filename;
+	    this.meta.code = (this.meta.code || {});
+	    if (meta.id) this.meta.code.id = meta.id;
+	    if (meta.code) {
+	        if (meta.code.name) this.meta.code.name = meta.code.name;
+	        if (meta.code.type) this.meta.code.type = meta.code.type;
+	        if (meta.code.val)  this.meta.code.val = meta.code.val;
+	    }
+	}
+	
+	exports.Doclet.prototype.postProcess = function() {
+	    jsdoc.name.resolve(this);
 	}
 	
 	exports.Doclet.prototype.addTag = function(title, text) {
@@ -49,6 +71,20 @@
 	    applyTag.call(this, newTag);
 	}
 	
+	exports.Doclet.prototype.augment = function(base) {
+	    if (!this.mixins) { this.mixins = []; }
+        this.mixins.push( {source: source, target: (target||'this')} );
+	}
+	
+	exports.Doclet.prototype.setMemberof = function(sid) {
+	    this.memberof = sid;
+	}
+	
+	exports.Doclet.prototype.borrow = function(source, target) {
+	    if (!this.borrowed) { this.borrowed = []; }
+        this.borrowed.push( {from: source, as: (target||'this')} );
+	}
+	
 	function applyTag(tag) {
 	    if (tag.title === 'name') {
             this.name = tag.value;
@@ -60,6 +96,10 @@
         
         if (tag.title === 'description') {
             this.description = tag.value;
+        }
+        
+        if (tag.title === 'scope') {
+            this.scope = tag.value;
         }
 	}
 	

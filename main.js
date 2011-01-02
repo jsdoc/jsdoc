@@ -134,7 +134,7 @@ function main() {
             include(env.conf.plugins[i]);
         }
     }
-    
+   
     if (env.opts._.length > 0) { // are there any files to scan and parse?
         
         // allow filtering of found source files
@@ -152,8 +152,9 @@ function main() {
         require('jsdoc/src/handlers');
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
-
+//print('dumping docs...');
 //dump(docs); exit(0);
+
 
         env.opts.template = env.opts.template || 'default';
         

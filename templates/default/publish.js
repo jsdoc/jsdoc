@@ -23,7 +23,12 @@
         function trim(text) {
             return text.replace(/^\s+|\s+$/g, '');
         }
-	
+	    
+	    
+	    docs = docs.filter(function(doc) {
+	        return !doc.undocumented;
+	    });
+	    
         out = Mustache.to_html(
             templates.index,
             {

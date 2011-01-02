@@ -1,53 +1,35 @@
 /**
     @module jsdoc/src/parser
+    @requires module:common/util
     @requires module:common/events
-    @requires module:jsdoc/doclet
  */
 
 (function() {
-    var Token  = Packages.org.mozilla.javascript.Token,
-        Doclet = require('jsdoc/doclet').Doclet,
+    var Token = Packages.org.mozilla.javascript.Token,
         currentParser = null,
-        currentSourceName = '',
-        seen = {},
-        pragmas = {};
+        currentSourceName = '';
         
     /** 
         @constructor module:jsdoc/src/parser.Parser
-        @mixesIn module:common/events.EventEmitter
+        @mixesIn module:common/events.Eventful
      */
     var Parser = exports.Parser = function() {
         this._resultBuffer = [];
-    }
-    require('common/events').mixin(exports.Parser.prototype);
+        this.refs = {};
+    },
+    Eventful = require('common/events').Eventful,
+    mixin = require('common/util').mixin;
     
-    /**
-        @event jsdocCommentFound
-        @param e
-        @param {string} e.comment The raw text of the JSDoc comment that will be parsed.
-        This value may be modified in place by your event handler.
-        @param {string} e.file The name of the file containing the comment.
-        @defaultAction The comment text will be used to create a new Doclet.
-        Returning false from your handler will prevent this.
-    */
-    
-    /**
-        @event newDoclet
-        @param e
-        @param {string} e.doclet The new doclet that will be added to the results.
-        The properties of this value may be modified in place by your event handler.
-        @defaultAction The new doclet will be added to the parsers result set.
-        Returning false from your handler will prevent this.
-    */
+    mixin(Eventful, Parser.prototype);
     
     /**
         @method module:jsdoc/src/parser.Parser#parse
         @param {Array<string>} sourceFiles
         @param {string} [encoding=utf8]
         @fires jsdocCommentFound
-        @fires documentedCodeFound
-        @fires jsdocPragma
-	    @fires newDoclet
+        @fires symbolFound
+        @fires fileBegin
+	    @fires fileComplete
      */
     Parser.prototype.parse = function(sourceFiles, encoding) {
         var sourceCode = '',
@@ -103,7 +85,6 @@
     Parser.prototype.clear = function() {
         currentParser = null;
         currentSourceName = '';
-        seen = {};
         this._resultBuffer = [];
     }
     
@@ -137,7 +118,8 @@
         @function visitNode
      */
     function visitNode(node) {
-        var e;
+        var e,
+            commentSrc;
         
         // look for stand-alone doc comments
         if (node.type === Token.SCRIPT && node.comments) {
@@ -147,71 +129,95 @@
                     continue;
                 }
                 
-                if (commentSrc = '' + comment.toSource()) {
+                if (commentSrc = ''+comment.toSource()) {
+
                     var e = {
-                        id: 'comment'+comment.hashCode(),
                         comment: commentSrc,
                         lineno: comment.getLineno(),
                         filename: currentSourceName
                     };
                     
-                    // comments like this affect parsing: /**#blahblah*/
-                    var m = /^\/\*\*#([\s\S]+?)\*\//.exec(commentSrc);
-                    if (m && m[1]) {
-                        pragmas[m[1]] = true;
-                        e.pragma = m[1];
-                        currentParser.fire('jsdocPragma', e, currentParser);
-                    }
-                    else {
-                        currentParser.fire('jsdocCommentFound', e, currentParser);
-                    }
+                    currentParser.fire('jsdocCommentFound', e, currentParser);
                 }
             }
         }
-        // look for things being assigned to documented symbols
-        else if ((node.type === Token.COLON || node.type === Token.ASSIGN) && node.left.jsDoc) {
-            // this clause allows us to grab some more info: the {type} of the assigned value
-            e = new DocumentationEvent(node.left, {name: nodeToString(node.left), type: getTypeName(node.right)});
+        else if (node.type === Token.ASSIGN) {
+            var e = {
+                id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
+                comment: String(node.jsDoc||'@undocumented'), // document that it is undocumented :)
+                lineno: node.getLineno(),
+                filename: currentSourceName,
+                astnode: node,
+                code: aboutNode(node)
+            };
+
+            currentParser.fire('symbolFound', e, currentParser);
             
-            if (!seen[e.id]) {
-                seen[e.id] = true;
+            if (e.doclet) {
+                currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
+            }
+        }
+        else if (node.type === Token.COLON) {
+            var e = {
+                id: 'astnode'+node.hashCode(), // the id of the COLON node
+                comment: String(node.left.jsDoc||'@undocumented'),
+                lineno: node.getLineno(),
+                filename: currentSourceName,
+                astnode: node,
+                code: aboutNode(node)
+            };
+
+            currentParser.fire('symbolFound', e, currentParser);
+            
+            if (e.doclet) {
+                currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
+            }
+        }
+        else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
+
+            if (node.variables) {
+                return true; // we'll get each var separately on future visits
+            }
+            
+            if (node.parent.variables.toArray()[0] === node) { // like /** blah */ var a=1, b=2, c=3;
+                // the first var assignment gets any jsDoc before the whole var series
+                node.jsDoc = node.parent.jsDoc;
+            }
+
+            var e = {
+                id: 'astnode'+node.hashCode(), // the id of the VARIABLE node
+                comment: String(node.jsDoc||'@undocumented'),
+                lineno: node.getLineno(),
+                filename: currentSourceName,
+                astnode: node,
+                code: aboutNode(node)
+            };
+           
+            currentParser.fire('symbolFound', e, currentParser);
+            
+            if (e.doclet) {
+                currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
                 
-                currentParser.fire('documentedCodeFound', e, currentParser);
             }
         }
-        // look for documented but unassigned symbols
-        else if (node.jsDoc) {
-            // a symbol is documented but has no value assigned to it yet
-            e = new DocumentationEvent(node, aboutNode(node));
+        else if (node.type == Token.FUNCTION && String(node.name) !== '') {
+            var e = {
+                id: 'astnode'+node.hashCode(), // the id of the COLON node
+                comment: String(node.jsDoc||'@undocumented'),
+                lineno: node.getLineno(),
+                filename: currentSourceName,
+                astnode: node,
+                code: aboutNode(node)
+            };
+
+            currentParser.fire('symbolFound', e, currentParser);
             
-            if (!seen[e.id]) { // wasn't already handled above?
-                seen[e.id] = true;
-                currentParser.fire('documentedCodeFound', e, currentParser);
-            }
+           if (e.doclet) {
+                currentParser.refs['astnode'+node.hashCode()] = e.doclet; // allow lookup from value => doclet
+           }
         }
-        
-        // Notice that, due to the way the AST is walked, an assignment node
-        // like {ASSIGN: x = 1} will be visited before its individual parts
-        // like {NAME: x}, and {NUMBER: 1} will be visited. In such a case the  
-        // jsdoc will be seen twice, once for both the assignment node and again
-        // for the name node and could therefore end up being documented twice.
-        // We track which nodes have been handled in the `seen` hash to prevent
-        // that.
-        
+       
         return true;
-    }
-    
-    /**
-        @private
-        @event DocumentationEvent
-     */
-    function DocumentationEvent(node, codeInfo) {
-        this.id = 'node' + node.jsDoc.hashCode();
-        this.comment = '' + node.jsDoc;
-        this.lineno = node.getLineno();
-        this.filename = currentSourceName;
-        this.code = codeInfo;
-        this.node = node;
     }
     
     /**
@@ -246,26 +252,25 @@
         }
         
         if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
-            if (node.variables) {
-                for each (var n in node.variables.toArray()) {
-                    about.name = String(n.target.string);
-                    if (n.initializer) { about.type = getTypeName(n.initializer); }
-                    return about;
-                }
+            about.name = nodeToString(node.target);
+            if (node.initializer) {  // like var i = 0;
+                about.val = node.initializer;
+                about.type = getTypeName(node.initializer);
             }
-            else {
-                about.name = nodeToString(node);
-                if (node.initializer) { about.type = getTypeName(node.initializer); }
-                
-                return about;
+            else { // like var i;
+                about.val = node.target;
+                about.type = 'undefined';
             }
+            
+            return about;
         }
          
-         if (node.type === Token.ASSIGN || node.type === Token.COLON) {
-             about.name = nodeToString(node.left);
-             about.type = getTypeName(node.right);
-             return about;
-         }
+        if (node.type === Token.ASSIGN || node.type === Token.COLON) {
+            about.name = nodeToString(node.left);
+            about.val = node.right;
+            about.type = getTypeName(node.right);
+            return about;
+        }
         
         // type 39 (NAME)
         var string = nodeToString(node);

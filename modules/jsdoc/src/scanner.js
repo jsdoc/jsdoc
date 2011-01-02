@@ -8,16 +8,18 @@
 
 (function() {
 	var common = {
-		fs: require('common/fs')
+		fs: require('common/fs'),
+		mixin: require('common/util').mixin,
+		events: require('common/events')
 	};
 	
 	/**
 	    @constructor
 	 */
-	exports.Scanner = function() {
+	var Scanner = exports.Scanner = function() {
 	}
-	require('common/events').mixin(exports.Scanner.prototype);
-	
+	common.mixin(common.events.Eventful, Scanner.prototype);
+
 	/**
 		Recursively searches the given searchPaths for js files.
 		@param {Array.<string>} searchPaths
