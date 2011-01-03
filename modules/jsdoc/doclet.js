@@ -52,7 +52,8 @@
 	}
 	
 	exports.Doclet.prototype.postProcess = function() {
-	    jsdoc.name.resolve(this);
+	    if (!this.preserveName) { jsdoc.name.resolve(this); }
+	    if (this.name && !this.longname) { this.longname = this.name; }
 	}
 	
 	exports.Doclet.prototype.addTag = function(title, text) {

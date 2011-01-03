@@ -2,7 +2,7 @@
 
     include('templates/lib/janl/mustache.js');
 
-    publish = function(docs, opts) {
+    publish = function(docSet, opts) {
         var out = '',
             templates = {
                 index: readFile(BASEDIR + 'templates/default/tmpl/index.html')
@@ -24,15 +24,16 @@
             return text.replace(/^\s+|\s+$/g, '');
         }
 	    
-	    
-	    docs = docs.filter(function(doc) {
-	        return !doc.undocumented;
+	    // remove undocumented symbols from the output
+	    docSet.doclets = docSet.doclets.filter(function(doclet) {
+	        return !doclet.undocumented;
 	    });
 	    
+	    // apply template
         out = Mustache.to_html(
             templates.index,
             {
-                docs: docs,
+                docs: docSet.doclets,
                 summarize: summarize
             }
         );

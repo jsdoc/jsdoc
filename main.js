@@ -106,8 +106,9 @@ function main() {
         docs,
         jsdoc = {
             opts: {
-                parser: require('jsdoc/opts/parser')
-            }
+                parser: require('jsdoc/opts/parser'),
+            },
+            docset: require('jsdoc/docset')
         };
     
     try {
@@ -163,7 +164,7 @@ function main() {
 
         if (typeof publish === 'function') {
             publish(
-                docs,
+                new jsdoc.docset.DocSet(docs),
                 { destination: env.opts.destination }
             );
         }

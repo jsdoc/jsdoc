@@ -50,6 +50,8 @@ testFile('test/t/common/dumper.js');
 testFile('test/t/jsdoc/opts/parser.js');
 testFile('test/t/jsdoc/src/parser.js');
 
+testFile('test/t/cases/file.js');
+
 testFile('test/t/cases/virtual.js');
 
 testFile('test/t/cases/objectlit.js');

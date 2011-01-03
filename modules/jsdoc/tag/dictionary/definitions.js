@@ -73,6 +73,8 @@
                 setDocletKindToTitle(doclet, tag);
                 applyNamespace(doclet, tag);
                 
+                doclet.preserveName = true;
+                
                 return false;
             }
         })
