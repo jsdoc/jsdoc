@@ -66,12 +66,12 @@
         });
         
         dictionary.defineTag('file', {
-            keepsWhitespace: true,
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 setNameToFile(doclet, tag);
                 setDocletKindToTitle(doclet, tag);
                 applyNamespace(doclet, tag);
+                setDocletDescriptionToValue(doclet, tag);
                 
                 doclet.preserveName = true;
                 
@@ -175,7 +175,12 @@
         });
         
         dictionary.defineTag('private', {
-            mustNotHaveValue: true
+            mustNotHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.access = 'private';
+                
+                return true;
+            }
         });
         
         dictionary.defineTag('property', {
@@ -221,6 +226,12 @@
 	function setDocletNameToValue(doclet, tag) {
 	    if (tag.text) {
 	        doclet.addTag( 'name', tag.text );
+	    }
+	}
+	
+	function setDocletDescriptionToValue(doclet, tag) {
+	    if (tag.value) {
+	        doclet.addTag( 'description', tag.value );
 	    }
 	}
 	

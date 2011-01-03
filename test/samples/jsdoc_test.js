@@ -1,5 +1,5 @@
 /** 
- * @fileoverview This file is to be used for testing the JSDoc parser
+ * @fileoverview This file is to be used for testing the JSDoc parser.
  * It is not intended to be an example of good JavaScript OO-programming,
  * nor is it intended to fulfill any specific purpose apart from 
  * demonstrating the functionality of the 
@@ -58,8 +58,8 @@ geometry.util.ShapeFactory.prototype = {
 geometry.Shape = function(template){
   
    /**
-    * This is an example of a function that is not given as a property
-    * of a prototype, but instead it is assigned within a constructor.
+    * This is an example of a function that is a `this` property.
+    * Not of a prototype, instead it is assigned within a constructor.
     * For inner functions like this to be picked up by the parser, the
     * function that acts as a constructor *must* be denoted with
     * the `@constructor` tag in its comment.
@@ -71,7 +71,7 @@ geometry.Shape = function(template){
    }
 
    /** 
-    * This is an inner method, just used here as an example
+    * This is an inner method, just used here as an example.
     * @private
     * @since version 0.5
     * @author Sue Smart
@@ -102,7 +102,7 @@ geometry.Hexagon = function(sideLength) {
 
 
 /**
- * This is an unattached (static) function that adds two integers together using {@link geometry.Shape#getClassName}.
+ * This is a global function that adds two integers together using {@link geometry.Shape#getClassName}.
  * @function
  * @param {int} One The first number to add 
  * @param {int} Two The second number to add 
@@ -115,7 +115,7 @@ function Add(One, Two){
 
 
 /**
- * The color of this shape
+ * The color of this shape.
  * @property
  * @type {string|Color}
  */
@@ -179,7 +179,7 @@ geometry.Shape.prototype.setColor = function(color){
 }
 
 /**
- * Clone this shape
+ * Clone this shape.
  * @method
  * @returns A copy of this shape
  * @type geometry.Shape
@@ -222,14 +222,14 @@ geometry.Rectangle.prototype = new geometry.Shape();
  * @private
  * @type int
  */
-geometry.Rectangle.prototype.width = 0;
+geometry.Rectangle.prototype._width = 0;
 
 /**
- * Value to represent the height of the Rectangle
+ * Value to represent the height of the Rectangle.
  * @private
  * @type int
  */
-geometry.Rectangle.prototype.height = 0;
+geometry.Rectangle.prototype._height = 0;
 
 /**
  * Get the type of this object. 
@@ -240,7 +240,7 @@ geometry.Rectangle.prototype.getClassName= function(){
 }
 
 /**
- * Get the value of the width for the Rectangle
+ * Get the value of the width for the Rectangle.
  * @type int
  * @see geometry.Rectangle#setWidth
  */
@@ -279,7 +279,7 @@ geometry.Rectangle.prototype.setHeight = function(height){
 }
 
 /**
- * Get the value for the total area of this Rectangle
+ * Get the value for the total area of this Rectangle.
  * @return total area of this Rectangle
  * @type int
  */
@@ -318,7 +318,7 @@ geometry.Square.prototype.setWidth = function(width){
 }
 
 /**
- * Set the height value for this Shape 
+ * Set the height value for this Shape.
  * Sets the {@link geometry.Rectangle#height} attribute in the Rectangle.
  * @param {int} height The height value to be set
  */
@@ -349,21 +349,21 @@ geometry.Circle = function(radius){
 geometry.Circle.prototype = new geometry.Shape();
 
 /** 
- * The radius value for this Circle 
+ * The radius value for this Circle.
  * @private
  * @type int
  */
 geometry.Circle.prototype.radius = 0;
 
 /** 
- * A very simple class (static) field that is also a constant
+ * A field that is also a constant.
  * @const
  * @type float
  */
 geometry.Circle.PI = 3.14;
 
 /**
- * Get the radius value for this Circle
+ * Get the radius value for this Circle.
  * @type int
  * @see #setRadius
  */
@@ -372,7 +372,7 @@ geometry.Circle.prototype.getRadius = function(){
 }
 
 /** 
- * Set the radius value for this Circle
+ * Set the radius value for this Circle.
  * @param {int} radius The {@link geometry.Circle#radius} value to set
  * @see #getRadius
  */
@@ -386,8 +386,8 @@ geometry.Circle.prototype.setRadius = function(radius){
 geometry.Circle.prototype.setDiameter = geometry.Square.prototype.setWidth;
 
 /** 
- * An example of a  class (static) method that acts as a factory for Circle
- * objects. Given a radius value, this method creates a new Circle.
+ * An example of a  class (static) method that acts as a factory for Circle objects.
+ * Given a radius value, this method creates a new Circle.
  * @param {int} radius The radius value to use for the new Circle.
  * @type geometry.Circle
  */
@@ -412,7 +412,7 @@ geometry.Coordinate = function(x, y){
 }
 
 /** 
- * The x portion of the Coordinate 
+ * The x portion of the Coordinate.
  * @type {int}
  * @see #getX
  * @see #setX
@@ -420,7 +420,7 @@ geometry.Coordinate = function(x, y){
 geometry.Coordinate.prototype.x = 0;
 
 /** 
- * The y portion of the Coordinate 
+ * The y portion of the Coordinate.
  * @type int
  * @see #getY
  * @see #setY
@@ -464,14 +464,14 @@ geometry.Coordinate.prototype.setY = function(y){
 }
 
 /**
- * An example of a singleton class
+ * An example of a singleton class.
  * @param ... Arguments represent {@link coordinate}s in the shape.
  * @constructor
  */
 MySingletonShapeFactory = function(){
 
    /**
-    * Get the next {@link geometry.Shape}
+    * Get the next {@link geometry.Shape}.
     * @type geometry.Shape
     * @return A new {@link geometry.Shape}
     */
@@ -490,8 +490,7 @@ MySingletonShapeFactory = function(){
 function Foo(){}
 
 /** 
- * Nested class
- * @public
+ * Nested class.
  * @constructor 
  */
 Foo.Bar = function(){
@@ -507,7 +506,7 @@ Foo.Bar.prototype.y = '3';
  * @private
  * @this {geometry.Circle}
  */
-function getArea() {
+function _getArea() {
 }
 
 // see http://www.integralist.co.uk/javascript/implementing-interfaces-in-javascript/

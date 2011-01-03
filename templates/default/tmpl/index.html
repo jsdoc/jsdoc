@@ -3,19 +3,45 @@
 <head>
 	<meta charset="utf-8">
 	<title>JSDoc Index</title>
+	<style type="text/css">
+        .kind { font-style: italic; }
+        .constructor
+        {
+        	font-weight: bold;
+        	color: #780000;
+        }
+        
+        .namespace { color: #780000; }
+        .property { color: #999; }
+        .function { color: #999; }
+        
+        .access { color: #999; }
+        
+        dt
+        {
+        	margin-top: 8px;
+        	margin-bottom: 4px;
+        	border-top: 1px solid #ccc;
+        	font-size: 110%;
+        	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
 
 <h1>All Symbols</h1>
 
-<ul>
+<dl>
 {{#docs}}
-    <li class="symbol">
-        <i>{{kind}}</i> {{longname}}{{#description}} - {{#summarize}}{{{description}}}{{/summarize}}{{/description}}
-    </li>
+    <dt class="symbol">
+        {{#kind}}<span class="kind {{kind}}">{{kind}}</span> {{/kind}}{{#access}}<span class="access {{access}}">&lt;{{access}}></span> {{/access}}{{longname}}
+    </dt>
+    {{#description}}<dd>
+        {{#summarize}}{{{description}}}{{/summarize}}
+    </dd>{{/description}}
 {{/docs}}
-</ul>
+</dl>
 
 </body>
 </html>

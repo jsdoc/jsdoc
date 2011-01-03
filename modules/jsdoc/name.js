@@ -93,7 +93,11 @@
     exports.shorten = function(longname) {
         //// quoted strings in a longname are atomic, convert to tokens
         var atoms = [], token; 
-        longname = longname.replace(/(".*?")/g, function($) {
+        
+        // handle quoted names like foo["bar"]
+        longname = longname.replace(/(\[?".*?"\]?)/g, function($) {
+            $ = $.replace(/^\[/g, '.').replace(/\]$/g, '');
+            
             token = '@{' + atoms.length + '}@';
             atoms.push($);
             return token;
@@ -107,11 +111,13 @@
         //// restore quoted strings back again
         var i = atoms.length;
         while (i--) {
+            longname = longname.replace('@{'+i+'}@', atoms[i]);
             memberof = memberof.replace('@{'+i+'}@', atoms[i]);
-            name   = name.replace('@{'+i+'}@', atoms[i]);
+            scope    = scope.replace('@{'+i+'}@', atoms[i]);
+            name     = name.replace('@{'+i+'}@', atoms[i]);
         }
         ////
-        
+
         return {longname: longname, memberof: memberof, scope: scope, name: name};
     }   
 })();

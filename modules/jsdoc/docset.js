@@ -7,13 +7,25 @@
 	}
 	
 	DocSet.prototype.getByLongname = function(longname) {
-	    var found = [];
-	    for (var i = 0, l = this.doclets.length; i < l; i++) {
-	        if (this.doclets[i].longname === longname) {
-	            found.push(this.doclets[i]);
-	        }
-	    }
-	    return found;
+	    return this.doclets.filter(function(doclet) {
+	        return doclet.longname === longname;
+	    });
+	}
+	
+	DocSet.prototype.getByMemberof = function(memberof) {
+	    return this.doclets.filter(function(doclet) {
+	        return doclet.memberof === memberof;
+	    });
+	}
+	
+	DocSet.prototype.sortByLongname = function() {
+	    this.doclets.sort(function(a, b) {
+	        if(a.longname == b.longname) {
+			    return 0;
+		    }
+
+		    return (a.longname < b.longname)? -1 : 1;
+	    });
 	}
 	
 })();

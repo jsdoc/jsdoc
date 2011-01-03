@@ -29,6 +29,8 @@
 	        return !doclet.undocumented;
 	    });
 	    
+	    docSet.sortByLongname();
+	    
 	    // apply template
         out = Mustache.to_html(
             templates.index,
