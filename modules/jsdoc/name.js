@@ -79,8 +79,24 @@
     function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us
         if ( (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) && /[^$_a-zA-Z0-9\/]/.test(name) ) {
             if (!/^[a-z_$-\/]+:\"/i.test(name)) {
-                return '"' + name.replace(/\"/g, '"') + '"'
+                return '"' + name.replace(/\"/g, '"') + '"';
             }
+        }
+        
+        return name;
+    }
+    
+    RegExp.escape = RegExp.escape || function(str) {
+        var specials = new RegExp("[.*+?|()\\[\\]{}\\\\]", "g"); // .*+?|()[]{}\
+        return str.replace(specials, "\\$&");
+    }
+    
+    exports.applyNamespace = function(name, ns) {
+        var nameParts = exports.shorten(name),
+            shortName = nameParts.name;
+        
+        if ( !/^[a-z]+:.+/i.test(shortName) ) {
+            name = name.replace( new RegExp(shortName+'$'), ns + ':' + shortName );
         }
         
         return name;

@@ -70,7 +70,7 @@
             onTagged: function(doclet, tag) {
                 setNameToFile(doclet, tag);
                 setDocletKindToTitle(doclet, tag);
-                applyNamespace(doclet, tag);
+                //applyNamespace(doclet, tag); // you must add the "file:" namespace yourself, kids
                 setDocletDescriptionToValue(doclet, tag);
                 
                 doclet.preserveName = true;
@@ -253,14 +253,11 @@
 	function setDocletMemberof(doclet, tag) {
 	    doclet.setMemberof(tag.value);
 	}
-	
+
 	function applyNamespace(doclet, tag) {
 	    if (!doclet.name) return; // error?
 	    
-	    var m = /^([a-zA-Z]+)\:.+/.exec(doclet.name);
-	    if (!(m && m[1] == tag.title)) {
-	        doclet.name = tag.title + ':'+doclet.name;
-	    }
+	    doclet.name = app.jsdoc.name.applyNamespace(doclet.name, tag.title)
 	}
 	
 	function parseBorrows(doclet, tag) {

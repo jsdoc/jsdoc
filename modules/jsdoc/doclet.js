@@ -146,8 +146,14 @@
 	}
 	
 	function split(docletSrc) {
-		var tagSrcs = [];
-
+		var tagSrcs = [],
+		    indent = '',
+		    indentMatch;
+        
+        // trim off any leading whitespace, up to the first (at)
+        var m = /^([^\S\n\r]+)@\S/m.exec(docletSrc);
+        indentMatch = (m && m[1])? new RegExp('^'+m[1], 'gm') : null;
+            
 		// split out the basic tags, keep surrounding whitespace
 		// like: @tagTitle tagBody
 		docletSrc
@@ -155,11 +161,16 @@
 		.split('\\@')                        // then split on that arbitrary sequence
 		.forEach(function($) {
 		    if ($) {
+		        
                 parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
                 
                  if (parsedTag) {
                     var [, tagTitle, tagText] = parsedTag;
                     
+                    if (tagText && indentMatch) {
+                        tagText = tagText.replace(indentMatch, '');
+                    }
+
                     if (tagTitle) {
                         tagSrcs.push({
                             title: tagTitle,

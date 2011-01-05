@@ -30,6 +30,10 @@
             list-style-type:none;
         }
         
+        .summary {
+            font-style: italic;
+        }
+        
     </style>
 </head>
 
@@ -42,9 +46,27 @@
     <dt class="symbol">
         {{#kind}}<span class="kind {{kind}}">{{kind}}</span> {{/kind}}{{#access}}<span class="access {{access}}">&lt;{{access}}></span> {{/access}}{{longname}}
     </dt>
-    {{#description}}<dd>
-        {{#summarize}}{{{description}}}{{/summarize}}
+    <dd>
+        <div class="summary">
+        {{#summary}}
+            {{{summary}}}
+        {{/summary}}
+        </div>
+        
         <div class="details">
+            {{#description}}
+                <div class="description">
+                {{{description}}}
+                </div>
+            {{/description}}
+        
+            {{#borrowed?}}
+            <p>Mixes In:</p>
+            <ol class="borrows">
+                {{#borrowed}} <li>{{from}}</li> {{/borrowed}}
+            </ol>
+            {{/borrowed?}}
+            
             {{#params?}}
             <p>Parameters:</p>
             <ol class="params">
@@ -59,7 +81,7 @@
             </ol>
             {{/returns}}
         </div>
-    </dd>{{/description}}
+    </dd>
 {{/docs}}
 </dl>
 

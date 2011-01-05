@@ -60,7 +60,8 @@ env = {
 app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
-        parser: new (require('jsdoc/src/parser').Parser)()
+        parser: new (require('jsdoc/src/parser').Parser)(),
+        name: require('jsdoc/name')
     }
 }
 
@@ -154,7 +155,8 @@ function main() {
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
 //print('dumping docs...');
-//dump(docs); exit(0);
+//dump(docs);
+//exit(0);
 
 
         env.opts.template = env.opts.template || 'default';
