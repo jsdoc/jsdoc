@@ -12,26 +12,32 @@
         }
         
         .namespace { color: #780000; }
-        .property { color: #999; }
-        .function { color: #999; }
+        .property { color: #666; }
+        .function { color: #666; }
         
-        .access { color: #999; }
+        .access { color: #666; }
         
-        dt
+        .symbol-head
         {
         	margin-top: 8px;
         	margin-bottom: 4px;
-        	border-top: 1px solid #ccc;
+        	padding: 6px;
         	font-size: 110%;
         	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+        	background-color: #B8B9CB;
         }
         
-        ol.params {
+        .detail-list {
             list-style-type:none;
         }
         
-        .summary {
+        .symbol-head .summary {
             font-style: italic;
+            color: #fff;
+            font-size: 90%;
+        }
+        .description {
+            margin-top: 12px;
         }
         
     </style>
@@ -43,15 +49,13 @@
 
 <dl>
 {{#docs}}
-    <dt class="symbol">
+    <h2 class="symbol-head">
         {{#kind}}<span class="kind {{kind}}">{{kind}}</span> {{/kind}}{{#access}}<span class="access {{access}}">&lt;{{access}}></span> {{/access}}{{longname}}
-    </dt>
-    <dd>
-        <div class="summary">
-        {{#summary}}
-            {{{summary}}}
-        {{/summary}}
-        </div>
+        <span class="summary">
+        {{#summary}}{{{summary}}}{{/summary}}
+        </span>
+    </h2>
+    <div>
         
         <div class="details">
             {{#description}}
@@ -61,29 +65,29 @@
             {{/description}}
         
             {{#borrowed?}}
-            <p>Mixes In:</p>
-            <ol class="borrows">
+            <h3>Mixes In:</h3>
+            <ol class="borrows detail-list">
                 {{#borrowed}} <li>{{from}}</li> {{/borrowed}}
             </ol>
             {{/borrowed?}}
             
             {{#params?}}
-            <p>Parameters:</p>
-            <ol class="params">
+            <h3>Parameters:</h3>
+            <ol class="params detail-list">
                 {{#params}} {{>param}} {{/params}}
             </ol>
             {{/params?}}
             
             {{#returns}}
-            <p>Returns:</p>
-            <ol class="params">
+            <h3>Returns:</h3>
+            <ol class="returns detail-list">
                 {{>returns}}
             </ol>
             {{/returns}}
         </div>
-    </dd>
+    </div>
 {{/docs}}
-</dl>
+
 
 </body>
 </html>

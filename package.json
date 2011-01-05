@@ -1,8 +1,8 @@
 {
 	"name": "jsdoc",
 	"version": "3.0.0alpha1",
-	"revision": "2010-12-27-1223",
-	"description": "An automatic documentation generator for javascript",
+	"revision": "2011-01-05-2350",
+	"description": "An automatic documentation generator for javascript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
 		{
@@ -16,6 +16,13 @@
 			"url": "http://github.com/micmath/JSDoc"
 		}
 	],
+	"contributors" : [
+        {
+			"name": "Michael Mathews",
+			"email": "micmath@gmail.com",
+			"web": "http://micmath.ws"
+		}
+    ],
 	"maintainers": [
 		{
 			"name": "Michael Mathews",
