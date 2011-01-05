@@ -29,15 +29,26 @@
 	        return !doclet.undocumented;
 	    });
 	    
+	    // add template helpers
+	    docSet.doclets.forEach(function(doclet) {
+	        doclet['params?'] = doclet.params && doclet.params.length > 0;
+	    });
+	    
 	    docSet.sortByLongname();
 	    
+	    var partials = {
+            param: readFile(BASEDIR + 'templates/default/tmpl/param.mustache'),
+            returns: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache')
+        };
+        
 	    // apply template
         out = Mustache.to_html(
             templates.index,
             {
                 docs: docSet.doclets,
                 summarize: summarize
-            }
+            },
+            partials
         );
 
         if (opts.destination === 'console') {

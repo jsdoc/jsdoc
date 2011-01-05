@@ -25,6 +25,11 @@
         	font-size: 110%;
         	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
         }
+        
+        ol.params {
+            list-style-type:none;
+        }
+        
     </style>
 </head>
 
@@ -39,6 +44,21 @@
     </dt>
     {{#description}}<dd>
         {{#summarize}}{{{description}}}{{/summarize}}
+        <div class="details">
+            {{#params?}}
+            <p>Parameters:</p>
+            <ol class="params">
+                {{#params}} {{>param}} {{/params}}
+            </ol>
+            {{/params?}}
+            
+            {{#returns}}
+            <p>Returns:</p>
+            <ol class="params">
+                {{>returns}}
+            </ol>
+            {{/returns}}
+        </div>
     </dd>{{/description}}
 {{/docs}}
 </dl>

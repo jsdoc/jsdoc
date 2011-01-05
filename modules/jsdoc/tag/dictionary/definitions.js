@@ -171,7 +171,13 @@
         dictionary.defineTag('param', {
             mustHaveValue: true,
             canHaveType: true,
-            canHaveName: true
+            canHaveName: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.params) { doclet.params = []; }
+                doclet.params.push(tag.value);
+                
+                return false;
+            }
         });
         
         dictionary.defineTag('private', {
@@ -196,7 +202,12 @@
         
         dictionary.defineTag('returns', {
             mustHaveValue: true,
-            canHaveType: true
+            canHaveType: true,
+            onTagged: function(doclet, tag) {
+                doclet.returns = tag.value;
+                
+                return false;
+            }
         })
         .synonym('return');
         
