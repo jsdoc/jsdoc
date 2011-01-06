@@ -5,13 +5,12 @@
 	<title>JSDoc Index</title>
 	<style type="text/css">
         .kind { font-style: italic; }
-        .constructor
+        .constructor, .mixin, .namespace
         {
         	font-weight: bold;
         	color: #780000;
         }
         
-        .namespace { color: #780000; }
         .property { color: #666; }
         .function { color: #666; }
         
@@ -49,7 +48,7 @@
 
 <dl>
 {{#docs}}
-    <h2 class="symbol-head">
+    <h2 class="symbol-head" id="{{longname}}">
         {{#kind}}<span class="kind {{kind}}">{{kind}}</span> {{/kind}}{{#access}}<span class="access {{access}}">&lt;{{access}}></span> {{/access}}{{longname}}
         <span class="summary">
         {{#summary}}{{{summary}}}{{/summary}}
@@ -67,7 +66,7 @@
             {{#borrowed?}}
             <h3>Mixes In:</h3>
             <ol class="borrows detail-list">
-                {{#borrowed}} <li>{{from}}</li> {{/borrowed}}
+                {{#borrowed}} <li>{{#linkify}}{{from}}{{/linkify}}</li> {{/borrowed}}
             </ol>
             {{/borrowed?}}
             

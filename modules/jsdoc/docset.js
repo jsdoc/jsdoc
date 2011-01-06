@@ -8,7 +8,7 @@
 	
 	DocSet.prototype.getByLongname = function(longname) {
 	    return this.doclets.filter(function(doclet) {
-	        return doclet.longname === longname;
+	        return (doclet.longname || doclet.name) === longname;
 	    });
 	}
 	
@@ -26,6 +26,10 @@
 
 		    return (a.longname < b.longname)? -1 : 1;
 	    });
+	}
+	
+	DocSet.prototype.hasDoc = function(longname) {
+	    return !! (this.getByLongname(longname)).length;
 	}
 	
 })();

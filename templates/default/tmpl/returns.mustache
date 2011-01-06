@@ -1,6 +1,6 @@
 <li>
     {{#type}}
-    { {{#names}}<span class="returns-type">{{.}}</span> {{/names}} }
+    { {{#names}}<span class="returns-type">{{#linkify}}{{.}}{{/linkify}}</span> {{/names}} }
     {{/type}}
     <span class="returns-desc">{{description}}</span>
 </li>

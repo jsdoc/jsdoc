@@ -1,6 +1,6 @@
 <li>
     {{#type}}
-    { {{#names}}<span class="param-type">{{.}}</span> {{/names}} }
+    { {{#names}}<span class="param-type">{{#linkify}}{{.}}{{/linkify}}</span> {{/names}} }
     {{/type}}
     <span class="param-name">{{name}}</span>
 </li>

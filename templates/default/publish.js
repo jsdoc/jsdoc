@@ -8,10 +8,15 @@
                 index: readFile(BASEDIR + 'templates/default/tmpl/index.html')
             };
         
-        function linkify () {
+        function linkify() {
             return function(text, render) {
-                // todo
-                return render(text);
+                var linkTo,
+                    text = render(text);
+
+                if ( !docSet.hasDoc(text) ) { return text; }
+                
+                linkTo = text.replace(/#/g, '%23');
+                return '<a href="#' + linkTo + '">' + text + '</a>';
             }
         }
         
