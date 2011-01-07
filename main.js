@@ -155,7 +155,7 @@ function main() {
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
 
-        if (env.opts.dump) {
+        if (env.opts.expel) {
             dump(docs);
             exit(0);
         }

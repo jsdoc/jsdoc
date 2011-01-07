@@ -24,7 +24,7 @@
 	argsParser.addOption('V', 'validate',    false, 'Validate the results produced by parsing the source code.');
 	argsParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
     argsParser.addOption('h', 'help',        false, 'Print this message and quit.');
-	argsParser.addOption('D', 'dump',        false, 'Dump all found doclet internals to console and quit.');
+	argsParser.addOption('X', 'expel',       false, 'Dump all found doclet internals to console and quit.');
 
 
 // TODO [-R, recurseonly] = a number representing the depth to recurse
