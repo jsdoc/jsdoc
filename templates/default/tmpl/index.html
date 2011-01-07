@@ -63,19 +63,19 @@
                 </div>
             {{/description}}
         
-            {{#borrowed?}}
+            {{#hasBorrowed}}
             <h3>Mixes In:</h3>
             <ol class="borrows detail-list">
                 {{#borrowed}} <li>{{#linkify}}{{from}}{{/linkify}}</li> {{/borrowed}}
             </ol>
-            {{/borrowed?}}
+            {{/hasBorrowed}}
             
-            {{#params?}}
+            {{#hasParams}}
             <h3>Parameters:</h3>
             <ol class="params detail-list">
                 {{#params}} {{>param}} {{/params}}
             </ol>
-            {{/params?}}
+            {{/hasParams}}
             
             {{#returns}}
             <h3>Returns:</h3>

@@ -5,22 +5,26 @@
     publish = function(docSet, opts) {
         var out = '',
             templates = {
-                index: readFile(BASEDIR + 'templates/default/tmpl/index.html')
+                index: readFile(BASEDIR + 'templates/default/tmpl/index.html'),
+                param: readFile(BASEDIR + 'templates/default/tmpl/param.mustache'),
+                returns: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache')
             };
         
-        function linkify() {
-            return function(text, render) {
-                var linkTo,
-                    text = render(text);
-
-                if ( !docSet.hasDoc(text) ) { return text; }
-                
-                linkTo = text.replace(/#/g, '%23');
-                return '<a href="#' + linkTo + '">' + text + '</a>';
+        var helpers = {
+            linkify: function() {
+                return function(text, render) {
+                    var linkTo,
+                        text = render(text);
+    
+                    if ( !docSet.hasDoc(text) ) { return text; }
+                    
+                    linkTo = text.replace(/#/g, '%23');
+                    return '<a href="#' + linkTo + '">' + text + '</a>';
+                }
             }
-        }
+        };
         
-        function summarize (doclet) {
+        function summarize(doclet) {
             var desc = doclet.description || '';
             desc = desc.replace(/<\/?p>/gi, ''); // full text may be HTML, remove P wrapper
             desc = trim(desc);
@@ -44,8 +48,8 @@
 	    
 	    // add template helpers
 	    docSet.doclets.forEach(function(doclet) {
-	        doclet['params?']   = doclet.params   && doclet.params.length > 0;
-	        doclet['borrowed?'] = doclet.borrowed && doclet.borrowed.length > 0;
+	        doclet.hasParams   = doclet.params   && doclet.params.length > 0;
+	        doclet.hasBorrowed = doclet.borrowed && doclet.borrowed.length > 0;
 	        
 	        summarize(doclet);
 	    });
@@ -53,8 +57,8 @@
 	    docSet.sortByLongname();
 	    
 	    var partials = {
-            param: readFile(BASEDIR + 'templates/default/tmpl/param.mustache'),
-            returns: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache')
+            param: templates.param,
+            returns: templates.returns
         };
         
 	    // apply template
@@ -62,7 +66,7 @@
             templates.index,
             {
                 docs: docSet.doclets,
-                linkify: linkify
+                linkify: helpers.linkify
             },
             partials
         );

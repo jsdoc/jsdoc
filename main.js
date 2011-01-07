@@ -28,7 +28,7 @@ function require(id) { // like commonjs
     try {
         var f = new Function('require', 'exports', 'module', fileContent),
             exports = require.cache[path] || {},
-            module = { id: id, uri: path };
+            module = { id: id, uri: path, exports: exports };
             
         require.cache[id] = exports;
         f.call({}, require, exports, module);
