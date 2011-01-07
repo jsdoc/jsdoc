@@ -19,14 +19,16 @@
 	argsParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
 	argsParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: your system default encoding');
 	argsParser.addOption('n', 'nocode',      false, 'Ignore doclets that don\'t explicitly provide a symbol name.');
-	argsParser.addOption('T', 'test',        false, 'Run unit tests and quit.');
-	argsParser.addOption('d', 'destination', true,  'The path to the output folder. Use "stdout.json" or "stdout.xml" to dump data to the console. Default: ./jsdocs');
+	argsParser.addOption('T', 'test',        false, 'Run all tests and quit.');
+	argsParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
 	argsParser.addOption('V', 'validate',    false, 'Validate the results produced by parsing the source code.');
 	argsParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
     argsParser.addOption('h', 'help',        false, 'Print this message and quit.');
-	
+	argsParser.addOption('D', 'dump',        false, 'Dump all found doclet internals to console and quit.');
+
+
 // TODO [-R, recurseonly] = a number representing the depth to recurse
-// TODO [-f, filter] = a regex to filter on
+// TODO [-f, filter] = a regex to filter on <-- this can be better defined in the configs?
 
 	/**
 		Set the options for this app.

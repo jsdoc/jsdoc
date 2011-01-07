@@ -154,9 +154,11 @@ function main() {
         require('jsdoc/src/handlers');
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
-//print('dumping docs...');
-//dump(docs);
-//exit(0);
+
+        if (env.opts.dump) {
+            dump(docs);
+            exit(0);
+        }
 
 
         env.opts.template = env.opts.template || 'default';
