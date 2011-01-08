@@ -28,10 +28,12 @@ function require(id) { // like commonjs
     try {
         var f = new Function('require', 'exports', 'module', fileContent),
             exports = require.cache[path] || {},
-            module = { id: id, uri: path, exports: exports };
-            
-        require.cache[id] = exports;
+            module = { id: id, uri: path };
+
         f.call({}, require, exports, module);
+        
+        if (module.exports) { exports = module.exports; }
+        require.cache[id] = exports;
     }
     catch(e) {
         print('Unable to require source code from "' + path + '": ' + e.toSource());
@@ -168,7 +170,7 @@ function main() {
 
         if (typeof publish === 'function') {
             publish(
-                new jsdoc.docset.DocSet(docs),
+                new (require('typicaljoe/taffy'))(docs),
                 { destination: env.opts.destination }
             );
         }

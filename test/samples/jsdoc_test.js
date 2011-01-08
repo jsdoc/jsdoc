@@ -104,8 +104,8 @@ geometry.Hexagon = function(sideLength) {
 /**
  * This is a global function that adds two integers together using {@link geometry.Shape#getClassName}.
  * @function
- * @param {int} oneNumber The first number to add 
- * @param {int} twoNumber The second number to add 
+ * @param {int|string} oneNumber The first number to add 
+ * @param {int|string} twoNumber The second number to add 
  * @author Gabriel Reid
  * @deprecated So you shouldn't use it anymore! Use {@link geometry.Shape#getClassName} instead.
  */

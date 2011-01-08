@@ -1,22 +1,26 @@
 (function() {
 
     include('templates/lib/janl/mustache.js');
-
-    publish = function(docSet, opts) {
+    
+    /**
+        @param {TAFFY} db
+        @param {object} opts
+     */
+    publish = function(db, opts) {
         var out = '',
-            templates = {
-                index: readFile(BASEDIR + 'templates/default/tmpl/index.html'),
+            templateSource = {
+                index: readFile(BASEDIR + 'templates/default/tmpl/index.mustache'),
                 param: readFile(BASEDIR + 'templates/default/tmpl/param.mustache'),
                 returns: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache')
             };
         
         var helpers = {
-            linkify: function() {
+            linkTo: function() {
                 return function(text, render) {
                     var linkTo,
                         text = render(text);
     
-                    if ( !docSet.hasDoc(text) ) { return text; }
+                    if ( !db.find({longname: text}).length ) { return text; }
                     
                     linkTo = text.replace(/#/g, '%23');
                     return '<a href="#' + linkTo + '">' + text + '</a>';
@@ -26,6 +30,7 @@
         
         function summarize(doclet) {
             var desc = doclet.description || '';
+            
             desc = desc.replace(/<\/?p>/gi, ''); // full text may be HTML, remove P wrapper
             desc = trim(desc);
             
@@ -41,32 +46,29 @@
             return text.replace(/^\s+|\s+$/g, '');
         }
 	    
-	    // remove undocumented symbols from the output
-	    docSet.doclets = docSet.doclets.filter(function(doclet) {
-	        return !doclet.undocumented;
-	    });
+	    db.remove({undocumented: true});
 	    
 	    // add template helpers
-	    docSet.doclets.forEach(function(doclet) {
+	    db.forEach(function(doclet) {
 	        doclet.hasParams   = doclet.params   && doclet.params.length > 0;
 	        doclet.hasBorrowed = doclet.borrowed && doclet.borrowed.length > 0;
 	        
 	        summarize(doclet);
 	    });
 	    
-	    docSet.sortByLongname();
+	    db.orderBy(['longname', 'kind']);
 	    
 	    var partials = {
-            param: templates.param,
-            returns: templates.returns
+            param: templateSource.param,
+            returns: templateSource.returns
         };
         
 	    // apply template
         out = Mustache.to_html(
-            templates.index,
+            templateSource.index,
             {
-                docs: docSet.doclets,
-                linkify: helpers.linkify
+                docs: db.get(),
+                linkTo: helpers.linkTo
             },
             partials
         );
