@@ -2,10 +2,13 @@
     "tags": {
         "allowUnknownTags": true
     },
+    
     "source": {
         "includePattern": ".+\\.js(doc)?$"
     },
+    
+    "//": "Add paths to any plugin files you want applied. like: plugins/markdown.js",
     "plugins": [
-        "plugins/markdown.js"
-    ]
+    ],
+    
 }

@@ -11,15 +11,30 @@
         @param {object} opts
      */
     publish = function(data, opts) {
-        var rootNamespace = {},
+
+        var root = {},
             docs;
         
         data.remove({undocumented: true});
         docs = data.get(); // <-- an array of Doclet objects
 
-        graft(rootNamespace, docs);
-
-        dump(rootNamespace);
+        graft(root, docs);
+        
+        
+        
+        if (opts.destination === 'console') {
+            if (opts.query && opts.query.format === 'xml') {
+                var xml = require('goessner/json2xml');
+                print( '<jsdoc>\n' + xml.convert(root) + '\n</jsdoc>' );
+            }
+            else {
+                dump(root);
+            }
+        }
+        else {
+            print('The only -d destination option currently supported is "console"!');
+        }
+        
     }
     
     function graft(parentNode, childNodes, parentLongname, parentName) {

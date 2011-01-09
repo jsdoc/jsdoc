@@ -122,7 +122,17 @@ function main() {
     
     env.opts = jsdoc.opts.parser.parse(env.args);
     
-     if (env.opts.help) {
+    if (env.opts.query) {
+        var q = env.opts.query;
+        env.opts.query = {};
+        var queryString = {};
+        q.replace( // thanks Steven Benner
+            new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+            function($0, $1, $2, $3) { env.opts.query[$1] = $3; }
+        );
+    }
+    
+    if (env.opts.help) {
         print( jsdoc.opts.parser.help() );
         exit(0);
     }
@@ -169,9 +179,10 @@ function main() {
         if (typeof publish === 'function') {
             publish(
                 new (require('typicaljoe/taffy'))(docs),
-                { destination: env.opts.destination }
+                env.opts
             );
         }
-        // TODO throw no publish warning?
+        else { // TODO throw no publish warning?
+        }
     }
 }

@@ -25,6 +25,7 @@
 	argsParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
     argsParser.addOption('h', 'help',        false, 'Print this message and quit.');
 	argsParser.addOption('X', 'expel',       false, 'Dump all found doclet internals to console and quit.');
+    argsParser.addOption('q', 'query',       true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
 
 
 // TODO [-R, recurseonly] = a number representing the depth to recurse
