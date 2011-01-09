@@ -123,13 +123,7 @@ function main() {
     env.opts = jsdoc.opts.parser.parse(env.args);
     
     if (env.opts.query) {
-        var q = env.opts.query;
-        env.opts.query = {};
-        var queryString = {};
-        q.replace( // thanks Steven Benner
-            new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-            function($0, $1, $2, $3) { env.opts.query[$1] = $3; }
-        );
+        env.opts.query = require('common/query').toObject(env.opts.query);
     }
     
     if (env.opts.help) {
