@@ -25,13 +25,21 @@
         <delete dir="build/java/build" />
         <delete file="jsdoc.jar" />
     </target>
-
+    
     <target name="jar-compile">
+        <path id="local-classes">
+            <fileset dir="build/java/classes/">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    
         <mkdir dir="build/java/build/classes" />
-        <javac 
-         srcdir="build/java/src" destdir="build/java/build/classes"
-         classpath="build/java/classes/js.jar"
-        />
+        
+        <javac srcdir="build/java/src"
+               destdir="build/java/build/classes"
+               includeAntRuntime="false">
+            <classpath refid="local-classes" />
+        </javac>
     </target>
 
     <target name="jar-build" depends="jar-compile">
@@ -39,7 +47,7 @@
         <jar destfile="build/java/build/jar/jsdoc.jar" basedir="build/java/build/classes">
             <manifest>
                <attribute name="Main-Class" value="Run" />
-               <attribute name="Class-Path" value="build/java/classes/js.jar" />
+               <attribute name="Class-Path" value="build/java/classes/js.jar build/java/classes/sqlitejdbc-v054.jar" />
             </manifest>
         </jar>
     </target>

@@ -18,9 +18,9 @@ import java.net.URL;
 import java.util.*;
 
 public class Run {
-	
 	// requires java.io.File, java.net.URL
 	public static void main(String[] args) throws java.io.IOException {
+
 		// get the absolute file path to the jar file containing this class
 		ClassLoader loader = Run.class.getClassLoader();
 		

@@ -1,8 +1,7 @@
 /** @module jsdoc/docset */
 
 (function() {
-	var DocSet;
-	exports.DocSet = DocSet = function(doclets) {
+	var DocSet = exports.DocSet = function(doclets) {
         this.doclets = doclets;
 	}
 	

@@ -1,14 +1,16 @@
 License
 =======
 
-JSDoc is free software.
+JSDoc 3 is free software. You may use it for commercial or any other purpose.
 
-Copyright (c) 2010 Michael Mathews <micmath@gmail.com>
+Unless otherwise noted below, JSDoc 3 is:
+
+Copyright (c) 2010, 2011 Michael Mathews <micmath@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
-may not use this software except in compliance with the License. You may
-obtain a copy of the License at
+MAY NOT use this software except in compliance with the License.
 
+You may obtain a copy of the License at
 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
@@ -17,6 +19,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
 implied. See the License for the specific language governing
 permissions and limitations under the License.
 
+You can obtain the source code for JSDoc 3 at
+https://github.com/micmath/JSDoc
+
+
 In Addition
 ===========
 
@@ -24,7 +30,8 @@ Third party software is included, used-by or distributed along
 with JSDoc 3. Each is provided under its own license and has source
 available from other locations.
 
-Rhino
+
+Rhino (build/java/classes/js.jar)
 ----
 
 Rhino is open source and licensed by Mozilla under the MPL 1.1 or
@@ -43,7 +50,7 @@ Copyright (c) Stefan Goessner 2006
 json2xml is licensed under Creative Commons GNU LGPL License,
 http://creativecommons.org/licenses/LGPL/2.1/
 
-http://goessner.net/
+You can obtain the source code for json2xml at
 http://goessner.net/download/prj/jsonxml/
 
 Node (modules/common/assert, modules/common/util)
@@ -68,6 +75,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 
+You can obtain the source code for Node at
 https://github.com/ry/node
 
 JSONSchema Validator (modules/sitepen/jsonschema)
@@ -75,10 +83,11 @@ JSONSchema Validator (modules/sitepen/jsonschema)
 
 Copyright (c) 2007 Kris Zyp SitePen (www.sitepen.com)
 
+Licensed under the MIT license.
+
+You can obtain the source code for JSONSchema Validator at
 http://github.com/kriszyp/commonjs-utils/blob/master/lib/json-schema.js
 http://www.sitepen.com/blog/2010/03/02/commonjs-utilities/
-
-Licensed under the MIT license.
 
 markdown-js (modules/evilstreak/markdown)
 ----
@@ -86,37 +95,30 @@ markdown-js (modules/evilstreak/markdown)
 markdown-js is released under the MIT license.
 http://www.opensource.org/licenses/mit-license.php
 
+You can obtain the source code for markdown-js at
 http://github.com/evilstreak/markdown-js
 
-TAFFY (modules/typicaljoe/taffy.js)
+sqlitejdbc (build/java/classes/sqlitejdbc-v054.jar)
 ----
 
-Software License Agreement (BSD License)
-http://taffydb.com
-Copyright (c) 2008
-All rights reserved.
-Version 1.7.3
+Copyright (c) 2007 David Crawshaw <david@zentus.com>
 
-Redistribution and use of this software in source and binary forms,
-with or without modification, are permitted provided that the following
-condition is met:
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
 
-* Redistributions of source code must retain the above copyright notice,
-  this list of conditions and the following disclaimer.
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
-OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+You can obtain the source code for sqlitejdbc at
+https://github.com/crawshaw/sqlitejdbc
 
-Mustache (templates/lib/janl/mustache.js)
+MustacheJS (templates/lib/janl/mustache.js)
 ----
 
 Copyright (c) 2009 Chris Wanstrath (Ruby)
@@ -141,4 +143,5 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+You can obtain the source code for MustacheJS at
 https://github.com/janl/mustache.js

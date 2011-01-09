@@ -4,7 +4,6 @@
  * @license See LICENSE.md file included in this distribution.
  */
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
@@ -54,7 +53,7 @@ env = {
         finish: null
     },
     args: arguments.slice(1), // jsdoc.jar sets argument[0] to the abspath to main.js, user args follow
-    conf: {}, // TODO: populate from file BASEDIR+'/conf.json'
+    conf: {},
     opts: {}
 };
 
