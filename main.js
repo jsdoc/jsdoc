@@ -31,7 +31,7 @@ function require(id) { // like commonjs
 
         f.call({}, require, exports, module);
         
-        if (module.exports) { exports = module.exports; }
+        exports = module.exports || exports;
         require.cache[id] = exports;
     }
     catch(e) {
@@ -161,7 +161,6 @@ function main() {
             exit(0);
         }
 
-
         env.opts.template = env.opts.template || 'default';
         
         // should define a global "publish" function
@@ -173,5 +172,6 @@ function main() {
                 { destination: env.opts.destination }
             );
         }
+        // TODO throw no publish warning?
     }
 }

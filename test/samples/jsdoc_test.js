@@ -17,14 +17,23 @@
 var errors = [];
 
 /**
+    Overall namespace object for this library.
+    @public
 	@namespace geometry
  */
 geometry = {};
 
 /**
+	Handy utility functions related to geometry.
 	@namespace geometry.util
  */
-geometry.util = {};
+geometry.util = {
+    /** Determine if 2 shapes intersect.
+        @returns {boolean} True if they do intersect.
+    */
+    intersects: function(shape1, shape2) {
+    }
+};
 
 /**
  * @class This class exists to demonstrate the assignment of a class prototype
@@ -50,6 +59,7 @@ geometry.util.ShapeFactory.prototype = {
  * @class This is the basic Shape class.  
  * It can be considered an abstract class, even though no such thing
  * really existing in JavaScript
+ * @borrows threeD
  * @param {Object} template
  * @throws {MemoryException} If there is no more memory 
  * @throws GeneralShapeException rarely (if ever)
@@ -510,7 +520,11 @@ function _getArea() {
 }
 
 // see http://www.integralist.co.uk/javascript/implementing-interfaces-in-javascript/
-/** @var */
+/**
+    Adds functionality related to three-dimensional calculations.
+    @protected
+    @mixin
+*/
 var threeD = new Interface('threeD');
 
 /**

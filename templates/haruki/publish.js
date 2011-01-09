@@ -1,156 +1,174 @@
+/**
+    @overview Builds a tree-like JSON string from the doclet data.
+    @version 0.0.1
+ */
+
 (function() {
-	var dumper = require('flesler/jsdump');
 
-	publish = function(docs, opts) { // global
+    /**
+        @global
+        @param {TAFFY} data
+        @param {object} opts
+     */
+    publish = function(data, opts) {
+        var rootNamespace = {},
+            docs;
+        
+        data.remove({undocumented: true});
+        docs = data.get(); // <-- an array of Doclet objects
 
-        function addDocNode(to, from, parentPath, parentName) {
-            from.filter(function (element) {            
-                return (element.memberof === parentPath);
-            }).forEach(function (element) {
-                if (element.kind === 'namespace') {
-                    if (! to.namespaces) {
-                        to.namespaces = {};
-                    }
-                    var thisNamespace = to.namespaces[element.name] = {
-                        'name': element.name,
-                        'description': element.desc || '',
-                        'access': element.access || ''
-                    };
-                    addDocNode(thisNamespace, from, element.path, element.name);
+        graft(rootNamespace, docs);
+
+        dump(rootNamespace);
+    }
+    
+    function graft(parentNode, childNodes, parentLongname, parentName) {
+        childNodes
+        .filter(function (element) {            
+            return (element.memberof === parentLongname);
+        })
+        .forEach(function (element, i) {
+            //print((i+1)+': '+element.kind+' '+element.longname+' ('+element.name+')');
+            
+            if (element.kind === 'namespace') {
+                if (! parentNode.namespaces) {
+                    parentNode.namespaces = { };
                 }
-                else if (element.kind === 'mixin') {
-                    if (! to.mixins) {
-                        to.mixins = {};
-                    }
-                    var thisMixin = to.mixins[element.name] = {
-                        'name': element.name,
-                        'description': element.desc || '',
-                        'access': element.access || ''
-                    };
-                    addDocNode(thisMixin, from, element.path, element.name);
+                
+                var thisNamespace = parentNode.namespaces[element.name] = {
+                    'name': element.name,
+                    'description': element.description || '',
+                    'access': element.access || ''
+                };
+                
+                graft(thisNamespace, childNodes, element.longname, element.name);
+            }
+            else if (element.kind === 'mixin') {
+                if (! parentNode.mixins) {
+                    parentNode.mixins = { };
                 }
-                else if (element.kind === 'method') {
-                	var _to = to;
-//                 	if (element.scope === 'static') {
-//                 		if (to.constructor) { // like a class
-//                 			to = to.constructor;
-//                 		}
-//                 	}
-                	
-                    if (! to.functions) {
-                        to.functions = {};
+                
+                var thisMixin = parentNode.mixins[element.name] = {
+                    'name': element.name,
+                    'description': element.description || '',
+                    'access': element.access || ''
+                };
+                
+                graft(thisMixin, childNodes, element.longname, element.name);
+            }
+            else if (element.kind === 'function') {
+                if (! parentNode.functions) {
+                    parentNode.functions = { };
+                }
+                
+                var thisFunction = parentNode.functions[element.name] = {
+                    'name': element.name,
+                    'access': element.access || '',
+                    'description': element.description || '',
+                    'parameters': [ ]
+                };
+                
+                if (element.returns) {
+                    parentNode.functions[element.name].returns = {
+                        'type': element.returns.type? (element.returns.type.names.length === 1? element.returns.type.names[0] : element.returns.type.names) : '',
+                        'description': element.returns.description || ''
+                    };
+                }
+                
+                if (element.params) {
+                    for (var i = 0, len = element.params.length; i < len; i++) {
+                        thisFunction.parameters.push({
+                            'name': element.params[i].name,
+                            'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
+                            'description': element.params[i].description || '',
+                            'default': element.params[i].defaultvalue || '',
+                            'optional': typeof element.params[i].optional === 'boolean'? element.params[i].optional : '',
+                            'nullable': typeof element.params[i].nullable === 'boolean'? element.params[i].nullable : ''
+                        });
                     }
-                    var thisFunction = to.functions[element.name] = {
+                }
+            }
+            else if (element.kind === 'property') {
+                if (! parentNode.properties) {
+                    parentNode.properties = { };
+                }
+                parentNode.properties[element.name] = {
+                    'name': element.name,
+                    'access': element.access || '',
+                    'description': element.description || '',
+                    'type': element.type? (element.type.length === 1? element.type[0] : element.type) : ''
+                };
+            }
+            
+            else if (element.kind === 'event') {
+                if (! parentNode.events) {
+                    parentNode.events = { };
+                }
+                
+                var thisEvent = parentNode.events[element.name] = {
+                    'name': element.name,
+                    'access': element.access || '',
+                    'description': element.description || '',
+                    'parameters': [
+                    ]
+                };
+                
+                if (element.returns) {
+                    parentNode.events[element.name].returns = {
+                        'type': element.returns.type? (element.returns.type.names.length === 1? element.returns.type.names[0] : element.returns.type.names) : '',
+                        'description': element.returns.description || ''
+                    };
+                }
+                
+                if (element.params) {
+                    for (var i = 0, len = element.params.length; i < len; i++) {
+                        thisEvent.parameters.push({
+                            'name': element.params[i].name,
+                            'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
+                            'description': element.params[i].description || '',
+                            'default': element.params[i].defaultvalue || '',
+                            'optional': typeof element.params[i].optional === 'boolean'? element.params[i].optional : '',
+                            'nullable': typeof element.params[i].nullable === 'boolean'? element.params[i].nullable : ''
+                        });
+                    }
+                }
+            }
+            else if (element.kind === 'constructor') {
+                if (! parentNode.classes) {
+                    parentNode.classes = { };
+                }
+                
+                var thisClass = parentNode.classes[element.name] = {
+                    'name': element.name,
+                    'description': element.classdesc || '',
+                    'extends': element.augments || [],
+                    'access': element.access || '',
+                    'fires': element.fires || '',
+                    'constructor': {
                         'name': element.name,
-                        'access': element.access || '',
-                        'description': element.desc || '',
+                        'description': element.description || '',
                         'parameters': [
                         ]
-                    };
-                    
-                    if (element.returns !== undefined) {
-                        to.functions[element.name].returns = element.returns;
                     }
-                    
-                    if (element.param) for (var i = 0, len = element.param.length; i < len; i++) {
-                    	thisFunction.parameters.push({
-                    		'name': element.param[i].name,
-                    		'type': element.param[i].type? (element.param[i].type.length === 1? element.param[i].type[0] : element.param[i].type) : '',
-                    		'description': element.param[i].desc || '',
-                    		'default': element.param[i].defaultvalue || '',
-                    		'optional': typeof element.param[i].optional === 'boolean'? element.param[i].optional : '',
-                    		'nullable': typeof element.param[i].nullable === 'boolean'? element.param[i].nullable : ''
-                    	});
+                };
+                
+                if (element.params) {
+                    for (var i = 0, len = element.params.length; i < len; i++) {
+                        thisClass.constructor.parameters.push({
+                            'name': element.params[i].name,
+                            'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
+                            'description': element.params[i].description || '',
+                            'default': element.params[i].defaultvalue || '',
+                            'optional': typeof element.params[i].optional === 'boolean'? element.params[i].optional : '',
+                            'nullable': typeof element.params[i].nullable === 'boolean'? element.params[i].nullable : ''
+                        });
                     }
-                    to = _to;
                 }
-                else if (element.kind === 'property') {
-                	var _to = to;
-                    if (element.scope === 'static') {
-                		if (to.constructor) { // like a class
-                			to = to.constructor;
-                		}
-                	}
-                    
-                    if (! to.properties) {
-                        to.properties = {};
-                    }
-                    to.properties[element.name] = {
-                        'name': element.name,
-                        'access': element.access || '',
-                        'description': element.desc || '',
-                        'type': element.type? (element.type.length === 1? element.type[0] : element.type) : ''
-                    };
-                    to = _to;
-                }
-                else if (element.kind === 'event') {
-                	var _to = to;
-                	
-                    if (! to.events) {
-                        to.events = {};
-                    }
-                    var thisEvent = to.events[element.name] = {
-                        'name': element.name,
-                        'access': element.access || '',
-                        'description': element.desc || '',
-                        'parameters': [
-                        ]
-                    };
-                    
-                    if (element.returns !== undefined) {
-                        to.events[element.name].returns = element.returns;
-                    }
-                    
-                    if (element.param) for (var i = 0, len = element.param.length; i < len; i++) {
-                    	thisEvent.parameters.push({
-                    		'name': element.param[i].name,
-                    		'type': element.param[i].type? (element.param[i].type.length === 1? element.param[i].type[0] : element.param[i].type) : '',
-                    		'description': element.param[i].desc || '',
-                    		'default': element.param[i].defaultvalue || '',
-                    		'optional': typeof element.param[i].optional === 'boolean'? element.param[i].optional : '',
-                    		'nullable': typeof element.param[i].nullable === 'boolean'? element.param[i].nullable : ''
-                    	});
-                    }
-                    to = _to;
-                }
-                else if (element.kind === 'constructor') {
-                    if (! to.classes) {
-                        to.classes = {};
-                    }
-                    var thisClass = to.classes[element.name] = {
-                        'name': element.name,
-                        'description': element.classdesc || '',
-                        'extends': element.augments || [],
-                        'access': element.access || '',
-                        'fires': element.fires || '',
-                        'constructor': {
-                        	'name': element.name,
-                        	'description': element.desc || '',
-                        	'parameters': [
-                        	]
-                        }
-                    };
-                    
-                    if (element.param) for (var i = 0, len = element.param.length; i < len; i++) {
-                    	thisClass.constructor.parameters.push({
-                    		'name': element.param[i].name,
-                    		'type': element.param[i].type? (element.param[i].type.length === 1? element.param[i].type[0] : element.param[i].type) : '',
-                    		'description': element.param[i].desc || '',
-                    		'default': element.param[i].defaultvalue || '',
-                    		'optional': typeof element.param[i].optional === 'boolean'? element.param[i].optional : '',
-                    		'nullable': typeof element.param[i].nullable === 'boolean'? element.param[i].nullable : ''
-                    	});
-                    }
-                    addDocNode(thisClass, from, element.path, element.name);
-                }
-            });
-        }
-
-        var rootNamespace = {};
-        addDocNode(rootNamespace, docs.doc, undefined);
-
-        print(dumper.jsDump.parse(rootNamespace));
-	}
+                
+                graft(thisClass, childNodes, element.longname, element.name);
+           }
+        });
+    }
 
 })();
 

@@ -86,6 +86,11 @@
         this.borrowed.push( {from: source, as: (target||'this')} );
 	}
 	
+	exports.Doclet.prototype.augment = function(base) {
+	    if (!this.augments) { this.augments = []; }
+        this.augments.push(base);
+	}
+	
 	function applyTag(tag) {
 	    if (tag.title === 'name') {
             this.name = tag.value;

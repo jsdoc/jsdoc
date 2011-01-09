@@ -55,7 +55,7 @@
                         if (tagName)     { this.value.name = tagName; }
                         if (tagDesc)     { this.value.description = tagDesc; }
                         if (tagOptional) { this.value.optional = tagOptional; }
-                        if (tagDefault)  { this.value.defaultValue = tagDefault; }
+                        if (tagDefault)  { this.value.defaultvalue = tagDefault; }
                     }
                     else {
                         this.value.description = remainingText;

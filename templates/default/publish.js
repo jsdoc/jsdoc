@@ -3,10 +3,11 @@
     include('templates/lib/janl/mustache.js');
     
     /**
-        @param {TAFFY} db
+        @global
+        @param {TAFFY} data
         @param {object} opts
      */
-    publish = function(db, opts) {
+    publish = function(data, opts) {
         var out = '',
             templateSource = {
                 index: readFile(BASEDIR + 'templates/default/tmpl/index.mustache'),
@@ -20,7 +21,7 @@
                     var linkTo,
                         text = render(text);
     
-                    if ( !db.find({longname: text}).length ) { return text; }
+                    if ( !data.find({longname: text}).length ) { return text; }
                     
                     linkTo = text.replace(/#/g, '%23');
                     return '<a href="#' + linkTo + '">' + text + '</a>';
@@ -46,17 +47,17 @@
             return text.replace(/^\s+|\s+$/g, '');
         }
 	    
-	    db.remove({undocumented: true});
+	    data.remove({undocumented: true});
 	    
 	    // add template helpers
-	    db.forEach(function(doclet) {
+	    data.forEach(function(doclet) {
 	        doclet.hasParams   = doclet.params   && doclet.params.length > 0;
 	        doclet.hasBorrowed = doclet.borrowed && doclet.borrowed.length > 0;
 	        
 	        summarize(doclet);
 	    });
 	    
-	    db.orderBy(['longname', 'kind']);
+	    data.orderBy(['longname', 'kind']);
 	    
 	    var partials = {
             param: templateSource.param,
@@ -67,7 +68,7 @@
         out = Mustache.to_html(
             templateSource.index,
             {
-                docs: db.get(),
+                docs: data.get(),
                 linkTo: helpers.linkTo
             },
             partials

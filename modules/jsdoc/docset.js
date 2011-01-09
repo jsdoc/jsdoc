@@ -1,5 +1,8 @@
 /** @module jsdoc/docset */
 
+// TODO: this module is currently only ever used as a helper in the test runner
+// Can it be refactored a=out of the source code?
+
 (function() {
 	var DocSet = exports.DocSet = function(doclets) {
         this.doclets = doclets;

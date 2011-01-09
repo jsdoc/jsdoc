@@ -19,9 +19,22 @@
         .synonym('extends')
         .synonym('mixes');
         
+        dictionary.defineTag('augments', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.augment(tag.value);
+                
+                return false;
+            }
+        })
+        .synonym('extends');
+        
         dictionary.defineTag('class', {
             onTagged: function(doclet, tag) { // @class implies @constructor
                 doclet.addTag('kind', 'constructor');
+                doclet.classdesc = tag.value;
+                
+                return false;
             }
         });
         
@@ -200,6 +213,24 @@
         .synonym('field')
         .synonym('var');
         
+        dictionary.defineTag('protected', {
+            mustNotHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.access = 'protected';
+                
+                return true;
+            }
+        });
+        
+        dictionary.defineTag('public', {
+            mustNotHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.access = 'public';
+                
+                return true;
+            }
+        });
+        
         dictionary.defineTag('returns', {
             mustHaveValue: true,
             canHaveType: true,
@@ -211,9 +242,9 @@
         })
         .synonym('return');
         
-        dictionary.defineTag('static', {
-            
-        });
+//         dictionary.defineTag('static', {
+//             
+//         });
         
         dictionary.defineTag('undocumented', {
             mustNotHaveValue: true,
