@@ -1,4 +1,10 @@
 /*
+ * CommonJS-compatible mustache.js module
+ *
+ * See http://github.com/janl/mustache.js for more info.
+ */
+
+/*
   mustache.js — Logic-less templates in JavaScript
 
   See http://mustache.github.com/ for more info.
@@ -13,7 +19,8 @@ var Mustache = function() {
     pragmas: {},
     buffer: [],
     pragmas_implemented: {
-      "IMPLICIT-ITERATOR": true
+      "IMPLICIT-ITERATOR": true,
+      "ARRAY-ORDINALS": true // define #first? and #last? when looping arrays
     },
     context: {},
 
@@ -122,7 +129,7 @@ var Mustache = function() {
           if(that.is_array(value)) { // Enumerable, Let's loop!
             var len = value.length;
             return value.map(function(row, i) {
-              return that.render(content, that.create_context(row, {last: i === len-1}),
+              return that.render(content, that.create_context(row, {first: i === 0, last: i === len-1}),
                 partials, true);
             }).join("");
           } else if(that.is_object(value)) { // Object, Use it as subcontext!
@@ -245,11 +252,12 @@ var Mustache = function() {
     */
     escape: function(s) {
       s = String(s === null ? "" : s);
-      return s.replace(/&(?!\w+;)|["<>\\]/g, function(s) {
+      return s.replace(/&(?!\w+;)|["'<>\\]/g, function(s) {
         switch(s) {
         case "&": return "&amp;";
         case "\\": return "\\\\";
-        case '"': return '\"';
+        case '"': return '&quot;';
+        case "'": return '&#39;';
         case "<": return "&lt;";
         case ">": return "&gt;";
         default: return s;
@@ -260,7 +268,10 @@ var Mustache = function() {
     // by @langalex, support for arrays of strings
     create_context: function(_context, opts) {
       if(this.is_object(_context)) {
-        if (opts){ _context['last?'] = opts.last || false; }
+        if (this.pragmas["ARRAY-ORDINALS"] && opts) {
+            _context['first?'] = opts.first || false;
+            _context['last?'] = opts.last || false;
+        }
         return _context;
       } else {
         var iterator = ".";
@@ -269,7 +280,10 @@ var Mustache = function() {
         }
         var ctx = {};
         ctx[iterator] = _context;
-        if (opts){ ctx['last?'] = opts.last || false; }
+        if (this.pragmas["ARRAY-ORDINALS"] && opts){
+            ctx['first?'] = opts.first || false;
+            ctx['last?'] = opts.last || false;
+        }
         return ctx;
       }
     },
@@ -287,12 +301,28 @@ var Mustache = function() {
     */
     trim: function(s) {
       return s.replace(/^\s*|\s*$/g, "");
+    },
+
+    /*
+      Why, why, why? Because IE. Cry, cry cry.
+    */
+    map: function(array, fn) {
+      if (typeof array.map == "function") {
+        return array.map(fn);
+      } else {
+        var r = [];
+        var l = array.length;
+        for(var i = 0; i < l; i++) {
+          r.push(fn(array[i]));
+        }
+        return r;
+      }
     }
   };
 
   return({
     name: "mustache.js",
-    version: "0.3.0",
+    version: "0.3.1-dev",
 
     /*
       Turns a template and view into HTML
@@ -309,3 +339,10 @@ var Mustache = function() {
     }
   });
 }();
+
+exports.name = Mustache.name;
+exports.version = Mustache.version;
+
+exports.to_html = function() {
+  return Mustache.to_html.apply(this, arguments);
+};

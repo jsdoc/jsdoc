@@ -1,6 +1,6 @@
 (function() {
 
-    include('templates/lib/janl/mustache.js');
+    var Mustache = require('janl/mustache');
     
     /**
         @global
