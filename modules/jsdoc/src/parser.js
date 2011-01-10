@@ -11,16 +11,15 @@
         
     /** 
         @constructor module:jsdoc/src/parser.Parser
-        @mixesIn module:common/events.Eventful
+        @mixesIn module:common/events
      */
     var Parser = exports.Parser = function() {
         this._resultBuffer = [];
         this.refs = {};
     },
-    Eventful = require('common/events').Eventful,
-    mixin = require('common/util').mixin;
+    events = require('common/events');
     
-    mixin(Eventful, Parser.prototype);
+    require('common/util').mixin(Parser.prototype, events);
     
     /**
         @method module:jsdoc/src/parser.Parser#parse

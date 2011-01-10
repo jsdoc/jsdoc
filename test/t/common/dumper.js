@@ -81,3 +81,13 @@ test('The common/dumper.dump function dumps complex mixed values.', function() {
 
     assert.equal(actual, expected);
 });
+
+test('The common/dumper.dump function doesn\'t crash on circular references.', function() {
+    var a = {};
+    a.b = a;
+
+    var actual = common.dumper.dump(a),
+    expected = '{\n    "b": <CircularRef>\n}';
+
+    assert.equal(actual, expected);
+});

@@ -99,7 +99,7 @@ exports.inherits = function(ctor, superCtor) {
   });
 };
 
-exports.mixin = function(source, target){
+exports.mixin = function(target, source){
     var property, empty = {};
 
     for (property in source) {
@@ -107,4 +107,6 @@ exports.mixin = function(source, target){
             target[property] = source[property];
         }
     }
+    
+    return target;
 };

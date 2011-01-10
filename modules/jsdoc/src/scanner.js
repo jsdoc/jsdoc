@@ -18,7 +18,7 @@
 	 */
 	var Scanner = exports.Scanner = function() {
 	}
-	common.mixin(common.events.Eventful, Scanner.prototype);
+	common.mixin(Scanner.prototype, common.events);
 
 	/**
 		Recursively searches the given searchPaths for js files.

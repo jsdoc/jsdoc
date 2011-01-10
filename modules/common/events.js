@@ -5,11 +5,11 @@
  */
 (function() { 
     /**
-        @mixin module:common/events.Eventful
+        @mixin module:common/events
     */
-    var Eventful = exports.Eventful = {
+    module.exports = {
         /**
-            @function module:common/events.Eventful.on
+            @function module:common/events.on
             @param {string} type
             @param {function} handler
             @returns this
@@ -33,7 +33,7 @@
         },
         
         /**
-            @function module:common/events.Eventful.fire
+            @function module:common/events.fire
             @param {string} type
             @param {object} [eventData]
             @returns this
@@ -54,7 +54,7 @@
         },
         
         /**
-            @function module:common/events.Eventful.removeListener
+            @function module:common/events.removeListener
             @param {string} type
             @param {function} handler
         */
