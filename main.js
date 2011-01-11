@@ -109,8 +109,7 @@ function main() {
         jsdoc = {
             opts: {
                 parser: require('jsdoc/opts/parser'),
-            },
-            docset: require('jsdoc/docset')
+            }
         };
     
     try {
@@ -156,7 +155,7 @@ function main() {
         
         sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined));
         
-        require('jsdoc/src/handlers');
+        require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
 

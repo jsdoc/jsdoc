@@ -36,13 +36,23 @@ function report() {
 var testhelpers = {
     getDocSetFromFile: function(filename) {
         var sourceCode = readFile(BASEDIR + filename),
-            docs;
+            testParser,
+            doclets;
             
-        app.jsdoc.parser = new (require('jsdoc/src/parser')).Parser();
-        require('jsdoc/src/handlers');
-        docs = app.jsdoc.parser.parse('javascript:' + sourceCode);
+        testParser = new (require('jsdoc/src/parser')).Parser();
+        require('jsdoc/src/handlers').attachTo(testParser);
         
-        return new (require('jsdoc/docset')).DocSet(docs);
+        doclets = testParser.parse('javascript:' + sourceCode);
+        
+        
+        return {
+            doclets: doclets,
+            getByLongname: function(longname) {
+                return doclets.filter(function(doclet) {
+                    return (doclet.longname || doclet.name) === longname;
+                });
+            }
+        };
     }
 };
 
@@ -53,6 +63,7 @@ testFile('test/t/common/query.js');
 
 testFile('test/t/jsdoc/opts/parser.js');
 testFile('test/t/jsdoc/src/parser.js');
+testFile('test/t/jsdoc/src/handlers.js');
 testFile('test/t/jsdoc/name.js');
 
 testFile('test/t/cases/file.js');

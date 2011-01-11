@@ -4,7 +4,7 @@
             
     app.jsdoc.parser = new srcParser.Parser();
     
-    require('jsdoc/src/handlers');
+    require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
     
     doclets = app.jsdoc.parser.parse(BASEDIR + 'test/cases/file.js')
     
