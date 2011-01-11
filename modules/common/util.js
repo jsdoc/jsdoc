@@ -99,12 +99,16 @@ exports.inherits = function(ctor, superCtor) {
   });
 };
 
-exports.mixin = function(target, source){
-    var property, empty = {};
-
-    for (property in source) {
-        if( !(property in empty) ) {
-            target[property] = source[property];
+exports.mixin = function(target, source /*...*/){
+    var sourceProperty;
+    
+    for (var i = 1, len = arguments.length; i < len; i++) {
+        source = arguments[i];
+        
+        for (sourceProperty in source) {
+            if( source.hasOwnProperty(sourceProperty) ) {
+                target[sourceProperty] = source[sourceProperty]; // overwrites target property
+            }
         }
     }
     

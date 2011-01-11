@@ -91,15 +91,16 @@
         return str.replace(specials, "\\$&");
     }
     
-    exports.applyNamespace = function(name, ns) {
-        var nameParts = exports.shorten(name),
-            shortName = nameParts.name;
-        
-        if ( !/^[a-z]+:.+/i.test(shortName) ) {
-            name = name.replace( new RegExp(shortName+'$'), ns + ':' + shortName );
+    exports.applyNamespace = function(longname, ns) {
+        var nameParts = exports.shorten(longname),
+            name = nameParts.name,
+            longname = nameParts.longname;
+
+        if ( !/^[a-zA-Z]+?:.+$/i.test(name) ) {
+            longname = longname.replace( new RegExp(RegExp.escape(name)+'$'), ns + ':' + name );
         }
         
-        return name;
+        return longname;
     }
     
     /**
@@ -111,13 +112,19 @@
         var atoms = [], token; 
         
         // handle quoted names like foo["bar"]
-        longname = longname.replace(/(\[?".*?"\]?)/g, function($) {
-            $ = $.replace(/^\[/g, '.').replace(/\]$/g, '');
+        longname = longname.replace(/(\[?".+?"\]?)/g, function($) {
+            $ = $.replace(/^\[/g, '').replace(/\]$/g, '');
             
             token = '@{' + atoms.length + '}@';
             atoms.push($);
-            return token;
+
+            return '.'+token; // could result in foo#["bar"] => foo#.@{1}@
         });
+
+        longname = longname.replace(/([#.~])\.(@\{\d+\}@)/g, function($0, $1, $2) { return $1+$2; }); // fix #.     
+        
+        longname = longname.replace(/\.prototype\.?/g, '#');     
+        
         ////
 
         var name = longname.split(/[#.~]/).pop(),
@@ -133,7 +140,6 @@
             name     = name.replace('@{'+i+'}@', atoms[i]);
         }
         ////
-
         return {longname: longname, memberof: memberof, scope: scope, name: name};
     }   
 })();

@@ -54,6 +54,9 @@
 	exports.Doclet.prototype.postProcess = function() {
 	    if (!this.preserveName) { jsdoc.name.resolve(this); }
 	    if (this.name && !this.longname) { this.longname = this.name; }
+	    if (!this.kind && this.meta && this.meta.code) {
+	        this.addTag( 'kind', codetypeToKind(this.meta.code.type) );
+        }
 	}
 	
 	exports.Doclet.prototype.addTag = function(title, text) {
@@ -108,6 +111,17 @@
             this.scope = tag.value;
         }
 	}
+	
+	// use the meta info about the source code to guess what the doclet kind should be
+    function codetypeToKind(type) {
+        var kind = (type || '').toLowerCase();
+        
+        if (kind !== 'function') {
+            return 'property';
+        }
+        
+        return kind;
+    }
 	
 	/**
 	    Convert the raw source of the doclet comment into an array of Tag objects.
@@ -166,8 +180,7 @@
 		.split('\\@')                        // then split on that arbitrary sequence
 		.forEach(function($) {
 		    if ($) {
-		        
-                parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
+		        var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
                 
                  if (parsedTag) {
                     var [, tagTitle, tagText] = parsedTag;

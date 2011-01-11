@@ -1,36 +1,101 @@
+var jsdoc = {name: require('jsdoc/name') };
 
-var name = app.jsdoc.name;
-
-test('The name module is defined.', function() {
-    assert.notEqual(typeof name, 'undefined', 'The name module should not be undefined.');
-    assert.equal(typeof name, 'object', 'The name module should be an object.');
+test('There is a jsdoc/name module.', function() {
+    assert.equal(typeof jsdoc.name, 'object');
 });
 
-test('The name module exports a "applyNamespace" function.', function() {
-    assert.notEqual(typeof name.applyNamespace, 'undefined', 'The name.applyNamespace method should not be undefined.');
-    assert.equal(typeof name.applyNamespace, 'function', 'The name.applyNamespace method should be a function.');
+test('The jsdoc/name module exports an shorten function.', function() {
+    assert.equal(typeof jsdoc.name.shorten, 'function');
 });
 
-test('The name.applyNamespace function should insert the namespace in the correct place.', function() {
+test('The module:jsdoc/name.shorten function breaks a longname up into the correct memberof, name and scope parts.', function() {
     var startName = 'lib.Panel#open',
-        endName = name.applyNamespace(startName, 'event');
+        parts = jsdoc.name.shorten(startName);
     
-    assert.equal(endName, 'lib.Panel#event:open', 'The namespace should be inserted only before the shortname.');
-    
-    startName = 'flipout';
-    endName = name.applyNamespace(startName, 'event');
-    
-    assert.equal(endName, 'event:flipout', 'The namespace should be inserted before simple name.');
-    
-    startName = 'foo."i.have~many#parts!"';
-    endName = name.applyNamespace(startName, 'event');
-    
-    assert.equal(endName, 'foo.event:"i.have~many#parts!"', 'The namespace should be inserted before a quoted shortname.');
+    assert.equal(parts.name, 'open', 'The name should be the bit after the last scoping character.');
+    assert.equal(parts.memberof, 'lib.Panel', 'The memberof should be the bit before the last scoping character.');
+    assert.equal(parts.scope, '#', 'The scope should be the scoping character itself.');
 });
 
-test('The name.applyNamespace function should not add more than one namespace.', function() {
+test('The module:jsdoc/name.shorten function works on static names.', function() {
+    var startName = 'elements.selected.getVisible',
+        parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.name, 'getVisible');
+    assert.equal(parts.memberof, 'elements.selected');
+    assert.equal(parts.scope, '.');
+});
+
+test('The module:jsdoc/name.shorten function works on protoyped names.', function() {
+    var startName = 'Validator.prototype.$element',
+        parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.name, '$element');
+    assert.equal(parts.memberof, 'Validator');
+    assert.equal(parts.scope, '#');
+});
+
+test('The module:jsdoc/name.shorten function works on inner names.', function() {
+    var startName = 'Button~_onclick',
+        parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.name, '_onclick');
+    assert.equal(parts.memberof, 'Button');
+    assert.equal(parts.scope, '~');
+});
+
+test('The module:jsdoc/name.shorten function works on global names.', function() {
+    var startName = 'close',
+        parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.name, 'close');
+    assert.equal(parts.memberof, '', 'The memberof should be an empty string for global symbols.');
+    assert.equal(parts.scope, '', 'The scope should be an empty string for global symbols.');
+});
+
+test('The module:jsdoc/name.shorten function works on bracketed stringy names.', function() {
+    var startName = 'channels["#ops"]#open',
+        parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.name, 'open');
+    assert.equal(parts.memberof, 'channels."#ops"', 'Bracketed stringy names should appear as quoted strings.');
+    assert.equal(parts.scope, '#');
+
+    startName = 'channels["#bots"]["log.max"]',
+    parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.name, '"log.max"');
+    assert.equal(parts.memberof, 'channels."#bots"');
+    assert.equal(parts.scope, '.');
+});
+
+test('The jsdoc/name module exports an applyNamespace function.', function() {
+    assert.equal(typeof jsdoc.name.applyNamespace, 'function');
+});
+
+test('The module:jsdoc/name.applyNamespace function inserts the namespace in the correct place.', function() {
+    var startName = 'lib.Panel#open',
+        endName = jsdoc.name.applyNamespace(startName, 'event');
+    
+    assert.equal(endName, 'lib.Panel#event:open', 'The namespace should be inserted only before the name part of the longname.');
+    
+    startName = 'maths/bigint';
+    endName = jsdoc.name.applyNamespace(startName, 'module');
+    
+    assert.equal(endName, 'module:maths/bigint', 'The namespace should be inserted before a global name.');
+});
+
+test('The module:jsdoc/name.applyNamespace function treats quoted parts of the name as atomic.', function() {
+    var startName = 'foo."*dont\'t.look~in#here!"',
+    endName = jsdoc.name.applyNamespace(startName, 'event');
+    
+    assert.equal(endName, 'foo.event:"*dont\'t.look~in#here!"', 'The namespace should be inserted before a quoted shortname.');
+});
+
+test('The module:jsdoc/name.applyNamespace function will not add another namespace if one already exists.', function() {
     var startName = 'lib.Panel#event:open',
-        endName = name.applyNamespace(startName, 'event');
+        endName = jsdoc.name.applyNamespace(startName, 'event');
     
     assert.equal(endName, 'lib.Panel#event:open', 'The namespace should not be inserted twice.');
 });
+

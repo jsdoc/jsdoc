@@ -1,6 +1,7 @@
 /**
     @module jsdoc/src/parser
     @requires module:common/util
+    @requires module:common/fs
     @requires module:common/events
  */
 
@@ -11,15 +12,13 @@
         
     /** 
         @constructor module:jsdoc/src/parser.Parser
-        @mixesIn module:common/events
+        @mixes module:common/events
      */
     var Parser = exports.Parser = function() {
         this._resultBuffer = [];
         this.refs = {};
-    },
-    events = require('common/events');
-    
-    require('common/util').mixin(Parser.prototype, events);
+    }
+    require('common/util').mixin(Parser.prototype, require('common/events'));
     
     /**
         @method module:jsdoc/src/parser.Parser#parse
@@ -27,19 +26,20 @@
         @param {string} [encoding=utf8]
         @fires jsdocCommentFound
         @fires symbolFound
+        @fires newDoclet
         @fires fileBegin
 	    @fires fileComplete
      */
     Parser.prototype.parse = function(sourceFiles, encoding) {
+        const SCHEMA = 'javascript:';
         var sourceCode = '',
-            filename = '',
-            jsUriScheme = 'javascript:';
+            filename = '';
         
         if (typeof sourceFiles === 'string') { sourceFiles = [sourceFiles]; }
         
         for (i = 0, leni = sourceFiles.length; i < leni; i++) {
-            if (sourceFiles[i].indexOf(jsUriScheme) === 0) {
-                sourceCode = sourceFiles[i].substr(jsUriScheme.length);
+            if (sourceFiles[i].indexOf(SCHEMA) === 0) {
+                sourceCode = sourceFiles[i].substr(SCHEMA.length);
                 filename = '[[string' + i + ']]';
             }
             else {
@@ -54,7 +54,7 @@
             }
             
             currentParser = this;
-            parseSource(sourceCode, filename);
+            this._parseSourceCode(sourceCode, filename);
             currentParser = null;
             pragmas = {}; // always resets at end of file
         }
@@ -78,8 +78,8 @@
     }
     
     /**
-        @method module:jsdoc/src/parser.Parser#clearResults
-        @desc Empty any accumulated results of calls to parse.
+        Empty any accumulated results of calls to parse.
+        @method module:jsdoc/src/parser.Parser#clear 
      */
     Parser.prototype.clear = function() {
         currentParser = null;
@@ -89,15 +89,14 @@
     
     /**
         @private
-        @function parseSource
      */
-    function parseSource(source, sourceName) {
+    Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         currentSourceName = sourceName;
         
-        var ast = parserFactory().parse(source, sourceName, 1);
+        var ast = parserFactory().parse(sourceCode, sourceName, 1);
         
         var e = {filename: currentSourceName};
-        currentParser.fire('fileBegin', e);
+        this.fire('fileBegin', e);
         
         if (!e.defaultPrevented) {
             ast.visit(
@@ -107,14 +106,79 @@
             );
         }
         
-        currentParser.fire('fileComplete', e);
+        this.fire('fileComplete', e);
         
         currentSourceName = '';
     }
     
     /**
+        Given a node, determine what the node is a member of.
+     */
+    Parser.prototype.astnodeToMemberof = function(astnode) {
+        var memberof = {};
+        
+        if (astnode.type === Token.VAR || astnode.type === Token.FUNCTION) {
+            if (astnode.enclosingFunction) { // an inner var or func
+                memberof.id = 'astnode'+astnode.enclosingFunction.hashCode();
+                memberof.doclet = this.refs[memberof.id];
+                if (!memberof.doclet) {
+                    return '[[anonymous]]~';
+                }
+                return (memberof.doclet.longname||memberof.doclet.name) +  '~';
+            }
+        }
+        else {
+            memberof.id = 'astnode'+astnode.parent.hashCode();
+            memberof.doclet = this.refs[memberof.id];
+            if (!memberof.doclet) return ''; // global?
+            return memberof.doclet.longname||memberof.doclet.name;
+        }
+    }
+    
+    
+    /**
+        Resolve what "this" refers too, relative to a node
+     */
+    Parser.prototype.resolveThis = function(astnode) {
+        var memberof = {};
+        
+        if (astnode.enclosingFunction) {
+            memberof.id = 'astnode'+astnode.enclosingFunction.hashCode();
+            memberof.doclet = this.refs[memberof.id];
+            
+            if (!memberof.doclet) return '[[anonymous]]'; // TODO handle global this?
+            
+            // walk up to the closest @constructor we can find
+            if (memberof.doclet.kind === 'constructor') {
+                return memberof.doclet.longname||memberof.doclet.name;
+            }
+            else {
+                if (memberof.doclet.meta.code.val){
+                    return this.resolveThis(memberof.doclet.meta.code.val);
+                }
+                else return ''; // TODO handle global this?
+            }
+        }
+        else if (astnode.parent) {
+            //print('member of something that isnt a function? '+'astnode'+astnode.parent.parent.hashCode()+' ('+nodeToString(astnode.parent.parent)+')');
+            
+            var parent = astnode.parent;
+            if (parent.type === Token.COLON) parent = parent.parent; // go up one more
+            
+            memberof.id = 'astnode'+parent.hashCode();
+            memberof.doclet = this.refs[memberof.id];
+            
+            if (!memberof.doclet) return ''; // global?
+            
+            return memberof.doclet.longname||memberof.doclet.name;
+        }
+        else {
+            return ''; // global?
+        }
+    }
+    
+    /**
         @private
-        @function visitNode
      */
     function visitNode(node) {
         var e,
@@ -130,18 +194,20 @@
                 
                 if (commentSrc = ''+comment.toSource()) {
 
-                    var e = {
+                    e = {
                         comment: commentSrc,
                         lineno: comment.getLineno(),
                         filename: currentSourceName
                     };
                     
-                    currentParser.fire('jsdocCommentFound', e, currentParser);
+                    if ( isValidJsdoc(commentSrc) ) {
+                        currentParser.fire('jsdocCommentFound', e, currentParser);
+                    }
                 }
             }
         }
         else if (node.type === Token.ASSIGN) {
-            var e = {
+            e = {
                 id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
                 comment: String(node.jsDoc||'@undocumented'), // document that it is undocumented :)
                 lineno: node.getLineno(),
@@ -149,15 +215,17 @@
                 astnode: node,
                 code: aboutNode(node)
             };
-
-            currentParser.fire('symbolFound', e, currentParser);
+            
+            if ( isValidJsdoc(e.comment) ) {
+                currentParser.fire('symbolFound', e, currentParser);
+            }
             
             if (e.doclet) {
                 currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
         }
         else if (node.type === Token.COLON) {
-            var e = {
+            e = {
                 id: 'astnode'+node.hashCode(), // the id of the COLON node
                 comment: String(node.left.jsDoc||'@undocumented'),
                 lineno: node.getLineno(),
@@ -165,8 +233,10 @@
                 astnode: node,
                 code: aboutNode(node)
             };
-
-            currentParser.fire('symbolFound', e, currentParser);
+            
+            if ( isValidJsdoc(e.comment) ) {
+                currentParser.fire('symbolFound', e, currentParser);
+            }
             
             if (e.doclet) {
                 currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
@@ -183,7 +253,7 @@
                 node.jsDoc = node.parent.jsDoc;
             }
 
-            var e = {
+            e = {
                 id: 'astnode'+node.hashCode(), // the id of the VARIABLE node
                 comment: String(node.jsDoc||'@undocumented'),
                 lineno: node.getLineno(),
@@ -191,16 +261,17 @@
                 astnode: node,
                 code: aboutNode(node)
             };
-           
-            currentParser.fire('symbolFound', e, currentParser);
+            
+            if ( isValidJsdoc(e.comment) ) {
+                currentParser.fire('symbolFound', e, currentParser);
+            }
             
             if (e.doclet) {
                 currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
-                
             }
         }
         else if (node.type == Token.FUNCTION && String(node.name) !== '') {
-            var e = {
+            e = {
                 id: 'astnode'+node.hashCode(), // the id of the COLON node
                 comment: String(node.jsDoc||'@undocumented'),
                 lineno: node.getLineno(),
@@ -208,12 +279,14 @@
                 astnode: node,
                 code: aboutNode(node)
             };
-
-            currentParser.fire('symbolFound', e, currentParser);
             
-           if (e.doclet) {
+            if ( isValidJsdoc(e.comment) ) {
+                currentParser.fire('symbolFound', e, currentParser);
+            }
+            
+            if (e.doclet) {
                 currentParser.refs['astnode'+node.hashCode()] = e.doclet; // allow lookup from value => doclet
-           }
+            }
         }
        
         return true;
@@ -221,7 +294,6 @@
     
     /**
         @private
-        @function parserFactory
      */
     function parserFactory() {
         var cx = Packages.org.mozilla.javascript.Context.getCurrentContext();
@@ -238,7 +310,6 @@
     /**
         Attempts to find the name and type of the given node.
         @private
-        @function aboutNode
      */
     function aboutNode(node) {
         about = {};
@@ -281,6 +352,9 @@
         return about;
     }
     
+    /**
+        @private
+     */
     function nodeToString(node) {
         var str;
         
@@ -311,6 +385,9 @@
         return '' + str;
     };
     
+    /**
+        @private
+     */
     function getTypeName(node) {
         var type = '';
         
@@ -319,6 +396,13 @@
         }
         
         return type;
+    }
+    
+    /**
+        @private
+     */
+    function isValidJsdoc(commentSrc) {
+        return commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
     }
     
 })();
