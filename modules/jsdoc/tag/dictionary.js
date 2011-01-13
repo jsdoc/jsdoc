@@ -6,13 +6,14 @@
  */
 (function() {
     var _synonyms = {},
-        _definitions = {};
+        _definitions = {},
+        dictionary;
     
     /** @constructor */
     function TagDefinition(title, etc) {
         etc = etc || {};
         
-        this.title = exports.normalise(title);
+        this.title = dictionary.normalise(title);
         
         for (var p in etc) {
             if (etc.hasOwnProperty(p)) {
@@ -21,37 +22,41 @@
         }
     }
     
-    exports.defineTag = function(title, opts) {
-        _definitions[title] = new TagDefinition(title, opts);
-        
-        return _definitions[title];
-    }
-    
-    exports.lookUp = function(title) {
-	    title = exports.normalise(title);
-	    
-	    if ( _definitions.hasOwnProperty(title) ) {
-	       return _definitions[title];
-	    }
-	    
-	    return false;
-	}
-    
     TagDefinition.prototype.synonym = function(synonymName) {
         _synonyms[synonymName.toLowerCase()] = this.title;
         return this; // chainable
     }
     
-    exports.normalise = function(title) {
-	    canonicalName = title.toLowerCase();
-	        
-	    if ( _synonyms.hasOwnProperty(canonicalName) ) {
-	        return _synonyms[canonicalName];
-	    }
-	    
-	    return canonicalName;
-	}
-
-    require('jsdoc/tag/dictionary/definitions').defineTags(exports)
+    dictionary = {
+        defineTag: function(title, opts) {
+            _definitions[title] = new TagDefinition(title, opts);
+            
+            return _definitions[title];
+        },
+    
+        lookUp: function(title) {
+            title = dictionary.normalise(title);
+            
+            if ( _definitions.hasOwnProperty(title) ) {
+               return _definitions[title];
+            }
+            
+            return false;
+        },
+        
+        normalise: function(title) {
+            canonicalName = title.toLowerCase();
+                
+            if ( _synonyms.hasOwnProperty(canonicalName) ) {
+                return _synonyms[canonicalName];
+            }
+            
+            return canonicalName;
+        }
+    };
+    
+    require('jsdoc/tag/dictionary/definitions').defineTags(dictionary);
+    
+    module.exports = dictionary;
 	
 })();
