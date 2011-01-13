@@ -83,5 +83,10 @@ testFile('test/t/cases/var.js');
 
 testFile('test/t/cases/inner.js');
 
+testFile('test/t/cases/modules/data/mod-1.js');
+testFile('test/t/cases/modules/data/mod-2.js');
+
+testFile('test/t/cases/alias.js');
+
 report();
 

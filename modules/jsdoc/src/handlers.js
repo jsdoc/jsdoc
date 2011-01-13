@@ -25,8 +25,11 @@
                 newDoclet = new jsdoc.doclet.Doclet(e.comment, e);
             } 
             
-            // we need to get the symbol name from code
-            if (e.code && e.code.name) {
+            if (newDoclet.alias) {
+                newDoclet.addTag('name', newDoclet.alias);
+                newDoclet.postProcess();
+            }
+            else if (e.code && e.code.name) { // we need to get the symbol name from code
                 newDoclet.addTag('name', e.code.name);
                 
                 if (!newDoclet.memberof && e.astnode) {

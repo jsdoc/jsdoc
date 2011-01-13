@@ -128,6 +128,15 @@
             mustHaveValue: true
         });
         
+        dictionary.defineTag('alias', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.alias = tag.value;
+
+                return true;
+            }
+        });
+        
         dictionary.defineTag('memberof', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
@@ -151,6 +160,8 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
+                doclet.name || setDocletNameToFilename(doclet, tag);
+                
                 applyNamespace(doclet, tag);
                 
                 return false;
@@ -289,6 +300,19 @@
 	    if (!doclet.name) return; // error?
 	    
 	    doclet.name = app.jsdoc.name.applyNamespace(doclet.name, tag.title)
+	}
+	
+	function setDocletNameToFilename(doclet, tag) {
+	    var name = doclet.meta.filename;
+	    name = name.replace(/\.js$/i, '');
+	    
+	    for (var i = 0, len = env.opts._.length; i < len; i++) {
+	        if (name.indexOf(env.opts._[i]) === 0) {
+	            name = name.replace(env.opts._[0], '');
+	            break
+	        }
+	    }
+	    doclet.name = name;
 	}
 	
 	function parseBorrows(doclet, tag) {
