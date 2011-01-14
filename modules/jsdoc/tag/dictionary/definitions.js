@@ -108,6 +108,15 @@
         })
         .synonym('method');
         
+        dictionary.defineTag('global', {
+            mustNotHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.scope = 'global';
+                
+                return true;
+            }
+        });
+        
         dictionary.defineTag('inner', {
             onTagged: function(doclet, tag) {
                 setDocletScopeToTitle(doclet, tag);

@@ -1,8 +1,9 @@
 /**
- * @overview JSDoc/main.js
- * @copyright 2010, 2011 (c) Michael Mathews <micmath@gmail.com>
+ * @project JSDoc
+ * @author Michael Mathews <micmath@gmail.com>
  * @license See LICENSE.md file included in this distribution.
  */
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 

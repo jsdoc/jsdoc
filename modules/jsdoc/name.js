@@ -23,6 +23,7 @@
         @param {Doclet} doclet
      */
     exports.resolve = function(doclet) {
+
         var name = doclet.name,
             memberof = doclet.memberof || '',
             about = {},
@@ -65,7 +66,11 @@
             doclet.longname = about.longname;
         }
         
-        if (about.scope) {
+        if (doclet.scope === 'global') { // via @global tag?
+            doclet.longname = doclet.name;
+            delete doclet.memberof;
+        }
+        else if (about.scope) {
             doclet.scope = puncToScope[about.scope];
         }
         else {
@@ -74,6 +79,8 @@
                 doclet.longname = doclet.memberof + scopeToPunc[doclet.scope] + doclet.name;
             }
         }
+        
+        
     }
     
     function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us
