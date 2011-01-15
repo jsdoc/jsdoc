@@ -89,6 +89,16 @@
             }
         });
         
+        dictionary.defineTag('deprecated', {
+            // value is optional
+            onTagged: function(doclet, tag) {
+                doclet.deprecated = tag.value || true;
+                
+                return true;
+            }
+        })
+        .synonym('deprec');
+        
         dictionary.defineTag('description', {
             mustHaveValue: true
         })
@@ -243,7 +253,8 @@
                 
                 return false;
             }
-        });
+        })
+        .synonym('argument');
         
         dictionary.defineTag('private', {
             mustNotHaveValue: true,
