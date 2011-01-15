@@ -22,6 +22,15 @@
             }
         });
         
+        dictionary.defineTag('author', {
+            musHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.author = tag.value;
+                
+                return true;
+            }
+        });
+        
         dictionary.defineTag('borrows', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
