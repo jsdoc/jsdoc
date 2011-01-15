@@ -335,16 +335,21 @@
             }
         });
         
-//         dictionary.defineTag('static', {
-//             
-//         });
-        
         dictionary.defineTag('undocumented', {
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.undocumented = true;
                 
                 return false;
+            }
+        });
+        
+        dictionary.defineTag('version', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.version = tag.value;
+                
+                return true;
             }
         });
     }
