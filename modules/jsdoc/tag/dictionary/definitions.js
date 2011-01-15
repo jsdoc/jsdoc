@@ -7,7 +7,21 @@
  */
 (function() {
     exports.defineTags = function(dictionary) {
-    
+        
+        dictionary.defineTag('access', {
+            musHaveValue: true,
+            onTagged: function(doclet, tag) {
+                if ( /^(private|protected)$/.test(tag.value) ) {
+                    doclet.access = tag.value;
+                }
+                else if (tag.value === 'public') {
+                    delete doclet.access;
+                }
+                
+                return true;
+            }
+        });
+        
         dictionary.defineTag('borrows', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {

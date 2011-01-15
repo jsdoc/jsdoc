@@ -89,6 +89,7 @@ testFile('test/t/cases/modules/data/mod-2.js');
 testFile('test/t/cases/alias.js');
 testFile('test/t/cases/alias2.js');
 
+testFile('test/t/cases/accesstag.js');
 testFile('test/t/cases/globaltag.js');
 
 report();
