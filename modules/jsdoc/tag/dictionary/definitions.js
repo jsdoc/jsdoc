@@ -326,6 +326,15 @@
         })
         .synonym('return');
         
+        dictionary.defineTag('since', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.since = tag.value;
+                
+                return true;
+            }
+        });
+        
 //         dictionary.defineTag('static', {
 //             
 //         });
