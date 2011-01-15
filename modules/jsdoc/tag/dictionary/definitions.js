@@ -171,6 +171,15 @@
             }
         });
         
+        dictionary.defineTag('ignore', {
+            mustNotHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.ignore = true;
+                
+                return true;
+            }
+        });
+        
         dictionary.defineTag('inner', {
             onTagged: function(doclet, tag) {
                 setDocletScopeToTitle(doclet, tag);

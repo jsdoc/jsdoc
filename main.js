@@ -159,7 +159,7 @@ function main() {
         require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
-dump(docs); exit(0);
+//dump(docs); exit(0);
         if (env.opts.expel) {
             dump(docs);
             exit(0);

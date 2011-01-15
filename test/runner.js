@@ -95,6 +95,7 @@ testFile('test/t/cases/copyrighttag.js');
 testFile('test/t/cases/deprecatedtag.js');
 testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
+testFile('test/t/cases/ignoretag.js');
 
 report();
 
