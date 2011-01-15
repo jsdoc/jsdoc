@@ -31,6 +31,16 @@
             }
         });
         
+        dictionary.defineTag('augments', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.augment(tag.value);
+                
+                return false;
+            }
+        })
+        .synonym('extends');
+        
         dictionary.defineTag('borrows', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
@@ -42,15 +52,14 @@
         .synonym('extends')
         .synonym('mixes');
         
-        dictionary.defineTag('augments', {
-            mustHaveValue: true,
+        dictionary.defineTag('copyright', {
+            musHaveValue: true,
             onTagged: function(doclet, tag) {
-                doclet.augment(tag.value);
+                doclet.copyright = tag.value;
                 
-                return false;
+                return true;
             }
-        })
-        .synonym('extends');
+        });
         
         dictionary.defineTag('class', {
             onTagged: function(doclet, tag) { // @class implies @constructor
