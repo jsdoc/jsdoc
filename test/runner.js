@@ -93,6 +93,7 @@ testFile('test/t/cases/accesstag.js');
 testFile('test/t/cases/authortag.js');
 testFile('test/t/cases/copyrighttag.js');
 testFile('test/t/cases/deprecatedtag.js');
+testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
 
 report();

@@ -52,15 +52,6 @@
         .synonym('extends')
         .synonym('mixes');
         
-        dictionary.defineTag('copyright', {
-            musHaveValue: true,
-            onTagged: function(doclet, tag) {
-                doclet.copyright = tag.value;
-                
-                return true;
-            }
-        });
-        
         dictionary.defineTag('class', {
             onTagged: function(doclet, tag) { // @class implies @constructor
                 doclet.addTag('kind', 'constructor');
@@ -79,6 +70,15 @@
             }
         })
         .synonym('const');
+        
+        dictionary.defineTag('copyright', {
+            musHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.copyright = tag.value;
+                
+                return true;
+            }
+        });
         
         dictionary.defineTag('constructor', {
             onTagged: function(doclet, tag) {
@@ -119,6 +119,18 @@
             keepsWhitespace: true,
             mustHaveValue: true
         });
+        
+        dictionary.defineTag('exception', {
+            mustHaveValue: true,
+            canHaveType: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.exceptions) { doclet.exceptions = []; }
+                doclet.exceptions.push(tag.value);
+                
+                return false;
+            }
+        })
+        .synonym('throws');
         
         dictionary.defineTag('file', {
             mustHaveValue: true,
