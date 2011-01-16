@@ -1,0 +1,20 @@
+(function() {
+    var docSet = testhelpers.getDocSetFromFile('test/cases/returnstag.js'),
+        find = docSet.getByLongname('find')[0],
+        bind = docSet.getByLongname('bind')[0];
+
+    //dump(docSet.doclets); exit(0);
+    
+    test('When a symbol has an @returns tag with a type and description, the doclet has a returns property that includes that return.', function() {
+        assert.equal(typeof find.returns, 'object');
+        assert.equal(find.returns.type.names.join(', '), 'String, Array<String>');
+        assert.equal(find.returns.description, 'The names of the found item(s).');
+    });
+    
+    test('When a symbol has an @param tag with only a type and name, the doclet has a params property that includes that param.', function() {
+        assert.equal(typeof bind.returns, 'object');
+        assert.equal(bind.returns.description, 'The binding id.');
+    });
+    
+
+})();
