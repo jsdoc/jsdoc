@@ -327,6 +327,16 @@
         })
         .synonym('return');
         
+        dictionary.defineTag('see', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.see) { doclet.see = []; }
+                doclet.see.push(tag.value);
+                
+                return true;
+            }
+        });
+        
         dictionary.defineTag('since', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
