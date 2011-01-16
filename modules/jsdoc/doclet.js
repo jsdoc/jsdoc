@@ -75,11 +75,6 @@
 	    applyTag.call(this, newTag);
 	}
 	
-	exports.Doclet.prototype.augment = function(base) {
-	    if (!this.mixins) { this.mixins = []; }
-        this.mixins.push( {source: source, target: (target||'this')} );
-	}
-	
 	exports.Doclet.prototype.setMemberof = function(sid) {
 	    this.memberof = sid;
 	}

@@ -89,6 +89,7 @@ testFile('test/t/cases/modules/data/mod-2.js');
 testFile('test/t/cases/alias.js');
 testFile('test/t/cases/alias2.js');
 
+testFile('test/t/cases/augmentstag.js');
 testFile('test/t/cases/accesstag.js');
 testFile('test/t/cases/authortag.js');
 testFile('test/t/cases/copyrighttag.js');
@@ -97,6 +98,7 @@ testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');
 testFile('test/t/cases/paramtag.js');
+testFile('test/t/cases/privatetag.js');
 testFile('test/t/cases/requirestag.js');
 testFile('test/t/cases/returnstag.js');
 testFile('test/t/cases/seetag.js');

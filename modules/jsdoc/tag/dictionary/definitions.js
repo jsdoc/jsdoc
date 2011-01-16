@@ -31,25 +31,28 @@
             }
         });
         
+        // I add on to that
         dictionary.defineTag('augments', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
-                doclet.augment(tag.value);
-                
-                return false;
-            }
-        })
-        .synonym('extends');
-        
-        dictionary.defineTag('borrows', {
-            mustHaveValue: true,
-            onTagged: function(doclet, tag) {
-                parseBorrows(doclet, tag);
+                doclet.augment( firstWordOf(tag.value) );
                 
                 return false;
             }
         })
         .synonym('extends')
+        .synonym('inherits');
+        
+        // that adds on to me
+        dictionary.defineTag('borrows', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                var [target, source] = parseBorrows(doclet, tag);
+                doclet.borrow(target, source);
+                
+                return false;
+            }
+        })
         .synonym('mixes');
         
         dictionary.defineTag('class', {
@@ -444,10 +447,10 @@
 	    var m = /^(\S+)(?:\s+as\s+(\S+))?$/.exec(tag.text);
 	    if (m) {
 	        if (m[1] && m[2]) {
-	            doclet.borrow(m[1], m[2]);
+	            return [ m[1], m[2] ];
 	        }
 	        else if (m[1]) {
-	            doclet.borrow(m[1]);
+	            return [ m[1] ];
 	        }
 	    }
 	}
