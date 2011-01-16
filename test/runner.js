@@ -99,6 +99,7 @@ testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');
 testFile('test/t/cases/paramtag.js');
 testFile('test/t/cases/privatetag.js');
+testFile('test/t/cases/readonlytag.js');
 testFile('test/t/cases/requirestag.js');
 testFile('test/t/cases/returnstag.js');
 testFile('test/t/cases/seetag.js');

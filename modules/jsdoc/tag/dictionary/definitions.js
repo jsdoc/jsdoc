@@ -9,7 +9,7 @@
     exports.defineTags = function(dictionary) {
         
         dictionary.defineTag('access', {
-            musHaveValue: true,
+            mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 if ( /^(private|protected)$/.test(tag.value) ) {
                     doclet.access = tag.value;
@@ -23,7 +23,7 @@
         });
         
         dictionary.defineTag('author', {
-            musHaveValue: true,
+            mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.author = tag.value;
                 
@@ -75,7 +75,7 @@
         .synonym('const');
         
         dictionary.defineTag('copyright', {
-            musHaveValue: true,
+            mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.copyright = tag.value;
                 
@@ -316,6 +316,16 @@
                 doclet.access = 'public';
                 
                 return true;
+            }
+        });
+        
+        // use this instead of old deprecated @final tag
+        dictionary.defineTag('readonly', {
+            mustNotHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.readonly = true;
+                
+                return false;
             }
         });
         
