@@ -97,6 +97,7 @@ testFile('test/t/cases/deprecatedtag.js');
 testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');
+testFile('test/t/cases/memberoftag.js');
 testFile('test/t/cases/paramtag.js');
 testFile('test/t/cases/privatetag.js');
 testFile('test/t/cases/readonlytag.js');
