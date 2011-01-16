@@ -28,6 +28,11 @@
 	    this.text = trim(tagBody, tagDef.keepsWhitespace);
 	    
 	    if (this.text) {
+	        
+	        if (tagDef.onTagText) {
+	            this.text = tagDef.onTagText(this.text);
+	        }
+	        
             if (tagDef.canHaveType) {
                 this.value = {};
                 

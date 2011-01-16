@@ -335,6 +335,23 @@
             }
         });
         
+        dictionary.defineTag('type', {
+            mustHaveValue: true,
+            canHaveType: true,
+            onTagText: function(text) {
+                // any text must be formatted as a type, but for back compat braces are optional
+                if ( ! /^\{.+\}$/.test(text) ) {
+                    text = '{ '+text+' }';
+                }
+                return text;
+            },
+            onTagged: function(doclet, tag) {
+                if (tag.value.type) { doclet.type = tag.value.type; }
+                
+                return false;
+            }
+        })
+        
         dictionary.defineTag('undocumented', {
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
