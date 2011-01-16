@@ -12,7 +12,7 @@
     });
     
     test('When a symbol has an @type tag set to a plain string, the doclet has a type property set to that string as if it were a type.', function() {
-        assert.equal(bar.type.names.join(', '), 'number');
+        assert.equal(bar.type.names.join(', '), 'integer');
     });
 
 })();

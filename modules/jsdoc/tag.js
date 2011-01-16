@@ -55,12 +55,15 @@
                 
                 if (remainingText) {
                     if (tagDef.canHaveName) {
-                        var [tagName, tagDesc, tagOptional, tagDefault] = parseTagText(remainingText);
+                        var [paramName, paramDesc, paramOptional, paramDefault]
+                            = parseParamText(remainingText);
                         
-                        if (tagName)     { this.value.name = tagName; }
-                        if (tagDesc)     { this.value.description = tagDesc; }
-                        if (tagOptional) { this.value.optional = tagOptional; }
-                        if (tagDefault)  { this.value.defaultvalue = tagDefault; }
+                        // note the dash is a special case: as a param name it means "no name"
+                        if (paramName && paramName !== '-') { this.value.name = paramName; }
+                        
+                        if (paramDesc)     { this.value.description = paramDesc; }
+                        if (paramOptional) { this.value.optional = paramOptional; }
+                        if (paramDefault)  { this.value.defaultvalue = paramDefault; }
                     }
                     else {
                         this.value.description = remainingText;
@@ -89,11 +92,11 @@
 	/**
 		Parse the parameter name and parameter desc from the tag text.
 		@private
-		@method parseTagText
+		@method parseParamText
 		@param {string} tagText
 		@returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
 	 */
-	function parseTagText(tagText) {
+	function parseParamText(tagText) {
 		var pname, pdesc, poptional, pdefault;
 		
 		// like: pname, pname pdesc, or name - pdesc

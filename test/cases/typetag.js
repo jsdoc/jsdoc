@@ -5,6 +5,6 @@ var foo;
 
 
 /**
-    @type number
+    @type integer
 */
-var bar;
+var bar = +(new Date()).getTime();
