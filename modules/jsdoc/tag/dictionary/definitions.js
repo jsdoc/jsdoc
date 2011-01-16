@@ -275,7 +275,8 @@
                 return false;
             }
         })
-        .synonym('argument');
+        .synonym('argument')
+        .synonym('arg');
         
         dictionary.defineTag('private', {
             mustNotHaveValue: true,
