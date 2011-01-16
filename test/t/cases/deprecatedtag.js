@@ -10,7 +10,7 @@
     });
     
     test('When a symbol has a @deprec tag with a value, the doclet has a deprecated property set to that value.', function() {
-        assert.equal(bar.deprecated, 'v1.0.2');
+        assert.equal(bar.deprecated, 'since version 2.0');
     });
 
 })();

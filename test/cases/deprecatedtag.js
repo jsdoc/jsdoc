@@ -4,7 +4,7 @@ function foo() {
     
 }
 
-/** @deprec v1.0.2
+/** @deprec since version 2.0
 */
 function bar() {
     

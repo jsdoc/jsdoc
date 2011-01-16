@@ -11,11 +11,12 @@
         dictionary.defineTag('access', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
-                if ( /^(private|protected)$/.test(tag.value) ) {
-                    doclet.access = tag.value;
+                // only valid values are private and protected, public is default
+                if ( /^(private|protected)$/i.test(tag.value) ) {
+                    doclet.access = tag.value.toLowerCase();
                 }
-                else if (tag.value === 'public') {
-                    delete doclet.access;
+                else {
+                    delete doclet.access; 
                 }
                 
                 return true;
@@ -313,7 +314,7 @@
         dictionary.defineTag('public', {
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
-                doclet.access = 'public';
+                delete doclet.access; // public is default
                 
                 return true;
             }

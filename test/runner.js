@@ -92,6 +92,7 @@ testFile('test/t/cases/alias2.js');
 testFile('test/t/cases/augmentstag.js');
 testFile('test/t/cases/accesstag.js');
 testFile('test/t/cases/authortag.js');
+testFile('test/t/cases/classtag.js');
 testFile('test/t/cases/copyrighttag.js');
 testFile('test/t/cases/deprecatedtag.js');
 testFile('test/t/cases/exceptiontag.js');
