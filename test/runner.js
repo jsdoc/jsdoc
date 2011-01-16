@@ -97,6 +97,7 @@ testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');
 testFile('test/t/cases/paramtag.js');
+testFile('test/t/cases/requirestag.js');
 testFile('test/t/cases/returnstag.js');
 testFile('test/t/cases/seetag.js');
 testFile('test/t/cases/sincetag.js');

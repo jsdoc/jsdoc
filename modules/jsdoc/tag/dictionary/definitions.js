@@ -316,6 +316,16 @@
             }
         });
         
+        dictionary.defineTag('requires', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.requires) { doclet.requires = []; }
+                doclet.requires.push( firstWordOf(tag.value) );
+                
+                return true;
+            }
+        });
+        
         dictionary.defineTag('returns', {
             mustHaveValue: true,
             canHaveType: true,
@@ -442,4 +452,9 @@
 	    }
 	}
 	
+	function firstWordOf(string) {
+	    var m = /^(\S+)/.exec(string);
+	    if (m) { return m[1]; }
+	    else { return ''; }
+	}
 })();
