@@ -53,7 +53,7 @@ env = {
         start: new Date(),
         finish: null
     },
-    args: arguments.slice(1), // jsdoc.jar sets argument[0] to the abspath to main.js, user args follow
+    args: Array.prototype.slice.call(arguments, 1), // jsdoc.jar adds argument[0], the abspath to main.js, user args follow
     conf: {},
     opts: {}
 };
@@ -113,14 +113,16 @@ function main() {
             }
         };
     
+    env.opts = jsdoc.opts.parser.parse(env.args);
+    
     try {
-        env.conf = JSON.parse( require('common/fs').read(BASEDIR+'conf.json') );
+        env.conf = JSON.parse(
+            require('common/fs').read( env.opts.configure || BASEDIR+'conf.json' )
+        );
     }
     catch (e) {
         throw('Configuration file cannot be evaluated. '+e);
     }
-    
-    env.opts = jsdoc.opts.parser.parse(env.args);
     
     if (env.opts.query) {
         env.opts.query = require('common/query').toObject(env.opts.query);

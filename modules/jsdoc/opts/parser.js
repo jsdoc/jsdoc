@@ -17,6 +17,7 @@
 		};
 	
 	argsParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
+	argsParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc basedir + conf.json');
 	argsParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: your system default encoding');
 	argsParser.addOption('n', 'nocode',      false, 'Ignore doclets that don\'t explicitly provide a symbol name.');
 	argsParser.addOption('T', 'test',        false, 'Run all tests and quit.');
