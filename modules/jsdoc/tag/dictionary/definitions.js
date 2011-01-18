@@ -93,6 +93,22 @@
             }
         });
         
+        dictionary.defineTag('exports', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                var modName = firstWordOf(tag.value);
+                
+                if ( modName.indexOf('module:') !== 0) {
+                    modName = 'module:'+modName;
+                }
+                
+                doclet.addTag('alias', modName);
+                doclet.addTag('kind', 'module');
+                
+                return false;
+            }
+        });
+        
         dictionary.defineTag('deprecated', {
             // value is optional
             onTagged: function(doclet, tag) {
@@ -333,8 +349,12 @@
         dictionary.defineTag('requires', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
+                var modName = firstWordOf(tag.value);
+                if (modName.indexOf('module:') !== 0) {
+                    modName = 'module:'+modName;
+                }
                 if (!doclet.requires) { doclet.requires = []; }
-                doclet.requires.push( firstWordOf(tag.value) );
+                doclet.requires.push(modName);
                 
                 return true;
             }

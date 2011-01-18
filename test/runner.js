@@ -95,6 +95,8 @@ testFile('test/t/cases/authortag.js');
 testFile('test/t/cases/classtag.js');
 testFile('test/t/cases/copyrighttag.js');
 testFile('test/t/cases/deprecatedtag.js');
+testFile('test/t/cases/exportstag.js');
+testFile('test/t/cases/exportstag2.js');
 testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');
@@ -108,6 +110,7 @@ testFile('test/t/cases/seetag.js');
 testFile('test/t/cases/sincetag.js');
 testFile('test/t/cases/typetag.js');
 testFile('test/t/cases/versiontag.js');
+
 
 report();
 
