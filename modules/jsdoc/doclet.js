@@ -20,9 +20,8 @@
 	exports.Doclet = function (docletSrc, meta) {
 	    var newTags = [];
 	    
-	    this.src = docletSrc;
+	    this.comment = docletSrc;
 	    addMeta.call(this, meta);
-	    this.tags = [];
 	    
 	    docletSrc = unwrap(docletSrc);
 	    docletSrc = fixDescription(docletSrc);
@@ -63,12 +62,12 @@
         var tagDef = jsdoc.tag.dictionary.lookUp(title),
 	        newTag = new jsdoc.tag.Tag(title, text, this.meta);
 	    
-	    if (tagDef.onTagged) {
-	        if (tagDef.onTagged(this, newTag) !== false) { // onTagged handler prevents tag being added bt returning false
-	            this.tags.push(newTag);
-	        }
+	    if (tagDef && tagDef.onTagged) {
+	       tagDef.onTagged(this, newTag)
 	    }
-	    else {
+	    
+	    if (!tagDef) {
+	        this.tags = this.tags || [];
 	        this.tags.push(newTag);
 	    }
 	    

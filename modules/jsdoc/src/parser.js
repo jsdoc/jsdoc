@@ -211,7 +211,7 @@
         else if (node.type === Token.ASSIGN) {
             e = {
                 id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
-                comment: String(node.jsDoc||'@undocumented'), // document that it is undocumented :)
+                comment: String(node.jsDoc||'@undocumented'),
                 lineno: node.getLineno(),
                 filename: currentSourceName,
                 astnode: node,

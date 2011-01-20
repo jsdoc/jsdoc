@@ -411,6 +411,7 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.undocumented = true;
+                doclet.comment = '';
                 
                 return false;
             }
