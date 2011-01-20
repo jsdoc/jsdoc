@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.0.0beta1",
-	"revision": "2011-01-16-2015",
+	"revision": "2011-01-20-2310",
 	"description": "An automatic documentation generator for javascript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
