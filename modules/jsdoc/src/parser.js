@@ -150,8 +150,11 @@
                 return '[[anonymous]]'; // TODO handle global this?
             }
             
+            if (memberof.doclet['this']) {
+                return memberof.doclet['this'];
+            }
             // walk up to the closest @constructor we can find
-            if (memberof.doclet.kind === 'constructor' || memberof.doclet.kind === 'module') {
+            else if (memberof.doclet.kind === 'constructor' || memberof.doclet.kind === 'module') {
                 return memberof.doclet.longname||memberof.doclet.name;
             }
             else {

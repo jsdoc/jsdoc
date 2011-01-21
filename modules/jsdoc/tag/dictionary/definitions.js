@@ -18,8 +18,6 @@
                 else {
                     delete doclet.access; 
                 }
-                
-                return true;
             }
         });
         
@@ -27,8 +25,6 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.author = tag.value;
-                
-                return true;
             }
         });
         
@@ -37,8 +33,6 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.augment( firstWordOf(tag.value) );
-                
-                return false;
             }
         })
         .synonym('extends')
@@ -50,8 +44,6 @@
             onTagged: function(doclet, tag) {
                 var [target, source] = parseBorrows(doclet, tag);
                 doclet.borrow(target, source);
-                
-                return false;
             }
         })
         .synonym('mixes');
@@ -60,8 +52,6 @@
             onTagged: function(doclet, tag) { // @class implies @constructor
                 doclet.addTag('kind', 'constructor');
                 doclet.classdesc = tag.value;
-                
-                return false;
             }
         });
         
@@ -69,8 +59,6 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
-                
-                return false;
             }
         })
         .synonym('const');
@@ -79,8 +67,6 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.copyright = tag.value;
-                
-                return true;
             }
         });
         
@@ -88,8 +74,6 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
-                
-                return false;
             }
         });
         
@@ -104,17 +88,13 @@
                 
                 doclet.addTag('alias', modName);
                 doclet.addTag('kind', 'module');
-                
-                return false;
-            }
+             }
         });
         
         dictionary.defineTag('deprecated', {
             // value is optional
             onTagged: function(doclet, tag) {
                 doclet.deprecated = tag.value || true;
-                
-                return true;
             }
         })
         .synonym('deprec');
@@ -130,8 +110,6 @@
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
                 applyNamespace(doclet, tag);
-                
-                return false;
             }
         });
         
@@ -146,8 +124,6 @@
             onTagged: function(doclet, tag) {
                 if (!doclet.exceptions) { doclet.exceptions = []; }
                 doclet.exceptions.push(tag.value);
-                
-                return false;
             }
         })
         .synonym('throws');
@@ -161,8 +137,6 @@
                 setDocletDescriptionToValue(doclet, tag);
                 
                 doclet.preserveName = true;
-                
-                return false;
             }
         })
         .synonym('fileoverview')
@@ -176,8 +150,6 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
-                
-                return false;
             }
         })
         .synonym('method');
@@ -186,8 +158,6 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.scope = 'global';
-                
-                return true;
             }
         });
         
@@ -195,24 +165,20 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.ignore = true;
-                
-                return true;
             }
         });
         
         dictionary.defineTag('inner', {
             onTagged: function(doclet, tag) {
                 setDocletScopeToTitle(doclet, tag);
-                
-                return false;
-            }
+             }
         });
         
         dictionary.defineTag('instance', {
             onTagged: function(doclet, tag) {
                 setDocletScopeToTitle(doclet, tag);
                 
-                return false;
+                
             }
         });
         
@@ -224,8 +190,6 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.alias = tag.value;
-
-                return true;
             }
         });
         
@@ -233,9 +197,7 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 setDocletMemberof(doclet, tag);
-                
-                return true;
-            }
+             }
         })
         .synonym('member');
         
@@ -243,8 +205,6 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
-                
-                return false;
             }
         });
         
@@ -255,9 +215,7 @@
                 doclet.name || setDocletNameToFilename(doclet, tag);
                 
                 applyNamespace(doclet, tag);
-                
-                return false;
-            }
+             }
         });
         
         dictionary.defineTag('name', {
@@ -268,8 +226,6 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
-                
-                return false;
             }
         });
         
@@ -278,8 +234,6 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
-                
-                return false;
             }
         })
         .synonym('overloads');
@@ -291,8 +245,6 @@
             onTagged: function(doclet, tag) {
                 if (!doclet.params) { doclet.params = []; }
                 doclet.params.push(tag.value);
-                
-                return false;
             }
         })
         .synonym('argument')
@@ -302,8 +254,6 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.access = 'private';
-                
-                return true;
             }
         });
         
@@ -311,8 +261,6 @@
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
-                
-                return false;
             }
         })
         .synonym('field')
@@ -322,8 +270,6 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.access = 'protected';
-                
-                return true;
             }
         });
         
@@ -331,8 +277,6 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 delete doclet.access; // public is default
-                
-                return true;
             }
         });
         
@@ -341,8 +285,6 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.readonly = true;
-                
-                return false;
             }
         });
         
@@ -355,8 +297,6 @@
                 }
                 if (!doclet.requires) { doclet.requires = []; }
                 doclet.requires.push(modName);
-                
-                return true;
             }
         });
         
@@ -365,8 +305,6 @@
             canHaveType: true,
             onTagged: function(doclet, tag) {
                 doclet.returns = tag.value;
-                
-                return false;
             }
         })
         .synonym('return');
@@ -376,8 +314,6 @@
             onTagged: function(doclet, tag) {
                 if (!doclet.see) { doclet.see = []; }
                 doclet.see.push(tag.value);
-                
-                return true;
             }
         });
         
@@ -385,8 +321,14 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.since = tag.value;
-                
-                return true;
+            }
+        });
+        
+        dictionary.defineTag('this', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.see) { doclet.see = []; }
+                doclet['this'] = firstWordOf(tag.value);
             }
         });
         
@@ -402,8 +344,6 @@
             },
             onTagged: function(doclet, tag) {
                 if (tag.value.type) { doclet.type = tag.value.type; }
-                
-                return false;
             }
         })
         
@@ -412,8 +352,6 @@
             onTagged: function(doclet, tag) {
                 doclet.undocumented = true;
                 doclet.comment = '';
-                
-                return false;
             }
         });
         
@@ -421,8 +359,6 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.version = tag.value;
-                
-                return true;
             }
         });
     }
