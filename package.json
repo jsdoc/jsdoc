@@ -13,7 +13,7 @@
 	"repositories": [
 		{
 			"type": "git",
-			"url": "http://github.com/micmath/JSDoc"
+			"url": "http://github.com/micmath/jsdoc"
 		}
 	],
 	"contributors" : [

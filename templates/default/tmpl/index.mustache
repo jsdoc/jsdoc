@@ -16,7 +16,7 @@
         .function { color: #666; }
         
         .access { color: #666; }
-        
+/*        
         .symbol-head
         {
         	margin-top: 8px;
@@ -27,9 +27,7 @@
         	background-color: #B8B9CB;
         }
         
-        .detail-list {
-            list-style-type:none;
-        }
+        
         
         .symbol-head .summary {
             font-style: italic;
@@ -39,6 +37,128 @@
         .description {
             margin-top: 12px;
         }
+        
+ */       
+    
+    
+    .detail-list {
+        list-style-type:none;
+    }
+        
+    html {
+        /* stops IE resizing fonts by a massive amount */
+        font-size: 100%
+    }
+    body {
+        /* pixes monospace font sizes in webkit */
+        font-size: 10px;
+        /* following line is picked up by IE6 & 7, which cannot resize pixel-based font sizes */
+        *font-size: 62.5%;
+    }
+    
+    body {
+        font-size: 0.8em;
+        font-family: verdana, sans-serif;
+        /*overflow: hidden;*/
+        zoom: 1;
+        background: url(images/pagebg.png) 0 73px repeat-x;
+        color: #333333;
+    }
+    a:link, a:visited {
+        color: #356a8b;
+        text-decoration: none;
+        border-bottom: 1px dotted #356a8b;
+    }
+    a:hover, a:active {
+        color: #3B607B;
+        border-color: #3B607B;
+        border-bottom-style: solid;
+    }
+    a.image {
+        border: 0;
+    }
+    h1 {
+        font-size: 2em;
+        font-family: arial, sans-serif;
+    }
+    h2 {
+        font-size: 1.7em;
+        margin: 0 0 1em 0;
+        font-family: arial, sans-serif;
+    }
+    h3 {
+        font-size: 1.4em;
+        margin: 0.4em 0;
+        font-family: arial, sans-serif;
+        color: #4e4e4e;
+    }
+    h4 {
+        margin: 1em 0;
+        color: #3B607B;
+    }
+    h5 {
+        margin: 1em 0;
+    }
+    p {
+        margin: 0 0 1em 0;
+        line-height: 1.5;
+    }
+        
+    dl.params dt {
+        border-top: 1px solid #b2b1b1;
+        color: #3B607B;
+        font-weight: bold;
+        padding-top: 8px;
+        margin-bottom: 5px;
+        font-size: 1.1em;
+        float: none;
+        overflow: visible;
+        zoom: 0;
+    }
+    
+    dl.params dt.first {
+        border-top: none;
+    }
+    
+    dl.params dd {
+        border-width: 0;
+        margin-bottom: 16px;
+    }
+    
+    dl.param-properties {
+        font-style: italic;
+        overflow: hidden;
+        zoom: 1;
+        font-size: 0.9em;
+        margin: 1em 0;
+    }
+    dl.param-properties dt span,
+    dl.param-properties dd {
+        color: #555;
+        float: left;
+        margin: 0;
+        padding: 0;
+        display: inline;
+        margin-bottom: 5px;
+        font-size: 1em;
+        border: none;
+    }
+    dl.param-properties dt {
+        clear: both;
+        display: inline;
+        font-size: 1em;
+        padding: 0;
+        float: none;
+        overflow: visible;
+        zoom: 0;
+    }
+    dl.param-properties dt span {
+        width: 85px;
+        clear: both;
+    }
+    dl.param-properties dd.optionalDef {
+        text-indent: -5000px;
+    }
         
     </style>
 </head>
@@ -73,9 +193,9 @@
             
             {{#hasParams}}
             <h3>Parameters:</h3>
-            <ol class="params detail-list">
+            <dl class="params detail-list">
                 {{#params}} {{>param}} {{/params}}
-            </ol>
+            </dl>
             {{/hasParams}}
             
             {{#returns}}

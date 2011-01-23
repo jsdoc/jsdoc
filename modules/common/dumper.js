@@ -52,8 +52,6 @@
     function walk(object) {
         var value;
         
-        
-        
         if ( value = getValue(object) ) {
             output += value + ',\n';
         }

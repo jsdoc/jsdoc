@@ -1,5 +1,5 @@
 /**
- * @project JSDoc
+ * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
  * @license See LICENSE.md file included in this distribution.
  */
@@ -8,11 +8,17 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
-/** @global */
+/** The absolute path to the base directory of the jsdoc application.
+    @type string
+    @global
+ */
 const BASEDIR = arguments[0].replace(/([\/\\])main\.js$/, '$1'); // jsdoc.jar sets argument[0] to the abspath to main.js
 
-/** @global */
-function require(id) { // like commonjs
+/** Include a JavaScript module, defined in the CommonJS way.
+    @global
+    @param {string} id The identifier of the module you require.
+ */
+function require(id, encoding) { // like commonjs
     var path = require.base + id + '.js',
         fileContent = '';
         
@@ -47,18 +53,41 @@ require.cache = {}; // cache module exports. Like: {id: exported}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 	
-/** @global */
+/** Data representing the environment in which this app is running.
+    @namespace
+*/
 env = {
+    /** Running start and finish times. */
     run: {
         start: new Date(),
         finish: null
     },
+    
+    /**
+        The command line arguments passed into jsdoc.
+        @type Array
+    */
     args: Array.prototype.slice.call(arguments, 1), // jsdoc.jar adds argument[0], the abspath to main.js, user args follow
+    
+    
+    /**
+        The parsed JSON data from the configuration file.
+        @type Object
+    */
     conf: {},
+    
+    /**
+        The command line arguments, parsed into a key/value hash.
+        @type Object
+        @example if (env.opts.help) { print 'Helpful message.'; }
+    */
     opts: {}
 };
 
-/** @global */
+/**
+    Data that must be shared across the entire application.
+    @namespace
+*/
 app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
@@ -70,21 +99,29 @@ app = {
 try { main(); }
 finally { env.run.finish = new Date(); }
 
-/** @global */
-function print(/*...*/) {
+/** Print string/s out to the console.
+    @param {string} ... String/s to print out to console.
+ */
+function print() {
     for (var i = 0, leni = arguments.length; i < leni; i++) {
         java.lang.System.out.println('' + arguments[i]);
     }
 }
 
-/** @global */
-function dump(/*...*/) {
+/**
+    Try to recursively print out all key/values in an object.
+    @global
+    @param {Object} ... Object/s to dump out to console.
+ */
+function dump() {
     for (var i = 0, leni = arguments.length; i < leni; i++) {
         print( require('common/dumper').dump(arguments[i]) );
     }
 }
 
-/** @global */
+/** @global
+    @param {string} filepath The path to the script file to include (read and execute).
+*/
 function include(filepath) {
     try {
         load(BASEDIR + filepath);
@@ -94,16 +131,22 @@ function include(filepath) {
     }
 }
 
-/** @global */
-function exit(v) {
-    java.lang.System.exit(v);
+/** 
+    Cause the VM running jsdoc to exit running.
+    @param {number} [n = 0] The exit status.
+ */
+function exit(n) {
+    n = n || 0;
+    java.lang.System.exit(n);
 }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
-/** @global */
+/**
+    Run the jsoc application.
+ */
 function main() {
     var sourceFiles,
         docs,
