@@ -61,7 +61,7 @@
         font-family: verdana, sans-serif;
         /*overflow: hidden;*/
         zoom: 1;
-        background: url(images/pagebg.png) 0 73px repeat-x;
+        /*background: url(images/pagebg.png) 0 73px repeat-x;*/
         color: #333333;
     }
     a:link, a:visited {
@@ -70,8 +70,8 @@
         border-bottom: 1px dotted #356a8b;
     }
     a:hover, a:active {
-        color: #3B607B;
-        border-color: #3B607B;
+        color: #298FB2;
+        border-color: #298FB2;
         border-bottom-style: solid;
     }
     a.image {
@@ -94,7 +94,7 @@
     }
     h4 {
         margin: 1em 0;
-        color: #3B607B;
+        color: #298FB2;
     }
     h5 {
         margin: 1em 0;
@@ -106,7 +106,7 @@
         
     dl.params dt {
         border-top: 1px solid #b2b1b1;
-        color: #3B607B;
+        color: #298FB2;
         font-weight: bold;
         padding-top: 8px;
         margin-bottom: 5px;
@@ -193,15 +193,13 @@
             
             {{#hasParams}}
                 <h3>Parameters:</h3>
-                {{>param}}
+                {{>paramsTemplate}}
             {{/hasParams}}
             
-            {{#returns}}
-            <h3>Returns:</h3>
-            <ol class="returns detail-list">
-                {{>returns}}
-            </ol>
-            {{/returns}}
+            {{#hasReturns}}
+                <h3>Returns:</h3>
+                {{>returnsTemplate}}
+            {{/hasReturns}}
         </div>
     </div>
 {{/docs}}

@@ -1,0 +1,53 @@
+<dl class="params detail-list">
+    {{#params}}  
+
+    <dt{{#first?}} class="first"{{/first?}}>
+        <span class="param-name">{{name}}</span>
+    </dt>
+    
+    <dd>
+        <dl class="param-properties">
+            {{#type}}
+            <dt>
+                <span>Type</span>
+            </dt>
+            <dd>
+                {{#names}}
+                <span class="param-type">{{#linkTo}}{{.}}{{/linkTo}}</span>{{^last?}} | {{/last?}}{{#last?}} {{/last?}}
+                {{/names}}
+            </dd>
+            {{/type}}
+            
+            {{#defaultvalue}}
+            <dt>
+                <span>Default</span>
+            </dt>
+            <dd>
+                {{defaultvalue}}
+            </dd>
+            {{/defaultvalue}}
+            
+            {{#optional}}
+            <dt>
+                <span>Optional</span>
+            </dt>
+            <dd class="yesDef">Yes</dd>
+            {{/optional}}
+            
+            {{#nullable}}
+            <dt>
+                <span>Nullable</span>
+            </dt>
+            <dd class="yesDef">Yes</dd>
+            {{/nullable}}
+        </dl>
+        
+        {{#description}}
+        <div class="param-desc">
+            {{description}}
+        </div>
+        {{/description}}
+    </dd>
+    
+    {{/params}}
+</dl>

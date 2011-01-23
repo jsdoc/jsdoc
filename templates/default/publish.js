@@ -11,8 +11,8 @@
         var out = '',
             templateSource = {
                 index: readFile(BASEDIR + 'templates/default/tmpl/index.mustache'),
-                param: readFile(BASEDIR + 'templates/default/tmpl/param.mustache'),
-                returns: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache')
+                paramsTemplate: readFile(BASEDIR + 'templates/default/tmpl/params.mustache'),
+                returnsTemplate: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache')
             };
         
         var helpers = {
@@ -52,16 +52,17 @@
 	    // add template helpers
 	    data.forEach(function(doclet) {
 	        doclet.hasParams   = doclet.params   && doclet.params.length > 0;
+	        doclet.hasReturns  = doclet.returns  && doclet.returns.length > 0;
 	        doclet.hasBorrowed = doclet.borrowed && doclet.borrowed.length > 0;
-	        
+
 	        summarize(doclet);
 	    });
 	    
 	    data.orderBy(['longname', 'kind']);
 	    
 	    var partials = {
-            param: templateSource.param,
-            returns: templateSource.returns
+            paramsTemplate: templateSource.paramsTemplate,
+            returnsTemplate: templateSource.returnsTemplate
         };
         
 	    // apply template

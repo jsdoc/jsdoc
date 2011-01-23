@@ -304,7 +304,8 @@
             mustHaveValue: true,
             canHaveType: true,
             onTagged: function(doclet, tag) {
-                doclet.returns = tag.value;
+                 if (!doclet.returns) { doclet.returns = []; }
+                doclet.returns.push(tag.value);
             }
         })
         .synonym('return');

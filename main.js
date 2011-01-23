@@ -16,6 +16,7 @@ const BASEDIR = arguments[0].replace(/([\/\\])main\.js$/, '$1'); // jsdoc.jar se
 
 /** Include a JavaScript module, defined in the CommonJS way.
     @param {string} id The identifier of the module you require.
+    @returns {mixed} The value exported by the module.
     @see http://wiki.commonjs.org/wiki/Modules/1.1
  */
 function require(id) { // like commonjs
