@@ -156,7 +156,7 @@
         width: 85px;
         clear: both;
     }
-    dl.param-properties dd.optionalDef {
+    dl.param-properties dd.yesDef {
         text-indent: -5000px;
     }
         
@@ -192,10 +192,8 @@
             {{/hasBorrowed}}
             
             {{#hasParams}}
-            <h3>Parameters:</h3>
-            <dl class="params detail-list">
-                {{#params}} {{>param}} {{/params}}
-            </dl>
+                <h3>Parameters:</h3>
+                {{>param}}
             {{/hasParams}}
             
             {{#returns}}

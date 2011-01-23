@@ -15,38 +15,52 @@
 const BASEDIR = arguments[0].replace(/([\/\\])main\.js$/, '$1'); // jsdoc.jar sets argument[0] to the abspath to main.js
 
 /** Include a JavaScript module, defined in the CommonJS way.
-    @global
     @param {string} id The identifier of the module you require.
+    @see http://wiki.commonjs.org/wiki/Modules/1.1
  */
-function require(id, encoding) { // like commonjs
-    var path = require.base + id + '.js',
-        fileContent = '';
+function require(id) { // like commonjs
+    var moduleContent = '',
+        moduleUri;
+    
+    for (var i = 0, len = require.paths.length; i < len; i++) {
+        moduleUri = require.paths[i] + '/' + id + '.js';
+        moduleContent = '';
         
-    try {
-        var file = new java.io.File(path),
-            scanner = new java.util.Scanner(file).useDelimiter("\\Z"),
-            fileContent = String( scanner.next() );
-    }
-    catch(e) {
-        print('Unable to read source code from "' + path + '": ' + e);
+        var file = new java.io.File(moduleUri);
+        if ( file.exists() && file.canRead() && !file.isDirectory() ) {
+            try {    
+                var scanner = new java.util.Scanner(file).useDelimiter("\\Z");
+                moduleContent = String( scanner.next() );
+            }
+            catch(ignored) { }
+            
+            if (moduleContent) { break; }
+        }
     }
     
-    try {
-        var f = new Function('require', 'exports', 'module', fileContent),
-            exports = require.cache[path] || {},
-            module = { id: id, uri: path };
-
-        f.call({}, require, exports, module);
-        
-        exports = module.exports || exports;
-        require.cache[id] = exports;
+    if (moduleContent) {
+        try {
+            var f = new Function('require', 'exports', 'module', moduleContent),
+                exports = require.cache[moduleUri] || {},
+                module = { id: id, uri: moduleUri };
+    
+            f.call({}, require, exports, module);
+            
+            exports = module.exports || exports;
+            require.cache[id] = exports;
+        }
+        catch(e) {
+            throw 'Unable to require source code from "' + moduleUri + '": ' + e.toSource();
+        }
     }
-    catch(e) {
-        print('Unable to require source code from "' + path + '": ' + e.toSource());
+    else {
+        throw 'The requested module cannot be returned: no content for id: "' + id + '" in paths: ' + require.paths.join(', ');
     }
+    
     return exports;
 }
-require.base = BASEDIR + '/modules/'; // assume all module paths are relative to here
+require.root = BASEDIR;
+require.paths = [ require.root + 'modules', require.root + 'modules/common' ];
 require.cache = {}; // cache module exports. Like: {id: exported}
 
 
@@ -160,7 +174,7 @@ function main() {
     
     try {
         env.conf = JSON.parse(
-            require('common/fs').read( env.opts.configure || BASEDIR+'conf.json' )
+            require('fs').read( env.opts.configure || BASEDIR+'conf.json' )
         );
     }
     catch (e) {
@@ -168,7 +182,7 @@ function main() {
     }
     
     if (env.opts.query) {
-        env.opts.query = require('common/query').toObject(env.opts.query);
+        env.opts.query = require('query').toObject(env.opts.query);
     }
     
     if (env.opts.help) {
