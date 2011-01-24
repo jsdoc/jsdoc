@@ -28,11 +28,6 @@
             memberof = doclet.memberof || '',
             about = {},
             parentDoc;
-
-// TODO
-//      if (currentModule) {
-//          name = name.replace(/^exports\.(?=.+$)/, currentModule + '.');
-//      }
         
         name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
 
@@ -62,7 +57,7 @@
             doclet.memberof = about.memberof;
         }
         
-        if (about.longname) {
+        if (about.longname && !doclet.longname) {
             doclet.longname = about.longname;
         }
         
@@ -74,13 +69,11 @@
             doclet.scope = puncToScope[about.scope];
         }
         else {
-            if (doclet.name && doclet.memberof) {
+            if (doclet.name && doclet.memberof && !doclet.longname) {
                 doclet.scope = 'static'; // default scope when none is provided
                 doclet.longname = doclet.memberof + scopeToPunc[doclet.scope] + doclet.name;
             }
         }
-        
-        
     }
     
     function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us

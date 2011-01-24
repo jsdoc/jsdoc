@@ -53,7 +53,7 @@
                 // handle special case where both @class and @constructor tags exist in same doclet
                 if (tag.originalTitle === 'class') {
                     if ( /@construct(s|or)\b/i.test(doclet.comment) ) {
-                        doclet.classdesc = tag.value; // treat @class tag as a @classdesc tag instead
+                        doclet.classdesc = tag.value; // treat the @class tag as a @classdesc tag instead
                         return;
                     }
                 }
@@ -193,14 +193,19 @@
         
         dictionary.defineTag('instance', {
             onTagged: function(doclet, tag) {
-                setDocletScopeToTitle(doclet, tag);
-                
-                
+                setDocletScopeToTitle(doclet, tag);  
             }
         });
         
         dictionary.defineTag('kind', {
             mustHaveValue: true
+        });
+        
+        dictionary.defineTag('license', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.license = tag.value;
+            }
         });
         
         dictionary.defineTag('alias', {
@@ -271,6 +276,15 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.access = 'private';
+            }
+        });
+        
+        dictionary.defineTag('project', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                setDocletKindToTitle(doclet, tag);
+                setDocletNameToValue(doclet, tag);
+                applyNamespace(doclet, tag);
             }
         });
         
@@ -413,7 +427,8 @@
 	function applyNamespace(doclet, tag) {
 	    if (!doclet.name) return; // error?
 	    
-	    doclet.name = app.jsdoc.name.applyNamespace(doclet.name, tag.title)
+	    //doclet.displayname = doclet.name;
+	    doclet.longname = app.jsdoc.name.applyNamespace(doclet.name, tag.title)
 	}
 	
 	function setDocletNameToFilename(doclet, tag) {

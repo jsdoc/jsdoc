@@ -153,6 +153,10 @@
             if (memberof.doclet['this']) {
                 return memberof.doclet['this'];
             }
+            // like: Foo.constructor = function(n) { /** blah */ this.name = n; }
+            else if (memberof.doclet.kind === 'function' && memberof.doclet.memberof) {
+                return memberof.doclet.memberof;
+            }
             // walk up to the closest class we can find
             else if (memberof.doclet.kind === 'class' || memberof.doclet.kind === 'module') {
                 return memberof.doclet.longname||memberof.doclet.name;

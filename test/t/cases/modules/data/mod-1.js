@@ -12,7 +12,7 @@
     
     test('When a module has no name documented, the name comes from the file path.', function() {
         assert.ok(doclets.length > 1);
-        assert.equal(doclets[0].name, 'module:data/mod-1');
+        assert.equal(doclets[0].longname, 'module:data/mod-1');
     });
 
 })();

@@ -12,7 +12,7 @@
     
     test('When a module has a name documented, that name is used.', function() {
         assert.ok(doclets.length > 1);
-        assert.equal(doclets[0].name, 'module:my/module/name');
+        assert.equal(doclets[0].longname, 'module:my/module/name');
     });
 
 })();

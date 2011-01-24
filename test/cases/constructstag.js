@@ -2,7 +2,7 @@
     Describe your class here
     @class TextBlock
  */
-classify('TextBlock', {
+Classify('TextBlock', {
     
     /**
         Document your constructor function here.
@@ -17,6 +17,6 @@ classify('TextBlock', {
         Document your method here.
         @memberof TextBlock#
      */
-     align: function(){
+     align: function() {
      }
 });

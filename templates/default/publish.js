@@ -85,17 +85,16 @@
 	    var modules = data.get( data.find({kind: 'module'}) );
         modules.forEach(function(m) {
             m.methods = data.get( data.find({kind: 'function', memberof: m.longname}) );
-            m.displayName = m.longname.replace(/^module:/, '');
             m.hasMethods = (m.methods && m.methods.length > 0);
             
-             m.methods.forEach(function(f) {
+            m.methods.forEach(function(f) {
                 var pnames = [];
                 if (f.params) {
                     f.params.forEach(function(p) {
                         if (p.name && p.name.indexOf('.') === -1) { pnames.push(p.name); }
                     });
                 }
-                f.synopsis = 'require("'+m.displayName+'").'+f.name+'('+pnames.join(', ')+');'
+                f.synopsis = 'require("'+m.name+'").'+f.name+'('+pnames.join(', ')+');'
                 f.hasParams = (f.params && f.params.length > 0);
                 f.hasReturns = (f.returns && f.returns.length > 0);
             });
