@@ -1,10 +1,11 @@
 (function() {
 
-    var Mustache = require('janl/mustache');
+    var Mustache = require('janl/mustache'),
+        fs = require('fs');
     
     /**
         @global
-        @param {TAFFY} data
+        @param {TAFFY} data See <http://taffydb.com/>.
         @param {object} opts
      */
     publish = function(data, opts) {
@@ -12,7 +13,11 @@
             templateSource = {
                 index: readFile(BASEDIR + 'templates/default/tmpl/index.mustache'),
                 paramsTemplate: readFile(BASEDIR + 'templates/default/tmpl/params.mustache'),
-                returnsTemplate: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache')
+                returnsTemplate: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache'),
+                
+                containerTemplate: readFile(BASEDIR + 'templates/default/tmpl/container.mustache'),
+                methodsTemplate: readFile(BASEDIR + 'templates/default/tmpl/methods.mustache')
+                
             };
         
         var helpers = {
@@ -62,25 +67,65 @@
 	    
 	    var partials = {
             paramsTemplate: templateSource.paramsTemplate,
-            returnsTemplate: templateSource.returnsTemplate
+            returnsTemplate: templateSource.returnsTemplate,
+            methodsTemplate: templateSource.methodsTemplate
         };
         
-	    // apply template
-        out = Mustache.to_html(
-            templateSource.index,
-            {
-                docs: data.get(),
-                linkTo: helpers.linkTo
-            },
-            partials
-        );
+        var topLevels = {
+	        projects: [],
+	        globals: [],
+	        modules: [],
+	        namespaces: [],
+	        classes: [],
+	        mixins: []
+	    };
+	    
+	    topLevels.globals = data.get( data.find({memberof: {isUndefined: true}}) );
+	    
+	    var modules = data.get( data.find({kind: 'module'}) );
+        modules.forEach(function(m) {
+            m.methods = data.get( data.find({kind: 'function', memberof: m.longname}) );
+            m.displayName = m.longname.replace(/^module:/, '');
+            m.hasMethods = (m.methods && m.methods.length > 0);
+            
+             m.methods.forEach(function(f) {
+                var pnames = [];
+                if (f.params) {
+                    f.params.forEach(function(p) {
+                        if (p.name && p.name.indexOf('.') === -1) { pnames.push(p.name); }
+                    });
+                }
+                f.synopsis = 'require("'+m.displayName+'").'+f.name+'('+pnames.join(', ')+');'
+                f.hasParams = (f.params && f.params.length > 0);
+                f.hasReturns = (f.returns && f.returns.length > 0);
+            });
+        });
+        
+       
+        
+        var outdir = opts.destination;
+        fs.mkPath(outdir);
+        
+        generate('Modules', modules, 'modules.html');
+        
+        function generate(title, docs, filename) {
+//dump(docs); exit();
+            var path = outdir + '/' + filename,
+                html = Mustache.to_html(
+                    templateSource.containerTemplate,
+                    {
+                        title: title,
+                        docs: docs,
+                        linkTo: helpers.linkTo
+                    },
+                    partials
+                );
+            fs.write(path, html)
+        }
 
-        if (opts.destination === 'console') {
-            print(out);
-        }
-        else {
-            print('The only -d destination option currently supported is "console"!');
-        }
     }
+    
+    
+    
 
 })();

@@ -3,10 +3,10 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>JSDoc Index</title>
+	<title>JSDoc: {{title}}</title>
 	<style type="text/css">
         .kind { font-style: italic; }
-        .class, .mixin, .namespace
+        .constructor, .mixin, .namespace
         {
         	font-weight: bold;
         	color: #780000;
@@ -165,44 +165,17 @@
 
 <body>
 
-<h1>{{title}}</h1>
+    <h1>{{title}}</h1>
 
-<dl>
 {{#docs}}
-    <h2 class="symbol-head" id="{{longname}}">
-        {{#kind}}<span class="kind {{kind}}">{{kind}}</span> {{/kind}}{{#access}}<span class="access {{access}}">&lt;{{access}}></span> {{/access}}{{longname}}
-        <span class="summary">
-        {{#summary}}{{{summary}}}{{/summary}}
-        </span>
-    </h2>
-    <div>
-        
-        <div class="details">
-            {{#description}}
-                <div class="description">
-                {{{description}}}
-                </div>
-            {{/description}}
-        
-            {{#hasBorrowed}}
-            <h3>Mixes In:</h3>
-            <ol class="borrows detail-list">
-                {{#borrowed}} <li>{{#linkTo}}{{from}}{{/linkTo}}</li> {{/borrowed}}
-            </ol>
-            {{/hasBorrowed}}
-            
-            {{#hasParams}}
-                <h3>Parameters:</h3>
-                {{>paramsTemplate}}
-            {{/hasParams}}
-            
-            {{#hasReturns}}
-                <h3>Returns:</h3>
-                {{>returnsTemplate}}
-            {{/hasReturns}}
-        </div>
-    </div>
+    <h2 class="symbol-head" id="{{longname}}">{{displayName}}</h2>
+    
+    {{#hasMethods}}
+        <h3>Methods</h3>
+        {{>methodsTemplate}}
+    {{/hasMethods}}
 {{/docs}}
+
 
 
 </body>

@@ -153,8 +153,8 @@
             if (memberof.doclet['this']) {
                 return memberof.doclet['this'];
             }
-            // walk up to the closest @constructor we can find
-            else if (memberof.doclet.kind === 'constructor' || memberof.doclet.kind === 'module') {
+            // walk up to the closest class we can find
+            else if (memberof.doclet.kind === 'class' || memberof.doclet.kind === 'module') {
                 return memberof.doclet.longname||memberof.doclet.name;
             }
             else {
@@ -275,7 +275,7 @@
                 currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
         }
-        else if (node.type == Token.FUNCTION && String(node.name) !== '') {
+        else if (node.type == Token.FUNCTION/* && String(node.name) !== ''*/) {
             e = {
                 id: 'astnode'+node.hashCode(), // the id of the COLON node
                 comment: String(node.jsDoc||'@undocumented'),
@@ -284,6 +284,8 @@
                 astnode: node,
                 code: aboutNode(node)
             };
+            
+            e.code.name = String(node.name);
             
             if ( isValidJsdoc(e.comment) ) {
                 currentParser.fire('symbolFound', e, currentParser);

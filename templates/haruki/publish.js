@@ -148,7 +148,7 @@
                     }
                 }
             }
-            else if (element.kind === 'constructor') {
+            else if (element.kind === 'class') {
                 if (! parentNode.classes) {
                     parentNode.classes = { };
                 }

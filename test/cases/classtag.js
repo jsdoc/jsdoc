@@ -1,8 +1,12 @@
 /** 
-    This function creates a new Foo.
-    @constructor
-    @class The class of Foo represent all those foo things. 
+    Describe the Ticker class here.
+    @class
  */
-function Foo() {
-    
-}
+var Ticker = function() { 
+
+};
+
+/** 
+    Describe the NewsSource class here.
+    @class NewsSource
+ */

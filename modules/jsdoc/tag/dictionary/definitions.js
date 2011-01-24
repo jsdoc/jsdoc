@@ -49,8 +49,23 @@
         .synonym('mixes');
         
         dictionary.defineTag('class', {
-            onTagged: function(doclet, tag) { // @class implies @constructor
-                doclet.addTag('kind', 'constructor');
+            onTagged: function(doclet, tag) {
+                // handle special case where both @class and @constructor tags exist in same doclet
+                if (tag.originalTitle === 'class') {
+                    if ( /@construct(s|or)\b/i.test(doclet.comment) ) {
+                        doclet.classdesc = tag.value; // treat @class tag as a @classdesc tag instead
+                        return;
+                    }
+                }
+                
+                doclet.addTag('kind', 'class');
+                setDocletNameToValue(doclet, tag);
+            }
+        })
+        .synonym('constructor');
+        
+        dictionary.defineTag('classdesc', {
+            onTagged: function(doclet, tag) {
                 doclet.classdesc = tag.value;
             }
         });
@@ -70,10 +85,12 @@
             }
         });
         
-        dictionary.defineTag('constructor', {
+        dictionary.defineTag('constructs', {
             onTagged: function(doclet, tag) {
-                setDocletKindToTitle(doclet, tag);
-                setDocletNameToValue(doclet, tag);
+                var ownerClassName = firstWordOf(tag.value);
+                doclet.addTag('alias', ownerClassName + '.constructor');
+                doclet.addTag('memberof', ownerClassName);
+                doclet.addTag('kind', 'function');
             }
         });
         

@@ -106,6 +106,21 @@
 		return _allFiles;
 	}
 	
+	exports.mkPath = function(/**Array*/ path) {
+		if (path.constructor != Array) path = path.split(/[\\\/]/);
+		var make = "";
+		for (var i = 0, l = path.length; i < l; i++) {
+			make += path[i] + slash;
+			if (! exports.exists(make)) {
+				exports.makeDir(make);
+			}
+		}
+	}
+	
+	exports.makeDir = function(/**string*/ path) {
+		(new File(path)).mkdir();
+	},
+	
 	// fix multiple slashes, like one//two
 	function fixSlash(path) {
 		return path.replace(/[\/\\]+/g, slash);

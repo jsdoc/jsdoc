@@ -24,7 +24,8 @@
 	    var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle),
 	        meta = meta  || {};
 	    	
-	    this.title = jsdoc.tag.dictionary.normalise( trim(tagTitle) );
+	    this.originalTitle = trim(tagTitle);
+	    this.title = jsdoc.tag.dictionary.normalise( this.originalTitle );
 	    this.text = trim(tagBody, tagDef.keepsWhitespace);
 	    
 	    if (this.text) {

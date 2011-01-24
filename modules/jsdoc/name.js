@@ -1,4 +1,4 @@
-/**
+/*
     @overview
     @author Michael Mathews <micmath@gmail.com>
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
@@ -19,7 +19,7 @@
         
     /**
         Resolves the sid, memberof and name values.
-        @method resolve
+        @method module:jsdoc/name.resolve
         @param {Doclet} doclet
      */
     exports.resolve = function(doclet) {
@@ -98,6 +98,12 @@
         return str.replace(specials, "\\$&");
     }
     
+    /**
+        @method module:jsdoc/name.applyNamespace
+        @param {string} longname The full longname of the symbol.
+        @param {string} ns The namespace to be applied.
+        @returns {string} The longname with the namespace applied.
+     */
     exports.applyNamespace = function(longname, ns) {
         var nameParts = exports.shorten(longname),
             name = nameParts.name,
