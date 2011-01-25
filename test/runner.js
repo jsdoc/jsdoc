@@ -86,11 +86,11 @@ testFile('test/t/cases/inner.js');
 testFile('test/t/cases/modules/data/mod-1.js');
 testFile('test/t/cases/modules/data/mod-2.js');
 
+testFile('test/t/cases/accesstag.js');
 testFile('test/t/cases/alias.js');
 testFile('test/t/cases/alias2.js');
-
+testFile('test/t/cases/alias3.js');
 testFile('test/t/cases/augmentstag.js');
-testFile('test/t/cases/accesstag.js');
 testFile('test/t/cases/authortag.js');
 testFile('test/t/cases/classtag.js');
 testFile('test/t/cases/constructstag.js');
