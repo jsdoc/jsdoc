@@ -7,7 +7,11 @@
     
     test('When a function symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
         assert.equal(typeof coat, 'object');
-        assert.equal(coat.alias, 'module:my/coat');
+        assert.equal(coat.alias, 'my/coat');
+    });
+    
+    test('When a function symbol has an @exports tag, the doclet\'s longname includes the "module:" namespace.', function() {
+        assert.equal(coat.longname, 'module:my/coat');
     });
     
     test('When a function symbol has an @exports tag, the doclet kind is set to module.', function() {

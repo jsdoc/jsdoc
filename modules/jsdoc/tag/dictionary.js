@@ -7,6 +7,7 @@
 (function() {
     var _synonyms = {},
         _definitions = {},
+        _namespaces = [],
         dictionary;
     
     /** @constructor */
@@ -31,6 +32,10 @@
         defineTag: function(title, opts) {
             _definitions[title] = new TagDefinition(title, opts);
             
+            if (opts.isNamespace) {
+                _namespaces.push(title);
+            }
+            
             return _definitions[title];
         },
     
@@ -42,6 +47,10 @@
             }
             
             return false;
+        },
+        
+        isNamespace: function(kind) {
+            return ( ~ _namespaces.indexOf(kind) );
         },
         
         normalise: function(title) {

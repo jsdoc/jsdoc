@@ -21,6 +21,13 @@
             }
         });
         
+        dictionary.defineTag('alias', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.alias = tag.value;
+            }
+        });
+        
         dictionary.defineTag('author', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
@@ -94,20 +101,6 @@
             }
         });
         
-        dictionary.defineTag('exports', {
-            mustHaveValue: true,
-            onTagged: function(doclet, tag) {
-                var modName = firstWordOf(tag.value);
-                
-                if ( modName.indexOf('module:') !== 0) {
-                    modName = 'module:'+modName;
-                }
-                
-                doclet.addTag('alias', modName);
-                doclet.addTag('kind', 'module');
-             }
-        });
-        
         dictionary.defineTag('deprecated', {
             // value is optional
             onTagged: function(doclet, tag) {
@@ -144,6 +137,20 @@
             }
         })
         .synonym('throws');
+        
+        dictionary.defineTag('exports', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                var modName = firstWordOf(tag.value);
+                
+                if ( modName.indexOf('module:') !== 0) {
+                    //modName = 'module:'+modName;
+                }
+                
+                doclet.addTag('alias', modName);
+                doclet.addTag('kind', 'module');
+             }
+        });
         
         dictionary.defineTag('file', {
             mustHaveValue: true,
@@ -208,13 +215,6 @@
             }
         });
         
-        dictionary.defineTag('alias', {
-            mustHaveValue: true,
-            onTagged: function(doclet, tag) {
-                doclet.alias = tag.value;
-            }
-        });
-        
         dictionary.defineTag('memberof', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
@@ -231,12 +231,13 @@
         });
         
         dictionary.defineTag('module', {
+            isNamespace: true,
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
                 doclet.name || setDocletNameToFilename(doclet, tag);
                 
-                applyNamespace(doclet, tag);
+                //applyNamespace(doclet, tag);
              }
         });
         

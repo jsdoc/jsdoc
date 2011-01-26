@@ -21,6 +21,7 @@
         Resolves the sid, memberof and name values.
         @method module:jsdoc/name.resolve
         @param {Doclet} doclet
+        @throws {invalidArgumentException}
      */
     exports.resolve = function(doclet) {
 
@@ -58,11 +59,11 @@
         }
         
         if (about.longname && !doclet.longname) {
-            doclet.longname = about.longname;
+            exports.setLongname(doclet, about.longname);
         }
         
         if (doclet.scope === 'global') { // via @global tag?
-            doclet.longname = doclet.name;
+            exports.setLongname(doclet, doclet.name);
             delete doclet.memberof;
         }
         else if (about.scope) {
@@ -71,9 +72,17 @@
         else {
             if (doclet.name && doclet.memberof && !doclet.longname) {
                 doclet.scope = 'static'; // default scope when none is provided
-                doclet.longname = doclet.memberof + scopeToPunc[doclet.scope] + doclet.name;
+                
+                exports.setLongname(doclet, doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
             }
         }
+    }
+    
+    exports.setLongname = function(doclet, name) {
+        doclet.longname = name;
+        if (jsdoc.tagDictionary.isNamespace(doclet.kind)) {
+	        doclet.longname = exports.applyNamespace(doclet.longname, doclet.kind);
+	    }
     }
     
     function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us
@@ -127,7 +136,7 @@
             return '.'+token; // could result in foo#["bar"] => foo#.@{1}@
         });
 
-        longname = longname.replace(/([#.~])\.(@\{\d+\}@)/g, function($0, $1, $2) { return $1+$2; }); // fix #.     
+        longname = longname.replace(/(^|[#.~])\.(@\{\d+\}@)/g, function($0, $1, $2) { return $1+$2; }); // fix #.     
         
         longname = longname.replace(/\.prototype\.?/g, '#');     
         
@@ -147,5 +156,6 @@
         }
         ////
         return {longname: longname, memberof: memberof, scope: scope, name: name};
-    }   
+    }
+    
 })();

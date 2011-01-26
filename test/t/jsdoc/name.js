@@ -69,6 +69,16 @@ test('The module:jsdoc/name.shorten function works on bracketed stringy names.',
     assert.equal(parts.scope, '.');
 });
 
+test('The module:jsdoc/name.shorten function works on fully stringy names, like "foo.bar".', function() {
+    var startName = '"foo.bar"',
+        parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.name, '"foo.bar"', 'The name should be the full quoted string.');
+    assert.equal(parts.longname, '"foo.bar"', 'The longname should be the full quoted string.');
+    assert.equal(parts.memberof, '', 'There should be no memberof, as it is global.');
+    assert.equal(parts.scope, '', 'The scope should be as global.');
+});
+
 test('The jsdoc/name module exports an applyNamespace function.', function() {
     assert.equal(typeof jsdoc.name.applyNamespace, 'function');
 });

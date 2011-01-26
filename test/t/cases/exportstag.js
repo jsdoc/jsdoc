@@ -9,7 +9,11 @@
     
     test('When an objlit symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
         assert.equal(typeof shirt, 'object');
-        assert.equal(shirt.alias, 'module:my/shirt');
+        assert.equal(shirt.alias, 'my/shirt');
+    });
+    
+    test('When an objlit symbol has an @exports tag, the doclet\'s longname includes the "module:" namespace.', function() {
+        assert.equal(shirt.longname, 'module:my/shirt');
     });
     
     test('When an objlit symbol has an @exports tag, the doclet kind is set to module.', function() {

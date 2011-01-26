@@ -16,6 +16,11 @@
                 {{>paramsTemplate}}
             {{/hasParams}}
             
+            {{#hasExceptions}}
+                <h5>Throws:</h5>
+                {{>exceptionsTemplate}}
+            {{/hasExceptions}}
+            
             {{#hasReturns}}
                 <h5>Returns:</h5>
                 {{>returnsTemplate}}

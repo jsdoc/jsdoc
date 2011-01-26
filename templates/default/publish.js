@@ -9,16 +9,7 @@
         @param {object} opts
      */
     publish = function(data, opts) {
-        var out = '',
-            templateSource = {
-                index: readFile(BASEDIR + 'templates/default/tmpl/index.mustache'),
-                paramsTemplate: readFile(BASEDIR + 'templates/default/tmpl/params.mustache'),
-                returnsTemplate: readFile(BASEDIR + 'templates/default/tmpl/returns.mustache'),
-                
-                containerTemplate: readFile(BASEDIR + 'templates/default/tmpl/container.mustache'),
-                methodsTemplate: readFile(BASEDIR + 'templates/default/tmpl/methods.mustache')
-                
-            };
+        var out = '';
         
         var helpers = {
             linkTo: function() {
@@ -59,16 +50,19 @@
 	        doclet.hasParams   = doclet.params   && doclet.params.length > 0;
 	        doclet.hasReturns  = doclet.returns  && doclet.returns.length > 0;
 	        doclet.hasBorrowed = doclet.borrowed && doclet.borrowed.length > 0;
+	        doclet.hasExceptions = doclet.exceptions && doclet.exceptions.length > 0;
 
 	        summarize(doclet);
 	    });
 	    
 	    data.orderBy(['longname', 'kind']);
 	    
+	    var containerTemplate = fs.read(BASEDIR + 'templates/default/tmpl/container.mustache');
 	    var partials = {
-            paramsTemplate: templateSource.paramsTemplate,
-            returnsTemplate: templateSource.returnsTemplate,
-            methodsTemplate: templateSource.methodsTemplate
+            paramsTemplate:     fs.read(BASEDIR + 'templates/default/tmpl/params.mustache'),
+            returnsTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/returns.mustache'),
+            methodsTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/methods.mustache'),
+            exceptionsTemplate: fs.read(BASEDIR + 'templates/default/tmpl/exceptions.mustache')
         };
         
         var topLevels = {
@@ -111,7 +105,7 @@
 //dump(docs); exit();
             var path = outdir + '/' + filename,
                 html = Mustache.to_html(
-                    templateSource.containerTemplate,
+                    containerTemplate,
                     {
                         title: title,
                         docs: docs,
