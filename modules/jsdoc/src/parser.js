@@ -288,8 +288,8 @@
                 astnode: node,
                 code: aboutNode(node)
             };
-            
-            e.code.name = String(node.name);
+
+            e.code.name = String(node.name) || '';
             
             if ( isValidJsdoc(e.comment) ) {
                 currentParser.fire('symbolFound', e, currentParser);
@@ -325,7 +325,7 @@
     function aboutNode(node) {
         about = {};
         
-        if (node.type == Token.FUNCTION && String(node.name) !== '') {
+        if (node.type == Token.FUNCTION /*&& String(node.name) !== ''*/) {
             about.name = '' + node.name;
             about.type = 'function';
             
