@@ -44,21 +44,35 @@
                 newDoclet.addTag('name', e.code.name);
                 
                 if (!newDoclet.memberof && e.astnode) {
-                    var memberofName;
+                    var memberofName,
+                        scope;
                     
                     if ( /^(exports|this)(\.|$)/.test(newDoclet.name) ) {
+                        var nameStartsWith = RegExp.$1;
+                        
                         newDoclet.name = newDoclet.name.replace(/^(exports|this)(\.|$)/, '');
                         
-                        if (RegExp.$1 === 'exports' && currentModule) {
+                        // like /** @module foo */ exports.bar = 1;
+                        if (nameStartsWith === 'exports' && currentModule) {
                             memberofName = currentModule;
+                            scope = 'static';
                         }
                         else {
+                            // like /** @module foo */ exports = {bar: 1};
+                            // or /** blah */ this.foo = 1;
                             memberofName = this.resolveThis(e.astnode);
+                            scope = nameStartsWith === 'exports'? 'static' : 'instance';
+                            
+                            // like /** @module foo */ this.bar = 1;
+                            if (nameStartsWith === 'this' && currentModule && !memberofName) {
+                                memberofName = currentModule;
+                                scope = 'static';
+                            }
                         }
                         
                         if (memberofName) {
                             if (newDoclet.name) {
-                                newDoclet.name = memberofName + (RegExp.$1 === 'this'? '#' : '.') + newDoclet.name;
+                                newDoclet.name = memberofName + (scope === 'instance'? '#' : '.') + newDoclet.name;
                             }
                             else { newDoclet.name = memberofName; }
                         }
