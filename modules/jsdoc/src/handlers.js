@@ -1,5 +1,13 @@
-(function() {
+/**
+    @module jsdoc/src/handlers
+ */
 
+(function() {
+    var currentModule = null;
+    
+    /**
+        Attach these event handlers to a particular instance of a parser.
+     */
     exports.attachTo = function(parser) {
         var jsdoc = {doclet: require('jsdoc/doclet')};
         
@@ -11,6 +19,9 @@
             }
             
             addDoclet.call(this, newDoclet);
+            if (newDoclet.kind === 'module') {
+                currentModule = newDoclet.longname;
+            }
             e.doclet = newDoclet;
         });
         
@@ -34,12 +45,22 @@
                 
                 if (!newDoclet.memberof && e.astnode) {
                     var memberofName;
-    
-                    if ( /^this\./.test(newDoclet.name) ) {
-                        newDoclet.name = newDoclet.name.replace('this.', '');
-                        memberofName = this.resolveThis(e.astnode);
+                    
+                    if ( /^(exports|this)(\.|$)/.test(newDoclet.name) ) {
+                        newDoclet.name = newDoclet.name.replace(/^(exports|this)(\.|$)/, '');
+                        
+                        if (RegExp.$1 === 'exports' && currentModule) {
+                            memberofName = currentModule;
+                        }
+                        else {
+                            memberofName = this.resolveThis(e.astnode);
+                        }
+                        
                         if (memberofName) {
-                            newDoclet.name = memberofName + '#' + newDoclet.name;
+                            if (newDoclet.name) {
+                                newDoclet.name = memberofName + (RegExp.$1 === 'this'? '#' : '.') + newDoclet.name;
+                            }
+                            else { newDoclet.name = memberofName; }
                         }
                     }
                     else {
@@ -61,7 +82,9 @@
         
         //parser.on('fileBegin', function(e) { });
         
-        //parser.on('fileComplete', function(e) { });
+        parser.on('fileComplete', function(e) {
+            currentModule = null;
+        });
     
         function addDoclet(newDoclet) {
             if (newDoclet) {

@@ -99,6 +99,7 @@ testFile('test/t/cases/constructstag3.js');
 testFile('test/t/cases/constructortag.js');
 testFile('test/t/cases/copyrighttag.js');
 testFile('test/t/cases/deprecatedtag.js');
+testFile('test/t/cases/exports.js');
 testFile('test/t/cases/exportstag.js');
 testFile('test/t/cases/exportstag2.js');
 testFile('test/t/cases/exceptiontag.js');

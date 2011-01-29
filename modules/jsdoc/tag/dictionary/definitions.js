@@ -149,8 +149,10 @@
                 
                 doclet.addTag('alias', modName);
                 doclet.addTag('kind', 'module');
+                doclet.addTag('undocumented');
              }
-        });
+        })
+        .synonym('defines');
         
         dictionary.defineTag('file', {
             mustHaveValue: true,
