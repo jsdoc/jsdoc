@@ -1,12 +1,14 @@
 /**
-	@module jsdoc/doclet
-	
-	@requires jsdoc/tag
-	@requires jsdoc/tag/dictionary
-	@requires jsdoc/name
-
-	@author Michael Mathews <micmath@gmail.com>
+    @overview
+    @author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+ */
+
+/**
+	@module jsdoc/doclet
+	@requires jsdoc/tag
+	@requires jsdoc/name
+	@requires jsdoc/tag/dictionary
  */
 (function() {
 	var jsdoc = {
@@ -19,6 +21,8 @@
 	
 	/**
 	    @constructor
+	    @param {string} docletSrc - The raw source code of the jsdoc comment.
+	    @param {object} meta - Properties describing the code related to this comment.
 	 */
 	exports.Doclet = function (docletSrc, meta) {
 	    var newTags = [];
@@ -36,7 +40,6 @@
 	    }
 	    
 	    this.postProcess();
-	    
 	}
 	
 	function addMeta(meta) {
@@ -57,8 +60,7 @@
 	exports.Doclet.prototype.postProcess = function() {
 	    if (!this.preserveName) { jsdoc.name.resolve(this); }
 	    if (this.name && !this.longname) {
-	        this.longname = this.name;
-	        jsdoc.name.setLongname(this, this.name);  
+	        this.setLongname(this.name);  
 	    }
 	    if (!this.kind && this.meta && this.meta.code) {
 	        this.addTag( 'kind', codetypeToKind(this.meta.code.type) );
@@ -92,6 +94,16 @@
 	    this.memberof = sid;
 	}
 	
+	/** Set the `longname` property of this doclet.
+	    @param {string} name
+	*/
+	exports.Doclet.prototype.setLongname = function(name) {
+	    this.longname = name;
+        if (jsdoc.tag.dictionary.isNamespace(this.kind)) {
+	        this.longname = jsdoc.name.applyNamespace(this.longname, this.kind);
+	    }
+	}
+	
 	/** Add a symbol to this doclet's `borrowed` array.
 	    @param {string} source - The longname of the symbol that is the source.
 	    @param {string} target - The name the symbol is being assigned to.
@@ -101,6 +113,9 @@
         this.borrowed.push( {from: source, as: (target||source)} );
 	}
 	
+	/** Add a symbol to this doclet's `augments` array.
+	    @param {string} base - The longname of the base symbol.
+	*/
 	exports.Doclet.prototype.augment = function(base) {
 	    if (!this.augments) { this.augments = []; }
         this.augments.push(base);

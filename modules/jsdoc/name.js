@@ -1,12 +1,7 @@
-/*
-    @overview
-    @author Michael Mathews <micmath@gmail.com>
-    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
- */
-
 /**
-    Functionality relating to symbol name manipulation.
+    A collection of functions relating to JSDoc symbol name manipulation.
     @module jsdoc/name
+    @requires jsdoc/tag/dictionary
  */
 (function() {
     var jsdoc = {
@@ -18,10 +13,8 @@
         Token  = Packages.org.mozilla.javascript.Token;
         
     /**
-        Resolves the sid, memberof and name values.
-        @method module:jsdoc/name.resolve
-        @param {Doclet} doclet
-        @throws {invalidArgumentException}
+        Resolves the longname, memberof, variation and name values of the given doclet.
+        @param {module:jsdoc/doclet.Doclet} doclet
      */
     exports.resolve = function(doclet) {
 
@@ -59,11 +52,11 @@
         }
         
         if (about.longname && !doclet.longname) {
-            exports.setLongname(doclet, about.longname);
+            doclet.setLongname(about.longname);
         }
         
         if (doclet.scope === 'global') { // via @global tag?
-            exports.setLongname(doclet, doclet.name);
+            doclet.setLongname(doclet.name);
             delete doclet.memberof;
         }
         else if (about.scope) {
@@ -73,20 +66,13 @@
             if (doclet.name && doclet.memberof && !doclet.longname) {
                 doclet.scope = 'static'; // default scope when none is provided
                 
-                exports.setLongname(doclet, doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
+                doclet.setLongname(doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
             }
         }
         
         if (about.variation) {
             doclet.variation = about.variation;
         }
-    }
-    
-    exports.setLongname = function(doclet, name) {
-        doclet.longname = name;
-        if (jsdoc.tagDictionary.isNamespace(doclet.kind)) {
-	        doclet.longname = exports.applyNamespace(doclet.longname, doclet.kind);
-	    }
     }
     
     function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us
@@ -125,6 +111,8 @@
     /**
         Given a longname like "a.b#c(2)", slice it up into ["a.b", "#", 'c', '2'],
         representing the memberof, the scope, the name, and variation.
+        @param {string} longname
+        @returns {object} Representing the properties of the given name.
      */
     exports.shorten = function(longname) {
         //// quoted strings in a longname are atomic, convert to tokens
