@@ -1,6 +1,9 @@
 /**
 	@module jsdoc/doclet
-	@requires  jsdoc/tag
+	
+	@requires jsdoc/tag
+	@requires jsdoc/tag/dictionary
+	@requires jsdoc/name
 
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
@@ -50,6 +53,7 @@
 	    }
 	}
 	
+	/** Called once after all tags have been added. */
 	exports.Doclet.prototype.postProcess = function() {
 	    if (!this.preserveName) { jsdoc.name.resolve(this); }
 	    if (this.name && !this.longname) {
@@ -61,6 +65,10 @@
         }
 	}
 	
+	/** Add a tag to this doclet.
+	    @param {string} title - The title of the tag being added.
+	    @param {string} [text] - The text of the tag being added.
+	*/
 	exports.Doclet.prototype.addTag = function(title, text) {
         var tagDef = jsdoc.tag.dictionary.lookUp(title),
 	        newTag = new jsdoc.tag.Tag(title, text, this.meta);
@@ -77,10 +85,17 @@
 	    applyTag.call(this, newTag);
 	}
 	
+	/** Set the `memberof` property of this doclet.
+	    @param {string} sid - The longname of the symbol that this doclet is a member of.
+	*/
 	exports.Doclet.prototype.setMemberof = function(sid) {
 	    this.memberof = sid;
 	}
 	
+	/** Add a symbol to this doclet's `borrowed` array.
+	    @param {string} source - The longname of the symbol that is the source.
+	    @param {string} target - The name the symbol is being assigned to.
+	*/
 	exports.Doclet.prototype.borrow = function(source, target) {
 	    if (!this.borrowed) { this.borrowed = []; }
         this.borrowed.push( {from: source, as: (target||'this')} );

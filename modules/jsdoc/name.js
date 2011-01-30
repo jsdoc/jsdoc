@@ -55,7 +55,7 @@
         }
         
         if (about.memberof) {
-            doclet.memberof = about.memberof;
+            doclet.setMemberof(about.memberof);
         }
         
         if (about.longname && !doclet.longname) {
