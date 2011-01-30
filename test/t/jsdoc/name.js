@@ -109,3 +109,11 @@ test('The module:jsdoc/name.applyNamespace function will not add another namespa
     assert.equal(endName, 'lib.Panel#event:open', 'The namespace should not be inserted twice.');
 });
 
+test('The module:jsdoc/name.shorten function finds the variation.', function() {
+    var startName = 'anim.fadein(2)',
+        parts = jsdoc.name.shorten(startName);
+    
+    assert.equal(parts.variation, '2');
+    assert.equal(parts.name, 'fadein');
+    assert.equal(parts.longname, 'anim.fadein(2)');
+});

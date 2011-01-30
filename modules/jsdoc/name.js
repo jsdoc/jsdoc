@@ -76,6 +76,10 @@
                 exports.setLongname(doclet, doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
             }
         }
+        
+        if (about.variation) {
+            doclet.variation = about.variation;
+        }
     }
     
     exports.setLongname = function(doclet, name) {
@@ -119,8 +123,8 @@
     }
     
     /**
-        Given a longname like "a.b#c", slice it up into ["a.b", "#", 'c'],
-        representing the memberof, the scope, and the name.
+        Given a longname like "a.b#c(2)", slice it up into ["a.b", "#", 'c', '2'],
+        representing the memberof, the scope, the name, and variation.
      */
     exports.shorten = function(longname) {
         //// quoted strings in a longname are atomic, convert to tokens
@@ -144,8 +148,13 @@
 
         var name = longname.split(/[#.~]/).pop(),
             scope = longname[longname.length - name.length - 1] || '', // ., ~, or #
-            memberof = scope? longname.slice(0, longname.length - name.length - 1) : '';
-
+            memberof = scope? longname.slice(0, longname.length - name.length - 1) : '',
+            variation;
+        
+        if ( /(.+)\(([^)]+)\)$/.test(name) ) {
+            name = RegExp.$1, variation = RegExp.$2;
+        }
+        
         //// restore quoted strings back again
         var i = atoms.length;
         while (i--) {
@@ -155,7 +164,7 @@
             name     = name.replace('@{'+i+'}@', atoms[i]);
         }
         ////
-        return {longname: longname, memberof: memberof, scope: scope, name: name};
+        return {longname: longname, memberof: memberof, scope: scope, name: name, variation: variation};
     }
     
 })();

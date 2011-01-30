@@ -117,6 +117,7 @@ testFile('test/t/cases/seetag.js');
 testFile('test/t/cases/sincetag.js');
 testFile('test/t/cases/thistag.js');
 testFile('test/t/cases/typetag.js');
+testFile('test/t/cases/variations.js');
 testFile('test/t/cases/versiontag.js');
 
 
