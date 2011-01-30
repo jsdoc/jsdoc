@@ -98,7 +98,7 @@
 	*/
 	exports.Doclet.prototype.borrow = function(source, target) {
 	    if (!this.borrowed) { this.borrowed = []; }
-        this.borrowed.push( {from: source, as: (target||'this')} );
+        this.borrowed.push( {from: source, as: (target||source)} );
 	}
 	
 	exports.Doclet.prototype.augment = function(base) {

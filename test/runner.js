@@ -93,6 +93,7 @@ testFile('test/t/cases/alias3.js');
 testFile('test/t/cases/augmentstag.js');
 testFile('test/t/cases/authortag.js');
 testFile('test/t/cases/borrowstag.js');
+testFile('test/t/cases/borrowstag2.js');
 testFile('test/t/cases/classtag.js');
 testFile('test/t/cases/constructstag.js');
 testFile('test/t/cases/constructstag2.js');
