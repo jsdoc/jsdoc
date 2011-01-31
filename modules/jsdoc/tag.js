@@ -1,11 +1,15 @@
 /**
+    @overview
+    @author Michael Mathews <micmath@gmail.com>
+	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+ */
+
+/**
+    Functionality related to JSDoc tags.
 	@module jsdoc/tag
 	@requires jsdoc/tag/dictionary
 	@requires jsdoc/tag/validator
 	@requires jsdoc/tag/type
-
-	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 (function() {
 	
@@ -18,14 +22,23 @@
 	};
 	
 	/**
-	    @constructor Tag
+	    Constructs a new tag object. Calls the tag validator.
+	    @class
+	    @classdesc Represents a single doclet tag.
+	    @param {string} tagTitle
+	    @param {string=} tagBody
+	    @param {object=} meta
 	 */
 	exports.Tag = function(tagTitle, tagBody, meta) {
 	    var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle),
 	        meta = meta  || {};
 	    	
 	    this.originalTitle = trim(tagTitle);
+	    
+	    /** The title part of the tag: @title text */
 	    this.title = jsdoc.tag.dictionary.normalise( this.originalTitle );
+	    
+	    /** The text part of the tag: @title text */
 	    this.text = trim(tagBody, tagDef.keepsWhitespace);
 	    
 	    if (this.text) {
@@ -35,6 +48,8 @@
 	        }
 	        
             if (tagDef.canHaveType) {
+            
+                /** The value propertiy represents the result of parsing the tag text. */
                 this.value = {};
                 
                 var [
@@ -53,7 +68,7 @@
                         variable: variable
                     };
                 }
-                
+
                 if (remainingText) {
                     if (tagDef.canHaveName) {
                         var [paramName, paramDesc, paramOptional, paramDefault]

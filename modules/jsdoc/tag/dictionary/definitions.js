@@ -155,11 +155,9 @@
         .synonym('defines');
         
         dictionary.defineTag('file', {
-            mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 setNameToFile(doclet, tag);
                 setDocletKindToTitle(doclet, tag);
-                //applyNamespace(doclet, tag); // you must add the "file:" namespace yourself, kids
                 setDocletDescriptionToValue(doclet, tag);
                 
                 doclet.preserveName = true;

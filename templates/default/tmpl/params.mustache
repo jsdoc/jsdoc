@@ -7,7 +7,7 @@
     
     <dd>
         <dl class="param-properties">
-            {{#type}}
+        {{#type}}
             <dt>
                 <span>Type</span>
             </dt>
@@ -16,7 +16,6 @@
                 <span class="param-type">{{#linkTo}}{{.}}{{/linkTo}}</span>{{^last?}} | {{/last?}}{{#last?}} {{/last?}}
                 {{/names}}
             </dd>
-            {{/type}}
             
             {{#defaultvalue}}
             <dt>
@@ -40,6 +39,7 @@
             </dt>
             <dd class="yesDef">Yes</dd>
             {{/nullable}}
+        {{/type}}
         </dl>
         
         {{#description}}

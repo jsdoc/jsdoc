@@ -38,8 +38,46 @@
             margin-top: 12px;
         }
         
- */       
+ */  
+    .page-title
+    {
+    	font-family: "Bitstream Vera Sans", "DejaVu Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans serif;
+    	font-size: 3.5em;
+    	font-weight: bolder;
+    	margin: 0 0 0.1em;
+    	color: #FFF;
+    }
     
+    .section-title
+    {
+    	font-size: 2.5em;
+    	margin: 0;
+    	color: #798D3E;
+    }
+    
+    section {
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        -moz-border-radius: 8px;
+        display: block;
+        padding: 0.75em 0.5em 0.5em 1em;
+        margin: 0.5em 0.5em 1em 1em;
+        background-color: #fff;
+        color: #000;
+    }
+    
+    .subsection-title {
+        font-size: 1.9em;
+        margin: 0.5em 0 1em;
+        color: #000;
+    }
+    
+    .method-title, .class-title
+    {
+    	font-size: 1.7em;
+    	margin: 0 0 1em 1em;
+    	color: #7B1A3F;
+    }
     
     .detail-list {
         list-style-type:none;
@@ -50,8 +88,9 @@
         font-size: 100%
     }
     body {
-        /* pixes monospace font sizes in webkit */
-        font-size: 10px;
+        font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans serif;
+        /* fixes monospace font sizes in webkit */
+        font-size: 11px;
         /* following line is picked up by IE6 & 7, which cannot resize pixel-based font sizes */
         *font-size: 62.5%;
     }
@@ -62,7 +101,8 @@
         /*overflow: hidden;*/
         zoom: 1;
         /*background: url(images/pagebg.png) 0 73px repeat-x;*/
-        color: #333333;
+        color: #fff;
+        background-color: #777;
     }
     a:link, a:visited {
         color: #356a8b;
@@ -77,31 +117,15 @@
     a.image {
         border: 0;
     }
-    h1 {
-        font-size: 2em;
-        font-family: arial, sans-serif;
-    }
-    h2 {
-        font-size: 1.7em;
-        margin: 0 0 1em 0;
-        font-family: arial, sans-serif;
-    }
-    h3 {
-        font-size: 1.4em;
-        margin: 0.4em 0;
-        font-family: arial, sans-serif;
-        color: #4e4e4e;
-    }
-    h4 {
-        margin: 1em 0;
-        color: #298FB2;
-    }
-    h5 {
-        margin: 1em 0;
-    }
+   
     p {
         margin: 0 0 1em 0;
         line-height: 1.5;
+    }
+    
+    code {
+        font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+        color: #000;
     }
         
     dl.params dt {
@@ -116,8 +140,10 @@
         zoom: 0;
     }
     
-    dl.params dt.first {
+     dl.params dt.first {
         border-top: none;
+        padding-top: 0;
+        margin-top: 0;
     }
     
     dl.params dd {
@@ -159,24 +185,79 @@
     dl.param-properties dd.yesDef {
         text-indent: -5000px;
     }
-        
+    
+    .no-docs
+    {
+    	font-style: italic;
+    	font-weight: lighter;
+    	color: #666;
+    }
     </style>
 </head>
 
 <body>
 
-    <h1>{{title}}</h1>
+    <h1 class="page-title">{{title}}</h1>
 
 {{#docs}}
-    <h2 class="symbol-head" id="{{longname}}">{{name}}</h2>
-    
-    {{#hasMethods}}
-        <h3>Methods</h3>
-        {{>methodsTemplate}}
-    {{/hasMethods}}
+    <section>
+        <h2 class="section-title" id="{{longname}}">{{kind}}: {{name}}</h2>
+        
+        {{#summary}}
+            <div class="summary">{{summary}}</div>
+        {{/summary}}
+        
+        {{#classdesc}}
+            <div class="description">{{classdesc}}</div>
+        {{/classdesc}}
+        
+        {{#description}}
+            <div class="description">{{description}}</div>
+        {{/description}}
+        
+        {{#hasConstructor}}
+            <h3 class="subsection-title">Constructor:</h3>
+            <dl class="constructor">
+            {{>methodsTemplate}}
+            </dl>
+        {{/hasConstructor}}
+        
+        {{#hasClasses}}
+            <h3 class="subsection-title">Classes:</h3>
+            {{>classesTemplate}}
+        {{/hasClasses}}
+        
+        {{#hasNamespaces}}
+            <h3 class="subsection-title">Namespaces:</h3>
+            {{>namespacesTemplate}}
+        {{/hasNamespaces}}
+        
+        <h3 class="subsection-title">Methods:</h3>
+        {{#hasMethods}}
+            <dl class="methods">
+            {{#methods}}
+            {{>methodsTemplate}}
+            {{/methods}}
+            </dl>
+        {{/hasMethods}}
+        {{^hasMethods}}
+        <p class="no-docs">The {{name}} {{kind}} has no documented methods.</p>
+        {{/hasMethods}}
+        
+        <h3 class="subsection-title">Properties:</h3>
+        {{#hasProperties}}
+            <dl class="properties">
+            {{#properties}}
+            {{>propertiesTemplate}}
+            {{/properties}}
+            </dl>
+        {{/hasProperties}}
+        {{^hasProperties}}
+        <p class="no-docs">The {{name}} {{kind}} has no documented properties.</p>
+        {{/hasProperties}}
+        
+    </section>
 {{/docs}}
-
-
 
 </body>
 </html>

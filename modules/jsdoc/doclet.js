@@ -20,15 +20,17 @@
 	};
 	
 	/**
-	    @constructor
+	    @class
+	    @classdesc Represents a single JSDoc comment.
 	    @param {string} docletSrc - The raw source code of the jsdoc comment.
-	    @param {object} meta - Properties describing the code related to this comment.
+	    @param {object=} meta - Properties describing the code related to this comment.
 	 */
-	exports.Doclet = function (docletSrc, meta) {
+	exports.Doclet = function(docletSrc, meta) {
 	    var newTags = [];
 	    
+	    /** The original text of the comment from the source code. */
 	    this.comment = docletSrc;
-	    addMeta.call(this, meta);
+	    this.setMeta(meta);
 	    
 	    docletSrc = unwrap(docletSrc);
 	    docletSrc = fixDescription(docletSrc);
@@ -40,20 +42,6 @@
 	    }
 	    
 	    this.postProcess();
-	}
-	
-	function addMeta(meta) {
-	    if (!this.meta) { this.meta = {}; }
-	    
-	    if (meta.lineno) this.meta.lineno = meta.lineno;
-	    if (meta.lineno) this.meta.filename = meta.filename;
-	    this.meta.code = (this.meta.code || {});
-	    if (meta.id) this.meta.code.id = meta.id;
-	    if (meta.code) {
-	        if (meta.code.name) this.meta.code.name = meta.code.name;
-	        if (meta.code.type) this.meta.code.type = meta.code.type;
-	        if (meta.code.val)  this.meta.code.val = meta.code.val;
-	    }
 	}
 	
 	/** Called once after all tags have been added. */
@@ -91,6 +79,7 @@
 	    @param {string} sid - The longname of the symbol that this doclet is a member of.
 	*/
 	exports.Doclet.prototype.setMemberof = function(sid) {
+	    /** The symbol that contains this one, if any. */
 	    this.memberof = sid;
 	}
 	
@@ -98,6 +87,7 @@
 	    @param {string} name
 	*/
 	exports.Doclet.prototype.setLongname = function(name) {
+	    /** The fully resolved symbol name. */
 	    this.longname = name;
         if (jsdoc.tag.dictionary.isNamespace(this.kind)) {
 	        this.longname = jsdoc.name.applyNamespace(this.longname, this.kind);
@@ -109,7 +99,10 @@
 	    @param {string} target - The name the symbol is being assigned to.
 	*/
 	exports.Doclet.prototype.borrow = function(source, target) {
-	    if (!this.borrowed) { this.borrowed = []; }
+	    if (!this.borrowed) {
+	        /** A list of symbols that are borrowed by this one, if any. */
+	        this.borrowed = [];
+	    }
         this.borrowed.push( {from: source, as: (target||source)} );
 	}
 	
@@ -117,8 +110,61 @@
 	    @param {string} base - The longname of the base symbol.
 	*/
 	exports.Doclet.prototype.augment = function(base) {
-	    if (!this.augments) { this.augments = []; }
+	    if (!this.augments) {
+	        /** A list of symbols that are augmented by this one, if any. */
+	        this.augments = [];
+	    }
         this.augments.push(base);
+	}
+	
+	/** Set the `meta` property of this doclet.
+	    @param {object} meta
+	*/
+	exports.Doclet.prototype.setMeta = function(meta) {
+	    if (!this.meta) {
+	        /**
+	            Information about the source code associated with this doclet.
+	            @namespace
+	         */
+	        this.meta = {};
+	    }
+	    
+	    if (meta.lineno) {
+	        /**
+	            The line number of the code associated with this doclet.
+	            @type number
+	         */
+	        this.meta.lineno = meta.lineno;
+	    }
+	    
+	    if (meta.lineno) {
+	        /**
+	            The name of the file containing the code associated with this doclet.
+	            @type string
+	         */
+	        this.meta.filename = meta.filename;
+	    }
+	    
+	    /**
+	        Information about the code symbol.
+	        @namespace
+	     */
+	    this.meta.code = (this.meta.code || {});
+	    if (meta.id) this.meta.code.id = meta.id;
+	    if (meta.code) {
+	        if (meta.code.name) {
+	            /** The name of the symbol in the source code. */
+	            this.meta.code.name = meta.code.name;
+	        }
+	        if (meta.code.type) {
+	            /** The type of the symbol in the source code. */
+	            this.meta.code.type = meta.code.type;
+	        }
+	        if (meta.code.value) {
+	            /** The value of the symbol in the source code. */
+	            this.meta.code.value = meta.code.value;
+	        }
+	    }
 	}
 	
 	function applyTag(tag) {
