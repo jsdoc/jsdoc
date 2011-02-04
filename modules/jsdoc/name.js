@@ -115,30 +115,35 @@
         @returns {object} Representing the properties of the given name.
      */
     exports.shorten = function(longname) {
-        //// quoted strings in a longname are atomic, convert to tokens
+        // quoted strings in a longname are atomic, convert to tokens
         var atoms = [], token; 
         
         // handle quoted names like foo["bar"]
         longname = longname.replace(/(\[?".+?"\]?)/g, function($) {
-            $ = $.replace(/^\[/g, '').replace(/\]$/g, '');
+            var dot = '';
+            if ( /^\[/.test($) ) {
+                dot = '.';
+                $ = $.replace( /^\[/g, '' ).replace( /\]$/g, '' );
+            }
             
             token = '@{' + atoms.length + '}@';
             atoms.push($);
 
-            return '.'+token; // could result in foo#["bar"] => foo#.@{1}@
+            return dot + token; // foo["bar"] => foo.@{1}@
         });
 
-        longname = longname.replace(/(^|[#.~])\.(@\{\d+\}@)/g, function($0, $1, $2) { return $1+$2; }); // fix #.     
+        longname = longname.replace( /\.prototype\.?/g, '#' );     
+            
+        var parts = longname?
+                    longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ).reverse()
+                    : [''];
         
-        longname = longname.replace(/\.prototype\.?/g, '#');     
-        
-        ////
-
-        var name = longname.split(/[#.~]/).pop(),
-            scope = longname[longname.length - name.length - 1] || '', // ., ~, or #
-            memberof = scope? longname.slice(0, longname.length - name.length - 1) : '',
+        var name = parts[0],
+            scope = parts[1] || '', // ., ~, or #
+            memberof = parts[2] || '',
             variation;
         
+        // like /** @name foo.bar(2) */
         if ( /(.+)\(([^)]+)\)$/.test(name) ) {
             name = RegExp.$1, variation = RegExp.$2;
         }

@@ -336,10 +336,12 @@
             about.name = nodeToString(node.target);
             if (node.initializer) {  // like var i = 0;
                 about.val = node.initializer;
+				about.value = nodeToString(about.val);
                 about.type = getTypeName(node.initializer);
             }
             else { // like var i;
                 about.val = node.target;
+				about.value = nodeToString(about.val);
                 about.type = 'undefined';
             }
             
@@ -349,6 +351,7 @@
         if (node.type === Token.ASSIGN || node.type === Token.COLON) {
             about.name = nodeToString(node.left);
             about.val = node.right;
+			about.value = nodeToString(about.val);
             about.type = getTypeName(node.right);
             return about;
         }
@@ -359,7 +362,7 @@
             about.name = string;
             return about;
         }
-        
+		
         return about;
     }
     
@@ -381,6 +384,9 @@
             str = node.string;
         }
         else if (node.type === Token.STRING) {
+            str = node.value;
+        }
+		else if (node.type === Token.NUMBER) {
             str = node.value;
         }
         else if (node.type === Token.THIS) {

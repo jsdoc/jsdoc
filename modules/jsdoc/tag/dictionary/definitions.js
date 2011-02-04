@@ -100,6 +100,28 @@
                 doclet.addTag('kind', 'function');
             }
         });
+
+		dictionary.defineTag('defaultvalue', {
+            onTagged: function(doclet, tag) {
+                if (tag.value) {
+					doclet.defaultvalue = tag.value;
+				}
+				else if (doclet.meta && doclet.meta.code && typeof doclet.meta.code.value !== 'undefined') {
+					if (doclet.meta.code.type && /STRING|NUMBER|NAME/.test(doclet.meta.code.type)) {
+						doclet.defaultvalue = doclet.meta.code.value;
+						if (doclet.meta.code.type === 'STRING') {
+							// TODO: handle escaped quotes in values
+							doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"'
+						}
+					}
+					else if (doclet.meta.code.type === 'NULL') {
+						// TODO: handle escaped quotes in values
+						doclet.defaultvalue = 'null'
+					}
+				}
+            }
+        })
+		.synonym('default');
         
         dictionary.defineTag('deprecated', {
             // value is optional
@@ -113,7 +135,6 @@
             mustHaveValue: true
         })
         .synonym('desc');
-        
         
         dictionary.defineTag('event', {
             onTagged: function(doclet, tag) {
@@ -142,10 +163,6 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 var modName = firstWordOf(tag.value);
-                
-                if ( modName.indexOf('module:') !== 0) {
-                    //modName = 'module:'+modName;
-                }
                 
                 doclet.addTag('alias', modName);
                 doclet.addTag('kind', 'module');
