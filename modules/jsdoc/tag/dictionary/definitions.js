@@ -146,7 +146,11 @@
         
         dictionary.defineTag('example', {
             keepsWhitespace: true,
-            mustHaveValue: true
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.examples) { doclet.examples = []; }
+                doclet.examples.push(tag.value);
+            }
         });
         
         dictionary.defineTag('exception', {

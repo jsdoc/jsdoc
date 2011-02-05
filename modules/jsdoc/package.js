@@ -20,7 +20,8 @@
 	     */
 	    this.files = [];
 	    
-	    /** The name of this package.
+	    /** The kind of this package.
+	        @readonly
 	        @default
 	    */
 	    this.kind = 'package';
@@ -47,16 +48,17 @@
 	    */
 	    this.version = json.version;
 	    
-	    /** The licenses of this package.
-	        @type {Array<Object>}
-	        @example
-	        "licenses": [
-                {
-                   "type": "GPLv2",
-                   "url": "http://www.example.com/licenses/gpl.html",
-                }
-            ]
-	    */
+	    /** 
+	     * The licenses of this package.
+	     * @type {Array<Object>}
+	     * @example
+	     * "licenses": [
+	     *     {
+	     *        "type": "GPLv2",
+	     *        "url": "http://www.example.com/licenses/gpl.html",
+	     *     }
+	     * ]
+	     */
 	    this.licenses = json.licenses;
 	}
 

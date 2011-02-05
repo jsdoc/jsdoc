@@ -171,7 +171,7 @@
         generate('Modules', modules, 'modules.html');
         generate('Classes', classes, 'classes.html');
         generate('Namespaces', namespaces, 'namespaces.html');
-       
+//dump(classes)        
         function generate(title, docs, filename) {
             var path = outdir + '/' + filename,
                 html = Mustache.to_html(

@@ -1,45 +1,70 @@
+<div class="property">
 
-    <dt class="furtherDetailHeading" id="method:{{name}}">
-        <h4 class="property-title">{{name}}</h4>
-    </dt>
-    <dd>
-        <dl class="type-details">
-            {{#summary}}
-            <dt>
-                Summary
-            </dt>
-            <dd>
-                {{{summary}}}
-            </dd>
-            {{/summary}}
-            
-            {{#type}}
-            <dt>
-                Type
-            </dt>
-            <dd>
-                {{#names}}
-                <span class="param-type">{{#linkTo}}{{.}}{{/linkTo}}</span>{{^last?}} | {{/last?}}{{#last?}} {{/last?}}
-                {{/names}}
-            </dd>
-            {{/type}}
-            
-            {{#nullable}}
-            <dt>
-                Nullable
-            </dt>
-            <dd class="yesDef">
-                Yes
-            </dd>
-            {{/nullable}}
-            
-            {{#defaultvalue}}
-            <dt>
-                Default Value
-            </dt>
-            <dd class="yesDef">
-                {{defaultvalue}}
-            </dd>
-            {{/defaultvalue}}
-        </dl>
-    </dd>
+    <dl class="property-head" id="property:{{name}}">
+        <dt class="property-name">
+            <h4 class="property-title">{{name}}</h4>
+        </dt>
+        <dd class="property-summary">
+            {{{summary}}}
+        </dd>
+    </dl>
+    <dl class="property-details">
+        {{#description}}
+        <dt>
+            Description
+        </dt>
+        <dd>
+            {{{description}}}
+        </dd>
+        {{/description}}
+        
+        {{#type}}
+        <dt>
+            Type
+        </dt>
+        <dd>
+            {{#names}}
+            <span class="type-name">{{#linkTo}}{{.}}{{/linkTo}}</span>{{^last?}} | {{/last?}}{{#last?}} {{/last?}}
+            {{/names}}
+        </dd>
+        {{/type}}
+        
+        {{#readonly}}
+        <dt>
+            Readonly
+        </dt>
+        <dd class="yesDef">
+            Yes
+        </dd>
+        {{/readonly}}
+        
+        {{#nullable}}
+        <dt>
+            Nullable
+        </dt>
+        <dd class="yesDef">
+            Yes
+        </dd>
+        {{/nullable}}
+        
+        {{#defaultvalue}}
+        <dt>
+            Default Value
+        </dt>
+        <dd>
+            {{defaultvalue}}
+        </dd>
+        {{/defaultvalue}}
+        
+        {{#examples}}
+        <dt>
+            Example
+        </dt>
+        <dd>
+            <div class="example-code">
+                <pre class="prettyprint lang-js"><code>{{.}}</code></pre>
+            </div>
+        </dd>
+        {{/examples}}
+    </dl>
+</div>
