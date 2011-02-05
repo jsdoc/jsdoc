@@ -27,20 +27,28 @@
 	    
 	    json = JSON.parse(json);
 	    
-	    /** The name of this package. */
+	    /** The name of this package.
+	        @type {string}
+	    */
 	    this.name = json.name;
 	    
-	    /** The longname of this package. */
+	    /** The longname of this package.
+	        @type {string}
+	    */
 	    this.longname = this.kind + ':' + this.name;
 	    
-	    /** The description of this package. */
+	    /** The description of this package.
+	        @type {string}
+	    */
 	    this.description = json.description;
 	    
-	    /** The version of this package. */
+	    /** The version of this package.
+	        @type {string}
+	    */
 	    this.version = json.version;
 	    
 	    /** The licenses of this package.
-	    
+	        @type {Array<Object>}
 	        @example
 	        "licenses": [
                 {

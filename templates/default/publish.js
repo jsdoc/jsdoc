@@ -45,6 +45,8 @@
 	    
 	    data.remove({undocumented: true});
 	    
+	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
+
 	    // add template helpers
 	    data.forEach(function(doclet) {
 	        doclet.hasParams   = doclet.params   && doclet.params.length > 0;
@@ -160,13 +162,16 @@
         }
         
         var outdir = opts.destination;
+        if (packageInfo) {
+            outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
+        }
         fs.mkPath(outdir);
         
         // containers
         generate('Modules', modules, 'modules.html');
         generate('Classes', classes, 'classes.html');
         generate('Namespaces', namespaces, 'namespaces.html');
-        
+       
         function generate(title, docs, filename) {
             var path = outdir + '/' + filename,
                 html = Mustache.to_html(

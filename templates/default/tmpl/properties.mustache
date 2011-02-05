@@ -3,6 +3,43 @@
         <h4 class="property-title">{{name}}</h4>
     </dt>
     <dd>
-        {{#summary}}<p class="shortDesc">{{{summary}}}</p>{{/summary}}
+        <dl class="type-details">
+            {{#summary}}
+            <dt>
+                Summary
+            </dt>
+            <dd>
+                {{{summary}}}
+            </dd>
+            {{/summary}}
+            
+            {{#type}}
+            <dt>
+                Type
+            </dt>
+            <dd>
+                {{#names}}
+                <span class="param-type">{{#linkTo}}{{.}}{{/linkTo}}</span>{{^last?}} | {{/last?}}{{#last?}} {{/last?}}
+                {{/names}}
+            </dd>
+            {{/type}}
+            
+            {{#nullable}}
+            <dt>
+                Nullable
+            </dt>
+            <dd class="yesDef">
+                Yes
+            </dd>
+            {{/nullable}}
+            
+            {{#defaultvalue}}
+            <dt>
+                Default Value
+            </dt>
+            <dd class="yesDef">
+                {{defaultvalue}}
+            </dd>
+            {{/defaultvalue}}
+        </dl>
     </dd>
-
