@@ -164,6 +164,7 @@ function exit(n) {
  */
 function main() {
     var sourceFiles,
+        packageJson,
         docs,
         jsdoc = {
             opts: {
@@ -201,7 +202,15 @@ function main() {
             include(env.conf.plugins[i]);
         }
     }
-   
+    
+    // any source file named package.json is treated special
+    for (var i = 0, l = env.opts._.length; i < l; i++ ) {
+        if (/\bpackage\.json$/i.test(env.opts._[i])) {
+            packageJson = require('fs').read( env.opts._[i] );
+            env.opts._.splice(i--, 1);
+        }
+    }
+
     if (env.opts._.length > 0) { // are there any files to scan and parse?
         
         // allow filtering of found source files
@@ -219,6 +228,12 @@ function main() {
         require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
+        
+        if (packageJson) {
+            var packageDocs = new (require('jsdoc/package').Package)(packageJson);
+            packageDocs.files = sourceFiles || [];
+            docs.push(packageDocs);
+        }
 
         if (env.opts.expel) {
             dump(docs);
