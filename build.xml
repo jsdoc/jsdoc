@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+ 
+<project name="JSDoc-3" default="jar-install">
+	<property file="build/build.properties" />
+	<property name="build.templates" location="build/templates" />
+	
+	<tstamp>
+		<format property="NOW" pattern="yyyy-MM-dd-HHmm" locale="en,UK"/>
+	</tstamp>
+	
+	<target name="about">
+		<delete file="package.json" quiet="true"/>
+		<copy file="${build.templates}/package.json" tofile="package.json" >
+			<filterchain>
+				<replacetokens>
+					<token key="app.name" value="${app.name}" />
+					<token key="app.version" value="${app.version}" />
+					<token key="timestamp" value="${NOW}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+	</target>
+	
+	<target name="jar-clean">
+        <delete dir="build/java/build" />
+        <delete file="jsdoc.jar" />
+    </target>
+    
+    <target name="jar-compile">
+        <path id="local-classes">
+            <fileset dir="build/java/classes/">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    
+        <mkdir dir="build/java/build/classes" />
+        
+        <javac srcdir="build/java/src"
+               destdir="build/java/build/classes"
+               includeAntRuntime="false">
+            <classpath refid="local-classes" />
+        </javac>
+    </target>
+
+    <target name="jar-build" depends="jar-compile">
+        <mkdir dir="build/java/build/jar" />
+        <jar destfile="build/java/build/jar/jsdoc.jar" basedir="build/java/build/classes">
+            <manifest>
+               <attribute name="Main-Class" value="Run" />
+               <attribute name="Class-Path" value="build/java/classes/js.jar build/java/classes/sqlitejdbc-v054.jar" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="jar-install" depends="jar-clean, jar-build">
+    	<copy file="build/java/build/jar/jsdoc.jar" tofile="jsdoc.jar" overwrite="true" />
+	</target>
+
+</project>

@@ -1,0 +1,13 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    
+    "source": {
+        "includePattern": ".+\\.js(doc)?$"
+    },
+    
+    "plugins": [
+    ]
+    
+}

@@ -1,0 +1,29 @@
+
+    <dt class="furtherDetailHeading" id="method:{{name}}">
+        <h4 class="method-title">{{name}}</h4>
+    </dt>
+    <dd>
+        {{#summary}}<p class="shortDesc">{{{summary}}}</p>{{/summary}}
+    
+        <div class="apiFurtherDetail" style="height: auto;">
+            
+            <h5>Synopsis:</h5>
+            <pre class="prettyprint"><code>{{synopsis}}</code></pre>
+            
+            {{#hasParams}}
+                <h5>Parameters:</h5>
+                {{>paramsTemplate}}
+            {{/hasParams}}
+            
+            {{#hasExceptions}}
+                <h5>Throws:</h5>
+                {{>exceptionsTemplate}}
+            {{/hasExceptions}}
+            
+            {{#hasReturns}}
+                <h5>Returns:</h5>
+                {{>returnsTemplate}}
+            {{/hasReturns}}
+        </div>
+    </dd>
+

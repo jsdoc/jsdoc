@@ -1,0 +1,28 @@
+<dl class="params detail-list">
+    {{#returns}}
+    
+    <dt{{#first?}} class="first"{{/first?}}></dt>
+    
+    <dd>
+        <dl class="param-properties">
+            {{#type}}
+            <dt>
+                <span>Type</span>
+            </dt>
+            <dd>
+                {{#names}}
+                <span class="param-type">{{#linkTo}}{{.}}{{/linkTo}}</span>{{^last?}} | {{/last?}}{{#last?}} {{/last?}}
+                {{/names}}
+            </dd>
+            {{/type}}
+        </dl>
+        
+        {{#description}}
+        <div class="param-desc">
+            {{description}}
+        </div>
+        {{/description}}
+    </dd>
+    
+    {{/returns}}
+</dl>
