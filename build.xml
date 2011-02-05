@@ -21,6 +21,13 @@
 		</copy>
 	</target>
 	
+	<target name="mirror">
+        <exec executable="/usr/local/git/bin/git">
+            <arg value="svn"/>
+            <arg value="dcommit"/>
+        </exec>
+    </target>
+	
 	<target name="jar-clean">
         <delete dir="build/java/build" />
         <delete file="jsdoc.jar" />
