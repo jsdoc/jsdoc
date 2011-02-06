@@ -1,33 +1,36 @@
 {
 	"name": "jsdoc",
 	"version": "3.0.0beta1",
-	"revision": "2011-02-05-2259",
+	"revision": "2011-02-06-0040",
 	"description": "An automatic documentation generator for javascript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
 		{
 			"type": "Apache 2.0",
-			"url": "http://www.apache.org/licenses/LICENSE-2.0"
+			"url":  "http://www.apache.org/licenses/LICENSE-2.0"
 		}
 	],
 	"repositories": [
 		{
 			"type": "git",
-			"url": "http://github.com/micmath/JSDoc"
+			"url":  "git://github.com/micmath/jsdoc.git"
+		},
+		{
+			"type": "svn",
+			"url":  "https://jsdoc.googlecode.com/svn/trunk"
 		}
 	],
+	"bugs": "http://code.google.com/p/jsdoc/issues/list",
 	"contributors" : [
         {
-			"name": "Michael Mathews",
-			"email": "micmath@gmail.com",
-			"web": "http://micmath.ws"
+			"name":  "Michael Mathews",
+			"email": "micmath@gmail.com"
 		}
     ],
 	"maintainers": [
 		{
-			"name": "Michael Mathews",
-			"email": "micmath@gmail.com",
-			"web": "http://micmath.ws"
+			"name":  "Michael Mathews",
+			"email": "micmath@gmail.com"
 		}
     ]
 }

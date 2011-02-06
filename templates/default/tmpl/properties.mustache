@@ -1,8 +1,8 @@
 <div class="property">
 
-    <dl class="property-head" id="property:{{name}}">
+    <dl class="property-head{{#deprecated}} property-deprecated{{/deprecated}}" id="{{longname}}">
         <dt class="property-name">
-            <h4 class="property-title">{{name}}</h4>
+            {{name}}
         </dt>
         <dd class="property-summary">
             {{{summary}}}
@@ -15,8 +15,29 @@
         </dt>
         <dd>
             {{{description}}}
+            <br clear="both">
         </dd>
         {{/description}}
+        
+        {{#deprecated}}
+        <dt>
+            Deprecated
+        </dt>
+        <dd>
+            {{{deprecated}}}
+            <br clear="both">
+        </dd>
+        {{/deprecated}}
+        
+        {{#since}}
+        <dt>
+            Since
+        </dt>
+        <dd>
+            {{{since}}}
+            <br clear="both">
+        </dd>
+        {{/since}}
         
         {{#type}}
         <dt>
@@ -26,6 +47,7 @@
             {{#names}}
             <span class="type-name">{{#linkTo}}{{.}}{{/linkTo}}</span>{{^last?}} | {{/last?}}{{#last?}} {{/last?}}
             {{/names}}
+            <br clear="both">
         </dd>
         {{/type}}
         
@@ -35,6 +57,7 @@
         </dt>
         <dd class="yesDef">
             Yes
+            <br clear="both">
         </dd>
         {{/readonly}}
         
@@ -44,15 +67,17 @@
         </dt>
         <dd class="yesDef">
             Yes
+            <br clear="both">
         </dd>
         {{/nullable}}
         
         {{#defaultvalue}}
         <dt>
-            Default Value
+            Default
         </dt>
         <dd>
             {{defaultvalue}}
+            <br clear="both">
         </dd>
         {{/defaultvalue}}
         
@@ -61,9 +86,11 @@
             Example
         </dt>
         <dd>
+            <br clear="both">
             <div class="example-code">
                 <pre class="prettyprint lang-js"><code>{{.}}</code></pre>
             </div>
+            <br clear="both">
         </dd>
         {{/examples}}
     </dl>

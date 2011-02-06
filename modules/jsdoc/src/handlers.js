@@ -27,7 +27,15 @@
         
         // handles named symbols in the code, may or may not have a JSDoc comment attached
         parser.on('symbolFound', function(e) {
-            var newDoclet = new jsdoc.doclet.Doclet(e.comment, e);
+            var subDoclets = e.comment.split(/@also\b/g);
+            
+            for (var i = 0, l = subDoclets.length; i < l; i++) {
+                newSymbolDoclet.call(this, subDoclets[i], e);
+            }
+        });
+        
+        function newSymbolDoclet(docletSrc, e) {
+            var newDoclet = new jsdoc.doclet.Doclet(docletSrc, e);
             
             // an undocumented symbol right after a virtual comment? rhino mistakenly connected the two
             if (newDoclet.name) { // there was a @name in comment
@@ -92,7 +100,7 @@
             
             addDoclet.call(this, newDoclet);
             e.doclet = newDoclet;
-        });
+        }
         
         //parser.on('fileBegin', function(e) { });
         
