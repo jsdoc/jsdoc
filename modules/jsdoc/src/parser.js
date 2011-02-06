@@ -93,6 +93,9 @@
     Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         currentSourceName = sourceName;
         
+        // merge adjacent doclets
+        sourceCode = sourceCode.replace(/\*\/\/\*\*+/g, '@also');
+        
         var ast = parserFactory().parse(sourceCode, sourceName, 1);
         
         var e = {filename: currentSourceName};
