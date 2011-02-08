@@ -195,7 +195,7 @@
     function visitNode(node) {
         var e,
             commentSrc;
-        
+
         // look for stand-alone doc comments
         if (node.type === Token.SCRIPT && node.comments) {
             // note: ALL comments are seen in this block...
