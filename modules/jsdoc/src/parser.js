@@ -125,7 +125,7 @@
                 memberof.id = 'astnode'+astnode.enclosingFunction.hashCode();
                 memberof.doclet = this.refs[memberof.id];
                 if (!memberof.doclet) {
-                    return '[[anonymous]]~';
+                    return '<anonymous>~';
                 }
                 return (memberof.doclet.longname||memberof.doclet.name) +  '~';
             }
@@ -138,7 +138,6 @@
         }
     }
     
-    
     /**
         Resolve what "this" refers too, relative to a node
      */
@@ -150,7 +149,7 @@
             memberof.doclet = this.refs[memberof.id];
             
             if (!memberof.doclet) {
-                return '[[anonymous]]'; // TODO handle global this?
+                return '<anonymous>'; // TODO handle global this?
             }
             
             if (memberof.doclet['this']) {
@@ -165,15 +164,13 @@
                 return memberof.doclet.longname||memberof.doclet.name;
             }
             else {
-                if (memberof.doclet.meta.code.val){
-                    return this.resolveThis(memberof.doclet.meta.code.val);
+                if (astnode.enclosingFunction){
+                    return this.resolveThis(astnode.enclosingFunction/*memberof.doclet.meta.code.val*/);
                 }
                 else return ''; // TODO handle global this?
             }
         }
         else if (astnode.parent) {
-            //print('member of something that isnt a function? '+'astnode'+astnode.parent.parent.hashCode()+' ('+nodeToString(astnode.parent.parent)+')');
-            
             var parent = astnode.parent;
             if (parent.type === Token.COLON) parent = parent.parent; // go up one more
             
@@ -183,6 +180,37 @@
             if (!memberof.doclet) return ''; // global?
             
             return memberof.doclet.longname||memberof.doclet.name;
+        }
+        else {
+            return ''; // global?
+        }
+    }
+    
+    /**
+        Resolve what function a var is limited to.
+        @param {astnode} node
+        @param {string} basename The leftmost name in the long name: in foo.bar.zip the basename is foo.
+     */
+    Parser.prototype.resolveVar = function(node, basename) {
+        var memberof = {};
+        
+        if (node.enclosingFunction) {
+            memberof.id = 'astnode'+node.enclosingFunction.hashCode();
+            memberof.doclet = this.refs[memberof.id];
+            
+            if (!memberof.doclet) {
+                return this.resolveVar(node.enclosingFunction, basename);
+            }
+            
+            if (memberof.doclet.vars && ~memberof.doclet.vars.indexOf(basename) ) {
+                return memberof.doclet.longname;
+            }
+            else {
+                if (memberof.doclet.meta.code.node){
+                    return this.resolveVar(memberof.doclet.meta.code.node, basename);
+                }
+                else return ''; // TODO handle global this?
+            }
         }
         else {
             return ''; // global?
@@ -228,12 +256,15 @@
                 code: aboutNode(node)
             };
             
+            var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+            if (basename !== 'this') e.code.funcscope = currentParser.resolveVar(node, basename);
+
             if ( isValidJsdoc(e.comment) ) {
                 currentParser.fire('symbolFound', e, currentParser);
             }
             
             if (e.doclet) {
-                currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
+                currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
         }
         else if (node.type === Token.COLON) {
@@ -251,7 +282,7 @@
             }
             
             if (e.doclet) {
-                currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
+                currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
         }
         else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
@@ -274,12 +305,23 @@
                 code: aboutNode(node)
             };
             
+            // keep track of vars in a function scope
+            if (node.enclosingFunction) {
+                var func = 'astnode'+node.enclosingFunction.hashCode(),
+                funcDoc = currentParser.refs[func];
+
+                if (funcDoc) {
+                    funcDoc.vars = func.vars || [];
+                    funcDoc.vars.push(e.code.name);
+                }
+            }
+
             if ( isValidJsdoc(e.comment) ) {
                 currentParser.fire('symbolFound', e, currentParser);
             }
             
             if (e.doclet) {
-                currentParser.refs['astnode'+e.code.val.hashCode()] = e.doclet; // allow lookup from value => doclet
+                currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
         }
         else if (node.type == Token.FUNCTION/* && String(node.name) !== ''*/) {
@@ -297,9 +339,17 @@
             if ( isValidJsdoc(e.comment) ) {
                 currentParser.fire('symbolFound', e, currentParser);
             }
-            
+
             if (e.doclet) {
-                currentParser.refs['astnode'+node.hashCode()] = e.doclet; // allow lookup from value => doclet
+//dump(e.code.node.hashCode(), e.code, e.code.node.enclosingFunction? e.code.node.enclosingFunction.hashCode() : 'global')
+                currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
+            }
+            else if (!currentParser.refs['astnode'+e.code.node.hashCode()]) { // keep references to undocumented anonymous functions too as they might have scoped vars
+                currentParser.refs['astnode'+e.code.node.hashCode()] = {
+                    //name: '<anonymous>',
+                    longname: '<anonymous>',
+                    meta: { code: e.code }
+                };
             }
         }
        
@@ -331,6 +381,7 @@
         if (node.type == Token.FUNCTION /*&& String(node.name) !== ''*/) {
             about.name = '' + node.name;
             about.type = 'function';
+            about.node = node;
             
             return about;
         }
@@ -338,13 +389,13 @@
         if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
             about.name = nodeToString(node.target);
             if (node.initializer) {  // like var i = 0;
-                about.val = node.initializer;
-				about.value = nodeToString(about.val);
+                about.node = node.initializer;
+				about.value = nodeToString(about.node);
                 about.type = getTypeName(node.initializer);
             }
             else { // like var i;
-                about.val = node.target;
-				about.value = nodeToString(about.val);
+                about.node = node.target;
+				about.value = nodeToString(about.node);
                 about.type = 'undefined';
             }
             
@@ -353,8 +404,8 @@
          
         if (node.type === Token.ASSIGN || node.type === Token.COLON) {
             about.name = nodeToString(node.left);
-            about.val = node.right;
-			about.value = nodeToString(about.val);
+            about.node = node.right;
+			about.value = nodeToString(about.node);
             about.type = getTypeName(node.right);
             return about;
         }

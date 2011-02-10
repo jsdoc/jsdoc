@@ -1,7 +1,7 @@
 /** @constructor */
 function TemplateBuilder(templateType) {
-    /** document me */
-    this.templateType = templateType;
+    //** document me */
+    //this.templateType = templateType;
     
     /** @constructor */
     this.Template = function() { // nested constructor of constructor TemplateFactory

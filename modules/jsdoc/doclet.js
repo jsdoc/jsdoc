@@ -160,6 +160,12 @@
 	            /** The type of the symbol in the source code. */
 	            this.meta.code.type = meta.code.type;
 	        }
+	        if (meta.code.node) {
+	            this.meta.code.node = meta.code.node;
+	        }
+	        if (meta.code.funcscope) {
+	            this.meta.code.funcscope = meta.code.funcscope;
+	        }
 	        if (meta.code.value) {
 	            /** The value of the symbol in the source code. */
 	            this.meta.code.value = meta.code.value;
