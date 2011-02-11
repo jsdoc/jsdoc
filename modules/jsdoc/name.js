@@ -25,6 +25,11 @@
         
         name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
 
+        // member of a var in an outer scope?
+        if (name && !memberof && doclet.meta.code && doclet.meta.code.funcscope) {
+            name = doclet.longname = doclet.meta.code.funcscope + '~' + name;
+        }
+
         if (memberof) { // @memberof tag given
             memberof = memberof.replace(/\.prototype\.?/g, '#');
             
@@ -47,14 +52,7 @@
             doclet.name = about.name;
         }
         
-        if (doclet.name && !memberof) {
-            if (doclet.meta.code && doclet.meta.code.funcscope) {
-                about.memberof = doclet.meta.code.funcscope;
-                doclet.longname = about.memberof + '~' + name;
-                about.scope = '~';
-            }
-            
-        }
+        
         
         if (about.memberof) {
             doclet.setMemberof(about.memberof);
