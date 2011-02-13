@@ -1,8 +1,8 @@
 /**
-    @module jsdoc/src/parser
-    @requires module:common/util
-    @requires module:common/fs
-    @requires module:common/events
+ * @module jsdoc/src/parser
+ * @requires common/util
+ * @requires common/fs
+ * @requires common/events
  */
 
 (function() {
@@ -11,24 +11,31 @@
         currentSourceName = '';
         
     /** 
-        @constructor module:jsdoc/src/parser.Parser
-        @mixes module:common/events
+     * @class
+     * @mixes module:common/events
+     * 
+     * @example
+     * var jsdocParser = new (require('jsdoc/src/parser').Parser)();
      */
-    var Parser = exports.Parser = function() {
+    exports.Parser = function() {
         this._resultBuffer = [];
         this.refs = {};
     }
-    require('common/util').mixin(Parser.prototype, require('common/events'));
+    require('common/util').mixin(exports.Parser.prototype, require('common/events'));
     
     /**
-        @method module:jsdoc/src/parser.Parser#parse
-        @param {Array<string>} sourceFiles
-        @param {string} [encoding=utf8]
-        @fires jsdocCommentFound
-        @fires symbolFound
-        @fires newDoclet
-        @fires fileBegin
-	    @fires fileComplete
+     * @param {Array<string>} sourceFiles
+     * @param {string} [encoding=utf8]
+     *
+     * @fires jsdocCommentFound
+     * @fires symbolFound
+     * @fires newDoclet
+     * @fires fileBegin
+     * @fires fileComplete
+     * 
+     * @example
+     * var myFiles = ['file1.js', 'file2.js'];
+     * var docs = jsdocParser.parse(myFiles);
      */
     exports.Parser.prototype.parse = function(sourceFiles, encoding) {
         const SCHEMA = 'javascript:';
@@ -62,23 +69,21 @@
     }
     
     /**
-        @method module:jsdoc/src/parser.Parser#results
-        @returns {Array<Doclet>} The accumulated results of any calls to parse.
+     * @returns {Array<Doclet>} The accumulated results of any calls to parse.
      */
     exports.Parser.prototype.results = function() {
         return this._resultBuffer;
     }
     
     /**
-        @method module:jsdoc/src/parser.Parser#addResult
+     * @param {Object} The parse result to add to the result buffer.
      */
     exports.Parser.prototype.addResult = function(o) {
         this._resultBuffer.push(o);
     }
     
     /**
-        Empty any accumulated results of calls to parse.
-        @method module:jsdoc/src/parser.Parser#clear 
+     * Empty any accumulated results of calls to parse.
      */
     exports.Parser.prototype.clear = function() {
         currentParser = null;
@@ -86,9 +91,7 @@
         this._resultBuffer = [];
     }
     
-    /**
-        @private
-     */
+    /** @private */
     exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         currentSourceName = sourceName;
         
@@ -114,14 +117,15 @@
     }
     
     /**
-        Given a node, determine what the node is a member of.
+     * Given a node, determine what the node is a member of.
+     * @param {astnode} node
      */
-    exports.Parser.prototype.astnodeToMemberof = function(astnode) {
+    exports.Parser.prototype.astnodeToMemberof = function(node) {
         var memberof = {};
         
-        if (astnode.type === Token.VAR || astnode.type === Token.FUNCTION) {
-            if (astnode.enclosingFunction) { // an inner var or func
-                memberof.id = 'astnode'+astnode.enclosingFunction.hashCode();
+        if (node.type === Token.VAR || node.type === Token.FUNCTION) {
+            if (node.enclosingFunction) { // an inner var or func
+                memberof.id = 'astnode'+node.enclosingFunction.hashCode();
                 memberof.doclet = this.refs[memberof.id];
                 if (!memberof.doclet) {
                     return '<anonymous>~';
@@ -130,7 +134,7 @@
             }
         }
         else {
-            memberof.id = 'astnode'+astnode.parent.hashCode();
+            memberof.id = 'astnode'+node.parent.hashCode();
             memberof.doclet = this.refs[memberof.id];
             if (!memberof.doclet) return ''; // global?
             return memberof.doclet.longname||memberof.doclet.name;
@@ -138,7 +142,9 @@
     }
     
     /**
-        Resolve what "this" refers too, relative to a node
+     * Resolve what "this" refers too, relative to a node.
+     * @param {astnode} node - The "this" node
+     * @returns {string} The longname of the enclosing node.
      */
     exports.Parser.prototype.resolveThis = function(node) {
         var memberof = {};
@@ -186,9 +192,9 @@
     }
     
     /**
-        Resolve what function a var is limited to.
-        @param {astnode} node
-        @param {string} basename The leftmost name in the long name: in foo.bar.zip the basename is foo.
+     * Resolve what function a var is limited to.
+     * @param {astnode} node
+     * @param {string} basename The leftmost name in the long name: in foo.bar.zip the basename is foo.
      */
     exports.Parser.prototype.resolveVar = function(node, basename) {
         var doclet,
@@ -205,9 +211,7 @@
         return this.resolveVar(enclosingFunction, basename);
     }
     
-    /**
-        @private
-     */
+    /** @private */
     function visitNode(node) {
         var e,
             commentSrc;
@@ -312,7 +316,7 @@
                 currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
         }
-        else if (node.type == Token.FUNCTION/* && String(node.name) !== ''*/) {
+        else if (node.type == Token.FUNCTION) {
             e = {
                 id: 'astnode'+node.hashCode(), // the id of the COLON node
                 comment: String(node.jsDoc||'@undocumented'),
@@ -329,12 +333,10 @@
             }
 
             if (e.doclet) {
-//dump(e.code.node.hashCode(), e.code, e.code.node.enclosingFunction? e.code.node.enclosingFunction.hashCode() : 'global')
                 currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
             else if (!currentParser.refs['astnode'+e.code.node.hashCode()]) { // keep references to undocumented anonymous functions too as they might have scoped vars
                 currentParser.refs['astnode'+e.code.node.hashCode()] = {
-                    //name: '<anonymous>',
                     longname: '<anonymous>',
                     meta: { code: e.code }
                 };
@@ -344,9 +346,7 @@
         return true;
     }
     
-    /**
-        @private
-     */
+    /** @private */
     function parserFactory() {
         var cx = Packages.org.mozilla.javascript.Context.getCurrentContext();
         
@@ -360,8 +360,8 @@
     }
     
     /**
-        Attempts to find the name and type of the given node.
-        @private
+     * Attempts to find the name and type of the given node.
+     * @private
      */
     function aboutNode(node) {
         about = {};
@@ -408,9 +408,7 @@
         return about;
     }
     
-    /**
-        @private
-     */
+    /** @private */
     function nodeToString(node) {
         var str;
         
@@ -444,9 +442,7 @@
         return '' + str;
     };
     
-    /**
-        @private
-     */
+    /** @private */
     function getTypeName(node) {
         var type = '';
         
@@ -457,9 +453,7 @@
         return type;
     }
     
-    /**
-        @private
-     */
+    /** @private */
     function isValidJsdoc(commentSrc) {
         return commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
     }

@@ -8,7 +8,7 @@
         <div class="apiFurtherDetail" style="height: auto;">
             
             <h5>Synopsis:</h5>
-            <pre class="prettyprint"><code>{{synopsis}}</code></pre>
+            <pre class="synopsis"><code>{{synopsis}}</code></pre>
             
             {{#hasParams}}
                 <h5>Parameters:</h5>
@@ -24,6 +24,10 @@
                 <h5>Returns:</h5>
                 {{>returnsTemplate}}
             {{/hasReturns}}
+            
+            {{#hasExamples}}
+                {{>examplesTemplate}}
+            {{/hasExamples}}
         </div>
     </dd>
 

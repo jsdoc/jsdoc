@@ -53,6 +53,7 @@
 	        doclet.hasReturns  = doclet.returns  && doclet.returns.length > 0;
 	        doclet.hasBorrowed = doclet.borrowed && doclet.borrowed.length > 0;
 	        doclet.hasExceptions = doclet.exceptions && doclet.exceptions.length > 0;
+            doclet.hasExamples = doclet.examples && doclet.examples.length > 0;
 
 	        summarize(doclet);
 	    });
@@ -65,6 +66,7 @@
             returnsTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/returns.mustache'),
             methodsTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/methods.mustache'),
             propertiesTemplate: fs.read(BASEDIR + 'templates/default/tmpl/properties.mustache'),
+            examplesTemplate:   fs.read(BASEDIR + 'templates/default/tmpl/example.mustache'),
             namespacesTemplate: fs.read(BASEDIR + 'templates/default/tmpl/namespaces.mustache'),
             
             classesTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/classes.mustache'),
@@ -166,6 +168,17 @@
             outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
         }
         fs.mkPath(outdir);
+        
+        // copy static files to outdir
+        var fromDir = BASEDIR + 'templates/default/static',
+            staticFiles = fs.ls(fromDir, 3);
+        staticFiles.forEach(function(fileName) {
+            var toDir = fs.toDir(fileName.replace(fromDir, outdir));
+            fs.mkPath(toDir);
+            fs.copyFile(fileName, toDir);
+        });
+        
+        
         
         // containers
         generate('Modules', modules, 'modules.html');
