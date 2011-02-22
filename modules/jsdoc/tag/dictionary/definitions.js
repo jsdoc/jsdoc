@@ -26,7 +26,8 @@
             onTagged: function(doclet, tag) {
                 doclet.alias = tag.value;
             }
-        });
+        })
+        .synonym('lends');
         
         dictionary.defineTag('author', {
             mustHaveValue: true,
@@ -93,11 +94,12 @@
         });
         
         dictionary.defineTag('constructs', {
+            mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 var ownerClassName = firstWordOf(tag.value);
-                doclet.addTag('alias', ownerClassName + '.constructor');
-                doclet.addTag('memberof', ownerClassName);
-                doclet.addTag('kind', 'function');
+                doclet.addTag('alias', ownerClassName/* + '.constructor'*/);
+                //doclet.addTag('memberof', ownerClassName);
+                doclet.addTag('kind', 'class');
             }
         });
 
@@ -188,7 +190,11 @@
         .synonym('overview');
         
         dictionary.defineTag('fires', {
-            mustHaveValue: true
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.fires) { doclet.fires = []; }
+                doclet.fires.push(tag.value);
+            }
         });
         
         dictionary.defineTag('function', {

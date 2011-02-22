@@ -79,15 +79,21 @@
 	    @param {string} sid - The longname of the symbol that this doclet is a member of.
 	*/
 	exports.Doclet.prototype.setMemberof = function(sid) {
-	    /** The symbol that contains this one, if any. */
-	    this.memberof = sid;
+	    /**
+	        The longname of the symbol that contains this one, if any.
+	        @type string
+	     */
+	    this.memberof = sid.replace(/\.prototype/g, '#');
 	}
 	
 	/** Set the `longname` property of this doclet.
 	    @param {string} name
 	*/
 	exports.Doclet.prototype.setLongname = function(name) {
-	    /** The fully resolved symbol name. */
+	    /**
+	        The fully resolved symbol name.
+	        @type string
+	     */
 	    this.longname = name;
         if (jsdoc.tag.dictionary.isNamespace(this.kind)) {
 	        this.longname = jsdoc.name.applyNamespace(this.longname, this.kind);
@@ -99,11 +105,17 @@
 	    @param {string} target - The name the symbol is being assigned to.
 	*/
 	exports.Doclet.prototype.borrow = function(source, target) {
+	    var about = {from: source};
+	    if (target) about.as = target;
+	    
 	    if (!this.borrowed) {
-	        /** A list of symbols that are borrowed by this one, if any. */
+	        /**
+	            A list of symbols that are borrowed by this one, if any.
+	            @type Array.<string>
+	         */
 	        this.borrowed = [];
 	    }
-        this.borrowed.push( {from: source, as: (target||source)} );
+        this.borrowed.push(about);
 	}
 	
 	/** Add a symbol to this doclet's `augments` array.
@@ -111,13 +123,17 @@
 	*/
 	exports.Doclet.prototype.augment = function(base) {
 	    if (!this.augments) {
-	        /** A list of symbols that are augmented by this one, if any. */
+	        /**
+	            A list of symbols that are augmented by this one, if any.
+	            @type Array.<string>
+	         */
 	        this.augments = [];
 	    }
         this.augments.push(base);
 	}
 	
-	/** Set the `meta` property of this doclet.
+	/**
+	    Set the `meta` property of this doclet.
 	    @param {object} meta
 	*/
 	exports.Doclet.prototype.setMeta = function(meta) {

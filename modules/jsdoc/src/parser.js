@@ -12,7 +12,7 @@
         
     /** 
      * @class
-     * @mixes module:common/events
+     * @mixes module:common/events.*
      * 
      * @example
      * var jsdocParser = new (require('jsdoc/src/parser').Parser)();
@@ -24,6 +24,7 @@
     require('common/util').mixin(exports.Parser.prototype, require('common/events'));
     
     /**
+     * Parse the given source files for JSDoc comments.
      * @param {Array<string>} sourceFiles
      * @param {string} [encoding=utf8]
      *
@@ -76,7 +77,7 @@
     }
     
     /**
-     * @param {Object} The parse result to add to the result buffer.
+     * @param {Object} o The parse result to add to the result buffer.
      */
     exports.Parser.prototype.addResult = function(o) {
         this._resultBuffer.push(o);
@@ -95,8 +96,7 @@
     exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         currentSourceName = sourceName;
         
-        // merge adjacent doclets
-        sourceCode = sourceCode.replace(/\*\/\/\*\*+/g, '@also');
+        sourceCode = pretreat(sourceCode);
         
         var ast = parserFactory().parse(sourceCode, sourceName, 1);
         
@@ -114,6 +114,14 @@
         this.fire('fileComplete', e);
         
         currentSourceName = '';
+    }
+    
+    function pretreat(code) {
+        return code
+            // merge adjacent doclets
+            .replace(/\*\/\/\*\*+/g, '@also')
+            // make lent objectliterals documentable by giving them a dummy name
+            .replace(/(\/\*\*[\s\S]*@lends\b[\s\S]*\*\/\s*)\{/g, '$1____ = {');
     }
     
     /**
@@ -204,7 +212,7 @@
         
         doclet = this.refs['astnode'+enclosingFunction.hashCode()];
         
-        if ( doclet && doclet.vars && ~doclet.vars.indexOf(basename) ) {
+        if ( doclet && doclet.meta.vars && ~doclet.meta.vars.indexOf(basename) ) {
             return doclet.longname;
         }
         
@@ -303,8 +311,8 @@
                 funcDoc = currentParser.refs[func];
 
                 if (funcDoc) {
-                    funcDoc.vars = func.vars || [];
-                    funcDoc.vars.push(e.code.name);
+                    funcDoc.meta.vars = funcDoc.meta.vars || [];
+                    funcDoc.meta.vars.push(e.code.name);
                 }
             }
 
@@ -362,6 +370,7 @@
     /**
      * Attempts to find the name and type of the given node.
      * @private
+     * @memberof module:src/parser.Parser
      */
     function aboutNode(node) {
         about = {};
@@ -408,7 +417,9 @@
         return about;
     }
     
-    /** @private */
+    /** @private
+        @memberof module:src/parser.Parser
+    */
     function nodeToString(node) {
         var str;
         
@@ -442,7 +453,9 @@
         return '' + str;
     };
     
-    /** @private */
+    /** @private
+        @memberof module:src/parser.Parser
+    */
     function getTypeName(node) {
         var type = '';
         
@@ -453,9 +466,21 @@
         return type;
     }
     
-    /** @private */
+    /** @private
+        @memberof module:src/parser.Parser
+    */
     function isValidJsdoc(commentSrc) {
         return commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
     }
     
 })();
+
+/**
+    Fired whenever the parser encounters a JSDoc comment in the current source code.
+    @event jsdocCommentFound
+    @memberof module:jsdoc/src/parser.Parser
+    @param e
+    @param e.comment The text content of the JSDoc comment
+    @param e.lineno The line number associated with the found comment.
+    @param e.filename The file name associated with the found comment.
+ */

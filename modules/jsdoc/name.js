@@ -24,7 +24,7 @@
             parentDoc;
         
         name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
-
+        
         // member of a var in an outer scope?
         if (name && !memberof && doclet.meta.code && doclet.meta.code.funcscope) {
             name = doclet.longname = doclet.meta.code.funcscope + '~' + name;
@@ -34,13 +34,13 @@
             memberof = memberof.replace(/\.prototype\.?/g, '#');
             
             // the name is a fullname, like @name foo.bar, @memberof foo
-            if (name.indexOf(memberof) === 0) {
+            if (name && name.indexOf(memberof) === 0) {
                 about = exports.shorten(name);
             }
-            else if ( /([#.~])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
+            else if (name && /([#.~])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
                 about = exports.shorten(memberof + name);
             }
-            else if ( doclet.scope ) { // like @memberof foo# or @memberof foo~
+            else if (name && doclet.scope ) { // like @memberof foo# or @memberof foo~
                 about = exports.shorten(memberof + scopeToPunc[doclet.scope] + name);
             }
         }
@@ -51,8 +51,6 @@
         if (about.name) {
             doclet.name = about.name;
         }
-        
-        
         
         if (about.memberof) {
             doclet.setMemberof(about.memberof);
@@ -80,6 +78,8 @@
         if (about.variation) {
             doclet.variation = about.variation;
         }
+
+//dump('doclet', doclet);
     }
     
     function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us

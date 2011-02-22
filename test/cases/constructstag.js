@@ -1,12 +1,9 @@
-/**
-    Describe your class here
-    @class TextBlock
- */
 Classify('TextBlock', {
     
     /**
         Document your constructor function here.
         @constructs TextBlock
+        @classdesc Describe your class here
         @param {object} opts
         @throws MissingNode
      */
@@ -17,6 +14,6 @@ Classify('TextBlock', {
         Document your method here.
         @memberof TextBlock#
      */
-     align: function() {
-     }
+    align: function() {
+    }
 });

@@ -1,7 +1,3 @@
-/** 
-    Describe the class here.
-    @class Menu
- */
 Classify('Menu', 
     /**
         @constructs Menu

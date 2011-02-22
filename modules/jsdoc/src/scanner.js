@@ -15,10 +15,11 @@
 	
 	/**
 	    @constructor
+	    @mixes module:common.events.*
 	 */
-	var Scanner = exports.Scanner = function() {
+	exports.Scanner = function() {
 	}
-	common.mixin(Scanner.prototype, common.events);
+	common.mixin(exports.Scanner.prototype, common.events);
 
 	/**
 		Recursively searches the given searchPaths for js files.
