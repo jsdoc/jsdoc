@@ -81,17 +81,8 @@
         </dd>
         {{/defaultvalue}}
         
-        {{#examples}}
-        <dt>
-            Example
-        </dt>
-        <dd>
-            <br clear="both">
-            <div class="example-code">
-                <pre class="prettyprint lang-js"><code>{{.}}</code></pre>
-            </div>
-            <br clear="both">
-        </dd>
-        {{/examples}}
+        {{#hasExamples}}
+            {{>examplesTemplate}}
+        {{/hasExamples}
     </dl>
 </div>

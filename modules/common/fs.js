@@ -106,6 +106,42 @@
 		return _allFiles;
 	}
 	
+	exports.copyFile = function(inFile, outDir, fileName) {
+	        if (fileName == null) fileName = exports.toFile(inFile);
+            
+            outDir = exports.toDir(outDir);
+            
+            var inFile = new File(inFile);
+            var outFile = new File(outDir+slash+fileName);
+            
+            var bis = new Packages.java.io.BufferedInputStream(new Packages.java.io.FileInputStream(inFile), 4096);
+            var bos = new Packages.java.io.BufferedOutputStream(new Packages.java.io.FileOutputStream(outFile), 4096);
+            var theChar;
+            while ((theChar = bis.read()) != -1) {
+                    bos.write(theChar);
+            }
+            bos.close();
+            bis.close();
+    }
+    
+    exports.toDir = function(path) {
+        var file = new File(path);
+        
+        if (file.isDirectory()){
+           return path;
+        }
+        
+        var parts = path.split(/[\\\/]/);
+        parts.pop();
+        
+        return parts.join(slash);
+    }
+    
+    exports.toFile = function(path) {
+        var parts = path.split(/[\\\/]/);
+        return parts.pop();
+    }
+    
 	exports.mkPath = function(/**Array*/ path) {
 		if (path.constructor != Array) path = path.split(/[\\\/]/);
 		var make = "";
@@ -118,8 +154,9 @@
 	}
 	
 	exports.makeDir = function(/**string*/ path) {
-		(new File(path)).mkdir();
-	},
+	    var dirPath = (exports.toDir(path));
+		(new File(dirPath)).mkdir();
+	}
 	
 	// fix multiple slashes, like one//two
 	function fixSlash(path) {
