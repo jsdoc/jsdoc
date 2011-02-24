@@ -1,0 +1,31 @@
+<li>
+    <?js if (this.description) { ?>
+    <div class="param-desc">
+        <?js= description ?>
+    </div>
+    <?js } ?>
+    
+    <?js
+        if (this.type) {
+            with(type) {
+    ?>
+    
+    <dl>
+        <dt>
+            Type
+        </dt>
+        <dd>
+            <?js
+                names.forEach(function(name, i) {
+            ?>
+            <span class="param-type"><?js= htmlsafe(name) ?></span> <?js if (i < names.length-1) print('|'); ?>
+            <?js
+                });
+            ?>
+        </dd>
+    </dl>
+    <?js 
+            }
+        }
+    ?>
+</li>

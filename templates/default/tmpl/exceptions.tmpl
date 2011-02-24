@@ -1,0 +1,28 @@
+<li>
+    <?js if (this.description) { ?>
+    <div class="param-desc">
+        <?js= description ?>
+    </div>
+    <?js } ?>
+    
+    <?js
+        if (typeof this.names !== 'undefined') {
+    ?>
+    <dl>
+        <dt>
+            Type
+        </dt>
+        <dd>
+            <?js
+                this.names.forEach(function(name, i) {
+            ?>
+            <span class="param-type"><?js= name ?></span> <?js if (i < this.names.length-1) print('|'); ?>
+            <?js
+                 });
+            ?>
+        </dd>
+    </dl>
+    <?js 
+        }
+    ?>
+</li>

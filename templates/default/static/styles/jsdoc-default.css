@@ -1,233 +1,155 @@
-.kind { font-style: italic; }
-
-.constructor, .mixin, .namespace
+body
 {
-	font-weight: bold;
-	color: #780000;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+	font-size: 13px;
+	color: #000;
+	background-color: #E2ECF0;
 }
 
-.property { color: #666; }
-.function { color: #666; }
-.access { color: #666; }
-
-h1, h2, h3, h4, h5, h6
+header
 {
-	font-family: "Bitstream Vera Sans", "DejaVu Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans serif;
-	font-weight: bold;
+	display: block;
+	/*border-bottom: 1px solid #ddd;*/
+	padding: 6px 4px;
 }
 
-.page-title
-{
-	font-family: "Bitstream Vera Sans", "DejaVu Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans serif;
-	font-size: 3.5em;
-	font-weight: bolder;
-	margin: 0 0 0.1em;
-	color: #FFF;
-}
-
-.section-title
-{
-	font-size: 2.5em;
-	margin: 0;
-	color: #798D3E;
+.class-description {
+    font-style: italic;
+	font-family: Palatino, "Palatino Linotype", serif;
+	font-size: 18px;
 }
 
 section
 {
-	border: 1px solid #ccc;
-	border-radius: 15px;
-	-moz-border-radius: 8px;
 	display: block;
-	padding: 0.75em 0.5em 0.5em 1em;
-	margin: 0.5em 0.5em 1em 1em;
+	margin: 14px 28px;
+	background-color: #fff;
+	padding: 12px 24px;
+	-moz-border-radius: 7px;
+    border-radius: 7px
+}
+
+h1
+{
+	font-size: 32px;
+	font-weight: bold;
+	letter-spacing: -0.03em;
+	margin: 6px 0 9px 0;
+}
+
+h2
+{
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: -0.03em;
+	margin: 6px 0 3px 0;
+}
+
+h3
+{
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: -0.03em;
+	margin-top: 16px;
+	margin: 6px 0 3px 0;
+}
+
+h4
+{
+	font-size: 18px;
+	font-weight: bold;
+	letter-spacing: -0.03em;
+	margin-top: 16px;
+	margin: 18px 0 3px 0;
+	color: #A35A00;
+}
+
+h5
+{
+	font-size: 16px;
+	font-weight: bold;
+	letter-spacing: -0.03em;
+	margin: 6px 0 3px 0;
+}
+
+h6
+{
+	font-size: 13px;
+	letter-spacing: -0.03em;
+	margin: 6px 0 3px 0;
+	font-style: italic;
+}
+
+.ancestor-name {
+    color: #ccc;
+}
+
+.type-signature {
+    color: #aaa;
+}
+
+/*.description {
+    font-family: Palatino, "Palatino Linotype", serif;
+	font-size: 14px;
+}*/
+
+.code-caption
+{
+	font-style: italic;
+	font-family: Palatino, "Palatino Linotype", serif;
+	font-size: 14px;
+	margin: 0;
+}
+
+.sh_sourceCode
+{
+	border: 1px solid #ddd;
+	width: 80%;
+}
+
+.sh_sourceCode code
+{
+	font-family: Consolas, "Lucida Console", Monaco, monospace;
+	font-size: 12px;
+	line-height: 18px;
+	display: block;
+	padding: 4px 12px;
+	margin: 0;
 	background-color: #fff;
 	color: #000;
+	border-left: 3px #1C02A3 solid;
 }
 
-.subsection-title
+.params
 {
-	font-size: 1.9em;
-	margin: 0.5em 0 1em;
-	color: #000;
+	border-spacing: 0;
+	border: 0;
+	border-collapse: collapse;
 }
 
-.method-title, .class-title
+.params .name { color: #1C02A3; }
+
+.params td, .params th
 {
-	font-size: 1.7em;
-	margin: 0 0 1em 1em;
-	color: #7B1A3F;
+	border: 1px solid #ddd;
+	margin: 0px;
+	text-align: left;
+	vertical-align: top;
+	padding: 4px 6px;
+	display: table-cell;
 }
 
-.detail-list { list-style-type: none; }
-
-html
+.params thead tr
 {
-	/* stops IE resizing fonts by a massive amount */
-	font-size: 100%;
-}
-
-body
-{
-	/* fixes monospace font sizes in webkit */
-	/* following line is picked up by IE6 & 7, which cannot resize pixel-based font sizes */
-	*font-size: 62.5%;
-	font-size: 0.8em;
-	font-family: verdana, sans-serif;
-	/*overflow: hidden;*/
-	zoom: 1;
-	/*background: url(images/pagebg.png) 0 73px repeat-x;*/
-	color: #eee;
-	background-color: #22252a;
-}
-
-a:link, a:visited
-{
-	color: #356a8b;
-	text-decoration: none;
-	border-bottom: 1px dotted #356a8b;
-}
-
-a:hover, a:active
-{
-	color: #298FB2;
-	border-color: #298FB2;
-	border-bottom-style: solid;
-}
-
-a.image { border: 0; }
-
-p
-{
-	margin: 0 0 1em 0;
-	line-height: 1.5;
-}
-
-code { font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace; }
-
-dl.params dt
-{
-	border-top: 1px solid #b2b1b1;
-	color: #298FB2;
+	background-color: #ddd;
 	font-weight: bold;
-	padding-top: 8px;
-	margin-bottom: 5px;
-	font-size: 1.1em;
-	float: none;
-	overflow: visible;
-	zoom: 0;
 }
 
-dl.params dt.first
+.params .params thead tr
 {
-	border-top: none;
-	padding-top: 0;
-	margin-top: 0;
-}
-
-dl.params dd
-{
-	border-width: 0;
-	margin-bottom: 16px;
-}
-
-dl.param-properties
-{
-	font-style: italic;
-	overflow: hidden;
-	zoom: 1;
-	font-size: 0.9em;
-	margin: 1em 0;
-}
-
-dl.param-properties dt span,
-dl.param-properties dd
-{
-	color: #555;
-	float: left;
-	margin: 0;
-	padding: 0;
-	display: inline;
-	margin-bottom: 5px;
-	font-size: 1em;
-	border: none;
-}
-
-dl.param-properties dt
-{
-	clear: both;
-	display: inline;
-	font-size: 1em;
-	padding: 0;
-	float: none;
-	overflow: visible;
-	zoom: 0;
-}
-
-dl.param-properties dt span
-{
-	width: 85px;
-	clear: both;
-}
-
-.no-docs
-{
-	font-style: italic;
-	font-weight: lighter;
-	color: #666;
-}
-
-.property { margin-left: 30px; }
-
-.property-head
-{
-	margin-left: -20px;
-	display: block;
-	line-height: 1.2em;
-}
-
-.property-name
-{
-	float: left;
-	margin: 0;
-	padding: 0 10px 0 0;
-	font-style: italic;
+	background-color: #fff;
 	font-weight: bold;
-	font-size: 1.2em;
-	color: #4782B5;
 }
 
-.property-summary
-{
-	color: #999;
-	font-size: 1em;
-}
-
-.property-details
-{
-	clear: both;
-	overflow: hidden;
-}
-
-.property-details dt
-{
-	font-weight: bold;
-	margin-bottom: 4px;
-	padding-left: 10px;
-	clear: left;
-	float: left;
-}
-
-.property-details dd { padding-left: 60px; }
-.property-deprecated { text-decoration: line-through; }
-
-.example-code
-{
-	padding: 2px 2px 2px 10px;
-	margin-right: 24px;
-	color: #fff;
-	background-color: #444;
-	border-radius: 2px;
-	-moz-border-radius: 2px;
-}
-
-.yesDef { text-indent: -5000px; }
+.params th { border-right: 1px solid #aaa; }
+.params thead .last { border-right: 1px solid #ddd; }
