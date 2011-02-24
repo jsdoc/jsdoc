@@ -36,6 +36,7 @@ See
 ---
 
 Project Documentation: <http://micmath.github.com/jsdoc>
+Subversion Mirror: <http://code.google.com/p/jsdoc/source>
 
 License
 -------
