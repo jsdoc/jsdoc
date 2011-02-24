@@ -3,7 +3,7 @@
         found1 = docSet.getByLongname('Singer#tralala'),
         found2 = docSet.getByLongname('Singer#isSinging');
     
-    //dump(docSet);
+    // dump(docSet);
     
     test('When a member is attached to this in a constructor.', function() {
         assert.equal(found1.length, 1, 'The longname should be like Constructor#member.');

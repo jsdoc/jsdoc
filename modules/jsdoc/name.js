@@ -47,6 +47,15 @@
             doclet.name = about.name;
         }
         
+        if (doclet.name && !memberof) {
+            if (doclet.meta.code && doclet.meta.code.funcscope) {
+                about.memberof = doclet.meta.code.funcscope;
+                doclet.longname = about.memberof + '~' + name;
+                about.scope = '~';
+            }
+            
+        }
+        
         if (about.memberof) {
             doclet.setMemberof(about.memberof);
         }

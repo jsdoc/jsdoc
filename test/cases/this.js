@@ -7,5 +7,4 @@ function Singer() {
         /** document me */
         this.isSinging = true; // setting a member of constructor Singer
     };
-    
 }
