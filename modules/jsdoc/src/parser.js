@@ -14,7 +14,7 @@
      * @class
      * @mixes module:common/events.*
      * 
-     * @example
+     * @example <caption>Create a new parser.</caption>
      * var jsdocParser = new (require('jsdoc/src/parser').Parser)();
      */
     exports.Parser = function() {
@@ -25,7 +25,7 @@
     
     /**
      * Parse the given source files for JSDoc comments.
-     * @param {Array<string>} sourceFiles
+     * @param {Array.<string>} sourceFiles An array of filepaths to the JavaScript sources.
      * @param {string} [encoding=utf8]
      *
      * @fires jsdocCommentFound
@@ -34,7 +34,7 @@
      * @fires fileBegin
      * @fires fileComplete
      * 
-     * @example
+     * @example <caption>Parse two source files.</caption>
      * var myFiles = ['file1.js', 'file2.js'];
      * var docs = jsdocParser.parse(myFiles);
      */
@@ -127,6 +127,7 @@
     /**
      * Given a node, determine what the node is a member of.
      * @param {astnode} node
+     * @returns {string} The long name of the node that this is a member of.
      */
     exports.Parser.prototype.astnodeToMemberof = function(node) {
         var memberof = {};
@@ -479,8 +480,8 @@
     Fired whenever the parser encounters a JSDoc comment in the current source code.
     @event jsdocCommentFound
     @memberof module:jsdoc/src/parser.Parser
-    @param e
-    @param e.comment The text content of the JSDoc comment
-    @param e.lineno The line number associated with the found comment.
-    @param e.filename The file name associated with the found comment.
+    @param {event} e
+    @param {string} e.comment The text content of the JSDoc comment
+    @param {number} e.lineno The line number associated with the found comment.
+    @param {string} e.filename The file name associated with the found comment.
  */

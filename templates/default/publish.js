@@ -1,7 +1,10 @@
 (function() {
 
-    var Mustache = require('janl/mustache'),
+    var template = require('underscore/template'),
         fs = require('fs');
+        
+        template.settings.evaluate    = /<\?js([\s\S]+?)\?>/g;
+        template.settings.interpolate = /<\?js=([\s\S]+?)\?>/g;
     
     /**
         @global
@@ -9,27 +12,49 @@
         @param {object} opts
      */
     publish = function(data, opts) {
-        var out = '';
+        var out = '',
+            containerTemplate = template.render(fs.read(BASEDIR + 'templates/default/tmpl/container.tmpl'));
         
-        var helpers = {
-            linkTo: function() {
-                return function(text, render) {
-                    var linkTo,
-                        text = render(text);
-    
-                    if ( !data.find({longname: text}).length ) { return text; }
-                    
-                    linkTo = text.replace(/#/g, '%23');
-                    return '<a href="#' + linkTo + '">' + text + '</a>';
-                }
+        function render(tmpl, partialData) {
+            var renderFunction = arguments.callee.cache[tmpl];
+            if (!renderFunction) {
+                renderFunction = arguments.callee.cache[tmpl] = template.render(fs.read(BASEDIR + 'templates/default/tmpl/'+tmpl));
             }
-        };
+            partialData.render = arguments.callee;
+            partialData.find = find;
+            partialData.htmlsafe = htmlsafe;
+            
+            return renderFunction.call(partialData, partialData);
+        }
+        render.cache = {};
+        
+        function find(spec) {
+            return data.get( data.find(spec) );
+        }
+        
+        function htmlsafe(str) {
+            return str.replace(/</g, '&lt;');
+        }
+        
+//         var helpers = {
+//             linkTo: function() {
+//                 return function(text, render) {
+//                     var linkTo,
+//                         text = render(text);
+//     
+//                     if ( !data.find({longname: text}).length ) { return text; }
+//                     
+//                     linkTo = text.replace(/#/g, '%23');
+//                     return '<a href="#' + linkTo + '">' + text + '</a>';
+//                 }
+//             }
+//         };
         
         function summarize(doclet) {
             var desc = doclet.description || '';
             
             desc = desc.replace(/<\/?p>/gi, ''); // full text may be HTML, remove P wrapper
-            desc = trim(desc);
+            desc = desc.trim();
             
             var m;
 
@@ -37,131 +62,107 @@
                 doclet.summary = m[1];
                 doclet.description = m[2]? m[2] : '';
             }
+            
+            doclet.signature = '';
+            doclet.attribs = '';
         }
         
-        function trim(text) {
-            return text.replace(/^\s+|\s+$/g, '');
-        }
-	    
-	    data.remove({undocumented: true});
-	    
-	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
-
-	    // add template helpers
-	    data.forEach(function(doclet) {
-	        doclet.hasParams   = doclet.params   && doclet.params.length > 0;
-	        doclet.hasReturns  = doclet.returns  && doclet.returns.length > 0;
-	        doclet.hasBorrowed = doclet.borrowed && doclet.borrowed.length > 0;
-	        doclet.hasExceptions = doclet.exceptions && doclet.exceptions.length > 0;
-            doclet.hasExamples = doclet.examples && doclet.examples.length > 0;
-
-	        summarize(doclet);
-	    });
-	    
-	    data.orderBy(['longname', 'kind']);
-	    
-	    var containerTemplate = fs.read(BASEDIR + 'templates/default/tmpl/container.mustache');
-	    var partials = {
-            paramsTemplate:     fs.read(BASEDIR + 'templates/default/tmpl/params.mustache'),
-            returnsTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/returns.mustache'),
-            methodsTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/methods.mustache'),
-            propertiesTemplate: fs.read(BASEDIR + 'templates/default/tmpl/properties.mustache'),
-            examplesTemplate:   fs.read(BASEDIR + 'templates/default/tmpl/example.mustache'),
-            namespacesTemplate: fs.read(BASEDIR + 'templates/default/tmpl/namespaces.mustache'),
-            
-            classesTemplate:    fs.read(BASEDIR + 'templates/default/tmpl/classes.mustache'),
-            exceptionsTemplate: fs.read(BASEDIR + 'templates/default/tmpl/exceptions.mustache')
-        };
-        
-        var topLevels = {
-	        projects: [],
-	        globals: [],
-	        modules: [],
-	        namespaces: [],
-	        classes: [],
-	        mixins: []
-	    };
-	    
-	    topLevels.globals = data.get( data.find({memberof: {isUndefined: true}}) );
-	    
-	    var modules = data.get( data.find({kind: 'module'}) ),
-	        classes = data.get( data.find({kind: 'class'}) ),
-	        namespaces = data.get( data.find({kind: 'namespace'}) );
-	        
-        modules.forEach(function(m) {
-            m.methods = data.get( data.find({kind: 'function', memberof: m.longname}) );
-            m.hasMethods = (m.methods && m.methods.length > 0);
-            m.methods.forEach(prepareFunc);
-            
-            m.properties = data.get( data.find({kind: 'property', memberof: m.longname}) );
-            m.hasProperties = (m.properties && m.properties.length > 0);
-            m.properties.forEach(prepareProp);
-            
-            m.namespaces = data.get( data.find({kind: 'namespace', memberof: m.longname}) );
-            m.hasNamespaces = (m.namespaces && m.namespaces.length > 0);
-            m.namespaces.forEach(prepareNs);
-            
-            m.classes = data.get( data.find({kind: 'class', memberof: m.longname}) );
-            m.hasClasses = (m.classes && m.classes.length > 0);
-            
-            // TODO: namespaces
-        });
-        
-        classes.forEach(function(c) {
-            c.methods = data.get( data.find({kind: 'function', memberof: c.longname}) );
-            c.hasMethods = (c.methods && c.methods.length > 0);
-            prepareFunc(c);
-            c.hasConstructor = true;
-            c.methods.forEach(prepareFunc);
-            
-            c.properties = data.get( data.find({kind: 'property', memberof: c.longname}) );
-            c.hasProperties = (c.properties && c.properties.length > 0);
-            c.properties.forEach(prepareProp);
-            
-            c.namespaces = data.get( data.find({kind: 'namespace', memberof: c.longname}) );
-            c.hasNamespaces = (c.namespaces && c.namespaces.length > 0);
-            c.namespaces.forEach(prepareNs);
-
-            c.classes = data.get( data.find({kind: 'class', memberof: c.longname}) );
-            c.hasClasses = (c.classes && c.classes.length > 0);
-        });
-        
-        namespaces.forEach(function(n) {
-            
-            n.methods = data.get( data.find({kind: 'function', memberof: n.longname}) );
-            n.hasMethods = (n.methods && n.methods.length > 0);
-            //prepareNs(n);
-            n.methods.forEach(prepareFunc);
-            
-            n.properties = data.get( data.find({kind: 'property', memberof: n.longname}) );
-            n.hasProperties = (n.properties && n.properties.length > 0);
-            n.properties.forEach(prepareProp);
-            
-            n.namespaces = data.get( data.find({kind: 'namespace', memberof: n.longname}) );
-            n.hasNamespaces = (n.namespaces && n.namespaces.length > 0);
-            n.namespaces.forEach(prepareNs);
-            
-            n.classes = data.get( data.find({kind: 'class', memberof: n.longname}) );
-            n.hasClasses = (n.classes && n.classes.length > 0);
-        });
-        
-        function prepareFunc(f) {
+        function addSignatureParams(f) {
             var pnames = [];
             if (f.params) {
                 f.params.forEach(function(p) {
-                    if (p.name && p.name.indexOf('.') === -1) { pnames.push(p.name); }
+                    if (p.name && p.name.indexOf('.') === -1) {
+                        if (p.optional) { pnames.push('['+p.name+']'); }
+                        else { pnames.push(p.name); }
+                    }
                 });
             }
-            f.synopsis = (f.kind === 'class'? 'new ' : '') + f.name+'('+pnames.join(', ')+')'
-            f.hasParams = (f.params && f.params.length > 0);
-            f.hasReturns = (f.returns && f.returns.length > 0);
+            
+            f.signature = (f.signature || '') + '('+pnames.join(', ')+')';
         }
         
-        function prepareProp(p) {
+        function addSignatureReturns(f) {
+            var returnTypes = [];
+            
+            if (f.returns) {
+                f.returns.forEach(function(r) {
+                    if (r.type && r.type.names) {
+                        returnTypes = r.type.names;
+                    }
+                });
+            }
+            
+            f.signature = (f.signature || '') + '<span class="type-signature">'+htmlsafe(returnTypes.length? ' &#8658; '+returnTypes.join('|') : '')+'</span>';
         }
         
-        function prepareNs(p) {
+        function addSignatureType(f) {
+            var types = [];
+            
+            if (f.type && f.type.names) {
+                types = f.type.names;
+            }
+            
+            f.signature = (f.signature || '') + '<span class="type-signature">'+htmlsafe(types.length? ' :'+types.join('|') : '')+'</span>';
         }
+        
+        function addAttribs(f) {
+            var attribs = [];
+            
+            if (f.access && f.access !== 'public') {
+                attribs.push(f.access);
+            }
+            
+            if (f.scope && f.scope !== 'instance') {
+                if (f.kind == 'function' || f.kind == 'property') attribs.push(f.scope);
+            }
+            
+            if (f.readonly === true) {
+                if (f.kind == 'property') attribs.push('readonly');
+            }
+            
+            f.attribs = '<span class="type-signature">'+htmlsafe(attribs.length? '<'+attribs.join(', ')+'> ' : '')+'</span>';
+        }
+        
+        data.remove({undocumented: true});
+	    
+	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
+
+	    data.forEach(function(doclet) {
+	        summarize(doclet);
+	        if (doclet.kind === 'function' || doclet.kind === 'class') {
+	            addSignatureParams(doclet);
+	            addSignatureReturns(doclet);
+	            addAttribs(doclet);
+	        }
+	        
+	        if (doclet.kind === 'property') {
+	            addSignatureType(doclet);
+	            addAttribs(doclet)
+	        }
+	        
+	        if (doclet.examples) {
+	            doclet.examples = doclet.examples.map(function(example) {
+	                var caption, code;
+	                
+	                if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
+	                    caption = RegExp.$1;
+	                    code    = RegExp.$3;
+	                }
+	                
+                    return {
+                        caption: caption || '',
+                        code: code || example
+                    };
+                });
+	        }
+	    });
+	    
+	    data.orderBy(['longname', 'kind', 'version', 'since']);
+        
+        // kinds of containers
+        var globals = data.get( data.find({kind: ['property', 'function'], memberof: {isUndefined: true}}) ),
+            modules = data.get( data.find({kind: 'module'}) ),
+	        namespaces = data.get( data.find({kind: 'namespace'}) );
         
         var outdir = opts.destination;
         if (packageInfo) {
@@ -172,36 +173,53 @@
         // copy static files to outdir
         var fromDir = BASEDIR + 'templates/default/static',
             staticFiles = fs.ls(fromDir, 3);
+            
         staticFiles.forEach(function(fileName) {
             var toDir = fs.toDir(fileName.replace(fromDir, outdir));
             fs.mkPath(toDir);
             fs.copyFile(fileName, toDir);
         });
         
-        
-        
         // containers
-        generate('Modules', modules, 'modules.html');
-        generate('Classes', classes, 'classes.html');
-        generate('Namespaces', namespaces, 'namespaces.html');
-//dump(classes)        
+        //generate('Globals', globals, 'globals.html');
+        //generate('Modules', modules, 'modules.html');
+        //generate('Classes', classes, 'classes.html');
+        //generate('Namespaces', namespaces, 'namespaces.html');
+        
+        var urlToLongname = {},
+            longnameToUrl = {};
+        
+        var classes = data.get(data.find({kind: 'class'}));
+        for (var i = 0, len = classes.length; i < len; i++) {
+            var longname = classes[i].longname,
+                urlSafe = longname.replace(/[^$a-z0-9._-]/gi, '_');
+            
+            // bidirectional lookups: url <=> longname
+            urlToLongname[urlSafe]  = longname;
+            longnameToUrl[longname] = urlSafe;
+        }
+        
+        for (var longname in longnameToUrl) {
+            var classes = data.get( data.find({kind: 'class', longname: longname}) );
+            generate(classes[0].kind+': '+classes[0].name, classes, longnameToUrl[longname]+'.html');
+        }
+         
         function generate(title, docs, filename) {
+            var data = {
+                title: title,
+                docs: docs,
+                
+                // helpers
+                render: render,
+                find: find,
+                htmlsafe: htmlsafe
+            };
+            
             var path = outdir + '/' + filename,
-                html = Mustache.to_html(
-                    containerTemplate,
-                    {
-                        title: title,
-                        docs: docs,
-                        linkTo: helpers.linkTo
-                    },
-                    partials
-                );
+                html = containerTemplate.call(data, data);
+                
             fs.write(path, html)
         }
-
     }
     
-    
-    
-
 })();

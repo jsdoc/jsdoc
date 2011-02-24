@@ -7,7 +7,7 @@ compliance with the License. You have permission to use it for commercial,
 non-commercial, or any other purpose you like, according to the
 License below.
 
-Copyright (c) 2010, 2011 Michael Mathews <micmath@gmail.com>
+Copyright (c) 2011 Michael Mathews <micmath@gmail.com>
 All rights reserved.
 
 You may obtain a copy of the License at
@@ -158,33 +158,19 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 You may obtain the source code for sqlitejdbc at
 https://github.com/crawshaw/sqlitejdbc
 
-MustacheJS (templates/lib/janl/mustache.js)
+Underscore Template (templates/lib/underscore/template.js)
 ----
 
-Copyright (c) 2009 Chris Wanstrath (Ruby)
-Copyright (c) 2010 Jan Lehnardt (JavaScript)
+Underscore.js 1.1.4
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
- 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
- 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Copyright (c) 2011 Jeremy Ashkenas, DocumentCloud Inc.
 
-You may obtain the source code for MustacheJS at
-https://github.com/janl/mustache.js
+Underscore is freely distributable under the MIT license.
+Portions of Underscore are inspired or borrowed from Prototype,
+Oliver Steele's Functional, and John Resig's Micro-Templating.
+
+For all details and documentation:
+http://documentcloud.github.com/underscore/#template
 
 TaffyDB (modules/typicaljoe/taffy.js)
 ----

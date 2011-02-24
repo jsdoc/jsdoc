@@ -1,0 +1,47 @@
+
+<dt id="property:<?js= longname ?>">
+    <h4 class="name"><?js= this.attribs + name + this.signature ?></h4>
+    
+    <?js if (this.summary) { ?>
+    <p class="summary"><?js= summary ?></p>
+    <?js } ?>
+</dt>
+<dd>
+    <?js if (this.description) { ?>
+    <h5>Description:</h5>
+    <p>
+        <?js= this.description ?>
+    </p>
+    <?js } ?>
+    
+    <?js if (this.type || this.deprecated || this.since || this.readonly || typeof this.defaultvalue !== 'undefined') { ?>
+    <dl>        
+        <?js if (this.deprecated) { ?>
+        <dt>Deprecated</dt>
+        <dd class="yesDef">Yes</dd>
+        <?js } ?>
+        
+        <?js if (this.since) { ?>
+        <dt>Since</dt>
+        <dd><?js= this.since ?></dd>
+        <?js } ?>
+        
+        <?js if (this.readonly) { ?>
+        <dt>Read-Only</dt>
+        <dd class="yesDef">Yes</dd>
+        <?js } ?>
+        
+        <?js if (typeof this.defaultvalue !== 'undefined') { ?>
+        <dt>Default Value</dt>
+        <dd><?js= this.defaultvalue ?></dd>
+        <?js } ?>
+    </dl>
+    <?js } ?>
+    
+    <?js 
+        if (this.examples && examples.length) {
+            print('<h5>Example' + (examples.length > 1? 's':'') + '</h5>');
+            print( render('examples.tmpl', examples) );
+        }
+    ?>
+</dd>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JSDoc: <?js= title ?></title>
+	
+	<script src="http://shjs.sourceforge.net/sh_main.min.js"> </script>
+    <script src="http://shjs.sourceforge.net/lang/sh_javascript.min.js"> </script>
+    
+    <link type="text/css" rel="stylesheet" href="styles/node-dark.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+
+</head>
+
+<body>
+
+
+<h1 class="page-title"><?js= title ?></h1>
+
+<?js
+    docs.forEach(function(doc, i) {
+?>
+<section>
+ 
+<header>
+    <?js
+        if (doc.classdesc) {
+           print('<p class="class-description">'+doc.classdesc+'</p>'); 
+        }
+    ?>
+
+    <!--
+        var displayname = htmlsafe(doc.longname).replace(doc.name, '</span><b>'+doc.name+'</b>');
+        /*print('<span class="ancestor-name">' + displayname + doc.signature);*/
+    -->
+</header>    
+    
+<div class="accordian-content">
+    <?js
+        if (doc.kind === 'class') { 
+    ?>
+        
+     <?js  
+        print(render('method.tmpl', doc));
+        
+     } ?>
+    
+    <?js
+        if (doc.augments && doc.augments.length && doc.augments.forEach) { 
+    ?>
+        
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul><?js
+            doc.augments.forEach(function(a) {
+        ?>
+            <li><?js= a ?></li>
+        <?js
+            });
+        ?></ul>
+        
+    <?js } ?>
+    
+    <?js
+        if (doc.borrowed && doc.borrowed.length && doc.borrowed.forEach) { 
+    ?>
+        
+        <h3 class="subsection-title">Borrows From</h3>
+        
+        <ul><?js
+            doc.borrowed.forEach(function(b) {
+        ?>
+            <li><?js= b.from ?></li>
+        <?js
+            });
+        ?></ul>
+        
+    <?js } ?>
+    
+    <?js
+        /* link to any classes in this container */
+        var classes = find({kind: 'class', memberof: doc.longname}); 
+        if (classes && classes.length && classes.forEach) { 
+    ?>
+        
+        <h3 class="subsection-title">Classes</h3>
+        
+        <dl><?js
+            classes.forEach(function(c) {
+        ?>
+            <dt><a href="classes.html#<?js= c.longname ?>"><?js= c.name ?></a></dt>
+            <dd><?js if (c.summary) print(c.summary); ?></dd>
+        <?js
+            });
+        ?></dl>
+        
+    <?js } ?>
+    
+    <?js
+        /* link to any namespaces in this container */
+        var namespaces = find({kind: 'namespace', memberof: doc.longname}); 
+        if (namespaces && namespaces.length && namespaces.forEach) { 
+    ?>
+        
+        <h3 class="subsection-title">Namespaces</h3>
+        
+        <dl><?js
+            namespaces.forEach(function(n) {
+        ?>
+            <dt><a href="namespaces.html#<?js= n.longname ?>"><?js= n.name ?></a></dt>
+            <dd><?js if (n.summary) print(n.summary); ?></dd>
+        <?js
+            });
+        ?></dl>
+        
+    <?js } ?>
+    
+    <?js
+        /* list any properties in this container */
+        var properties = find({kind: 'property', memberof: doc.longname}); 
+        if (properties && properties.length && properties.forEach) { 
+    ?>
+        
+        <h3 class="subsection-title">Properties</h3>
+        
+        <dl><?js
+            properties.forEach(function(p) {
+                print(render('properties.tmpl', p));
+            });
+        ?></dl>
+        
+    <?js } ?>
+    
+    <?js
+        /* list any methods in this container */
+        var methods = find({kind: 'function', memberof: doc.longname});
+        if (title === 'Globals') {
+            methods = find({kind: 'function', memberof: {isUndefined: true}});
+        }
+        if (methods && methods.length && methods.forEach) { 
+    ?>
+        
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl><?js
+            methods.forEach(function(m) {
+                print(render('method.tmpl', m));
+            });
+        ?></dl>
+        
+    <?js } ?>
+    
+    <?js
+        /* list any events in this container */
+        var events = find({kind: 'event', memberof: doc.longname}); 
+        if (events && events.length && events.forEach) { 
+    ?>
+        
+        <h3 class="subsection-title">Events</h3>
+        
+        <dl><?js
+            events.forEach(function(e) {
+                print(render('method.tmpl', e));
+            });
+        ?></dl>
+        
+    <?js } ?>
+</div> 
+</section>  
+<?js }); ?>
+
+
+<script> sh_highlightDocument(); </script>
+
+</body>
+</html>

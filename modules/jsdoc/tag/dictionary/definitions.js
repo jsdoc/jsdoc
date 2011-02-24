@@ -58,15 +58,17 @@
         
         dictionary.defineTag('class', {
             onTagged: function(doclet, tag) {
+                doclet.addTag('kind', 'class');
+                
                 // handle special case where both @class and @constructor tags exist in same doclet
                 if (tag.originalTitle === 'class') {
-                    if ( /@construct(s|or)\b/i.test(doclet.comment) ) {
+                    var looksLikeDesc = (tag.value || '').match(/\S+\s+\S+/); // multiple words after @class?
+                    if ( looksLikeDesc || /@construct(s|or)\b/i.test(doclet.comment) ) {
                         doclet.classdesc = tag.value; // treat the @class tag as a @classdesc tag instead
                         return;
                     }
                 }
                 
-                doclet.addTag('kind', 'class');
                 setDocletNameToValue(doclet, tag);
             }
         })
@@ -97,8 +99,7 @@
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 var ownerClassName = firstWordOf(tag.value);
-                doclet.addTag('alias', ownerClassName/* + '.constructor'*/);
-                //doclet.addTag('memberof', ownerClassName);
+                doclet.addTag('alias', ownerClassName);
                 doclet.addTag('kind', 'class');
             }
         });
@@ -172,7 +173,7 @@
                 
                 doclet.addTag('alias', modName);
                 doclet.addTag('kind', 'module');
-                doclet.addTag('undocumented');
+                //doclet.addTag('undocumented');
              }
         })
         .synonym('defines');

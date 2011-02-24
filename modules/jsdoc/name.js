@@ -142,7 +142,7 @@
         longname = longname.replace( /\.prototype\.?/g, '#' );     
             
         var parts = longname?
-                    longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ).reverse()
+                    (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
                     : [''];
         
         var name = parts[0],

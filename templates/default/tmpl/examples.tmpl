@@ -1,0 +1,10 @@
+<?js
+    this.forEach(function(example) {
+        if (example.caption) {
+    ?>
+        <p class="code-caption"><?js= example.caption ?></p>
+    <?js } ?>
+    <pre class="sh_javascript"><code><?js= example.code ?></code></pre>
+<?js
+    });
+?>
