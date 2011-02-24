@@ -7,7 +7,10 @@ function Message(to) {
     headers.to = to;
     
     (function() {
-        var headers = {};
+        var headers = {
+            /** document me */
+            cache: {}
+        };
        
         /** document me */
         headers.from = '';

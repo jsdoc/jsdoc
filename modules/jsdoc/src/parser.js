@@ -30,7 +30,7 @@
         @fires fileBegin
 	    @fires fileComplete
      */
-    Parser.prototype.parse = function(sourceFiles, encoding) {
+    exports.Parser.prototype.parse = function(sourceFiles, encoding) {
         const SCHEMA = 'javascript:';
         var sourceCode = '',
             filename = '';
@@ -56,7 +56,6 @@
             currentParser = this;
             this._parseSourceCode(sourceCode, filename);
             currentParser = null;
-            pragmas = {}; // always resets at end of file
         }
         
         return this._resultBuffer;
@@ -66,14 +65,14 @@
         @method module:jsdoc/src/parser.Parser#results
         @returns {Array<Doclet>} The accumulated results of any calls to parse.
      */
-    Parser.prototype.results = function() {
+    exports.Parser.prototype.results = function() {
         return this._resultBuffer;
     }
     
     /**
         @method module:jsdoc/src/parser.Parser#addResult
      */
-    Parser.prototype.addResult = function(o) {
+    exports.Parser.prototype.addResult = function(o) {
         this._resultBuffer.push(o);
     }
     
@@ -81,7 +80,7 @@
         Empty any accumulated results of calls to parse.
         @method module:jsdoc/src/parser.Parser#clear 
      */
-    Parser.prototype.clear = function() {
+    exports.Parser.prototype.clear = function() {
         currentParser = null;
         currentSourceName = '';
         this._resultBuffer = [];
@@ -90,7 +89,7 @@
     /**
         @private
      */
-    Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
+    exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         currentSourceName = sourceName;
         
         // merge adjacent doclets
@@ -117,7 +116,7 @@
     /**
         Given a node, determine what the node is a member of.
      */
-    Parser.prototype.astnodeToMemberof = function(astnode) {
+    exports.Parser.prototype.astnodeToMemberof = function(astnode) {
         var memberof = {};
         
         if (astnode.type === Token.VAR || astnode.type === Token.FUNCTION) {
@@ -141,11 +140,11 @@
     /**
         Resolve what "this" refers too, relative to a node
      */
-    Parser.prototype.resolveThis = function(astnode) {
+    exports.Parser.prototype.resolveThis = function(node) {
         var memberof = {};
         
-        if (astnode.enclosingFunction) {
-            memberof.id = 'astnode'+astnode.enclosingFunction.hashCode();
+        if (node.enclosingFunction) {
+            memberof.id = 'astnode'+node.enclosingFunction.hashCode();
             memberof.doclet = this.refs[memberof.id];
             
             if (!memberof.doclet) {
@@ -164,14 +163,14 @@
                 return memberof.doclet.longname||memberof.doclet.name;
             }
             else {
-                if (astnode.enclosingFunction){
-                    return this.resolveThis(astnode.enclosingFunction/*memberof.doclet.meta.code.val*/);
+                if (node.enclosingFunction){
+                    return this.resolveThis(node.enclosingFunction/*memberof.doclet.meta.code.val*/);
                 }
                 else return ''; // TODO handle global this?
             }
         }
-        else if (astnode.parent) {
-            var parent = astnode.parent;
+        else if (node.parent) {
+            var parent = node.parent;
             if (parent.type === Token.COLON) parent = parent.parent; // go up one more
             
             memberof.id = 'astnode'+parent.hashCode();
@@ -191,30 +190,19 @@
         @param {astnode} node
         @param {string} basename The leftmost name in the long name: in foo.bar.zip the basename is foo.
      */
-    Parser.prototype.resolveVar = function(node, basename) {
-        var memberof = {};
+    exports.Parser.prototype.resolveVar = function(node, basename) {
+        var doclet,
+            enclosingFunction = node.enclosingFunction;
         
-        if (node.enclosingFunction) {
-            memberof.id = 'astnode'+node.enclosingFunction.hashCode();
-            memberof.doclet = this.refs[memberof.id];
-            
-            if (!memberof.doclet) {
-                return this.resolveVar(node.enclosingFunction, basename);
-            }
-            
-            if (memberof.doclet.vars && ~memberof.doclet.vars.indexOf(basename) ) {
-                return memberof.doclet.longname;
-            }
-            else {
-                if (memberof.doclet.meta.code.node){
-                    return this.resolveVar(memberof.doclet.meta.code.node, basename);
-                }
-                else return ''; // TODO handle global this?
-            }
+        if (!enclosingFunction) { return ''; } // global
+        
+        doclet = this.refs['astnode'+enclosingFunction.hashCode()];
+        
+        if ( doclet && doclet.vars && ~doclet.vars.indexOf(basename) ) {
+            return doclet.longname;
         }
-        else {
-            return ''; // global?
-        }
+        
+        return this.resolveVar(enclosingFunction, basename);
     }
     
     /**
