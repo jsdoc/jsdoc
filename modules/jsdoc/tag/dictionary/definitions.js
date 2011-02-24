@@ -399,7 +399,24 @@
             onTagged: function(doclet, tag) {
                 if (tag.value.type) { doclet.type = tag.value.type; }
             }
-        })
+        });
+        
+        dictionary.defineTag('typedef', {
+            canHaveType: true,
+            canHaveName: true,
+            onTagged: function(doclet, tag) {
+                setDocletKindToTitle(doclet, tag);
+                
+                if (tag.value) {
+                    if (tag.value.name) {
+                        doclet.addTag('name', tag.value.name);
+                    }
+                    if (tag.value.type) {
+                        doclet.type = tag.value.type;
+                    }
+                }
+            }
+        });
         
         dictionary.defineTag('undocumented', {
             mustNotHaveValue: true,
