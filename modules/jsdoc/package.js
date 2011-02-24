@@ -23,12 +23,14 @@
 	    /** The kind of this package.
 	        @readonly
 	        @default
+	        @type {string}
 	    */
 	    this.kind = 'package';
 	    
 	    json = JSON.parse(json);
 	    
 	    /** The name of this package.
+	        This value is found in the package.json file passed in as a command line option.
 	        @type {string}
 	    */
 	    this.name = json.name;
@@ -43,8 +45,10 @@
 	    */
 	    this.description = json.description;
 	    
-	    /** The version of this package.
+	    /** 
+	        The hash summary of the source file.
 	        @type {string}
+	        @since 3.2.0
 	    */
 	    this.version = json.version;
 	    
@@ -55,7 +59,7 @@
 	     * "licenses": [
 	     *     {
 	     *        "type": "GPLv2",
-	     *        "url": "http://www.example.com/licenses/gpl.html",
+	     *        "url": "http://www.example.com/licenses/gpl.html"
 	     *     }
 	     * ]
 	     */

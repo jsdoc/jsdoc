@@ -194,19 +194,19 @@
         margin-left: 30px;
     }
     .property-head {
-        margin-left: -30px;
+        margin-left: -20px;
         display: block;
         line-height: 1.2em;
     }
-    .property-head h4 {
-        color: #4782B5;
-    }
-    .property-title {
+    .property-name {
     	float: left;
     	margin: 0;
-    	padding: 0 20px 0 0;
-    	font-style: italic;
+    	padding: 0 10px 0 0;
+    	
+        font-style: italic;
+        font-weight: bold;
     	font-size: 1.2em;
+    	color: #4782B5;
     }
     .property-summary {
         color: #999;
@@ -219,8 +219,16 @@
     .property-details dt {
         font-weight: bold;
         margin-bottom: 4px;
+        padding-left: 10px;
+        clear: left;
+        float: left;
     }
-    
+    .property-details dd {
+        padding-left: 60px;
+    }
+    .property-deprecated {
+        text-decoration: line-through;
+    }
     
     .example-code {
     	border: 1px solid #999;
