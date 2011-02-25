@@ -15,7 +15,7 @@
 	
 	/**
 	    @constructor
-	    @mixes module:common.events.*
+	    @mixes module:common.events
 	 */
 	exports.Scanner = function() {
 	}

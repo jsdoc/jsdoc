@@ -10,7 +10,7 @@
 	var dictionary = require('jsdoc/tag/dictionary');
 	
 	/**
-	    @constructor
+	    Validate the given tag.
 	 */
 	exports.validate = function(tag, meta) {
 	    var tagDef = dictionary.lookUp(tag.title);

@@ -280,7 +280,7 @@
             }
         });
         
-        dictionary.defineTag('overload', {
+/*TODO?*/dictionary.defineTag('overload', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
@@ -385,6 +385,13 @@
             }
         });
         
+        dictionary.defineTag('summary', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.summary = tag.value;
+            }
+        });
+        
         dictionary.defineTag('this', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
@@ -404,7 +411,10 @@
                 return text;
             },
             onTagged: function(doclet, tag) {
-                if (tag.value.type) { doclet.type = tag.value.type; }
+                if (tag.value.type) {
+                    doclet.type = tag.value.type;
+                    doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
+                }
             }
         });
         

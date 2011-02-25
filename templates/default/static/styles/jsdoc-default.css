@@ -3,7 +3,6 @@ body
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
 	font-size: 13px;
 	color: #000;
-	background-color: #E2ECF0;
 }
 
 header
@@ -19,14 +18,64 @@ header
 	font-size: 18px;
 }
 
+#main {
+    float: left;
+    width: 100%;
+}
+
 section
 {
 	display: block;
-	margin: 14px 28px;
+	
 	background-color: #fff;
 	padding: 12px 24px;
-	-moz-border-radius: 7px;
-    border-radius: 7px
+    
+    margin-right: 240px;
+}
+
+nav
+{
+	display: block;
+	
+	float: left;
+    margin-left: -230px;
+    margin-top: 53px;
+    width: 220px;
+    border-left: 1px solid #ddd;
+    padding-left: 9px;
+}
+
+nav ul {
+    padding:0;
+    margin:0;
+    list-style-type:none;
+}
+
+nav h3 {
+    margin-top: 12px;
+}
+
+nav li {
+    margin-top: 6px;
+}
+
+nav a {
+    color: #000;
+}
+
+nav a:visited {
+    color: #000;
+}
+
+nav a:active {
+    color: #000;
+}
+
+footer {
+    display: block;
+    padding: 6px;
+    margin-top: 12px;
+    font-style: italic;
 }
 
 h1
@@ -69,7 +118,7 @@ h5
 	font-size: 16px;
 	font-weight: bold;
 	letter-spacing: -0.03em;
-	margin: 6px 0 3px 0;
+	margin: 8px 0 3px -16px;
 }
 
 h6
@@ -88,10 +137,10 @@ h6
     color: #aaa;
 }
 
-/*.description {
-    font-family: Palatino, "Palatino Linotype", serif;
-	font-size: 14px;
-}*/
+.details dt { width:100px; float:left;}
+.details dd { margin-left: 100px; }
+
+.description { margin-left: -16px; }
 
 .code-caption
 {

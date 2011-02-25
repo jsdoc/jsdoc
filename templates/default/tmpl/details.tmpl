@@ -1,0 +1,45 @@
+<dl class="details">
+	<?js if (this.version) {?>
+	<dt>Version:</dt>
+	<dd><?js= version ?></dd>
+	<?js } ?>
+	
+	<?js if (this.since) {?>
+	<dt>Since:</dt>
+	<dd><?js= since ?></dd>
+	<?js } ?>
+	
+	<?js if (this.deprecated) {?>
+	<dt>Deprecated:</dt>
+	<dd class="yesDef">Yes</dd>
+	<?js } ?>
+	
+	<?js if (this.author) {?>
+	<dt>Author:</dt>
+	<dd><?js= author ?></dd>
+	<?js } ?>
+	
+	<?js if (this.copyright) {?>
+	<dt>Copyright:</dt>
+	<dd><?js= copyright ?></dd>
+	<?js } ?>
+	
+	<?js if (this.license) {?>
+	<dt>License:</dt>
+	<dd><?js= license ?></dd>
+	<?js } ?>
+	
+	<dt>Source:</dt>
+	<dd><?js= meta.filename ?>, line <?js= meta.lineno ?></dd>
+	
+	<?js if (this.see && see.length) {?>
+	<dt>See:</dt>
+	<dd>
+        <ul><?js
+            see.forEach(function(s) {
+                print('<li>'+s+'</li>');
+            });
+        ?></ul>
+	</dd>
+	<?js } ?>
+</dl>

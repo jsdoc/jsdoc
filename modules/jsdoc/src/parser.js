@@ -12,7 +12,7 @@
         
     /** 
      * @class
-     * @mixes module:common/events.*
+     * @mixes module:common/events
      * 
      * @example <caption>Create a new parser.</caption>
      * var jsdocParser = new (require('jsdoc/src/parser').Parser)();

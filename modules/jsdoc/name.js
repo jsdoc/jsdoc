@@ -78,10 +78,15 @@
         if (about.variation) {
             doclet.variation = about.variation;
         }
-
-//dump('doclet', doclet);
     }
     
+    /**
+        @inner
+        @memberof module:jsdoc/name
+        @param {string} name
+        @param {string} kind
+        @returns {string} The name with unsafe names enclosed in quotes.
+     */
     function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters which need to be quoted by us
         if ( (jsdoc.tagDictionary.lookUp(kind).setsDocletDocspace) && /[^$_a-zA-Z0-9\/]/.test(name) ) {
             if (!/^[a-z_$-\/]+:\"/i.test(name)) {

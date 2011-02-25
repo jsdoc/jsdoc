@@ -22,6 +22,7 @@
             }
             partialData.render = arguments.callee;
             partialData.find = find;
+            partialData.linkto = linkto;
             partialData.htmlsafe = htmlsafe;
             
             return renderFunction.call(partialData, partialData);
@@ -35,38 +36,7 @@
         function htmlsafe(str) {
             return str.replace(/</g, '&lt;');
         }
-        
-//         var helpers = {
-//             linkTo: function() {
-//                 return function(text, render) {
-//                     var linkTo,
-//                         text = render(text);
-//     
-//                     if ( !data.find({longname: text}).length ) { return text; }
-//                     
-//                     linkTo = text.replace(/#/g, '%23');
-//                     return '<a href="#' + linkTo + '">' + text + '</a>';
-//                 }
-//             }
-//         };
-        
-        function summarize(doclet) {
-            var desc = doclet.description || '';
-            
-            desc = desc.replace(/<\/?p>/gi, ''); // full text may be HTML, remove P wrapper
-            desc = desc.trim();
-            
-            var m;
 
-            if ( m = /^([\s\S]+?)(?:\n|\r|\f|<br>|$)+([\s\S]*)$/.exec(desc) ) {
-                doclet.summary = m[1];
-                doclet.description = m[2]? m[2] : '';
-            }
-            
-            doclet.signature = '';
-            doclet.attribs = '';
-        }
-        
         function addSignatureParams(f) {
             var pnames = [];
             if (f.params) {
@@ -128,7 +98,9 @@
 	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
 
 	    data.forEach(function(doclet) {
-	        summarize(doclet);
+	        doclet.signature = '';
+            doclet.attribs = '';
+            
 	        if (doclet.kind === 'function' || doclet.kind === 'class') {
 	            addSignatureParams(doclet);
 	            addSignatureReturns(doclet);
@@ -157,7 +129,7 @@
 	        }
 	    });
 	    
-	    data.orderBy(['longname', 'kind', 'version', 'since']);
+	    data.orderBy(['longname', 'version', 'since']);
         
         // kinds of containers
         var globals = data.get( data.find({kind: ['property', 'function'], memberof: {isUndefined: true}}) ),
@@ -180,38 +152,70 @@
             fs.copyFile(fileName, toDir);
         });
         
-        // containers
-        //generate('Globals', globals, 'globals.html');
-        //generate('Modules', modules, 'modules.html');
-        //generate('Classes', classes, 'classes.html');
-        //generate('Namespaces', namespaces, 'namespaces.html');
+        function linkto(longname, linktext) {
+            var url = longnameToUrl[longname];
+            return url? '<a href="'+url+'">'+linktext+'</a>' : (linktext || longname);
+        }
         
         var urlToLongname = {},
             longnameToUrl = {};
         
-        var classes = data.get(data.find({kind: 'class'}));
-        for (var i = 0, len = classes.length; i < len; i++) {
-            var longname = classes[i].longname,
-                urlSafe = longname.replace(/[^$a-z0-9._-]/gi, '_');
+        data.forEach(function(doclet) {
+            var longname = doclet.longname,
+                urlSafe = longname.replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
+                url = urlSafe + '.html';
             
             // bidirectional lookups: url <=> longname
             urlToLongname[urlSafe]  = longname;
-            longnameToUrl[longname] = urlSafe;
+            longnameToUrl[longname] = url;
+        });
+        
+        var nav = '',
+            seen = {};
+        
+        var moduleNames = data.get( data.find({kind: 'module'}) );
+        if (moduleNames.length) {
+            nav = nav + '<h3>Modules</h3><ul>';
+            moduleNames.forEach(function(m) {
+                if (!seen[m.longname]) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                seen[m.longname] = true;
+            });
+            
+             nav = nav + '</ul>';
+        }
+        var classNames = data.get( data.find({kind: 'class'}) );
+        if (classNames.length) {
+            nav = nav + '<h3>Classes</h3><ul>';
+            classNames.forEach(function(c) {
+                if (!seen[c.longname]) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                seen[c.longname] = true;
+            });
+            
+             nav = nav + '</ul>';
         }
         
         for (var longname in longnameToUrl) {
             var classes = data.get( data.find({kind: 'class', longname: longname}) );
-            generate(classes[0].kind+': '+classes[0].name, classes, longnameToUrl[longname]+'.html');
+            if (classes.length) generate('Class: '+classes[0].name, classes, longnameToUrl[longname]);
+        
+            var modules = data.get( data.find({kind: 'module', longname: longname}) );
+            if (modules.length) generate('Module: '+modules[0].name, modules, longnameToUrl[longname]);
+            
+            var namespaces = data.get( data.find({kind: 'namespace', longname: longname}) );
+            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, longnameToUrl[longname]);
+        
         }
          
         function generate(title, docs, filename) {
             var data = {
                 title: title,
                 docs: docs,
+                nav: nav,
                 
                 // helpers
                 render: render,
                 find: find,
+                linkto: linkto,
                 htmlsafe: htmlsafe
             };
             
