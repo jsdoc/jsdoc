@@ -1,8 +1,20 @@
 body
 {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Verdana, Tahoma, sans-serif;
 	font-size: 13px;
 	color: #000;
+}
+
+a {
+    color: #444;
+}
+
+a:visited {
+    color: #444;
+}
+
+a:active {
+    color: #444;
 }
 
 header
@@ -14,7 +26,7 @@ header
 
 .class-description {
     font-style: italic;
-	font-family: Palatino, "Palatino Linotype", serif;
+	font-family: Palatino, 'Palatino Linotype', serif;
 	font-size: 18px;
 }
 
@@ -37,15 +49,19 @@ nav
 {
 	display: block;
 	
+
 	float: left;
     margin-left: -230px;
-    margin-top: 53px;
+    margin-top: 28px;
     width: 220px;
-    border-left: 1px solid #ddd;
+    border-left: 1px solid #ccc;
     padding-left: 9px;
 }
 
 nav ul {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
+    font-size: 13px;
+    line-height: 17px;
     padding:0;
     margin:0;
     list-style-type:none;
@@ -60,15 +76,15 @@ nav li {
 }
 
 nav a {
-    color: #000;
+    color: #5C5954;
 }
 
 nav a:visited {
-    color: #000;
+    color: #5C5954;
 }
 
 nav a:active {
-    color: #000;
+    color: #5C5954;
 }
 
 footer {
@@ -129,6 +145,12 @@ h6
 	font-style: italic;
 }
 
+.important
+{
+	font-weight: bold;
+	color: #950B02;
+}
+
 .ancestor-name {
     color: #ccc;
 }
@@ -145,7 +167,7 @@ h6
 .code-caption
 {
 	font-style: italic;
-	font-family: Palatino, "Palatino Linotype", serif;
+	font-family: Palatino, 'Palatino Linotype', serif;
 	font-size: 14px;
 	margin: 0;
 }
@@ -158,7 +180,7 @@ h6
 
 .sh_sourceCode code
 {
-	font-family: Consolas, "Lucida Console", Monaco, monospace;
+	font-family: Consolas, 'Lucida Console', Monaco, monospace;
 	font-size: 12px;
 	line-height: 18px;
 	display: block;

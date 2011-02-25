@@ -8,6 +8,8 @@
 
 	/**
 		Create an instance of the parser.
+		@classdesc A parser to interpret the key value pairs entered on the command
+		line.
 		@constructor
 	 */
 	exports.ArgParser = function() {
@@ -30,10 +32,10 @@
 	
 	/**
 	 * Provide information about a legal option.
-	 * @param {character} shortName
-	 * @param {string} longName
-	 * @param {boolean} hasValue
-	 * @param {string} helpText
+	 * @param {character} shortName The short name of the option, entered like: -T.
+	 * @param {string}    longName The equivalent long name of the option, entered like: --test.
+	 * @param {boolean}   hasValue Does this option require a value? Like: -t templatename
+	 * @param {string}    helpText
 	 * @example
 	 * myParser.addOption('t', 'template', true, 'The path to the template.');
 	 * myParser.addOption('h', 'help', false, 'Show the help message.');

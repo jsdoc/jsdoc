@@ -13,21 +13,25 @@
     </p>
     <?js } ?>
     
-    <?js if (this.type || this.deprecated || this.since || this.readonly || typeof this.defaultvalue !== 'undefined') { ?>
-    <dl>        
+    <?js if (this.version || this.deprecated || this.since || typeof this.defaultvalue !== 'undefined') { ?>
+    <dl>  
+        <?js if (this.version) { ?>
+        <dt>Version</dt>
+        <dd><?js= this.version ?></dd>
+        <?js } ?>
+        
         <?js if (this.deprecated) { ?>
-        <dt>Deprecated</dt>
-        <dd class="yesDef">Yes</dd>
+        <dt class="important">Deprecated</dt>
+        <?js
+            if (this.deprecated === true) print('<dd class="yesDef">Yes</dd>');
+            else print('<dd>'+this.deprecated+'</dd>');
+        ?>
+        
         <?js } ?>
         
         <?js if (this.since) { ?>
         <dt>Since</dt>
         <dd><?js= this.since ?></dd>
-        <?js } ?>
-        
-        <?js if (this.readonly) { ?>
-        <dt>Read-Only</dt>
-        <dd class="yesDef">Yes</dd>
         <?js } ?>
         
         <?js if (typeof this.defaultvalue !== 'undefined') { ?>

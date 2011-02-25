@@ -1,3 +1,7 @@
+/**
+    @module common/util
+ */
+
 exports.print = function() {
   for (var i = 0, len = arguments.length; i < len; ++i) {
     java.lang.System.out.print(String(arguments[i]));
@@ -65,7 +69,10 @@ exports.format = {
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
               'Oct', 'Nov', 'Dec'];
 
-// 26 Feb 16:19:34
+/**
+ * Create a timestamp string.
+ * @returns {string} Like 26 Feb 16:19:34
+ */
 exports.timestamp = function() {
   var d = new Date();
   var time = [pad(d.getHours()),
@@ -74,31 +81,27 @@ exports.timestamp = function() {
   return [d.getDate(), months[d.getMonth()], time].join(' ');
 }
 
-
 exports.log = function(msg) {
   exports.puts(exports.timestamp() + ' - ' + msg.toString());
 };
 
 /**
  * Inherit the prototype methods from one constructor into another.
- *
- * The Function.prototype.inherits from lang.js rewritten as a standalone
- * function (not on Function.prototype). NOTE: If this file is to be loaded
- * during bootstrapping this function needs to be revritten using some native
- * functions as prototype setup using normal JavaScript does not work as
- * expected during bootstrapping (see mirror.js in r114903).
- *
- * @param {function} ctor Constructor function which needs to inherit the
- *     prototype.
+ * @param {function} ctor Constructor function which needs to inherit the prototype.
  * @param {function} superCtor Constructor function to inherit prototype from.
  */
 exports.inherits = function(ctor, superCtor) {
-  ctor.super_ = superCtor;
-  ctor.prototype = Object.create(superCtor.prototype, {
-    constructor: { value: ctor, enumerable: false }
-  });
+    ctor.super_ = superCtor;
+    ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: { value: ctor, enumerable: false }
+    });
 };
 
+/**
+ * Mix in the members of a source object over a target object.
+ * @param {object} target
+ * @param {object} source
+ */
 exports.mixin = function(target, source /*...*/){
     var sourceProperty;
     

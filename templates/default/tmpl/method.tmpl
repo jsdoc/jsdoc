@@ -14,6 +14,31 @@
     </p>
     <?js } ?>
     
+    <?js if (this.version || this.deprecated || this.since) { ?>
+    <dl>        
+        <?js if (this.version) { ?>
+        <dt>Version</dt>
+        <dd><?js= this.version ?></dd>
+        <?js } ?>
+        
+        <?js if (this.deprecated) { ?>
+        <dt class="important">Deprecated</dt>
+        <?js
+            if (this.deprecated === true) print('<dd class="yesDef">Yes</dd>');
+            else print('<dd>'+this.deprecated+'</dd>');
+        ?>
+        
+        <?js } ?>
+        
+        <?js if (this.since) { ?>
+        <dt>Since</dt>
+        <dd><?js= this.since ?></dd>
+        <?js } ?>
+    </dl>
+    <?js } ?>
+    
+    
+    
     <?js
     if (this.params && params.length) {
         print('<h5>Parameters:</h5>');
