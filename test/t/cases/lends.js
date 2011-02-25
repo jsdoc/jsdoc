@@ -2,7 +2,7 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/lends.js'),
         init = docSet.getByLongname('Person#initialize'),
         say = docSet.getByLongname('Person#say'),
-        name = docSet.getByLongname('Person#say');
+        name = docSet.getByLongname('Person#name');
     
     //dump(docSet);
     

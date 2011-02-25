@@ -2,7 +2,9 @@
 var Person = makeClass(
     /** @lends Person# */
     {
-        /** @constructs Person */
+        /** Construct a Person.
+            @constructs Person
+         */
         initialize: function(name) {
             /** The name of the person. */
             this.name = name;
