@@ -1,6 +1,7 @@
 /**
-	@overview File system stuff.
-	@author Michael Mathews <micmath@gmail.com>
+    Functions related to interaction with the filesystem.
+    @module common/fs
+    @author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
@@ -9,6 +10,12 @@
 		File = java.io.File,
 		defaultEncoding = java.lang.System.getProperty('file.encoding');
 	
+	/**
+	    Read the contents of a file.
+	    @param {string} path
+	    @param {string} encoding
+	    @returns {string} The contents of the file.
+	 */
 	exports.read = function(path, encoding) {
 		var options = options || {},
 			encoding = encoding || defaultEncoding,
@@ -22,6 +29,12 @@
 		return String( input.next() );
 	}
 	
+	/**
+	    Write the content to a file.
+	    @param {string} path
+	    @param {string} content
+	    @param {string} encoding
+	 */
 	exports.write = function(path, content, encoding) {
 		var options = options || {},
 			encoding = encoding || defaultEncoding,

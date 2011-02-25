@@ -1,9 +1,13 @@
 /**
+    Recursively print out all names and values in a data structure.
     @module common/dumper
     @author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 (function() {
+    /**
+        @param {any} object
+     */
     exports.dump = function(object) {
         indentBy = 0;
         output = '';
@@ -25,14 +29,23 @@
         return padding;
     }
     
+    /**
+        @param {string} openingBrace - The opening brace to add, like "{".
+        @private
+        @inner
+        @memberof module:common/dumper
+     */
     function indent(openingBrace) {
         indentBy++;
         if (openingBrace) output += openingBrace + '\n';
     }
     
     /**
-        @param {string|boolean} The closing brace to add, like "}" or if boolean
-        `false` no closing brace nor trailing newline;
+        @param {string|boolean} closingBrace - The closing brace to add, like "}" or if boolean
+        `false` no closing brace or trailing newline.
+        @private
+        @inner
+        @memberof module:common/dumper
      */
     function outdent(closingBrace) {
         indentBy--;

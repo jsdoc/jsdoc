@@ -1,15 +1,12 @@
-/**
-	@module common/events
-	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
- */
 (function() { 
     /**
-        @mixin module:common/events
+        Functions related to events. Designed to be mixed into other classes.
+	    @exports common/events
+        @author Michael Mathews <micmath@gmail.com>
+	    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
     */
     module.exports = {
         /**
-            @function module:common/events.on
             @param {string} type
             @param {function} handler
             @returns this
@@ -33,7 +30,6 @@
         },
         
         /**
-            @function module:common/events.fire
             @param {string} type
             @param {object} [eventData]
             @returns this
@@ -54,7 +50,6 @@
         },
         
         /**
-            @function module:common/events.removeListener
             @param {string} type
             @param {function} handler
         */

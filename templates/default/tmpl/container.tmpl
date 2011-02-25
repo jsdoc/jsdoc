@@ -42,6 +42,17 @@
     if (doc.kind === 'class') {
         print(render('method.tmpl', doc));
     }
+    
+    else {
+        if (doc.description) {
+            print('<p class="description">' + doc.description + '</p>');
+        }
+        
+        if (doc.examples && doc.examples.length) {
+            print('<h3>Example' + (doc.examples.length > 1? 's':'') + '</h3>');
+            print( render('examples.tmpl', doc.examples) );
+        }
+    }
     ?>
     
     <?js

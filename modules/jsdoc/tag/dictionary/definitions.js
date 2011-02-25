@@ -6,6 +6,9 @@
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 (function() {
+    /** Populate the given dictionary with all known JSDoc tag definitions.
+        @param {module:jsdoc/tag/dictionary.Dictionary} dictionary
+    */
     exports.defineTags = function(dictionary) {
         
         dictionary.defineTag('access', {

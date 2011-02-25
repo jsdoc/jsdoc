@@ -1,4 +1,5 @@
 /**
+	Parse the command line arguments.
 	@module common/args
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
@@ -9,18 +10,18 @@
 		Create an instance of the parser.
 		@constructor
 	 */
-	exports.Parser = function() {
+	exports.ArgParser = function() {
 		this._options = [];
 	}
 	
-	exports.Parser.prototype._getOptionByShortName = function(name) {
+	exports.ArgParser.prototype._getOptionByShortName = function(name) {
 		for (var i = this._options.length; i--;) {
 			if (this._options[i].shortName === name) { return this._options[i]; }
 		}
 		return null;
 	}
 	
-	exports.Parser.prototype._getOptionByLongName = function(name) {
+	exports.ArgParser.prototype._getOptionByLongName = function(name) {
 		for (var i = this._options.length; i--;) {
 			if (this._options[i].longName === name) { return this._options[i]; }
 		}
@@ -29,25 +30,23 @@
 	
 	/**
 	 * Provide information about a legal option.
-	 * @method Parser#addOption
-	 * @param shortName
-	 * @param longName
-	 * @param hasValue
-	 * @param helpText
+	 * @param {character} shortName
+	 * @param {string} longName
+	 * @param {boolean} hasValue
+	 * @param {string} helpText
 	 * @example
 	 * myParser.addOption('t', 'template', true, 'The path to the template.');
 	 * myParser.addOption('h', 'help', false, 'Show the help message.');
 	 */
-	exports.Parser.prototype.addOption = function(shortName, longName, hasValue, helpText) {
+	exports.ArgParser.prototype.addOption = function(shortName, longName, hasValue, helpText) {
  		this._options.push({shortName: shortName, longName: longName, hasValue: hasValue, helpText: helpText});
  	};
  	
  	/**
  		Generate a summary of all the options with corresponding help text.
- 		@method Parser#help
  		@returns {string}
  	 */
- 	exports.Parser.prototype.help = function() {
+ 	exports.ArgParser.prototype.help = function() {
  		var help = 'OPTIONS:\n',
  			option;
  		
@@ -74,14 +73,13 @@
 	
 	/**
 		Get the options.
-		@method Parser#parse
-		@param args An array, like ['-x', 'hello']
-		@param defaults An optional collection of default values.
+		@param {Array.<string>} args An array, like ['-x', 'hello']
+		@param {Object} [defaults={}] An optional collection of default values.
 		@returns {Object} The keys will be the longNames, or the shortName if
 		no longName is defined for that option. The values will be the values
 		provided, or `true` if the option accepts no value.
 	 */
-	exports.Parser.prototype.parse = function(args, defaults) {
+	exports.ArgParser.prototype.parse = function(args, defaults) {
  		var result = defaults || {};
  		
  		result._ = [];

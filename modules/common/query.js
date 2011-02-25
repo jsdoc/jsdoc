@@ -1,5 +1,5 @@
 /**
-    Support parsing of command line querystrings into JS objects.
+    @description Support parsing of command line querystrings into JS objects.
     @module common/query
     @example
     
