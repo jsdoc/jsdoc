@@ -162,10 +162,10 @@
             longnameToUrl = {};
         
         data.forEach(function(doclet) {
-            if (~containers.indexOf(doclet.kind)) {
+            if (doclet.memberof && containers.indexOf(doclet.kind) < 0) {
                 var longname = doclet.longname,
                     urlSafe = doclet.memberof.replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
-                    url = urlSafe + '.html#'doclet.name;
+                    url = urlSafe + '.html#'+doclet.name;
             }
             else {
                 var longname = doclet.longname,
