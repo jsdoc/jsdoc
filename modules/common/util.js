@@ -71,14 +71,14 @@ var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
 
 /**
  * Create a timestamp string.
- * @returns {string} Like 26 Feb 16:19:34
+ * @returns {string} Like 26 Feb 2011 16:19:34
  */
 exports.timestamp = function() {
   var d = new Date();
   var time = [pad(d.getHours()),
               pad(d.getMinutes()),
               pad(d.getSeconds())].join(':');
-  return [d.getDate(), months[d.getMonth()], time].join(' ');
+  return [d.getDate(), months[d.getMonth()], d.getFullYear(), time].join(' ');
 }
 
 exports.log = function(msg) {
