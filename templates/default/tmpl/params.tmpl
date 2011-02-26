@@ -74,7 +74,7 @@
             <?js
                 if (param.type && param.type.names) {
                     param.type.names.forEach(function(name, i) {
-                        print( htmlsafe(name) );
+                        print( linkto(name, htmlsafe(name)) );
                         if (i < param.type.names.length-1) { print(' | '); }
                     }); 
                 }

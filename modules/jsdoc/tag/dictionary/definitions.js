@@ -7,7 +7,7 @@
  */
 (function() {
     /** Populate the given dictionary with all known JSDoc tag definitions.
-        @param {module:jsdoc/tag/dictionary.Dictionary} dictionary
+        @param {module:jsdoc/tag/dictionary} dictionary
     */
     exports.defineTags = function(dictionary) {
         
