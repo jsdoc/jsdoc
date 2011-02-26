@@ -96,7 +96,16 @@
         data.remove({undocumented: true});
 	    
 	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
-
+        
+        function renderLinks(text) {
+            text = text.replace(/\{@link (\S+)\}/g, function(match, longname) {
+            var link = linkto(longname);
+                return link;
+            });
+            
+            return text;
+        }
+        
 	    data.forEach(function(doclet) {
 	        doclet.signature = '';
             doclet.attribs = '';
@@ -176,6 +185,11 @@
             // bidirectional lookups: url <=> longname
             urlToLongname[urlSafe]  = longname;
             longnameToUrl[longname] = url;
+        });
+        
+        data.forEach(function(doclet) {
+            if (doclet.classdesc) doclet.classdesc = renderLinks(doclet.classdesc);
+            if (doclet.description) doclet.description = renderLinks(doclet.description);
         });
         
         var nav = '',
