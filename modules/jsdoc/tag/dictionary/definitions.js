@@ -29,8 +29,15 @@
             onTagged: function(doclet, tag) {
                 doclet.alias = tag.value;
             }
-        })
-        .synonym('lends');
+        });
+        
+        dictionary.defineTag('lends', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.alias = tag.value;
+                doclet.addTag('undocumented');
+            }
+        });
         
         dictionary.defineTag('author', {
             mustHaveValue: true,

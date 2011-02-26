@@ -55,7 +55,6 @@
                 if (!newDoclet.memberof && e.astnode) {
                     var memberofName,
                         scope;
-                    
                     if ( /^(exports|this)(\.|$)/.test(newDoclet.name) ) {
                         var nameStartsWith = RegExp.$1;
                         
