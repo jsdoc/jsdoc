@@ -157,13 +157,21 @@
             return url? '<a href="'+url+'">'+(linktext || longname)+'</a>' : (linktext || longname);
         }
         
-        var urlToLongname = {},
+        var containers= ['class', 'module', 'namespace'],
+            urlToLongname = {},
             longnameToUrl = {};
         
         data.forEach(function(doclet) {
-            var longname = doclet.longname,
-                urlSafe = longname.replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
-                url = urlSafe + '.html';
+            if (~containers.indexOf(doclet.kind)) {
+                var longname = doclet.longname,
+                    urlSafe = doclet.memberof.replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
+                    url = urlSafe + '.html#'doclet.name;
+            }
+            else {
+                var longname = doclet.longname,
+                    urlSafe = longname.replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
+                    url = urlSafe + '.html';
+            }
             
             // bidirectional lookups: url <=> longname
             urlToLongname[urlSafe]  = longname;
