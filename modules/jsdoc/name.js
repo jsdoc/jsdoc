@@ -80,6 +80,8 @@
         if (about.variation) {
             doclet.variation = about.variation;
         }
+
+//dump('doclet', doclet);
     }
     
     /**
