@@ -9,10 +9,13 @@
 	<dd><?js= since ?></dd>
 	<?js } ?>
 	
-	<?js if (this.deprecated) {?>
-	<dt>Deprecated:</dt>
-	<dd class="yesDef">Yes</dd>
-	<?js } ?>
+	<?js if (this.deprecated) { ?>
+        <dt class="important">Deprecated<?js
+            if (this.deprecated === true) print('</dt><dd class="yes-def">Yes</dd>');
+            else print(':</dt><dd>'+this.deprecated+'</dd>');
+        ?>
+        
+        <?js } ?>
 	
 	<?js if (this.author) {?>
 	<dt>Author:</dt>
@@ -37,7 +40,7 @@
 	<dd>
         <ul><?js
             see.forEach(function(s) {
-                print('<li>'+s+'</li>');
+                print('<li>'+linkto(s)+'</li>');
             });
         ?></ul>
 	</dd>

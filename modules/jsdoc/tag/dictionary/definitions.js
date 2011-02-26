@@ -446,6 +446,13 @@
             }
         });
         
+        dictionary.defineTag('variation', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                doclet.variation = tag.value;
+            }
+        });
+        
         dictionary.defineTag('version', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {

@@ -154,7 +154,7 @@
         
         function linkto(longname, linktext) {
             var url = longnameToUrl[longname];
-            return url? '<a href="'+url+'">'+linktext+'</a>' : (linktext || longname);
+            return url? '<a href="'+url+'">'+(linktext || longname)+'</a>' : (linktext || longname);
         }
         
         var urlToLongname = {},
