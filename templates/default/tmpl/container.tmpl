@@ -117,7 +117,7 @@
     
     <?js
         var classes = find({kind: 'class', memberof: doc.longname}); 
-        if (classes && classes.length && classes.forEach) { 
+        if (doc.kind !== 'globalobj' && classes && classes.length) { 
     ?>
         
         <h3 class="subsection-title">Classes</h3>
@@ -135,7 +135,7 @@
     
     <?js
         var namespaces = find({kind: 'namespace', memberof: doc.longname}); 
-        if (namespaces && namespaces.length && namespaces.forEach) { 
+        if (doc.kind !== 'globalobj' && namespaces && namespaces.length) { 
     ?>
         
         <h3 class="subsection-title">Namespaces</h3>

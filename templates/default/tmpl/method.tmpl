@@ -16,6 +16,12 @@
     
     <?js print(render('details.tmpl', this)); ?>
     
+    <?js
+    if (this['this']) {
+        print('<h5>This:</h5>');
+        print( '<ul><li>'+linkto(this['this'], this['this'])+'</li></ul>' );
+    }
+    ?>
     
     <?js
     if (this.params && params.length) {

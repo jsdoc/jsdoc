@@ -183,9 +183,9 @@
             longnameToUrl = {};
         
         data.forEach(function(doclet) {
-            if (doclet.memberof && containers.indexOf(doclet.kind) < 0) {
+            if (containers.indexOf(doclet.kind) < 0) {
                 var longname = doclet.longname,
-                    urlSafe = doclet.memberof.replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
+                    urlSafe = ('global' || doclet.memberof).replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
                     url = urlSafe + '.html#'+doclet.name;
             }
             else {
@@ -241,6 +241,17 @@
             nav = nav + '</ul>';
         }
         
+        var globalNames = data.get( data.find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}}) );
+        if (globalNames.length) {
+            nav = nav + '<h3>Global</h3><ul>';
+            globalNames.forEach(function(g) {
+                if (!seen[g.longname]) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                seen[g.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+        
         for (var longname in longnameToUrl) {
             var classes = data.get( data.find({kind: 'class', longname: longname}) );
             if (classes.length) generate('Class: '+classes[0].name, classes, longnameToUrl[longname]);
@@ -249,9 +260,11 @@
             if (modules.length) generate('Module: '+modules[0].name, modules, longnameToUrl[longname]);
             
             var namespaces = data.get( data.find({kind: 'namespace', longname: longname}) );
-            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, longnameToUrl[longname]);
-        
+            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, longnameToUrl[longname]);        
         }
+        
+        if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
+
          
         function generate(title, docs, filename) {
             var data = {
