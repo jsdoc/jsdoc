@@ -26,10 +26,22 @@
  
 <header>
     <?js
-        if (doc.variation) {
-           print('<h2 id="'+doc.variation+'" class="variation">'+doc.name+'<sup>'+doc.variation+'</sup></h2>'); 
+        print('<h2>');
+    
+        if (doc.ancestors && doc.ancestors.length) {
+            print('<span class="ancestors">'+doc.ancestors.join(' » ')+'</span>'); 
+            print(' » '+doc.name);
+        }
+        else {
+            print(doc.name)
         }
         
+        if (doc.variation) {
+           print('<sup>'+doc.variation+'</sup>'); 
+        }
+        
+        print('</h2>');
+    
         if (doc.classdesc) {
            print('<p class="class-description">'+doc.classdesc+'</p>'); 
         }

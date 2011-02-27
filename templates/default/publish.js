@@ -51,6 +51,18 @@
             f.signature = (f.signature || '') + '('+pnames.join(', ')+')';
         }
         
+        function generateAncestry(doc) {
+            var ancestors = [];
+
+            while (doc = doc.memberof) {
+                doc = data.get( data.find({longname: doc}) );
+                if (doc) { doc = doc[0]; }
+                if (!doc) break;
+                ancestors.unshift( linkto(doc.longname, doc.name) );
+            }
+            return ancestors;
+        }
+        
         function addSignatureReturns(f) {
             var returnTypes = [];
             
@@ -187,9 +199,12 @@
             longnameToUrl[longname] = url;
         });
         
+        // do this after the urls have all been generated
         data.forEach(function(doclet) {
             if (doclet.classdesc) doclet.classdesc = renderLinks(doclet.classdesc);
             if (doclet.description) doclet.description = renderLinks(doclet.description);
+            
+            doclet.ancestors = generateAncestry(doclet);
         });
         
         var nav = '',
@@ -203,7 +218,17 @@
                 seen[m.longname] = true;
             });
             
-             nav = nav + '</ul>';
+            nav = nav + '</ul>';
+        }
+        var namespaceNames = data.get( data.find({kind: 'namespace'}) );
+        if (namespaceNames.length) {
+            nav = nav + '<h3>Namespaces</h3><ul>';
+            namespaceNames.forEach(function(n) {
+                if (!seen[n.longname]) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                seen[n.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
         }
         var classNames = data.get( data.find({kind: 'class'}) );
         if (classNames.length) {
@@ -213,7 +238,7 @@
                 seen[c.longname] = true;
             });
             
-             nav = nav + '</ul>';
+            nav = nav + '</ul>';
         }
         
         for (var longname in longnameToUrl) {
