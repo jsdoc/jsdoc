@@ -53,8 +53,7 @@
                 doclet.augment( firstWordOf(tag.value) );
             }
         })
-        .synonym('extends')
-        .synonym('inherits');
+        .synonym('extends');
         
         // that adds on to me
         dictionary.defineTag('borrows', {
@@ -141,8 +140,7 @@
             onTagged: function(doclet, tag) {
                 doclet.deprecated = tag.value || true;
             }
-        })
-        .synonym('deprec');
+        });
         
         dictionary.defineTag('description', {
             mustHaveValue: true
@@ -183,10 +181,8 @@
                 
                 doclet.addTag('alias', modName);
                 doclet.addTag('kind', 'module');
-                //doclet.addTag('undocumented');
              }
-        })
-        .synonym('defines');
+        });
         
         dictionary.defineTag('file', {
             onTagged: function(doclet, tag) {
@@ -220,6 +216,7 @@
             mustNotHaveValue: true,
             onTagged: function(doclet, tag) {
                 doclet.scope = 'global';
+                delete doclet.memberof;
             }
         });
         
@@ -274,8 +271,6 @@
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
                 doclet.name || setDocletNameToFilename(doclet, tag);
-                
-                //applyNamespace(doclet, tag);
              }
         });
         
@@ -289,15 +284,6 @@
                 setDocletNameToValue(doclet, tag);
             }
         });
-        
-/*TODO?*/dictionary.defineTag('overload', {
-            mustHaveValue: true,
-            onTagged: function(doclet, tag) {
-                setDocletKindToTitle(doclet, tag);
-                setDocletNameToValue(doclet, tag);
-            }
-        })
-        .synonym('overloads');
         
         dictionary.defineTag('param', {
             mustHaveValue: true,
@@ -318,23 +304,12 @@
             }
         });
         
-        dictionary.defineTag('project', {
-            mustHaveValue: true,
-            onTagged: function(doclet, tag) {
-                setDocletKindToTitle(doclet, tag);
-                setDocletNameToValue(doclet, tag);
-                applyNamespace(doclet, tag);
-            }
-        });
-        
         dictionary.defineTag('property', {
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
             }
-        })
-        .synonym('field')
-        .synonym('var');
+        });
         
         dictionary.defineTag('protected', {
             mustNotHaveValue: true,
