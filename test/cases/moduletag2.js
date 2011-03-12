@@ -1,6 +1,5 @@
 /** @module color/mixer */
 
-/** @lends module:color/mixer */
 module.exports = {
     /** Blend two colors together. */
     blend: function(color1, color2) { }

@@ -99,22 +99,6 @@
         }  
     ?>
     
-     <?js
-        if (doc.borrowed && doc.borrowed.length && doc.borrowed.forEach) { 
-     ?>
-        
-        <h3 class="subsection-title">Borrows</h3>
-        
-        <ul><?js
-            doc.borrowed.forEach(function(b) {
-        ?>
-            <li><?js= linkto(b.from, b.from) ?></li>
-        <?js
-            });
-        ?></ul>
-        
-    <?js } ?>
-    
     <?js
         var classes = find({kind: 'class', memberof: doc.longname}); 
         if (doc.kind !== 'globalobj' && classes && classes.length) { 

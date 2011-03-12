@@ -55,7 +55,7 @@
                 if (!newDoclet.memberof && e.astnode) {
                     var memberofName,
                         scope;
-                    if ( /^(exports|this)(\.|$)/.test(newDoclet.name) ) {
+                    if ( /^((module.)?exports|this)(\.|$)/.test(newDoclet.name) ) {
                         var nameStartsWith = RegExp.$1;
                         
                         newDoclet.name = newDoclet.name.replace(/^(exports|this)(\.|$)/, '');
@@ -64,6 +64,10 @@
                         if (nameStartsWith === 'exports' && currentModule) {
                             memberofName = currentModule;
                             scope = 'static';
+                        }
+                        else if (newDoclet.name === 'module.exports' && currentModule) {
+                                newDoclet.addTag('name', currentModule);
+                                newDoclet.postProcess();
                         }
                         else {
                             // like /** @module foo */ exports = {bar: 1};
