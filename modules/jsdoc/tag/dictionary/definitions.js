@@ -90,9 +90,13 @@
         });
         
         dictionary.defineTag('constant', {
+            canHaveType: true,
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
+                if (tag.value && tag.value.type) {
+                    doclet.type = tag.value.type;
+                }
             }
         })
         .synonym('const');
@@ -170,6 +174,9 @@
             onTagged: function(doclet, tag) {
                 if (!doclet.exceptions) { doclet.exceptions = []; }
                 doclet.exceptions.push(tag.value);
+                if (tag.value && tag.value.type) {
+                    doclet.type = tag.value.type;
+                }
             }
         })
         .synonym('throws');
@@ -266,11 +273,15 @@
         });
         
         dictionary.defineTag('module', {
+            canHaveType: true,
             isNamespace: true,
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
                 doclet.name || setDocletNameToFilename(doclet, tag);
+                if (tag.value && tag.value.type) {
+                    doclet.type = tag.value.type;
+                }
              }
         });
         
@@ -279,9 +290,13 @@
         });
         
         dictionary.defineTag('namespace', {
+            canHaveType: true,
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
+                if (tag.value && tag.value.type) {
+                    doclet.type = tag.value.type;
+                }
             }
         });
         
@@ -305,9 +320,13 @@
         });
         
         dictionary.defineTag('property', {
+            canHaveType: true,
             onTagged: function(doclet, tag) {
                 setDocletKindToTitle(doclet, tag);
                 setDocletNameToValue(doclet, tag);
+                if (tag.value && tag.value.type) {
+                    doclet.type = tag.value.type;
+                }
             }
         });
         
@@ -396,9 +415,9 @@
                 return text;
             },
             onTagged: function(doclet, tag) {
-                if (tag.value.type) {
+                if (tag.value && tag.value.type) {
                     doclet.type = tag.value.type;
-                    doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
+                    if (doclet.kind === 'function') doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
                 }
             }
         });
@@ -453,8 +472,11 @@
 	}
 	
 	function setDocletNameToValue(doclet, tag) {
-	    if (tag.text) {
-	        doclet.addTag( 'name', tag.text );
+        if (tag.value && tag.value.description) { // as in a long tag
+            doclet.addTag( 'name', tag.value.description);
+        }
+	    else if (tag.text) { // or a short tag
+	        doclet.addTag('name', tag.text);
 	    }
 	}
 	
