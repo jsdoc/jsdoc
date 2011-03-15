@@ -32,6 +32,11 @@
 	<dd><?js= license ?></dd>
 	<?js } ?>
 	
+	<?js if (this.defaultvalue) {?>
+	<dt>Default Value:</dt>
+	<dd><?js= this.defaultvalue ?></dd>
+	<?js } ?>
+	
 	<?js if (this.meta) {?>
 	<dt>Source:</dt>
 	<dd><?js= meta.filename ?>, line <?js= meta.lineno ?></dd>

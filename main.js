@@ -7,7 +7,6 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-
 /** The absolute path to the base directory of the jsdoc application.
     @type string
     @global
