@@ -4,7 +4,8 @@
     },
     
     "source": {
-        "includePattern": ".+\\.js(doc)?$"
+        "includePattern": ".+\\.js(doc)?$",
+        "excludePattern": "(^|\\/)_"
     },
     
     "plugins": [

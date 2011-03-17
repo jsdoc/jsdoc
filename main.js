@@ -212,17 +212,10 @@ function main() {
 
     if (env.opts._.length > 0) { // are there any files to scan and parse?
         
-        // allow filtering of found source files
-        if (env.conf.source && env.conf.source.includePattern) {
-            var includeRegexp = new RegExp(env.conf.source.includePattern);
-            app.jsdoc.scanner.on('sourceFileFound', function(e) {
-                if ( !includeRegexp.test(e.fileName) ) {
-                    return false;
-                }
-            });
-        }
+        var includeMatch = (env.conf.source && env.conf.source.includePattern)? new RegExp(env.conf.source.includePattern) : null,
+            excludeMatch = (env.conf.source && env.conf.source.excludePattern)? new RegExp(env.conf.source.excludePattern) : null;
         
-        sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined));
+        sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), includeMatch, excludeMatch);
         
         require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
         

@@ -27,7 +27,7 @@
 		@param {number} [depth=1]
 		@fires sourceFileFound
 	 */
-	exports.Scanner.prototype.scan = function(searchPaths, depth) {
+	exports.Scanner.prototype.scan = function(searchPaths, depth, includeMatch, excludeMatch) {
 		var filePaths = [],
 		    that = this;
 
@@ -36,6 +36,18 @@
 
 		searchPaths.forEach(function($) {
 			filePaths = filePaths.concat(common.fs.ls($, depth));
+		});
+		
+		filePaths = filePaths.filter(function($) {
+		    if (includeMatch && !includeMatch.test($)) {
+		        return false
+		    }
+		    
+		    if (excludeMatch && excludeMatch.test($)) {
+		        return false
+		    }
+		    
+		    return true;
 		});
 		
 		filePaths = filePaths.filter(function($) {

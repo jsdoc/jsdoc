@@ -68,6 +68,7 @@ testFile('test/t/common/util.js');
 testFile('test/t/common/dumper.js');
 testFile('test/t/common/events.js');
 testFile('test/t/common/query.js');
+testFile('test/t/common/scanner.js');
 
 testFile('test/t/jsdoc/opts/parser.js');
 testFile('test/t/jsdoc/src/parser.js');
