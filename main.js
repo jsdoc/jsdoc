@@ -243,44 +243,10 @@ function main() {
             docs.index = index;
         }
         
-        function doop(o) {
-            return eval(uneval(o));
-        }
-        
-        function resolveBorrowed(docs) {
-            docs.forEach(function(doc) {
-                if (doc.borrowed) {
-                    doc.borrowed.forEach(function(b, i) {
-                        var from = docs.index[b.from],
-                            asName = b['as'] || b.from;
-   
-                        if (from) {
-                            var cloned = doop(from);
-                            
-                            cloned.forEach(function(c) {
-                                asName = asName.replace(/^prototype\./, '#');
-                                var parts = asName.split('#');
-                                
-                                if (parts.length === 2) c.scope = 'instance';
-                                else c.scope = 'static';
-
-                                asName = parts.pop();
-                                c.name = asName;
-                                c.memberof = doc.longname;
-                                c.longname = c.memberof + (c.scope === 'instance'? '#': '.') + c.name;
-                                docs.push(c);
-                            });
-                            
-                        }
-                    });
-                }
-            });
-        }
-        
-        
         indexAll(docs);
-        resolveBorrowed(docs);
-
+        
+        require('jsdoc/borrow').resolveBorrows(docs);
+        
         if (env.opts.expel) {
             dump(docs);
             exit(0);
@@ -299,8 +265,5 @@ function main() {
         }
         else { // TODO throw no publish warning?
         }
-        
-        
-        
     }
 }

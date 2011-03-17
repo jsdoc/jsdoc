@@ -43,7 +43,7 @@ var testhelpers = {
         require('jsdoc/src/handlers').attachTo(testParser);
         
         doclets = testParser.parse('javascript:' + sourceCode);
-        
+        testhelpers.indexAll(doclets);
         
         return {
             doclets: doclets,
@@ -53,6 +53,14 @@ var testhelpers = {
                 });
             }
         };
+    },
+    indexAll: function(docs) {
+        var index = {};
+        docs.forEach(function(doc) {
+            if (!index[doc.longname]) index[doc.longname] = [];
+            index[doc.longname].push(doc);
+        });
+        docs.index = index;
     }
 };
 
@@ -87,7 +95,6 @@ testFile('test/t/cases/innerscope2.js');
 
 testFile('test/t/cases/modules/data/mod-1.js');
 testFile('test/t/cases/modules/data/mod-2.js');
-
 
 testFile('test/t/cases/accesstag.js');
 testFile('test/t/cases/alias.js');

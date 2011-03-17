@@ -2,6 +2,13 @@
     @borrows rtrim
 */
 var str = {
+    rtrim: util.rtrim
+};
+
+/** @namespace
+    @borrows rtrim
+*/
+var util = {
     rtrim: rtrim
 };
 
