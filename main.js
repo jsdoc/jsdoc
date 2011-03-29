@@ -39,19 +39,20 @@ function require(id) { // like commonjs
     }
     
     if (moduleContent) {
-        try {
-            var f = new Function('require', 'exports', 'module', moduleContent),
+            try {
+                var f = new Function('require', 'exports', 'module', moduleContent),
                 exports = require.cache[moduleUri] || {},
                 module = { id: id, uri: moduleUri };
     
-            f.call({}, require, exports, module);
+            
+                f.call({}, require, exports, module);
+            }
+            catch(e) {
+                throw 'Unable to require source code from "' + moduleUri + '": ' + e.toSource();
+            }
             
             exports = module.exports || exports;
             require.cache[id] = exports;
-        }
-        catch(e) {
-            throw 'Unable to require source code from "' + moduleUri + '": ' + e.toSource();
-        }
     }
     else {
         throw 'The requested module cannot be returned: no content for id: "' + id + '" in paths: ' + require.paths.join(', ');
