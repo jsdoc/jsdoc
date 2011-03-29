@@ -2,8 +2,8 @@
  
 <project name="jsdoc" default="jar-install">
 
-    <property file="java-build/build.properties" />
-    <property name="build.templates" location="java-build/templates" />
+    <property file="build-files/build.properties" />
+    <property name="build.templates" location="build-files/templates" />
     
     <tstamp>
         <format property="NOW" pattern="yyyy-MM-dd-HHmm" locale="en,UK"/>
@@ -33,39 +33,39 @@
     
     <!-- steps to build and install the jsdoc.jar file: clean, compile, build -->
     <target name="jar-clean">
-        <delete dir="java-build/java/build" />
+        <delete dir="build-files/java/build" />
         <delete file="jsdoc.jar" />
     </target>
     
     <target name="jar-compile">
         <path id="local-classes">
-            <fileset dir="java-build/java/classes/">
+            <fileset dir="build-files/java/classes/">
                 <include name="*.jar" />
             </fileset>
         </path>
     
-        <mkdir dir="java-build/java/build/classes" />
+        <mkdir dir="build-files/java/build/classes" />
         
-        <javac srcdir="java-build/java/src"
-               destdir="java-build/java/build/classes"
+        <javac srcdir="build-files/java/src"
+               destdir="build-files/java/build/classes"
                includeAntRuntime="false">
             <classpath refid="local-classes" />
         </javac>
     </target>
 
     <target name="jar-build" depends="jar-compile">
-        <mkdir dir="java-build/java/build/jar" />
-        <jar destfile="java-build/java/build/jar/jsdoc.jar" basedir="java-build/java/build/classes">
+        <mkdir dir="build-files/java/build/jar" />
+        <jar destfile="build-files/java/build/jar/jsdoc.jar" basedir="build-files/java/build/classes">
             <manifest>
                <attribute name="Main-Class" value="Run" />
-               <attribute name="Class-Path" value="java-build/java/classes/js.jar java-build/java/classes/sqlitejdbc-v054.jar" />
+               <attribute name="Class-Path" value="build-files/java/classes/js.jar build-files/java/classes/sqlitejdbc-v054.jar" />
             </manifest>
         </jar>
     </target>
     
     <!-- do all the steps to build and install the jsdoc.jar file -->
     <target name="jar-install" depends="jar-clean, jar-build">
-        <copy file="java-build/java/build/jar/jsdoc.jar" tofile="jsdoc.jar" overwrite="true" />
+        <copy file="build-files/java/build/jar/jsdoc.jar" tofile="jsdoc.jar" overwrite="true" />
     </target>
 
 </project>
