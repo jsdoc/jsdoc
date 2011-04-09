@@ -1,4 +1,4 @@
 #!/bin/sh
 
-basedir=`dirname $0`
-java -jar ${basedir}/jsdoc.jar $@
+BASEDIR=`dirname $0`
+java -classpath ${BASEDIR}/build-files/java/classes/js.jar -jar ${BASEDIR}/jsdoc.jar $@
