@@ -24,7 +24,7 @@
             memberof = doclet.memberof || '',
             about = {},
             parentDoc;
-        
+
         name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
         
         // member of a var in an outer scope?
@@ -172,6 +172,7 @@
             scope    = scope.replace('@{'+i+'}@', atoms[i]);
             name     = name.replace('@{'+i+'}@', atoms[i]);
         }
+
         ////
         return {longname: longname, memberof: memberof, scope: scope, name: name, variation: variation};
     }

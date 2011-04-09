@@ -268,7 +268,7 @@
                 currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
             }
         }
-        else if (node.type === Token.COLON) {
+        else if (node.type === Token.COLON) { // assignment within an object literal
             e = {
                 id: 'astnode'+node.hashCode(), // the id of the COLON node
                 comment: String(node.left.jsDoc||'@undocumented'),
@@ -376,8 +376,9 @@
     function aboutNode(node) {
         about = {};
         
-        if (node.type == Token.FUNCTION /*&& String(node.name) !== ''*/) {
+        if (node.type == Token.FUNCTION) {
             about.name = '' + node.name;
+
             about.type = 'function';
             about.node = node;
             
@@ -402,6 +403,13 @@
          
         if (node.type === Token.ASSIGN || node.type === Token.COLON) {
             about.name = nodeToString(node.left);
+            if (node.type === Token.COLON) {
+
+                 // objlit keys with unsafe variable-name characters must be quoted
+                if (!/^[$_a-z][$_a-z0-9]*$/i.test(about.name) ) {
+                    about.name = '"'+about.name.replace(/"/g, '\\"')+'"';
+                }
+            }
             about.node = node.right;
 			about.value = nodeToString(about.node);
             about.type = getTypeName(node.right);

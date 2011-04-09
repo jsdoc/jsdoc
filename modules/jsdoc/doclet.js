@@ -95,7 +95,7 @@
 	*/
 	exports.Doclet.prototype.setLongname = function(name) {
         if (/^<global>\.?/.test(name)) { name = name.replace(/^<global>\.?/, ''); }
-
+        
 	    /**
 	        The fully resolved symbol name.
 	        @type string

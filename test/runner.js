@@ -130,6 +130,8 @@ testFile('test/t/cases/moduletag.js');
 testFile('test/t/cases/moduletag2.js');
 testFile('test/t/cases/paramtag.js');
 testFile('test/t/cases/privatetag.js');
+testFile('test/t/cases/quotename.js');
+testFile('test/t/cases/quotename2.js');
 testFile('test/t/cases/readonlytag.js');
 testFile('test/t/cases/requirestag.js');
 testFile('test/t/cases/returnstag.js');

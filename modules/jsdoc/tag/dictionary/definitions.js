@@ -123,11 +123,15 @@
 					doclet.defaultvalue = tag.value;
 				}
 				else if (doclet.meta && doclet.meta.code && typeof doclet.meta.code.value !== 'undefined') {
-					if (doclet.meta.code.type && /STRING|NUMBER|NAME/.test(doclet.meta.code.type)) {
+					if (doclet.meta.code.type && /STRING|NUMBER|NAME|TRUE|FALSE/.test(doclet.meta.code.type)) {
 						doclet.defaultvalue = doclet.meta.code.value;
 						if (doclet.meta.code.type === 'STRING') {
 							// TODO: handle escaped quotes in values
 							doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"'
+						}
+						
+						if (doclet.defaultvalue === 'TRUE' || doclet.defaultvalue == 'FALSE') {
+						    doclet.defaultvalue = doclet.defaultvalue.toLowerCase();
 						}
 					}
 					else if (doclet.meta.code.type === 'NULL') {

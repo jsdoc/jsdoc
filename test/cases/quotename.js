@@ -1,6 +1,8 @@
+/** @namespace */
+var chat = {};
+
 /**
 	@namespace
-	@name chat."#channel"
  */
 chat["#channel"] = {};
 
@@ -8,7 +10,7 @@ chat["#channel"] = {};
 /**
 	@property
 	@type {boolean}
-	@name chat."#channel".open
+	@defaultvalue
  */
 chat["#channel"].open = true;
 
