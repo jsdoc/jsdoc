@@ -123,6 +123,7 @@ testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');
 testFile('test/t/cases/lends.js');
 testFile('test/t/cases/lends2.js');
+testFile('test/t/cases/lendsglobal.js');
 testFile('test/t/cases/memberoftag.js');
 testFile('test/t/cases/memberoftag2.js');
 testFile('test/t/cases/moduletag.js');

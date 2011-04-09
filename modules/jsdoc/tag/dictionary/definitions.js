@@ -32,9 +32,9 @@
         });
         
         dictionary.defineTag('lends', {
-            mustHaveValue: true,
+           // mustHaveValue: true,
             onTagged: function(doclet, tag) {
-                doclet.alias = tag.value;
+                doclet.alias = tag.value || '<global>';
                 doclet.addTag('undocumented');
             }
         });

@@ -50,6 +50,9 @@
 	    if (this.name && !this.longname) {
 	        this.setLongname(this.name);  
 	    }
+	    if (this.memberof === '') {
+	        delete(this.memberof);  
+	    }
 	    if (!this.kind && this.meta && this.meta.code) {
 	        this.addTag( 'kind', codetypeToKind(this.meta.code.type) );
         }
@@ -62,7 +65,7 @@
 	exports.Doclet.prototype.addTag = function(title, text) {
         var tagDef = jsdoc.tag.dictionary.lookUp(title),
 	        newTag = new jsdoc.tag.Tag(title, text, this.meta);
-	    
+
 	    if (tagDef && tagDef.onTagged) {
 	       tagDef.onTagged(this, newTag)
 	    }
@@ -79,6 +82,7 @@
 	    @param {string} sid - The longname of the symbol that this doclet is a member of.
 	*/
 	exports.Doclet.prototype.setMemberof = function(sid) {
+        if (/^<global>\.?/.test(sid)) { sid = sid.replace(/^<global>.?/, ''); }
 	    /**
 	        The longname of the symbol that contains this one, if any.
 	        @type string
@@ -90,6 +94,8 @@
 	    @param {string} name
 	*/
 	exports.Doclet.prototype.setLongname = function(name) {
+        if (/^<global>\.?/.test(name)) { name = name.replace(/^<global>\.?/, ''); }
+
 	    /**
 	        The fully resolved symbol name.
 	        @type string
