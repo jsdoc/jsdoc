@@ -75,7 +75,7 @@
             output += '<RegExp ' + object + '>,\n'
         }
         else if ( isDate(object) ) {
-            output += '<Date ' + object + '>,\n'
+            output += '<Date ' + object.toUTCString() + '>,\n'
         }
         else if ( isFunction(object) ) {
             output += '<Function' + (object.name? ' '+ object.name : '') + '>,\n';

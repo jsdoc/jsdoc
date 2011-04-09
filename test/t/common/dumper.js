@@ -37,7 +37,7 @@ test('The module:module:common/dumper.dump function dumps regex values.', functi
 });
 
 test('The module:module:common/dumper.dump function dumps date values.', function() {
-    assert.equal(common.dumper.dump(new Date(1901, 0, 1)), '<Date Tue Jan 01 1901 00:00:00 GMT-0000 (GMT)>');
+    assert.equal(common.dumper.dump(new Date('January 1, 1901 GMT')), '<Date Tue, 01 Jan 1901 00:00:00 GMT>');
 });
 
 test('The module:module:common/dumper.dump function dumps function values.', function() {
@@ -73,9 +73,9 @@ test('The module:common/dumper.dump function dumps complex mixed values.', funct
     function Foo(){}
 
     var actual = common.dumper.dump(
-        [undefined, null, new Foo(), 1, true, 'hello\n"world', new Error('oops'), /foo/gi, new Date(2010, 11, 26), {f: function myFunc(){}, o: {a:1}}]
+        [undefined, null, new Foo(), 1, true, 'hello\n"world', new Error('oops'), /foo/gi, new Date('December 26, 2010 GMT'), {f: function myFunc(){}, o: {a:1}}]
     ),
-    expected = '[\n    undefined,\n    null,\n    {\n    },\n    1,\n    true,\n    "hello\\n\\"world",\n    {\n        "message": "oops"\n    },\n    <RegExp /foo/gi>,\n    <Date Sun Dec 26 2010 00:00:00 GMT-0000 (GMT)>,\n    {\n        "f": <Function myFunc>,\n        "o": {\n            "a": 1\n        }\n    }\n]';
+    expected = '[\n    undefined,\n    null,\n    {\n    },\n    1,\n    true,\n    "hello\\n\\"world",\n    {\n        "message": "oops"\n    },\n    <RegExp /foo/gi>,\n    <Date Sun, 26 Dec 2010 00:00:00 GMT>,\n    {\n        "f": <Function myFunc>,\n        "o": {\n            "a": 1\n        }\n    }\n]';
 
     assert.equal(actual, expected);
 });
