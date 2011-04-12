@@ -7,7 +7,8 @@ an upgrade to JsDoc Toolkit (JSDoc 2).
 Notice
 ------
 
-This software is not yet released and is still under active development.
+This is *pre-release software*! It is under active development, not complete
+and is not suitable for reqular use yet.
 
 Installation
 ------------
@@ -64,9 +65,10 @@ version 1.8.2 of ant.
 See
 ---
 
-Project Documentation: <http://usejsdoc.org/>
-User's Group: <http://groups.google.com/group/jsdoc-users>
+Project Documentation: <http://usejsdoc.org/> (under development)
+JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>
 Subversion Mirror: <http://code.google.com/p/jsdoc/source>
+Project Annoncements: <http://twitter.com/jsdoc3>
 
 License
 -------
