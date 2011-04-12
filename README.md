@@ -71,7 +71,7 @@ more useful than a simple stack trace. To invoke JSDoc with the debugger try the
 following command:
 
     $ java -classpath build-files/java/classes/js.jar \
-    org.mozilla.javascript.tools.debugger.Main.main main.js `pwd` \
+    org.mozilla.javascript.tools.debugger.Main main.js `pwd` \
     your/script.js
 
 This will open a debugging window. Choose "Break on Exceptions" from the "Debug"

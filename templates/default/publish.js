@@ -156,13 +156,13 @@
         var globals = data.get( data.find({kind: ['property', 'function'], memberof: {isUndefined: true}}) ),
             modules = data.get( data.find({kind: 'module'}) ),
 	        namespaces = data.get( data.find({kind: 'namespace'}) );
-        
+
         var outdir = opts.destination;
         if (packageInfo) {
             outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
         }
         fs.mkPath(outdir);
-        
+
         // copy static files to outdir
         var fromDir = BASEDIR + 'templates/default/static',
             staticFiles = fs.ls(fromDir, 3);
@@ -214,7 +214,7 @@
         if (moduleNames.length) {
             nav = nav + '<h3>Modules</h3><ul>';
             moduleNames.forEach(function(m) {
-                if (!seen[m.longname]) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
                 seen[m.longname] = true;
             });
             
@@ -224,7 +224,7 @@
         if (namespaceNames.length) {
             nav = nav + '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
-                if (!seen[n.longname]) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                if ( !seen.hasOwnProperty(n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
                 seen[n.longname] = true;
             });
             
@@ -234,7 +234,7 @@
         if (classNames.length) {
             nav = nav + '<h3>Classes</h3><ul>';
             classNames.forEach(function(c) {
-                if (!seen[c.longname]) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                if ( !seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
                 seen[c.longname] = true;
             });
             
@@ -242,10 +242,11 @@
         }
         
         var globalNames = data.get( data.find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}}) );
+
         if (globalNames.length) {
             nav = nav + '<h3>Global</h3><ul>';
             globalNames.forEach(function(g) {
-                if (!seen[g.longname]) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                if ( !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
                 seen[g.longname] = true;
             });
             

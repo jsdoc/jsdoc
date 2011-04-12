@@ -12,7 +12,7 @@
     @type string
     @global
  */
-const BASEDIR = arguments[0].replace(/([\/\\])main\.js$/, '$1') + '/'; // jsdoc.jar sets argument[0] to the abspath to main.js
+const BASEDIR = (arguments[0].replace(/([\/\\])main\.js$/, '$1') + '/').replace('//', '/'); // expects argument[0] to the abspath to main.js
 
 /** Include a JavaScript module, defined in the CommonJS way.
     @param {string} id The identifier of the module you require.
@@ -117,6 +117,7 @@ catch(e) {
      if (e.rhinoException != null) { 
          e.rhinoException.printStackTrace();
      }
+     else throw e;
 } 
 finally { env.run.finish = new Date(); }
 
@@ -235,12 +236,15 @@ function main() {
         }
         
         function indexAll(docs) {
-            var index = {};
+            var lookupTable = {};
+            
             docs.forEach(function(doc) {
-                if (!index[doc.longname]) index[doc.longname] = [];
-                index[doc.longname].push(doc);
+                if ( !lookupTable.hasOwnProperty(doc.longname) ) {
+                    lookupTable[doc.longname] = [];
+                }
+                lookupTable[doc.longname].push(doc);
             });
-            docs.index = index;
+            docs.index = lookupTable;
         }
         
         indexAll(docs);
