@@ -4,6 +4,7 @@
  * @license See LICENSE.md file included in this distribution.
  */
 
+// try: $ java -classpath build-files/java/classes/js.jar org.mozilla.javascript.tools.shell.Main main.js `pwd` script/to/parse.js
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
@@ -11,7 +12,7 @@
     @type string
     @global
  */
-const BASEDIR = arguments[0].replace(/([\/\\])main\.js$/, '$1'); // jsdoc.jar sets argument[0] to the abspath to main.js
+const BASEDIR = arguments[0].replace(/([\/\\])main\.js$/, '$1') + '/'; // jsdoc.jar sets argument[0] to the abspath to main.js
 
 /** Include a JavaScript module, defined in the CommonJS way.
     @param {string} id The identifier of the module you require.
@@ -112,6 +113,11 @@ app = {
 }
 
 try { main(); }
+catch(e) { 
+     if (e.rhinoException != null) { 
+         e.rhinoException.printStackTrace();
+     }
+} 
 finally { env.run.finish = new Date(); }
 
 /** Print string/s out to the console.

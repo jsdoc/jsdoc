@@ -62,8 +62,24 @@ older Rhino.
 The build script for JSDoc 3 requires Apache ant. It is know to work with
 version 1.8.2 of ant.
 
-See
----
+Debugging
+---------
+
+Rhino is not always very friendly when it comes to reporting errors in
+JavaScript. Luckily it comes with a full-on debugger included that can be much
+more useful than a simple stack trace. To invoke JSDoc with the debugger try the
+following command:
+
+    $ java -classpath build-files/java/classes/js.jar \
+    org.mozilla.javascript.tools.debugger.Main.main main.js `pwd` \
+    your/script.js
+
+This will open a debugging window. Choose "Break on Exceptions" from the "Debug"
+menu, then press the "Run" button. If there is an error, you should see exactly
+where it is in the source code.
+
+See Also
+--------
 
 Project Documentation: <http://usejsdoc.org/> (under development)
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>
