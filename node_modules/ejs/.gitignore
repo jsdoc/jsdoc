@@ -1,0 +1,3 @@
+# ignore any vim files:
+*.sw[a-z]
+vim/.netrwhist
