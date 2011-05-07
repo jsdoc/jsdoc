@@ -38,14 +38,29 @@
         console.log('USAGE: node main.js yourfile.js');
         process.exit(0);
     }
+    
     var srcFile = opts._[0];
 
     var src = fs.readFileSync(srcFile, 'utf-8');
     
     var parser = require('jsdoc/parser');
     
-    var symbols = parser.parse(src);
+    var docs = parser.parse(src);
     
-    console.log( dumper.dump(symbols) );
+//     docs = _.map(docs, function(doc) {
+//         if (!doc.jsdoc) { doc.jsdoc = {}; }
+//         doc.jsdoc.longname = doc.longname;
+//         return doc.jsdoc;
+//     });
+    
+    if (opts.expel) {
+        console.log( dumper.dump(docs) );
+    }
+    else {
+        var taffy = require('./templates/lib/taffy');
+        var publisher = require('./templates/default');
+        
+        console.log( publisher.publish( new taffy(docs) ) );
+    }
     
 })();
