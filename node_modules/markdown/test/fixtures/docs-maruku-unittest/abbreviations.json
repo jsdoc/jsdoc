@@ -1,0 +1,8 @@
+["html", ["p", "The ", ["abbr", {
+    "title": "Hyper Text Markup Language"
+},
+"HTML"], " specification is maintained by the ", ["abbr", {
+    "title": "World Wide Web Consortium"
+},
+"W3C"], "."],
+    ["p", "Operation ", ["abbr", "Tigra Genesis"], " is going well."]]

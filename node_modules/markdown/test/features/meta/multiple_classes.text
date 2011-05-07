@@ -1,0 +1,4 @@
+Here's a paragraph and
+an *em*{: .foo .bar}
+with multiple classes
+{: .foo .bar}

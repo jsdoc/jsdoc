@@ -1,0 +1,20 @@
+["html", ["p", "Link: ", ["a", {
+    "href": "http://example.com/"
+},
+"http://example.com/"], "."],
+    ["p", "With an ampersand: ", ["a", {
+        "href": "http://example.com/?foo=1&bar=2"
+    },
+    "http://example.com/?foo=1&bar=2"]],
+    ["ul", ["li", "In a list?"],
+        ["li", ["a", {
+            "href": "http://example.com/"
+        },
+        "http://example.com/"]],
+        ["li", "It should."]],
+    ["blockquote", ["p", "Blockquoted: ", ["a", {
+        "href": "http://example.com/"
+    },
+    "http://example.com/"]]],
+    ["p", "Auto-links should not occur here: ", ["code", "<http://example.com/>"]],
+    ["pre", ["code", "or here: <http://example.com/>\u000a"]]]

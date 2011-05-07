@@ -1,0 +1,88 @@
+["html", ["p", "Foo ", ["a", {
+    "href": "/url/",
+    "title": "Title"
+},
+"bar"], "."],
+    ["p", "Foo ", ["a", {
+        "href": "/url/",
+        "title": "Title"
+    },
+    "bar"], "."],
+    ["p", "Foo ", ["a", {
+        "href": "/url/",
+        "title": "Title"
+    },
+    "bar"], "."],
+    ["p", "With ", ["a", {
+        "href": "/url/"
+    },
+    "embedded [brackets]"], "."],
+    ["p", "Indented ", ["a", {
+        "href": "/url"
+    },
+    "once"], "."],
+    ["p", "Indented ", ["a", {
+        "href": "/url"
+    },
+    "twice"], "."],
+    ["p", "Indented ", ["a", {
+        "href": "/url"
+    },
+    "thrice"], "."],
+    ["p", "Indented [four][] times."],
+    ["pre", ["code", "[four]: /url\u000a"]], "\u000a\u000a", ["hr"], "\u000a\u000a", ["p", ["a", {
+    "href": "foo"
+},
+"this"], " should work"],
+    ["p", "So should ", ["a", {
+        "href": "foo"
+    },
+    "this"], "."],
+    ["p", "And ", ["a", {
+        "href": "foo"
+    },
+    "this"], "."],
+    ["p", "And ", ["a", {
+        "href": "foo"
+    },
+    "this"], "."],
+    ["p", "And ", ["a", {
+        "href": "foo"
+    },
+    "this"], "."],
+    ["p", "But not [that] []."],
+    ["p", "Nor [that][]."],
+    ["p", "Nor [that]."],
+    ["p", "[Something in brackets like ", ["a", {
+        "href": "foo"
+    },
+    "this"], " should work]"],
+    ["p", "[Same with ", ["a", {
+        "href": "foo"
+    },
+    "this"], ".]"],
+    ["p", "In this case, ", ["a", {
+        "href": "/somethingelse/"
+    },
+    "this"], " points to something else."],
+    ["p", "Backslashing should suppress [this] and [this]."], "\u000a\u000a", ["hr"], "\u000a\u000a", ["p", "Here's one where the ", ["a", {
+    "href": "/url/"
+},
+"link\u000abreaks"], " across lines."],
+    ["p", "Here's another where the ", ["a", {
+        "href": "/url/"
+    },
+    "link \u000abreaks"], " across lines, but with a line-ending space."],
+    ["p", "More multi line edge cases. First a broken link id"],
+    ["p", ["a", {
+        "href": "/someurl/"
+    },
+    "link \u000atext"]],
+    ["p", "Then a line with 2 chars of trailing whitespace and a line break ", ["a", {
+        "href": "http://www.ua.es"
+    },
+    "my ", ["br"], "\u000aUniversity"], "."],
+    ["p", "The a shortcut reference link with 2 chars of trailing whitespace and a line break ", ["a", {
+        "href": "http://www.ua.es"
+    },
+    "my ", ["br"], "\u000aUniversity"], "."]]

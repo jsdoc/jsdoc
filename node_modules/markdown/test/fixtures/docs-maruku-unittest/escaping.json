@@ -1,0 +1,5 @@
+["html", ["p", "Hello: ! ! ` { } [ ] ( ) # . ! * * *"],
+    ["p", "Ora, ", ["em", "emphasis"], ", ", ["strong", "bold"], ", * <- due asterischi-> * , un underscore-> _ , ", ["em", "emphasis"], ", incre", ["em", "dible"], "e!"],
+    ["p", "This is ", ["code", "Code with a special: -> ` <-"], "(after)"],
+    ["p", ["code", "Start "], " of paragraph"],
+    ["p", "End of ", ["code", "paragraph "]]]

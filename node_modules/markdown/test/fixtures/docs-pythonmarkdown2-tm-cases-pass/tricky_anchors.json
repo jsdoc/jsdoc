@@ -1,0 +1,29 @@
+["html", ["p", ["a", {
+    "href": "/url/"
+},
+"with [brackets][] in text"]],
+    ["p", ["a", {
+        "href": "/url/",
+        "title": "a title"
+    },
+    "with [[brackets][]] in text"]],
+    ["p", ["a", {
+        "href": "/url/"
+    },
+    "full link [like](/this/) in text"]],
+    ["p", ["a", {
+        "href": "/url/"
+    },
+    "full link to img ", ["img", {
+        "src": "/this/",
+        "alt": "like"
+    }], " is ok"]],
+    ["p", "[only open ", ["a", {
+        "href": "/url/",
+        "title": "a title"
+    },
+    "bracket(/in/) text"]],
+    ["p", ["a", {
+        "href": "/in/"
+    },
+    "only close bracket"], " text](/url/)"]]

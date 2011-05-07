@@ -1,0 +1,2 @@
+["html", ["blockquote", ["p", "Markdown indents blockquotes a couple of spaces\u000a  necessitating some tweaks for pre-blocks in that\u000a  blockquote:"],
+    ["pre", ["code", "here is a check\u000afor that\u000a"]]]]

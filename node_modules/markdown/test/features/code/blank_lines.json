@@ -1,0 +1,26 @@
+["html",
+  ["p",
+    "This block is composed of three lines:"
+  ],
+  ["pre",
+    ["code",
+      "one\n\nthree"
+    ]
+  ],
+  ["p",
+    "This block is composed of 5"
+  ],
+  ["pre",
+    ["code",
+      "one\n\n\nfour"
+    ]
+  ],
+  ["p",
+    "This block is composed of 2"
+  ],
+  ["pre",
+    ["code",
+      "two"
+    ]
+  ]
+]

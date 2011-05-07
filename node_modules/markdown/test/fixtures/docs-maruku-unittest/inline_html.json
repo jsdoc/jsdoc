@@ -1,0 +1,28 @@
+["html", ["p", "Input:"],
+    ["pre", ["code", "<em>Emphasis</em>"]],
+    ["p", "Result: ", ["em", "Emphasis"]],
+    ["p", "Input:"],
+    ["pre", ["code", "<img src=\"http://jigsaw.w3.org/css-validator/images/vcss\"/>"]],
+    ["p", "Result on span: ", ["img", {
+        "src": "http://jigsaw.w3.org/css-validator/images/vcss"
+    }]],
+    ["p", "Result alone:"], "\u000a", ["img", {
+    "src": "http://jigsaw.w3.org/css-validator/images/vcss"
+}], "\u000a", ["p", "Without closing:"], "\u000a", ["img", {
+    "src": "http://jigsaw.w3.org/css-validator/images/vcss"
+}],
+    ["div", ["p", ["p", "This is"], "\u000a", ["em", ["p", "true"]], "\u000a", ["p", "markdown text (paragraph)"]],
+        ["p", ["p", ["p", "This is"], "\u000a", ["em", ["p", "true"]], "\u000a", ["p", "markdown text (no paragraph)"]]],
+        ["p", ["p", ["p", "This is"], "\u000a", ["em", ["p", "true"]], "\u000a", ["p", "markdown text (block paragraph)"]]]],
+    ["table", ["tr", ["td", ["p", "This is"], "\u000a", ["em", ["p", "true"]], "\u000a", ["p", "markdown text. (no par)"]],
+        ["td", ["p", "This is"], "\u000a", ["em", ["p", "true"]], "\u000a", ["p", "markdown text. (par)"]]]], "\u000a", ["p", "The following is invalid HTML, and will generate an error:"],
+    ["pre", {
+        "class": "markdown-html-error",
+        "style": "border: solid 3px red; background-color: pink"
+    },
+    "HTML parse error: \u000a<table>\u000a<td markdown=\"1\">This is *true* markdown text. (no par)</td>\u000a<td markdown=\"block\">This is *true* markdown text. (par)</td>\u000a</tr>"],
+    ["pre", {
+        "class": "markdown-html-error",
+        "style": "border: solid 3px red; background-color: pink"
+    },
+    "HTML parse error: \u000a</table>"]]

@@ -1,0 +1,22 @@
+["html",
+  ["dl",
+    ["dt",
+      "a term"
+    ],
+    ["dd",
+      ["em",
+        "emphasised"
+      ],
+      " definition."
+    ],
+    ["dt",
+      "another term"
+    ],
+    ["dd",
+      ["strong",
+        "strong"
+      ],
+      " definition."
+    ]
+  ]
+]

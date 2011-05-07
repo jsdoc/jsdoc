@@ -1,0 +1,36 @@
+
+Search on [Google][]
+
+Search on [Google] []
+
+Search on [Google] [google]
+
+Search on [Google] [Google]
+
+Search on [Google images][]
+
+Inline: [Google images](http://google.com)
+
+Inline with title: [Google images](http://google.com "Title")
+
+Inline with title: [Google images]( http://google.com  "Title" )
+
+
+Search on <http://www.gogole.com> or <http://Here.com> or ask <mailto:bill@google.com>
+or you might ask bill@google.com.
+
+If all else fails, ask [Google](http://www.google.com)
+	
+[google]: http://www.google.com
+
+[google2]: http://www.google.com 'Single quotes'
+
+[google3]: http://www.google.com "Double quotes"
+
+[google4]: http://www.google.com (Parenthesis)
+
+[Google Search]: 
+ http://www.google.com "Google search"
+
+[Google Images]: 
+ http://images.google.com  (Google images)

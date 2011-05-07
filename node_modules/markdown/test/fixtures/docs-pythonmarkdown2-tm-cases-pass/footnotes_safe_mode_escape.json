@@ -1,0 +1,20 @@
+["html", ["p", "This is a para with a footnote.", ["sup", {
+    "class": "footnote-ref",
+    "id": "fnref-1"
+},
+["a", {
+    "href": "#fn-1"
+},
+"1"]]], "\u000a\u000a", ["div", {
+    "class": "footnotes"
+},
+"\u000a", ["hr"], "\u000a", ["ol", ["li", {
+    "id": "fn-1"
+},
+["p", "Here is the <em>body</em> of <span class=\"yo\">the</span> footnote."],
+    ["p", "<div class=\"blah\">And here is the second para of the footnote.</div>", ["a", {
+        "href": "#fnref-1",
+        "class": "footnoteBackLink",
+        "title": "Jump back to footnote 1 in the text."
+    },
+    "↩"]]]]], "\u000a"]

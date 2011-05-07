@@ -1,0 +1,7 @@
+["html",
+  ["blockquote",
+    ["p",
+      "blockquote\nwithout spaces"
+    ]
+  ]
+]

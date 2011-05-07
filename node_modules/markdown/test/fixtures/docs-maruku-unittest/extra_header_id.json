@@ -1,0 +1,20 @@
+["html", ["h1", {
+    "id": "header1"
+},
+"Header 1"], "\u000a\u000a", ["h2", {
+    "id": "header2"
+},
+"Header 2"], "\u000a\u000a", ["h3", {
+    "id": "header3"
+},
+"Header 3"], "\u000a\u000a", ["p", "Then you can create links to different parts of the same document like this:"],
+    ["p", ["a", {
+        "href": "#header1"
+    },
+    "Link back to header 1"], ", ", ["a", {
+        "href": "#header2"
+    },
+    "Link back to header 2"], ", ", ["a", {
+        "href": "#header3"
+    },
+    "Link back to header 3"]]]

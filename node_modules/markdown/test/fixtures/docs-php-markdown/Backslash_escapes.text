@@ -1,0 +1,1 @@
+Tricky combinaisons:backslash with \\-- two dashesbackslash with \\> greater than\\\[test](not a link)\\\*no emphasis*

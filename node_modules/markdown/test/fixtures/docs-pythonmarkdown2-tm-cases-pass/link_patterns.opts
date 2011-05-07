@@ -1,0 +1,7 @@
+{"extras": ["link-patterns"],
+ "link_patterns": [
+    (re.compile("recipe\s+(\d+)", re.I), r"http://code.activestate.com/recipes/\1/"),
+    (re.compile("(?:komodo\s+)?bug\s+(\d+)", re.I), r"http://bugs.activestate.com/show_bug.cgi?id=\1"),
+ ],
+}
+

@@ -1,0 +1,8 @@
+["html", ["p", ["a", {
+    "href": "mailto:michel.fortin@michelf.com"
+},
+"michel.fortin@michelf.com"]],
+    ["p", "International domain names: ", ["a", {
+        "href": "mailto:help@tūdaliņ.lv"
+    },
+    "help@tūdaliņ.lv"]]]

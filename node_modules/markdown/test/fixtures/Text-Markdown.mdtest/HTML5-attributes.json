@@ -1,0 +1,10 @@
+["html", ["h1", {
+    "class": "foo"
+},
+"foo"], "\u000a\u000a", ["p", {
+    "class": "bar"
+},
+"\u000athis is a paragraph\u000a"], "\u000a\u000a", ["h2", {
+    "class": "bar"
+},
+"\u000aan h2\u000a"], "\u000a\u000a", ["p", "normal"]]

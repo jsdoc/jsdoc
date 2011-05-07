@@ -1,0 +1,8 @@
+["html", ["ul", ["li", ["p", "this is a list item\u000aindented with tabs"]],
+    ["li", ["p", "this is a list item\u000aindented with spaces"]]],
+    ["p", "Code:"],
+    ["pre", ["code", "this code block is indented by one tab\u000a"]],
+    ["p", "And:"],
+    ["pre", ["code", "    this code block is indented by two tabs\u000a"]],
+    ["p", "And:"],
+    ["pre", ["code", "+   this is an example list item\u000a    indented with tabs\u000a\u000a+   this is an example list item\u000a    indented with spaces\u000a"]]]

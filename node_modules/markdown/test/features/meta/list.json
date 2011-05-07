@@ -1,0 +1,11 @@
+["html",
+  ["ul",
+    { "id" : "list" },
+    ["li",
+      "here's a\nloose list"
+    ],
+    ["li",
+      "it might confuse the\nblock_meta routine"
+    ]
+  ]
+]

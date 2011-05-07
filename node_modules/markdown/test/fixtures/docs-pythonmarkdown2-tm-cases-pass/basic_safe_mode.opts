@@ -1,0 +1,2 @@
+# Use the old (for-compat-only) way of specifying "replace" safe mode.
+{"safe_mode": True}

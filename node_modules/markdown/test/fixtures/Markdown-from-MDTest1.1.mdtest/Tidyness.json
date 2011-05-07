@@ -1,0 +1,4 @@
+["html", ["blockquote", ["p", "A list within a blockquote:"],
+    ["ul", ["li", "asterisk 1"],
+        ["li", "asterisk 2"],
+        ["li", "asterisk 3"]]]]

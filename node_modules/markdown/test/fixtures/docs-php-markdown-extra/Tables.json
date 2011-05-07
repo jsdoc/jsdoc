@@ -1,0 +1,130 @@
+["html", ["h1", "Simple tables"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell 1"],
+        ["td", "Cell 2"]],
+        ["tr", ["td", "Cell 3"],
+            ["td", "Cell 4"]]]], "\u000a\u000a", ["p", "With leading pipes:"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell 1"],
+        ["td", "Cell 2"]],
+        ["tr", ["td", "Cell 3"],
+            ["td", "Cell 4"]]]], "\u000a\u000a", ["p", "With tailing pipes:"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell 1"],
+        ["td", "Cell 2"]],
+        ["tr", ["td", "Cell 3"],
+            ["td", "Cell 4"]]]], "\u000a\u000a", ["p", "With leading and tailing pipes:"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell 1"],
+        ["td", "Cell 2"]],
+        ["tr", ["td", "Cell 3"],
+            ["td", "Cell 4"]]]], "\u000a\u000a", ["hr"], "\u000a\u000a", ["h1", "One-column one-row table"], "\u000a\u000a", ["p", "With leading pipes:"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header"]]],
+    ["tbody", ["tr", ["td", "Cell"]]]], "\u000a\u000a", ["p", "With tailing pipes:"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header"]]],
+    ["tbody", ["tr", ["td", "Cell"]]]], "\u000a\u000a", ["p", "With leading and tailing pipes:"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header"]]],
+    ["tbody", ["tr", ["td", "Cell"]]]], "\u000a\u000a", ["hr"], "\u000a\u000a", ["p", "Table alignement:"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Default"],
+    ["th", {
+        "align": "left"
+    },
+    "Right"],
+    ["th", {
+        "align": "center"
+    },
+    "Center"],
+    ["th", {
+        "align": "right"
+    },
+    "Left"]]],
+    ["tbody", ["tr", ["td", "Long Cell"],
+        ["td", {
+            "align": "left"
+        },
+        "Long Cell"],
+        ["td", {
+            "align": "center"
+        },
+        "Long Cell"],
+        ["td", {
+            "align": "right"
+        },
+        "Long Cell"]],
+        ["tr", ["td", "Cell"],
+            ["td", {
+                "align": "left"
+            },
+            "Cell"],
+            ["td", {
+                "align": "center"
+            },
+            "Cell"],
+            ["td", {
+                "align": "right"
+            },
+            "Cell"]]]], "\u000a\u000a", ["p", "Table alignement (alternate spacing):"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Default"],
+    ["th", {
+        "align": "left"
+    },
+    "Right"],
+    ["th", {
+        "align": "center"
+    },
+    "Center"],
+    ["th", {
+        "align": "right"
+    },
+    "Left"]]],
+    ["tbody", ["tr", ["td", "Long Cell"],
+        ["td", {
+            "align": "left"
+        },
+        "Long Cell"],
+        ["td", {
+            "align": "center"
+        },
+        "Long Cell"],
+        ["td", {
+            "align": "right"
+        },
+        "Long Cell"]],
+        ["tr", ["td", "Cell"],
+            ["td", {
+                "align": "left"
+            },
+            "Cell"],
+            ["td", {
+                "align": "center"
+            },
+            "Cell"],
+            ["td", {
+                "align": "right"
+            },
+            "Cell"]]]], "\u000a\u000a", ["hr"], "\u000a\u000a", ["h1", "Empty cells"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "A"],
+        ["td", "B"]],
+        ["tr", ["td", "C"],
+            ["td"]]]], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "A"],
+        ["td", "B"]],
+        ["tr", ["td"],
+            ["td", "D"]]]], "\u000a\u000a", ["hr"], "\u000a\u000a", ["h1", "Missing tailing pipe"], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell"],
+        ["td", "Cell"]],
+        ["tr", ["td", "Cell"],
+            ["td", "Cell"]]]], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell"],
+        ["td", "Cell"]],
+        ["tr", ["td", "Cell"],
+            ["td", "Cell"]]]], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell"],
+        ["td", "Cell"]],
+        ["tr", ["td", "Cell"],
+            ["td", "Cell"]]]], "\u000a\u000a", ["table", ["thead", ["tr", ["th", "Header 1"],
+    ["th", "Header 2"]]],
+    ["tbody", ["tr", ["td", "Cell"],
+        ["td", "Cell"]],
+        ["tr", ["td", "Cell"],
+            ["td", "Cell"]]]]]

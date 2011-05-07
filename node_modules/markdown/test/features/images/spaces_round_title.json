@@ -1,0 +1,9 @@
+["html",
+  ["p",
+    ["img", {
+      "src": "/url/",
+      "alt": "alt text",
+      "title": "title has spaces afterward"
+    } ]
+  ]
+]

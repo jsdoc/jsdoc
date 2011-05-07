@@ -1,0 +1,18 @@
+["html", ["table", ["thead", ["tr", ["th", "First Header"],
+    ["th", "Second Header"]]],
+    ["tbody", ["tr", ["td", {
+        "style": "text-align: left;"
+    },
+    "Content Cell"],
+        ["td", {
+            "style": "text-align: left;"
+        },
+        "Content Cell"]],
+        ["tr", ["td", {
+            "style": "text-align: left;"
+        },
+        "Content Cell"],
+            ["td", {
+                "style": "text-align: left;"
+            },
+            "Content Cell"]]]], "\u000a"]

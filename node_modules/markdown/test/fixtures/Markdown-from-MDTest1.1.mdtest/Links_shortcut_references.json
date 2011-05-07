@@ -1,0 +1,19 @@
+["html", ["p", "This is the ", ["a", {
+    "href": "/simple"
+},
+"simple case"], "."],
+    ["p", "This one has a ", ["a", {
+        "href": "/foo"
+    },
+    "line\u000abreak"], "."],
+    ["p", "This one has a ", ["a", {
+        "href": "/foo"
+    },
+    "line \u000abreak"], " with a line-ending space."],
+    ["p", ["a", {
+        "href": "/that"
+    },
+    "this"], " and the ", ["a", {
+        "href": "/other"
+    },
+    "other"]]]

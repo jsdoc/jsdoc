@@ -1,0 +1,26 @@
+["html",
+  ["p",
+    "Stars"
+  ],
+  ["ul",
+    ["li",
+      "star"
+    ]
+  ],
+  ["p",
+    "Dashes"
+  ],
+  ["ul",
+    ["li",
+      "dash"
+    ]
+  ],
+  ["p",
+    "Pluses"
+  ],
+  ["ul",
+    ["li",
+      "plus"
+    ]
+  ]
+]

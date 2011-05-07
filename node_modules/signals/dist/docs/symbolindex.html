@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		
+		<title>JsDoc Reference - Index</title>
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+        <link rel="stylesheet" href="static/default.css" type="text/css" media="screen" charset="utf-8" />
+
+        <style>
+            #symbolFilter {
+                margin-top: 2em;
+                margin-bottom: 1em;
+            }
+
+            .hidden {
+                visibility: hidden;
+                display: none;
+            }
+        </style>
+
+        <script>
+            var overview, filterField;
+
+            function filterOverview() {
+                var i, name,
+                    lst = overview.getElementsByTagName('tr'),
+                    regex = filterField.value ? ('^(' + filterField.value + ')') : '.*';
+
+                regex = new RegExp(regex, 'i');
+                for (i = 0; i < lst.length; i++) {
+                    name = lst[i].getElementsByTagName('td')[0].innerHTML;
+                    if (regex.test(name)) {
+                        lst[i].className = 'symbolEntry';
+                    } else {
+                        lst[i].className = 'symbolEntry hidden';
+                    }
+                }
+            }
+
+            var init = function() {
+                overview = window.document.getElementById('symbolOverview');
+                filterField = window.document.getElementById('symbolFilter');
+
+                filterField.addEventListener('change', filterOverview, false);
+                filterOverview();
+
+                delete init;
+            }
+        </script>
+	</head>
+	
+	<body onload="init()">
+		<div id="header">
+</div>
+
+		<div id="index">
+            <div id="docs">
+                
+            </div>
+			
+<h2>Index</h2>
+<ul class="classList">
+  <li><a href="files.html">File Index</a></li>
+  <li><a href="index.html">Class Index</a></li>
+  <li><a href="symbolindex.html">Symbol Index</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="symbols/signals.html">signals</a></li>
+	
+	<li><a href="symbols/signals.Signal.html">signals.Signal</a></li>
+	
+	<li><a href="symbols/signals.SignalBinding.html">signals.SignalBinding</a></li>
+	
+</ul>
+
+		</div>
+		
+		<div id="content">
+            <h1 id="classTitle">Symbol Index</h1>
+            <div>
+                <input id="symbolFilter" type="text" /><br />
+                <table id="symbolOverview">
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">active</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#active">signals.Signal#active</a>
+                        
+                          <a href="symbols/signals.SignalBinding.html#active">signals.SignalBinding#active</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">add</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#add">signals.Signal#add</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">addOnce</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#addOnce">signals.Signal#addOnce</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">context</td>
+                      <td>
+                        
+                          <a href="symbols/signals.SignalBinding.html#context">signals.SignalBinding#context</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">detach</td>
+                      <td>
+                        
+                          <a href="symbols/signals.SignalBinding.html#detach">signals.SignalBinding#detach</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">dispatch</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#dispatch">signals.Signal#dispatch</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">dispose</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#dispose">signals.Signal#dispose</a>
+                        
+                          <a href="symbols/signals.SignalBinding.html#dispose">signals.SignalBinding#dispose</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">execute</td>
+                      <td>
+                        
+                          <a href="symbols/signals.SignalBinding.html#execute">signals.SignalBinding#execute</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getListener</td>
+                      <td>
+                        
+                          <a href="symbols/signals.SignalBinding.html#getListener">signals.SignalBinding#getListener</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getNumListeners</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#getNumListeners">signals.Signal#getNumListeners</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">halt</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#halt">signals.Signal#halt</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">isOnce</td>
+                      <td>
+                        
+                          <a href="symbols/signals.SignalBinding.html#isOnce">signals.SignalBinding#isOnce</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">remove</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#remove">signals.Signal#remove</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">removeAll</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#removeAll">signals.Signal#removeAll</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">Signal</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html">signals.Signal</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">SignalBinding</td>
+                      <td>
+                        
+                          <a href="symbols/signals.SignalBinding.html">signals.SignalBinding</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">signals</td>
+                      <td>
+                        
+                          <a href="symbols/signals.html">signals</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">toString</td>
+                      <td>
+                        
+                          <a href="symbols/signals.Signal.html#toString">signals.Signal#toString</a>
+                        
+                          <a href="symbols/signals.SignalBinding.html#toString">signals.SignalBinding#toString</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">VERSION</td>
+                      <td>
+                        
+                          <a href="symbols/signals.html#.VERSION">signals.VERSION</a>
+                        
+                      </td>
+                    </tr>
+                  
+                </table>
+            </div>
+            <hr />
+		</div>
+		<div class="fineprint" style="clear:both;text-align:center">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blankt">JsDoc Toolkit</a> 2.4.0 on Tue May 03 2011 01:07:20 GMT-0300 (BRT)
+			 | template based on Steffen Siering <a href="http://github.com/urso/jsdoc-simple">jsdoc-simple</a>.
+		</div>
+	</body>
+</html>
+

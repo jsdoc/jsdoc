@@ -1,0 +1,4 @@
+["html", ["p", ["img", {
+    "src": "/foo.jpg",
+    "alt": "bar"
+}]]]

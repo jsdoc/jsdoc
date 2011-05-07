@@ -1,0 +1,45 @@
+["html", ["p", "Maruku translates HTML entities to the equivalent in LaTeX:"], "\u000a", ["table", ["thead", ["tr", ["th", "Entity"],
+    ["th", "Result"]]],
+    ["tbody", ["tr", ["td", {
+        "style": "text-align: left;"
+    },
+    ["code", "&copy;"]],
+        ["td", {
+            "style": "text-align: left;"
+        },
+        "©"]],
+        ["tr", ["td", {
+            "style": "text-align: left;"
+        },
+        ["code", "&pound;"]],
+            ["td", {
+                "style": "text-align: left;"
+            },
+            "£"]],
+        ["tr", ["td", {
+            "style": "text-align: left;"
+        },
+        ["code", "a&nbsp;b"]],
+            ["td", {
+                "style": "text-align: left;"
+            },
+            "a b"]],
+        ["tr", ["td", {
+            "style": "text-align: left;"
+        },
+        ["code", "&lambda;"]],
+            ["td", {
+                "style": "text-align: left;"
+            },
+            "λ"]],
+        ["tr", ["td", {
+            "style": "text-align: left;"
+        },
+        ["code", "&mdash;"]],
+            ["td", {
+                "style": "text-align: left;"
+            },
+            "—"]]]], "\u000a", ["p", "Entity-substitution does not happen in code blocks or inline code."],
+    ["p", "The following should not be translated:"],
+    ["pre", ["code", "&copy;"]],
+    ["p", "It should read just like this: ", ["code", "&copy;"], "."]]

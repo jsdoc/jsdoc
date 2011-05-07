@@ -1,0 +1,25 @@
+{
+	"name" : "signals",
+	"description" : "Custom Event/Messaging System",
+	"keywords" : ["js-signals", "signals", "pub/sub", "event", "publish", "subscribe", "observer"],
+	"homepage" : "http://millermedeiros.github.com/js-signals/",
+	"version" : "0.6.1",
+	"author" : "Miller Medeiros",
+	"repository" : {
+		"type" : "git",
+		"url" : "https://github.com/millermedeiros/js-signals.git"
+	},
+	"main" : "dist/js-signals.cjs.js",
+	"bugs" : {
+		"web" : "https://github.com/millermedeiros/js-signals/issues"
+	},
+	"directories" : {
+		"doc" : "./dist/docs"
+	},
+	"licenses" : [
+		{
+			"type" : "MIT",
+			"url" : "http://www.opensource.org/licenses/mit-license.php"
+		}
+	]
+}

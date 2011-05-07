@@ -1,0 +1,118 @@
+["html", ["p", "Here is some sample code:"], "\u000a\u000a", ["div", {
+    "class": "codehilite"
+},
+["pre", ["code", ["span", {
+    "class": "k"
+},
+"import"], " ", ["span", {
+    "class": "nn"
+},
+"sys"], "\u000a", ["span", {
+    "class": "k"
+},
+"def"], " ", ["span", {
+    "class": "nf"
+},
+"main"],
+    ["span", {
+        "class": "p"
+    },
+    "("],
+    ["span", {
+        "class": "n"
+    },
+    "argv"],
+    ["span", {
+        "class": "o"
+    },
+    "="],
+    ["span", {
+        "class": "n"
+    },
+    "sys"],
+    ["span", {
+        "class": "o"
+    },
+    "."],
+    ["span", {
+        "class": "n"
+    },
+    "argv"],
+    ["span", {
+        "class": "p"
+    },
+    "):"], "\u000a    ", ["span", {
+    "class": "n"
+},
+"logging"],
+    ["span", {
+        "class": "o"
+    },
+    "."],
+    ["span", {
+        "class": "n"
+    },
+    "basicConfig"],
+    ["span", {
+        "class": "p"
+    },
+    "()"], "\u000a    ", ["span", {
+    "class": "n"
+},
+"log"],
+    ["span", {
+        "class": "o"
+    },
+    "."],
+    ["span", {
+        "class": "n"
+    },
+    "info"],
+    ["span", {
+        "class": "p"
+    },
+    "("],
+    ["span", {
+        "class": "s"
+    },
+    "'hi'"],
+    ["span", {
+        "class": "p"
+    },
+    ")"], "\u000a"]]], "\u000a\u000a", ["p", "and:"], "\u000a\u000a", ["div", {
+    "class": "codehilite"
+},
+["pre", ["code", ["span", {
+    "class": "n"
+},
+"use"], " ", ["span", {
+    "class": "s1"
+},
+"'zlib'"], "\u000a", ["span", {
+    "class": "nb"
+},
+"sub"], " ", ["span", {
+    "class": "n"
+},
+"main"],
+    ["span", {
+        "class": "p"
+    },
+    "("],
+    ["span", {
+        "class": "n"
+    },
+    "argv"],
+    ["span", {
+        "class": "p"
+    },
+    ")"], "\u000a    ", ["span", {
+    "class": "nb"
+},
+"puts"], " ", ["span", {
+    "class": "s1"
+},
+"'hi'"], "\u000a", ["span", {
+    "class": "k"
+},
+"end"], "\u000a"]]], "\u000a"]

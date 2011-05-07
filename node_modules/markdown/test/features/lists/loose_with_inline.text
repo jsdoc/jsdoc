@@ -1,0 +1,8 @@
+  * List item _ending_
+  with _emphasis_.
+
+  * List item
+  with **strong emphasis**.
+
+  * List item
+  with [a link](http://google.com).

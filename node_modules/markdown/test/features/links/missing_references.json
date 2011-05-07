@@ -1,0 +1,11 @@
+["html",
+  ["p",
+    "Link with [missing][id] reference"
+  ],
+  ["p",
+    "Link with [empty][] reference"
+  ],
+  ["p",
+    "Link with [inferred] reference"
+  ]
+]

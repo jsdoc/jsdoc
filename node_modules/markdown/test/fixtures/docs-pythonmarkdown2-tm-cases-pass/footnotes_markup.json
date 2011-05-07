@@ -1,0 +1,41 @@
+["html", ["p", "This is a para with a footnote.", ["sup", {
+    "class": "footnote-ref",
+    "id": "fnref-1"
+},
+["a", {
+    "href": "#fn-1"
+},
+"1"]]],
+    ["p", "This is another para with a footnote.", ["sup", {
+        "class": "footnote-ref",
+        "id": "fnref-2"
+    },
+    ["a", {
+        "href": "#fn-2"
+    },
+    "2"]]], "\u000a\u000a", ["div", {
+    "class": "footnotes"
+},
+"\u000a", ["hr"], "\u000a", ["ol", ["li", {
+    "id": "fn-1"
+},
+["p", "And the ", ["strong", "body"], " of the footnote has ", ["code", "markup"], ". For example,\u000aa ", ["a", {
+    "href": "http://digg.com"
+},
+"link to digg"], ". And some code:"],
+    ["pre", ["code", "print \"Hello, World!\"\u000a"]],
+    ["p", ["a", {
+        "href": "#fnref-1",
+        "class": "footnoteBackLink",
+        "title": "Jump back to footnote 1 in the text."
+    },
+    "↩"]]],
+    ["li", {
+        "id": "fn-2"
+    },
+    ["p", "This body has markup too, ", ["em", "but"], " doesn't end with a code block.", ["a", {
+        "href": "#fnref-2",
+        "class": "footnoteBackLink",
+        "title": "Jump back to footnote 2 in the text."
+    },
+    "↩"]]]]], "\u000a"]

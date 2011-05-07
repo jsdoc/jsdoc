@@ -1,0 +1,13 @@
+["html", ["p", "Alternative delimiters for ", ["a", {
+    "href": "http://daringfireball.net/projects/markdown/syntax#link",
+    "title": "link syntax"
+},
+"link definitions"], " are allowed -- as of\u000aMarkdown 1.0.2, I think. Hence, ", ["a", {
+    "href": "http://daringfireball.net/projects/markdown/syntax#link",
+    "title": "link syntax"
+},
+"this link"], " and ", ["a", {
+    "href": "http://daringfireball.net/projects/markdown/syntax#link",
+    "title": "link syntax"
+},
+"this link"], " work\u000atoo."]]

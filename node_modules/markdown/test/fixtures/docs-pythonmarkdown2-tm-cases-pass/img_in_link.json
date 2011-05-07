@@ -1,0 +1,12 @@
+["html", ["p", "This example from\u000a", ["a", {
+    "href": "http://orestis.gr/en/blog/2007/05/28/python-markdown-problems/"
+},
+"http://orestis.gr/en/blog/2007/05/28/python-markdown-problems/"], ":"],
+    ["p", ["a", {
+        "href": "http://www.google.com/",
+        "title": "click to visit Google.com"
+    },
+    ["img", {
+        "src": "http://www.google.com/images/logo.gif",
+        "alt": "the google logo"
+    }]]]]

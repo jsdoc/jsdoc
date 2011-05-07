@@ -1,0 +1,4 @@
+["html", ["ul", ["li", ["p", "A list item with a blockquote:"],
+    ["blockquote", ["p", "This is a blockquote inside a list item."]]],
+    ["li", ["p", "A list item with a code block:"],
+        ["pre", ["code", "<code goes here>"]]]]]

@@ -1,0 +1,1 @@
+Paragraph and no space:* ciaoParagraph and 1 space: * ciaoParagraph and 3 spaces:  * ciaoParagraph and 4 spaces:   * ciaoParagraph before header:#HeaderParagraph before blockquote:>Some quote.

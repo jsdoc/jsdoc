@@ -1,0 +1,10 @@
+["html",
+  ["ul",
+    ["li",
+      "List items can have ",
+      [ "em", "inline content\nthat spans multiple lines" ],
+      ". Pain"
+    ]
+  ]
+]
+

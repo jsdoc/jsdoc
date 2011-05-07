@@ -1,0 +1,10 @@
+["html", ["p", "Some quick thoughts from a coder's perspective:"],
+    ["ul", ["li", ["p", "The source will be available in a Mercurial ..."]],
+        ["li", ["p", "Komodo is a Mozilla-based application..."],
+            ["ul", ["li", "Get a slightly tweaked mozilla build (C++, JavaScript, XUL)."],
+                ["li", "Get a slightly tweaks Python build (C)."],
+                ["li", "Add a bunch of core logic (Python)..."],
+                ["li", "Add Komodo chrome (XUL, JavaScript, CSS, DTDs)."]],
+            ["p", ["p", "What this means is that work on and add significant functionality..."]]],
+        ["li", ["p", "Komodo uses the same extension mechanisms as Firefox..."]],
+        ["li", ["p", "Komodo builds and runs on Windows, Linux and ..."]]]]

@@ -1,0 +1,4 @@
+["html", ["blockquote", ["p", "Example:"],
+    ["pre", ["code", "sub status {\u000a    print \"working\";\u000a}\u000a"]],
+    ["p", "Or:"],
+    ["pre", ["code", "sub status {\u000a    return \"working\";\u000a}\u000a"]]]]

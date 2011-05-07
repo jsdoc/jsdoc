@@ -1,0 +1,6 @@
+{"extras": ["link-patterns"],
+ "link_patterns": [
+    (re.compile("Blah\s+(\d+)", re.I), r"http://foo.com/blah_blah_blah/\1"),
+ ],
+}
+

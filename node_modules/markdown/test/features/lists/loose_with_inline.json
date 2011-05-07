@@ -1,0 +1,36 @@
+["html",
+  ["ul",
+    ["li",
+      ["p",
+        "List item ",
+        ["em",
+          "ending"
+        ],
+        "\nwith ",
+        ["em",
+          "emphasis"
+        ],
+        "."
+      ]
+    ],
+    ["li",
+      ["p",
+        "List item\nwith ",
+        ["strong",
+          "strong emphasis"
+        ],
+        "."
+      ]
+    ],
+    ["li",
+      ["p",
+        "List item\nwith ",
+        ["a",
+          { "href" : "http://google.com" },
+          "a link"
+        ],
+        "."
+      ]
+    ]
+  ]
+]

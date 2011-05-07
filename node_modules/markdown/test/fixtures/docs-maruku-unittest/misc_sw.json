@@ -1,0 +1,139 @@
+["html", ["h3", {
+    "id": "general"
+},
+"General"], "\u000a\u000a", ["ul", ["li", ["em", "Operating System"], " : ", ["a", {
+    "href": "http://www.apple.com/getamac/"
+},
+"Mac OS X"], ": heaven, after the purgatory of Linux and the hell of Windows."],
+    ["li", ["em", "Browser"], ": ", ["a", {
+        "href": "http://getfirefox.com/"
+    },
+    "Firefox"], ". On a Mac, ", ["a", {
+        "href": "http://www.caminobrowser.org/"
+    },
+    "Camino"], "."],
+    ["li", ["em", "Email"], ": ", ["a", {
+        "href": "http://gmail.com/"
+    },
+    "GMail"], ", “search, don’t sort” really works."],
+    ["li", ["em", "Text Editor"], ": ", ["a", {
+        "href": "http://www.apple.com/getamac/"
+    },
+    "TextMate"], ", you have to buy it, but it’s worth every penny. There are rumours that it’s been converting (recovering) Emacs users (addicts). Unfortunately, it’s Mac only. An alternative is ", ["a", {
+        "href": "http://www.jedit.org/"
+    },
+    "jedit"], " (GPL, Java)."]], "\u000a\u000a", ["h3", {
+    "id": "development"
+},
+"Development"], "\u000a\u000a", ["ul", ["li", ["p", ["em", "Build system"], ": ", ["a", {
+    "href": "http://www.cmake.org/"
+},
+"cmake"], ", throw the ", ["a", {
+    "href": "http://sources.redhat.com/autobook/"
+},
+"autotools"], " away."]],
+    ["li", ["p", ["em", "Source code control system"], ": ditch CVS for ", ["a", {
+        "href": "http://subversion.tigris.org"
+    },
+    "subversion"], "."]],
+    ["li", ["p", ["em", "Project management"], ": ", ["a", {
+        "href": "http://trac.edgewall.org/"
+    },
+    "Trac"], " tracks everything."]],
+    ["li", ["p", ["em", "Scripting language"], ": ", ["a", {
+        "href": "http://www.ruby-lang.org/"
+    },
+    "Ruby"], " is Japanese pragmatism (and has a ", ["a", {
+        "href": "http://poignantguide.net/ruby/"
+    },
+    "poignant"], " guide). Python, you say? Python is too academic and snob:"],
+        ["pre", ["code", "$ python       \u000aPython 2.4.1 (\\#1, Jun  4 2005, 00:54:33) \u000aType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\u000a>>> exit\u000a'Use Ctrl-D (i.e. EOF) to exit.'\u000a>>> quit\u000a'Use Ctrl-D (i.e. EOF) to exit.'"]]],
+    ["li", ["p", ["em", "Java IDE"], ": ", ["a", {
+        "href": "http://www.borland.com/us/products/jbuilder/index.html"
+    },
+    "JBuilder"], " is great software and has a free version (IMHO better than Eclipse). Java is not a pain anymore since it gained ", ["a", {
+        "href": "http://java.sun.com/j2se/1.5.0/docs/guide/language/generics.html"
+    },
+    "generics"], " and got opensourced."]],
+    ["li", ["p", ["em", "Mark-up language"], ": HTML is so 2001, why don’t you take at look at ", ["a", {
+        "href": "http://en.wikipedia.org/wiki/Markdown"
+    },
+    "Markdown"], "? ", ["a", {
+        "href": "data/misc_markdown.png"
+    },
+    "Look at the source of this page"], "."]],
+    ["li", ["p", ["em", "C++ libraries"], ": * ", ["a", {
+        "href": "http://www.trolltech.no/"
+    },
+    "QT"], " for GUIs. * ", ["a", {
+        "href": "http://www.gnu.org/software/gsl/"
+    },
+    "GSL"], " for math. * ", ["a", {
+        "href": "http://www.imagemagick.org/Magick++/"
+    },
+    "Magick++"], " for manipulating images. * ", ["a", {
+        "href": "http://cairographics.org/"
+    },
+    "Cairo"], " for creating PDFs. * ", ["a", {
+        "href": "http://www.boost.org/"
+    },
+    "Boost"], " for just about everything else."]]], "\u000a\u000a", ["h3", {
+    "id": "research"
+},
+"Research"], "\u000a\u000a", ["ul", ["li", ["em", "Writing papers"], ": ", ["a", {
+    "href": "http://en.wikipedia.org/wiki/LaTeX"
+},
+"LaTeX"]],
+    ["li", ["em", "Writing papers & enjoying the process"], ": ", ["a", {
+        "href": "http://www.lyx.org"
+    },
+    "LyX"]],
+    ["li", ["em", "Handsome figures in your papers"], ": ", ["a", {
+        "href": "http://www.xfig.org/"
+    },
+    "xfig"], " or, better, ", ["a", {
+        "href": "http://tams-www.informatik.uni-hamburg.de/applets/jfig/"
+    },
+    "jfig"], "."],
+    ["li", ["em", "The occasional presentation with many graphical content"], ": ", ["a", {
+        "href": "http://www.openoffice.org/product/impress.html"
+    },
+    "OpenOffice Impress"], " (using the ", ["a", {
+        "href": "http://ooolatex.sourceforge.net/"
+    },
+    "OOOlatex plugin"], "); the alternative is PowerPoint with the ", ["a", {
+        "href": "http://texpoint.necula.org/"
+    },
+    "TexPoint"], " plugin."],
+    ["li", ["em", "Managing BibTeX"], ": ", ["a", {
+        "href": "http://jabref.sourceforge.net/"
+    },
+    "jabref"], ": multi-platform, for all your bibtex needs."],
+    ["li", ["em", "IEEExplore and BibTeX"], ": convert citations using ", ["a", {
+        "href": "http://www.bibconverter.net/ieeexplore/"
+    },
+    "BibConverter"], "."]], "\u000a\u000a", ["h3", {
+    "id": "cool_websites"
+},
+"Cool websites"], "\u000a\u000a", ["ul", ["li", ["em", "Best site in the wwworld"], ": ", ["a", {
+    "href": "http://en.wikipedia.org/"
+},
+"Wikipedia"]],
+    ["li", ["a", {
+        "href": "http://www.mutopiaproject.org/"
+    },
+    "Mutopia"], " for sheet music; ", ["a", {
+        "href": "http://www.gutenberg.org/"
+    },
+    "the Gutenberg Project"], " for books; ", ["a", {
+        "href": "http://www.liberliber.it/"
+    },
+    "LiberLiber"], " for books in italian."],
+    ["li", ["em", "Blogs"], ": ", ["a", {
+        "href": "http://bloglines.com/"
+    },
+    "Bloglines"]],
+    ["li", ["em", "Sharing photos"], ": ", ["a", {
+        "href": "http://www.flickr.com/"
+    },
+    "flickr"], " exposes an API you can use."]]]

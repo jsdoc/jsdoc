@@ -1,0 +1,7 @@
+{"extras": ["link-patterns"],
+ "link_patterns": [
+    (re.compile(r'mozilla\s+bug\s+(\d+)', re.I), r'http://bugzilla.mozilla.org/show_bug.cgi?id=\1'),
+    (re.compile("(?:komodo\s+)?bug\s+(\d+)", re.I), r"http://bugs.activestate.com/show_bug.cgi?id=\1"),
+ ],
+}
+

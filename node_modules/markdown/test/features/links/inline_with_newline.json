@@ -1,0 +1,10 @@
+["html",
+  ["p",
+    "An ",
+    ["a",
+      { "href" : "http://inline.com" },
+      "inline\nlink"
+    ],
+    " with a newline."
+  ]
+]

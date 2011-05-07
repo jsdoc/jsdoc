@@ -1,0 +1,7 @@
+> There's a code block in here:
+>
+>     SET foo = TRUE
+>
+>     IF foo GOTO 10
+>
+> Wasn't that nice?

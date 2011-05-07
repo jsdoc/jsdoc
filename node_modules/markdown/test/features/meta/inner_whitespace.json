@@ -1,0 +1,14 @@
+["html",
+  ["p",
+    { "id" : "none" },
+    "We can have no whitespace"
+  ],
+  ["p",
+    { "id" : "one" },
+    "Or a single whitespace"
+  ],
+  ["p",
+    { "id" : "lots" },
+    "And even lots of whitespace"
+  ]
+]

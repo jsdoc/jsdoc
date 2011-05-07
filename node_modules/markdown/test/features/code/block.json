@@ -1,0 +1,10 @@
+["html",
+  ["p",
+    "Here is an example of AppleScript:"
+  ],
+  ["pre",
+    ["code",
+      "tell application \"Foo\"\n    beep\nend tell\n\ttab"
+    ]
+  ]
+]

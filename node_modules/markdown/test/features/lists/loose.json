@@ -1,0 +1,22 @@
+["html",
+  ["ul",
+    ["li",
+      ["p",
+        "the quick brown fox jumps\nover the lazy dog"
+      ]
+    ],
+    ["li",
+      ["p",
+        "pack my box with five\ndozen liquor jugs"
+      ],
+      ["p",
+        "this item has a\nsecond paragraph"
+      ]
+    ],
+    ["li",
+      ["p",
+        "this item has\nonly one paragraph"
+      ]
+    ]
+  ]
+]

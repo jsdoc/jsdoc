@@ -1,0 +1,18 @@
+["html", ["p", "Here's a simple block:"], "\u000a\u000a", ["div", "\u000a    foo\u000a"], "\u000a\u000a", ["p", "This should be a code block, though:"],
+    ["pre", ["code", "<div>\u000a    foo\u000a</div>\u000a"]],
+    ["p", "As should this:"],
+    ["pre", ["code", "<div>foo</div>\u000a"]],
+    ["p", "Now, nested:"], "\u000a\u000a", ["div", "\u000a    ", ["div", "\u000a        ", ["div", "\u000a            foo\u000a        "], "\u000a    "], "\u000a"], "\u000a\u000a", ["p", "This should just be an HTML comment:"], "\u000a\u000a", "\u000a\u000a", ["p", "Multiline:"], "\u000a\u000a", "\u000a\u000a", ["p", "Code block:"],
+    ["pre", ["code", "<!-- Comment -->\u000a"]],
+    ["p", "Just plain comment, with trailing spaces on the line:"], "\u000a\u000a", "   \u000a\u000a", ["p", "Code:"],
+    ["pre", ["code", "<hr />\u000a"]],
+    ["p", "Hr's:"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["hr"], "   \u000a\u000a", ["hr"], "  \u000a\u000a", ["hr"], " \u000a\u000a", ["hr", {
+    "class": "foo",
+    "id": "bar"
+}], "\u000a\u000a", ["hr", {
+    "class": "foo",
+    "id": "bar"
+}], "\u000a\u000a", ["hr", {
+    "class": "foo",
+    "id": "bar"
+}], "\u000a"]

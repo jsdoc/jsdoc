@@ -1,0 +1,96 @@
+["html", ["h1", "Markdown: Basics"], "\u000a\u000a", ["ul", {
+    "id": "ProjectSubmenu"
+},
+["li", ["a", {
+    "href": "/projects/markdown/",
+    "title": "Markdown Project Page"
+},
+"Main"]],
+    ["li", ["a", {
+        "class": "selected",
+        "title": "Markdown Basics"
+    },
+    "Basics"]],
+    ["li", ["a", {
+        "href": "/projects/markdown/syntax",
+        "title": "Markdown Syntax Documentation"
+    },
+    "Syntax"]],
+    ["li", ["a", {
+        "href": "/projects/markdown/license",
+        "title": "Pricing and License Information"
+    },
+    "License"]],
+    ["li", ["a", {
+        "href": "/projects/markdown/dingus",
+        "title": "Online Markdown Web Form"
+    },
+    "Dingus"]]], "\u000a\u000a", ["h2", "Getting the Gist of Markdown's Formatting Syntax"], "\u000a\u000a", ["p", "This page offers a brief overview of what it's like to use Markdown.\u000aThe ", ["a", {
+    "href": "/projects/markdown/syntax",
+    "title": "Markdown Syntax"
+},
+"syntax page"], " provides complete, detailed documentation for\u000aevery feature, but Markdown should be very easy to pick up simply by\u000alooking at a few examples of it in action. The examples on this page\u000aare written in a before/after style, showing example syntax and the\u000aHTML output produced by Markdown."],
+    ["p", "It's also helpful to simply try Markdown out; the ", ["a", {
+        "href": "/projects/markdown/dingus",
+        "title": "Markdown Dingus"
+    },
+    "Dingus"], " is a\u000aweb application that allows you type your own Markdown-formatted text\u000aand translate it to XHTML."],
+    ["p", ["strong", "Note:"], " This document is itself written using Markdown; you\u000acan ", ["a", {
+        "href": "/projects/markdown/basics.text"
+    },
+    "see the source for it by adding '.text' to the URL"], "."], "\u000a\u000a", ["h2", "Paragraphs, Headers, Blockquotes"], "\u000a\u000a", ["p", "A paragraph is simply one or more consecutive lines of text, separated\u000aby one or more blank lines. (A blank line is any line that looks like a\u000ablank line -- a line containing nothing spaces or tabs is considered\u000ablank.) Normal paragraphs should not be intended with spaces or tabs."],
+    ["p", "Markdown offers two styles of headers: ", ["em", "Setext"], " and ", ["em", "atx"], ".\u000aSetext-style headers for ", ["code", "<h1>"], " and ", ["code", "<h2>"], " are created by\u000a\"underlining\" with equal signs (", ["code", "="], ") and hyphens (", ["code", "-"], "), respectively.\u000aTo create an atx-style header, you put 1-6 hash marks (", ["code", "#"], ") at the\u000abeginning of the line -- the number of hashes equals the resulting\u000aHTML header level."],
+    ["p", "Blockquotes are indicated using email-style '", ["code", ">"], "' angle brackets."],
+    ["p", "Markdown:"],
+    ["pre", ["code", "A First Level Header\u000a====================\u000a\u000aA Second Level Header\u000a---------------------\u000a\u000aNow is the time for all good men to come to\u000athe aid of their country. This is just a\u000aregular paragraph.\u000a\u000aThe quick brown fox jumped over the lazy\u000adog's back.\u000a\u000a### Header 3\u000a\u000a> This is a blockquote.\u000a> \u000a> This is the second paragraph in the blockquote.\u000a>\u000a> ## This is an H2 in a blockquote\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<h1>A First Level Header</h1>\u000a\u000a<h2>A Second Level Header</h2>\u000a\u000a<p>Now is the time for all good men to come to\u000athe aid of their country. This is just a\u000aregular paragraph.</p>\u000a\u000a<p>The quick brown fox jumped over the lazy\u000adog's back.</p>\u000a\u000a<h3>Header 3</h3>\u000a\u000a<blockquote>\u000a    <p>This is a blockquote.</p>\u000a\u000a    <p>This is the second paragraph in the blockquote.</p>\u000a\u000a    <h2>This is an H2 in a blockquote</h2>\u000a</blockquote>\u000a"]], "\u000a\u000a", ["h3", "Phrase Emphasis"], "\u000a\u000a", ["p", "Markdown uses asterisks and underscores to indicate spans of emphasis."],
+    ["p", "Markdown:"],
+    ["pre", ["code", "Some of these words *are emphasized*.\u000aSome of these words _are emphasized also_.\u000a\u000aUse two asterisks for **strong emphasis**.\u000aOr, if you prefer, __use two underscores instead__.\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<p>Some of these words <em>are emphasized</em>.\u000aSome of these words <em>are emphasized also</em>.</p>\u000a\u000a<p>Use two asterisks for <strong>strong emphasis</strong>.\u000aOr, if you prefer, <strong>use two underscores instead</strong>.</p>\u000a"]], "\u000a\u000a", ["h2", "Lists"], "\u000a\u000a", ["p", "Unordered (bulleted) lists use asterisks, pluses, and hyphens (", ["code", "*"], ",\u000a", ["code", "+"], ", and ", ["code", "-"], ") as list markers. These three markers are\u000ainterchangable; this:"],
+    ["pre", ["code", "*   Candy.\u000a*   Gum.\u000a*   Booze.\u000a"]],
+    ["p", "this:"],
+    ["pre", ["code", "+   Candy.\u000a+   Gum.\u000a+   Booze.\u000a"]],
+    ["p", "and this:"],
+    ["pre", ["code", "-   Candy.\u000a-   Gum.\u000a-   Booze.\u000a"]],
+    ["p", "all produce the same output:"],
+    ["pre", ["code", "<ul>\u000a<li>Candy.</li>\u000a<li>Gum.</li>\u000a<li>Booze.</li>\u000a</ul>\u000a"]],
+    ["p", "Ordered (numbered) lists use regular numbers, followed by periods, as\u000alist markers:"],
+    ["pre", ["code", "1.  Red\u000a2.  Green\u000a3.  Blue\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<ol>\u000a<li>Red</li>\u000a<li>Green</li>\u000a<li>Blue</li>\u000a</ol>\u000a"]],
+    ["p", "If you put blank lines between items, you'll get ", ["code", "<p>"], " tags for the\u000alist item text. You can create multi-paragraph list items by indenting\u000athe paragraphs by 4 spaces or 1 tab:"],
+    ["pre", ["code", "*   A list item.\u000a\u000a    With multiple paragraphs.\u000a\u000a*   Another item in the list.\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<ul>\u000a<li><p>A list item.</p>\u000a<p>With multiple paragraphs.</p></li>\u000a<li><p>Another item in the list.</p></li>\u000a</ul>\u000a"]], "\u000a\u000a", ["h3", "Links"], "\u000a\u000a", ["p", "Markdown supports two styles for creating links: ", ["em", "inline"], " and\u000a", ["em", "reference"], ". With both styles, you use square brackets to delimit the\u000atext you want to turn into a link."],
+    ["p", "Inline-style links use parentheses immediately after the link text.\u000aFor example:"],
+    ["pre", ["code", "This is an [example link](http://example.com/).\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<p>This is an <a href=\"http://example.com/\">\u000aexample link</a>.</p>\u000a"]],
+    ["p", "Optionally, you may include a title attribute in the parentheses:"],
+    ["pre", ["code", "This is an [example link](http://example.com/ \"With a Title\").\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<p>This is an <a href=\"http://example.com/\" title=\"With a Title\">\u000aexample link</a>.</p>\u000a"]],
+    ["p", "Reference-style links allow you to refer to your links by names, which\u000ayou define elsewhere in your document:"],
+    ["pre", ["code", "I get 10 times more traffic from [Google][1] than from\u000a[Yahoo][2] or [MSN][3].\u000a\u000a[1]: http://google.com/        \"Google\"\u000a[2]: http://search.yahoo.com/  \"Yahoo Search\"\u000a[3]: http://search.msn.com/    \"MSN Search\"\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<p>I get 10 times more traffic from <a href=\"http://google.com/\"\u000atitle=\"Google\">Google</a> than from <a href=\"http://search.yahoo.com/\"\u000atitle=\"Yahoo Search\">Yahoo</a> or <a href=\"http://search.msn.com/\"\u000atitle=\"MSN Search\">MSN</a>.</p>\u000a"]],
+    ["p", "The title attribute is optional. Link names may contain letters,\u000anumbers and spaces, but are ", ["em", "not"], " case sensitive:"],
+    ["pre", ["code", "I start my morning with a cup of coffee and\u000a[The New York Times][NY Times].\u000a\u000a[ny times]: http://www.nytimes.com/\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<p>I start my morning with a cup of coffee and\u000a<a href=\"http://www.nytimes.com/\">The New York Times</a>.</p>\u000a"]], "\u000a\u000a", ["h3", "Images"], "\u000a\u000a", ["p", "Image syntax is very much like link syntax."],
+    ["p", "Inline (titles are optional):"],
+    ["pre", ["code", "![alt text](/path/to/img.jpg \"Title\")\u000a"]],
+    ["p", "Reference-style:"],
+    ["pre", ["code", "![alt text][id]\u000a\u000a[id]: /path/to/img.jpg \"Title\"\u000a"]],
+    ["p", "Both of the above examples produce the same output:"],
+    ["pre", ["code", "<img src=\"/path/to/img.jpg\" alt=\"alt text\" title=\"Title\" />\u000a"]], "\u000a\u000a", ["h3", "Code"], "\u000a\u000a", ["p", "In a regular paragraph, you can create code span by wrapping text in\u000abacktick quotes. Any ampersands (", ["code", "&"], ") and angle brackets (", ["code", "<"], " or\u000a", ["code", ">"], ") will automatically be translated into HTML entities. This makes\u000ait easy to use Markdown to write about HTML example code:"],
+    ["pre", ["code", "I strongly recommend against using any `<blink>` tags.\u000a\u000aI wish SmartyPants used named entities like `&mdash;`\u000ainstead of decimal-encoded entites like `&#8212;`.\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<p>I strongly recommend against using any\u000a<code>&lt;blink&gt;</code> tags.</p>\u000a\u000a<p>I wish SmartyPants used named entities like\u000a<code>&amp;mdash;</code> instead of decimal-encoded\u000aentites like <code>&amp;#8212;</code>.</p>\u000a"]],
+    ["p", "To specify an entire block of pre-formatted code, indent every line of\u000athe block by 4 spaces or 1 tab. Just like with code spans, ", ["code", "&"], ", ", ["code", "<"], ",\u000aand ", ["code", ">"], " characters will be escaped automatically."],
+    ["p", "Markdown:"],
+    ["pre", ["code", "If you want your page to validate under XHTML 1.0 Strict,\u000ayou've got to put paragraph tags in your blockquotes:\u000a\u000a    <blockquote>\u000a        <p>For example.</p>\u000a    </blockquote>\u000a"]],
+    ["p", "Output:"],
+    ["pre", ["code", "<p>If you want your page to validate under XHTML 1.0 Strict,\u000ayou've got to put paragraph tags in your blockquotes:</p>\u000a\u000a<pre><code>&lt;blockquote&gt;\u000a    &lt;p&gt;For example.&lt;/p&gt;\u000a&lt;/blockquote&gt;\u000a</code></pre>\u000a"]]]

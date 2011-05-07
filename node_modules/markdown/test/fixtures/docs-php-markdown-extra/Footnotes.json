@@ -1,0 +1,152 @@
+["html", ["p", "This is the first paragraph.", ["sup", {
+    "id": "fnref:first"
+},
+["a", {
+    "href": "#fn:first",
+    "rel": "footnote"
+},
+"1"]]],
+    ["ul", ["li", "List item one.", ["sup", {
+        "id": "fnref:second"
+    },
+    ["a", {
+        "href": "#fn:second",
+        "rel": "footnote"
+    },
+    "2"]]],
+        ["li", "List item two.", ["sup", {
+            "id": "fnref:third"
+        },
+        ["a", {
+            "href": "#fn:third",
+            "rel": "footnote"
+        },
+        "3"]]]], "\u000a\u000a", ["h1", "Header", ["sup", {
+    "id": "fnref:fourth"
+},
+["a", {
+    "href": "#fn:fourth",
+    "rel": "footnote"
+},
+"4"]]], "\u000a\u000a", ["p", "Some paragraph with a footnote", ["sup", {
+    "id": "fnref:1"
+},
+["a", {
+    "href": "#fn:1",
+    "rel": "footnote"
+},
+"5"]], ", and another", ["sup", {
+    "id": "fnref:2"
+},
+["a", {
+    "href": "#fn:2",
+    "rel": "footnote"
+},
+"6"]], "."],
+    ["p", "Another paragraph with a named footnote", ["sup", {
+        "id": "fnref:fn-name"
+    },
+    ["a", {
+        "href": "#fn:fn-name",
+        "rel": "footnote"
+    },
+    "7"]], "."],
+    ["p", "This paragraph should not have a footnote marker since \u000athe footnote is undefined.[^3]"],
+    ["p", "This paragraph should not have a footnote marker since \u000athe footnote has already been used before.[^1]"],
+    ["p", "This paragraph links to a footnote with plenty of \u000ablock-level content.", ["sup", {
+        "id": "fnref:block"
+    },
+    ["a", {
+        "href": "#fn:block",
+        "rel": "footnote"
+    },
+    "8"]]],
+    ["p", "This paragraph host the footnote reference within a \u000afootnote test", ["sup", {
+        "id": "fnref:reference"
+    },
+    ["a", {
+        "href": "#fn:reference",
+        "rel": "footnote"
+    },
+    "9"]], "."], "\u000a\u000a", ["div", {
+    "class": "footnotes"
+},
+"\u000a", ["hr"], "\u000a", ["ol", ["li", {
+    "id": "fn:first"
+},
+["p", "This is the first note. ", ["a", {
+    "href": "#fnref:first",
+    "rev": "footnote"
+},
+"↩"]]],
+    ["li", {
+        "id": "fn:second"
+    },
+    ["p", "This is the second note. ", ["a", {
+        "href": "#fnref:second",
+        "rev": "footnote"
+    },
+    "↩"]]],
+    ["li", {
+        "id": "fn:third"
+    },
+    ["p", "This is the third note, defined out of order. ", ["a", {
+        "href": "#fnref:third",
+        "rev": "footnote"
+    },
+    "↩"]]],
+    ["li", {
+        "id": "fn:fourth"
+    },
+    ["p", "This is the fourth note. ", ["a", {
+        "href": "#fnref:fourth",
+        "rev": "footnote"
+    },
+    "↩"]]],
+    ["li", {
+        "id": "fn:1"
+    },
+    ["p", "Content for fifth footnote. ", ["a", {
+        "href": "#fnref:1",
+        "rev": "footnote"
+    },
+    "↩"]]],
+    ["li", {
+        "id": "fn:2"
+    },
+    ["p", "Content for sixth footnote spaning on \u000athree lines, with some span-level markup like\u000a", ["em", "emphasis"], ", a ", ["a", {
+        "href": "http://www.michelf.com/"
+    },
+    "link"], ". ", ["a", {
+        "href": "#fnref:2",
+        "rev": "footnote"
+    },
+    "↩"]]],
+    ["li", {
+        "id": "fn:fn-name"
+    },
+    ["p", "Footnote beginning on the line next to the marker. ", ["a", {
+        "href": "#fnref:fn-name",
+        "rev": "footnote"
+    },
+    "↩"]]],
+    ["li", {
+        "id": "fn:block"
+    },
+    ["p", "Paragraph."],
+        ["ul", ["li", "List item"]],
+        ["blockquote", ["p", "Blockquote"]],
+        ["pre", ["code", "Code block\u000a"]],
+        ["p", ["a", {
+            "href": "#fnref:block",
+            "rev": "footnote"
+        },
+        "↩"]]],
+    ["li", {
+        "id": "fn:reference"
+    },
+    ["p", "This footnote attemps to refer to another footnote. This \u000ashould be impossible.[^impossible] ", ["a", {
+        "href": "#fnref:reference",
+        "rev": "footnote"
+    },
+    "↩"]]]]], "\u000a"]

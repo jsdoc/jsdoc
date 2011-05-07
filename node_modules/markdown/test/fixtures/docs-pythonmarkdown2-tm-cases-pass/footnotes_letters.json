@@ -1,0 +1,53 @@
+["html", ["p", "This is a para with a footnote.", ["sup", {
+    "class": "footnote-ref",
+    "id": "fnref-foo"
+},
+["a", {
+    "href": "#fn-foo"
+},
+"1"]]],
+    ["p", "This is another para with a footnote", ["sup", {
+        "class": "footnote-ref",
+        "id": "fnref-hyphen-ated"
+    },
+    ["a", {
+        "href": "#fn-hyphen-ated"
+    },
+    "2"]], " in it. Actually it has two", ["sup", {
+        "class": "footnote-ref",
+        "id": "fnref-Capital"
+    },
+    ["a", {
+        "href": "#fn-Capital"
+    },
+    "3"]], " of\u000athem."], "\u000a\u000a", ["div", {
+    "class": "footnotes"
+},
+"\u000a", ["hr"], "\u000a", ["ol", ["li", {
+    "id": "fn-foo"
+},
+["p", "Here is the body of the first footnote.", ["a", {
+    "href": "#fnref-foo",
+    "class": "footnoteBackLink",
+    "title": "Jump back to footnote 1 in the text."
+},
+"↩"]]],
+    ["li", {
+        "id": "fn-hyphen-ated"
+    },
+    ["p", "And of the second footnote."],
+        ["p", "This one has multiple paragraphs.", ["a", {
+            "href": "#fnref-hyphen-ated",
+            "class": "footnoteBackLink",
+            "title": "Jump back to footnote 2 in the text."
+        },
+        "↩"]]],
+    ["li", {
+        "id": "fn-Capital"
+    },
+    ["p", "Here is a footnote body that starts on next line.", ["a", {
+        "href": "#fnref-Capital",
+        "class": "footnoteBackLink",
+        "title": "Jump back to footnote 3 in the text."
+    },
+    "↩"]]]]], "\u000a"]

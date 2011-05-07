@@ -1,0 +1,8 @@
+["html", ["p", "This is a list:"],
+    ["ul", ["li", "one"],
+        ["li", "two"]],
+    ["p", "This is not a list: * one ciao"],
+    ["p", "This is a list:"],
+    ["ol", ["li", "one"],
+        ["li", "two"]],
+    ["p", "This is not a list: 1987. one ciao"]]

@@ -1,0 +1,7 @@
+["html", ["pre", ["code", "code block on the first line\u000a"]],
+    ["p", "Regular text."],
+    ["pre", ["code", "code block indented by spaces\u000a"]],
+    ["p", "Regular text."],
+    ["pre", ["code", "the lines in this block  \u000aall contain trailing spaces  \u000a"]],
+    ["p", "Regular Text."],
+    ["pre", ["code", "code block on the last line\u000a"]]]

@@ -1,0 +1,3 @@
+[Reference link][1] with non-escaped parens.
+
+[1]: /url(test) "title"

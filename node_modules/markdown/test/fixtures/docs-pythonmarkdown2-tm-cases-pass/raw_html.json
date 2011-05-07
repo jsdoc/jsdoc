@@ -1,0 +1,4 @@
+["html", ["p", "Hi, ", ["span", {
+    "foo": "*bar*"
+},
+["em", "there"]], ". ", " blah"], "\u000a\u000a", ["div", "\u000a    **ack**\u000a"], "\u000a"]

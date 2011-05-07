@@ -1,0 +1,18 @@
+["html", ["p", "Valid nesting:"],
+    ["p", ["strong", ["a", {
+        "href": "url"
+    },
+    "Link"]]],
+    ["p", ["a", {
+        "href": "url"
+    },
+    ["strong", "Link"]]],
+    ["p", ["strong", ["a", {
+        "href": "url"
+    },
+    ["strong", "Link"]]]],
+    ["p", "Invalid nesting:"],
+    ["p", ["a", {
+        "href": "url"
+    },
+    "[Link](url)"]]]

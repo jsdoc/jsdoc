@@ -1,0 +1,20 @@
+["html",
+  ["p",
+    "This is ",
+    ["a",
+      { "href" : "http://google.com" },
+      "google"
+    ],
+    ". ",
+    ["a",
+      { "href" : "http://google.com" },
+      "Google"
+    ],
+    " and ",
+    ["a",
+      { "href" : "http://google.com" },
+      "this"
+    ],
+    " are the same thing too"
+  ]
+]

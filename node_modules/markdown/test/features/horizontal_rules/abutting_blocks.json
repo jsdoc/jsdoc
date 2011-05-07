@@ -1,0 +1,17 @@
+["html",
+  ["p",
+    "para"
+  ],
+  ["hr"],
+  ["ul",
+    ["li",
+      "list"
+    ]
+  ],
+  ["hr"],
+  ["blockquote",
+    ["p",
+      "blockquote"
+    ]
+  ]
+]

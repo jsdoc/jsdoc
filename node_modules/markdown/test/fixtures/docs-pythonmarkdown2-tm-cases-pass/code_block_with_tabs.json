@@ -1,0 +1,2 @@
+["html", ["p", "Test with tabs for ", ["code", "_Detab"], ":"],
+    ["pre", ["code", "Code    'block' with    some    \"tabs\"  and \"quotes\"\u000a"]]]

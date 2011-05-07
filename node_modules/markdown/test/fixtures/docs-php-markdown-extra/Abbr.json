@@ -1,0 +1,44 @@
+["html", ["p", "Some text about ", ["abbr", {
+    "title": "Hyper Text Markup Language"
+},
+"HTML"], ", ", ["abbr", {
+    "title": "Standard Generalized Markup Language"
+},
+"SGML"], " and ", ["abbr", {
+    "title": "Hyper Text Markup Language version 4"
+},
+"HTML4"], "."],
+    ["p", "Let's talk about the ", ["abbr", {
+        "title": "United States of America"
+    },
+    "U.S.A."], ", (", ["abbr", {
+        "title": "États-Unis d'Amérique"
+    },
+    "É.U."], " or ", ["abbr", {
+        "title": "États-Unis d'Amérique"
+    },
+    "É.-U. d'A."], " in French)."],
+    ["p", "And here we have a ", ["abbr", {
+        "title": "Compact Disk"
+    },
+    "CD"], ", some CDs, and some other ", ["abbr", {
+        "title": "Compact Disk"
+    },
+    "CD"], "'s."],
+    ["p", "Let's transfert documents through ", ["abbr", {
+        "title": "Transmission Control Protocol"
+    },
+    "TCP"], "/", ["abbr", {
+        "title": "Internet Protocol"
+    },
+    "IP"], ", using ", ["abbr", {
+        "title": "Transmission Control Protocol"
+    },
+    "TCP"], " packets."], "\u000a\u000a", ["hr"], "\u000a\u000a", ["p", "Bienvenue sur ", ["a", {
+    "href": "http://www.bidulecms.com",
+    "title": "Bidule CMS"
+},
+["abbr", {
+    "title": "Content Management System"
+},
+"CMS"]], "."]]

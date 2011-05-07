@@ -1,0 +1,9 @@
+["html", ["p", "Horizontal rules:"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["hr"], "\u000a\u000a", ["p", "Not horizontal rules (testing for a bug in 1.0.1j):"],
+    ["p", "+++"],
+    ["p", ",,,"],
+    ["p", "==="],
+    ["p", "???"],
+    ["p", "AAA"],
+    ["p", "jjj"],
+    ["p", "j j j"],
+    ["p", "n n n"]]

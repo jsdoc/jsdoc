@@ -1,0 +1,3 @@
+A paragraph with an
+arbitrary attribute.
+{: foo=bar}

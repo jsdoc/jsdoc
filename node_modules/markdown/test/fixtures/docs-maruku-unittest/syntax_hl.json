@@ -1,0 +1,23 @@
+["html", ["p", "This is ruby code:"],
+    ["pre", ["code", "require 'maruku'\u000a\u000aputs Maruku.new($stdin).to_html"]],
+    ["p", "This is ruby code:"],
+    ["pre", ["code", {
+        "class": "ruby",
+        "lang": "ruby"
+    },
+    ["span", {
+        "class": "ident"
+    },
+    "require"], " ", ["span", {
+        "class": "punct"
+    },
+    "'"],
+        ["span", {
+            "class": "string"
+        },
+        "maruku"],
+        ["span", {
+            "class": "punct"
+        },
+        "'"]]],
+    ["pre", ["code", "puts Maruku.new($stdin).to_html"]]]

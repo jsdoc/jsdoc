@@ -1,0 +1,8 @@
+["html", ["pre", ["code", "'Twas a \"test\" to 'remember' in the '90s."]],
+    ["p", "‘Twas a “test” to ‘remember’ in the ’90s."],
+    ["pre", ["code", "It was --- in a sense --- really... interesting."]],
+    ["p", "It was — in a sense — really… interesting."],
+    ["pre", ["code", "I -- too -- met << some curly quotes >> there or <<here>>No space."]],
+    ["p", "I – too – met « some curly quotes » there or «here»No space."],
+    ["pre", ["code", "She was 6\\\"12\\'."]],
+    ["blockquote", ["p", "She was 6\"12'."]]]

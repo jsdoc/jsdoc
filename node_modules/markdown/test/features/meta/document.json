@@ -1,0 +1,9 @@
+["html",
+  {
+    "key" : "value",
+    "anotherkey" : "another value"
+  },
+  ["p",
+    "A regular paragraph"
+  ]
+]

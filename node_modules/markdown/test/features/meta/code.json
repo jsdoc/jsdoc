@@ -1,0 +1,8 @@
+["html",
+  ["pre",
+    { "class" : "foo" },
+    ["code",
+      "a code block;\n\nwith multiple lines;\n\nand a class;"
+    ]
+  ]
+]

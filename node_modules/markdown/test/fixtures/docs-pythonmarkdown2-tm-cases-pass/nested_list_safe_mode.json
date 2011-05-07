@@ -1,0 +1,6 @@
+["html", ["p", "shopping list:"],
+    ["ul", ["li", "veggies\u000a", ["ul", ["li", "carrots"],
+        ["li", "lettuce"]]],
+        ["li", "fruits\u000a", ["ul", ["li", "oranges"],
+            ["li", "apples"],
+            ["li", ["em", "peaches"]]]]]]

@@ -1,0 +1,11 @@
+["html", ["p", "With some attributes:"], "\u000a\u000a", ["div", {
+    "id": "test"
+},
+"\u000a    foo\u000a"], "\u000a\u000a", ["div", {
+    "id": "test",
+    "class": "nono"
+},
+"\u000a    foo\u000a"], "\u000a\u000a", ["p", "Hr's:"], "\u000a\u000a", ["hr", {
+    "class": "foo",
+    "id": "bar"
+}]]

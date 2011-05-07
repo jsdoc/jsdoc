@@ -1,0 +1,8 @@
+["html", ["p", "I can has autolink? ", ["a", {
+    "href": "http://icanhascheeseburger.com"
+},
+"http://icanhascheeseburger.com"]],
+    ["p", "Ask garfield: ", ["a", {
+        "href": "mailto:garfield@example.com"
+    },
+    "garfield@example.com"]]]

@@ -1,0 +1,10 @@
+["html", ["h1", {
+    "id": "a_title_with_emphasis"
+},
+"A title with ", ["em", "emphasis"]], "\u000a\u000a", ["h2", {
+    "id": "a_title_with_emphasis"
+},
+"A title with ", ["em", "emphasis"]], "\u000a\u000a", ["h4", {
+    "id": "a_title_with_emphasis"
+},
+"A title with ", ["em", "emphasis"]], "\u000a"]

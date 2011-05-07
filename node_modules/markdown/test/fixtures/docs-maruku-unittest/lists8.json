@@ -1,0 +1,5 @@
+["html", ["p", "Here is a paragraph."],
+    ["ul", ["li", "Item 1"],
+        ["li", "Item 2"],
+        ["li", "Item 3"]], "\u000a-----| WARNING | -----\u000a", ["p", "Here is a paragraph."],
+    ["p", "* Item 1 * Item 2 * Item 3"]]

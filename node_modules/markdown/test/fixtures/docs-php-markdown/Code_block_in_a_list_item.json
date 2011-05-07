@@ -1,0 +1,3 @@
+["html", ["ul", ["li", ["p", "List Item:"],
+    ["pre", ["code", "code block\u000a\u000a\u000awith a blank line\u000a"]],
+    ["p", "within a list item."]]]]

@@ -1,0 +1,8 @@
+["html",
+  ["p",
+    "This is a ",
+    ["code",
+      "code span with an `embedded` backtick"],
+    "."
+  ]
+]

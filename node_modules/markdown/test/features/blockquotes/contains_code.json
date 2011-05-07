@@ -1,0 +1,15 @@
+["html",
+  ["blockquote",
+    ["p",
+      "There's a code block in here:"
+    ],
+    ["pre",
+      ["code",
+        "SET foo = TRUE\n\nIF foo GOTO 10"
+      ]
+    ],
+    ["p",
+      "Wasn't that nice?"
+    ]
+  ]
+]

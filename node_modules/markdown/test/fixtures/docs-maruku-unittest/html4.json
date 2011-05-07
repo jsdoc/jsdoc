@@ -1,0 +1,11 @@
+["html", ["div", {
+    "class": "frame"
+},
+"\u000a\u0009", ["a", {
+    "href": "http://www.flickr.com/photos/censi/54757256/",
+    "class": "photo"
+},
+["img", {
+    "src": "http://static.flickr.com/27/54757256_1a2c1d2a95_m.jpg",
+    "moz-do-not-send": "true"
+}]], "\u000a"], "\u000a"]

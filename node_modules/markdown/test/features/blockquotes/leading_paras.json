@@ -1,0 +1,18 @@
+["html",
+  ["p",
+    "Amy wrote:"
+  ],
+  ["blockquote",
+    ["p",
+      "No wai?"
+    ]
+  ],
+  ["p",
+    "Bob wrote:"
+  ],
+  ["blockquote",
+    ["p",
+      "Ya rly!"
+    ]
+  ]
+]

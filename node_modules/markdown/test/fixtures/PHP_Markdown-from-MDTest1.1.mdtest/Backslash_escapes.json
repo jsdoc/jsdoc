@@ -1,0 +1,5 @@
+["html", ["p", "Tricky combinaisons:"],
+    ["p", "backslash with \\-- two dashes"],
+    ["p", "backslash with \\> greater than"],
+    ["p", "\\[test](not a link)"],
+    ["p", "\\*no emphasis*"]]

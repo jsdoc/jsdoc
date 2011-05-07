@@ -1,0 +1,7 @@
+![alt text](/url/)
+
+![alt text](</url/>)
+
+![alt text][foo]
+
+  [foo]: /url/

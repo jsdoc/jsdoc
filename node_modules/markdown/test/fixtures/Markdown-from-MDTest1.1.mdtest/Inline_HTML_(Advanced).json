@@ -1,0 +1,11 @@
+["html", ["p", "Simple block on one line:"], "\u000a\u000a", ["div", "foo"], "\u000a\u000a", ["p", "And nested without indentation:"], "\u000a\u000a", ["div", "\u000a", ["div", "\u000a", ["div", "\u000afoo\u000a"], "\u000a", ["div", {
+    "style": ">"
+}], "\u000a"], "\u000a", ["div", "bar"], "\u000a"], "\u000a\u000a", ["p", "And with attributes:"], "\u000a\u000a", ["div", "\u000a    ", ["div", {
+    "id": "foo"
+}], "\u000a"], "\u000a\u000a", ["p", "This was broken in 1.0.2b7:"], "\u000a\u000a", ["div", {
+    "class": "inlinepage"
+},
+"\u000a", ["div", {
+    "class": "toggleableend"
+},
+"\u000afoo\u000a"], "\u000a"], "\u000a"]

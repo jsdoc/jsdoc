@@ -1,0 +1,6 @@
+["html", ["p", ["code", "<test a=\""], " content of attribute ", ["code", "\">"]],
+    ["p", "Fix for backticks within HTML tag: ", ["span", {
+        "attr": "`ticks`"
+    },
+    "like this"]],
+    ["p", "Here's how you put ", ["code", "`backticks`"], " in a code span."]]

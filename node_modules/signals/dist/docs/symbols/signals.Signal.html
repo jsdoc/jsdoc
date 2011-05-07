@@ -1,0 +1,594 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - signals.Signal</title>
+
+        <link rel="stylesheet" href="../static/default.css" type="text/css" media="screen" charset="utf-8" />
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+        
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+            <div id="docs">
+                
+            </div>
+			
+<h2>Index</h2>
+<ul class="classList">
+  <li><a href="../files.html">File Index</a></li>
+  <li><a href="../index.html">Class Index</a></li>
+  <li><a href="../symbolindex.html">Symbol Index</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/signals.html">signals</a></li>
+	
+	<li><a href="../symbols/signals.Signal.html">signals.Signal</a></li>
+	
+	<li><a href="../symbols/signals.SignalBinding.html">signals.SignalBinding</a></li>
+	
+</ul>
+
+		</div>
+		
+        <div id="symbolList">
+           <!-- constructor list -->
+           
+             <h3>
+                 Class 
+             </h3>
+             <ul>
+                <li  class="fixedFont">
+                  <a href="../symbols/signals.Signal.html">Signal</a>
+                </li>
+             </ul>
+           
+           <!-- end constructor list -->
+
+           <!-- properties list -->
+           
+           
+             <h3>Fields</h3>
+             <ul>
+               
+                 <li class="fixedFont">
+                   <a href="../symbols/signals.Signal.html#active">active</a>
+                 </li>
+               
+             </ul>
+           
+           <!-- end properties list -->
+
+           <!-- function summary -->
+           
+           
+             <h3>Methods</h3>
+             <ul>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#add">add</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#addOnce">addOnce</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#dispatch">dispatch</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#dispose">dispose</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#getNumListeners">getNumListeners</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#halt">halt</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#remove">remove</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#removeAll">removeAll</a>
+                    </li>
+               
+                   <li class="fixedFont">
+                        <a href="../symbols/signals.Signal.html#toString">toString</a>
+                    </li>
+               
+             </ul>
+           
+           <!-- end function summary -->
+
+           <!-- events summary -->
+           
+           
+           <!-- end events summary -->
+        </div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				Class signals.Signal
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_millermedeiros_Projects__open_source_js-signals_dist_js-signals.js.html">js-signals.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>signals.Signal</b>()
+				</div>
+				
+				<div class="description">
+					<p>Custom event broadcaster
+<br />- inspired by Robert Penner's AS3 Signals.</p>
+					<br /><i>Author: </i>Miller Medeiros.
+				</div>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+                  <div class="member">
+					<a name="active"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<span class="light">{boolean}</span>
+					<b>active</b>
+					
+					</div>
+					<div class="description">
+						<p>If Signal is active and should broadcast events.</p>
+
+<p><strong>IMPORTANT:</strong> Setting this property during a dispatch will only affect the next dispatch, if you want to stop the propagation of a signal use `halt()` instead.</p>
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+              </div>
+			
+
+<!-- ============================== method details ========================= -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+                  <div class="member">
+					<a name="add"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					<span class="light">{SignalBinding}</span>
+					<b>add</b>(listener, scope, priority)
+					
+					</div>
+					<div class="description">
+						<p>Add a listener to the signal.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Function}</span> <b>listener</b>
+									
+								</dt>
+								<dd>Signal handler function.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>scope</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Context on which listener will be executed (object that should represent the `this` variable inside listener function).</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>priority</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added. (default = 0)</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{SignalBinding}</span> An Object representing the binding between the Signal and listener.</dd>
+							
+							</dl>
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="addOnce"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					<span class="light">{SignalBinding}</span>
+					<b>addOnce</b>(listener, scope, priority)
+					
+					</div>
+					<div class="description">
+						<p>Add listener to the signal that should be removed after first execution (will be executed only once).</p>
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Function}</span> <b>listener</b>
+									
+								</dt>
+								<dd>Signal handler function.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>scope</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Context on which listener will be executed (object that should represent the `this` variable inside listener function).</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>priority</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added. (default = 0)</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{SignalBinding}</span> An Object representing the binding between the Signal and listener.</dd>
+							
+							</dl>
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="dispatch"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>dispatch</b>(params)
+					
+					</div>
+					<div class="description">
+						<p>Dispatch/Broadcast Signal to all listeners added to the queue.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{...*}</span> <b>params</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Parameters that should be passed to each handler.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="dispose"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>dispose</b>()
+					
+					</div>
+					<div class="description">
+						<p>Remove all bindings from signal and destroy any reference to external objects (destroy Signal object).</p>
+
+<p><strong>IMPORTANT:</strong> calling any method on the signal instance after calling dispose will throw errors.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="getNumListeners"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					<span class="light">{number}</span>
+					<b>getNumListeners</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{number}</span> Number of listeners attached to the Signal.</dd>
+							
+							</dl>
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="halt"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>halt</b>()
+					
+					</div>
+					<div class="description">
+						<p>Stop propagation of the event, blocking the dispatch to next listeners on the queue.</p>
+
+<p><strong>IMPORTANT:</strong> should be called only during signal dispatch, calling it before/after dispatch won't affect signal broadcast.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd>signals.Signal.prototype.disable</dd>
+							
+							</dl>
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="remove"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					<span class="light">{Function}</span>
+					<b>remove</b>(listener)
+					
+					</div>
+					<div class="description">
+						<p>Remove a single listener from the dispatch queue.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Function}</span> <b>listener</b>
+									
+								</dt>
+								<dd>Handler function that should be removed.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Function}</span> Listener handler function.</dd>
+							
+							</dl>
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="removeAll"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>removeAll</b>()
+					
+					</div>
+					<div class="description">
+						<p>Remove all listeners from the Signal.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="toString"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					<span class="light">{string}</span>
+					<b>toString</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{string}</span> String representation of the object.</dd>
+							
+							</dl>
+						
+						
+						
+
+                  </div>
+				
+              </div>
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both;text-align:center">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blankt">JsDoc Toolkit</a> 2.4.0 on Tue May 03 2011 01:07:20 GMT-0300 (BRT)
+			 | template based on Steffen Siering <a href="http://github.com/urso/jsdoc-simple">jsdoc-simple</a>.
+		</div>
+	</body>
+</html>

@@ -1,0 +1,20 @@
+["html", ["h1", "Markdown inside code blocks"], "\u000a\u000a", ["div", ["p", "foo"]], "\u000a\u000a", ["div", ["p", "foo"]], "\u000a\u000a", ["div", ["p", "foo"]], "\u000a\u000a", ["table", ["tr", ["td", "test ", ["em", "emphasis"], " (span)"]]], "\u000a\u000a", ["table", ["tr", ["td", "test ", ["em", "emphasis"], " (span)"]]], "\u000a\u000a", ["table", ["tr", ["td", ["p", "test ", ["em", "emphasis"], " (block)"]]]], "\u000a\u000a", ["h2", "More complicated"], "\u000a\u000a", ["table", ["tr", ["td", "\u000a* this is ", ["em", "not"], " a list item"]],
+    ["tr", ["td", "\u000a* this is ", ["em", "not"], " a list item"]],
+    ["tr", ["td", ["ul", ["li", "this ", ["em", "is"], " a list item"]]]]], "\u000a\u000a", ["h2", "With indent"], "\u000a\u000a", ["div", "\u000a    ", ["div", ["p", "This text is no code block: if it was, the \u000aclosing ", ["code", "<div>"], " would be too and the HTML block \u000awould be invalid."],
+    ["p", "Markdown content in HTML blocks is assumed to be \u000aindented the same as the block opening tag."],
+    ["p", ["strong", "This should be the third paragraph after the header."]]], "\u000a"], "\u000a\u000a", ["h2", "Code block with rogue ", ["code", "</div>"], "s in Markdown code span and block"], "\u000a\u000a", ["div", "\u000a    ", ["div", ["p", "This is a code block however:"],
+    ["pre", ["code", "</div>\u000a"]],
+    ["p", "Funny isn't it? Here is a code span: ", ["code", "</div>"], "."]], "\u000a"], "\u000a\u000a", ["div", "\u000a  ", ["div", ["ul", ["li", "List item, not a code block"]],
+    ["p", "Some text"],
+    ["pre", ["code", "This is a code block.\u000a"]]], "\u000a"], "\u000a\u000a", ["h2", "No code block in markdown span mode"], "\u000a\u000a", ["p", "\u000a    This is not a code block since Markdown parse paragraph \u000a    content as span. Code spans like ", ["code", "</p>"], " are allowed though.\u000a"],
+    ["p", ["em", "Hello"], " ", ["em", "world"]], "\u000a\u000a", ["h2", "Preserving attributes and tags on more than one line:"], "\u000a\u000a", ["p", {
+    "class": "test",
+    "id": "12"
+},
+"\u000aSome ", ["em", "span"], " content.\u000a"], "\u000a\u000a", ["h2", "Header confusion bug"], "\u000a\u000a", ["table", {
+    "class": "canvas"
+},
+["tr", ["td", {
+    "id": "main"
+},
+"Hello World!\u000a============\u000a\u000aHello World!"]]]]

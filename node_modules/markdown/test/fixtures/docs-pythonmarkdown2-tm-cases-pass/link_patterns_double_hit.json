@@ -1,0 +1,7 @@
+["html", ["p", "There once was a ", ["a", {
+    "href": "http://bugzilla.mozilla.org/show_bug.cgi?id=123"
+},
+"Mozilla bug 123"], " and a ", ["a", {
+    "href": "http://bugs.activestate.com/show_bug.cgi?id=123"
+},
+"Komodo bug 123"], "."]]

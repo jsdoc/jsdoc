@@ -1,0 +1,2 @@
+["html", ["h2", "Heading 2"], "\u000a\u000a", ["p", "blah [HTML_REMOVED]alert('this should be removed')[HTML_REMOVED] ", ["strong", "blah"]],
+    ["p", "[HTML_REMOVED]alert('as should this')[HTML_REMOVED]"]]

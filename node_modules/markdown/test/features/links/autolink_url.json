@@ -1,0 +1,10 @@
+["html",
+  ["p",
+    "URLs like ",
+    ["a",
+      { "href" : "http://google.com" },
+      "http://google.com"
+    ],
+    " get autolinkified."
+  ]
+]

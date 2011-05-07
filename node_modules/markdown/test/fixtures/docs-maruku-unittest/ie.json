@@ -1,0 +1,42 @@
+["html", ["p", ["code", "<p>here's an apostrophe & a quote \"</p>"]],
+    ["pre", ["code", "<p>here's an apostrophe & a quote \"</p>"]],
+    ["pre", {
+        "lang": "xml"
+    },
+    ["code", {
+        "class": "xml",
+        "lang": "xml"
+    },
+    "<p>here's an apostrophe & a quote \"</p>"]],
+    ["pre", ["code", {
+        "class": "not_supported",
+        "lang": "not_supported"
+    },
+    "<p>here's an apostrophe & a quote \"</p>"]],
+    ["pre", ["code", {
+        "class": "xml",
+        "lang": "xml"
+    },
+    ["span", {
+        "class": "punct"
+    },
+    "<"],
+        ["span", {
+            "class": "tag"
+        },
+        "p"],
+        ["span", {
+            "class": "punct"
+        },
+        ">"], "here's an apostrophe & a quote \"", ["span", {
+        "class": "punct"
+    },
+    "</"],
+        ["span", {
+            "class": "tag"
+        },
+        "p"],
+        ["span", {
+            "class": "punct"
+        },
+        ">"]]]]

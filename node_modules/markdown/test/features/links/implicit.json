@@ -1,0 +1,15 @@
+["html",
+  ["p",
+    "These ",
+    ["a",
+      { "href" : "http://links.com" },
+      "links"
+    ],
+    " use ",
+    ["a",
+      { "href" : "http://implicit.com" },
+      "implicit"
+    ],
+    " references."
+  ]
+]

@@ -1,0 +1,31 @@
+{
+	"name" : "jsdoc",
+	"description" : "Automated documentation generator for JavaScript",
+	"keywords" : ["jsdoc", "documentation"],
+	"homepage" : "http://micmath.github.com/jsdoc/",
+	"version" : "3.0.0a",
+	"author" : "Michael Mathews",
+	"repository" : {
+		"type" : "git",
+		"url" : "https://github.com/micmath/jsdoc.git"
+	},
+	"maintainers" : [
+        {
+            "name" : "Michael Mathews",
+            "email" : "micmath@gmail.com"
+        }
+    ],
+	"main" : "./jsdoc.js",
+	"bugs" : {
+		"web" : "https://github.com/micmath/jsdoc/issues"
+	},
+	"directories" : {
+		"doc" : "./docs"
+	},
+	"licenses" : [
+		{
+			"type" : "MIT",
+			"url" : "http://www.opensource.org/licenses/mit-license.php"
+		}
+	]
+}

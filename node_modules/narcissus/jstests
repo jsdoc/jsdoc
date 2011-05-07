@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Root of the narcissus tree
+NJS_HOME=`dirname $0`
+NJS_HOME=`(cd $NJS_HOME; pwd)`
+
+# Fake information for the test harness's |xulRuntime| configuration object.
+XUL_INFO=none:none:true
+
+if [ $# -eq 1 -a "$1" = "-h" ]; then
+    echo "usage: jstests [-h | -a | <test> ...]"  1>&2
+    echo "  -h      display this usage information and quit" 1>&2
+    echo "  -a      run all but the slowest tests (those in xfail/narcissus-slow.txt)" 1>&2
+    echo "  <test>  path to individual test (relative to test directory)" 1>&2
+    echo "" 1>&2
+    echo "With no arguments, jstests runs all tests except those listed in" 1>&2
+    echo "xfail/narcissus-failures.txt, which includes all the tests listed in" 1>&2
+    echo "xfail/narcissus-slow.txt." 1>&2
+    echo "" 1>&2
+    echo "The test directory is searched for either in NJS_TESTS or in" 1>&2
+    echo "a tests/ subdirectory of the Narcissus home directory."
+    exit
+elif [ $# -gt 0 -a "$1" = "-a" ]; then
+    shift
+    XFAIL=narcissus-slow.txt
+else
+    XFAIL=narcissus-failures.txt
+fi
+
+if [ ! -z $NJS_TESTS -a -d $NJS_TESTS ]; then
+    cd $NJS_TESTS
+elif [ -d $NJS_HOME/tests ]; then
+    cd $NJS_HOME/tests
+else
+    echo 'Expected a test directory in $NJS_TESTS or '"$NJS_HOME/tests." 1>&2
+    echo "Run jstests -h for more information." 1>&2
+    exit 1
+fi
+
+if [ $# -gt 0 ]; then
+    exec python jstests.py --xul-info=$XUL_INFO -s -o -d -j 4 $NJS_HOME/njs $*
+else
+    exec python jstests.py --xul-info=$XUL_INFO -d -j 4 $NJS_HOME/njs -x $NJS_HOME/xfail/$XFAIL
+fi

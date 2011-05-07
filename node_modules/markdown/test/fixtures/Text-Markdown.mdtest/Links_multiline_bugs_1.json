@@ -1,0 +1,8 @@
+["html", ["p", ["a", {
+    "href": "http://bugs.debian.org/459885"
+},
+"http://bugs.debian.org/459885"]],
+    ["p", ["a", {
+        "href": "/someurl/"
+    },
+    "link \u000atext"]]]

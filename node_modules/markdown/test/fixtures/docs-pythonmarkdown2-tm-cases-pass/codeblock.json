@@ -1,0 +1,3 @@
+["html", ["pre", ["code", "some code\u000a"]],
+    ["p", "some 'splaining"],
+    ["pre", ["code", "some more code\u000a2 > 1\u000a"]]]

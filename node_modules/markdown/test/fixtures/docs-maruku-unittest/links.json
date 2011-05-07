@@ -1,0 +1,49 @@
+["html", ["p", "Search on ", ["a", {
+    "href": "http://www.google.com"
+},
+"Google"]],
+    ["p", "Search on ", ["a", {
+        "href": "http://www.google.com"
+    },
+    "Google"]],
+    ["p", "Search on ", ["a", {
+        "href": "http://www.google.com"
+    },
+    "Google"]],
+    ["p", "Search on ", ["a", {
+        "href": "http://www.google.com"
+    },
+    "Google"]],
+    ["p", "Search on ", ["a", {
+        "href": "http://images.google.com",
+        "title": "Google images"
+    },
+    "Google images"]],
+    ["p", "Inline: ", ["a", {
+        "href": "http://google.com"
+    },
+    "Google images"]],
+    ["p", "Inline with title: ", ["a", {
+        "href": "http://google.com",
+        "title": "Title"
+    },
+    "Google images"]],
+    ["p", "Inline with title: ", ["a", {
+        "href": "http://google.com",
+        "title": "Title"
+    },
+    "Google images"]],
+    ["p", "Search on ", ["a", {
+        "href": "http://www.gogole.com"
+    },
+    "http://www.gogole.com"], " or ", ["a", {
+        "href": "http://Here.com"
+    },
+    "http://Here.com"], " or ask ", ["a", {
+        "href": "mailto:bill@google.com"
+    },
+    "bill@google.com"], " or you might ask bill@google.com."],
+    ["p", "If all else fails, ask ", ["a", {
+        "href": "http://www.google.com"
+    },
+    "Google"]]]

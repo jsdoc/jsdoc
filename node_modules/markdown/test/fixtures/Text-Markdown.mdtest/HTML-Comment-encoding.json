@@ -1,0 +1,3 @@
+["html", ["p", "A markdown paragraph with a comment that ", ["em", "will"], " be processed by original Markdown. However MultiMarkdown and Pandoc do not convert the & sigil in the comment.. "],
+    ["p", "A paragraph "],
+    ["p"]]

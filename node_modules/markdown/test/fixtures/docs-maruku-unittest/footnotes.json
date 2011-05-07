@@ -1,0 +1,52 @@
+["html", ["p", "That’s some text with a footnote ", ["sup", {
+    "id": "fnref:1"
+},
+["a", {
+    "href": "#fn:1",
+    "rel": "footnote"
+},
+"1"]], " and another ", ["sup", {
+    "id": "fnref:2"
+},
+["a", {
+    "href": "#fn:2",
+    "rel": "footnote"
+},
+"2"]], " and another ", ["sup", {
+    "id": "fnref:3"
+},
+["a", {
+    "href": "#fn:3",
+    "rel": "footnote"
+},
+"3"]], "."],
+    ["p", "This is not a footnote."], "\u000a", ["div", {
+    "class": "footnotes"
+},
+["hr"],
+    ["ol", ["li", {
+        "id": "fn:1"
+    },
+    ["p", "And that’s the footnote. This is second sentence (same paragraph)."], "\u000a", ["a", {
+        "href": "#fnref:1",
+        "rev": "footnote"
+    },
+    "↩"]],
+        ["li", {
+            "id": "fn:2"
+        },
+        ["p", "This is the very long one."],
+            ["p", "That’s the second paragraph."], "\u000a", ["a", {
+            "href": "#fnref:2",
+            "rev": "footnote"
+        },
+        "↩"]],
+        ["li", {
+            "id": "fn:3"
+        },
+        ["p", "And that’s the footnote."],
+            ["p", "That’s the second paragraph of the footnote."], "\u000a", ["a", {
+            "href": "#fnref:3",
+            "rev": "footnote"
+        },
+        "↩"]]]], "\u000a"]

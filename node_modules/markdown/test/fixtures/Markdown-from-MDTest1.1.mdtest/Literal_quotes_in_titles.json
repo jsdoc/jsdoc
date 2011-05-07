@@ -1,0 +1,10 @@
+["html", ["p", "Foo ", ["a", {
+    "href": "/url/",
+    "title": "Title with \"quotes\" inside"
+},
+"bar"], "."],
+    ["p", "Foo ", ["a", {
+        "href": "/url/",
+        "title": "Title with \"quotes\" inside"
+    },
+    "bar"], "."]]

@@ -1,0 +1,125 @@
+<h1>Markdown inside code blocks</h1>
+
+<div>
+
+<p>foo</p>
+
+</div>
+
+<div>
+
+<p>foo</p>
+
+</div>
+
+<div>
+
+<p>foo</p>
+
+</div>
+
+<table>
+<tr><td>test <em>emphasis</em> (span)</td></tr>
+</table>
+
+<table>
+<tr><td>test <em>emphasis</em> (span)</td></tr>
+</table>
+
+<table>
+<tr><td>
+
+<p>test <em>emphasis</em> (block)</p>
+
+</td></tr>
+</table>
+
+<h2>More complicated</h2>
+
+<table>
+<tr><td>
+* this is <em>not</em> a list item</td></tr>
+<tr><td>
+* this is <em>not</em> a list item</td></tr>
+<tr><td>
+
+<ul>
+<li>this <em>is</em> a list item</li>
+</ul>
+
+</td></tr>
+</table>
+
+<h2>With indent</h2>
+
+<div>
+    <div>
+
+<p>This text is no code block: if it was, the 
+closing <code>&lt;div&gt;</code> would be too and the HTML block 
+would be invalid.</p>
+
+<p>Markdown content in HTML blocks is assumed to be 
+indented the same as the block opening tag.</p>
+
+<p><strong>This should be the third paragraph after the header.</strong></p>
+
+</div>
+</div>
+
+<h2>Code block with rogue <code>&lt;/div&gt;</code>s in Markdown code span and block</h2>
+
+<div>
+    <div>
+
+<p>This is a code block however:</p>
+
+<pre><code>&lt;/div&gt;
+</code></pre>
+
+<p>Funny isn't it? Here is a code span: <code>&lt;/div&gt;</code>.</p>
+
+</div>
+</div>
+
+<div>
+  <div>
+
+<ul>
+<li>List item, not a code block</li>
+</ul>
+
+<p>Some text</p>
+
+<pre><code>This is a code block.
+</code></pre>
+
+</div>
+</div>
+
+<h2>No code block in markdown span mode</h2>
+
+<p>
+    This is not a code block since Markdown parse paragraph 
+    content as span. Code spans like <code>&lt;/p&gt;</code> are allowed though.
+</p>
+
+<p><em>Hello</em> <em>world</em></p>
+
+<h2>Preserving attributes and tags on more than one line:</h2>
+
+<p class="test" 
+id="12">
+Some <em>span</em> content.
+</p>
+
+<h2>Header confusion bug</h2>
+
+<table class="canvas">
+<tr>
+<td id="main">Hello World!
+============
+
+Hello World!</td>
+</tr>
+</table>

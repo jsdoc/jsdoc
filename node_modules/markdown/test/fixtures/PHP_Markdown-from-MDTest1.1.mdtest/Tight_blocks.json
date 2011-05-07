@@ -1,0 +1,6 @@
+["html", ["p", "Paragraph and no space:\u000a* ciao"],
+    ["p", "Paragraph and 1 space:\u000a * ciao"],
+    ["p", "Paragraph and 3 spaces:\u000a  * ciao"],
+    ["p", "Paragraph and 4 spaces:\u000a   * ciao"],
+    ["p", "Paragraph before header:"], "\u000a\u000a", ["h1", "Header"], "\u000a\u000a", ["p", "Paragraph before blockquote:"],
+    ["blockquote", ["p", "Some quote."]]]

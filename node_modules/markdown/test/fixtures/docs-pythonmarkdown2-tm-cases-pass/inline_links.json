@@ -1,0 +1,18 @@
+["html", ["p", "an inline ", ["a", {
+    "href": "/url/"
+},
+"link"]],
+    ["p", "a ", ["a", {
+        "href": "/url/",
+        "title": "title"
+    },
+    "link \"with\" title"]],
+    ["p", "an inline ", ["img", {
+        "src": "/url/",
+        "alt": "image link"
+    }]],
+    ["p", "an ", ["img", {
+        "src": "/url/",
+        "alt": "image \"with\" title",
+        "title": "title"
+    }]]]

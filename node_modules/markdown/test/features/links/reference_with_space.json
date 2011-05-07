@@ -1,0 +1,10 @@
+["html",
+  ["p",
+    "A ",
+    ["a",
+      { "href" : "http://reference.com" },
+      "link using a reference"
+    ],
+    " separated by a space."
+  ]
+]

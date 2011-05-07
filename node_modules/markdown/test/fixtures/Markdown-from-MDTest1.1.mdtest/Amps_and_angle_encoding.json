@@ -1,0 +1,22 @@
+["html", ["p", "AT&T has an ampersand in their name."],
+    ["p", "AT&T is another way to write it."],
+    ["p", "This & that."],
+    ["p", "4 < 5."],
+    ["p", "6 > 5."],
+    ["p", "Here's a ", ["a", {
+        "href": "http://example.com/?foo=1&bar=2"
+    },
+    "link"], " with an ampersand in the URL."],
+    ["p", "Here's a link with an amersand in the link text: ", ["a", {
+        "href": "http://att.com/",
+        "title": "AT&T"
+    },
+    "AT&T"], "."],
+    ["p", "Here's an inline ", ["a", {
+        "href": "/script?foo=1&bar=2"
+    },
+    "link"], "."],
+    ["p", "Here's an inline ", ["a", {
+        "href": "/script?foo=1&bar=2"
+    },
+    "link"], "."]]

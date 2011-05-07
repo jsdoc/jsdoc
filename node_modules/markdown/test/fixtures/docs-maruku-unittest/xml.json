@@ -1,0 +1,21 @@
+["html", ["svg:svg"],
+    ["svg:svg", {
+        "height": "400px",
+        "width": "600px"
+    },
+    "\u000a  ", ["svg:g", {
+        "id": "group"
+    },
+    "\u000a\u0009", ["svg:circle", {
+        "cy": "3cm",
+        "id": "circ1",
+        "r": "1cm",
+        "cx": "3cm",
+        "style": "fill:red;"
+    }], "\u000a\u0009", ["svg:circle", {
+        "cy": "3cm",
+        "id": "circ2",
+        "r": "1cm",
+        "cx": "7cm",
+        "style": "fill:red;"
+    }], "\u000a  "], "\u000a"], "\u000a"]

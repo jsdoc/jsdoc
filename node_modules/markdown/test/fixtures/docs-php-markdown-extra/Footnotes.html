@@ -1,0 +1,83 @@
+<p>This is the first paragraph.<sup id="fnref:first"><a href="#fn:first" rel="footnote">1</a></sup></p>
+
+<ul>
+<li>List item one.<sup id="fnref:second"><a href="#fn:second" rel="footnote">2</a></sup></li>
+<li>List item two.<sup id="fnref:third"><a href="#fn:third" rel="footnote">3</a></sup></li>
+</ul>
+
+<h1>Header<sup id="fnref:fourth"><a href="#fn:fourth" rel="footnote">4</a></sup></h1>
+
+<p>Some paragraph with a footnote<sup id="fnref:1"><a href="#fn:1" rel="footnote">5</a></sup>, and another<sup id="fnref:2"><a href="#fn:2" rel="footnote">6</a></sup>.</p>
+
+<p>Another paragraph with a named footnote<sup id="fnref:fn-name"><a href="#fn:fn-name" rel="footnote">7</a></sup>.</p>
+
+<p>This paragraph should not have a footnote marker since 
+the footnote is undefined.[^3]</p>
+
+<p>This paragraph should not have a footnote marker since 
+the footnote has already been used before.[^1]</p>
+
+<p>This paragraph links to a footnote with plenty of 
+block-level content.<sup id="fnref:block"><a href="#fn:block" rel="footnote">8</a></sup></p>
+
+<p>This paragraph host the footnote reference within a 
+footnote test<sup id="fnref:reference"><a href="#fn:reference" rel="footnote">9</a></sup>.</p>
+
+<div class="footnotes">
+<hr />
+<ol>
+
+<li id="fn:first">
+<p>This is the first note.&#160;<a href="#fnref:first" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:second">
+<p>This is the second note.&#160;<a href="#fnref:second" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:third">
+<p>This is the third note, defined out of order.&#160;<a href="#fnref:third" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:fourth">
+<p>This is the fourth note.&#160;<a href="#fnref:fourth" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:1">
+<p>Content for fifth footnote.&#160;<a href="#fnref:1" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:2">
+<p>Content for sixth footnote spaning on 
+three lines, with some span-level markup like
+<em>emphasis</em>, a <a href="http://www.michelf.com/">link</a>.&#160;<a href="#fnref:2" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:fn-name">
+<p>Footnote beginning on the line next to the marker.&#160;<a href="#fnref:fn-name" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:block">
+<p>Paragraph.</p>
+
+<ul>
+<li>List item</li>
+</ul>
+
+<blockquote>
+  <p>Blockquote</p>
+</blockquote>
+
+<pre><code>Code block
+</code></pre>
+
+<p><a href="#fnref:block" rev="footnote">&#8617;</a></p>
+</li>
+
+<li id="fn:reference">
+<p>This footnote attemps to refer to another footnote. This 
+should be impossible.[^impossible]&#160;<a href="#fnref:reference" rev="footnote">&#8617;</a></p>
+</li>
+
+</ol>
+</div>

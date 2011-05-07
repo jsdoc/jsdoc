@@ -1,0 +1,10 @@
+["html",
+  ["p",
+    ["a",
+      { "href": "/url(test)",
+        "title": "title" },
+      "Reference link"
+    ],
+    " with non-escaped parens."
+  ],
+]
