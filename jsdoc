@@ -1,7 +1,0 @@
-#!/bin/sh
-
-BASEDIR=`dirname $0`
-java -classpath ${BASEDIR}/build-files/java/classes/js.jar -jar ${BASEDIR}/jsdoc.jar $@
-
-# or possibly?
-# java -classpath build-files/java/classes/js.jar org.mozilla.javascript.tools.shell.Main main.js `pwd`
