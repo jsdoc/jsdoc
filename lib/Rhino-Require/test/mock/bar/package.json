@@ -1,0 +1,10 @@
+{
+    "name": "my-test-package",
+    "version": "1.2.3",
+    "description": "Blah blah blah",
+    "keywords": [
+       "package",
+       "example" 
+    ],
+    "main": "./myModuleLib/bar.js"
+}
