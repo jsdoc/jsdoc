@@ -55,6 +55,11 @@
     require.paths = [];
     require.cache = {}; // cache module exports. Like: {id: exported}
     
+    var SLASH = Packages.java.io.File.separator,
+        RegExpEscape = function(text) {
+            return (''+text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        };
+    
     /** Given a module id, try to find the path to the associated module.
      */
     require.resolve = function(id) {
@@ -79,7 +84,7 @@
             }
             else {
             var root = (isRelative? toDir(require._root[0] || '.') : '.'),
-                    rootedId = (root + '/' + id).replace(/\/[^\/]+\/\.\.\//g, '/').replace(/\/\.\//g, '/'),
+                rootedId = deDotPath(root + SLASH + id),
                 uri = '';
             }
             
@@ -105,10 +110,10 @@
            return path;
         }
         
-        var parts = path.split(/[\\\/]/);
+        var parts = path.split(SLASH);
         parts.pop();
         
-        return parts.join('/');
+        return parts.join(SLASH);
     }
     
     /** Returns true if the given path exists and is a file.
@@ -138,13 +143,20 @@
     /** Get the path of the current working directory
      */
     function getCwd() {
-        return toDir( ''+new java.io.File('.').getAbsolutePath() ).replace(/\/\.$/, '');
+        return deDotPath( toDir( ''+new java.io.File('.').getAbsolutePath() ) );
     }
     
     function toAbsolute(relPath) {
         absPath = ''+new java.io.File(relPath).getAbsolutePath();
-        absPath = absPath.replace(/\/[^\/]+\/\.\.\//g, '/').replace(/\/\.\//g, '/');
+        absPath = deDotPath(absPath);
         return absPath;
+    }
+    
+    var dotSlash = new RegExp(RegExpEscape(SLASH+'.'+SLASH), 'g'),
+        dotDotSlash = new RegExp(RegExpEscape(SLASH)+'[^'+RegExpEscape(SLASH)+']+'+RegExpEscape('..'+SLASH), 'g'),
+        slashDot = new RegExp(RegExpEscape(SLASH+'.')+'$');
+    function deDotPath(path) {
+        return String(path).replace(dotSlash, SLASH).replace(dotDotSlash, SLASH).replace(slashDot, '');
     }
     
     /** Assume the id is a file, try to find it.
@@ -164,17 +176,17 @@
            return;
         }
         // look for the "main" property of the package.json file
-        if ( isFile(id+'/package.json') ) {
-            var packageJson = readFileSync(id+'/package.json', 'utf-8');
+        if ( isFile(id+SLASH+'package.json') ) {
+            var packageJson = readFileSync(id+SLASH+'package.json', 'utf-8');
             eval( 'packageJson = '+ packageJson);
             if (packageJson.hasOwnProperty('main')) {
-                var main = (id + '/' + packageJson.main).replace(/\/\.?\//g, '/');
+                var main = deDotPath(id + SLASH + packageJson.main);
                 return require.resolve(main);
             }
         }
         
-        if ( isFile(id+'/index.js') ) {
-            return id+'/index.js';
+        if ( isFile(id+SLASH+'index.js') ) {
+            return id+SLASH+'index.js';
         }
     }
     
@@ -184,7 +196,7 @@
         for (var i = 0, len = require.paths.length; i < len; i++) {
             path = require.paths[i];
             if (isDir(path)) {
-                path = (path + '/' + id).replace(/\/\.?\//g, '/');
+                path = deDotPath(path + SLASH + id);
                 
                 uri = loadAsFile(path);
                 if (typeof uri !== 'undefined') {
@@ -201,18 +213,18 @@
     
     function nodeModulesPaths(id, moduleFolder) {
         var cwd = getCwd(),
-            dirs = cwd.split('/'),
+            dirs = cwd.split(SLASH),
             dir,
             path,
             filename,
             uri;
 
         while (dirs.length) {
-            dir = dirs.join('/');
-            path = dir+'/'+moduleFolder;
+            dir = dirs.join(SLASH);
+            path = dir+SLASH+moduleFolder;
 
             if ( isDir(path) ) {
-                filename = (path+'/'+id).replace(/\/\.?\//g, '/');
+                filename = deDotPath(path+SLASH+id);
                 
                 if ( uri = loadAsFile(filename) ) {
                     uri = uri.replace(cwd, '.');

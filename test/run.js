@@ -95,14 +95,9 @@ var test = module.exports = {
     }
 };
 
-var cwd = (typeof __dirname === 'undefined')? ''+new java.io.File('.').getAbsolutePath() : __dirname;
+var SLASH = Packages.java.io.File.separator;
 function toAbsolute(relPath) {
-    if ( /^\//.test(relPath) ) return relPath;
-    
-    relPath = relPath.replace(/^\.\//, '');
-    var absPath = cwd + '/' + relPath;
-    absPath = absPath.replace(/\/[^\/]+\/\.\.\//g, '/').replace(/\/\.\//g, '/');
-    return absPath;
+    return String (new java.io.File(relPath).getAbsolutePath()).replace(/(\/|\\)[^\/\\]+\/\.\.(\/|\\)/g, SLASH).replace(/(\/|\\)\.(\/|\\)/g, SLASH);
 }
 
 nodeunit.run(test);
