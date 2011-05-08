@@ -12,6 +12,8 @@
 (function(global) {
 
     var require = global.require = function(id) { /*debug*///console.log('require('+id+')');
+        if (typeof arguments[0] !== 'string') throw 'USAGE: require(moduleId)';
+        
         var moduleContent = '',
             moduleUri;
         
