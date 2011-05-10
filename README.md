@@ -16,16 +16,15 @@ Installation
 Download a copy of JSDoc 3 from the official Git Hub repository here:
 <https://github.com/micmath/jsdoc>
 
-To build the jar file that runs JSDoc 3, use the Apache ant build tool:
+To test that jsdoc is working, change your working directory to the jsdoc folder
+and run the following command:
 
-    cd jsdoc
-    ant
+	java -classpath js.jar org.mozilla.javascript.tools.shell.Main jsdoc.js -T
+	
+If you are operating on a Mac OSX or *nix platform, you can shorten that command
+to this:
 
-This will create a file named `jsdoc.jar` in the project base directory.
-
-To test that the newly installed app is working, execute the following:
-
-	java -jar jsdoc.jar --test
+    ./jsdoc -T
 
 Usage
 -----
@@ -33,17 +32,11 @@ Usage
 This example assumes that your working directory is the jsdoc application base
 directory:
 
-    java -jar jsdoc.jar yourSourceCodeFile.js
+    ./jsdoc yourSourceCodeFile.js
 
 For help regarding the supported commandline options use the --help option.
 
-	java -jar jsdoc.jar --help
-
-Included with JSDoc 3 is a bash shell script that can simplify the command line
-usage slightly. For example:
-
-    ./jsdoc --help
-    ./jsdoc yourSourceCodeFile.js
+	./jsdoc --help
 
 Dependencies
 ------------
@@ -59,9 +52,6 @@ configured to override that included Rhino and point to some older version of
 Rhino instead. If this is the case, simply correct the CLASSPATH to remove the
 older Rhino.
 
-The build script for JSDoc 3 requires Apache ant. It is know to work with
-version 1.8.2 of ant.
-
 Debugging
 ---------
 
@@ -70,8 +60,8 @@ JavaScript. Luckily it comes with a full-on debugger included that can be much
 more useful than a simple stack trace. To invoke JSDoc with the debugger try the
 following command:
 
-    $ java -classpath build-files/java/classes/js.jar \
-    org.mozilla.javascript.tools.debugger.Main main.js `pwd` \
+    $ java -classpath js.jar \
+    org.mozilla.javascript.tools.debugger.Main jsdoc.js \
     your/script.js
 
 This will open a debugging window. Choose "Break on Exceptions" from the "Debug"
