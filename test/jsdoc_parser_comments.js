@@ -36,3 +36,14 @@ exports['Parse a source with only single non-jsdoc multi-line comments.'] = func
     t.equal( docs.length, 0, 'should result in docs that are empty' );
     t.done();
 };
+
+exports['Parse second source, should be unaffected by the first pasre.'] = function(t) {
+    t.expect(2);
+    var docs = parser.parse('/**@doc1*/ /**@doc2*/ var x;');
+    t.equal( docs.length, 2 );
+    
+    docs = parser.parse('function y(){}');
+    t.equal( docs.length, 1 );
+    
+    t.done();
+};
