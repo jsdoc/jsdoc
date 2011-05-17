@@ -12,7 +12,9 @@
     @type string
     @global
  */
-const BASEDIR = './';
+var opt = { output: "" };
+runCommand( "dirname", java.lang.System.getProperty( "java.class.path" ), opt );
+const BASEDIR = opt.output.replace(/[\r\n]/g, "") + "/";
 
 /** Include a JavaScript module, defined in the CommonJS way.
     @param {string} id The identifier of the module you require.
