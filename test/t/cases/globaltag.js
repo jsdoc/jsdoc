@@ -4,8 +4,6 @@
             return ! $.undocumented;
         });
     
-    //dump(docSet.doclets);
-    
     test('When an inner symbol has a @global tag it is documented as if it were global.', function() {
         assert.equal(found[0].name, 'foo');
         assert.equal(found[0].longname, 'foo');

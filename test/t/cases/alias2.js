@@ -6,8 +6,6 @@
         
         foundMember = docSet.getByLongname('ns.Myclass#myProperty')
     
-    //dump(found);
-    
     test('When a symbol is a member of an alias of a nested name it is documented as if the memberof is the nested alias value.', function() {
         assert.equal(foundMember[0].longname, 'ns.Myclass#myProperty');
         assert.equal(foundMember[0].name, 'myProperty');

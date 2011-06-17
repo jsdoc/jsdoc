@@ -1,8 +1,6 @@
 (function() {
     var docSet = testhelpers.getDocSetFromFile('test/cases/constructortag.js'),
         feed = docSet.getByLongname('Feed')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When a symbol has an @constructor tag, it is documented as a class.', function() {
         assert.equal(feed.kind, 'class');

@@ -4,8 +4,6 @@
         color = docSet.getByLongname('module:my/shirt.color')[0],
         tneck = docSet.getByLongname('module:my/shirt.Turtleneck')[0],
         size = docSet.getByLongname('module:my/shirt.Turtleneck#size')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When an objlit symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
         assert.equal(typeof shirt, 'object');

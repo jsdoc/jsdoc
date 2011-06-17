@@ -8,8 +8,6 @@
             docSet.getByLongname('results')
         ];
     
-    //dump(docSet);
-    
     test('When a series of constants are documented.', function() {
         assert.equal(found[0].length, 1, 'The first constant should be found');
         assert.equal(found[0][0].comment, '/** document me */', 'The first constant should get the docs.');

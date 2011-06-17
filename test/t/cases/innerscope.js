@@ -4,8 +4,6 @@
         from = docSet.getByLongname('Message~headers.from'),
         response = docSet.getByLongname('Message~response.code');
     
-    //dump(docSet); exit();
-    
     test('When a member of a var member is documented.', function() {
         assert.equal(to.length, 1, 'It is like Outer~inner.member.');
     });

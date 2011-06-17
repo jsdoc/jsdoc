@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/objectlit.js'),
         found = docSet.getByLongname('tools.serialiser.value');
     
-    //dump(docSet);
-    
     test('When a child of an objlit has no @name or @memberof tags.', function() {
         assert.equal(found.length, 1, 'A doclet with the correct longname should be found.');
         assert.equal(found[0].name,     'value', 'The short name should be correct.');

@@ -1,4 +1,4 @@
-var common = {dumper: require('common/dumper')};
+var common = {dumper: require('jsdoc/util/dumper')};
 
 test('There is a common/dumper module.', function() {
     assert.equal(typeof common.dumper, 'object', 'The common/dumper module should be an object.');

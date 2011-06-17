@@ -5,8 +5,6 @@
         })[0],
         blend = docSet.getByLongname('module:color/mixer.blend')[0],
         darken = docSet.getByLongname('module:color/mixer.darken')[0];
-
-    //dump(mixer); exit(0);
     
     test('When a @module tag defines a module module.', function() {
         assert.equal(typeof mixer, 'object');

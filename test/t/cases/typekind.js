@@ -3,8 +3,6 @@
         blog = docSet.getByLongname('module:blog/server')[0],
         port = docSet.getByLongname('module:blog/server.port')[0];
     
-    //dump(docSet.doclets); exit(0);
-    
     test('When a module symbol has an kind tag, that includes a {type} clause', function() {
         assert.equal(typeof blog.type, 'object', 'the doclet has a type.');
         assert.equal(blog.type.names.join(', '), 'ConnectServer', 'the doclet has a type property set to that {type} clause.');

@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/requirestag.js'),
         foo = docSet.getByLongname('foo')[0],
         bar = docSet.getByLongname('bar')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When a symbol has an @requires tag, the doclet has a requires property that includes that value, with the "module:" namespace added.', function() {
         assert.equal(typeof foo.requires, 'object');

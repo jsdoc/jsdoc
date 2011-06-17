@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/thistag.js'),
         setName = docSet.getByLongname('setName')[0],
         fooName = docSet.getByLongname('Foo#name')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When a symbol has a @this tag, the doclet has a this property that is set to that value.', function() {
         assert.equal(setName['this'], 'Foo');

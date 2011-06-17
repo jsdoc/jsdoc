@@ -23,11 +23,11 @@ function testFile(filepath) {
 }
 
 function report() {
-    print('\033[032mPASSED: ' + passCount + ' test' + (passCount == 1? '' : 's') + '.\033[0m');
+    console.log('\033[032mPASSED: ' + passCount + ' test' + (passCount == 1? '' : 's') + '.\033[0m');
     if (failCount) {
-        print('\033[031mFAILED: '+ failCount + ' test' + (passCount == 1? '' : 's') + '.\033[0m');
+        console.log('\033[031mFAILED: '+ failCount + ' test' + (passCount == 1? '' : 's') + '.\033[0m');
         for (var i = 0, leni = errorLog.length; i < leni; i++) {
-            print(' ' + (i+1) + '. ' + (i+1 < 10? ' ' : '') + (errorLog[i]||'') + '\n');
+            console.log(' ' + (i+1) + '. ' + (i+1 < 10? ' ' : '') + (errorLog[i]||'') + '\n');
         }
     }
 }
@@ -35,7 +35,7 @@ function report() {
 // helpers
 var testhelpers = {
     getDocSetFromFile: function(filename) {
-        var sourceCode = readFile(BASEDIR + filename),
+        var sourceCode = readFile(__dirname + '/' + filename),
             testParser,
             doclets;
             

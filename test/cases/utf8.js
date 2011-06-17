@@ -1,0 +1,5 @@
+/**
+ * @desc テスト
+ */
+test = function() {
+};

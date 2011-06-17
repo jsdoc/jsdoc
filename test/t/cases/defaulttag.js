@@ -8,8 +8,6 @@
 		win = (docSet.getByLongname('win') || [])[0];
 		header = (docSet.getByLongname('header') || [])[0];
     
-    //dump(response);
-    
     test('When symbol set to null has a @default tag with no text.', function() {
         assert.equal(request.defaultvalue, 'null', 'The doclet\'s defaultValue property should be: undefined.');
     });

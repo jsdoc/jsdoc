@@ -20,19 +20,17 @@
 
         graft(root, docs);
         
-        
-        
         if (opts.destination === 'console') {
             if (opts.query && opts.query.format === 'xml') {
                 var xml = require('goessner/json2xml');
-                print( '<jsdoc>\n' + xml.convert(root) + '\n</jsdoc>' );
+                console.log( '<jsdoc>\n' + xml.convert(root) + '\n</jsdoc>' );
             }
             else {
-                dump(root);
+                console.log(root);
             }
         }
         else {
-            print('The only -d destination option currently supported is "console"!');
+            console.log('The only -d destination option currently supported is "console"!');
         }
         
     }
@@ -43,7 +41,7 @@
             return (element.memberof === parentLongname);
         })
         .forEach(function (element, i) {
-            //print((i+1)+': '+element.kind+' '+element.longname+' ('+element.name+')');
+            //console.log((i+1)+': '+element.kind+' '+element.longname+' ('+element.name+')');
             
             if (element.kind === 'namespace') {
                 if (! parentNode.namespaces) {

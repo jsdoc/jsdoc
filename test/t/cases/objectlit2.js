@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/objectlit2.js'),
         found = docSet.getByLongname('position.axis.x');
     
-    //dump(docSet);
-    
     test('When a parent of an objlit has no documentation.', function() {
         assert.equal(found.length, 1, 'A doclet with the correct longname should be found.');
         assert.equal(found[0].name,     'x', 'The short name should be correct.');

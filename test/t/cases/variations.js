@@ -3,8 +3,6 @@
         fadein1 = docSet.getByLongname('anim.fadein(1)')[0],
         fadein2 = docSet.getByLongname('anim.fadein(2)')[0];
     
-    //dump(docSet.doclets);
-    
     test('When a symbol has a name with a variation, the doclet has a variation property.', function() {
         assert.equal(fadein1.variation, '1');
         assert.equal(fadein2.variation, '2');

@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/exportstag2.js'),
         coat = docSet.getByLongname('module:my/coat')[0],
         wool = docSet.getByLongname('module:my/coat#wool')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When a function symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
         assert.equal(typeof coat, 'object');

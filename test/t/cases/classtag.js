@@ -3,8 +3,6 @@
         ticker = docSet.getByLongname('Ticker')[0],
         news = docSet.getByLongname('NewsSource')[0];
     
-    //dump(docSet.doclets); exit(0);
-    
     test('When a symbol has a @class tag, the doclet has a kind property set to "class".', function() {
         assert.equal(ticker.kind, 'class');
     });

@@ -13,12 +13,12 @@
      */
     publish = function(data, opts) {
         var out = '',
-            containerTemplate = template.render(fs.read(BASEDIR + 'templates/default/tmpl/container.tmpl'));
+            containerTemplate = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/container.tmpl'));
         
         function render(tmpl, partialData) {
             var renderFunction = arguments.callee.cache[tmpl];
             if (!renderFunction) {
-                renderFunction = arguments.callee.cache[tmpl] = template.render(fs.read(BASEDIR + 'templates/default/tmpl/'+tmpl));
+                renderFunction = arguments.callee.cache[tmpl] = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/'+tmpl));
             }
             partialData.render = arguments.callee;
             partialData.find = find;
@@ -164,7 +164,7 @@
         fs.mkPath(outdir);
 
         // copy static files to outdir
-        var fromDir = BASEDIR + 'templates/default/static',
+        var fromDir = __dirname + '/templates/default/static',
             staticFiles = fs.ls(fromDir, 3);
             
         staticFiles.forEach(function(fileName) {
@@ -282,8 +282,8 @@
             
             var path = outdir + '/' + filename,
                 html = containerTemplate.call(data, data);
-                
-            fs.write(path, html)
+   
+            fs.write(path, html, 'UTF-8')
         }
     }
     

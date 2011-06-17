@@ -6,9 +6,7 @@
     
     require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
     
-    doclets = app.jsdoc.parser.parse(BASEDIR + 'test/cases/file.js')
-    
-    //dump(doclets);
+    doclets = app.jsdoc.parser.parse(__dirname + '/test/cases/file.js');
     
     test('When a file overview tag appears in a doclet.', function() {
         var m = /^.*([\/\\]cases[\/\\]file\.js)$/.exec(doclets[0].name);

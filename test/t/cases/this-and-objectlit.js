@@ -14,8 +14,6 @@ function Page(title) {
     var docSet = testhelpers.getDocSetFromFile('test/cases/this-and-objectlit.js'),
         found = docSet.getByLongname('Page#parts.body.heading');
     
-    //dump(docSet);
-    
     test('When a member is nested inside an objectlit this property inside a constructor.', function() {
         assert.equal(found.length, 1, 'A this member should be like Constructor#objlit.member.');
         assert.equal(found[0].name,     'heading', 'The short name should be correct.');

@@ -12,59 +12,26 @@
     @type string
     @global
  */
-const BASEDIR = './';
+__dirname = '.',
+arguments = Array.prototype.slice.call(arguments, 0);
 
-/** Include a JavaScript module, defined in the CommonJS way.
-    @param {string} id The identifier of the module you require.
-    @returns {mixed} The module's "exports" value.
-    @see <http://wiki.commonjs.org/wiki/Modules/1.1>
- */
-function require(id) { // like commonjs
-    var moduleContent = '',
-        moduleUri;
-    
-    for (var i = 0, len = require.paths.length; i < len; i++) {
-        moduleUri = require.paths[i] + '/' + id + '.js';
-        moduleContent = '';
-        
-        var file = new java.io.File(moduleUri);
-        if ( file.exists() && file.canRead() && !file.isDirectory() ) {
-            try {    
-                var scanner = new java.util.Scanner(file).useDelimiter("\\Z");
-                moduleContent = String( scanner.next() );
-            }
-            catch(ignored) { }
-            
-            if (moduleContent) { break; }
+// rhino has no native way to get the base dirname of the currently running script
+// so this information must be manually passed in from the command line
+for (var i = 0; i < arguments.length; i++) {
+    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(arguments[i]) ) {
+        if (RegExp.$1) {
+            __dirname = RegExp.$1; // last wins
+            arguments.splice(i--, 1); // remove --dirname opt from arguments
+        }
+        else {
+            __dirname = arguments[i + 1];
+            arguments.splice(i--, 2);
         }
     }
-    
-    if (moduleContent) {
-            try {
-                var f = new Function('require', 'exports', 'module', moduleContent),
-                exports = require.cache[moduleUri] || {},
-                module = { id: id, uri: moduleUri };
-    
-            
-                f.call({}, require, exports, module);
-            }
-            catch(e) {
-                throw 'Unable to require source code from "' + moduleUri + '": ' + e.toSource();
-            }
-            
-            exports = module.exports || exports;
-            require.cache[id] = exports;
-    }
-    else {
-        throw 'The requested module cannot be returned: no content for id: "' + id + '" in paths: ' + require.paths.join(', ');
-    }
-    
-    return exports;
 }
-require.root = BASEDIR;
-require.paths = [ require.root + 'modules', require.root + 'modules/common' ];
-require.cache = {}; // cache module exports. Like: {id: exported}
 
+load(__dirname + '/lib/require.js');
+load(__dirname + '/lib/rhino-shim.js');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
@@ -137,7 +104,7 @@ function print() {
  */
 function dump() {
     for (var i = 0, leni = arguments.length; i < leni; i++) {
-        print( require('common/dumper').dump(arguments[i]) );
+        print( require('jsdoc/util/dumper').dump(arguments[i]) );
     }
 }
 
@@ -146,10 +113,10 @@ function dump() {
 */
 function include(filepath) {
     try {
-        load(BASEDIR + filepath);
+        load(__dirname + '/' + filepath);
     }
     catch (e) {
-        print('Cannot include "' + BASEDIR + filepath + '": '+e);
+        console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
     }
 }
 
@@ -183,7 +150,7 @@ function main() {
     
     try {
         env.conf = JSON.parse(
-            require('fs').read( env.opts.configure || BASEDIR+'conf.json' )
+            require('fs').readFileSync( env.opts.configure || __dirname + '/conf.json' )
         );
     }
     catch (e) {
@@ -195,7 +162,7 @@ function main() {
     }
     
     if (env.opts.help) {
-        print( jsdoc.opts.parser.help() );
+        console.log( jsdoc.opts.parser.help() );
         exit(0);
     }
     else if (env.opts.test) {
@@ -213,7 +180,7 @@ function main() {
     // any source file named package.json is treated special
     for (var i = 0, l = env.opts._.length; i < l; i++ ) {
         if (/\bpackage\.json$/i.test(env.opts._[i])) {
-            packageJson = require('fs').read( env.opts._[i] );
+            packageJson = require('fs').readFileSync( env.opts._[i] );
             env.opts._.splice(i--, 1);
         }
     }
@@ -224,7 +191,7 @@ function main() {
             excludeMatch = (env.conf.source && env.conf.source.excludePattern)? new RegExp(env.conf.source.excludePattern) : null;
         
         sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), includeMatch, excludeMatch);
-        
+
         require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
@@ -252,7 +219,7 @@ function main() {
         require('jsdoc/borrow').resolveBorrows(docs);
         
         if (env.opts.expel) {
-            dump(docs);
+            console.log(docs);
             exit(0);
         }
 

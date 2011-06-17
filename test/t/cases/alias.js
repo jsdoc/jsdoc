@@ -6,8 +6,6 @@
         
         foundMember = docSet.getByLongname('myObject.myProperty')
     
-    //dump(found);
-    
     test('When a symbol is given an alias it is documented as if the name is the alias value.', function() {
         assert.equal(found[0].longname, 'myObject');
     });

@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/seetag.js'),
         foo = docSet.getByLongname('foo')[0],
         bar = docSet.getByLongname('bar')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When a symbol has an @see tag, the doclet has a see property that includes that value.', function() {
         assert.equal(typeof foo.see, 'object');

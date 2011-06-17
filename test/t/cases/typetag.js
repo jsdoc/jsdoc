@@ -3,8 +3,6 @@
         foo = docSet.getByLongname('foo')[0],
         bar = docSet.getByLongname('bar')[0];
     
-    //dump(docSet.doclets); exit(0);
-    
     test('When a symbol has an @type tag, the doclet has a type property set to that value\'s type.', function() {
         assert.equal(typeof foo.type, 'object');
         assert.equal(typeof foo.type.names, 'object');

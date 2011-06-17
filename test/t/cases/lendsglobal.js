@@ -4,8 +4,6 @@
         test1 = docSet.getByLongname('test1')[0],
         test12 = docSet.getByLongname('test1.test2')[0];
     
-    //dump(testf, test1, test12); exit();
-    
     test('When a documented member is inside an objlit associated with a @lends tag that has no value.', function() {
         assert.equal(typeof testf.memberof, 'undefined', 'The members of the objlit are not members of any symbol.');
         assert.equal(testf.longname, 'test', 'The members of the objlit are documented as global.');

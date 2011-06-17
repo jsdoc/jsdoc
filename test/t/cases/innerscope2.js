@@ -4,8 +4,6 @@
         from = docSet.getByLongname('<anonymous>~headers.from'),
         cache = docSet.getByLongname('<anonymous>~headers.cache');
     
-    //dump(docSet);
-    
     test('When a var is declared in a function.', function() {
         assert.equal(cache.length, 1, 'It is like Inner~member.');
     });

@@ -8,8 +8,6 @@ var borrow = require('jsdoc/borrow');
     var str_rtrim = docSet.getByLongname('str.rtrim').filter(function($) {
             return ! $.undocumented;
         })[0];
-        
-    //dump(docSet); exit();
     
     test('When a symbol has a @borrows tag, the borrowed symbol is added to the symbol.', function() {
         assert.equal(typeof str_rtrim, 'object');

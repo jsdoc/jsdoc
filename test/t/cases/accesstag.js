@@ -4,8 +4,6 @@
         _bar = docSet.getByLongname('Thingy#_bar')[0],
         pez = docSet.getByLongname('Thingy#pez')[0];
     
-    //dump(docSet.doclets);
-    
     test('When a symbol has a @access private tag, the doclet has a access="private" property.', function() {
         assert.equal(foo.access, 'private');
     });

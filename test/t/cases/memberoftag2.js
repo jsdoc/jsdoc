@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/memberoftag2.js'),
         publish = docSet.getByLongname('Observable#publish')[0],
         cache = docSet.getByLongname('Observable.cache')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('A symbol is documented as a static @memberof a class.', function() {
         assert.equal(typeof cache, 'object', 'it should appear as a static member of that class.');

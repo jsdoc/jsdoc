@@ -5,8 +5,6 @@
             docSet.getByLongname('width')
         ];
     
-    //dump(docSet);
-    
     test('When a virtual symbol is documented.', function() {
         assert.equal(found[0].length, 1, 'The symbol should be documented');
     });

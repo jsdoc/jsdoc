@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/typedeftag.js'),
         numberlike = docSet.getByLongname('calc.NumberLike')[0];
     
-    //dump(docSet.doclets); exit(0);
-    
     test('When a symbol has an @typedef tag, the doclet has a kind property set to "typedef".', function() {
         assert.equal(numberlike.kind, 'typedef');
     });

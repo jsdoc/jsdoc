@@ -6,8 +6,6 @@
         say = docSet.getByLongname('Person#say'),
         name = docSet.getByLongname('Person#name')
     
-    //dump(person);
-    
     test('When a documented member is inside an objlit associated with a @lends tag.', function() {
         assert.equal(person.description, 'Construct a Person.', 'A tag with a @constructs tag is documented as a constructor.');
         assert.equal(say.length, 1, 'The member should be documented as a member of the lendee.');

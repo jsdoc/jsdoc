@@ -4,8 +4,6 @@
         bar = docSet.getByLongname('bar')[0],
         pez = docSet.getByLongname('pez')[0];
     
-    //dump(docSet.doclets);
-    
     test('When a symbol has an @exception tag, the doclet has a exception property set to that value.', function() {
         assert.equal(typeof foo.exceptions, 'object');
         assert.equal(foo.exceptions.length, 1);

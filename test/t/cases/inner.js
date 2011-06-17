@@ -3,8 +3,6 @@
         found1 = docSet.getByLongname('sendMessage~encoding'),
         found2 = docSet.getByLongname('sendMessage~encrypt');
     
-    //dump(docSet);
-    
     test('When a documented var member is inside a named function.', function() {
         assert.equal(found1.length, 1, 'A doclet with the correct longname should be found.');
         assert.equal(found1[0].name,     'encoding', 'The short name should be correct.');

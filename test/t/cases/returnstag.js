@@ -2,8 +2,6 @@
     var docSet = testhelpers.getDocSetFromFile('test/cases/returnstag.js'),
         find = docSet.getByLongname('find')[0],
         bind = docSet.getByLongname('bind')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When a symbol has an @returns tag with a type and description, the doclet has a returns array that includes that return.', function() {
         assert.equal(typeof find.returns, 'object');

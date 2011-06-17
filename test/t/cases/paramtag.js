@@ -7,8 +7,6 @@
         combine = docSet.getByLongname('combine')[0],
         split = docSet.getByLongname('split')[0],
         commit = docSet.getByLongname('commit')[0];
-
-    //dump(docSet.doclets); exit(0);
     
     test('When a symbol has an @param tag with a type before the name, the doclet has a params property that includes that param.', function() {
         assert.equal(typeof find.params, 'object');
