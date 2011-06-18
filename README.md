@@ -19,7 +19,7 @@ Download a copy of JSDoc 3 from the official Git Hub repository here:
 To test that jsdoc is working, change your working directory to the jsdoc folder
 and run the following command:
 
-	java -classpath js.jar org.mozilla.javascript.tools.shell.Main jsdoc.js -T
+	java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main jsdoc.js -T
 	
 If you are operating on a Mac OSX or *nix platform, you can shorten that command
 to this:
