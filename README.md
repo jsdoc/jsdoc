@@ -38,6 +38,9 @@ For help regarding the supported commandline options use the --help option.
 
 	./jsdoc --help
 
+Generated documentation will appear in the folder specified by the --destination
+option, or in a folder named "out" by default.
+
 Dependencies
 ------------
 
@@ -45,7 +48,7 @@ JSDoc 3 utilises the Mozilla Rhino engine, which requires Java. JSDoc 3 is known
 to work with version 1.6.0_24 of Java.
 
 JSDoc 3 uses advanced features in the Rhino application which are only
-available in or after Rhino 1.7 release 3. A copy of this version of Rhino is
+available in or after the 1.7 release 3. A copy of this version of Rhino is
 included in JSDoc so this is not normally an issue that the user needs to be
 concerned with. However, in rare cases, users may have their Java CLASSPATH
 configured to override that included Rhino and point to some older version of
