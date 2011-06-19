@@ -145,5 +145,20 @@ testFile('test/t/cases/variations.js');
 testFile('test/t/cases/versiontag.js');
 
 
-report();
+var os    = java.lang.System.getProperty('os.name'),
+	isWin = !!os.startsWith('Windows');
 
+/** Add codes to display string in color (red) on the console (if OS supports). */
+function red(str) {
+	if (isWin) { return str; }
+	else { return '\033[031m' + str + '\033[0m'; }
+}
+
+/** Add codes to display string in color (red) on the console (if OS supports). */
+function green(str) {
+	if (isWin) { return str; }
+	else { return '\033[032m' + str + '\033[0m'; }
+}
+
+
+report();

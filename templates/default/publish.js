@@ -283,7 +283,7 @@
             var path = outdir + '/' + filename,
                 html = containerTemplate.call(data, data);
    
-            fs.write(path, html, 'UTF-8')
+            fs.writeFileSync(path, html)
         }
     }
     

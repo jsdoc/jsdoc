@@ -1,29 +1,7 @@
-function readFileSync(filename, encoding, callback) {
-    if (typeof arguments[1] === 'function') {
-        encoding = null;
-        callback = arguments[1];
-    }
-    
-    // TODO: support other encodings
-    var lines = [],
-        reader,
-        input,
-        s;
-    
-    // see http://download.oracle.com/javase/1,5.0/docs/api/java/nio/charset/Charset.html
-    try {
-        reader = new java.io.InputStreamReader(new java.io.FileInputStream(filename), 'UTF-8');
-        input = new java.io.BufferedReader(reader);
-        
-        while( (s = input.readLine()) != null) {
-            lines.push( new java.lang.String(s.getBytes('UTF-8')) );
-        }
-        
-        return lines.join('\n');
-    }
-    catch (e) {
-        throw('Cannot read module file '+filename+', '+e);
-    }
+function readFileSync(filename, encoding) {
+    encoding = encoding || 'utf-8';
+
+    return readFile(filename, encoding);
 }
 
 function readdirSync(path) {
@@ -149,7 +127,7 @@ function copyFile(inFile, outDir, fileName) {
     var bos = new Packages.java.io.BufferedOutputStream(new Packages.java.io.FileOutputStream(outFile), 4096);
     var theChar;
     while ((theChar = bis.read()) != -1) {
-            bos.write(theChar);
+        bos.write(theChar);
     }
     bos.close();
     bis.close();
@@ -160,26 +138,33 @@ function toFile(path) {
     return parts.pop();
 }
 
-function write(path, content, encoding) {
-    var output = new java.io.BufferedWriter(new java.io.FileWriter(path));
+function writeFileSync(filename, data, encoding) {
+    encoding = encoding || 'utf-8';
+
+    var out = new Packages.java.io.PrintWriter(
+        new Packages.java.io.OutputStreamWriter(
+            new Packages.java.io.FileOutputStream(filename),
+            encoding
+        )
+    );
     
     try {
-      //FileWriter always assumes default encoding is OK!
-      output.write( content );
+        out.write(data);
     }
     finally {
-      output.close();
+        out.flush();
+        out.close();
     }
 }
 
 module.exports = {
     readFileSync: readFileSync,
+    writeFileSync: writeFileSync,
     readdirSync: readdirSync,
     stat: stat,
     
     ls: ls,
     mkPath: mkPath,
     toDir: toDir,
-    copyFile: copyFile,
-    write: write
+    copyFile: copyFile
 };

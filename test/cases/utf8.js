@@ -1,5 +1,6 @@
 /**
- * @desc テスト
+ * @constructor
+ * @desc Τεκμηρίωση είναι η επικοινωνία!
  */
-test = function() {
+Test = function() {
 };
