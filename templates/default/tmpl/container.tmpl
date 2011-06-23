@@ -50,6 +50,10 @@
 
 <article>    
     <?js
+    if (doc.kind === 'module' && doc.module) {
+        print(render('method.tmpl', doc.module));
+    }
+    
     if (doc.kind === 'class') {
         print(render('method.tmpl', doc));
     }

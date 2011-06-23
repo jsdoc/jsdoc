@@ -220,6 +220,7 @@
             
             nav = nav + '</ul>';
         }
+
         var namespaceNames = data.get( data.find({kind: 'namespace'}) );
         if (namespaceNames.length) {
             nav = nav + '<h3>Namespaces</h3><ul>';
@@ -230,17 +231,25 @@
             
             nav = nav + '</ul>';
         }
+
         var classNames = data.get( data.find({kind: 'class'}) );
         if (classNames.length) {
             nav = nav + '<h3>Classes</h3><ul>';
             classNames.forEach(function(c) {
-                if ( !seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                var moduleSameName = data.get( data.find({kind: 'module', longname: c.longname}) );
+                if (moduleSameName) {
+                    c.name = c.name.replace('module:', 'require(')+')';
+                    moduleSameName[0].module = c;
+                }
+                
+                if (!seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
                 seen[c.longname] = true;
             });
             
             nav = nav + '</ul>';
         }
-        
+//console.log('classNames', classNames);
+
         var globalNames = data.get( data.find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}}) );
 
         if (globalNames.length) {
