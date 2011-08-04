@@ -242,7 +242,7 @@
             nav = nav + '<h3>Classes</h3><ul>';
             classNames.forEach(function(c) {
                 var moduleSameName = data.get( data.find({kind: 'module', longname: c.longname}) );
-                if (moduleSameName) {
+                if (moduleSameName.length) {
                     c.name = c.name.replace('module:', 'require(')+')';
                     moduleSameName[0].module = c;
                 }
