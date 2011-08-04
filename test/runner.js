@@ -74,6 +74,7 @@ testFile('test/t/jsdoc/opts/parser.js');
 testFile('test/t/jsdoc/src/parser.js');
 testFile('test/t/jsdoc/src/handlers.js');
 testFile('test/t/jsdoc/name.js');
+testFile('test/t/jsdoc/util/templateHelper.js');
 
 testFile('test/t/cases/file.js');
 

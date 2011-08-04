@@ -1,5 +1,5 @@
 /**
-*  @see #search
+*  @see {@link bar}
 */
 function foo() {
 }

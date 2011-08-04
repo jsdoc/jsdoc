@@ -1,7 +1,8 @@
 (function() {
 
     var template = require('underscore/template'),
-        fs = require('fs');
+        fs = require('fs'),
+        helper = require('jsdoc/util/templateHelper');
         
         template.settings.evaluate    = /<\?js([\s\S]+?)\?>/g;
         template.settings.interpolate = /<\?js=([\s\S]+?)\?>/g;
@@ -110,12 +111,7 @@
 	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
         
         function renderLinks(text) {
-            text = text.replace(/\{@link (\S+)\}/g, function(match, longname) {
-            var link = linkto(longname);
-                return link;
-            });
-            
-            return text;
+            return helper.resolveLinks(text);
         }
         
 	    data.forEach(function(doclet) {
@@ -150,8 +146,9 @@
 	        }
 	        else if (doclet.see) {
 	            doclet.see.forEach(function(seeItem, i) {
-	                doclet.see[i] = linkify(seeItem);
-	            })
+	                doclet.see[i] = urlToLink(seeItem);
+	                doclet.see[i] = renderLinks(doclet.see[i]);
+	            });
 	        }
 	    });
 	    
@@ -202,6 +199,7 @@
             // bidirectional lookups: url <=> longname
             urlToLongname[urlSafe]  = longname;
             longnameToUrl[longname] = url;
+            helper.registerLink(longname, url);
         });
         
         // do this after the urls have all been generated
@@ -301,12 +299,12 @@
         }
     }
     
-    function linkify(text) {
-        var replacedText = text.replace(linkify.webUrl, '<a href="$1" target="_blank">$1</a>');
+    function urlToLink(text) {
+        var replacedText = text.replace(urlToLink.webUrl, '<a href="$1" target="_blank">$1</a>');
 
         return replacedText
     }
-    // looks like a URL starting with http://, https://, or ftp://
-    linkify.webUrl = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
+    // looks like a URL starting with http:// or https://
+    urlToLink.webUrl = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
     
 })();
