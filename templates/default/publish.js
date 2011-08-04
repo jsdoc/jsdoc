@@ -148,6 +148,11 @@
                     };
                 });
 	        }
+	        else if (doclet.see) {
+	            doclet.see.forEach(function(seeItem, i) {
+	                doclet.see[i] = linkify(seeItem);
+	            })
+	        }
 	    });
 	    
 	    data.orderBy(['longname', 'version', 'since']);
@@ -295,5 +300,13 @@
             fs.writeFileSync(path, html)
         }
     }
+    
+    function linkify(text) {
+        var replacedText = text.replace(linkify.webUrl, '<a href="$1" target="_blank">$1</a>');
+
+        return replacedText
+    }
+    // looks like a URL starting with http://, https://, or ftp://
+    linkify.webUrl = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
     
 })();
