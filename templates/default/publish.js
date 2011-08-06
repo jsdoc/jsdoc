@@ -176,30 +176,15 @@
         });
         
         function linkto(longname, linktext) {
-            var url = longnameToUrl[longname];
+            var url = helper.longnameToUrl[longname];
             return url? '<a href="'+url+'">'+(linktext || longname)+'</a>' : (linktext || longname);
         }
         
-        var containers= ['class', 'module', 'namespace'],
-            urlToLongname = {},
-            longnameToUrl = {};
+        var containers= ['class', 'module', 'namespace'];
         
         data.forEach(function(doclet) {
-            if (containers.indexOf(doclet.kind) < 0) {
-                var longname = doclet.longname,
-                    urlSafe = ('global' || doclet.memberof).replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
-                    url = urlSafe + '.html#'+doclet.name;
-            }
-            else {
-                var longname = doclet.longname,
-                    urlSafe = longname.replace(/[^$a-z0-9._-]/gi, '_'), // TODO handle name collisions
-                    url = urlSafe + '.html';
-            }
-            
-            // bidirectional lookups: url <=> longname
-            urlToLongname[urlSafe]  = longname;
-            longnameToUrl[longname] = url;
-            helper.registerLink(longname, url);
+            var url = helper.createLink(doclet);
+            helper.registerLink(doclet.longname, url);
         });
         
         // do this after the urls have all been generated
@@ -265,15 +250,15 @@
             nav = nav + '</ul>';
         }
         
-        for (var longname in longnameToUrl) {
+        for (var longname in helper.longnameToUrl) {
             var classes = data.get( data.find({kind: 'class', longname: longname}) );
-            if (classes.length) generate('Class: '+classes[0].name, classes, longnameToUrl[longname]);
+            if (classes.length) generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]);
         
             var modules = data.get( data.find({kind: 'module', longname: longname}) );
-            if (modules.length) generate('Module: '+modules[0].name, modules, longnameToUrl[longname]);
+            if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);
             
             var namespaces = data.get( data.find({kind: 'namespace', longname: longname}) );
-            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, longnameToUrl[longname]);        
+            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
         }
         
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');

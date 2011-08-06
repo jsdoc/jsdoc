@@ -2,6 +2,10 @@
  * @module jsdoc/util/templateHelper
  */
 
+var hash = require('pajhome/hash');
+exports.globalName = 'global';
+exports.fileExtension = '.html';
+
 /** Find symbol {@link ...} strings in text and turn into html links */
 exports.resolveLinks = function(str) {
     str = str.replace(/(?:\[(.+?)\])?\{@link +(.+?)\}/gi,
@@ -13,13 +17,50 @@ exports.resolveLinks = function(str) {
     return str;
 }
 
+// two-way lookup
+var linkMap = {
+    longnameToUrl: {},
+    urlToLongname: {}
+};
+
 exports.registerLink = function(longname, url) {
     linkMap.longnameToUrl[longname] = url;
+    linkMap.urlToLongname[url] = longname;
 }
 
-var linkMap = {
-    longnameToUrl: {}
-};
+// each container gets its own html file
+var containers = ['class', 'module', 'namespace'];
+
+/** Turn a doclet into a URL. */
+exports.createLink = function(doclet) {
+    var url = '';
+    
+    if (containers.indexOf(doclet.kind) < 0) {
+        var longname = doclet.longname,
+            filename = strToFilename(doclet.memberof || exports.globalName); // TODO handle name collisions
+        
+        url = filename + exports.fileExtension + '#' + doclet.name;
+    }
+    else {
+        var longname = doclet.longname,
+            filename = strToFilename(longname); // TODO handle name collisions
+        
+        url = filename + exports.fileExtension;
+    }
+    
+    return url;
+}
+
+function strToFilename(str) {
+    if ( /[^$a-z0-9._-]/i.test(str) ) {
+        return hash.hex_md5(str).substr(0, 10);
+    }
+    return str;
+}
+
+function makeFilenameUnique(filename) {
+    return filename;
+}
 
 function toLink(longname, content) {
     if (!longname) {
@@ -36,3 +77,5 @@ function toLink(longname, content) {
         return '<a href="'+url+'">'+content+'</a>';
     }
 }
+
+exports.longnameToUrl = linkMap.longnameToUrl;

@@ -4,6 +4,8 @@
     helper.registerLink('test', 'path/to/test.html');
     helper.registerLink('test."long blah"/blah', 'path/to/test_long_blah_blah.html');
     
+    //// resolveLinks
+    
     test('ResolveLinks should translate {@link test} into a HTML link.', function() {
         var input = 'This is a {@link test}.',
             output = helper.resolveLinks(input);
@@ -45,5 +47,73 @@
         
         assert.equal(output, input);
     });
-
+    
+    
+    //// createLink
+    
+    test('The createLink member should be a function.', function() {
+        var input = 'This is a {@link test}.',
+            output = helper.resolveLinks(input);
+        
+        assert.equal(typeof helper.createLink, 'function');
+    });
+    
+    test('The createLink function should create a url for a simple global.', function() {
+        var mockDoclet = {
+                kind: 'function',
+                longname: 'foo',
+                name: 'foo'
+            },
+            url = helper.createLink(mockDoclet);
+        
+        assert.equal(url, 'global.html#foo');
+    });
+    
+    test('The createLink function should create a url for a namespace.', function() {
+        var mockDoclet = {
+                kind: 'namespace',
+                longname: 'foo',
+                name: 'foo'
+            },
+            url = helper.createLink(mockDoclet);
+        
+        assert.equal(url, 'foo.html');
+    });
+    
+    test('The createLink function should create a url for a member of a namespace.', function() {
+        var mockDoclet = {
+                kind: 'function',
+                longname: 'ns.foo',
+                name: 'foo',
+                memberof: 'ns'
+            },
+            url = helper.createLink(mockDoclet);
+        
+        assert.equal(url, 'ns.html#foo');
+    });
+    
+    test('The createLink function should create a url for a member of a nested namespace.', function() {
+        var mockDoclet = {
+                kind: 'function',
+                longname: 'ns1.ns2.foo',
+                name: 'foo',
+                memberof: 'ns1.ns2'
+            },
+            url = helper.createLink(mockDoclet);
+        
+        assert.equal(url, 'ns1.ns2.html#foo');
+    });
+    
+    test('The createLink function should create a url for a name with invalid characters using a digest.', function() {
+        var mockDoclet = {
+                kind: 'function',
+                longname: 'ns1."!"."*foo"',
+                name: '"*foo"',
+                memberof: 'ns1."!"'
+            },
+            url = helper.createLink(mockDoclet);
+        
+        assert.equal(url, '9305caaec5.html#"*foo"');
+    });
+    
 })();
