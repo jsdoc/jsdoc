@@ -129,7 +129,6 @@ function exit(n) {
     java.lang.System.exit(n);
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
@@ -159,6 +158,11 @@ function main() {
     
     if (env.opts.query) {
         env.opts.query = require('query').toObject(env.opts.query);
+    }
+    
+    // which version of javascript will be supported? (rhino only)
+    if (typeof version === 'function') {
+        version(env.conf.jsVersion || 180);
     }
     
     if (env.opts.help) {

@@ -75,7 +75,7 @@
                 });
             }
             
-            f.signature = (f.signature || '') + '<span class="type-signature">'+htmlsafe(returnTypes.length? ' &#8658; '+returnTypes.join('|') : '')+'</span>';
+            f.signature = (f.signature || '') + '<span class="type-signature">'+htmlsafe(returnTypes.length? ' &rarr; {'+returnTypes.join('|')+'}' : '')+'</span>';
         }
         
         function addSignatureType(f) {
@@ -110,9 +110,9 @@
 	    
 	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
         
-        function renderLinks(text) {
-            return helper.resolveLinks(text);
-        }
+        //function renderLinks(text) {
+        //    return helper.resolveLinks(text);
+        //}
         
 	    data.forEach(function(doclet) {
 	        doclet.signature = '';
@@ -146,8 +146,7 @@
 	        }
 	        else if (doclet.see) {
 	            doclet.see.forEach(function(seeItem, i) {
-	                doclet.see[i] = urlToLink(seeItem);
-	                doclet.see[i] = renderLinks(doclet.see[i]);
+	                doclet.see[i] = hashToLink(doclet, seeItem);
 	            });
 	        }
 	    });
@@ -189,8 +188,8 @@
         
         // do this after the urls have all been generated
         data.forEach(function(doclet) {
-            if (doclet.classdesc) doclet.classdesc = renderLinks(doclet.classdesc);
-            if (doclet.description) doclet.description = renderLinks(doclet.description);
+            //if (doclet.classdesc) doclet.classdesc = renderLinks(doclet.classdesc);
+            //if (doclet.description) doclet.description = renderLinks(doclet.description);
             
             doclet.ancestors = generateAncestry(doclet);
         });
@@ -279,17 +278,20 @@
             
             var path = outdir + '/' + filename,
                 html = containerTemplate.call(data, data);
-   
+            
+            html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+            
             fs.writeFileSync(path, html)
         }
     }
     
-    function urlToLink(text) {
-        var replacedText = text.replace(urlToLink.webUrl, '<a href="$1" target="_blank">$1</a>');
-
-        return replacedText
+    function hashToLink(doclet, hash) {
+        if ( !/^(#.+)/.test(hash) ) { return hash; }
+        
+        var url = helper.createLink(doclet);
+        
+        url = url.replace(/(#.+|$)/, hash);
+        return '<a href="'+url+'">'+hash+'</a>';
     }
-    // looks like a URL starting with http:// or https://
-    urlToLink.webUrl = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
     
 })();

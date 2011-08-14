@@ -150,6 +150,13 @@ h6
 	font-style: italic;
 }
 
+.ancestors { color: #999; }
+.ancestors a
+{
+    color: #999 !important;
+    text-decoration: none;
+}
+
 .important
 {
 	font-weight: bold;

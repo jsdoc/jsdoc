@@ -221,6 +221,7 @@
                 setDocletNameToValue(doclet, tag);
             }
         })
+        .synonym('func')
         .synonym('method');
         
         dictionary.defineTag('global', {
@@ -332,7 +333,9 @@
                     doclet.type = tag.value.type;
                 }
             }
-        });
+        })
+        .synonym('prop')
+        .synonym('var');
         
         dictionary.defineTag('protected', {
             mustNotHaveValue: true,
