@@ -62,8 +62,16 @@
                 var [target, source] = parseBorrows(doclet, tag);
                 doclet.borrow(target, source);
             }
-        })
-        .synonym('mixes');
+        });
+        
+        // that adds all of it's members to me
+        dictionary.defineTag('mixes', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                var source = firstWordOf(tag.value);
+                doclet.mix(source);
+            }
+        });
         
         dictionary.defineTag('class', {
             onTagged: function(doclet, tag) {

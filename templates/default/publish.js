@@ -156,6 +156,7 @@
         // kinds of containers
         var globals = data.get( data.find({kind: ['property', 'function'], memberof: {isUndefined: true}}) ),
             modules = data.get( data.find({kind: 'module'}) ),
+            mixins = data.get( data.find({kind: 'mixin'}) ),
 	        namespaces = data.get( data.find({kind: 'namespace'}) );
 
         var outdir = opts.destination;
@@ -179,7 +180,7 @@
             return url? '<a href="'+url+'">'+(linktext || longname)+'</a>' : (linktext || longname);
         }
         
-        var containers= ['class', 'module', 'namespace'];
+        var containers = ['class', 'module', 'namespace', 'mixin'];
         
         data.forEach(function(doclet) {
             var url = helper.createLink(doclet);
@@ -208,17 +209,6 @@
             nav = nav + '</ul>';
         }
 
-        var namespaceNames = data.get( data.find({kind: 'namespace'}) );
-        if (namespaceNames.length) {
-            nav = nav + '<h3>Namespaces</h3><ul>';
-            namespaceNames.forEach(function(n) {
-                if ( !seen.hasOwnProperty(n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
-                seen[n.longname] = true;
-            });
-            
-            nav = nav + '</ul>';
-        }
-
         var classNames = data.get( data.find({kind: 'class'}) );
         if (classNames.length) {
             nav = nav + '<h3>Classes</h3><ul>';
@@ -235,7 +225,28 @@
             
             nav = nav + '</ul>';
         }
-//console.log('classNames', classNames);
+        
+        var namespaceNames = data.get( data.find({kind: 'namespace'}) );
+        if (namespaceNames.length) {
+            nav = nav + '<h3>Namespaces</h3><ul>';
+            namespaceNames.forEach(function(n) {
+                if ( !seen.hasOwnProperty(n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                seen[n.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+        
+        var mixinNames = data.get( data.find({kind: 'mixin'}) );
+        if (mixinNames.length) {
+            nav = nav + '<h3>Mixins</h3><ul>';
+            mixinNames.forEach(function(m) {
+                if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                seen[m.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
 
         var globalNames = data.get( data.find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}}) );
 
@@ -258,6 +269,9 @@
             
             var namespaces = data.get( data.find({kind: 'namespace', longname: longname}) );
             if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
+
+            var mixins = data.get( data.find({kind: 'mixin', longname: longname}) );
+            if (mixins.length) generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]);        
         }
         
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');

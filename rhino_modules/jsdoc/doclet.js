@@ -124,6 +124,17 @@
         this.borrowed.push(about);
 	}
 	
+	exports.Doclet.prototype.mix = function(source) {
+	    if (!this.mixes) {
+	        /**
+	            A list of symbols that are mixed into this one, if any.
+	            @type Array.<string>
+	         */
+	        this.mixes = [];
+	    }
+        this.mixes.push(source);
+	}
+	
 	/** Add a symbol to this doclet's `augments` array.
 	    @param {string} base - The longname of the base symbol.
 	*/

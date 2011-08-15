@@ -86,6 +86,22 @@
         ?>
         
         <?js
+            if (doc.mixes && doc.mixes.length) { 
+        ?>
+            <h3 class="subsection-title">Mixes In</h3>
+            
+            <ul><?js
+                doc.mixes.forEach(function(a) {
+            ?>
+                <li><?js= linkto(a, a) ?></li>
+            <?js
+                });
+            ?></ul>
+        <?js 
+            }
+        ?>
+        
+        <?js
             if (doc.requires && doc.requires.length) { 
         ?>
             <h3 class="subsection-title">Requires</h3>
