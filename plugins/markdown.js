@@ -1,18 +1,20 @@
 /**
     @overview Translate doclet descriptions from MarkDown into HTML.
+    @module plugins/markdown
+    @author Michael Mathews <micmath@gmail.com>
  */
 
-(function() {
+var mdParser = require('evilstreak/markdown');
 
-    var markdown = require('evilstreak/markdown');
-    
-    app.jsdoc.parser.on('newDoclet', function(e) {
-        if (e.doclet.description) {
-            e.doclet.description = markdown.toHTML(e.doclet.description)
-                .replace( /&amp;/g, "&" ) // because markdown escapes these
-                .replace( /&lt;/g, "<" )
-                .replace( /&gt;/g, ">" );
-        }
-    });
-    
-})();
+/**
+    Translate markdown syntax in a new doclet's description into HTML. Is run
+    by JSDoc 3 whenever a "newDoclet" event fires.
+ */
+exports.newDoclet = function(e) {
+    if (e.doclet.description) {
+        e.doclet.description = mdParser.toHTML(e.doclet.description)
+            .replace( /&amp;/g, "&" ) // because markdown escapes these
+            .replace( /&lt;/g, "<" )
+            .replace( /&gt;/g, ">" );
+    }
+};
