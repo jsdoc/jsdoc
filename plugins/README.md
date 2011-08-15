@@ -3,8 +3,8 @@ Adding a Plugin
 
 There are two steps required to install a new plugin:
 
-  # Create a JavaScript module to contain your plugin code.
-  # Include the name of that module in the "plugins" array of `conf.json`.
+1. Create a JavaScript module to contain your plugin code.
+2. Include the name of that module in the "plugins" array of `conf.json`.
 
 For example, if your plugin source code was saved in the  "plugins/shout.js"
 file, you would include it in conf.json like so:
