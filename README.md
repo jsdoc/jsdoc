@@ -74,9 +74,10 @@ where it is in the source code.
 See Also
 --------
 
-Project Documentation: <http://usejsdoc.org/> (under development)
-JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>
-Subversion Mirror: <http://code.google.com/p/jsdoc/source>
+Project Documentation: <http://usejsdoc.org/> (under development)  
+Project Documentation Source: <https://github.com/micmath/micmath.github.com>  
+JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
+Subversion Mirror: <http://code.google.com/p/jsdoc/source>  
 Project Annoncements: <http://twitter.com/jsdoc3>
 
 License
