@@ -31,18 +31,11 @@
             }
         });
         
-        dictionary.defineTag('lends', {
-           // mustHaveValue: true,
-            onTagged: function(doclet, tag) {
-                doclet.alias = tag.value || '<global>';
-                doclet.addTag('undocumented');
-            }
-        });
-        
         dictionary.defineTag('author', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {
-                doclet.author = tag.value;
+                if (!doclet.author) { doclet.author = []; }
+                doclet.author.push(tag.value);
             }
         });
         
@@ -261,6 +254,13 @@
         
         dictionary.defineTag('kind', {
             mustHaveValue: true
+        });
+        
+        dictionary.defineTag('lends', {
+            onTagged: function(doclet, tag) {
+                doclet.alias = tag.value || '<global>';
+                doclet.addTag('undocumented');
+            }
         });
         
         dictionary.defineTag('license', {
