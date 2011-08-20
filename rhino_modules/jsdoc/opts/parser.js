@@ -18,14 +18,12 @@
 	
 	argParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
 	argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc __dirname + /conf.json');
-	argParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: your system default encoding');
-	argParser.addOption('n', 'nocode',      false, 'Ignore doclets that don\'t explicitly provide a symbol name.');
+	argParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: utf-8');
 	argParser.addOption('T', 'test',        false, 'Run all tests and quit.');
 	argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
-	argParser.addOption('V', 'validate',    false, 'Validate the results produced by parsing the source code.');
 	argParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
     argParser.addOption('h', 'help',        false, 'Print this message and quit.');
-	argParser.addOption('X', 'expel',       false, 'Dump all found doclet internals to console and quit.');
+	argParser.addOption('X', 'explain',     false, 'Dump all found doclet internals to console and quit.');
     argParser.addOption('q', 'query',       true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
 
 

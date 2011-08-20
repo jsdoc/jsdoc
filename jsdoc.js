@@ -225,7 +225,7 @@ function main() {
         
         require('jsdoc/borrow').resolveBorrows(docs);
         
-        if (env.opts.expel) {
+        if (env.opts.explain) {
             console.log(docs);
             exit(0);
         }

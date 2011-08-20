@@ -419,6 +419,14 @@
             }
         });
         
+        dictionary.defineTag('todo', {
+            mustHaveValue: true,
+            onTagged: function(doclet, tag) {
+                if (!doclet.todo) { doclet.todo = []; }
+                doclet.todo.push(tag.value);
+            }
+        });
+        
         dictionary.defineTag('type', {
             mustHaveValue: true,
             canHaveType: true,

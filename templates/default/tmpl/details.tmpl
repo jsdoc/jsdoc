@@ -52,4 +52,15 @@
         ?></ul>
 	</dd>
 	<?js } ?>
+	
+	<?js if (this.todo && todo.length) {?>
+	<dt>To Do:</dt>
+	<dd>
+        <ul><?js
+            todo.forEach(function(t) {
+                print('<li>'+t+'</li>');
+            });
+        ?></ul>
+	</dd>
+	<?js } ?>
 </dl>
