@@ -1,4 +1,3 @@
-
 <dt id="<?js= longname ?>">
     <h4 class="name" id="<?js= name ?>"><?js= this.attribs + (kind == 'class'? 'new ':'') + name + this.signature ?></h4>
     
@@ -48,21 +47,15 @@
     ?></ul>
     <?js } ?>
     
-    <?js
-    if (this.returns && returns.length) {
-        
-        var rdesc = [];
+    <?js if (this.returns && returns.length) { ?>
+    <h5>Returns:</h5>
+	<ul><?js
         returns.forEach(function(r) {
-            if (r.description) rdesc.push(r.description);
-        });
-        
-        if (rdesc.length) {
-            print('<h5>Returns:</h5>');
-            print('<p>'+rdesc.join('</p><p>')+'</p>');
-        }
-    }
-    ?>
-     
+			print( render('returns.tmpl', r) );
+		});
+	?></ul>
+	<?js } ?>
+    
     <?js
     if (this.examples && examples.length) {
         print('<h5>Example' + (examples.length > 1? 's':'') + '</h5>');
