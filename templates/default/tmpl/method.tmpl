@@ -40,21 +40,27 @@
     
     <?js if (this.exceptions && exceptions.length) { ?>
     <h5>Throws:</h5>
-    <ul><?js
-        exceptions.forEach(function(e) {
-            print( render('exceptions.tmpl', e) );
+    <?js if (exceptions.length > 1) { ?><ul><?js
+        exceptions.forEach(function(r) {
+            print( '<li>' + render('exceptions.tmpl', r) + '</li>' );
         });
-    ?></ul>
-    <?js } ?>
+    ?></ul><?js } else {
+        exceptions.forEach(function(r) {
+            print( render('exceptions.tmpl', r) );
+        });
+    } } ?>
     
     <?js if (this.returns && returns.length) { ?>
     <h5>Returns:</h5>
-	<ul><?js
+    <?js if (returns.length > 1) { ?><ul><?js
         returns.forEach(function(r) {
-			print( render('returns.tmpl', r) );
-		});
-	?></ul>
-	<?js } ?>
+            print( '<li>' + render('returns.tmpl', r) + '</li>' );
+        });
+    ?></ul><?js } else {
+        returns.forEach(function(r) {
+            print( render('returns.tmpl', r) );
+        });
+    } } ?>
     
     <?js
     if (this.examples && examples.length) {
