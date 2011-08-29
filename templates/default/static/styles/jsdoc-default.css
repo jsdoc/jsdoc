@@ -45,8 +45,8 @@ section
     margin-right: 240px;
 }
 
-sup {
-    color: #aaa;
+.variation {
+    display: none;
 }
 
 nav
