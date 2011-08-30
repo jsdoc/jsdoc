@@ -66,9 +66,24 @@ function toLink(longname, content) {
     if (!longname) {
         throw new Error('Missing required parameter: url');
     }
-    content = content || longname;
     
-    var url = linkMap.longnameToUrl[longname];
+    // Has link been specified manually?
+    var url;
+    if (/^(http|ftp)s?:/.test(longname)) {
+        url = longname;
+        
+        // Has link text been specified {@link http://github.com GitHub Website}
+        var split = url.indexOf(' ');
+        if (split !== -1) {
+            content = url.substr(split + 1);
+            url = url.substr(0, split);
+        }
+    }
+    else {
+	    url = linkMap.longnameToUrl[longname];
+	}
+    
+    content = content || longname;
     
     if (!url) {
         return content;
