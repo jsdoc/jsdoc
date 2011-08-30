@@ -4,3 +4,5 @@
 PWD=`pwd`
 BASEDIR=`dirname $0`
 java -classpath ${BASEDIR}/lib/js.jar org.mozilla.javascript.tools.shell.Main -debug ${BASEDIR}/jsdoc.js --dirname=${PWD}/${BASEDIR} $@
+
+#java -classpath ${BASEDIR}/lib/js.jar org.mozilla.javascript.tools.debugger.Main -debug ${BASEDIR}/jsdoc.js --dirname=${PWD}/${BASEDIR} $@

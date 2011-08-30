@@ -152,7 +152,7 @@
                     (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
                     : [''];
         
-        var name = parts[0],
+        var name = parts[0] || '', // ensure name is always initialised to avoid error being thrown when calling replace on undefined [gh-24]
             scope = parts[1] || '', // ., ~, or #
             memberof = parts[2] || '',
             variation;
