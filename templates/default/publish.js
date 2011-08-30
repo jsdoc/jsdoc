@@ -56,7 +56,7 @@
             var ancestors = [];
 
             while (doc = doc.memberof) {
-                doc = data.get( data.find({longname: doc}) );
+                doc = find({longname: doc});
                 if (doc) { doc = doc[0]; }
                 if (!doc) break;
                 ancestors.unshift( linkto(doc.longname, doc.name) );
@@ -107,8 +107,9 @@
         }
         
         data.remove({undocumented: true});
+        data.remove({ignore: true});
 	    
-	    var packageInfo = (data.get( data.find({kind: 'package'}) ) || []) [0];
+	    var packageInfo = (find({kind: 'package'}) || []) [0];
         
         //function renderLinks(text) {
         //    return helper.resolveLinks(text);
@@ -154,10 +155,10 @@
 	    data.orderBy(['longname', 'version', 'since']);
         
         // kinds of containers
-        var globals = data.get( data.find({kind: ['property', 'function'], memberof: {isUndefined: true}}) ),
-            modules = data.get( data.find({kind: 'module'}) ),
-            mixins = data.get( data.find({kind: 'mixin'}) ),
-	        namespaces = data.get( data.find({kind: 'namespace'}) );
+        var globals = find( {kind: ['property', 'function'], memberof: {isUndefined: true}} ),
+            modules = find({kind: 'module'}),
+            mixins = find({kind: 'mixin'}),
+	        namespaces = find({kind: 'namespace'});
 
         var outdir = opts.destination;
         if (packageInfo) {
@@ -198,7 +199,7 @@
         var nav = '',
             seen = {};
         
-        var moduleNames = data.get( data.find({kind: 'module'}) );
+        var moduleNames = find({kind: 'module'});
         if (moduleNames.length) {
             nav = nav + '<h3>Modules</h3><ul>';
             moduleNames.forEach(function(m) {
@@ -209,11 +210,11 @@
             nav = nav + '</ul>';
         }
 
-        var classNames = data.get( data.find({kind: 'class'}) );
+        var classNames = find({kind: 'class'});
         if (classNames.length) {
             nav = nav + '<h3>Classes</h3><ul>';
             classNames.forEach(function(c) {
-                var moduleSameName = data.get( data.find({kind: 'module', longname: c.longname}) );
+                var moduleSameName = find({kind: 'module', longname: c.longname});
                 if (moduleSameName.length) {
                     c.name = c.name.replace('module:', 'require(')+')';
                     moduleSameName[0].module = c;
@@ -226,7 +227,7 @@
             nav = nav + '</ul>';
         }
         
-        var namespaceNames = data.get( data.find({kind: 'namespace'}) );
+        var namespaceNames = find({kind: 'namespace'});
         if (namespaceNames.length) {
             nav = nav + '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
@@ -237,7 +238,7 @@
             nav = nav + '</ul>';
         }
         
-        var mixinNames = data.get( data.find({kind: 'mixin'}) );
+        var mixinNames = find({kind: 'mixin'});
         if (mixinNames.length) {
             nav = nav + '<h3>Mixins</h3><ul>';
             mixinNames.forEach(function(m) {
@@ -248,7 +249,7 @@
             nav = nav + '</ul>';
         }
 
-        var globalNames = data.get( data.find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}}) );
+        var globalNames = find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}});
 
         if (globalNames.length) {
             nav = nav + '<h3>Global</h3><ul>';
@@ -261,16 +262,16 @@
         }
         
         for (var longname in helper.longnameToUrl) {
-            var classes = data.get( data.find({kind: 'class', longname: longname}) );
+            var classes = find({kind: 'class', longname: longname});
             if (classes.length) generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]);
         
-            var modules = data.get( data.find({kind: 'module', longname: longname}) );
+            var modules = find({kind: 'module', longname: longname});
             if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);
             
-            var namespaces = data.get( data.find({kind: 'namespace', longname: longname}) );
+            var namespaces = find({kind: 'namespace', longname: longname});
             if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
 
-            var mixins = data.get( data.find({kind: 'mixin', longname: longname}) );
+            var mixins = find({kind: 'mixin', longname: longname});
             if (mixins.length) generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]);        
         }
         
