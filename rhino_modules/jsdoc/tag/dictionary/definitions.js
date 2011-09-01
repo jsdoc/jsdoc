@@ -416,6 +416,12 @@
             }
         });
         
+        dictionary.defineTag('static', {
+            onTagged: function(doclet, tag) {
+                setDocletScopeToTitle(doclet, tag);  
+            }
+        });
+        
         dictionary.defineTag('summary', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {

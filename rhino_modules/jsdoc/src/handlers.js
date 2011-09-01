@@ -94,6 +94,12 @@
                     }
                     
                     if (memberofName) { newDoclet.addTag( 'memberof', memberofName); }
+                    else {
+                        if (currentModule) {
+                            if (!newDoclet.scope) newDoclet.addTag( 'inner');
+                            if (!newDoclet.memberof && newDoclet.scope !== 'global') newDoclet.addTag( 'memberof', currentModule);
+                        }
+                    }
                 }
                 
                 newDoclet.postProcess();
