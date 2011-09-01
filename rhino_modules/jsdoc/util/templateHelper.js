@@ -29,7 +29,7 @@ exports.registerLink = function(longname, url) {
 }
 
 // each container gets its own html file
-var containers = ['class', 'module', 'namespace', 'mixin'];
+var containers = ['class', 'module', 'external', 'namespace', 'mixin'];
 
 /** Turn a doclet into a URL. */
 exports.createLink = function(doclet) {

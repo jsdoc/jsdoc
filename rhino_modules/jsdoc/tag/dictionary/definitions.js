@@ -186,6 +186,18 @@
         })
         .synonym('throws');
         
+        dictionary.defineTag('external', {
+            canHaveType: true,
+            isNamespace: true,
+            onTagged: function(doclet, tag) {
+                setDocletKindToTitle(doclet, tag);
+                setDocletNameToValue(doclet, tag);
+                if (tag.value && tag.value.type) {
+                    doclet.type = tag.value.type;
+                }
+             }
+        });
+        
         dictionary.defineTag('exports', {
             mustHaveValue: true,
             onTagged: function(doclet, tag) {

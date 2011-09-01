@@ -157,6 +157,7 @@
         // kinds of containers
         var globals = find( {kind: ['property', 'function'], memberof: {isUndefined: true}} ),
             modules = find({kind: 'module'}),
+            externals = find({kind: 'external'}),
             mixins = find({kind: 'mixin'}),
 	        namespaces = find({kind: 'namespace'});
 
@@ -181,7 +182,7 @@
             return url? '<a href="'+url+'">'+(linktext || longname)+'</a>' : (linktext || longname);
         }
         
-        var containers = ['class', 'module', 'namespace', 'mixin'];
+        var containers = ['class', 'module', 'external', 'namespace', 'mixin'];
         
         data.forEach(function(doclet) {
             var url = helper.createLink(doclet);
@@ -209,7 +210,18 @@
             
             nav = nav + '</ul>';
         }
-
+        
+        var externalNames = find({kind: 'external'});
+        if (externalNames.length) {
+            nav = nav + '<h3>Externals</h3><ul>';
+            externalNames.forEach(function(e) {
+                if ( !seen.hasOwnProperty(e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
+                seen[e.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+    
         var classNames = find({kind: 'class'});
         if (classNames.length) {
             nav = nav + '<h3>Classes</h3><ul>';
@@ -273,6 +285,9 @@
 
             var mixins = find({kind: 'mixin', longname: longname});
             if (mixins.length) generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]);        
+        
+            var externals = find({kind: 'external', longname: longname});
+            if (externals.length) generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]);
         }
         
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
