@@ -67,7 +67,12 @@
             delete doclet.memberof;
         }
         else if (about.scope) {
-            doclet.scope = puncToScope[about.scope];
+            if (about.memberof === '<global>') { // via @memberof <global> ?
+                delete doclet.scope;
+            }
+            else {
+                doclet.scope = puncToScope[about.scope];
+            }
         }
         else {
             if (doclet.name && doclet.memberof && !doclet.longname) {
