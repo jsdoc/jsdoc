@@ -108,6 +108,7 @@
         
         data.remove({undocumented: true});
         data.remove({ignore: true});
+        data.remove({memberof: '<anonymous>'});
 	    
 	    var packageInfo = (find({kind: 'package'}) || []) [0];
         
