@@ -31,7 +31,7 @@ with JSDoc 3. Each is provided under its own license and has source
 available from other locations.
 
 
-Rhino (build/java/classes/js.jar)
+Rhino
 ----
 
 Rhino is open source and licensed by Mozilla under the MPL 1.1 or
@@ -42,73 +42,7 @@ https://developer.mozilla.org/en/Rhino_License
 You may obtain the source code for Rhino from the Mozilla web site at
 http://www.mozilla.org/rhino/download.html
 
-json2xml (modules/goessner/json2xml)
-----
-
-Copyright (c) Stefan Goessner 2006
-
-json2xml is licensed under Creative Commons GNU LGPL License,
-http://creativecommons.org/licenses/LGPL/2.1/
-
-You may obtain the source code for json2xml at
-http://goessner.net/download/prj/jsonxml/
-
-Node (modules/common/assert, modules/common/util)
-----
-
-Copyright 2009, 2010 Ryan Lienhart Dahl. All rights reserved.
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to
-deal in the Software without restriction, including without limitation the
-rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
-
-You may obtain the source code for Node at
-https://github.com/ry/node
-
-JSONSchema Validator (modules/sitepen/jsonschema)
-----
-
-Copyright (c) 2007 Kris Zyp SitePen (www.sitepen.com)
-
-Licensed under the MIT license. You may obtain a copy of the
-License at http://www.opensource.org/licenses/mit-license.php
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-You may obtain the source code for JSONSchema Validator at
-http://github.com/kriszyp/commonjs-utils/blob/master/lib/json-schema.js
-http://www.sitepen.com/blog/2010/03/02/commonjs-utilities/
-
-markdown-js (modules/evilstreak/markdown)
+markdown-js
 ----
 
 markdown-js is released under the MIT license. You may obtain a copy of the
@@ -158,7 +92,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 You may obtain the source code for sqlitejdbc at
 https://github.com/crawshaw/sqlitejdbc
 
-Underscore Template (templates/lib/underscore/template.js)
+Underscore Template
 ----
 
 Underscore.js 1.1.4
@@ -172,7 +106,7 @@ Oliver Steele's Functional, and John Resig's Micro-Templating.
 For all details and documentation:
 http://documentcloud.github.com/underscore/#template
 
-TaffyDB (modules/typicaljoe/taffy.js)
+TaffyDB
 ----
 
 Copyright (c) 2008 All rights reserved.
