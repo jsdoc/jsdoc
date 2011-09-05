@@ -7,8 +7,8 @@ an upgrade to JsDoc Toolkit (JSDoc 2).
 Notice
 ------
 
-This is *pre-release software*! It is under active development, not complete
-and is not suitable for reqular use yet.
+This is *beta software*! It is available for testing purposes and may not be 
+suitable for production use yet.
 
 Installation
 ------------
