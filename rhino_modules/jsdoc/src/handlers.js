@@ -59,7 +59,7 @@
                         var nameStartsWith = RegExp.$1;
                         
                         newDoclet.name = newDoclet.name.replace(/^(exports|this)(\.|$)/, '');
-                        
+
                         // like /** @module foo */ exports.bar = 1;
                         if (nameStartsWith === 'exports' && currentModule) {
                             memberofName = currentModule;

@@ -19,7 +19,6 @@
         @param {module:jsdoc/doclet.Doclet} doclet
      */
     exports.resolve = function(doclet) {
-
         var name = doclet.name,
             memberof = doclet.memberof || '',
             about = {},
@@ -49,7 +48,7 @@
         else { // no @memberof
              about = exports.shorten(name);
         }
-        
+
         if (about.name) {
             doclet.name = about.name;
         }

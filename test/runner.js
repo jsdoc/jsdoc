@@ -120,6 +120,7 @@ testFile('test/t/cases/exports.js');
 testFile('test/t/cases/exportstag.js');
 testFile('test/t/cases/exportstag2.js');
 testFile('test/t/cases/exportstag3.js');
+testFile('test/t/cases/exportstag4.js');
 testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');

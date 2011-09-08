@@ -210,9 +210,8 @@
             enclosingFunction = node.enclosingFunction;
         
         if (!enclosingFunction) { return ''; } // global
-        
         doclet = this.refs['astnode'+enclosingFunction.hashCode()];
-        
+
         if ( doclet && doclet.meta.vars && ~doclet.meta.vars.indexOf(basename) ) {
             return doclet.longname;
         }
@@ -258,6 +257,7 @@
             };
             
             var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+            
             if (basename !== 'this') e.code.funcscope = currentParser.resolveVar(node, basename);
 
             if ( isValidJsdoc(e.comment) ) {
@@ -334,9 +334,23 @@
                 astnode: node,
                 code: aboutNode(node)
             };
-
+            
             e.code.name = String(node.name) || '';
             
+            // keep track of vars in a function scope
+            if (node.enclosingFunction) {
+                var func = 'astnode'+node.enclosingFunction.hashCode(),
+                funcDoc = currentParser.refs[func];
+
+                if (funcDoc) {
+                    funcDoc.meta.vars = funcDoc.meta.vars || [];
+                    funcDoc.meta.vars.push(e.code.name);
+                }
+            }
+            
+            var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+            e.code.funcscope = currentParser.resolveVar(node, basename);
+
             if ( isValidJsdoc(e.comment) ) {
                 currentParser.fire('symbolFound', e, currentParser);
             }
