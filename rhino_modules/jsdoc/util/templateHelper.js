@@ -72,8 +72,8 @@ function toLink(longname, content) {
     if (/^(http|ftp)s?:/.test(longname)) {
         url = longname;
         
-        // Has link text been specified {@link http://github.com GitHub Website}
-        var split = url.indexOf(' ');
+        // Has link text been specified {@link http://github.com|GitHub Website}
+        var split = url.indexOf('|');
         if (split !== -1) {
             content = url.substr(split + 1);
             url = url.substr(0, split);

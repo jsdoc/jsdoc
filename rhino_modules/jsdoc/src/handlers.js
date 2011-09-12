@@ -47,6 +47,10 @@
              } 
             
             if (newDoclet.alias) {
+                if (newDoclet.alias === '{@this}') {
+                    memberofName = this.resolveThis(e.astnode);
+                    newDoclet.alias = memberofName;//'Blizp'
+                }
                 newDoclet.addTag('name', newDoclet.alias);
                 newDoclet.postProcess();
             }

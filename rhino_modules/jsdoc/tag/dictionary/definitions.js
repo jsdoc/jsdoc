@@ -110,9 +110,14 @@
         });
         
         dictionary.defineTag('constructs', {
-            mustHaveValue: true,
             onTagged: function(doclet, tag) {
-                var ownerClassName = firstWordOf(tag.value);
+                var ownerClassName;
+                if (!tag.value) {
+                    ownerClassName = '{@this}'; // this can be resolved later in the handlers
+                }
+                else {
+                    ownerClassName = firstWordOf(tag.value);
+                }
                 doclet.addTag('alias', ownerClassName);
                 doclet.addTag('kind', 'class');
             }
