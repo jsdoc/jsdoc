@@ -47,9 +47,14 @@
              } 
             
             if (newDoclet.alias) {
-                if (newDoclet.alias === '{@this}') {
+                if (newDoclet.alias === '{@thisClass}') {
                     memberofName = this.resolveThis(e.astnode);
-                    newDoclet.alias = memberofName;//'Blizp'
+                    
+                    // "class" refers to the owner of the prototype, not the prototype itself
+                    if ( /^(.+?)(\.prototype|#)$/.test(memberofName) ) {
+                        memberofName = RegExp.$1;
+                    }
+                    newDoclet.alias = memberofName;
                 }
                 newDoclet.addTag('name', newDoclet.alias);
                 newDoclet.postProcess();

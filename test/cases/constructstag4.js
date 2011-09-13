@@ -1,4 +1,4 @@
-var Person = Class.create(/** @lends Person */{
+var Person = Class.create(/** @lends Person# */{
 
     /**
         Describe the constructor.

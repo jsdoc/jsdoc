@@ -113,7 +113,7 @@
             onTagged: function(doclet, tag) {
                 var ownerClassName;
                 if (!tag.value) {
-                    ownerClassName = '{@this}'; // this can be resolved later in the handlers
+                    ownerClassName = '{@thisClass}'; // this can be resolved later in the handlers
                 }
                 else {
                     ownerClassName = firstWordOf(tag.value);
