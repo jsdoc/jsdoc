@@ -30,7 +30,6 @@ for (var i = 0; i < arguments.length; i++) {
     }
 }
 
-load(__dirname + '/lib/require.js');
 load(__dirname + '/lib/rhino-shim.js');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
