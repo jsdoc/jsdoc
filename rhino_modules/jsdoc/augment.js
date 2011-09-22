@@ -6,51 +6,56 @@
         var sorted = sort(dependencies);
         var additions = [];
         sorted.forEach(function(name) {
-            var doc = docs.index[name][0];
-            Array.prototype.push.apply(additions, getAdditions(doc, docs));
+            var doclets = docs.index[name];
+            Array.prototype.push.apply(additions, getAdditions(doclets, docs));
         });
         additions.forEach(function(doc) {
             var name = doc.longname;
             if (!(docs.index.hasOwnProperty(name))) {
-                docs.index[name] = [doc];
-            } else {
-                docs.index[name].push(doc);
+                docs.index[name] = [];
             }
+            docs.index[name].push(doc);
             docs.push(doc);
         });
     }
 
     function mapDependencies(index) {
-        var doc, len, dependencies = {};
+        var doclets, doc, len, dependencies = {};
         for (var name in index) {
-            doc = index[name][0];
-            if (doc.kind === "class") {
-                dependencies[name] = {};
-                len = doc.augments && doc.augments.length || 0;
-                for (var i=0; i<len; ++i) {
-                    dependencies[name][doc.augments[i]] = true;
+            doclets = index[name];
+            for (var i=0, ii=doclets.length; i<ii; ++i) {
+                doc = doclets[i];
+                if (doc.kind === "class") {
+                    dependencies[name] = {};
+                    len = doc.augments && doc.augments.length || 0;
+                    for (var j=0; j<len; ++j) {
+                        dependencies[name][doc.augments[j]] = true;
+                    }
                 }
             }
         }
         return dependencies;
     }
 
-    function getAdditions(doc, docs) {
+    function getAdditions(doclets, docs) {
         var additions = [];
-        var parents = doc.augments;
-        if (doc.kind === "class" && parents) {
-            var members, member;
-            for (var i=0, ii=parents.length; i<ii; ++i) {
-                members = getMembers(parents[i], docs);
-                for (var j=0, jj=members.length; j<jj; ++j) {
-                    member = doop(members[j]);
-                    member.memberof = doc.longname;
-                    parts = member.longname.split("#");
-                    parts[0] = doc.longname;
-                    member.longname = parts.join("#");
-                    additions.push(member);
-                }
+        var doc, parents, members, member;
+        for (var i=0, ii=doclets.length; i<ii; ++i) {
+            doc = doclets[i];
+            parents = doc.augments;
+            if (parents && doc.kind === "class") {
+                for (var j=0, jj=parents.length; j<jj; ++j) {
+                    members = getMembers(parents[j], docs);
+                    for (var k=0, kk=members.length; k<kk; ++k) {
+                        member = doop(members[k]);
+                        member.memberof = doc.longname;
+                        parts = member.longname.split("#");
+                        parts[0] = doc.longname;
+                        member.longname = parts.join("#");
+                        additions.push(member);
+                    }
 
+                }
             }
         }
         return additions;
