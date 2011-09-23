@@ -222,6 +222,7 @@ function main() {
         
         indexAll(docs);
         
+        require('jsdoc/augment').addInherited(docs);
         require('jsdoc/borrow').resolveBorrows(docs);
         
         if (env.opts.explain) {

@@ -44,6 +44,11 @@ var testhelpers = {
         
         doclets = testParser.parse('javascript:' + sourceCode);
         testhelpers.indexAll(doclets);
+
+        require('jsdoc/augment').addInherited(doclets);
+
+        // test assume borrows have not yet been resolved
+        // require('jsdoc/borrow').resolveBorrows(doclets);
         
         return {
             doclets: doclets,
