@@ -120,7 +120,9 @@ function pretreat(code) {
         // merge adjacent doclets
         .replace(/\*\/\/\*\*+/g, '@also')
         // make lent objectliterals documentable by giving them a dummy name
-        .replace(/(\/\*\*[\s\S]*?@lends\b[\s\S]*?\*\/\s*)\{/g, '$1____ = {');
+        .replace(/(\/\*\*[\s\S]*?@lends\b[\s\S]*?\*\/\s*)\{/g, '$1____ = {')
+        // make starbangstar comments look like real jsdoc comments
+        .replace(/\/\*\!\*/g, '/***');
 }
 
 /**

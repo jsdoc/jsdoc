@@ -147,6 +147,7 @@ testFile('test/t/cases/requirestag.js');
 testFile('test/t/cases/returnstag.js');
 testFile('test/t/cases/seetag.js');
 testFile('test/t/cases/sincetag.js');
+testFile('test/t/cases/starbangstar.js');
 testFile('test/t/cases/thistag.js');
 testFile('test/t/cases/typekind.js');
 testFile('test/t/cases/typetag.js');
