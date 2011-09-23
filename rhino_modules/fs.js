@@ -1,10 +1,10 @@
-function readFileSync(filename, encoding) {
+exports.readFileSync = function(filename, encoding) {
     encoding = encoding || 'utf-8';
 
     return readFile(filename, encoding);
-}
+};
 
-function readdirSync(path) {
+var readdirSync = exports.readdirSync = function(path) {
     var dir,
         files;
     
@@ -14,9 +14,9 @@ function readdirSync(path) {
     files = dir.list();
     
     return files;
-}
+};
 
-function ls(dir, recurse, _allFiles, _path) {
+var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     var files,
         file;
 
@@ -56,9 +56,9 @@ function ls(dir, recurse, _allFiles, _path) {
     }
 
     return _allFiles;
-}
+};
 
-function stat(path, encoding) {
+var stat = exports.stat = function(path, encoding) {
     var f = new java.io.File(path)
     return {
         isFile: function() {
@@ -69,9 +69,9 @@ function stat(path, encoding) {
         }
     }
 
-}
+};
 
-function mkPath(/**Array*/ path) {
+exports.mkPath = function(/**Array*/ path) {
     if (path.constructor != Array) path = path.split(/[\\\/]/);
     var make = "";
     for (var i = 0, l = path.length; i < l; i++) {
@@ -80,7 +80,7 @@ function mkPath(/**Array*/ path) {
             makeDir(make);
         }
     }
-}
+};
 
 function makeDir(/**string*/ path) {
     var dirPath = toDir(path);
@@ -102,7 +102,7 @@ function exists(path) {
     return true;
 }
 
-function toDir(path) {
+var toDir = exports.toDir = function(path) {
     var f = new java.io.File(path);
     
     if (f.isDirectory()){
@@ -113,9 +113,9 @@ function toDir(path) {
     parts.pop();
     
     return parts.join('/');
-}
+};
 
-function copyFile(inFile, outDir, fileName) {
+exports.copyFile = function(inFile, outDir, fileName) {
     if (fileName == null) fileName = toFile(inFile);
     
     outDir = toDir(outDir);
@@ -131,14 +131,14 @@ function copyFile(inFile, outDir, fileName) {
     }
     bos.close();
     bis.close();
-}
+};
 
 function toFile(path) {
     var parts = path.split(/[\\\/]/);
     return parts.pop();
 }
 
-function writeFileSync(filename, data, encoding) {
+exports.writeFileSync = function(filename, data, encoding) {
     encoding = encoding || 'utf-8';
 
     var out = new Packages.java.io.PrintWriter(
@@ -155,16 +155,4 @@ function writeFileSync(filename, data, encoding) {
         out.flush();
         out.close();
     }
-}
-
-module.exports = {
-    readFileSync: readFileSync,
-    writeFileSync: writeFileSync,
-    readdirSync: readdirSync,
-    stat: stat,
-    
-    ls: ls,
-    mkPath: mkPath,
-    toDir: toDir,
-    copyFile: copyFile
 };
