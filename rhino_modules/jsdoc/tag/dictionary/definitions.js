@@ -292,8 +292,7 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             setDocletMemberof(doclet, tag);
          }
-    })
-    .synonym('member');
+    });
     
     dictionary.defineTag('mixin', {
         onTagged: function(doclet, tag) {
@@ -352,20 +351,22 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('property', {
         canHaveType: true,
         onTagged: function(doclet, tag) {
-            if (doclet.kind) {
-                if (!doclet.properties) { doclet.properties = []; }
-                doclet.properties.push(tag.value);
-            }
-            else {
-                setDocletKindToTitle(doclet, tag);
-                setDocletNameToValue(doclet, tag);
-                if (tag.value && tag.value.type) {
-                    doclet.type = tag.value.type;
-                }
+            if (!doclet.properties) { doclet.properties = []; }
+            doclet.properties.push(tag.value);
+        }
+    })
+    .synonym('prop');
+    
+    dictionary.defineTag('member', {
+        canHaveType: true,
+        onTagged: function(doclet, tag) {
+            setDocletKindToTitle(doclet, tag);
+            setDocletNameToValue(doclet, tag);
+            if (tag.value && tag.value.type) {
+                doclet.type = tag.value.type;
             }
         }
     })
-    .synonym('prop')
     .synonym('var');
     
     dictionary.defineTag('protected', {

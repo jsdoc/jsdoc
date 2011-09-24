@@ -12,6 +12,6 @@ module.exports = require('connect').createServer(
 );
 
 /**
-    @property {number} module:blog/server.port
+    @member {number} module:blog/server.port
     @default 8080
 */

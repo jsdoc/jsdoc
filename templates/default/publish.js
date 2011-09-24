@@ -96,11 +96,11 @@
             }
             
             if (f.scope && f.scope !== 'instance') {
-                if (f.kind == 'function' || f.kind == 'property') attribs.push(f.scope);
+                if (f.kind == 'function' || f.kind == 'member') attribs.push(f.scope);
             }
             
             if (f.readonly === true) {
-                if (f.kind == 'property') attribs.push('readonly');
+                if (f.kind == 'member') attribs.push('readonly');
             }
             
             f.attribs = '<span class="type-signature">'+htmlsafe(attribs.length? '<'+attribs.join(', ')+'> ' : '')+'</span>';
@@ -126,7 +126,7 @@
 	            addAttribs(doclet);
 	        }
 	        
-	        if (doclet.kind === 'property') {
+	        if (doclet.kind === 'member') {
 	            addSignatureType(doclet);
 	            addAttribs(doclet)
 	        }
@@ -156,7 +156,7 @@
 	    data.orderBy(['longname', 'version', 'since']);
         
         // kinds of containers
-        var globals = find( {kind: ['property', 'function'], memberof: {isUndefined: true}} ),
+        var globals = find( {kind: ['member', 'function'], memberof: {isUndefined: true}} ),
             modules = find({kind: 'module'}),
             externals = find({kind: 'external'}),
             mixins = find({kind: 'mixin'}),
@@ -262,7 +262,7 @@
             nav = nav + '</ul>';
         }
 
-        var globalNames = find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}});
+        var globalNames = find({kind: ['member', 'function'], 'memberof': {'isUndefined': true}});
 
         if (globalNames.length) {
             nav = nav + '<h3>Global</h3><ul>';

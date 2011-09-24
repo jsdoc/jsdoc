@@ -229,7 +229,7 @@ function codetypeToKind(type) {
     var kind = (type || '').toLowerCase();
     
     if (kind !== 'function') {
-        return 'property';
+        return 'member';
     }
     
     return kind;
