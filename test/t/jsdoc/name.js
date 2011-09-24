@@ -117,3 +117,11 @@ test('The module:jsdoc/name.shorten function finds the variation.', function() {
     assert.equal(parts.name, 'fadein');
     assert.equal(parts.longname, 'anim.fadein(2)');
 });
+
+test('The module:jsdoc/name.splitName function finds the name and description.', function() {
+    var startName = 'ns.Page#"last \\"sentence\\"".words~sort(2)   - This is a description. ',
+        parts = jsdoc.name.splitName(startName);
+    
+    assert.equal(parts.name, 'ns.Page#"last \\"sentence\\"".words~sort(2)');
+    assert.equal(parts.description, 'This is a description.');
+});

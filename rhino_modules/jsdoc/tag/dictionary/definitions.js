@@ -352,10 +352,16 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('property', {
         canHaveType: true,
         onTagged: function(doclet, tag) {
-            setDocletKindToTitle(doclet, tag);
-            setDocletNameToValue(doclet, tag);
-            if (tag.value && tag.value.type) {
-                doclet.type = tag.value.type;
+            if (doclet.kind) {
+                if (!doclet.properties) { doclet.properties = []; }
+                doclet.properties.push(tag.value);
+            }
+            else {
+                setDocletKindToTitle(doclet, tag);
+                setDocletNameToValue(doclet, tag);
+                if (tag.value && tag.value.type) {
+                    doclet.type = tag.value.type;
+                }
             }
         }
     })
@@ -400,7 +406,7 @@ exports.defineTags = function(dictionary) {
         mustHaveValue: true,
         canHaveType: true,
         onTagged: function(doclet, tag) {
-             if (!doclet.returns) { doclet.returns = []; }
+            if (!doclet.returns) { doclet.returns = []; }
             doclet.returns.push(tag.value);
         }
     })
