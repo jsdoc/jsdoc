@@ -31,18 +31,18 @@ exports.resolve = function(doclet) {
         name = doclet.longname = doclet.meta.code.funcscope + '~' + name;
     }
 
-    if (memberof) { // @memberof tag given
-        memberof = memberof.replace(/\.prototype\.?/g, '#');
+    if (memberof || doclet.forceMemberof) { // @memberof tag given
+        memberof = ('' || memberof).replace(/\.prototype\.?/g, '#');
         
         // the name is a fullname, like @name foo.bar, @memberof foo
         if (name && name.indexOf(memberof) === 0) {
-            about = exports.shorten(name);
+            about = exports.shorten(name, (doclet.forceMemberof? memberof : undefined));
         }
         else if (name && /([#.~])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
-            about = exports.shorten(memberof + name);
+            about = exports.shorten(memberof + name, (doclet.forceMemberof? memberof : undefined));
         }
         else if (name && doclet.scope ) { // like @memberof foo# or @memberof foo~
-            about = exports.shorten(memberof + scopeToPunc[doclet.scope] + name);
+            about = exports.shorten(memberof + (scopeToPunc[doclet.scope]||'') + name, (doclet.forceMemberof? memberof : undefined));
         }
     }
     else { // no @memberof
@@ -67,7 +67,7 @@ exports.resolve = function(doclet) {
     }
     else if (about.scope) {
         if (about.memberof === '<global>') { // via @memberof <global> ?
-            delete doclet.scope;
+            doclet.scope = 'global';
         }
         else {
             doclet.scope = puncToScope[about.scope];
@@ -130,9 +130,10 @@ exports.applyNamespace = function(longname, ns) {
     Given a longname like "a.b#c(2)", slice it up into ["a.b", "#", 'c', '2'],
     representing the memberof, the scope, the name, and variation.
     @param {string} longname
+    @param {string} forcedMemberof
     @returns {object} Representing the properties of the given name.
  */
-exports.shorten = function(longname) {
+exports.shorten = function(longname, forcedMemberof) {
     // quoted strings in a longname are atomic, convert to tokens
     var atoms = [], token; 
     
@@ -149,17 +150,31 @@ exports.shorten = function(longname) {
 
         return dot + token; // foo["bar"] => foo.@{1}@
     });
-
-    longname = longname.replace( /\.prototype\.?/g, '#' );     
-        
-    var parts = longname?
-                (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
-                : [''];
     
-    var name = parts[0] || '', // ensure name is always initialised to avoid error being thrown when calling replace on undefined [gh-24]
-        scope = parts[1] || '', // ., ~, or #
-        memberof = parts[2] || '',
+    var name = '',
+        scope = '', // ., ~, or #
+        memberof =  '',
         variation;
+    
+    longname = longname.replace( /\.prototype\.?/g, '#' );
+//console.log(forcedMemberof);       
+    if (typeof forcedMemberof !== 'undefined') {
+//console.log('forcedMemberof');
+        name = longname.substr(forcedMemberof.length);
+        var parts = forcedMemberof.match(/^(.*?)([#.~]?)$/);
+//console.log(parts);
+        if (parts[1]) memberof = parts[1] || forcedMemberof;
+        if (parts[2]) scope = parts[2];
+    }
+    else {
+        var parts = longname?
+                    (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
+                    : [''];
+        
+        name = parts[0] || ''; // ensure name is always initialised to avoid error being thrown when calling replace on undefined [gh-24]
+        scope = parts[1] || ''; // ., ~, or #
+        memberof = parts[2] || '';
+    }
     
     // like /** @name foo.bar(2) */
     if ( /(.+)\(([^)]+)\)$/.test(name) ) {

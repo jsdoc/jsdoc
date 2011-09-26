@@ -128,6 +128,10 @@ exports.attachTo = function(parser) {
             }
         }
         
+        if (!newDoclet.memberof) {
+            newDoclet.scope = 'global';
+        }
+        
         addDoclet.call(this, newDoclet);
         e.doclet = newDoclet;
     }

@@ -51,8 +51,9 @@ exports.Doclet.prototype.postProcess = function() {
         this.setLongname(this.name);  
     }
     if (this.memberof === '') {
-        delete(this.memberof);  
+        delete(this.memberof);
     }
+    
     if (!this.kind && this.meta && this.meta.code) {
         this.addTag( 'kind', codetypeToKind(this.meta.code.type) );
     }

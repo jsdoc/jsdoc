@@ -46,7 +46,8 @@
         ?>
     </header>  
     
-    <article>    
+    <article>
+        <div class="container-overview">
         <?js
         if (doc.kind === 'module' && doc.module) {
             print(render('method.tmpl', doc.module));
@@ -68,6 +69,7 @@
             }
         }
         ?>
+        </div>
         
         <?js
             if (doc.augments && doc.augments.length) { 

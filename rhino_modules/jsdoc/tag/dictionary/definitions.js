@@ -161,6 +161,15 @@ exports.defineTags = function(dictionary) {
     })
     .synonym('desc');
     
+    dictionary.defineTag('enum', {
+        canHaveType: true,
+        onTagged: function(doclet, tag) {
+            doclet.kind = 'member';
+            doclet.isEnum = true;
+            doclet.type = tag.value.type;
+        }
+    });
+    
     dictionary.defineTag('event', {
         onTagged: function(doclet, tag) {
             setDocletKindToTitle(doclet, tag);
@@ -290,9 +299,17 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('memberof', {
         mustHaveValue: true,
         onTagged: function(doclet, tag) {
+            if (tag.originalTitle === 'memberof!') {
+                doclet.forceMemberof = true;
+                if (tag.value === '<global>') {
+                    doclet.addTag('global');
+                    delete doclet.memberof;
+                }
+            }
             setDocletMemberof(doclet, tag);
          }
-    });
+    })
+    .synonym('memberof!');
     
     dictionary.defineTag('mixin', {
         onTagged: function(doclet, tag) {
@@ -544,7 +561,9 @@ function setNameToFile(doclet, tag) {
 }
 
 function setDocletMemberof(doclet, tag) {
-    doclet.setMemberof(tag.value);
+    if (tag.value && tag.value !== '<global>') {
+        doclet.setMemberof(tag.value);
+    }
 }
 
 function applyNamespace(doclet, tag) {

@@ -1,0 +1,24 @@
+
+<dt id="member:<?js= longname ?>">
+    <h4 class="name"><?js= this.attribs + name + this.signature ?></h4>
+    
+    <?js if (this.summary) { ?>
+    <p class="summary"><?js= summary ?></p>
+    <?js } ?>
+</dt>
+<dd>
+    <?js if (this.description) { ?>
+    <p class="description">
+        <?js= this.description ?>
+    </p>
+    <?js } ?>
+    
+    <?js print(render('details.tmpl', this)); ?>
+    
+    <?js 
+        if (this.examples && examples.length) {
+            print('<h5>Example' + (examples.length > 1? 's':'') + '</h5>');
+            print( render('examples.tmpl', examples) );
+        }
+    ?>
+</dd>

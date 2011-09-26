@@ -202,6 +202,23 @@ exports.Parser.prototype.resolveThis = function(node) {
 }
 
 /**
+    Given: foo = { x:1 }, find foo from x.
+ */
+exports.Parser.prototype.resolvePropertyParent = function(node) {
+    var memberof = {};
+    
+    if (node.parent) {
+        var parent = node.parent;
+        if (parent.type === Token.COLON) parent = parent.parent; // go up one more
+        
+        memberof.id = 'astnode'+parent.hashCode();
+        memberof.doclet = this.refs[memberof.id];
+        
+        if (memberof.doclet) { return memberof; }
+    }
+}
+
+/**
  * Resolve what function a var is limited to.
  * @param {astnode} node
  * @param {string} basename The leftmost name in the long name: in foo.bar.zip the basename is foo.
@@ -285,6 +302,14 @@ function visitNode(node) {
         
         if (e.doclet) {
             currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
+        }
+        
+        var parent = currentParser.resolvePropertyParent(node);
+        if (parent && parent.doclet.isEnum) {
+            if (!parent.doclet.properties) { parent.doclet.properties = []; }
+            // members of an enum inherit the enum's type
+            if (parent.doclet.type && !e.doclet.type) { e.doclet.type = parent.doclet.type; }
+            parent.doclet.properties.push(e.doclet);
         }
     }
     else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {

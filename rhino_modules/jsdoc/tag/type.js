@@ -107,5 +107,5 @@ function parseTypes(type) {
 
 /** @private */
 function trim(text) {
-	return text.replace(/^\s+|\s+$/g, '');
+	return text.trim();
 }
