@@ -33,7 +33,7 @@
     <h5>Fires:</h5>
     <ul><?js
         fires.forEach(function(f) {
-            print( render('fires.tmpl', f) );
+            print( render('fires.tmpl', linkto(f) ) );
         });
     ?></ul>
     <?js } ?>
