@@ -1,18 +1,18 @@
 <dl class="details">
 	<?js if (this.version) {?>
 	<dt class="tag-version">Version:</dt>
-	<dd class="tag-version"><?js= version ?></dd>
+	<dd class="tag-version"><ul class="dummy"><li><?js= version ?></li></ul></dd>
 	<?js } ?>
 	
 	<?js if (this.since) {?>
 	<dt class="tag-since">Since:</dt>
-	<dd class="tag-since"><?js= since ?></dd>
+	<dd class="tag-since"><ul class="dummy"><li><?js= since ?></dd>
 	<?js } ?>
 	
 	<?js if (this.deprecated) { ?>
         <dt class="important tag-deprecated">Deprecated<?js
-            if (this.deprecated === true) print('</dt><dd class="yes-def tag-deprecated">Yes</dd>');
-            else print(':</dt><dd>'+this.deprecated+'</dd>');
+            if (this.deprecated === true) print('</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>');
+            else print(':</dt><dd><ul class="dummy"><li>'+this.deprecated+'</li><ul></dd>');
         ?>
         
         <?js } ?>
@@ -30,22 +30,22 @@
 	
 	<?js if (this.copyright) {?>
 	<dt class="tag-copyright">Copyright:</dt>
-	<dd class="tag-copyright"><?js= copyright ?></dd>
+	<dd class="tag-copyright"><ul class="dummy"><li><?js= copyright ?></li></ul></dd>
 	<?js } ?>
 	
 	<?js if (this.license) {?>
 	<dt class="tag-license">License:</dt>
-	<dd class="tag-license"><?js= license ?></dd>
+	<dd class="tag-license"><ul class="dummy"><li><?js= license ?></li></ul></dd>
 	<?js } ?>
 	
 	<?js if (this.defaultvalue) {?>
 	<dt class="tag-default">Default Value:</dt>
-	<dd class="tag-default"><?js= this.defaultvalue ?></dd>
+	<dd class="tag-default"><ul class="dummy"><li><?js= this.defaultvalue ?></li></ul></dd>
 	<?js } ?>
 	
 	<?js if (this.meta) {?>
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><?js= meta.filename ?>, line <?js= meta.lineno ?></dd>
+	<dd class="tag-source"><ul class="dummy"><li><?js= meta.filename ?>, line <?js= meta.lineno ?></li></ul></dd>
 	<?js } ?>
 	
 	<?js if (this.see && see.length) {?>
