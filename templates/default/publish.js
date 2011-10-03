@@ -43,7 +43,7 @@
             if (f.params) {
                 f.params.forEach(function(p) {
                     if (p.name && p.name.indexOf('.') === -1) {
-                        if (p.optional) { pnames.push('['+p.name+']'); }
+                        if (p.optional) { pnames.push(p.name+'<sub>opt</sub>'); }
                         else { pnames.push(p.name); }
                     }
                 });
@@ -75,7 +75,7 @@
                 });
             }
             
-            f.signature = (f.signature || '') + '<span class="type-signature">'+htmlsafe(returnTypes.length? ' &rarr; {'+returnTypes.join('|')+'}' : '')+'</span>';
+            f.signature = '<span class="signature">'+(f.signature || '') + '</span>' + '<span class="type-signature">'+htmlsafe(returnTypes.length? ' &rarr; {'+returnTypes.join('|')+'}' : '')+'</span>';
         }
         
         function addSignatureType(f) {

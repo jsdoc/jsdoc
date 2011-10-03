@@ -171,10 +171,15 @@ h6
     color: #aaa;
 }
 
+.signature sub {
+    font-size: 50%;
+}
+
 .details dt { width:100px; float:left; border-left: 2px solid #DDD; padding-left: 10px;}
 .details dd { margin-left: 50px; }
 .details ul { margin: 0; }
 .details ul.dummy { list-style-type: none; }
+.details li { margin-left: 30px; }
 
 .description { margin-left: -16px; }
 
