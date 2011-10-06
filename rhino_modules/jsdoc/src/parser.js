@@ -96,7 +96,7 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
     currentSourceName = sourceName;
     
     sourceCode = pretreat(sourceCode);
-    
+      
     var ast = parserFactory().parse(sourceCode, sourceName, 1);
     
     var e = {filename: currentSourceName};
@@ -159,7 +159,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
 exports.Parser.prototype.resolveThis = function(node) {
     var memberof = {};
     
-    if (node.enclosingFunction) {
+    if (node.type !== Token.COLON && node.enclosingFunction) {
         memberof.id = 'astnode'+node.enclosingFunction.hashCode();
         memberof.doclet = this.refs[memberof.id];
         
@@ -190,8 +190,7 @@ exports.Parser.prototype.resolveThis = function(node) {
         if (parent.type === Token.COLON) parent = parent.parent; // go up one more
         
         memberof.id = 'astnode'+parent.hashCode();
-        memberof.doclet = this.refs[memberof.id];
-        
+        memberof.doclet = this.refs[memberof.id];        
         if (!memberof.doclet) return ''; // global?
         
         return memberof.doclet.longname||memberof.doclet.name;

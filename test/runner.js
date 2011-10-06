@@ -118,6 +118,7 @@ testFile('test/t/cases/constructstag.js');
 testFile('test/t/cases/constructstag2.js');
 testFile('test/t/cases/constructstag3.js');
 testFile('test/t/cases/constructstag4.js');
+testFile('test/t/cases/constructstag5.js');
 testFile('test/t/cases/constructortag.js');
 testFile('test/t/cases/copyrighttag.js');
 testFile('test/t/cases/defaulttag.js');
