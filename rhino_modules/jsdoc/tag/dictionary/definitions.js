@@ -229,6 +229,7 @@ exports.defineTags = function(dictionary) {
         mustHaveValue: true,
         onTagged: function(doclet, tag) {
             if (!doclet.fires) { doclet.fires = []; }
+            applyNamespace('event', tag);
             doclet.fires.push(tag.value);
         }
     });
@@ -540,11 +541,16 @@ function setDocletMemberof(doclet, tag) {
     doclet.setMemberof(tag.value);
 }
 
-function applyNamespace(doclet, tag) {
-    if (!doclet.name) return; // error?
-    
-    //doclet.displayname = doclet.name;
-    doclet.longname = app.jsdoc.name.applyNamespace(doclet.name, tag.title)
+function applyNamespace(docletOrNs, tag) {
+    if (typeof docletOrNs === 'string') { // ns
+        tag.value = app.jsdoc.name.applyNamespace(tag.value, docletOrNs);
+    }
+    else { // doclet
+        if (!docletOrNs.name) return; // error?
+        
+        //doclet.displayname = doclet.name;
+        docletOrNs.longname = app.jsdoc.name.applyNamespace(docletOrNs.name, tag.title);
+    }
 }
 
 function setDocletNameToFilename(doclet, tag) {
