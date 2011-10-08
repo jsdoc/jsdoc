@@ -46,7 +46,8 @@
         ?>
     </header>  
     
-    <article>    
+    <article>
+        <div class="container-overview">
         <?js
         if (doc.kind === 'module' && doc.module) {
             print(render('method.tmpl', doc.module));
@@ -68,6 +69,7 @@
             }
         }
         ?>
+        </div>
         
         <?js
             if (doc.augments && doc.augments.length) { 
@@ -154,18 +156,18 @@
         <?js } ?>
         
         <?js
-            var properties = find({kind: 'property', memberof: doc.longname});
+            var members = find({kind: 'member', memberof: doc.longname});
             if (title === 'Globals') {
-                properties = find({kind: 'property', memberof: {isUndefined: true}});
+                members = find({kind: 'member', memberof: {isUndefined: true}});
             }
-            if (properties && properties.length && properties.forEach) { 
+            if (members && members.length && members.forEach) { 
         ?>
             
-            <h3 class="subsection-title">Properties</h3>
+            <h3 class="subsection-title">Members</h3>
             
             <dl><?js
-                properties.forEach(function(p) {
-                    print(render('properties.tmpl', p));
+                members.forEach(function(p) {
+                    print(render('members.tmpl', p));
                 });
             ?></dl>
             

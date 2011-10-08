@@ -161,6 +161,15 @@ exports.defineTags = function(dictionary) {
     })
     .synonym('desc');
     
+    dictionary.defineTag('enum', {
+        canHaveType: true,
+        onTagged: function(doclet, tag) {
+            doclet.kind = 'member';
+            doclet.isEnum = true;
+            doclet.type = tag.value.type;
+        }
+    });
+    
     dictionary.defineTag('event', {
         onTagged: function(doclet, tag) {
             setDocletKindToTitle(doclet, tag);
@@ -291,10 +300,17 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('memberof', {
         mustHaveValue: true,
         onTagged: function(doclet, tag) {
+            if (tag.originalTitle === 'memberof!') {
+                doclet.forceMemberof = true;
+                if (tag.value === '<global>') {
+                    doclet.addTag('global');
+                    delete doclet.memberof;
+                }
+            }
             setDocletMemberof(doclet, tag);
          }
     })
-    .synonym('member');
+    .synonym('memberof!');
     
     dictionary.defineTag('mixin', {
         onTagged: function(doclet, tag) {
@@ -353,6 +369,15 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('property', {
         canHaveType: true,
         onTagged: function(doclet, tag) {
+            if (!doclet.properties) { doclet.properties = []; }
+            doclet.properties.push(tag.value);
+        }
+    })
+    .synonym('prop');
+    
+    dictionary.defineTag('member', {
+        canHaveType: true,
+        onTagged: function(doclet, tag) {
             setDocletKindToTitle(doclet, tag);
             setDocletNameToValue(doclet, tag);
             if (tag.value && tag.value.type) {
@@ -360,7 +385,6 @@ exports.defineTags = function(dictionary) {
             }
         }
     })
-    .synonym('prop')
     .synonym('var');
     
     dictionary.defineTag('protected', {
@@ -401,7 +425,7 @@ exports.defineTags = function(dictionary) {
         mustHaveValue: true,
         canHaveType: true,
         onTagged: function(doclet, tag) {
-             if (!doclet.returns) { doclet.returns = []; }
+            if (!doclet.returns) { doclet.returns = []; }
             doclet.returns.push(tag.value);
         }
     })
@@ -538,7 +562,9 @@ function setNameToFile(doclet, tag) {
 }
 
 function setDocletMemberof(doclet, tag) {
-    doclet.setMemberof(tag.value);
+    if (tag.value && tag.value !== '<global>') {
+        doclet.setMemberof(tag.value);
+    }
 }
 
 function applyNamespace(docletOrNs, tag) {

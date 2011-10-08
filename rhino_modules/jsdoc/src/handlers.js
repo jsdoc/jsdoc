@@ -10,7 +10,7 @@ var currentModule = null;
     @param parser
  */
 exports.attachTo = function(parser) {
-    var jsdoc = {doclet: require('jsdoc/doclet')};
+    var jsdoc = {doclet: require('jsdoc/doclet'), name: require('jsdoc/name')};
     
     // handles JSDoc comments that include a @name tag -- the code is ignored in such a case
     parser.on('jsdocCommentFound', function(e) {
@@ -40,11 +40,11 @@ exports.attachTo = function(parser) {
         var newDoclet = new jsdoc.doclet.Doclet(docletSrc, e);
 
         // an undocumented symbol right after a virtual comment? rhino mistakenly connected the two
-         if (newDoclet.name) { // there was a @name in comment
-             // try again, without the comment
-             e.comment = '@undocumented';
-             newDoclet = new jsdoc.doclet.Doclet(e.comment, e);
-         } 
+        if (newDoclet.name) { // there was a @name in comment
+            // try again, without the comment
+            e.comment = '@undocumented';
+            newDoclet = new jsdoc.doclet.Doclet(e.comment, e);
+        }
         
         if (newDoclet.alias) {
             if (newDoclet.alias === '{@thisClass}') {
@@ -115,6 +115,21 @@ exports.attachTo = function(parser) {
         }
         else {
             return false;
+        }
+        
+        // find name and description from each property tag text
+        if (newDoclet.properties) {
+            for (var i = 0, len = newDoclet.properties.length; i < len; i++) {
+                var property = newDoclet.properties[i];
+                
+                var parts = jsdoc.name.splitName(property.description);
+                property.name = parts.name;
+                property.description = parts.description;
+            }
+        }
+        
+        if (!newDoclet.memberof) {
+            newDoclet.scope = 'global';
         }
         
         addDoclet.call(this, newDoclet);

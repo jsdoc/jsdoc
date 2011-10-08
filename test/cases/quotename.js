@@ -8,7 +8,7 @@ chat["#channel"] = {};
 
 
 /**
-	@property
+	@member
 	@type {boolean}
 	@defaultvalue
  */

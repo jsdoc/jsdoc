@@ -1,4 +1,17 @@
 <dl class="details">
+    <?js
+        var properties = this.properties;
+        if (properties && properties.length && properties.forEach) { 
+    ?>
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl><?js
+            print( render('properties.tmpl', properties) );
+        ?></dl>
+        
+    <?js } ?>
+        
 	<?js if (this.version) {?>
 	<dt class="tag-version">Version:</dt>
 	<dd class="tag-version"><ul class="dummy"><li><?js= version ?></li></ul></dd>

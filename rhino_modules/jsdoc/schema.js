@@ -100,7 +100,7 @@ exports.jsdocSchema = {
                     "kind": { // what kind of symbol is this?
                         "type": "string",
                         "maxItems": 1,
-                        "enum": ["constructor", "module", "event", "namespace", "method", "property", "enum", "class", "interface", "constant", "mixin", "file", "version"]
+                        "enum": ["constructor", "module", "event", "namespace", "method", "member", "enum", "class", "interface", "constant", "mixin", "file", "version"]
                     },
                     "refersto": { // the path to another doc: this doc is simply a renamed alias to that
                         "type": "string",

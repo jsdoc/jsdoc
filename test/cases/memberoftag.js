@@ -1,9 +1,9 @@
 /** @constructor 
-    @member mathlib
+    @memberof mathlib
  */
 function Data() {
 
-    /** @property */
+    /** @member */
     this.point = {};
 }
 

@@ -13,8 +13,6 @@
     </p>
     <?js } ?>
     
-    <?js print(render('details.tmpl', this)); ?>
-    
     <?js
     if (this['this']) {
         print('<h5>This:</h5>');
@@ -28,6 +26,8 @@
         print( render('params.tmpl', params) );
     }
     ?>
+    
+    <?js print(render('details.tmpl', this)); ?>
     
     <?js if (this.fires && fires.length) { ?>
     <h5>Fires:</h5>
