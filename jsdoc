@@ -5,4 +5,4 @@ PWD=`pwd`
 BASEDIR=`dirname $0`
 java -classpath ${BASEDIR}/lib/js.jar org.mozilla.javascript.tools.shell.Main -modules ${BASEDIR}/node_modules -modules ${BASEDIR}/rhino_modules ${BASEDIR}/jsdoc.js --dirname=${PWD}/${BASEDIR} $@
 
-#java -classpath ${BASEDIR}/lib/js.jar org.mozilla.javascript.tools.debugger.Main -debug -modules ${BASEDIR}/node_modules -modules ${BASEDIR}/rhino_modules ${BASEDIR}/jsdoc.js ${BASEDIR}/jsdoc.js --dirname=${PWD}/${BASEDIR} $@
+#java -classpath ${BASEDIR}/lib/js.jar org.mozilla.javascript.tools.debugger.Main -debug -modules ${BASEDIR}/node_modules -modules ${BASEDIR}/rhino_modules ${BASEDIR}/jsdoc.js --dirname=${PWD}/${BASEDIR} $@

@@ -65,9 +65,10 @@ JavaScript. Luckily it comes with a full-on debugger included that can be much
 more useful than a simple stack trace. To invoke JSDoc with the debugger try the
 following command:
 
-    $ java -classpath js.jar \
-    org.mozilla.javascript.tools.debugger.Main jsdoc.js \
+    $ java -classpath lib/js.jar \
+    org.mozilla.javascript.tools.debugger.Main -debug \
     -modules node_modules -modules rhino_modules \
+    jsdoc.js \
     your/script.js
 
 This will open a debugging window. Choose "Break on Exceptions" from the "Debug"
