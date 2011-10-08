@@ -166,7 +166,7 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             doclet.kind = 'member';
             doclet.isEnum = true;
-            doclet.type = tag.value.type;
+            if (tag.value && tag.value.type) { doclet.type = tag.value.type; }
         }
     });
     

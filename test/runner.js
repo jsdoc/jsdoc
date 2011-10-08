@@ -123,6 +123,7 @@ testFile('test/t/cases/constructortag.js');
 testFile('test/t/cases/copyrighttag.js');
 testFile('test/t/cases/defaulttag.js');
 testFile('test/t/cases/deprecatedtag.js');
+testFile('test/t/cases/enumtag.js');
 testFile('test/t/cases/eventfirestag.js');
 testFile('test/t/cases/exports.js');
 testFile('test/t/cases/exportstag.js');
