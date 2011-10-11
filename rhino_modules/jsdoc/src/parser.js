@@ -93,16 +93,18 @@ exports.Parser.prototype.clear = function() {
 
 /** @private */
 exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
-    currentSourceName = sourceName;
-    
-    sourceCode = pretreat(sourceCode);
-      
-    var ast = parserFactory().parse(sourceCode, sourceName, 1);
-    
-    var e = {filename: currentSourceName};
+    var e = {filename: sourceName};
     this.fire('fileBegin', e);
     
     if (!e.defaultPrevented) {
+        e = {filename: sourceName, source: sourceCode};
+        this.fire('beforeParse', e);
+        sourceCode = e.source;
+        currentSourceName = sourceName = e.filename;
+        
+        sourceCode = pretreat(e.source);
+        
+        var ast = parserFactory().parse(sourceCode, sourceName, 1);
         ast.visit(
             new Packages.org.mozilla.javascript.ast.NodeVisitor({
                 visit: visitNode
@@ -120,7 +122,7 @@ function pretreat(code) {
         // merge adjacent doclets
         .replace(/\*\/\/\*\*+/g, '@also')
         // make lent objectliterals documentable by giving them a dummy name
-        .replace(/(\/\*\*[\s\S]*?@lends\b[\s\S]*?\*\/\s*)\{/g, '$1____ = {')
+        .replace(/(\/\*\*[\s\S]*?@lends\b[\s\S]*?\*\/\s*)\{/g, '$1 ____ = {')
         // make starbangstar comments look like real jsdoc comments
         .replace(/\/\*\!\*/g, '/**');
 }
