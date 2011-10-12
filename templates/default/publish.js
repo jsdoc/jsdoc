@@ -152,6 +152,9 @@
 	                doclet.see[i] = hashToLink(doclet, seeItem);
 	            });
 	        }
+	        
+	        
+            
 	    });
 	    
 	    data.orderBy(['longname', 'version', 'since']);
@@ -191,11 +194,19 @@
             helper.registerLink(doclet.longname, url);
         });
         
+        data.forEach(function(doclet) {
+            var url = helper.longnameToUrl[doclet.longname];
+
+	        if (url.indexOf('#') > -1) {
+	            doclet.id = helper.longnameToUrl[doclet.longname].split(/#/).pop();
+	        }
+	        else {
+	            doclet.id = doclet.name;
+	        }
+	    })
+        
         // do this after the urls have all been generated
         data.forEach(function(doclet) {
-            //if (doclet.classdesc) doclet.classdesc = renderLinks(doclet.classdesc);
-            //if (doclet.description) doclet.description = renderLinks(doclet.description);
-            
             doclet.ancestors = generateAncestry(doclet);
         });
         

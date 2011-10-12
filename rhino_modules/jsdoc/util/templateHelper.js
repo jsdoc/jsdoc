@@ -3,6 +3,8 @@
  */
 
 var hash = require('pajhome/hash');
+var dictionary = require('jsdoc/tag/dictionary');
+
 exports.globalName = 'global';
 exports.fileExtension = '.html';
 
@@ -39,7 +41,7 @@ exports.createLink = function(doclet) {
         var longname = doclet.longname,
             filename = strToFilename(doclet.memberof || exports.globalName); // TODO handle name collisions
         
-        url = filename + exports.fileExtension + '#' + doclet.name;
+        url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
     }
     else {
         var longname = doclet.longname,
@@ -49,6 +51,13 @@ exports.createLink = function(doclet) {
     }
     
     return url;
+}
+
+function getNamespace(kind) {
+    if (dictionary.isNamespace(kind)) {
+        return kind+':';
+    }
+    return '';
 }
 
 function strToFilename(str) {

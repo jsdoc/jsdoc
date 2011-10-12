@@ -157,12 +157,11 @@ exports.shorten = function(longname, forcedMemberof) {
         variation;
     
     longname = longname.replace( /\.prototype\.?/g, '#' );
-//console.log(forcedMemberof);       
+         
     if (typeof forcedMemberof !== 'undefined') {
-//console.log('forcedMemberof');
         name = longname.substr(forcedMemberof.length);
         var parts = forcedMemberof.match(/^(.*?)([#.~]?)$/);
-//console.log(parts);
+
         if (parts[1]) memberof = parts[1] || forcedMemberof;
         if (parts[2]) scope = parts[2];
     }

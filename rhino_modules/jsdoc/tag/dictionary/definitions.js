@@ -171,6 +171,7 @@ exports.defineTags = function(dictionary) {
     });
     
     dictionary.defineTag('event', {
+        isNamespace: true,
         onTagged: function(doclet, tag) {
             setDocletKindToTitle(doclet, tag);
             setDocletNameToValue(doclet, tag);
