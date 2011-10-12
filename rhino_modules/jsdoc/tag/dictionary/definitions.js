@@ -367,6 +367,7 @@ exports.defineTags = function(dictionary) {
     });
     
     dictionary.defineTag('property', {
+        mustHaveValue: true,
         canHaveType: true,
         onTagged: function(doclet, tag) {
             if (!doclet.properties) { doclet.properties = []; }
