@@ -269,7 +269,7 @@ function visitNode(node) {
         e = {
             id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
             comment: String(node.jsDoc||'@undocumented'),
-            lineno: node.getLineno(),
+            lineno: node.left.getLineno(),
             filename: currentSourceName,
             astnode: node,
             code: aboutNode(node)
@@ -291,7 +291,7 @@ function visitNode(node) {
         e = {
             id: 'astnode'+node.hashCode(), // the id of the COLON node
             comment: String(node.left.jsDoc||'@undocumented'),
-            lineno: node.getLineno(),
+            lineno: node.left.getLineno(),
             filename: currentSourceName,
             astnode: node,
             code: aboutNode(node)
