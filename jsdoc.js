@@ -176,7 +176,7 @@ function main() {
     // allow user-defined plugins to register listeners
     if (env.conf.plugins) {
         for (var i = 0, leni = env.conf.plugins.length; i < leni; i++) {
-            var plugin = require(__dirname + '/' + env.conf.plugins[i]);
+            var plugin = require(env.conf.plugins[i]);
             for (var eventName in plugin) {
                 app.jsdoc.parser.on(eventName, plugin[eventName]);
             }
