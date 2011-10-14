@@ -156,6 +156,7 @@ testFile('test/t/cases/typekind.js');
 testFile('test/t/cases/typetag.js');
 testFile('test/t/cases/typedeftag.js');
 testFile('test/t/cases/variations.js');
+testFile('test/t/cases/variations3.js');
 testFile('test/t/cases/versiontag.js');
 
 

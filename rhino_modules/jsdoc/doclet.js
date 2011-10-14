@@ -57,6 +57,10 @@ exports.Doclet.prototype.postProcess = function() {
     if (!this.kind && this.meta && this.meta.code) {
         this.addTag( 'kind', codetypeToKind(this.meta.code.type) );
     }
+    
+    if (this.variation && this.longname && !/\)$/.test(this.longname) ) {
+        this.longname += '('+this.variation+')';
+    }
 }
 
 /** Add a tag to this doclet.
