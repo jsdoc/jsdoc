@@ -139,6 +139,7 @@ testFile('test/t/cases/lendsglobal.js');
 testFile('test/t/cases/moduleinner.js');
 testFile('test/t/cases/memberoftag.js');
 testFile('test/t/cases/memberoftag2.js');
+testFile('test/t/cases/memberoftag3.js');
 testFile('test/t/cases/moduletag.js');
 testFile('test/t/cases/moduletag2.js');
 testFile('test/t/cases/paramtag.js');

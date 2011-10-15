@@ -24,7 +24,7 @@ exports.resolve = function(doclet) {
         about = {},
         parentDoc;
 
-    name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
+    doclet.name = name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
     
     // member of a var in an outer scope?
     if (name && !memberof && doclet.meta.code && doclet.meta.code.funcscope) {
@@ -80,7 +80,7 @@ exports.resolve = function(doclet) {
             doclet.setLongname(doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
         }
     }
-    
+
     if (about.variation) {
         doclet.variation = about.variation;
     }
