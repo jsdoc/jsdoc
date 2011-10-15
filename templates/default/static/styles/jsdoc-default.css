@@ -1,7 +1,7 @@
 body
 {
-	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Verdana, Tahoma, sans-serif;
-	font-size: 13px;
+	font: 14px "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+	line-height: 130%;
 	color: #000;
 }
 
@@ -20,14 +20,14 @@ a:active {
 header
 {
 	display: block;
-	/*border-bottom: 1px solid #ddd;*/
 	padding: 6px 4px;
 }
 
 .class-description {
     font-style: italic;
 	font-family: Palatino, 'Palatino Linotype', serif;
-	font-size: 18px;
+	font-size: 130%;
+	line-height: 140%;
 }
 
 #main {
@@ -49,11 +49,17 @@ section
     display: none;
 }
 
+.optional:after {
+	content: "opt";
+	font-size: 60%;
+	color: #aaa;
+	font-style: italic;
+	font-weight: lighter;
+}
+
 nav
 {
 	display: block;
-	
-
 	float: left;
     margin-left: -230px;
     margin-top: 28px;
@@ -64,7 +70,7 @@ nav
 
 nav ul {
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
-    font-size: 13px;
+    font-size: 100%;
     line-height: 17px;
     padding:0;
     margin:0;
@@ -96,39 +102,39 @@ footer {
     padding: 6px;
     margin-top: 12px;
     font-style: italic;
-    font-size: 11px;
+    font-size: 90%;
 }
 
 h1
 {
-	font-size: 32px;
+	font-size: 200%;
 	font-weight: bold;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.01em;
 	margin: 6px 0 9px 0;
 }
 
 h2
 {
-	font-size: 22px;
+	font-size: 170%;
 	font-weight: bold;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.01em;
 	margin: 6px 0 3px 0;
 }
 
 h3
 {
-	font-size: 20px;
+	font-size: 150%;
 	font-weight: bold;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.01em;
 	margin-top: 16px;
 	margin: 6px 0 3px 0;
 }
 
 h4
 {
-	font-size: 18px;
+	font-size: 130%;
 	font-weight: bold;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.01em;
 	margin-top: 16px;
 	margin: 18px 0 3px 0;
 	color: #A35A00;
@@ -136,16 +142,16 @@ h4
 
 h5, .container-overview .subsection-title
 {
-	font-size: 16px;
+	font-size: 120%;
 	font-weight: bold;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.01em;
 	margin: 8px 0 3px -16px;
 }
 
 h6
 {
-	font-size: 13px;
-	letter-spacing: -0.03em;
+	font-size: 100%;
+	letter-spacing: -0.01em;
 	margin: 6px 0 3px 0;
 	font-style: italic;
 }
@@ -171,15 +177,16 @@ h6
     color: #aaa;
 }
 
-.signature sub {
-    font-size: 50%;
+.name, .signature {
+	font-family: Consolas, "Lucida Console", Monaco, monospace;
 }
 
-.details dt { width:100px; float:left; border-left: 2px solid #DDD; padding-left: 10px;}
+.details { margin-top: 14px; }
+.details dt { width:100px; float:left; border-left: 2px solid #DDD; padding-left: 10px;  padding-top: 6px; }
 .details dd { margin-left: 50px; }
 .details ul { margin: 0; }
-.details ul.dummy { list-style-type: none; }
-.details li { margin-left: 30px; }
+.details ul { list-style-type: none; }
+.details li { margin-left: 30px; padding-top: 6px; }
 
 .description { margin-left: -16px; }
 
@@ -187,7 +194,7 @@ h6
 {
 	font-style: italic;
 	font-family: Palatino, 'Palatino Linotype', serif;
-	font-size: 14px;
+	font-size: 107%;
 	margin: 0;
 }
 
@@ -200,7 +207,7 @@ h6
 .sh_sourceCode code
 {
 	font-family: Consolas, 'Lucida Console', Monaco, monospace;
-	font-size: 12px;
+	font-size: 100%;
 	line-height: 18px;
 	display: block;
 	padding: 4px 12px;
@@ -217,7 +224,11 @@ h6
 	border-collapse: collapse;
 }
 
-.params .name, .props .name { color: #1C02A3; }
+.params .name, .props .name, .name code {
+	color: #A35A00;
+	font-family: Consolas, 'Lucida Console', Monaco, monospace;
+	font-size: 100%;
+}
 
 .params td, .params th, .props td, .props th
 {

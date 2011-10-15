@@ -2,7 +2,8 @@
 
     var template = require('underscore/template'),
         fs = require('fs'),
-        helper = require('jsdoc/util/templateHelper');
+        helper = require('jsdoc/util/templateHelper'),
+        scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' };
         
         template.settings.evaluate    = /<\?js([\s\S]+?)\?>/g;
         template.settings.interpolate = /<\?js=([\s\S]+?)\?>/g;
@@ -43,7 +44,7 @@
             if (f.params) {
                 f.params.forEach(function(p) {
                     if (p.name && p.name.indexOf('.') === -1) {
-                        if (p.optional) { pnames.push(p.name+'<sub>opt</sub>'); }
+                        if (p.optional) { pnames.push('<span class="optional">'+p.name+'</span>'); }
                         else { pnames.push(p.name); }
                     }
                 });
@@ -52,14 +53,18 @@
             f.signature = (f.signature || '') + '('+pnames.join(', ')+')';
         }
         
-        function generateAncestry(doc) {
-            var ancestors = [];
+        function generateAncestry(thisdoc) {
+            var ancestors = [],
+                doc = thisdoc;
 
             while (doc = doc.memberof) {
                 doc = find({longname: doc});
                 if (doc) { doc = doc[0]; }
                 if (!doc) break;
-                ancestors.unshift( linkto(doc.longname, doc.name) );
+                ancestors.unshift( linkto(doc.longname, (scopeToPunc[doc.scope] || '') + doc.name) );
+            }
+            if (ancestors.length) {
+                ancestors[ancestors.length-1] += (scopeToPunc[thisdoc.scope] || '');
             }
             return ancestors;
         }
@@ -95,7 +100,7 @@
                 attribs.push(f.access);
             }
             
-            if (f.scope && f.scope !== 'instance') {
+            if (f.scope && f.scope !== 'instance' && f.scope !== 'global') {
                 if (f.kind == 'function' || f.kind == 'member') attribs.push(f.scope);
             }
             

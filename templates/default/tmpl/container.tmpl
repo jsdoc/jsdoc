@@ -27,8 +27,8 @@
         <h2><?js
             if (doc.ancestors && doc.ancestors.length) {
                 print('<span class="ancestors">');
-                print( doc.ancestors.join(' &rang; ') ); 
-                print(' &rang; </span>' + doc.name);
+                print( doc.ancestors.join('') ); 
+                print('</span>' + doc.name);
             }
             else {
                 print(doc.name)
