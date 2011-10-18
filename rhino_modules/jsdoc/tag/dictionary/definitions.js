@@ -123,7 +123,7 @@ exports.defineTags = function(dictionary) {
         }
     });
 
-	dictionary.defineTag('defaultvalue', {
+	dictionary.defineTag('default', {
         onTagged: function(doclet, tag) {
             if (tag.value) {
 				doclet.defaultvalue = tag.value;
@@ -147,7 +147,7 @@ exports.defineTags = function(dictionary) {
 			}
         }
     })
-	.synonym('default');
+	.synonym('defaultvalue');
     
     dictionary.defineTag('deprecated', {
         // value is optional

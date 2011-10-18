@@ -101,11 +101,16 @@
             }
             
             if (f.scope && f.scope !== 'instance' && f.scope !== 'global') {
-                if (f.kind == 'function' || f.kind == 'member') attribs.push(f.scope);
+                if (f.kind == 'function' || f.kind == 'member' || f.kind == 'constant') attribs.push(f.scope);
             }
             
             if (f.readonly === true) {
                 if (f.kind == 'member') attribs.push('readonly');
+            }
+            
+            if (f.kind === 'constant') {
+                attribs.push('constant');
+                f.kind = 'member';
             }
             
             f.attribs = '<span class="type-signature">'+htmlsafe(attribs.length? '<'+attribs.join(', ')+'> ' : '')+'</span>';
@@ -133,6 +138,11 @@
 	        }
 	        
 	        if (doclet.kind === 'member') {
+	            addSignatureType(doclet);
+	            addAttribs(doclet)
+	        }
+	        
+	        if (doclet.kind === 'constant') {
 	            addSignatureType(doclet);
 	            addAttribs(doclet)
 	        }
@@ -165,7 +175,7 @@
 	    data.orderBy(['longname', 'version', 'since']);
         
         // kinds of containers
-        var globals = find( {kind: ['member', 'function'], memberof: {isUndefined: true}} ),
+        var globals = find( {kind: ['member', 'function', 'constant'], memberof: {isUndefined: true}} ),
             modules = find({kind: 'module'}),
             externals = find({kind: 'external'}),
             mixins = find({kind: 'mixin'}),
@@ -268,6 +278,17 @@
             nav = nav + '</ul>';
         }
         
+//         var constantNames = find({kind: 'constants'});
+//         if (constantNames.length) {
+//             nav = nav + '<h3>Constants</h3><ul>';
+//             constantNames.forEach(function(c) {
+//                 if ( !seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+//                 seen[c.longname] = true;
+//             });
+//             
+//             nav = nav + '</ul>';
+//         }
+        
         var mixinNames = find({kind: 'mixin'});
         if (mixinNames.length) {
             nav = nav + '<h3>Mixins</h3><ul>';
@@ -279,7 +300,7 @@
             nav = nav + '</ul>';
         }
 
-        var globalNames = find({kind: ['member', 'function'], 'memberof': {'isUndefined': true}});
+        var globalNames = find({kind: ['member', 'function', 'constant'], 'memberof': {'isUndefined': true}});
 
         if (globalNames.length) {
             nav = nav + '<h3>Global</h3><ul>';
@@ -300,6 +321,9 @@
             
             var namespaces = find({kind: 'namespace', longname: longname});
             if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
+            
+//             var constants = find({kind: 'constant', longname: longname});
+//             if (constants.length) generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]);        
 
             var mixins = find({kind: 'mixin', longname: longname});
             if (mixins.length) generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]);        
