@@ -28,7 +28,6 @@
         assert.equal(typeof unbind.params, 'object');
         assert.equal(unbind.params.length, 1);
         assert.equal(unbind.params[0].type.names.join(', '), 'function');
-        assert.equal(unbind.params[0].name, undefined);
         assert.equal(unbind.params[0].description, undefined);
     });
     
@@ -60,8 +59,11 @@
         assert.equal(typeof commit.params, 'object');
         assert.equal(commit.params.length, 1);
         assert.equal(commit.params[0].type, undefined);
-        assert.equal(commit.params[0].name, undefined);
         assert.equal(commit.params[0].description, 'If true make the commit atomic.');
+    });
+    
+    test('When a symbol has an @param tag with no name and a name is given in the code, the doclet has a params property that includes that param with the name from the code.', function() {
+        assert.equal(commit.params[0].name, 'atomic');
     });
 
 })();

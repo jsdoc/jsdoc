@@ -422,11 +422,8 @@ function aboutNode(node) {
 
         about.type = 'function';
         about.node = node;
-        
-        return about;
     }
-    
-    if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
+    else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
         about.name = nodeToString(node.target);
         if (node.initializer) {  // like var i = 0;
             about.node = node.initializer;
@@ -438,11 +435,8 @@ function aboutNode(node) {
 			about.value = nodeToString(about.node);
             about.type = 'undefined';
         }
-        
-        return about;
     }
-     
-    if (node.type === Token.ASSIGN || node.type === Token.COLON) {
+    else if (node.type === Token.ASSIGN || node.type === Token.COLON) {
         about.name = nodeToString(node.left);
         if (node.type === Token.COLON) {
 
@@ -454,16 +448,28 @@ function aboutNode(node) {
         about.node = node.right;
 		about.value = nodeToString(about.node);
         about.type = getTypeName(node.right);
-        return about;
+    }
+    else {
+        // type 39 (NAME)
+        var string = nodeToString(node);
+        if (string) {
+            about.name = string;
+        }
     }
     
-    // type 39 (NAME)
-    var string = nodeToString(node);
-    if (string) {
-        about.name = string;
-        return about;
+    // get names of the formal parameters declared for this function
+    if (about.node && about.node.getParamCount) {
+        var paramCount = about.node.getParamCount();
+        if (typeof paramCount === 'number') {
+            about.node.flattenSymbolTable(true);
+            var paramNames = [];
+            for (var i = 0, len = paramCount; i < len; i++) {
+                paramNames.push(''+about.node.getParamOrVarName(i));
+            }
+            about.paramnames = paramNames;
+        }
     }
-	
+        
     return about;
 }
 

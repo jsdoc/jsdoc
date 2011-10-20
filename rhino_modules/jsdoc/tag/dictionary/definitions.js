@@ -298,6 +298,18 @@ exports.defineTags = function(dictionary) {
         }
     });
     
+    dictionary.defineTag('member', {
+        canHaveType: true,
+        onTagged: function(doclet, tag) {
+            setDocletKindToTitle(doclet, tag);
+            setDocletNameToValue(doclet, tag);
+            if (tag.value && tag.value.type) {
+                doclet.type = tag.value.type;
+            }
+        }
+    })
+    .synonym('var');
+    
     dictionary.defineTag('memberof', {
         mustHaveValue: true,
         onTagged: function(doclet, tag) {
@@ -349,12 +361,12 @@ exports.defineTags = function(dictionary) {
     });
     
     dictionary.defineTag('param', {
-        mustHaveValue: true,
+        //mustHaveValue: true, // param name can be found in the source code if not provided
         canHaveType: true,
         canHaveName: true,
         onTagged: function(doclet, tag) {
             if (!doclet.params) { doclet.params = []; }
-            doclet.params.push(tag.value);
+            doclet.params.push(tag.value||{});
         }
     })
     .synonym('argument')
@@ -376,18 +388,6 @@ exports.defineTags = function(dictionary) {
         }
     })
     .synonym('prop');
-    
-    dictionary.defineTag('member', {
-        canHaveType: true,
-        onTagged: function(doclet, tag) {
-            setDocletKindToTitle(doclet, tag);
-            setDocletNameToValue(doclet, tag);
-            if (tag.value && tag.value.type) {
-                doclet.type = tag.value.type;
-            }
-        }
-    })
-    .synonym('var');
     
     dictionary.defineTag('protected', {
         mustNotHaveValue: true,

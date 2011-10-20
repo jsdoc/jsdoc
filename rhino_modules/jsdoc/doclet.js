@@ -61,6 +61,15 @@ exports.Doclet.prototype.postProcess = function() {
     if (this.variation && this.longname && !/\)$/.test(this.longname) ) {
         this.longname += '('+this.variation+')';
     }
+    
+    // add in any missing param names
+    if (this.params && this.meta && this.meta.code && this.meta.code.paramnames) {
+        for (var i = 0, len = this.params.length; i < len; i++) {
+            if (!this.params[i].name) {
+                this.params[i].name = this.meta.code.paramnames[i] || '';
+            }
+        }
+    }
 }
 
 /** Add a tag to this doclet.
@@ -207,6 +216,9 @@ exports.Doclet.prototype.setMeta = function(meta) {
         if (meta.code.value) {
             /** The value of the symbol in the source code. */
             this.meta.code.value = meta.code.value;
+        }
+        if (meta.code.paramnames) {
+            this.meta.code.paramnames = meta.code.paramnames.concat([]);
         }
     }
 }
