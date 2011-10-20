@@ -103,7 +103,7 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         currentSourceName = sourceName = e.filename;
         
         sourceCode = pretreat(e.source);
-        
+               
         var ast = parserFactory().parse(sourceCode, sourceName, 1);
         ast.visit(
             new Packages.org.mozilla.javascript.ast.NodeVisitor({
@@ -119,12 +119,20 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
 
 function pretreat(code) {
     return code
-        // merge adjacent doclets
-        .replace(/\*\/\/\*\*+/g, '@also')
-        // make lent objectliterals documentable by giving them a dummy name
-        .replace(/(\/\*\*[\s\S]*?@lends\b[\s\S]*?\*\/\s*)\{/g, '$1 ____ = {')
         // make starbangstar comments look like real jsdoc comments
-        .replace(/\/\*\!\*/g, '/**');
+        .replace(/\/\*\!\*/g, '/**')
+        
+        // make matching comment endings easier
+        .replace(/\*\//g, '»')
+        
+        // merge adjacent doclets
+        .replace(/»\/\*\*+/g, '@also')
+        // make lent objectliterals documentable by giving them a dummy name
+        .replace(/(\/\*\*[^»]*?@lends\b[^»]*?»\s*)\{/g, '$1 ____ = {') // like return @lends {
+        .replace(/(\/\*\*[^»]*?@lends\b[^»]*?»)(\s*)return(\s*)\{/g, '$2$3 return $1 ____ = {') // like @lends return {
+        
+        // make matching comment endings harder
+        .replace(/»/g, '*/');
 }
 
 /**
