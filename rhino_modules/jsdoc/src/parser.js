@@ -318,6 +318,7 @@ function visitNode(node) {
             if (!parent.doclet.properties) { parent.doclet.properties = []; }
             // members of an enum inherit the enum's type
             if (parent.doclet.type && !e.doclet.type) { e.doclet.type = parent.doclet.type; }
+            delete e.doclet.undocumented;
             parent.doclet.properties.push(e.doclet);
         }
     }

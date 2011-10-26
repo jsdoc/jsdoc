@@ -12,6 +12,12 @@
         assert.equal(tristate.properties[0].type.names.join(', '), 'number');
     });
     
+    test('If no no comment is given for the property it is still included in the enum.', function() {
+        assert.equal(tristate.properties[1].longname, 'TriState.FALSE');
+        assert.equal(typeof tristate.properties[1].undocumented, 'undefined');
+        
+    });
+    
     test('If a @type is given for the property it is reflected in the property value.', function() {
         assert.equal(tristate.properties[2].type.names.join(', '), 'boolean');
     });
