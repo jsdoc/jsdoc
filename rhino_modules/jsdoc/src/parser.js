@@ -319,6 +319,7 @@ function visitNode(node) {
             // members of an enum inherit the enum's type
             if (parent.doclet.type && !e.doclet.type) { e.doclet.type = parent.doclet.type; }
             delete e.doclet.undocumented;
+            e.doclet.defaultvalue = e.doclet.meta.code.value;
             parent.doclet.properties.push(e.doclet);
         }
     }
@@ -510,6 +511,9 @@ function nodeToString(node) {
     }
     else if (node.type === Token.GETELEM) {
         str = node.toSource(); // like: Foo['Bar']
+    }
+    else if (node.type === Token.NEG || node.type === Token.TRUE || node.type === Token.FALSE) {
+        str = node.toSource(); // like -1
     }
     else {
         str = getTypeName(node);

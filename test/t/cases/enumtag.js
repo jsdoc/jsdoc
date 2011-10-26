@@ -15,7 +15,10 @@
     test('If no no comment is given for the property it is still included in the enum.', function() {
         assert.equal(tristate.properties[1].longname, 'TriState.FALSE');
         assert.equal(typeof tristate.properties[1].undocumented, 'undefined');
-        
+    });
+    
+    test('A property of an enum gets its defaultvalue set.', function() {
+        assert.equal(tristate.properties[1].defaultvalue, -1);
     });
     
     test('If a @type is given for the property it is reflected in the property value.', function() {
