@@ -25,6 +25,8 @@ exports.attachTo = function(parser) {
             currentModule = newDoclet.longname;
         }
         e.doclet = newDoclet;
+        
+        resolveProperties(newDoclet);
     });
     
     // handles named symbols in the code, may or may not have a JSDoc comment attached
@@ -117,16 +119,7 @@ exports.attachTo = function(parser) {
             return false;
         }
         
-        // find name and description from each property tag text
-        if (newDoclet.properties) {
-            for (var i = 0, len = newDoclet.properties.length; i < len; i++) {
-                var property = newDoclet.properties[i];
-                
-                var parts = jsdoc.name.splitName(property.description);
-                property.name = parts.name;
-                property.description = parts.description;
-            }
-        }
+        resolveProperties(newDoclet);
         
         if (!newDoclet.memberof) {
             newDoclet.scope = 'global';
@@ -162,6 +155,19 @@ exports.attachTo = function(parser) {
         if (doclet.meta.code && doclet.meta.code.name === '____') return true;
         
         return false;
+    }
+    
+    function resolveProperties(newDoclet) {
+        // find name and description from each property tag text
+        if (newDoclet.properties) {
+            for (var i = 0, len = newDoclet.properties.length; i < len; i++) {
+                var property = newDoclet.properties[i];
+                
+                var parts = jsdoc.name.splitName(property.description);
+                property.name = parts.name;
+                property.description = parts.description;
+            }
+        }
     }
 }
 

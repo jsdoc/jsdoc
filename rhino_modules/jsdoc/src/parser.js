@@ -429,7 +429,6 @@ function aboutNode(node) {
     
     if (node.type == Token.FUNCTION) {
         about.name = '' + node.name;
-
         about.type = 'function';
         about.node = node;
     }
