@@ -192,6 +192,20 @@
         <?js } ?>
         
         <?js
+            var typedefs = find({kind: 'typedef', memberof: doc.longname}); 
+            if (typedefs && typedefs.length && typedefs.forEach) { 
+        ?>
+            
+            <h3 class="subsection-title">TypeDefs</h3>
+            
+            <dl><?js
+                typedefs.forEach(function(e) {
+                    print(render('members.tmpl', e));
+                });
+            ?></dl>
+        <?js } ?>
+        
+        <?js
             var events = find({kind: 'event', memberof: doc.longname}); 
             if (events && events.length && events.forEach) { 
         ?>

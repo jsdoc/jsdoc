@@ -1,6 +1,7 @@
 (function() {
 
-    var template = require('underscore/template'),
+    var _ = require('underscore/underscore'),
+        template = require('underscore/template'),
         fs = require('fs'),
         helper = require('jsdoc/util/templateHelper'),
         scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' };
@@ -75,12 +76,17 @@
             if (f.returns) {
                 f.returns.forEach(function(r) {
                     if (r.type && r.type.names) {
-                        returnTypes = r.type.names;
+                        if (! returnTypes.length) { returnTypes = r.type.names; }
                     }
                 });
             }
             
-            f.signature = '<span class="signature">'+(f.signature || '') + '</span>' + '<span class="type-signature">'+htmlsafe(returnTypes.length? ' &rarr; {'+returnTypes.join('|')+'}' : '')+'</span>';
+            if (returnTypes && returnTypes.length) {
+                returnTypes = _.map(returnTypes, function(r) {
+                    return linkto(r);
+                });
+            }
+            f.signature = '<span class="signature">'+(f.signature || '') + '</span>' + '<span class="type-signature">'+(returnTypes.length? ' &rarr; {'+returnTypes.join('|')+'}' : '')+'</span>';
         }
         
         function addSignatureType(f) {
@@ -130,12 +136,6 @@
 	    data.forEach(function(doclet) {
 	        doclet.signature = '';
             doclet.attribs = '';
-            
-	        if (doclet.kind === 'function' || doclet.kind === 'class') {
-	            addSignatureParams(doclet);
-	            addSignatureReturns(doclet);
-	            addAttribs(doclet);
-	        }
 	        
 	        if (doclet.kind === 'member') {
 	            addSignatureType(doclet);
@@ -167,15 +167,12 @@
 	                doclet.see[i] = hashToLink(doclet, seeItem);
 	            });
 	        }
-	        
-	        
-            
 	    });
 	    
 	    data.orderBy(['longname', 'version', 'since']);
         
         // kinds of containers
-        var globals = find( {kind: ['member', 'function', 'constant'], memberof: {isUndefined: true}} ),
+        var globals = find( {kind: ['member', 'function', 'constant', 'typedef'], memberof: {isUndefined: true}} ),
             modules = find({kind: 'module'}),
             externals = find({kind: 'external'}),
             mixins = find({kind: 'mixin'}),
@@ -217,6 +214,12 @@
 	        }
 	        else {
 	            doclet.id = doclet.name;
+	        }
+	        
+	        if (doclet.kind === 'function' || doclet.kind === 'class') {
+	            addSignatureParams(doclet);
+	            addSignatureReturns(doclet);
+	            addAttribs(doclet);
 	        }
 	    })
         
@@ -300,12 +303,12 @@
             nav = nav + '</ul>';
         }
 
-        var globalNames = find({kind: ['member', 'function', 'constant'], 'memberof': {'isUndefined': true}});
+        var globalNames = find({kind: ['member', 'function', 'constant', 'typedef'], 'memberof': {'isUndefined': true}});
 
         if (globalNames.length) {
             nav = nav + '<h3>Global</h3><ul>';
             globalNames.forEach(function(g) {
-                if ( !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                if ( g.kind !== 'typedef' && !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
                 seen[g.longname] = true;
             });
             
@@ -331,7 +334,7 @@
             var externals = find({kind: 'external', longname: longname});
             if (externals.length) generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]);
         }
-        
+
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
 
          
