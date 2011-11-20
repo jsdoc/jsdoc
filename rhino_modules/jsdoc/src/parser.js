@@ -143,7 +143,7 @@ function pretreat(code) {
 exports.Parser.prototype.astnodeToMemberof = function(node) {
     var memberof = {};
     
-    if (node.type === Token.VAR || node.type === Token.FUNCTION) {
+    if (node.type === Token.VAR || node.type === Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONTATEMENT) {
         if (node.enclosingFunction) { // an inner var or func
             memberof.id = 'astnode'+node.enclosingFunction.hashCode();
             memberof.doclet = this.refs[memberof.id];
@@ -170,9 +170,10 @@ exports.Parser.prototype.resolveThis = function(node) {
     var memberof = {};
     
     if (node.type !== Token.COLON && node.enclosingFunction) {
+        // get documentation for the enclosing function
         memberof.id = 'astnode'+node.enclosingFunction.hashCode();
         memberof.doclet = this.refs[memberof.id];
-        
+
         if (!memberof.doclet) {
             return '<anonymous>'; // TODO handle global this?
         }
@@ -342,7 +343,7 @@ function visitNode(node) {
             astnode: node,
             code: aboutNode(node)
         };
-        
+
         // keep track of vars in a function scope
         if (node.enclosingFunction) {
             var func = 'astnode'+node.enclosingFunction.hashCode(),
@@ -362,7 +363,7 @@ function visitNode(node) {
             currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
         }
     }
-    else if (node.type == Token.FUNCTION) {
+    else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONTATEMENT) {
         e = {
             id: 'astnode'+node.hashCode(), // the id of the COLON node
             comment: String(node.jsDoc||'@undocumented'),
@@ -372,8 +373,8 @@ function visitNode(node) {
             code: aboutNode(node)
         };
         
-        e.code.name = String(node.name) || '';
-        
+        e.code.name = (node.type == tkn.NAMEDFUNCTIONTATEMENT)? '' : String(node.name) || '';
+//console.log(':: e.code.name is '+e.code.name);        
         // keep track of vars in a function scope
         if (node.enclosingFunction) {
             var func = 'astnode'+node.enclosingFunction.hashCode(),
@@ -418,7 +419,7 @@ function parserFactory() {
     ce.initFromContext(cx);
     return new Packages.org.mozilla.javascript.Parser(ce, ce.getErrorReporter());
 }
-
+var tkn = { NAMEDFUNCTIONTATEMENT: -1001 };
 /**
  * Attempts to find the name and type of the given node.
  * @private
@@ -427,8 +428,8 @@ function parserFactory() {
 function aboutNode(node) {
     about = {};
     
-    if (node.type == Token.FUNCTION) {
-        about.name = '' + node.name;
+    if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONTATEMENT) {
+        about.name = node.type == tkn.NAMEDFUNCTIONTATEMENT? '' : '' + node.name;
         about.type = 'function';
         about.node = node;
     }
@@ -438,6 +439,9 @@ function aboutNode(node) {
             about.node = node.initializer;
 			about.value = nodeToString(about.node);
             about.type = getTypeName(node.initializer);
+            if (about.type === 'FUNCTION' && about.node.name) {
+                about.node.type = tkn.NAMEDFUNCTIONTATEMENT;
+            }
         }
         else { // like var i;
             about.node = node.target;
@@ -457,6 +461,10 @@ function aboutNode(node) {
         about.node = node.right;
 		about.value = nodeToString(about.node);
         about.type = getTypeName(node.right);
+        
+        if (about.type === 'FUNCTION' && about.node.name) {
+            about.node.type = tkn.NAMEDFUNCTIONTATEMENT;
+        }
     }
     else {
         // type 39 (NAME)
