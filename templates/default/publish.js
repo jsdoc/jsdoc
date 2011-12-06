@@ -96,7 +96,13 @@
                 types = f.type.names;
             }
             
-            f.signature = (f.signature || '') + '<span class="type-signature">'+htmlsafe(types.length? ' :'+types.join('|') : '')+'</span>';
+            if (types && types.length) {
+                types = _.map(types, function(t) {
+                    return linkto(t, htmlsafe(t));
+                });
+            } 
+               
+            f.signature = (f.signature || '') + '<span class="type-signature">'+(types.length? ' :'+types.join('|') : '')+'</span>';
         }
         
         function addAttribs(f) {
@@ -134,18 +140,8 @@
         //}
         
 	    data.forEach(function(doclet) {
-	        doclet.signature = '';
-            doclet.attribs = '';
-	        
-	        if (doclet.kind === 'member') {
-	            addSignatureType(doclet);
-	            addAttribs(doclet)
-	        }
-	        
-	        if (doclet.kind === 'constant') {
-	            addSignatureType(doclet);
-	            addAttribs(doclet)
-	        }
+             doclet.attribs = '';
+
 	        
 	        if (doclet.examples) {
 	            doclet.examples = doclet.examples.map(function(example) {
@@ -226,6 +222,18 @@
         // do this after the urls have all been generated
         data.forEach(function(doclet) {
             doclet.ancestors = generateAncestry(doclet);
+            
+            doclet.signature = '';
+	        
+	        if (doclet.kind === 'member') {
+	            addSignatureType(doclet);
+	            addAttribs(doclet)
+	        }
+	        
+	        if (doclet.kind === 'constant') {
+	            addSignatureType(doclet);
+	            addAttribs(doclet)
+	        }
         });
         
         var nav = '',
