@@ -159,6 +159,16 @@ function main() {
         env.opts.query = require('query').toObject(env.opts.query);
     }
     
+    // allow to pass arguments from configuration file
+    if (env.conf.opts) {
+        for (var opt in env.conf.opts) {
+            // arguments passed in command are more important
+            if (!(opt in env.opts)) {
+                env.opts[opt] = env.conf.opts[opt];
+            }
+        }
+    }
+    
     // which version of javascript will be supported? (rhino only)
     if (typeof version === 'function') {
         version(env.conf.jsVersion || 180);
