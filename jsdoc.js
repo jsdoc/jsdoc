@@ -230,10 +230,10 @@ function main() {
             exit(0);
         }
 
-        env.opts.template = env.opts.template || 'default';
+        env.opts.template = env.opts.template || 'templates/default';
         
         // should define a global "publish" function
-        include('templates/' + env.opts.template + '/publish.js');
+        include(env.opts.template + '/publish.js');
 
         if (typeof publish === 'function') {
             publish(
