@@ -155,10 +155,6 @@ function main() {
         throw('Configuration file cannot be evaluated. '+e);
     }
     
-    if (env.opts.query) {
-        env.opts.query = require('query').toObject(env.opts.query);
-    }
-    
     // allow to pass arguments from configuration file
     if (env.conf.opts) {
         for (var opt in env.conf.opts) {
@@ -167,6 +163,10 @@ function main() {
                 env.opts[opt] = env.conf.opts[opt];
             }
         }
+    }
+    
+    if (env.opts.query) {
+        env.opts.query = require('query').toObject(env.opts.query);
     }
     
     // which version of javascript will be supported? (rhino only)
