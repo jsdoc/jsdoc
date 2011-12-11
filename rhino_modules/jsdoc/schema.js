@@ -113,6 +113,11 @@ exports.jsdocSchema = {
                         "maxItems": 1,
                         "enum": ["private", "protected", "public"]
                     },
+                    "virtual": { // is a member left to be implemented during inheritance?
+                        "type": "boolean",
+                        "optional": true,
+                        "default": false
+                    },
                     "attrib": { // other attributes, like "readonly"
                         "type": "string",
                         "optional": true

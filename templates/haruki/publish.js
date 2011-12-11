@@ -51,7 +51,8 @@
                 var thisNamespace = parentNode.namespaces[element.name] = {
                     'name': element.name,
                     'description': element.description || '',
-                    'access': element.access || ''
+                    'access': element.access || '',
+                    'virtual': !!element.virtual
                 };
                 
                 graft(thisNamespace, childNodes, element.longname, element.name);
@@ -64,7 +65,8 @@
                 var thisMixin = parentNode.mixins[element.name] = {
                     'name': element.name,
                     'description': element.description || '',
-                    'access': element.access || ''
+                    'access': element.access || '',
+                    'virtual': !!element.virtual
                 };
                 
                 graft(thisMixin, childNodes, element.longname, element.name);
@@ -77,6 +79,7 @@
                 var thisFunction = parentNode.functions[element.name] = {
                     'name': element.name,
                     'access': element.access || '',
+                    'virtual': !!element.virtual,
                     'description': element.description || '',
                     'parameters': [ ]
                 };
@@ -108,6 +111,7 @@
                 parentNode.properties[element.name] = {
                     'name': element.name,
                     'access': element.access || '',
+                    'virtual': !!element.virtual,
                     'description': element.description || '',
                     'type': element.type? (element.type.length === 1? element.type[0] : element.type) : ''
                 };
@@ -121,6 +125,7 @@
                 var thisEvent = parentNode.events[element.name] = {
                     'name': element.name,
                     'access': element.access || '',
+                    'virtual': !!element.virtual,
                     'description': element.description || '',
                     'parameters': [
                     ]
@@ -156,6 +161,7 @@
                     'description': element.classdesc || '',
                     'extends': element.augments || [],
                     'access': element.access || '',
+                    'virtual': !!element.virtual,
                     'fires': element.fires || '',
                     'constructor': {
                         'name': element.name,

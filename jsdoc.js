@@ -155,8 +155,18 @@ function main() {
         throw('Configuration file cannot be evaluated. '+e);
     }
     
+    // allow to pass arguments from configuration file
+    if (env.conf.opts) {
+        for (var opt in env.conf.opts) {
+            // arguments passed in command are more important
+            if (!(opt in env.opts)) {
+                env.opts[opt] = env.conf.opts[opt];
+            }
+        }
+    }
+    
     if (env.opts.query) {
-        env.opts.query = require('query').toObject(env.opts.query);
+        env.opts.query = require('common/query').toObject(env.opts.query);
     }
     
     // which version of javascript will be supported? (rhino only)
@@ -230,10 +240,10 @@ function main() {
             exit(0);
         }
 
-        env.opts.template = env.opts.template || 'default';
+        env.opts.template = env.opts.template || 'templates/default';
         
         // should define a global "publish" function
-        include('templates/' + env.opts.template + '/publish.js');
+        include(env.opts.template + '/publish.js');
 
         if (typeof publish === 'function') {
             publish(

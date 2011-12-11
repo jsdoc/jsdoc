@@ -108,6 +108,10 @@
         function addAttribs(f) {
             var attribs = [];
             
+            if (f.virtual) {
+                attribs.push('virtual');
+            }
+            
             if (f.access && f.access !== 'public') {
                 attribs.push(f.access);
             }
