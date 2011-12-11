@@ -12,7 +12,6 @@ var common = {
 var argParser = new common.args.ArgParser(),
 	ourOptions,
 	defaults = {
-		template: 'templates/default',
 		destination: './out/'
 	};
 
