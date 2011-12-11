@@ -155,6 +155,16 @@ function main() {
         throw('Configuration file cannot be evaluated. '+e);
     }
     
+    // allow to pass arguments from configuration file
+    if (env.conf.opts) {
+        for (var opt in env.conf.opts) {
+            // arguments passed in command are more important
+            if (!(opt in env.opts)) {
+                env.opts[opt] = env.conf.opts[opt];
+            }
+        }
+    }
+    
     if (env.opts.query) {
         env.opts.query = require('common/query').toObject(env.opts.query);
     }
