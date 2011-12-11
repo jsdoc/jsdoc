@@ -156,7 +156,7 @@ function main() {
     }
     
     if (env.opts.query) {
-        env.opts.query = require('query').toObject(env.opts.query);
+        env.opts.query = require('common/query').toObject(env.opts.query);
     }
     
     // which version of javascript will be supported? (rhino only)
