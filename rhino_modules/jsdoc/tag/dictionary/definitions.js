@@ -11,6 +11,15 @@
 */
 exports.defineTags = function(dictionary) {
     
+    dictionary.defineTag('abstract', {
+        mustNotHaveValue: true,
+        onTagged: function(doclet, tag) {
+            // since "abstract" is reserved word in JavaScript let's use "virtual" in code
+            doclet.virtual = true;
+        }
+    })
+    .synonym('virtual');
+    
     dictionary.defineTag('access', {
         mustHaveValue: true,
         onTagged: function(doclet, tag) {
