@@ -486,6 +486,14 @@ exports.defineTags = function(dictionary) {
         }
     });
     
+    dictionary.defineTag('tutorial', {
+        mustHaveValue: true,
+        onTagged: function(doclet, tag) {
+            if (!doclet.tutorials) { doclet.tutorials = []; }
+            doclet.tutorials.push(tag.value);
+        }
+    });
+    
     dictionary.defineTag('type', {
         mustHaveValue: true,
         canHaveType: true,

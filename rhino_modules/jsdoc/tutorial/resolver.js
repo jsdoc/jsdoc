@@ -29,6 +29,14 @@ exports.addTutorial = function(current) {
  */
 exports.root = new tutorial.Tutorial('', '');
 
+/** Additional instance method for root node.
+    @param {string} name - Tutorial name.
+    @reutrn {tutorial.Tutorial} Tutorial instance.
+ */
+exports.root.getByName = function(name) {
+    return tutorials[name];
+};
+
 /** Load tutorials from given path.
     @param {string} path - Tutorials directory.
  */

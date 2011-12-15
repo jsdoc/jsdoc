@@ -13,11 +13,15 @@
         @global
         @param {TAFFY} data See <http://taffydb.com/>.
         @param {object} opts
+        @param {Tutorial} tutorials
      */
-    publish = function(data, opts) {
+    publish = function(data, opts, tutorials) {
         var out = '',
             containerTemplate = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/container.tmpl'));
         
+        // set up tutorials for helper
+        helper.setTutorials(tutorials);
+
         function render(tmpl, partialData) {
             var renderFunction = arguments.callee.cache[tmpl];
             if (!renderFunction) {
@@ -26,6 +30,7 @@
             partialData.render = arguments.callee;
             partialData.find = find;
             partialData.linkto = linkto;
+            partialData.tutoriallink = tutoriallink;
             partialData.htmlsafe = htmlsafe;
             
             return renderFunction.call(partialData, partialData);
@@ -166,7 +171,7 @@
                     };
                 });
 	        }
-	        else if (doclet.see) {
+	        if (doclet.see) {
 	            doclet.see.forEach(function(seeItem, i) {
 	                doclet.see[i] = hashToLink(doclet, seeItem);
 	            });
@@ -203,6 +208,10 @@
             return url? '<a href="'+url+'">'+(linktext || longname)+'</a>' : (linktext || longname);
         }
         
+        function tutoriallink(tutorial) {
+            return helper.toTutorial(tutorial);
+        }
+        
         var containers = ['class', 'module', 'external', 'namespace', 'mixin'];
         
         data.forEach(function(doclet) {
@@ -237,29 +246,29 @@
         
         var moduleNames = find({kind: 'module'});
         if (moduleNames.length) {
-            nav = nav + '<h3>Modules</h3><ul>';
+            nav += '<h3>Modules</h3><ul>';
             moduleNames.forEach(function(m) {
                 if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
                 seen[m.longname] = true;
             });
             
-            nav = nav + '</ul>';
+            nav += '</ul>';
         }
         
         var externalNames = find({kind: 'external'});
         if (externalNames.length) {
-            nav = nav + '<h3>Externals</h3><ul>';
+            nav += '<h3>Externals</h3><ul>';
             externalNames.forEach(function(e) {
                 if ( !seen.hasOwnProperty(e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
                 seen[e.longname] = true;
             });
             
-            nav = nav + '</ul>';
+            nav += '</ul>';
         }
     
         var classNames = find({kind: 'class'});
         if (classNames.length) {
-            nav = nav + '<h3>Classes</h3><ul>';
+            nav += '<h3>Classes</h3><ul>';
             classNames.forEach(function(c) {
                 var moduleSameName = find({kind: 'module', longname: c.longname});
                 if (moduleSameName.length) {
@@ -271,52 +280,61 @@
                 seen[c.longname] = true;
             });
             
-            nav = nav + '</ul>';
+            nav += '</ul>';
         }
         
         var namespaceNames = find({kind: 'namespace'});
         if (namespaceNames.length) {
-            nav = nav + '<h3>Namespaces</h3><ul>';
+            nav += '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
                 if ( !seen.hasOwnProperty(n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
                 seen[n.longname] = true;
             });
             
-            nav = nav + '</ul>';
+            nav += '</ul>';
         }
         
 //         var constantNames = find({kind: 'constants'});
 //         if (constantNames.length) {
-//             nav = nav + '<h3>Constants</h3><ul>';
+//             nav += '<h3>Constants</h3><ul>';
 //             constantNames.forEach(function(c) {
 //                 if ( !seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
 //                 seen[c.longname] = true;
 //             });
 //             
-//             nav = nav + '</ul>';
+//             nav += '</ul>';
 //         }
         
         var mixinNames = find({kind: 'mixin'});
         if (mixinNames.length) {
-            nav = nav + '<h3>Mixins</h3><ul>';
+            nav += '<h3>Mixins</h3><ul>';
             mixinNames.forEach(function(m) {
                 if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
                 seen[m.longname] = true;
             });
             
-            nav = nav + '</ul>';
+            nav += '</ul>';
         }
 
+        if (tutorials.children.length) {
+            nav += '<h3>Tutorials</h3><ul>';
+            tutorials.children.forEach(function(t) {
+                nav += '<li>'+tutoriallink(t.name)+'</li>';
+            });
+            
+            nav += '</ul>';
+        }
+        
         var globalNames = find({kind: ['member', 'function', 'constant', 'typedef'], 'memberof': {'isUndefined': true}});
 
         if (globalNames.length) {
-            nav = nav + '<h3>Global</h3><ul>';
+            nav += '<h3>Global</h3><ul>';
             globalNames.forEach(function(g) {
                 if ( g.kind !== 'typedef' && !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
                 seen[g.longname] = true;
             });
             
-            nav = nav + '</ul>';
+            nav += '</ul>';
         }
         
         for (var longname in helper.longnameToUrl) {
@@ -352,6 +370,7 @@
                 render: render,
                 find: find,
                 linkto: linkto,
+                tutoriallink: tutoriallink,
                 htmlsafe: htmlsafe
             };
             
@@ -362,6 +381,9 @@
             
             fs.writeFileSync(path, html)
         }
+
+        // tutorials can have only one parent so there is no risk for loops
+        //TODO: generate tutorials from root.children up
     }
     
     function hashToLink(doclet, hash) {

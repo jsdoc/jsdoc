@@ -8,11 +8,17 @@ var dictionary = require('jsdoc/tag/dictionary');
 exports.globalName = 'global';
 exports.fileExtension = '.html';
 
-/** Find symbol {@link ...} strings in text and turn into html links */
+/** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
 exports.resolveLinks = function(str) {
     str = str.replace(/(?:\[(.+?)\])?\{@link +(.+?)\}/gi,
         function(match, content, longname) {
             return toLink(longname, content);
+        }
+    );
+
+    str = str.replace(/(?:\[(.+?)\])?\{@tutorial +(.+?)\}/gi,
+        function(match, content, tutorial) {
+            return toTutorial(tutorial, content);
         }
     );
 
@@ -100,6 +106,32 @@ function toLink(longname, content) {
     else {
         return '<a href="'+url+'">'+content+'</a>';
     }
+}
+
+/** @external {jsdoc.tutorial.Tutorial} */
+var tutorials;
+
+/** Sets tutorials map.
+    @param {jsdoc.tutorial.Tutorial} root - Root tutorial node.
+ */
+exports.setTutorials = function(root) {
+    tutorials = root;
+};
+
+exports.toTutorial = toTutorial = function(tutorial, content) {
+    if (!tutorial) {
+        throw new Error('Missing required parameter: tutorial');
+    }
+
+    var node = tutorials.getByName(tutorial);
+    // no such tutorial
+    if (!node) {
+        return '<em class="disabled">Tutorial: '+tutorial+'</em>';
+    }
+
+    content = content || node.title;
+
+    return '<a href="tutorial-'+strToFilename(node.name)+exports.fileExtension+'">'+content+'</a>';
 }
 
 exports.longnameToUrl = linkMap.longnameToUrl;
