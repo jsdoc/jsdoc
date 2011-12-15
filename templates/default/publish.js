@@ -17,7 +17,8 @@
      */
     publish = function(data, opts, tutorials) {
         var out = '',
-            containerTemplate = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/container.tmpl'));
+            containerTemplate = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/container.tmpl')),
+            tutorialTemplate = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/tutorial.tmpl'));
         
         // set up tutorials for helper
         helper.setTutorials(tutorials);
@@ -358,8 +359,8 @@
         }
 
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
-
-         
+        
+        
         function generate(title, docs, filename) {
             var data = {
                 title: title,
@@ -381,9 +382,39 @@
             
             fs.writeFileSync(path, html)
         }
-
+        
+        function generateTutorial(title, tutorial, filename) {
+            var data = {
+                title: title,
+                header: tutorial.title,
+                content: tutorial.parse(),
+                children: tutorial.children,
+                nav: nav,
+                
+                // helpers
+                render: render,
+                find: find,
+                linkto: linkto,
+                tutoriallink: tutoriallink,
+                htmlsafe: htmlsafe
+            };
+            
+            var path = outdir + '/' + filename,
+                html = tutorialTemplate.call(data, data);
+            
+            // yes, you can use {@link} in tutorials too!
+            html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+            
+            fs.writeFileSync(path, html)
+        }
+        
         // tutorials can have only one parent so there is no risk for loops
-        //TODO: generate tutorials from root.children up
+        function saveChildren(node) {
+            node.children.forEach(function(child) {
+                generateTutorial('Tutorial: '+child.title, child, helper.tutorialToUrl(child.name));
+            });
+        }
+        saveChildren(tutorials);
     }
     
     function hashToLink(doclet, hash) {

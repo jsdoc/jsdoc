@@ -131,7 +131,17 @@ exports.toTutorial = toTutorial = function(tutorial, content) {
 
     content = content || node.title;
 
-    return '<a href="tutorial-'+strToFilename(node.name)+exports.fileExtension+'">'+content+'</a>';
+    return '<a href="'+exports.tutorialToUrl(tutorial)+'">'+content+'</a>';
 }
 
 exports.longnameToUrl = linkMap.longnameToUrl;
+
+exports.tutorialToUrl = function(tutorial) {
+    var node = tutorials.getByName(tutorial);
+    // no such tutorial
+    if (!node) {
+        throw new Error('No such tutorial: '+tutorial);
+    }
+
+    return 'tutorial-'+strToFilename(node.name)+exports.fileExtension;
+};
