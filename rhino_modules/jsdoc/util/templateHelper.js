@@ -39,13 +39,13 @@ exports.createLink = function(doclet) {
     
     if (containers.indexOf(doclet.kind) < 0) {
         var longname = doclet.longname,
-            filename = strToFilename(doclet.memberof || exports.globalName); // TODO handle name collisions
+            filename = strToFilename(doclet.memberof || exports.globalName);
         
         url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
     }
     else {
         var longname = doclet.longname,
-            filename = strToFilename(longname); // TODO handle name collisions
+            filename = strToFilename(longname);
         
         url = filename + exports.fileExtension;
     }
@@ -60,14 +60,28 @@ function getNamespace(kind) {
     return '';
 }
 
+// compute it here just once
+var nsPrefix = /^(event|module|external):/;
+
 function strToFilename(str) {
+    // allow for namespace prefix
+    str = str.replace(nsPrefix, '$1-');
+
     if ( /[^$a-z0-9._-]/i.test(str) ) {
         return hash.hex_md5(str).substr(0, 10);
     }
-    return str;
+    return makeFilenameUnique(str);
 }
 
+var files = {};
+
 function makeFilenameUnique(filename) {
+    // add sufix underscore until filename gets really unique
+    while (filename in files) {
+        filename += '_';
+    }
+
+    files[filename] = true;
     return filename;
 }
 
