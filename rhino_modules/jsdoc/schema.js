@@ -55,6 +55,13 @@ exports.jsdocSchema = {
                             "type": "string"
                         }
                     },
+                    "tutorials": { // extended tutorials
+                        "type": ["string", "array"],
+                        "optional": true,
+                        "items": {
+                            "type": "string"
+                        }
+                    },
 					"deprecated": { // is usage of this symbol deprecated?
 						"type": ["string", "boolean"],
 						"optional": true

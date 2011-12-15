@@ -1,7 +1,7 @@
 {
 	"name": "JSDoc",
 	"version": "3.0.0alpha",
-	"revision": "1323214202201",
+	"revision": "1323947228470",
 	"description": "An automatic documentation generator for javascript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -21,6 +21,10 @@
         {
 			"name":  "Michael Mathews",
 			"email": "micmath@gmail.com"
+		},
+        {
+			"name":  "Rafa\u0105 Wrzeszcz",
+			"email": "rafal.wrzeszcz@wrzasq.pl"
 		}
     ],
 	"maintainers": [

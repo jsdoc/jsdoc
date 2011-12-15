@@ -48,6 +48,8 @@
                     members = getMembers(parents[j], docs);
                     for (var k=0, kk=members.length; k<kk; ++k) {
                         member = doop(members[k]);
+                        member.inherits = member.longname;
+                        member.inherited = true;
                         member.memberof = doc.longname;
                         parts = member.longname.split("#");
                         parts[0] = doc.longname;
