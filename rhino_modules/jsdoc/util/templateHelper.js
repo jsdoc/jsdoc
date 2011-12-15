@@ -8,11 +8,17 @@ var dictionary = require('jsdoc/tag/dictionary');
 exports.globalName = 'global';
 exports.fileExtension = '.html';
 
-/** Find symbol {@link ...} strings in text and turn into html links */
+/** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
 exports.resolveLinks = function(str) {
     str = str.replace(/(?:\[(.+?)\])?\{@link +(.+?)\}/gi,
         function(match, content, longname) {
             return toLink(longname, content);
+        }
+    );
+
+    str = str.replace(/(?:\[(.+?)\])?\{@tutorial +(.+?)\}/gi,
+        function(match, content, tutorial) {
+            return toTutorial(tutorial, content);
         }
     );
 
@@ -102,4 +108,40 @@ function toLink(longname, content) {
     }
 }
 
+/** @external {jsdoc.tutorial.Tutorial} */
+var tutorials;
+
+/** Sets tutorials map.
+    @param {jsdoc.tutorial.Tutorial} root - Root tutorial node.
+ */
+exports.setTutorials = function(root) {
+    tutorials = root;
+};
+
+exports.toTutorial = toTutorial = function(tutorial, content) {
+    if (!tutorial) {
+        throw new Error('Missing required parameter: tutorial');
+    }
+
+    var node = tutorials.getByName(tutorial);
+    // no such tutorial
+    if (!node) {
+        return '<em class="disabled">Tutorial: '+tutorial+'</em>';
+    }
+
+    content = content || node.title;
+
+    return '<a href="'+exports.tutorialToUrl(tutorial)+'">'+content+'</a>';
+}
+
 exports.longnameToUrl = linkMap.longnameToUrl;
+
+exports.tutorialToUrl = function(tutorial) {
+    var node = tutorials.getByName(tutorial);
+    // no such tutorial
+    if (!node) {
+        throw new Error('No such tutorial: '+tutorial);
+    }
+
+    return 'tutorial-'+strToFilename(node.name)+exports.fileExtension;
+};
