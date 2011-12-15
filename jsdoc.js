@@ -241,11 +241,14 @@ function main() {
             exit(0);
         }
 
+        // load this module anyway to ensure root instance exists
+        // it's not a problem since without tutorials root node will have empty children list
         resolver = require('jsdoc/tutorial/resolver');
-        var Tutorial = require('jsdoc/tutorial').Tutorial;
 
-        // tutorials handling
-        //TODO
+        if (env.opts.tutorials) {
+            resolver.load(env.opts.tutorials);
+            resolver.resolve();
+        }
 
         env.opts.template = env.opts.template || 'templates/default';
         

@@ -133,7 +133,7 @@ exports.copyFile = function(inFile, outDir, fileName) {
     bis.close();
 };
 
-function toFile(path) {
+var toFile = exports.toFile = function(path) {
     var parts = path.split(/[\\\/]/);
     return parts.pop();
 }
