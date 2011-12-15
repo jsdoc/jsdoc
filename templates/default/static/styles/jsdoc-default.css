@@ -254,3 +254,7 @@ h6
 
 .params th, .props th { border-right: 1px solid #aaa; }
 .params thead .last, .props thead .last { border-right: 1px solid #ddd; }
+
+.disabled {
+    color: #454545;
+}
