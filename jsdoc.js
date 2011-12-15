@@ -142,7 +142,8 @@ function main() {
             opts: {
                 parser: require('jsdoc/opts/parser'),
             }
-        };
+        },
+        resolver;
     
     env.opts = jsdoc.opts.parser.parse(env.args);
     
@@ -240,6 +241,12 @@ function main() {
             exit(0);
         }
 
+        resolver = require('jsdoc/tutorial/resolver');
+        var Tutorial = require('jsdoc/tutorial').Tutorial;
+
+        // tutorials handling
+        //TODO
+
         env.opts.template = env.opts.template || 'templates/default';
         
         // should define a global "publish" function
@@ -248,7 +255,8 @@ function main() {
         if (typeof publish === 'function') {
             publish(
                 new (require('typicaljoe/taffy'))(docs),
-                env.opts
+                env.opts,
+                resolver.root
             );
         }
         else { // TODO throw no publish warning?

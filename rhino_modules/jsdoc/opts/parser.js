@@ -25,6 +25,7 @@ argParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when
 argParser.addOption('h', 'help',        false, 'Print this message and quit.');
 argParser.addOption('X', 'explain',     false, 'Dump all found doclet internals to console and quit.');
 argParser.addOption('q', 'query',       true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
+argParser.addOption('u', 'tutorials',   false, 'Directory in which JSDoc should search for tutorials.');
 
 
 // TODO [-R, recurseonly] = a number representing the depth to recurse
