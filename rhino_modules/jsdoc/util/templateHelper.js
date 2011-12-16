@@ -65,23 +65,23 @@ var nsPrefix = /^(event|module|external):/;
 
 function strToFilename(str) {
     // allow for namespace prefix
-    str = str.replace(nsPrefix, '$1-');
+    var basename = str.replace(nsPrefix, '$1-');
 
-    if ( /[^$a-z0-9._-]/i.test(str) ) {
-        return hash.hex_md5(str).substr(0, 10);
+    if ( /[^$a-z0-9._-]/i.test(basename) ) {
+        return hash.hex_md5(basename).substr(0, 10);
     }
-    return makeFilenameUnique(str);
+    return makeFilenameUnique(basename, str);
 }
 
 var files = {};
 
-function makeFilenameUnique(filename) {
+function makeFilenameUnique(filename, str) {
     // add sufix underscore until filename gets really unique
-    while (filename in files) {
+    while (filename in files && files[filename] !== str) {
         filename += '_';
     }
 
-    files[filename] = true;
+    files[filename] = str;
     return filename;
 }
 
