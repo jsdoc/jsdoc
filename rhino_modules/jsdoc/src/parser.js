@@ -141,23 +141,37 @@ function pretreat(code) {
  * @returns {string} The long name of the node that this is a member of.
  */
 exports.Parser.prototype.astnodeToMemberof = function(node) {
-    var memberof = {};
+    var id,
+        doclet;
     
     if (node.type === Token.VAR || node.type === Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONTATEMENT) {
         if (node.enclosingFunction) { // an inner var or func
-            memberof.id = 'astnode'+node.enclosingFunction.hashCode();
-            memberof.doclet = this.refs[memberof.id];
-            if (!memberof.doclet) {
+            id = 'astnode'+node.enclosingFunction.hashCode();
+            doclet = this.refs[id];
+            if (!doclet) {
                 return '<anonymous>~';
             }
-            return (memberof.doclet.longname||memberof.doclet.name) +  '~';
+            return (doclet.longname||doclet.name) +  '~';
         }
     }
     else {
-        memberof.id = 'astnode'+node.parent.hashCode();
-        memberof.doclet = this.refs[memberof.id];
-        if (!memberof.doclet) return ''; // global?
-        return memberof.doclet.longname||memberof.doclet.name;
+        // check local references for aliases
+        if (node.enclosingFunction) {
+            var basename = getBasename(nodeToString(node.left));
+            id = 'astnode'+node.enclosingFunction.hashCode();
+            doclet = this.refs[id];
+            if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
+                var alias = doclet.meta.vars[basename];
+                if (alias !== false) {
+                    return [alias, basename];
+                }
+            }
+        }
+
+        id = 'astnode'+node.parent.hashCode();
+        doclet = this.refs[id];
+        if (!doclet) return ''; // global?
+        return doclet.longname||doclet.name;
     }
 }
 
@@ -240,7 +254,7 @@ exports.Parser.prototype.resolveVar = function(node, basename) {
     if (!enclosingFunction) { return ''; } // global
     doclet = this.refs['astnode'+enclosingFunction.hashCode()];
 
-    if ( doclet && doclet.meta.vars && ~doclet.meta.vars.indexOf(basename) ) {
+    if ( doclet && doclet.meta.vars && basename in doclet.meta.vars) {
         return doclet.longname;
     }
     
@@ -284,7 +298,7 @@ function visitNode(node) {
             code: aboutNode(node)
         };
         
-        var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+        var basename = getBasename(e.code.name);
         
         if (basename !== 'this') e.code.funcscope = currentParser.resolveVar(node, basename);
 
@@ -350,8 +364,8 @@ function visitNode(node) {
             funcDoc = currentParser.refs[func];
 
             if (funcDoc) {
-                funcDoc.meta.vars = funcDoc.meta.vars || [];
-                funcDoc.meta.vars.push(e.code.name);
+                funcDoc.meta.vars = funcDoc.meta.vars || {};
+                funcDoc.meta.vars[e.code.name] = false;
             }
         }
 
@@ -360,6 +374,10 @@ function visitNode(node) {
         }
         
         if (e.doclet) {
+            // no need to evaluate all things related to funcDoc again, just use it
+            if (funcDoc && e.doclet.alias) {
+                funcDoc.meta.vars[e.code.name] = e.doclet.longname;
+            }
             currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
         }
     }
@@ -381,12 +399,12 @@ function visitNode(node) {
             funcDoc = currentParser.refs[func];
 
             if (funcDoc) {
-                funcDoc.meta.vars = funcDoc.meta.vars || [];
-                funcDoc.meta.vars.push(e.code.name);
+                funcDoc.meta.vars = funcDoc.meta.vars || {};
+                funcDoc.meta.vars[e.code.name] = false;
             }
         }
         
-        var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+        var basename = getBasename(e.code.name);
         e.code.funcscope = currentParser.resolveVar(node, basename);
 
         if ( isValidJsdoc(e.comment) ) {
@@ -394,6 +412,10 @@ function visitNode(node) {
         }
 
         if (e.doclet) {
+            // no need to evaluate all things related to funcDoc again, just use it
+            if (funcDoc && e.doclet.alias) {
+                funcDoc.meta.vars[e.code.name] = e.doclet.longname;
+            }
             currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
         }
         else if (!currentParser.refs['astnode'+e.code.node.hashCode()]) { // keep references to undocumented anonymous functions too as they might have scoped vars
@@ -540,6 +562,15 @@ function getTypeName(node) {
     }
     
     return type;
+}
+
+/** @private
+    @memberof module:src/parser.Parser
+    @param {string} name Full symbol name.
+    @return {string} Basename.
+*/
+function getBasename(name) {
+    return name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
 }
 
 /** @private
