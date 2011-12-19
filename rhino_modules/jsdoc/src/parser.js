@@ -156,9 +156,10 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
     }
     else {
         // check local references for aliases
-        if (node.enclosingFunction) {
-            var basename = getBasename(nodeToString(node.left));
-            id = 'astnode'+node.enclosingFunction.hashCode();
+        var scope = node,
+            basename = getBasename(nodeToString(node.left));
+        while (scope.enclosingFunction) {
+            id = 'astnode'+scope.enclosingFunction.hashCode();
             doclet = this.refs[id];
             if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
                 var alias = doclet.meta.vars[basename];
@@ -166,6 +167,9 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
                     return [alias, basename];
                 }
             }
+
+            // move up
+            scope = scope.enclosingFunction;
         }
 
         id = 'astnode'+node.parent.hashCode();
