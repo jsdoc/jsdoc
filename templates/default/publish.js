@@ -1,7 +1,6 @@
 (function() {
 
-    var _ = require('underscore/underscore'),
-        template = require('jsdoc/template'),
+    var template = require('jsdoc/template'),
         fs = require('fs'),
         helper = require('jsdoc/util/templateHelper'),
         scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' };
@@ -72,7 +71,7 @@
             }
             
             if (returnTypes && returnTypes.length) {
-                returnTypes = _.map(returnTypes, function(r) {
+                returnTypes = returnTypes.map(function(r) {
                     return linkto(r);
                 });
             }
@@ -87,7 +86,7 @@
             }
             
             if (types && types.length) {
-                types = _.map(types, function(t) {
+                types = types.map(function(t) {
                     return linkto(t, htmlsafe(t));
                 });
             } 
