@@ -4,9 +4,7 @@
 </div>
 <?js } ?>
 
-<?js
-	if (data.type && data.type.names) {
-?>
+<?js if (data.type && data.type.names) { ?>
 <dl>
 	<dt>
 		Type
@@ -15,14 +13,9 @@
 		<?js
 			var typeNames = data.type.names,
                 self = this;
-			typeNames.forEach(function(name, i) {
-		?>
-		<span class="param-type"><?js= self.linkto(name, self.htmlsafe(name)) ?></span> <?js if (i < typeNames.length-1) print('|'); ?>
-		<?js
-			 });
-		?>
+			typeNames.forEach(function(name, i) { ?>
+		<span class="param-type"><?js= self.linkto(name, self.htmlsafe(name)) ?></span> <?js if (i < typeNames.length-1) { ?>|<?js } ?>
+		<?js }); ?>
 	</dd>
 </dl>
-<?js 
-	}
-?>
+<?js } ?>
