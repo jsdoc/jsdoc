@@ -1,5 +1,5 @@
 <?js
-    var params = this;
+    var params = data;
     
     /* sort subparams under their parent params (like opts.classname) */
     var parentParam = null;
@@ -61,6 +61,7 @@
 	
 	<tbody>
 	<?js
+        var self = this;
 	    params.forEach(function(param) {
 	        if (!param) { return; }
 	?>
@@ -74,7 +75,7 @@
             <?js
                 if (param.type && param.type.names) {
                     param.type.names.forEach(function(name, i) {
-                        print( linkto(name, htmlsafe(name)) );
+                        print( self.linkto(name, self.htmlsafe(name)) );
                         if (i < param.type.names.length-1) { print(' | '); }
                     }); 
                 }
@@ -99,14 +100,14 @@
                 <td class="default">
                 <?js
                     if (typeof param.defaultvalue !== 'undefined') {
-                        print( htmlsafe(param.defaultvalue) );
+                        print( self.htmlsafe(param.defaultvalue) );
                     }
                 ?>
                 </td>
             <?js } ?>
             
             <td class="description last"><?js= param.description ?><?js if (param.subparams) {
-                print( '<h6>Properties</h6>' + render('params.tmpl', param.subparams) );
+                print( '<h6>Properties</h6>' + selfpartial('params.tmpl', param.subparams) );
             }?></td>
         </tr>
 	

@@ -1,24 +1,24 @@
 
 <dt>
-    <h4 class="name" id="<?js= id ?>"><?js= this.attribs + name + this.signature ?></h4>
+    <h4 class="name" id="<?js= id ?>"><?js= data.attribs + name + data.signature ?></h4>
     
-    <?js if (this.summary) { ?>
+    <?js if (data.summary) { ?>
     <p class="summary"><?js= summary ?></p>
     <?js } ?>
 </dt>
 <dd>
-    <?js if (this.description) { ?>
+    <?js if (data.description) { ?>
     <p class="description">
-        <?js= this.description ?>
+        <?js= data.description ?>
     </p>
     <?js } ?>
     
-    <?js print(render('details.tmpl', this)); ?>
+    <?js= this.partial('details.tmpl', data) ?>
     
     <?js 
-        if (this.examples && examples.length) {
+        if (data.examples && examples.length) {
             print('<h5>Example' + (examples.length > 1? 's':'') + '</h5>');
-            print( render('examples.tmpl', examples) );
+            print( this.partial('examples.tmpl', examples) );
         }
     ?>
 </dd>

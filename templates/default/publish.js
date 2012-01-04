@@ -1,13 +1,10 @@
 (function() {
 
     var _ = require('underscore/underscore'),
-        template = require('underscore/template'),
+        template = require('jsdoc/template'),
         fs = require('fs'),
         helper = require('jsdoc/util/templateHelper'),
         scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' };
-        
-        template.settings.evaluate    = /<\?js([\s\S]+?)\?>/g;
-        template.settings.interpolate = /<\?js=([\s\S]+?)\?>/g;
     
     /**
         @global
@@ -17,27 +14,14 @@
      */
     publish = function(data, opts, tutorials) {
         var out = '',
-            containerTemplate = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/container.tmpl')),
-            tutorialTemplate = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/tutorial.tmpl'));
+            view = new template.Template(__dirname + '/templates/default/tmpl');
         
+        // set up templating
+        view.layout = 'layout.tmpl';
+
         // set up tutorials for helper
         helper.setTutorials(tutorials);
 
-        function render(tmpl, partialData) {
-            var renderFunction = arguments.callee.cache[tmpl];
-            if (!renderFunction) {
-                renderFunction = arguments.callee.cache[tmpl] = template.render(fs.readFileSync(__dirname + '/templates/default/tmpl/'+tmpl));
-            }
-            partialData.render = arguments.callee;
-            partialData.find = find;
-            partialData.linkto = linkto;
-            partialData.tutoriallink = tutoriallink;
-            partialData.htmlsafe = htmlsafe;
-            
-            return renderFunction.call(partialData, partialData);
-        }
-        render.cache = {};
-        
         function find(spec) {
             return data.get( data.find(spec) );
         }
@@ -346,6 +330,14 @@
             nav += '</ul>';
         }
         
+        // add template helpers
+        view.find = find;
+        view.linkto = linkto;
+        view.tutoriallink = tutoriallink;
+        view.htmlsafe = htmlsafe;
+        // once for all
+        view.nav = nav;
+
         for (var longname in helper.longnameToUrl) {
             var classes = find({kind: 'class', longname: longname});
             if (classes.length) generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]);
@@ -372,19 +364,11 @@
         function generate(title, docs, filename) {
             var data = {
                 title: title,
-                docs: docs,
-                nav: nav,
-                
-                // helpers
-                render: render,
-                find: find,
-                linkto: linkto,
-                tutoriallink: tutoriallink,
-                htmlsafe: htmlsafe
+                docs: docs
             };
             
             var path = outdir + '/' + filename,
-                html = containerTemplate.call(data, data);
+                html = view.render('container.tmpl', data);
             
             html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
             
@@ -396,19 +380,11 @@
                 title: title,
                 header: tutorial.title,
                 content: tutorial.parse(),
-                children: tutorial.children,
-                nav: nav,
-                
-                // helpers
-                render: render,
-                find: find,
-                linkto: linkto,
-                tutoriallink: tutoriallink,
-                htmlsafe: htmlsafe
+                children: tutorial.children
             };
             
             var path = outdir + '/' + filename,
-                html = tutorialTemplate.call(data, data);
+                html = view.render('tutorial.tmpl', data);
             
             // yes, you can use {@link} in tutorials too!
             html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>

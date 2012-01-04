@@ -1,11 +1,11 @@
-<?js if (this.description) { ?>
+<?js if (data.description) { ?>
 <div class="param-desc">
     <?js= description ?>
 </div>
 <?js } ?>
 
 <?js
-	if (this.type) {
+	if (data.type) {
 		with(type) {
 ?>
 
@@ -15,9 +15,10 @@
 	</dt>
 	<dd>
 		<?js
+            var self = this;
 			names.forEach(function(name, i) {
 		?>
-		<span class="param-type"><?js= htmlsafe(name) ?></span> <?js if (i < names.length-1) print('|'); ?>
+		<span class="param-type"><?js= self.htmlsafe(name) ?></span> <?js if (i < names.length-1) print('|'); ?>
 		<?js
 			});
 		?>
