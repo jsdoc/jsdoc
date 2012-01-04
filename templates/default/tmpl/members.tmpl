@@ -15,10 +15,8 @@
     
     <?js= this.partial('details.tmpl', data) ?>
     
-    <?js 
-        if (data.examples && examples.length) {
-            print('<h5>Example' + (examples.length > 1? 's':'') + '</h5>');
-            print( this.partial('examples.tmpl', examples) );
-        }
-    ?>
+    <?js if (data.examples && examples.length) { ?>
+        <h5>Example<?js= examples.length > 1? 's':'' ?></h5>
+        <?js= this.partial('examples.tmpl', examples) ?>
+    <?js } ?>
 </dd>

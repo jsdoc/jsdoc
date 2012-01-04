@@ -4,10 +4,9 @@
     <?js if (children.length > 0) { ?>
     <ul><?js
         var self = this;
-        children.forEach(function(t) {
-            print('<li>'+self.tutoriallink(t.name)+'</li>');
-        });
-    ?></ul>
+        children.forEach(function(t) { ?>
+        <li><?js= self.tutoriallink(t.name) ?></li>
+    <? }); ?></ul>
     <?js } ?>
 
     <h2><?js= header ?></h2>
