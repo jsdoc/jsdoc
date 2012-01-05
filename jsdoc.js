@@ -161,7 +161,7 @@ function main() {
     if (env.conf.opts) {
         for (var opt in env.conf.opts) {
             // arguments passed in command are more important
-            if (!(opt in env.opts)) {
+            if (!(opt in env.opts) || opt=='_' && env.opts['_'] && env.opts['_'].length<1) {
                 env.opts[opt] = env.conf.opts[opt];
             }
         }
