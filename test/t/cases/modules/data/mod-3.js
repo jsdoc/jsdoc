@@ -5,6 +5,7 @@
     env.opts._ = [__dirname + '/test/cases/modules/'];
     
     app.jsdoc.parser = new srcParser.Parser();
+    app.jsdoc.parser.setVisitor(require('jsdoc/src/defaultvisitor').NodeVisitor);
     
     require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
     
