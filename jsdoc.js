@@ -160,9 +160,13 @@ function main() {
     if (env.conf.opts) {
         for (var opt in env.conf.opts) {
             // arguments passed in command are more important
-            if (!(opt in env.opts) || opt=='_' && env.opts['_'] && env.opts['_'].length<1) {
+            if (!(opt in env.opts)) {
                 env.opts[opt] = env.conf.opts[opt];
             }
+        }
+        // command file list is concatenated after conf list
+        if( env.conf.opts._ ){
+            env.opts._ = env.conf.opts._.concat( env.opts._ );
         }
     }
     
