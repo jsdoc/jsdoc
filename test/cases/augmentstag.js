@@ -25,7 +25,7 @@ Foo.prototype.method2 = function() {};
 
 /**
  * @constructor
- *  @extends Foo
+ * @extends Foo
  */
 function Bar() {
     /** Thrid prop **/
@@ -36,4 +36,18 @@ function Bar() {
  * Second child method.
  */
 Bar.prototype.method2 = function() {};
+
+/**
+ * @constructor
+ * @extends Bar
+ */
+function Baz() {
+    /** Override prop1 */
+    this.prop1 = "new";
+}
+
+/**
+ * Third grandchild method.
+ */
+Baz.prototype.method3 = function() {};
 
