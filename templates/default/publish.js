@@ -185,7 +185,7 @@
 	        namespaces = find({kind: 'namespace'});
 
         var outdir = opts.destination;
-        if (packageInfo) {
+        if (packageInfo && packageInfo.name) {
             outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
         }
         fs.mkPath(outdir);
