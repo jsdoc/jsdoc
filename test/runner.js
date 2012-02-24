@@ -40,7 +40,6 @@ var testhelpers = {
             doclets;
             
         testParser = new (require('jsdoc/src/parser')).Parser();
-        testParser.setVisitor(require('jsdoc/src/defaultvisitor').NodeVisitor);
         require('jsdoc/src/handlers').attachTo(testParser);
         
         doclets = testParser.parse('javascript:' + sourceCode);

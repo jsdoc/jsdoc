@@ -23,7 +23,6 @@
             jsdocCounter = 0,
             event = null,
             parser = new jsdoc.src.parser.Parser();
-        parser.setVisitor(require('jsdoc/src/defaultvisitor').NodeVisitor);
             
         parser
             .on('jsdocCommentFound', function(e) {
@@ -41,7 +40,6 @@
         var sourceCode = 'javascript:var foo = 1;',
             symbolCounter = 0,
             parser = new jsdoc.src.parser.Parser();
-        parser.setVisitor(require('jsdoc/src/defaultvisitor').NodeVisitor);
             
         parser
             .on('symbolFound', function(e) {

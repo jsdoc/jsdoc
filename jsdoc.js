@@ -194,11 +194,6 @@ function main() {
         }
     }
     
-    // allow user-defined node visitor
-    if (!env.conf.nodeVisitor) { env.conf.nodeVisitor = "jsdoc/src/defaultvisitor"; }
-    var visitor = require(env.conf.nodeVisitor);
-    app.jsdoc.parser.setVisitor(visitor.NodeVisitor);
-    
     // any source file named package.json is treated special
     for (var i = 0, l = env.opts._.length; i < l; i++ ) {
         if (/\bpackage\.json$/i.test(env.opts._[i])) {

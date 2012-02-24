@@ -2,7 +2,6 @@
 
     var jsdoc = {src: { parser: require('jsdoc/src/parser')}},
         testParser = new jsdoc.src.parser.Parser();
-    testParser.setVisitor(require('jsdoc/src/defaultvisitor').NodeVisitor);
         
     require('jsdoc/src/handlers').attachTo(testParser);
     

@@ -9,10 +9,7 @@
     },
     
     "plugins": [
-        "plugins/jquery.ui.widget"
     ],
-    
-    "nodeVisitor": "plugins/jquery.ui.widget.visitor",
     
     "jsVersion": 180
 }
