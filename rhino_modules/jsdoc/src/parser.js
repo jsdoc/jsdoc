@@ -19,6 +19,7 @@ var Token = Packages.org.mozilla.javascript.Token,
 exports.Parser = function() {
     this._resultBuffer = [];
     this.refs = {};
+    this._visitors = [];
 }
 require('common/util').mixin(exports.Parser.prototype, require('common/events'));
 
@@ -91,6 +92,20 @@ exports.Parser.prototype.clear = function() {
     this._resultBuffer = [];
 }
 
+/**
+ * Adds a node visitor to use in parsing
+ */
+exports.Parser.prototype.addNodeVisitor = function(visitor) {
+    this._visitors.push(visitor);
+}
+
+/**
+ * Get the node visitors used in parsing
+ */
+exports.Parser.prototype.getVisitors = function() {
+    return this._visitors;
+}
+
 /** @private */
 exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
     var e = {filename: sourceName};
@@ -103,7 +118,7 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         currentSourceName = sourceName = e.filename;
         
         sourceCode = pretreat(e.source);
-               
+
         var ast = parserFactory().parse(sourceCode, sourceName, 1);
         ast.visit(
             new Packages.org.mozilla.javascript.ast.NodeVisitor({
@@ -135,6 +150,9 @@ function pretreat(code) {
         .replace(/»/g, '*/');
 }
 
+var tkn = { NAMEDFUNCTIONSTATEMENT: -1001 };
+exports.Parser.tkn = tkn;
+
 /**
  * Given a node, determine what the node is a member of.
  * @param {astnode} node
@@ -143,7 +161,7 @@ function pretreat(code) {
 exports.Parser.prototype.astnodeToMemberof = function(node) {
     var memberof = {};
     
-    if (node.type === Token.VAR || node.type === Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONTATEMENT) {
+    if (node.type === Token.VAR || node.type === Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         if (node.enclosingFunction) { // an inner var or func
             memberof.id = 'astnode'+node.enclosingFunction.hashCode();
             memberof.doclet = this.refs[memberof.id];
@@ -247,6 +265,31 @@ exports.Parser.prototype.resolveVar = function(node, basename) {
     return this.resolveVar(enclosingFunction, basename);
 }
 
+exports.Parser.prototype.addDocletRef = function(e) {
+    var node = e.code.node;
+    if (e.doclet) {
+        currentParser.refs['astnode'+node.hashCode()] = e.doclet; // allow lookup from value => doclet
+    }
+    else if ((node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) && !currentParser.refs['astnode'+node.hashCode()]) { // keep references to undocumented anonymous functions too as they might have scoped vars
+        currentParser.refs['astnode'+node.hashCode()] = {
+            longname: '<anonymous>',
+            meta: { code: e.code }
+        };
+    }
+}
+
+exports.Parser.prototype.resolveEnum = function(e) {
+    var parent = currentParser.resolvePropertyParent(e.code.node);
+    if (parent && parent.doclet.isEnum) {
+        if (!parent.doclet.properties) { parent.doclet.properties = []; }
+        // members of an enum inherit the enum's type
+        if (parent.doclet.type && !e.doclet.type) { e.doclet.type = parent.doclet.type; }
+        delete e.doclet.undocumented;
+        e.doclet.defaultvalue = e.doclet.meta.code.value;
+        parent.doclet.properties.push(e.doclet);
+    }
+}
+
 /** @private */
 function visitNode(node) {
     var e,
@@ -267,12 +310,13 @@ function visitNode(node) {
                     lineno: comment.getLineno(),
                     filename: currentSourceName
                 };
-                
+
                 if ( isValidJsdoc(commentSrc) ) {
                     currentParser.fire('jsdocCommentFound', e, currentParser);
                 }
             }
         }
+        e = null;
     }
     else if (node.type === Token.ASSIGN) {
         e = {
@@ -281,20 +325,14 @@ function visitNode(node) {
             lineno: node.left.getLineno(),
             filename: currentSourceName,
             astnode: node,
-            code: aboutNode(node)
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef]
         };
         
         var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
         
         if (basename !== 'this') e.code.funcscope = currentParser.resolveVar(node, basename);
-
-        if ( isValidJsdoc(e.comment) ) {
-            currentParser.fire('symbolFound', e, currentParser);
-        }
-        
-        if (e.doclet) {
-            currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
-        }
     }
     else if (node.type === Token.COLON) { // assignment within an object literal
         e = {
@@ -303,26 +341,10 @@ function visitNode(node) {
             lineno: node.left.getLineno(),
             filename: currentSourceName,
             astnode: node,
-            code: aboutNode(node)
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef, currentParser.resolveEnum]
         };
-        
-        if ( isValidJsdoc(e.comment) ) {
-            currentParser.fire('symbolFound', e, currentParser);
-        }
-        
-        if (e.doclet) {
-            currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
-        }
-        
-        var parent = currentParser.resolvePropertyParent(node);
-        if (parent && parent.doclet.isEnum) {
-            if (!parent.doclet.properties) { parent.doclet.properties = []; }
-            // members of an enum inherit the enum's type
-            if (parent.doclet.type && !e.doclet.type) { e.doclet.type = parent.doclet.type; }
-            delete e.doclet.undocumented;
-            e.doclet.defaultvalue = e.doclet.meta.code.value;
-            parent.doclet.properties.push(e.doclet);
-        }
     }
     else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
 
@@ -341,7 +363,9 @@ function visitNode(node) {
             lineno: node.getLineno(),
             filename: currentSourceName,
             astnode: node,
-            code: aboutNode(node)
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef]
         };
 
         // keep track of vars in a function scope
@@ -354,26 +378,20 @@ function visitNode(node) {
                 funcDoc.meta.vars.push(e.code.name);
             }
         }
-
-        if ( isValidJsdoc(e.comment) ) {
-            currentParser.fire('symbolFound', e, currentParser);
-        }
-        
-        if (e.doclet) {
-            currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
-        }
     }
-    else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONTATEMENT) {
+    else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         e = {
             id: 'astnode'+node.hashCode(), // the id of the COLON node
             comment: String(node.jsDoc||'@undocumented'),
             lineno: node.getLineno(),
             filename: currentSourceName,
             astnode: node,
-            code: aboutNode(node)
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef]
         };
         
-        e.code.name = (node.type == tkn.NAMEDFUNCTIONTATEMENT)? '' : String(node.name) || '';
+        e.code.name = (node.type == tkn.NAMEDFUNCTIONSTATEMENT)? '' : String(node.name) || '';
 //console.log(':: e.code.name is '+e.code.name);        
         // keep track of vars in a function scope
         if (node.enclosingFunction) {
@@ -388,22 +406,22 @@ function visitNode(node) {
         
         var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
         e.code.funcscope = currentParser.resolveVar(node, basename);
-
-        if ( isValidJsdoc(e.comment) ) {
-            currentParser.fire('symbolFound', e, currentParser);
-        }
-
-        if (e.doclet) {
-            currentParser.refs['astnode'+e.code.node.hashCode()] = e.doclet; // allow lookup from value => doclet
-        }
-        else if (!currentParser.refs['astnode'+e.code.node.hashCode()]) { // keep references to undocumented anonymous functions too as they might have scoped vars
-            currentParser.refs['astnode'+e.code.node.hashCode()] = {
-                longname: '<anonymous>',
-                meta: { code: e.code }
-            };
-        }
     }
-   
+
+    if (!e) { e = {finishers: []}; }
+    for(var i = 0, l = currentParser._visitors.length; i < l; i++) {
+        currentParser._visitors[i].visitNode(node, e, currentParser, currentSourceName);
+        if (e.stopPropagation) { break; }
+    }
+
+    if (!e.preventDefault && isValidJsdoc(e.comment)) {
+        currentParser.fire(e.event, e, currentParser);
+    }
+
+    for (var i = 0, l = e.finishers.length; i < l; i++) {
+        e.finishers[i].call(currentParser, e);
+    }
+
     return true;
 }
 
@@ -419,7 +437,7 @@ function parserFactory() {
     ce.initFromContext(cx);
     return new Packages.org.mozilla.javascript.Parser(ce, ce.getErrorReporter());
 }
-var tkn = { NAMEDFUNCTIONTATEMENT: -1001 };
+
 /**
  * Attempts to find the name and type of the given node.
  * @private
@@ -428,8 +446,8 @@ var tkn = { NAMEDFUNCTIONTATEMENT: -1001 };
 function aboutNode(node) {
     about = {};
     
-    if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONTATEMENT) {
-        about.name = node.type == tkn.NAMEDFUNCTIONTATEMENT? '' : '' + node.name;
+    if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
+        about.name = node.type == tkn.NAMEDFUNCTIONSTATEMENT? '' : '' + node.name;
         about.type = 'function';
         about.node = node;
     }
@@ -437,15 +455,15 @@ function aboutNode(node) {
         about.name = nodeToString(node.target);
         if (node.initializer) {  // like var i = 0;
             about.node = node.initializer;
-			about.value = nodeToString(about.node);
+            about.value = nodeToString(about.node);
             about.type = getTypeName(node.initializer);
             if (about.type === 'FUNCTION' && about.node.name) {
-                about.node.type = tkn.NAMEDFUNCTIONTATEMENT;
+                about.node.type = tkn.NAMEDFUNCTIONSTATEMENT;
             }
         }
         else { // like var i;
             about.node = node.target;
-			about.value = nodeToString(about.node);
+            about.value = nodeToString(about.node);
             about.type = 'undefined';
         }
     }
@@ -459,11 +477,11 @@ function aboutNode(node) {
             }
         }
         about.node = node.right;
-		about.value = nodeToString(about.node);
+        about.value = nodeToString(about.node);
         about.type = getTypeName(node.right);
         
         if (about.type === 'FUNCTION' && about.node.name) {
-            about.node.type = tkn.NAMEDFUNCTIONTATEMENT;
+            about.node.type = tkn.NAMEDFUNCTIONSTATEMENT;
         }
     }
     else {
@@ -510,7 +528,7 @@ function nodeToString(node) {
     else if (node.type === Token.STRING) {
         str = node.value;
     }
-	else if (node.type === Token.NUMBER) {
+    else if (node.type === Token.NUMBER) {
         str = node.value;
     }
     else if (node.type === Token.THIS) {
@@ -546,7 +564,7 @@ function getTypeName(node) {
     @memberof module:src/parser.Parser
 */
 function isValidJsdoc(commentSrc) {
-    return commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
+    return commentSrc && commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
 }
 
 /**
