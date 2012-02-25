@@ -167,7 +167,7 @@ parsed to determine the description and any jsdoc tags that maybe present.  When
 a tag is found, if it has been defined in the tag dictionary, it is given a 
 chance to modify the doclet.
 
-Plugins can define tags by exporting a _defineTags_ function.  That function
+Plugins can define tags by exporting a _defineTags_ function.  That function will
 be passed a dictionary that can be used to define tags, like so:
 
     exports.defineTags = function(dictionary) {
@@ -193,20 +193,20 @@ The dictionary provides the following methods:
   - isNamespace (Boolean): Whether or not the tag marks a doclet as representing
     a namespace. The "@module" tag, for instance sets this to true.
   - onTagged (Function): A callback function executed when the tag is found. The
-    function is passed two parameters: the doclet and the tag.  Here's an example
+    function is passed two parameters: the doclet and the tag.  Here's an example:
 
-        dictionary.defineTag('instance', {
-            onTagged: function(doclet, tag) {
-                doclet.scope = "instance";  
-            }
-        });
+            dictionary.defineTag('instance', {
+                onTagged: function(doclet, tag) {
+                    doclet.scope = "instance";  
+                }
+            });
     The defineTag method returns a Tag.  The Tag object has a method "synonym"
     that can be used to declare synonyms to the tag.  For example:
 
-        dictionary.defineTag('exception', {
-            <options for exception tag>
-        })
-        .synonym('throws');
+            dictionary.defineTag('exception', {
+                <options for exception tag>
+            })
+            .synonym('throws');
 2.  lookUp(title)
     Used to lookup a tag.  Returns either the tag or false if it's not defined
 3.  isNamespace(kind)
