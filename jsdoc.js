@@ -144,17 +144,26 @@ function main() {
             }
         },
         resolver,
-        dictionary = require('jsdoc/tag/dictionary');
+        dictionary = require('jsdoc/tag/dictionary'),
+        fs = require('fs');
     
     env.opts = jsdoc.opts.parser.parse(env.args);
     
     try {
         env.conf = JSON.parse(
-            require('fs').readFileSync( env.opts.configure || __dirname + '/conf.json' )
+            fs.readFileSync( env.opts.configure || __dirname + '/conf.json' )
         );
     }
     catch (e) {
-        throw('Configuration file cannot be evaluated. '+e);
+        try {
+            //Try to copy over the example conf
+            var example = fs.readFileSync(__dirname + '/conf.json.EXAMPLE', 'utf8');
+            fs.writeFileSync(__dirname + '/conf.json', example, 'utf8');
+            env.conf = JSON.parse(example);
+        }
+        catch(e) {
+            throw('Configuration file cannot be evaluated. ' + e);    
+        }
     }
     
     // allow to pass arguments from configuration file
