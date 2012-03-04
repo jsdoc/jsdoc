@@ -13,19 +13,19 @@
     @global
  */
 __dirname = '.',
-arguments = Array.prototype.slice.call(arguments, 0);
+args = Array.prototype.slice.call(arguments, 0);
 
 // rhino has no native way to get the base dirname of the currently running script
 // so this information must be manually passed in from the command line
-for (var i = 0; i < arguments.length; i++) {
-    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(arguments[i]) ) {
+for (var i = 0; i < args.length; i++) {
+    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
         if (RegExp.$1) {
             __dirname = RegExp.$1; // last wins
-            arguments.splice(i--, 1); // remove --dirname opt from arguments
+            args.splice(i--, 1); // remove --dirname opt from arguments
         }
         else {
-            __dirname = arguments[i + 1];
-            arguments.splice(i--, 2);
+            __dirname = args[i + 1];
+            args.splice(i--, 2);
         }
     }
 }
@@ -49,7 +49,7 @@ env = {
         The command line arguments passed into jsdoc.
         @type Array
     */
-    args: Array.prototype.slice.call(arguments, 0),
+    args: Array.prototype.slice.call(args, 0),
     
     
     /**
