@@ -57,6 +57,8 @@ configured to override that included Rhino and point to some older version of
 Rhino instead. If this is the case, simply correct the CLASSPATH to remove the
 older Rhino.
 
+The version of rhino distributed with JSDoc3 can be found here:  https://github.com/jannon/rhino
+
 Debugging
 ---------
 
@@ -81,6 +83,7 @@ See Also
 Project Documentation: <http://usejsdoc.org/> (under development)  
 Project Documentation Source: <https://github.com/micmath/micmath.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
+JSDoc3 Ant Task <https://github.com/jannon/jsdoc3-ant-task>
 Subversion Mirror: <http://code.google.com/p/jsdoc/source>  
 Project Annoncements: <http://twitter.com/jsdoc3>
 
