@@ -78,7 +78,7 @@ source code being documented, like methods provided by a third-party superclass:
 
 #### Event: jsDocCommentFound
 
-This is fired whenever a jsdoc comment is found.  It may or may not be associate
+This is fired whenever a jsdoc comment is found.  It may or may not be associated
 with any code.  You might use this to modify the contents of a comment before it
 is processed.
 
@@ -341,4 +341,4 @@ doclet to the map (keyed off of the id property) of doclets it knows about.
 Lastly, the visitors are executed in the order the plugins are listed in the
 conf.json file.  A plugin can stop later plugins from visiting a node by
 setting a ```stopPropagation``` property on the event object (e.stopPropagation = true).
-A plugin can stop the event from firing, but setting a ```preventDefault``` property.
+A plugin can stop the event from firing setting a ```preventDefault``` property.
