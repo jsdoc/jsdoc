@@ -143,7 +143,8 @@ function main() {
                 parser: require('jsdoc/opts/parser'),
             }
         },
-        resolver;
+        resolver,
+        dictionary = require('jsdoc/tag/dictionary');
     
     env.opts = jsdoc.opts.parser.parse(env.args);
     
@@ -184,16 +185,30 @@ function main() {
         exit(0);
     }
     
-    // allow user-defined plugins to register listeners
+    // allow user-defined plugins to...
     if (env.conf.plugins) {
         for (var i = 0, leni = env.conf.plugins.length; i < leni; i++) {
             var plugin = require(env.conf.plugins[i]);
-            for (var eventName in plugin) {
-                app.jsdoc.parser.on(eventName, plugin[eventName]);
+
+            //...register event handlers
+            if (plugin.handlers) {
+                for (var eventName in plugin.handlers) {
+                    app.jsdoc.parser.on(eventName, plugin.handlers[eventName]);
+                }
+            }
+
+            //...define tags
+            if (plugin.defineTags) {
+                plugin.defineTags(dictionary);
+            }
+
+            //...add a node visitor
+            if (plugin.nodeVisitor) {
+                app.jsdoc.parser.addNodeVisitor(plugin.nodeVisitor);
             }
         }
     }
-    
+
     // any source file named package.json is treated special
     for (var i = 0, l = env.opts._.length; i < l; i++ ) {
         if (/\bpackage\.json$/i.test(env.opts._[i])) {
