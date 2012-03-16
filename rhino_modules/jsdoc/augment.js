@@ -4,18 +4,17 @@
     exports.addInherited = function(docs) {
         var dependencies = mapDependencies(docs.index);
         var sorted = sort(dependencies);
-        var additions = [];
         sorted.forEach(function(name) {
             var doclets = docs.index[name];
-            Array.prototype.push.apply(additions, getAdditions(doclets, docs));
-        });
-        additions.forEach(function(doc) {
-            var name = doc.longname;
-            if (!(docs.index.hasOwnProperty(name))) {
-                docs.index[name] = [];
-            }
-            docs.index[name].push(doc);
-            docs.push(doc);
+            var additions = getAdditions(doclets, docs);
+            additions.forEach(function(doc) {
+                var name = doc.longname;
+                if (!(docs.index.hasOwnProperty(name))) {
+                    docs.index[name] = [];
+                }
+                docs.index[name].push(doc);
+                docs.push(doc);
+            });
         });
     }
 
