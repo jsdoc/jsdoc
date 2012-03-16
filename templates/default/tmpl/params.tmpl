@@ -1,5 +1,5 @@
 <?js
-    var params = this;
+    var params = data;
     
     /* sort subparams under their parent params (like opts.classname) */
     var parentParam = null;
@@ -61,6 +61,7 @@
 	
 	<tbody>
 	<?js
+        var self = this;
 	    params.forEach(function(param) {
 	        if (!param) { return; }
 	?>
@@ -73,41 +74,38 @@
             <td class="type">
             <?js
                 if (param.type && param.type.names) {
-                    param.type.names.forEach(function(name, i) {
-                        print( linkto(name, htmlsafe(name)) );
-                        if (i < param.type.names.length-1) { print(' | '); }
-                    }); 
+                    param.type.names.forEach(function(name, i) { ?>
+                        <?js= self.linkto(name, self.htmlsafe(name)) ?>
+                        <?js if (i < param.type.names.length-1) { ?> | <?js } ?>
+                    <?js }); 
                 }
             ?>
             </td>
             
             <?js if (params.hasAttributes) {?>
                 <td class="attributes">
-                <?js
-                    if (param.optional) {
-                        print( '&lt;optional><br>' );
-                    }
+                <?js if (param.optional) { ?>
+                    &lt;optional><br>
+                <?js } ?>
                     
-                    if (param.nullable) {
-                        print( '&lt;nullable><br>' );
-                    }
-                ?>
+                <?js if (param.nullable) { ?>
+                    &lt;nullable><br>
+                <?js } ?>
                 </td>
             <?js } ?>
             
             <?js if (params.hasDefault) {?>
                 <td class="default">
-                <?js
-                    if (typeof param.defaultvalue !== 'undefined') {
-                        print( htmlsafe(param.defaultvalue) );
-                    }
-                ?>
+                <?js if (typeof param.defaultvalue !== 'undefined') { ?>
+                    <?js= self.htmlsafe(param.defaultvalue) ?>
+                <?js } ?>
                 </td>
             <?js } ?>
             
-            <td class="description last"><?js= param.description ?><?js if (param.subparams) {
-                print( '<h6>Properties</h6>' + render('params.tmpl', param.subparams) );
-            }?></td>
+            <td class="description last"><?js= param.description ?><?js if (param.subparams) { ?>
+                <h6>Properties</h6>
+                <?js= self.partial('params.tmpl', param.subparams) ?>
+            <?js } ?></td>
         </tr>
 	
 	<?js }); ?>
