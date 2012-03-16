@@ -228,11 +228,11 @@ function main() {
         
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
         
-        if (packageJson) {
-            var packageDocs = new (require('jsdoc/package').Package)(packageJson);
-            packageDocs.files = sourceFiles || [];
-            docs.push(packageDocs);
-        }
+        //The files are ALWAYS useful for the templates to have
+        //If there is no package.json, just create an empty package
+        var packageDocs = new (require('jsdoc/package').Package)(packageJson);
+        packageDocs.files = sourceFiles || [];
+        docs.push(packageDocs);
         
         function indexAll(docs) {
             var lookupTable = {};
