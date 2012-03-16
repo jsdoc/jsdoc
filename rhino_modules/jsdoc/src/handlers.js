@@ -64,8 +64,9 @@ exports.attachTo = function(parser) {
         else if (e.code && e.code.name) { // we need to get the symbol name from code
             newDoclet.addTag('name', e.code.name);
             if (!newDoclet.memberof && e.astnode) {
-                var memberofName,
-                    scope;
+                var memberofName = null,
+                    basename = null,
+                    scope = '';
                 if ( /^((module.)?exports|this)(\.|$)/.test(newDoclet.name) ) {
                     var nameStartsWith = RegExp.$1;
                     
@@ -102,9 +103,18 @@ exports.attachTo = function(parser) {
                 }
                 else {
                     memberofName = this.astnodeToMemberof(e.astnode);
+                    if(memberofName instanceof Array) {
+                        basename = memberofName[1];
+                        memberofName = memberofName[0];
+                    }
                 }
                 
-                if (memberofName) { newDoclet.addTag( 'memberof', memberofName); }
+                if (memberofName) { 
+                    newDoclet.addTag( 'memberof', memberofName);
+                    if (basename) {
+                        newDoclet.name = newDoclet.name.replace(new RegExp('^' + RegExp.escape(basename) + '.'), '');
+                    }
+                }
                 else {
                     if (currentModule) {
                         if (!newDoclet.scope) newDoclet.addTag( 'inner');

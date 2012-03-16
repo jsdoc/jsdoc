@@ -159,23 +159,39 @@ exports.Parser.tkn = tkn;
  * @returns {string} The long name of the node that this is a member of.
  */
 exports.Parser.prototype.astnodeToMemberof = function(node) {
-    var memberof = {};
+    var id,
+        doclet;
     
     if (node.type === Token.VAR || node.type === Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         if (node.enclosingFunction) { // an inner var or func
-            memberof.id = 'astnode'+node.enclosingFunction.hashCode();
-            memberof.doclet = this.refs[memberof.id];
-            if (!memberof.doclet) {
+            id = 'astnode'+node.enclosingFunction.hashCode();
+            doclet = this.refs[id];
+            if (!doclet) {
                 return '<anonymous>~';
             }
-            return (memberof.doclet.longname||memberof.doclet.name) +  '~';
+            return (doclet.longname||doclet.name) +  '~';
         }
     }
     else {
-        memberof.id = 'astnode'+node.parent.hashCode();
-        memberof.doclet = this.refs[memberof.id];
-        if (!memberof.doclet) return ''; // global?
-        return memberof.doclet.longname||memberof.doclet.name;
+        //check local references for aliases
+        var scope = node,
+            basename = getBasename(nodeToString(node.left));
+        while(scope.enclosingFunction) {
+            id = 'astnode'+scope.enclosingFunction.hashCode();
+            doclet = this.refs[id];
+            if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
+                var alias = doclet.meta.vars[basename];
+                if (alias !== false) {
+                    return [alias, basename];
+                }
+            }
+            // move up
+            scope = scope.enclosingFunction;
+    }
+        id = 'astnode'+node.parent.hashCode();
+        doclet = this.refs[id];
+        if (!doclet) return ''; // global?
+        return doclet.longname||doclet.name;
     }
 }
 
@@ -258,7 +274,7 @@ exports.Parser.prototype.resolveVar = function(node, basename) {
     if (!enclosingFunction) { return ''; } // global
     doclet = this.refs['astnode'+enclosingFunction.hashCode()];
 
-    if ( doclet && doclet.meta.vars && ~doclet.meta.vars.indexOf(basename) ) {
+    if ( doclet && doclet.meta.vars && basename in doclet.meta.vars ) {
         return doclet.longname;
     }
     
@@ -330,7 +346,7 @@ function visitNode(node) {
             finishers: [currentParser.addDocletRef]
         };
         
-        var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+        var basename = getBasename(e.code.name);
         
         if (basename !== 'this') e.code.funcscope = currentParser.resolveVar(node, basename);
     }
@@ -371,11 +387,12 @@ function visitNode(node) {
         // keep track of vars in a function scope
         if (node.enclosingFunction) {
             var func = 'astnode'+node.enclosingFunction.hashCode(),
-            funcDoc = currentParser.refs[func];
+                funcDoc = currentParser.refs[func];
 
             if (funcDoc) {
-                funcDoc.meta.vars = funcDoc.meta.vars || [];
-                funcDoc.meta.vars.push(e.code.name);
+                funcDoc.meta.vars = funcDoc.meta.vars || {};
+                funcDoc.meta.vars[e.code.name] = false;
+                e.finishers.push(makeVarsFinisher(funcDoc));
             }
         }
     }
@@ -399,12 +416,13 @@ function visitNode(node) {
             funcDoc = currentParser.refs[func];
 
             if (funcDoc) {
-                funcDoc.meta.vars = funcDoc.meta.vars || [];
-                funcDoc.meta.vars.push(e.code.name);
+                funcDoc.meta.vars = funcDoc.meta.vars || {};
+                funcDoc.meta.vars[e.code.name] = false;
+                e.finishers.push(makeVarsFinisher(funcDoc));
             }
         }
         
-        var basename = e.code.name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+        var basename = getBasename(e.code.name)
         e.code.funcscope = currentParser.resolveVar(node, basename);
     }
 
@@ -565,6 +583,31 @@ function getTypeName(node) {
 */
 function isValidJsdoc(commentSrc) {
     return commentSrc && commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
+}
+
+/** @private
+ * @memberof module:src/parser.Parser
+ */
+function makeVarsFinisher(funcDoc) {
+    var func = function(e) {
+        //no need to evaluate all things related to funcDoc again, just use it
+        if (funcDoc && e.doclet && e.doclet.alias) {
+            funcDoc.meta.vars[e.code.name] = e.doclet.longname;
+        }
+    }
+    return func;
+}
+
+/** @private
+ * @memberof module:src/parser.Parser
+ * @param {string} name Full symbol name.
+ * @return {string} Basename.
+ */
+function getBasename(name) {
+    if (name !== undefined) {
+        return name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+    }
+    return name;
 }
 
 /**
