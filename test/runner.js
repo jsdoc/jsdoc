@@ -109,6 +109,8 @@ testFile('test/t/cases/alias.js');
 testFile('test/t/cases/alias2.js');
 testFile('test/t/cases/alias3.js');
 testFile('test/t/cases/aliasglobal.js');
+testFile('test/t/cases/aliasresolve.js');
+testFile('test/t/cases/aliasresolve2.js');
 testFile('test/t/cases/also.js');
 testFile('test/t/cases/augmentstag.js');
 testFile('test/t/cases/authortag.js');
