@@ -13,19 +13,19 @@
     @global
  */
 __dirname = '.',
-arguments = Array.prototype.slice.call(arguments, 0);
+args = Array.prototype.slice.call(arguments, 0);
 
 // rhino has no native way to get the base dirname of the currently running script
 // so this information must be manually passed in from the command line
-for (var i = 0; i < arguments.length; i++) {
-    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(arguments[i]) ) {
+for (var i = 0; i < args.length; i++) {
+    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
         if (RegExp.$1) {
             __dirname = RegExp.$1; // last wins
-            arguments.splice(i--, 1); // remove --dirname opt from arguments
+            args.splice(i--, 1); // remove --dirname opt from arguments
         }
         else {
-            __dirname = arguments[i + 1];
-            arguments.splice(i--, 2);
+            __dirname = args[i + 1];
+            args.splice(i--, 2);
         }
     }
 }
@@ -49,7 +49,7 @@ env = {
         The command line arguments passed into jsdoc.
         @type Array
     */
-    args: Array.prototype.slice.call(arguments, 0),
+    args: Array.prototype.slice.call(args, 0),
     
     
     /**
@@ -144,17 +144,26 @@ function main() {
             }
         },
         resolver,
-        dictionary = require('jsdoc/tag/dictionary');
+        dictionary = require('jsdoc/tag/dictionary'),
+        fs = require('fs');
     
     env.opts = jsdoc.opts.parser.parse(env.args);
     
     try {
         env.conf = JSON.parse(
-            require('fs').readFileSync( env.opts.configure || __dirname + '/conf.json' )
+            fs.readFileSync( env.opts.configure || __dirname + '/conf.json' )
         );
     }
     catch (e) {
-        throw('Configuration file cannot be evaluated. '+e);
+        try {
+            //Try to copy over the example conf
+            var example = fs.readFileSync(__dirname + '/conf.json.EXAMPLE', 'utf8');
+            fs.writeFileSync(__dirname + '/conf.json', example, 'utf8');
+            env.conf = JSON.parse(example);
+        }
+        catch(e) {
+            throw('Configuration file cannot be evaluated. ' + e);    
+        }
     }
     
     // allow to pass arguments from configuration file

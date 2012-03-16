@@ -71,7 +71,7 @@ var nsprefix = /^(event|module|external):/;
 
 function strToFilename(str) {
     // allow for namespace prefix
-    var basename = str.replace(nsPrefix, '$1-');
+    var basename = str.replace(nsprefix, '$1-');
     
     if ( /[^$a-z0-9._-]/i.test(basename) ) {
         return hash.hex_md5(str).substr(0, 10);
