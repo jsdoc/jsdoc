@@ -165,6 +165,10 @@ function main() {
                 env.opts[opt] = env.conf.opts[opt];
             }
         }
+        // command file list is concatenated after conf list
+        if( env.conf.opts._ ){
+            env.opts._ = env.conf.opts._.concat( env.opts._ );
+        }
     }
     
     if (env.opts.query) {
