@@ -1,5 +1,5 @@
 <?js
-    var props = this;
+    var props = data;
     
     /* sort subprops under their parent props (like opts.classname) */
     var parentProp = null;
@@ -61,6 +61,7 @@
 	
 	<tbody>
 	<?js
+        var self = this;
 	    props.forEach(function(prop) {
 	        if (!prop) { return; }
 	?>
@@ -73,41 +74,37 @@
             <td class="type">
             <?js
                 if (prop.type && prop.type.names) {
-                    prop.type.names.forEach(function(name, i) {
-                        print( linkto(name, htmlsafe(name)) );
-                        if (i < prop.type.names.length-1) { print(' | '); }
-                    }); 
+                    prop.type.names.forEach(function(name, i) { ?>
+                        <?js= self.linkto(name, self.htmlsafe(name)) ?>
+                        <?js if (i < prop.type.names.length-1) { ?> | <?js } ?>
+                    <?js }); 
                 }
             ?>
             </td>
             
             <?js if (props.hasAttributes) {?>
                 <td class="attributes">
-                <?js
-                    if (prop.optional) {
-                        print( '&lt;optional><br>' );
-                    }
+                <?js if (prop.optional) { ?>
+                    &lt;optional><br>
+                <?js } ?>
                     
-                    if (prop.nullable) {
-                        print( '&lt;nullable><br>' );
-                    }
-                ?>
+                <?js if (prop.nullable) { ?>
+                    &lt;nullable><br>
+                <?js } ?>
                 </td>
             <?js } ?>
             
             <?js if (props.hasDefault) {?>
                 <td class="default">
-                <?js
-                    if (typeof prop.defaultvalue !== 'undefined') {
-                        print( htmlsafe(prop.defaultvalue) );
-                    }
-                ?>
+                <?js if (typeof prop.defaultvalue !== 'undefined') { ?>
+                    <?js= self.htmlsafe(prop.defaultvalue) ?>
+                <?js } ?>
                 </td>
             <?js } ?>
             
-            <td class="description last"><?js= prop.description ?><?js if (prop.subprops) {
-                print( '<h6>Properties</h6>' + render('properties.tmpl', prop.subprops) );
-            }?></td>
+            <td class="description last"><?js= prop.description ?><?js if (prop.subprops) { ?>
+                <h6>Properties</h6><?js= self.partial('properties.tmpl', prop.subprops) ?>
+            <?js } ?></td>
         </tr>
 	
 	<?js }); ?>
