@@ -14,7 +14,7 @@ Installation
 ------------
 
 Download a copy of JSDoc 3 from the official Git Hub repository here:
-<https://github.com/micmath/jsdoc>
+<https://github.com/jsdoc3/jsdoc>
 
 To test that jsdoc is working, change your working directory to the jsdoc folder
 and run the following command:
@@ -83,8 +83,7 @@ See Also
 Project Documentation: <http://usejsdoc.org/> (under development)  
 Project Documentation Source: <https://github.com/micmath/micmath.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
-JSDoc3 Ant Task <https://github.com/jannon/jsdoc3-ant-task>
-Subversion Mirror: <http://code.google.com/p/jsdoc/source>  
+JSDoc3 Ant Task <https://github.com/jannon/jsdoc3-ant-task>  
 Project Annoncements: <http://twitter.com/jsdoc3>
 
 License
