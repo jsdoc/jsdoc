@@ -18,7 +18,12 @@ var Token = Packages.org.mozilla.javascript.Token,
  */
 exports.Parser = function() {
     this._resultBuffer = [];
-    this.refs = {};
+    //Initialize a global ref to store global members
+    this.refs = {
+        __global__: {
+            meta: {}
+        }
+    };
     this._visitors = [];
 }
 require('common/util').mixin(exports.Parser.prototype, require('common/events'));
@@ -187,7 +192,16 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             }
             // move up
             scope = scope.enclosingFunction;
-    }
+        }
+        //First check to see if we have a global scope alias
+        doclet = this.refs["__global__"];
+        if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
+            var alias = doclet.meta.vars[basename];
+            if (alias !== false) {
+                return [alias, basename];
+            }
+        }
+        
         id = 'astnode'+node.parent.hashCode();
         doclet = this.refs[id];
         if (!doclet) return ''; // global?
@@ -384,16 +398,17 @@ function visitNode(node) {
             finishers: [currentParser.addDocletRef]
         };
 
-        // keep track of vars in a function scope
+        // keep track of vars in a function or global scope
+        var func = "__global__",
+            funcDoc = null;
         if (node.enclosingFunction) {
-            var func = 'astnode'+node.enclosingFunction.hashCode(),
-                funcDoc = currentParser.refs[func];
-
-            if (funcDoc) {
-                funcDoc.meta.vars = funcDoc.meta.vars || {};
-                funcDoc.meta.vars[e.code.name] = false;
-                e.finishers.push(makeVarsFinisher(funcDoc));
-            }
+            func = 'astnode'+node.enclosingFunction.hashCode();
+        }  
+        funcDoc = currentParser.refs[func];
+        if (funcDoc) {
+            funcDoc.meta.vars = funcDoc.meta.vars || {};
+            funcDoc.meta.vars[e.code.name] = false;
+            e.finishers.push(makeVarsFinisher(funcDoc));
         }
     }
     else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
@@ -409,17 +424,19 @@ function visitNode(node) {
         };
         
         e.code.name = (node.type == tkn.NAMEDFUNCTIONSTATEMENT)? '' : String(node.name) || '';
-//console.log(':: e.code.name is '+e.code.name);        
-        // keep track of vars in a function scope
+        //console.log(':: e.code.name is', e.code.name);
+        
+        // keep track of vars in a function or global scope
+        var func = "__global__",
+            funcDoc = null;
         if (node.enclosingFunction) {
-            var func = 'astnode'+node.enclosingFunction.hashCode(),
-            funcDoc = currentParser.refs[func];
-
-            if (funcDoc) {
-                funcDoc.meta.vars = funcDoc.meta.vars || {};
-                funcDoc.meta.vars[e.code.name] = false;
-                e.finishers.push(makeVarsFinisher(funcDoc));
-            }
+            func = 'astnode'+node.enclosingFunction.hashCode();
+        }  
+        funcDoc = currentParser.refs[func];
+        if (funcDoc) {
+            funcDoc.meta.vars = funcDoc.meta.vars || {};
+            funcDoc.meta.vars[e.code.name] = false;
+            e.finishers.push(makeVarsFinisher(funcDoc));
         }
         
         var basename = getBasename(e.code.name)
