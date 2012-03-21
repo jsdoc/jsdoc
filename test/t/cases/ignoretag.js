@@ -6,4 +6,12 @@
         assert.equal(foo.ignore, true);
     });
 
+    try {
+        docSet = testhelpers.getDocSetFromFile('test/cases/ignoretag2.js');
+        foo = docSet.getByLongname('foo')[0];
+    } catch (e) {
+        test('When a symbol has an @ignore tag with a value an error is thrown', function() {
+            assert.equal(e.name, 'TagValueNotPermittedError');
+        });
+    }
 })();
