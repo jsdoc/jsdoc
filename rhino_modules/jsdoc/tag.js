@@ -49,7 +49,7 @@ exports.Tag = function(tagTitle, tagBody, meta) {
         
         if (tagDef.canHaveType) {
         
-            /** The value propertiy represents the result of parsing the tag text. */
+            /** The value property represents the result of parsing the tag text. */
             this.value = {};
             
             var [
@@ -59,7 +59,7 @@ exports.Tag = function(tagTitle, tagBody, meta) {
                 /*?boolean*/ nullable,
                 /*?boolean*/ variable
             ] = jsdoc.tag.type.parse(this.text);
-            
+
             if (typeNames.length) {
                 this.value.type = {
                     names:    typeNames,
