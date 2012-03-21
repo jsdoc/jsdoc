@@ -51,6 +51,12 @@ exports.defineTags = function(dictionary) {
     // I add on to that
     dictionary.defineTag('augments', {
         mustHaveValue: true,
+        // Allow augments value to be specified as a normal type, e.g. {Type}
+        onTagText: function(text) {
+            var type = require('jsdoc/tag/type'),
+                [tp, tx] = type.getTagType(text);
+            return tp || text;
+        },
         onTagged: function(doclet, tag) {
             doclet.augment( firstWordOf(tag.value) );
         }
