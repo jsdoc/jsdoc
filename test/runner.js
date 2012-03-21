@@ -136,6 +136,7 @@ testFile('test/t/cases/exportstag4.js');
 testFile('test/t/cases/exceptiontag.js');
 testFile('test/t/cases/globaltag.js');
 testFile('test/t/cases/ignoretag.js');
+testFile('test/t/cases/inlinecomment.js');
 testFile('test/t/cases/lends.js');
 testFile('test/t/cases/lends2.js');
 testFile('test/t/cases/lendsglobal.js');
