@@ -39,7 +39,7 @@ Bar.prototype.method2 = function() {};
 
 /**
  * @constructor
- * @extends Bar
+ * @extends {Bar}
  */
 function Baz() {
     /** Override prop1 */
