@@ -43,9 +43,9 @@ function TagValueRequiredError(tagName, meta) {
 }
 TagValueRequiredError.prototype = Error.prototype;
 
-function TagValueNotPermittedError(tagName, message, meta) {
+function TagValueNotPermittedError(tagName, meta) {
     this.name = 'TagValueNotPermittedError';
-    this.message = 'The @' + tagName + ' tag does not permit a value: "' + message + '". File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
+    this.message = 'The @' + tagName + ' tag does not permit a value. File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
 }
 TagValueNotPermittedError.prototype = Error.prototype;
 
