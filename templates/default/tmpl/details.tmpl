@@ -51,12 +51,12 @@
 	<dt class="tag-default">Default Value:</dt>
 	<dd class="tag-default"><ul class="dummy"><li><?js= data.defaultvalue ?></li></ul></dd>
 	<?js } ?>
-	
+	<!--
 	<?js if (data.meta) {?>
 	<dt class="tag-source">Source:</dt>
 	<dd class="tag-source"><ul class="dummy"><li><?js= meta.filename ?>, line <?js= meta.lineno ?></li></ul></dd>
 	<?js } ?>
-    
+    -->
     <?js if (data.tutorials && tutorials.length) {?>
     <dt class="tag-tutorial">Tutorials:</dt>
     <dd class="tag-tutorial">
@@ -67,12 +67,10 @@
     <?js } ?>
 	
 	<?js if (data.see && see.length) {?>
-	<dt class="tag-see">See:</dt>
-	<dd class="tag-see">
-        <ul><?js see.forEach(function(s) { ?>
-            <li><?js= self.linkto(s) ?></li>
-        <?js }); ?></ul>
-	</dd>
+	<h5>See:</h5>
+	<ul class="see-list"><?js see.forEach(function(s) { ?>
+		<li><?js= self.linkto(s) ?></li>
+	<?js }); ?></ul>
 	<?js } ?>
 	
 	<?js if (data.todo && todo.length) {?>

@@ -260,7 +260,8 @@
     
         var classNames = find({kind: 'class'});
         if (classNames.length) {
-            nav += '<h3>Classes</h3><ul>';
+            //nav += '<h3>Classes</h3><ul>';
+			nav += '<ul id="ClassList">';
             classNames.forEach(function(c) {
                 var moduleSameName = find({kind: 'module', longname: c.longname});
                 if (moduleSameName.length) {
@@ -272,10 +273,10 @@
                 seen[c.longname] = true;
             });
             
-            nav += '</ul>';
+            //nav += '</ul>';
         }
         
-        var namespaceNames = find({kind: 'namespace'});
+/*        var namespaceNames = find({kind: 'namespace'});
         if (namespaceNames.length) {
             nav += '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
@@ -285,7 +286,7 @@
             
             nav += '</ul>';
         }
-        
+*/        
 //         var constantNames = find({kind: 'constants'});
 //         if (constantNames.length) {
 //             nav += '<h3>Constants</h3><ul>';
@@ -297,7 +298,7 @@
 //             nav += '</ul>';
 //         }
         
-        var mixinNames = find({kind: 'mixin'});
+/*        var mixinNames = find({kind: 'mixin'});
         if (mixinNames.length) {
             nav += '<h3>Mixins</h3><ul>';
             mixinNames.forEach(function(m) {
@@ -316,11 +317,11 @@
             
             nav += '</ul>';
         }
-        
+*/        
         var globalNames = find({kind: ['member', 'function', 'constant', 'typedef'], 'memberof': {'isUndefined': true}});
 
         if (globalNames.length) {
-            nav += '<h3>Global</h3><ul>';
+            //nav += '<h3>Global</h3><ul>';
             globalNames.forEach(function(g) {
                 if ( g.kind !== 'typedef' && !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
                 seen[g.longname] = true;
@@ -339,13 +340,13 @@
 
         for (var longname in helper.longnameToUrl) {
             var classes = find({kind: 'class', longname: longname});
-            if (classes.length) generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]);
+            if (classes.length) generate(classes[0].name, classes, helper.longnameToUrl[longname]);
         
             var modules = find({kind: 'module', longname: longname});
             if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);
             
-            var namespaces = find({kind: 'namespace', longname: longname});
-            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
+//            var namespaces = find({kind: 'namespace', longname: longname});
+//            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
             
 //             var constants = find({kind: 'constant', longname: longname});
 //             if (constants.length) generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]);        
@@ -357,8 +358,8 @@
             if (externals.length) generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]);
         }
 
-        if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
-        
+        if (globals.length) generate('GLSL', [{kind: 'globalobj'}], 'glsl.html');
+        generate('Geoscope Documentation', [], 'index.html');
         
         function generate(title, docs, filename) {
             var data = {

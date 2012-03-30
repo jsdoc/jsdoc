@@ -24,8 +24,6 @@
         <?js= this.partial('params.tmpl', params) ?>
     <?js } ?>
     
-    <?js= this.partial('details.tmpl', data) ?>
-    
     <?js if (data.fires && fires.length) { ?>
     <h5>Fires:</h5>
     <ul><?js fires.forEach(function(f) { ?>
@@ -61,4 +59,8 @@
         <h5>Example<?js= examples.length > 1? 's':'' ?></h5>
         <?js= this.partial('examples.tmpl', examples) ?>
     <?js } ?>
+	
+	<?js= this.partial('details.tmpl', data) ?>
+	
+	<div class="hr"></div>
 </dd>

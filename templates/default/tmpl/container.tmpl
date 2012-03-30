@@ -31,12 +31,12 @@
             <p class="description"><?js= doc.description ?></p>
         <?js } ?>
         
-        <?js= self.partial('details.tmpl', doc) ?>
-        
         <?js if (doc.examples && doc.examples.length) { ?>
             <h3>Example<?js= doc.examples.length > 1? 's':'' ?></h3>
             <?js= self.partial('examples.tmpl', doc.examples) ?>
         <?js } ?>
+		
+		<?js= self.partial('details.tmpl', doc) ?>
     <?js } ?>
     </div>
     
