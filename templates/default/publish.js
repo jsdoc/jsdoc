@@ -318,8 +318,7 @@
             nav += '</ul>';
         }
 */        
-        var globalNames = find({kind: ['member', 'function', 'constant', 'typedef'], 'memberof': {'isUndefined': true}});
-
+        var globalNames = find({kind: ['members', 'function', 'constant', 'typedef'], 'memberof': {'isUndefined': true}});
         if (globalNames.length) {
             //nav += '<h3>Global</h3><ul>';
             globalNames.forEach(function(g) {
@@ -341,15 +340,15 @@
         for (var longname in helper.longnameToUrl) {
             var classes = find({kind: 'class', longname: longname});
             if (classes.length) generate(classes[0].name, classes, helper.longnameToUrl[longname]);
-        
+			
             var modules = find({kind: 'module', longname: longname});
             if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);
             
 //            var namespaces = find({kind: 'namespace', longname: longname});
 //            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
             
-//             var constants = find({kind: 'constant', longname: longname});
-//             if (constants.length) generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]);        
+//            var constants = find({kind: 'constant', longname: longname});
+//            if (constants.length) generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]);        
 
             var mixins = find({kind: 'mixin', longname: longname});
             if (mixins.length) generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]);        
@@ -358,7 +357,7 @@
             if (externals.length) generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]);
         }
 
-        if (globals.length) generate('GLSL', [{kind: 'globalobj'}], 'glsl.html');
+        //if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
         generate('Geoscope Documentation', [], 'index.html');
         
         function generate(title, docs, filename) {

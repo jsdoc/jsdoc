@@ -14,6 +14,11 @@
     </p>
     <?js } ?>
     
+	<?js if (data.performance) { ?>
+		<h5>Performance:</h5>
+		<p class="description"><?js= data.performance ?></p>
+	<?js } ?>
+	
     <?js if (data['this']) { ?>
         <h5>This:</h5>
         <ul><li><?js= this.linkto(data['this'], data['this']) ?></li></ul>

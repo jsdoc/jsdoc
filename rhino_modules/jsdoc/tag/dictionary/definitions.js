@@ -97,7 +97,9 @@ exports.defineTags = function(dictionary) {
             setDocletNameToValue(doclet, tag);
         }
     })
-    .synonym('constructor');
+    .synonym('constructor').synonym('internalConstructor')
+	// Not actual classes, but they should appear in the class list instead of the global list
+	.synonym('glslConstant').synonym('glslUniform').synonym('glslStruct').synonym('glslFunction');
     
     dictionary.defineTag('classdesc', {
         onTagged: function(doclet, tag) {
