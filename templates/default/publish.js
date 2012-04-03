@@ -165,7 +165,8 @@
             modules = find({kind: 'module'}),
             externals = find({kind: 'external'}),
             mixins = find({kind: 'mixin'}),
-	        namespaces = find({kind: 'namespace'});
+	        namespaces = find({kind: 'namespace'}),
+			glslTypes = find({kind: 'glsl'});
 
         var outdir = opts.destination;
         if (packageInfo && packageInfo.name) {
@@ -261,7 +262,7 @@
         var classNames = find({kind: 'class'});
         if (classNames.length) {
             //nav += '<h3>Classes</h3><ul>';
-			nav += '<ul id="ClassList">';
+			nav += '<ul id="ClassList"><div id="classItems">';
             classNames.forEach(function(c) {
                 var moduleSameName = find({kind: 'module', longname: c.longname});
                 if (moduleSameName.length) {
@@ -272,7 +273,7 @@
                 if (!seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
                 seen[c.longname] = true;
             });
-            
+            nav += '</div>';
             //nav += '</ul>';
         }
         
@@ -286,7 +287,7 @@
             
             nav += '</ul>';
         }
-*/        
+        
 //         var constantNames = find({kind: 'constants'});
 //         if (constantNames.length) {
 //             nav += '<h3>Constants</h3><ul>';
@@ -298,7 +299,7 @@
 //             nav += '</ul>';
 //         }
         
-/*        var mixinNames = find({kind: 'mixin'});
+        var mixinNames = find({kind: 'mixin'});
         if (mixinNames.length) {
             nav += '<h3>Mixins</h3><ul>';
             mixinNames.forEach(function(m) {
@@ -317,7 +318,7 @@
             
             nav += '</ul>';
         }
-*/        
+        
         var globalNames = find({kind: ['members', 'function', 'constant', 'typedef'], 'memberof': {'isUndefined': true}});
         if (globalNames.length) {
             //nav += '<h3>Global</h3><ul>';
@@ -328,7 +329,17 @@
             
             nav += '</ul>';
         }
-        
+ */
+		var glslNames = find({kind: 'glsl'});
+		nav += '<div id="glslItems">';
+        if (glslNames.length) {
+            glslNames.forEach(function(g) {
+                if ( !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                seen[g.longname] = true;
+            });    
+            nav += '</div></ul>';
+        }
+		
         // add template helpers
         view.find = find;
         view.linkto = linkto;
@@ -340,6 +351,9 @@
         for (var longname in helper.longnameToUrl) {
             var classes = find({kind: 'class', longname: longname});
             if (classes.length) generate(classes[0].name, classes, helper.longnameToUrl[longname]);
+			
+			var glslTypes = find({kind: 'glsl', longname: longname});
+            if (glslTypes.length) generate(glslTypes[0].name, glslTypes, helper.longnameToUrl[longname]);
 			
             var modules = find({kind: 'module', longname: longname});
             if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);

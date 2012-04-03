@@ -37,7 +37,7 @@ exports.registerLink = function(longname, url) {
 }
 
 // each container gets its own html file
-var containers = ['class', 'module', 'external', 'namespace', 'mixin'];
+var containers = ['class', 'module', 'external', 'namespace', 'mixin', 'glsl'];
 
 /** Turn a doclet into a URL. */
 exports.createLink = function(doclet) {
@@ -45,7 +45,7 @@ exports.createLink = function(doclet) {
     
     if (containers.indexOf(doclet.kind) < 0) {
         var longname = doclet.longname,
-            filename = strToFilename(doclet.memberof || exports.globalName);
+            filename = strToFilename(doclet.memberof || doclet.filename || exports.globalName);
         
         url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
     }

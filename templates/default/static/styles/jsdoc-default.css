@@ -119,15 +119,20 @@ div.indexTitle
 
 div.nav div.divider
 {
-	margin-top: 3.0em;
+	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 	border-bottom: 1px solid #999;
-	line-height: 1.3em;
+	line-height: 1.0em;
 }
 
 form 
 {
 	display: block;
+}
+
+div.nav div.indexLinks
+{
+	margin-left: 60%;
 }
 
 div.nav div.indexLinks a
@@ -139,6 +144,12 @@ div.nav div.indexLinks a
 	margin-bottom: 0;
 	border-right: 1px solid #999;
 	padding-right: 4px;
+}
+
+div.nav div.indexLinks a:hover
+{
+	text-decoration:underline;
+	cursor: pointer;
 }
 
 div.nav div.indexLinks a:last-child
@@ -275,7 +286,7 @@ h5, .container-overview .subsection-title
 	font-size: 120%;
 	font-weight: bold;
 	letter-spacing: -0.01em;
-	margin: 8px 0 3px -16px;
+	margin: 8px 0 3px 0px;
 }
 
 h6
@@ -323,7 +334,7 @@ h6
 	padding: 0;
 }
 
-.description { margin-left: -16px; }
+.description { margin-left: 16px; }
 
 .code-caption
 {
