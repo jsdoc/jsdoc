@@ -237,32 +237,10 @@
         var nav = '',
             seen = {};
         
-        var moduleNames = find({kind: 'module'});
-        if (moduleNames.length) {
-            nav += '<h3>Modules</h3><ul>';
-            moduleNames.forEach(function(m) {
-                if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
-                seen[m.longname] = true;
-            });
-            
-            nav += '</ul>';
-        }
-        
-        var externalNames = find({kind: 'external'});
-        if (externalNames.length) {
-            nav += '<h3>Externals</h3><ul>';
-            externalNames.forEach(function(e) {
-                if ( !seen.hasOwnProperty(e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
-                seen[e.longname] = true;
-            });
-            
-            nav += '</ul>';
-        }
-    
-        var classNames = find({kind: 'class'});
+		var classNames = find({kind: 'class'});
         if (classNames.length) {
             //nav += '<h3>Classes</h3><ul>';
-			nav += '<ul id="ClassList"><div id="classItems">';
+			nav += '<ul id="ClassList"><div id="classItems">';	// Start single class list, being JavaScript div
             classNames.forEach(function(c) {
                 var moduleSameName = find({kind: 'module', longname: c.longname});
                 if (moduleSameName.length) {
@@ -273,19 +251,47 @@
                 if (!seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
                 seen[c.longname] = true;
             });
-            nav += '</div>';
+            //nav += '</ul>';
+        }
+		
+        var moduleNames = find({kind: 'module'});
+        if (moduleNames.length) {
+            //nav += '<h3>Modules</h3><ul>';
+            moduleNames.forEach(function(m) {
+                if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                seen[m.longname] = true;
+            });
             //nav += '</ul>';
         }
         
-/*        var namespaceNames = find({kind: 'namespace'});
+        var externalNames = find({kind: 'external'});
+        if (externalNames.length) {
+            //nav += '<h3>Externals</h3><ul>';
+            externalNames.forEach(function(e) {
+                if ( !seen.hasOwnProperty(e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
+                seen[e.longname] = true;
+            });
+            //nav += '</ul>';
+        }
+        
+        var namespaceNames = find({kind: 'namespace'});
         if (namespaceNames.length) {
-            nav += '<h3>Namespaces</h3><ul>';
+            //nav += '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
                 if ( !seen.hasOwnProperty(n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
                 seen[n.longname] = true;
             });
-            
-            nav += '</ul>';
+            //nav += '</ul>';
+        }
+		
+		var glslNames = find({kind: 'glsl'});
+		nav += '</div><div id="glslItems">';	// Start GLSL div
+        if (glslNames.length) {
+            glslNames.forEach(function(g) {
+                if ( !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                seen[g.longname] = true;
+            });    
+            nav += '</div></ul>';	// End GLSL div, end Class list
         }
         
 //         var constantNames = find({kind: 'constants'});
@@ -298,7 +304,7 @@
 //             
 //             nav += '</ul>';
 //         }
-        
+/*        
         var mixinNames = find({kind: 'mixin'});
         if (mixinNames.length) {
             nav += '<h3>Mixins</h3><ul>';
@@ -329,17 +335,7 @@
             
             nav += '</ul>';
         }
- */
-		var glslNames = find({kind: 'glsl'});
-		nav += '<div id="glslItems">';
-        if (glslNames.length) {
-            glslNames.forEach(function(g) {
-                if ( !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
-                seen[g.longname] = true;
-            });    
-            nav += '</div></ul>';
-        }
-		
+ */		
         // add template helpers
         view.find = find;
         view.linkto = linkto;
@@ -356,10 +352,10 @@
             if (glslTypes.length) generate(glslTypes[0].name, glslTypes, helper.longnameToUrl[longname]);
 			
             var modules = find({kind: 'module', longname: longname});
-            if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);
+            if (modules.length) generate(+modules[0].name, modules, helper.longnameToUrl[longname]);
             
-//            var namespaces = find({kind: 'namespace', longname: longname});
-//            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
+            var namespaces = find({kind: 'namespace', longname: longname});
+            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
             
 //            var constants = find({kind: 'constant', longname: longname});
 //            if (constants.length) generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]);        

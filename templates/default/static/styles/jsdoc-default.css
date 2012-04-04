@@ -132,7 +132,7 @@ form
 
 div.nav div.indexLinks
 {
-	margin-left: 60%;
+	display: block;
 }
 
 div.nav div.indexLinks a
