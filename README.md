@@ -20,7 +20,7 @@ To test that jsdoc is working, change your working directory to the jsdoc folder
 and run the following command:
 
 	java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main \
-	-modules node_modules -modules rhino_modules \
+	-modules node_modules -modules rhino_modules -modules . \
 	jsdoc.js -T
 	
 If you are operating on a Mac OSX or *nix platform, you can shorten that command
