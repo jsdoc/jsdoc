@@ -352,7 +352,7 @@
             if (glslTypes.length) generate(glslTypes[0].name, glslTypes, helper.longnameToUrl[longname]);
 			
             var modules = find({kind: 'module', longname: longname});
-            if (modules.length) generate(+modules[0].name, modules, helper.longnameToUrl[longname]);
+            if (modules.length) generate(modules[0].name, modules, helper.longnameToUrl[longname]);
             
             var namespaces = find({kind: 'namespace', longname: longname});
             if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
