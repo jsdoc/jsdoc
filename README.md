@@ -69,7 +69,7 @@ following command:
 
     $ java -classpath lib/js.jar \
     org.mozilla.javascript.tools.debugger.Main -debug \
-    -modules node_modules -modules rhino_modules \
+    -modules node_modules -modules rhino_modules -modules . \
     jsdoc.js \
     your/script.js
 
