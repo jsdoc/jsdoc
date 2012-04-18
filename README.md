@@ -17,16 +17,19 @@ Download a copy of JSDoc 3 from the official Git Hub repository here:
 <https://github.com/jsdoc3/jsdoc>
 
 To test that jsdoc is working, change your working directory to the jsdoc folder
-and run the following command:
+and run the following command on Windows:
 
-	java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main \
-	-modules node_modules -modules rhino_modules -modules . \
-	jsdoc.js -T
-	
-If you are operating on a Mac OSX or *nix platform, you can shorten that command
-to this:
+    jsdoc -T
+
+... or on a Max OSX or *nix platform:
 
     ./jsdoc -T
+
+If you can't get the short-form commands to work, try invoking Java directly:
+
+    java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main \
+    -modules node_modules -modules rhino_modules -modules . \
+    jsdoc.js -T
 
 Usage
 -----
@@ -38,7 +41,7 @@ directory:
 
 For help regarding the supported commandline options use the --help option.
 
-	./jsdoc --help
+    ./jsdoc --help
 
 Generated documentation will appear in the folder specified by the --destination
 option, or in a folder named "out" by default.
