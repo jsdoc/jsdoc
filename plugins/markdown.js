@@ -6,7 +6,9 @@
  */
 
 var conf = env.conf.markdown;
+var defaultTags = [ "description", "params", "properties", "returns" ];
 var parse;
+var tags;
 
 /**
     Pull in the selected parser and wrap it in a common interface.
@@ -41,6 +43,24 @@ function getParser(parser, conf) {
     }
 }
 
+/**
+    Process the markdown source in a doclet. The properties which should be
+    processed are configurable, but always include "description", "params",
+    "properties", and "returns".  Handled properties can be bare strings,
+    objects, or arrays of objects.
+ */
+function process(doclet) {
+    tags.forEach(function(tag) {
+        if (typeof doclet[tag] === "string") {
+            doclet[tag] = doclet.description = parse(doclet[tag]);
+        } else if (doclet[tag] instanceof Array) {
+            doclet[tag].forEach(process);
+        } else if (doclet[tag]) {
+            process(doclet[tag]);
+        }
+    });
+}
+
 // determine which parser should be used based on configuration options, if any
 if (conf && conf.parser) {
     parse = getParser(conf.parser, conf);
@@ -52,17 +72,25 @@ if (conf && conf.parser) {
     parse = getParser("evilstreak");
 }
 
+// set up the list of "tags" (properties) to process
+if (conf && conf.tags) {
+    tags = conf.tags.slice();
+
+    defaultTags.forEach(function(tag) {
+        if (tags.indexOf(tag) === -1) {
+            tags.push(tag);
+        }
+    });
+} else {
+    tags = defaultTags;
+}
+
 exports.handlers = {
     /**
         Translate markdown syntax in a new doclet's description into HTML. Is run
         by JSDoc 3 whenever a "newDoclet" event fires.
      */
     newDoclet: function(e) {
-        if (e.doclet.description) {
-            e.doclet.description = parse(e.doclet.description)
-                .replace( /&amp;/g, "&" ) // because markdown escapes these
-                .replace( /&lt;/g, "<" )
-                .replace( /&gt;/g, ">" );
-        }
+        process(e.doclet);
     }
 };
