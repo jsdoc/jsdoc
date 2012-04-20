@@ -28,6 +28,7 @@ function getParser(parser, conf) {
         parser = new (require("gfm/showdown").Converter)();
         parser.githubRepoOwner = conf.githubRepoOwner;
         parser.githubRepoName = conf.githubRepoName;
+        parser.hardwrap = !!conf.gfmHardwrap;
 
         return function(source) {
             return parser.makeHtml(source);
