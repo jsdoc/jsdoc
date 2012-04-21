@@ -38,10 +38,10 @@ var testhelpers = {
         var sourceCode = readFile(__dirname + '/' + filename),
             testParser,
             doclets;
-            
+
         testParser = new (require('jsdoc/src/parser')).Parser();
         require('jsdoc/src/handlers').attachTo(testParser);
-        
+
         doclets = testParser.parse('javascript:' + sourceCode);
         testhelpers.indexAll(doclets);
 
@@ -49,7 +49,7 @@ var testhelpers = {
 
         // test assume borrows have not yet been resolved
         // require('jsdoc/borrow').resolveBorrows(doclets);
-        
+
         return {
             doclets: doclets,
             getByLongname: function(longname) {
@@ -62,7 +62,7 @@ var testhelpers = {
     indexAll: function(docs) {
         var index = {};
         docs.forEach(function(doc) {
-            if (!index[doc.longname]) index[doc.longname] = [];
+            if (!index.hasOwnProperty(doc.longname)){index[doc.longname] = [];}
             index[doc.longname].push(doc);
         });
         docs.index = index;
@@ -144,6 +144,7 @@ testFile('test/t/cases/moduleinner.js');
 testFile('test/t/cases/memberoftag.js');
 testFile('test/t/cases/memberoftag2.js');
 testFile('test/t/cases/memberoftag3.js');
+testFile('test/t/cases/memberoftag4.js');
 testFile('test/t/cases/memberoftagforced.js');
 testFile('test/t/cases/moduletag.js');
 testFile('test/t/cases/moduletag2.js');
