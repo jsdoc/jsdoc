@@ -52,10 +52,24 @@ exports.Scanner.prototype.scan = function(searchPaths, depth, includeMatch, excl
 	    if (excludeMatch && excludeMatch.test($)) {
 	        return false
 	    }
-	    
 	    return true;
 	});
-	
+
+	filePaths = filePaths.map(function($) {
+    // erb files are automatically converted in pure js to allow parsing them,
+    if ($.match(/\.erb$/)) {
+      var tmpConvertedFilename = $ + ".js~";
+      var str = readFile($);     // Read in the entire file
+      //generate another file that strip all ruby code
+      fs.writeFileSync(tmpConvertedFilename, str.replace(/<%.*%>/g, ""));
+      // replace file by this new one
+      return tmpConvertedFilename;
+    }
+    else {
+      return $;
+    }
+  });
+
 	filePaths = filePaths.filter(function($) {
 	    var e = { fileName: $ };
         that.fire('sourceFileFound', e);

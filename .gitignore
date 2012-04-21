@@ -1,4 +1,7 @@
 build-files/java/build
 jsdoc.jar
 test/tutorials/out
+.idea/*
+out/*
+*~
 conf.json

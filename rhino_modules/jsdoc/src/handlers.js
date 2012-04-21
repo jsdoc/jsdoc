@@ -109,7 +109,7 @@ exports.attachTo = function(parser) {
                     }
                 }
                 
-                if (memberofName) { 
+                if (memberofName  && typeof(memberofName) === 'string' ) {
                     newDoclet.addTag( 'memberof', memberofName);
                     if (basename) {
                         newDoclet.name = newDoclet.name.replace(new RegExp('^' + RegExp.escape(basename) + '.'), '');
