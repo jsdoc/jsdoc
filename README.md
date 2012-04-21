@@ -10,6 +10,8 @@ Notice
 This is *beta software*! It is available for testing purposes and may not be 
 suitable for production use yet.
 
+### Pull Requesters: Please read HOW_TO_CONTRIBUTE.md 
+
 Installation
 ------------
 
