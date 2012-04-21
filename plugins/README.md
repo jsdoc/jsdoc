@@ -72,7 +72,7 @@ source code being documented, like methods provided by a third-party superclass:
                 "@memberof ui.mywidget",
                 "@function",
                 "*/", ""];
-            e.comment += extraDoc.join("\n");
+            e.source += extraDoc.join("\n");
         }
     }
 
