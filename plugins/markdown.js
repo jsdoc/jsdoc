@@ -37,7 +37,7 @@ function getParser(parser, conf) {
         parser = require("evilstreak/markdown");
 
         return function(source) {
-            return parser.toHTML(source);
+            return parser.renderJsonML(parser.toHTMLTree(source, conf.dialect));
         }
     } else {
         throw "unknown Markdown parser: '" + parser + "'";
@@ -70,7 +70,7 @@ if (conf && conf.parser) {
     parse = getParser("gfm", conf);
 } else {
     // evilstreak is the default parser
-    parse = getParser("evilstreak");
+    parse = getParser("evilstreak", conf);
 }
 
 // set up the list of "tags" (properties) to process
