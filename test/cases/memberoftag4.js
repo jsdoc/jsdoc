@@ -8,5 +8,10 @@ Call(
   valueOf: function()
   {
     return this.id;
+  },
+
+  toString: function()
+  {
+      return this.id;
   }
 });
