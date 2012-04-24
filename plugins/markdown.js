@@ -6,7 +6,7 @@
  */
 
 var conf = env.conf.markdown;
-var defaultTags = [ "description", "params", "properties", "returns" ];
+var defaultTags = [ "classdesc", "description", "params", "properties", "returns" ];
 var parse;
 var tags;
 
@@ -46,14 +46,18 @@ function getParser(parser, conf) {
 
 /**
     Process the markdown source in a doclet. The properties which should be
-    processed are configurable, but always include "description", "params",
-    "properties", and "returns".  Handled properties can be bare strings,
-    objects, or arrays of objects.
+    processed are configurable, but always include "classdesc", "description",
+    "params", "properties", and "returns".  Handled properties can be bare
+    strings, objects, or arrays of objects.
  */
 function process(doclet) {
     tags.forEach(function(tag) {
+        if (!doclet.hasOwnProperty(tag)) {
+            return;
+        }
+
         if (typeof doclet[tag] === "string") {
-            doclet[tag] = doclet.description = parse(doclet[tag]);
+            doclet[tag] = parse(doclet[tag]);
         } else if (doclet[tag] instanceof Array) {
             doclet[tag].forEach(process);
         } else if (doclet[tag]) {
