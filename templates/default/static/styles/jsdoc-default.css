@@ -28,6 +28,8 @@ header
 	font-family: Palatino, 'Palatino Linotype', serif;
 	font-size: 130%;
 	line-height: 140%;
+	margin-bottom: 1em;
+	margin-top: 1em;
 }
 
 #main {
@@ -188,7 +190,11 @@ h6
 .details ul { list-style-type: none; }
 .details li { margin-left: 30px; padding-top: 6px; }
 
-.description { margin-left: -16px; }
+.description {
+	margin-bottom: 1em;
+	margin-left: -16px;
+	margin-top: 1em;
+}
 
 .code-caption
 {
