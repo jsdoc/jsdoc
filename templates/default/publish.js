@@ -358,6 +358,7 @@
         }
 
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
+        generate('Index', [], 'index.html');
         
         
         function generate(title, docs, filename) {
