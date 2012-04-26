@@ -59,9 +59,15 @@ The `githubRepoName` and `githubRepoOwner` indicate which GitHub repo should be 
 
         "markdown": {
             "parser": "gfm",
-            "dialect": "Maruku"
+            "hardwrap": true
         }
     }
+
+### Why two parsers?
+
+The "evilstreak" parser is flexible, extensible, currently-maintained, and was the only parser available in earlier versions of the Markdown plugin, but doesn't support the useful GFM extensions.  The "gfm" parser is based on the no-longer-maintained Showdown parser, but is the actual library used for GitHub's [client-side previews](http://github.github.com/github-flavored-markdown/preview.html).
+
+In the future, if GFM support is made available for the "evilstreak" parser, this plugin will drop the "gfm" parser in favor of that support.
 
 ## Extended tag support
 
