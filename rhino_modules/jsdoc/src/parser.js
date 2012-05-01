@@ -25,7 +25,7 @@ exports.Parser = function() {
         }
     };
     this._visitors = [];
-}
+};
 require('common/util').mixin(exports.Parser.prototype, require('common/events'));
 
 /**
@@ -72,7 +72,7 @@ exports.Parser.prototype.parse = function(sourceFiles, encoding) {
     }
 
     return this._resultBuffer;
-}
+};
 
 /**
  * @returns {Array<Doclet>} The accumulated results of any calls to parse.

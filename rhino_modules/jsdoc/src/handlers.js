@@ -183,5 +183,5 @@ exports.attachTo = function(parser) {
             }
         }
     }
-}
+};
 
