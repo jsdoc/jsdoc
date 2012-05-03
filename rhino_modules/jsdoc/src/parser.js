@@ -185,7 +185,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             id = 'astnode'+scope.enclosingFunction.hashCode();
             doclet = this.refs[id];
             if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
-                var alias = doclet.meta.vars[basename];
+                var alias = doclet.meta.vars.hasOwnProperty(basename)? doclet.meta.vars[basename] : false;
                 if (alias !== false) {
                     return [alias, basename];
                 }
