@@ -7,6 +7,6 @@ function Page(title) {
             heading: '',
             main: ''
         }
-    }
+    };
 }
 

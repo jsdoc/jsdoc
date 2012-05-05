@@ -1,5 +1,5 @@
-(function() {
-    var docSet = testhelpers.getDocSetFromFile('test/cases/augmentstag.js'),
+describe("@augments tag", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentstag.js'),
         foo = docSet.getByLongname('Foo')[0],
         fooProp1 = docSet.getByLongname('Foo#prop1')[0],
         fooProp2 = docSet.getByLongname('Foo#prop2')[0],
@@ -18,50 +18,48 @@
         bazMethod1 = docSet.getByLongname('Baz#method1')[0],
         bazMethod2 = docSet.getByLongname('Baz#method2')[0];
         bazMethod3 = docSet.getByLongname('Baz#method3')[0];
-    
-    test('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
-        assert.equal(typeof bar.augments, 'object');
-        assert.equal(bar.augments[0], 'Foo');
+
+    it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
+        expect(typeof bar.augments).toEqual('object');
+        expect(bar.augments[0]).toEqual('Foo');
     });
 
-    test('When an object is extended, the original is not modified', function() {
-        assert.equal(fooProp3, undefined);
+    it('When an object is extended, the original is not modified', function() {
+        expect(fooProp3).toBeUndefined();
     });
 
-    test('When an object is extended, it inherits properties set in parent constructor', function() {
-        assert.equal(fooProp1.memberof, "Foo");
-        assert.equal(barProp1.memberof, "Bar");
-        assert.equal(barProp1.description, fooProp1.description);
+    it('When an object is extended, it inherits properties set in parent constructor', function() {
+        expect(fooProp1.memberof).toEqual("Foo");
+        expect(barProp1.memberof).toEqual("Bar");
+        expect(barProp1.description).toEqual(fooProp1.description);
     });
 
-    test('When an object is extended, it inherits properties set on parent prototype', function() {
-        assert.equal(fooProp2.memberof, "Foo");
-        assert.equal(barProp2.memberof, "Bar");
-        assert.equal(barProp2.description, fooProp2.description);
+    it('When an object is extended, it inherits properties set on parent prototype', function() {
+        expect(fooProp2.memberof).toEqual("Foo");
+        expect(barProp2.memberof).toEqual("Bar");
+        expect(barProp2.description).toEqual(fooProp2.description);
     });
 
-    test('When an object is extended, it inherits methods set on parent prototype', function() {
-        assert.equal(fooMethod1.memberof, "Foo");
-        assert.equal(barMethod1.memberof, "Bar");
-        assert.equal(barMethod1.description, fooMethod1.description);
+    it('When an object is extended, it inherits methods set on parent prototype', function() {
+        expect(fooMethod1.memberof).toEqual("Foo");
+        expect(barMethod1.memberof).toEqual("Bar");
+        expect(barMethod1.description).toEqual(fooMethod1.description);
     });
 
-    test('When an object is extended, it may override methods set on parent prototype', function() {
-        assert.equal(fooMethod2.memberof, "Foo");
-        assert.equal(fooMethod2.description, "Second parent method.");
-        assert.equal(barMethod2.memberof, "Bar");
-        assert.equal(barMethod2.description, "Second child method.");
+    it('When an object is extended, it may override methods set on parent prototype', function() {
+        expect(fooMethod2.memberof).toEqual("Foo");
+        expect(fooMethod2.description).toEqual("Second parent method.");
+        expect(barMethod2.memberof).toEqual("Bar");
+        expect(barMethod2.description).toEqual("Second child method.");
     });
 
-    test('When an object is extended, it inherits properties set on grandparent prototype', function() {
-        assert.equal(fooProp1.memberof, "Foo");
-        assert.equal(barProp1.memberof, "Bar");
-        assert.equal(bazProp1.memberof, "Baz");
-        assert.equal(bazProp1.description, "Override prop1");
-        assert.equal(bazMethod1.memberof, "Baz");
-        assert.equal(bazMethod2.memberof, "Baz");
-        assert.equal(bazMethod3.memberof, "Baz");
+    it('When an object is extended, it inherits properties set on grandparent prototype', function() {
+        expect(fooProp1.memberof).toEqual("Foo");
+        expect(barProp1.memberof).toEqual("Bar");
+        expect(bazProp1.memberof).toEqual("Baz");
+        expect(bazProp1.description).toEqual("Override prop1");
+        expect(bazMethod1.memberof).toEqual("Baz");
+        expect(bazMethod2.memberof).toEqual("Baz");
+        expect(bazMethod3.memberof).toEqual("Baz");
     });
-
-
-})();
+});

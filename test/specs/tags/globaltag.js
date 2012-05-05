@@ -1,26 +1,24 @@
-(function() {
-    var docSet = testhelpers.getDocSetFromFile('test/cases/globaltag.js'),
-        found = docSet.getByLongname('foo').filter(function($) {
+describe("@global tag", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/globaltag.js');
+
+    it('When an inner symbol has a @global tag it is documented as if it were global.', function() {
+        var found = docSet.getByLongname('foo').filter(function($) {
             return ! $.undocumented;
         });
-    
-    test('When an inner symbol has a @global tag it is documented as if it were global.', function() {
-        assert.equal(found[0].name, 'foo');
-        assert.equal(found[0].longname, 'foo');
-        assert.equal(found[0].memberof, undefined);
-        assert.equal(found[0].scope, 'global');
-        
-    });
-    
-    found = docSet.getByLongname('Bar').filter(function($) {
-        return ! $.undocumented;
-    });
-    
-    test('When an nested symbol has a @global tag it is documented as if it were global.', function() {
-        assert.equal(found[0].name, 'Bar');
-        assert.equal(found[0].longname, 'Bar');
-        assert.equal(found[0].memberof, undefined);
-        assert.equal(found[0].scope, 'global');
+        expect(found[0].name).toEqual('foo');
+        expect(found[0].longname).toEqual('foo');
+        expect(found[0].memberof).toBeUndefined();
+        expect(found[0].scope).toEqual('global');
+
     });
 
-})();
+    it('When an nested symbol has a @global tag it is documented as if it were global.', function() {
+        var found = docSet.getByLongname('Bar').filter(function($) {
+            return ! $.undocumented;
+        });
+        expect(found[0].name).toEqual('Bar');
+        expect(found[0].longname).toEqual('Bar');
+        expect(found[0].memberof).toBeUndefined();
+        expect(found[0].scope).toEqual('global');
+    });
+});

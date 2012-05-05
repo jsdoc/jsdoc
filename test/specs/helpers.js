@@ -7,7 +7,7 @@ exports.getDocSetFromFile = function(filename) {
     require('jsdoc/src/handlers').attachTo(testParser);
 
     doclets = testParser.parse('javascript:' + sourceCode);
-    testhelpers.indexAll(doclets);
+    exports.indexAll(doclets);
 
     require('jsdoc/augment').addInherited(doclets);
 

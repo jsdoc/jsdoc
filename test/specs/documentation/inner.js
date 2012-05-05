@@ -1,19 +1,24 @@
-(function() {
-    var docSet = testhelpers.getDocSetFromFile('test/cases/inner.js'),
+describe("when a documented var memeber is inside a named function", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/inner.js'),
         found1 = docSet.getByLongname('sendMessage~encoding'),
         found2 = docSet.getByLongname('sendMessage~encrypt');
-    
-    test('When a documented var member is inside a named function.', function() {
-        assert.equal(found1.length, 1, 'A doclet with the correct longname should be found.');
-        assert.equal(found1[0].name,     'encoding', 'The short name should be correct.');
-        assert.equal(found1[0].memberof, 'sendMessage', 'The memberof should be correct.');
-        assert.equal(found1[0].scope,    'inner', 'The scope should default to "static".');
+
+    it("A Doclet with the correct longname should be found", function() {
+        expect(found1.length).toEqual(1);
+        expect(found2.length).toEqual(1);
     });
-    
-    test('When a documented function is inside a named function.', function() {
-        assert.equal(found2.length, 1, 'A doclet with the correct longname should be found.');
-        assert.equal(found2[0].name,     'encrypt', 'The short name should be correct.');
-        assert.equal(found2[0].memberof, 'sendMessage', 'The memberof should be correct.');
-        assert.equal(found2[0].scope,    'inner', 'The scope should default to "static".');
+
+    it("The short name should be correct", function() {
+        expect(found1[0].name).toEqual('encoding');
+        expect(found2[0].name).toEqual('encrypt');
     });
-})();
+
+    it("The member of should be correct", function() {
+        expect(found1[0].memberof).toEqual('sendMessage');
+        expect(found2[0].memberof).toEqual('sendMessage');
+    });
+    it("The scope should default to 'inner'", function() {
+        expect(found1[0].scope).toEqual('inner');
+        expect(found2[0].scope).toEqual('inner');
+    });
+});

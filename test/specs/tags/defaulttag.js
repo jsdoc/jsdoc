@@ -1,5 +1,5 @@
-(function() {
-    var docSet = testhelpers.getDocSetFromFile('test/cases/defaulttag.js'),
+describe("@default tag", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/defaulttag.js'),
 		request = (docSet.getByLongname('request') || [])[0],
         response = (docSet.getByLongname('response') || [])[0],
 		rcode = (docSet.getByLongname('rcode') || [])[0],
@@ -7,33 +7,33 @@
 		rerrored = (docSet.getByLongname('rerrored') || [])[0],
 		win = (docSet.getByLongname('win') || [])[0];
 		header = (docSet.getByLongname('header') || [])[0];
-    
-    test('When symbol set to null has a @default tag with no text.', function() {
-        assert.equal(request.defaultvalue, 'null', 'The doclet\'s defaultValue property should be: undefined.');
-    });
-    
-    test('When symbol set to a string has a @default tag with no text.', function() {
-        assert.equal(response.defaultvalue, '"ok"', 'The doclet\'s defaultValue property should be that quoted string.');
-    });
-    
-    test('When symbol set to a number has a @default tag with no text.', function() {
-        assert.equal(rcode.defaultvalue, '200', 'The doclet\'s defaultValue property should be that number.');
+
+    it('When symbol set to null has a @default tag with no text, the doclet\'s defaultValue property should be: null', function() {
+        expect(request.defaultvalue).toEqual('null');
     });
 
-	test('When symbol has a @default tag with text.', function() {
-        assert.equal(win.defaultvalue, 'the parent window', 'The doclet\'s defaultValue property should be that text.');
+    it('When symbol set to a string has a @default tag with no text, the doclet\'s defaultValue property should be that quoted string', function() {
+        expect(response.defaultvalue).toEqual('"ok"');
     });
-    
-    test('When symbol has a @default tag with true.', function() {
-        assert.equal(rvalid.defaultvalue, 'true');
+
+    it('When symbol set to a number has a @default tag with no text, the doclet\'s defaultValue property should be that number.', function() {
+        expect(rcode.defaultvalue).toEqual('200');
     });
-    
-    test('When symbol has a @default tag with false.', function() {
-        assert.equal(rerrored.defaultvalue, 'false');
+
+	it('When symbol has a @default tag with text, the doclet\'s defaultValue property should be that text.', function() {
+        expect(win.defaultvalue).toEqual('the parent window');
     });
-    
-    test('When symbol has a @default tag with a function call.', function() {
-        assert.equal(typeof header.defaultvalue, 'undefined');
+
+    it('When symbol has a @default tag with true.', function() {
+        expect(rvalid.defaultvalue).toEqual('true');
     });
-    
-})();
+
+    it('When symbol has a @default tag with false.', function() {
+        expect(rerrored.defaultvalue, 'false');
+    });
+
+    it('When symbol has a @default tag with a function call.', function() {
+        expect(header.defaultvalue).toBeUndefined();
+    });
+
+});

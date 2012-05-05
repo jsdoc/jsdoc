@@ -1,27 +1,25 @@
-(function() {
-    var docSet = testhelpers.getDocSetFromFile('test/cases/enumtag.js'),
+describe("@enum tag", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/enumtag.js'),
         tristate = docSet.getByLongname('TriState')[0];
-    
-    //console.log(docSet);
-    
-    test('When a symbol has a @enum tag, it has a properties array.', function() {
-        assert.equal(typeof tristate.properties, 'object');
+
+    it('When a symbol has a @enum tag, it has a properties array.', function() {
+        expect(typeof tristate.properties).toEqual('object');
     });
-    
-    test('If no @type is given for the property it is inherted from the enum.', function() {
-        assert.equal(tristate.properties[0].type.names.join(', '), 'number');
+
+    it('If no @type is given for the property it is inherted from the enum.', function() {
+        expect(tristate.properties[0].type.names.join(', ')).toEqual('number');
     });
-    
-    test('If no no comment is given for the property it is still included in the enum.', function() {
-        assert.equal(tristate.properties[1].longname, 'TriState.FALSE');
-        assert.equal(typeof tristate.properties[1].undocumented, 'undefined');
+
+    it('If no no comment is given for the property it is still included in the enum.', function() {
+        expect(tristate.properties[1].longname).toEqual('TriState.FALSE');
+        expect(tristate.properties[1].undocumented).toBeUndefined();
     });
-    
-    test('A property of an enum gets its defaultvalue set.', function() {
-        assert.equal(tristate.properties[1].defaultvalue, -1);
+
+    it('A property of an enum gets its defaultvalue set.', function() {
+        expect(tristate.properties[1].defaultvalue).toEqual('-1');
     });
-    
-    test('If a @type is given for the property it is reflected in the property value.', function() {
-        assert.equal(tristate.properties[2].type.names.join(', '), 'boolean');
+
+    it('If a @type is given for the property it is reflected in the property value.', function() {
+        expect(tristate.properties[2].type.names.join(', ')).toEqual('boolean');
     });
-})();
+});

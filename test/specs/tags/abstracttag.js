@@ -1,22 +1,20 @@
-(function() {
-    var docSet = testhelpers.getDocSetFromFile('test/cases/abstracttag.js'),
-        type = docSet.getByLongname('Thingy')[0]
+describe("@abstract tag", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/abstracttag.js'),
+        type = docSet.getByLongname('Thingy')[0],
         pez = docSet.getByLongname('Thingy#pez')[0];
-    
-    test('By default symbol has virtual=undefined property.', function() {
-        assert.equal(!!type.virtual, false);
-    });
-    
-    test('When a symbol has a @abstract tag, the doclet has a virtual=true property.', function() {
-        assert.equal(pez.virtual, true);
-    });
-    
-    // same as...
-    
-    pez = docSet.getByLongname('OtherThingy#pez')[0];
-    
-    test('When a symbol has a @virtual tag, the doclet has a virtual=true property.', function() {
-        assert.equal(pez.virtual, true);
+
+    it("should have an undefined 'virtual' property with no '@abstract' tag", function() {
+        expect(type.virtual).toBeUndefined();
     });
 
-})();
+    it("should set the doclet's 'virtual' property to true when ' @abstract tag is present", function() {
+        expect(pez.virtual).toEqual(true);
+    });
+
+    // same as...
+
+    it("should set the doclet's 'virtual' property to true when ' @abstract tag is present", function() {
+        pez = docSet.getByLongname('OtherThingy#pez')[0];
+        expect(pez.virtual).toEqual(true);
+    });
+});

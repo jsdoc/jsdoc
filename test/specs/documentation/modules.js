@@ -3,20 +3,20 @@ describe("module names", function() {
         srcParser = null, doclets;
 
     beforeEach(function() {
-        env.opts._ = [__dirname + '/test/cases/modules/'];
+        env.opts._ = [__dirname + '/test/fixtures/modules/'];
         srcParser = new parser.Parser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 
     it("should create a name from the file path when no documented module name exists", function() {
-        doclets = srcParser.parse(__dirname + '/test/cases/modules/data/mod-1.js');
-        assert.ok(doclets.length > 1);
-        assert.equal(doclets[0].longname, 'module:data/mod-1');
+        doclets = srcParser.parse(__dirname + '/test/fixtures/modules/data/mod-1.js');
+        expect(doclets.length).toBeGreaterThan(1);
+        expect(doclets[0].longname).toEqual('module:data/mod-1');
     });
 
     it("should use the documented module name if available", function() {
-        doclets = srcParser.parse(__dirname + '/test/cases/modules/data/mod-2.js');
-        assert.ok(doclets.length > 1);
-        assert.equal(doclets[0].longname, 'module:my/module/name');
+        doclets = srcParser.parse(__dirname + '/test/fixtures/modules/data/mod-2.js');
+        expect(doclets.length).toBeGreaterThan(1);
+        expect(doclets[0].longname).toEqual('module:my/module/name');
     });
 });

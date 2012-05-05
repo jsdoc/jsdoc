@@ -1,16 +1,15 @@
-(function() {
-    var docSet = testhelpers.getDocSetFromFile('test/cases/virtual.js'),
+describe("virtual symbols", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/virtual.js'),
         found = [
             docSet.getByLongname('dimensions'),
             docSet.getByLongname('width')
         ];
-    
-    test('When a virtual symbol is documented.', function() {
-        assert.equal(found[0].length, 1, 'The symbol should be documented');
-    });
-    
-    test('When an undocumented is after a comment for a virtual symbol is documented.', function() {
-        assert.equal(found[1].length, 1, 'The symbol should be documented');
+
+    it('should document virtual symbols', function() {
+        expect(found[0].length).toEqual(1);
     });
 
-})();
+    it('should document an undocumented symbol found after a comment for a virtual symbol', function() {
+        expect(found[1].length).toEqual(1);
+    });
+});
