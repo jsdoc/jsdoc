@@ -15,7 +15,7 @@ and run the following command on Windows:
 
 If you can't get the short-form commands to work, try invoking Java directly:
 
-    java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main \
+    java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main -opt -1 \
     -modules node_modules -modules rhino_modules -modules . \
     jsdoc.js -T
 
@@ -31,17 +31,15 @@ Take a look at that project's wiki for documentation on writing tests in general
 
 ### Tests for JSDoc
 
-And take a look at the files in the ```test``` directory for many examples of
+Take a look at the files in the ```test``` directory for many examples of
 writing tests for JSDoc itself.  the ```test\fixtures``` directory hold fixtures
-for use in the tests and the ```test\tests``` directory holds the tests themselves.
+for use in the tests and the ```test\specs``` directory holds the tests themselves.
 
 ### Tests for plugins
 
+Tests for plugins are found in ```plugins\test``` directory.   Plugins containing
+tests that were installed with the Jakefile install task will be run automatically.
 
+### Tests for templates
 
-
-
-
-TODO:
-
-More info for contributors about how tests work and about plugin/template tests
+TODO
