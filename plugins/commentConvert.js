@@ -1,10 +1,10 @@
 /**
     @overview Demonstrate how to modify the source code before the parser sees it.
-    @module plugins/comentConvert
+    @module plugins/commentConvert
     @author Michael Mathews <micmath@gmail.com>
  */
 
- 
+
 exports.handlers = {
     ///
     /// Convert ///-style comments into jsdoc comments.
