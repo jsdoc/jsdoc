@@ -1,9 +1,8 @@
-exports.getDocSetFromFile = function(filename) {
+exports.getDocSetFromFile = function(filename, parser) {
     var sourceCode = readFile(__dirname + '/' + filename),
-        testParser,
+        testParser = parser || new (require('jsdoc/src/parser')).Parser(),
         doclets;
 
-    testParser = new (require('jsdoc/src/parser')).Parser();
     require('jsdoc/src/handlers').attachTo(testParser);
 
     doclets = testParser.parse('javascript:' + sourceCode);
