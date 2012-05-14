@@ -1,41 +1,41 @@
 {
-    "name": "JSDoc",
-    "version": "3.0.0alpha",
-    "revision": "1323947228470",
-    "description": "An automatic documentation generator for javascript.",
-    "keywords": ["documentation", "javascript"],
-    "licenses": [
+	"name": "JSDoc",
+	"version": "3.0.0",
+	"revision": "1337012115464",
+	"description": "An automatic documentation generator for javascript.",
+	"keywords": [ "documentation", "javascript" ],
+	"licenses": [
+		{
+			"type": "Apache 2.0",
+			"url":  "http://www.apache.org/licenses/LICENSE-2.0"
+		}
+	],
+	"repositories": [
+		{
+			"type": "git",
+			"url":  "https://github.com/jsdoc3/jsdoc"
+		}
+	],
+	"bugs": "https://github.com/jsdoc3/jsdoc/issues",
+	"contributors" : [
         {
-            "type": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0"
-        }
-    ],
-    "repositories": [
+			"name":  "Michael Mathews",
+			"email": "micmath@gmail.com"
+		},
         {
-            "type": "git",
-            "url": "git://github.com/micmath/jsdoc.git"
-        }
-    ],
-    "bugs": "https://github.com/micmath/jsdoc/issues",
-    "contributors": [
-        {
-            "name": "Michael Mathews",
-            "email": "micmath@gmail.com"
-        }, 
-        {
-            "name": "Rafa\u0105 Wrzeszcz",
-            "email": "rafal.wrzeszcz@wrzasq.pl"
-        },
+			"name":  "Rafa\u0105 Wrzeszcz",
+			"email": "rafal.wrzeszcz@wrzasq.pl"
+		},
         {
             "name": "Jannon Frank",
             "email": "jannon@jannon.net"
         }
     ],
-    "maintainers": [
-        {
-            "name": "Michael Mathews",
-            "email": "micmath@gmail.com"
-        },
+	"maintainers": [
+		{
+			"name":  "Michael Mathews",
+			"email": "micmath@gmail.com"
+		},
         {
             "name": "Jannon Frank",
             "email": "jannon@jannon.net"
