@@ -3,6 +3,12 @@
     docs.forEach(function(doc, i) {
 ?>
 
+<?js if (doc.kind === 'mainpage') { ?>
+	
+	<?js= self.partial('mainpage.tmpl', doc) ?>
+
+<?js } else { ?>
+
 <section>
     
 <header>
@@ -134,4 +140,6 @@
 </article>
 
 </section>  
+<?js } ?>
+
 <?js }); ?>

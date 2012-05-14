@@ -12,8 +12,10 @@
         @param {Tutorial} tutorials
      */
     publish = function(data, opts, tutorials) {
+        var defaultTemplatePath = 'templates/default';
+        var templatePath = (opts.template) ? opts.template : defaultTemplate;
         var out = '',
-            view = new template.Template(__dirname + '/templates/default/tmpl');
+            view = new template.Template(__dirname + '/' + templatePath + '/tmpl');
         
         // set up templating
         view.layout = 'layout.tmpl';
@@ -174,7 +176,7 @@
         fs.mkPath(outdir);
 
         // copy static files to outdir
-        var fromDir = __dirname + '/templates/default/static',
+        var fromDir = __dirname + '/' + templatePath + '/static',
             staticFiles = fs.ls(fromDir, 3);
             
         staticFiles.forEach(function(fileName) {
@@ -358,7 +360,10 @@
         }
 
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
-        generate('Index', [], 'index.html');
+
+        generate('Index',
+			[{kind: 'mainpage', longname: (opts.mainpagetitle) ? opts.mainpagetitle : "Main Page"}]
+		, 'index.html');
         
         
         function generate(title, docs, filename) {
