@@ -4,12 +4,6 @@ JSDoc 3
 An inline API documentation processor for JavaScript. JSDoc 3 is intended to be
 an upgrade to JsDoc Toolkit (JSDoc 2).
 
-Notice
-------
-
-This is *beta software*! It is available for testing purposes and may not be 
-suitable for production use yet.
-
 ### Pull Requesters: Please read HOW_TO_CONTRIBUTE.md 
 
 Installation
