@@ -43,7 +43,7 @@
             return (element.memberof === parentLongname);
         })
         .forEach(function (element, i) {
-            //console.log((i+1)+': '+element.kind+' '+element.longname+' ('+element.name+')');
+            console.log(element);
           
             if (element.kind === 'namespace') {
                 if (! parentNode.namespaces) {
@@ -113,7 +113,7 @@
                     }
                 }
             }
-            else if (element.kind === 'property') {
+            else if (element.kind === 'member') {
                 if (! parentNode.properties) {
                     parentNode.properties = { };
                 }
