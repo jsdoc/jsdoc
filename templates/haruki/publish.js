@@ -5,7 +5,6 @@
         ./jsdoc scratch/jsdoc_test.js -t templates/haruki -d console -q format=xml
  */
 
-//var dumper = require('jsdoc/util/dumper');
 (function() {
 
     /**
@@ -45,7 +44,7 @@
         })
         .forEach(function (element, i) {
             //console.log((i+1)+': '+element.kind+' '+element.longname+' ('+element.name+')');
-            
+          
             if (element.kind === 'namespace') {
                 if (! parentNode.namespaces) {
                     parentNode.namespaces = { };
@@ -87,11 +86,11 @@
                     'parameters': [ ],
                     'examples': []
                 };
-                
+  
                 if (element.returns) {
                     parentNode.functions[element.name].returns = {
-                        'type': element.returns.type? (element.returns.type.names.length === 1? element.returns.type.names[0] : element.returns.type.names) : '',
-                        'description': element.returns.description || ''
+                        'type': element.returns[0].type? (element.returns[0].type.names.length === 1? element.returns[0].type.names[0] : element.returns[0].type.names) : '',
+                        'description': element.returns[0].description || ''
                     };
                 }
                 

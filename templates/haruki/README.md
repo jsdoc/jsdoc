@@ -12,6 +12,7 @@ Currently Haruki only supports a subset of the tags supported by the default tem
   * @function (or @method)
   * @var (or @member)
   * @class
+  * @mixin
   * @event
   * @param
   * @returns
