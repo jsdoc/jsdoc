@@ -1,8 +1,11 @@
 /**
     @overview Builds a tree-like JSON string from the doclet data.
     @version 0.0.1
+    @example
+        ./jsdoc scratch/jsdoc_test.js -t templates/haruki -d console -q format=xml
  */
 
+//var dumper = require('jsdoc/util/dumper');
 (function() {
 
     /**
@@ -81,7 +84,8 @@
                     'access': element.access || '',
                     'virtual': !!element.virtual,
                     'description': element.description || '',
-                    'parameters': [ ]
+                    'parameters': [ ],
+                    'examples': []
                 };
                 
                 if (element.returns) {
@@ -89,6 +93,12 @@
                         'type': element.returns.type? (element.returns.type.names.length === 1? element.returns.type.names[0] : element.returns.type.names) : '',
                         'description': element.returns.description || ''
                     };
+                }
+                
+                if (element.examples) {
+                    for (var i = 0, len = element.examples.length; i < len; i++) {
+                        parentNode.functions[element.name].examples.push(element.examples[i]);
+                    }
                 }
                 
                 if (element.params) {
@@ -127,8 +137,8 @@
                     'access': element.access || '',
                     'virtual': !!element.virtual,
                     'description': element.description || '',
-                    'parameters': [
-                    ]
+                    'parameters': [],
+                    'examples': []
                 };
                 
                 if (element.returns) {
@@ -136,6 +146,12 @@
                         'type': element.returns.type? (element.returns.type.names.length === 1? element.returns.type.names[0] : element.returns.type.names) : '',
                         'description': element.returns.description || ''
                     };
+                }
+                
+                if (element.examples) {
+                    for (var i = 0, len = element.examples.length; i < len; i++) {
+                        thisEvent.examples.push(element.examples[i]);
+                    }
                 }
                 
                 if (element.params) {
@@ -167,9 +183,16 @@
                         'name': element.name,
                         'description': element.description || '',
                         'parameters': [
-                        ]
+                        ],
+                        'examples': []
                     }
                 };
+                
+                if (element.examples) {
+                    for (var i = 0, len = element.examples.length; i < len; i++) {
+                        thisClass.constructor.examples.push(element.examples[i]);
+                    }
+                }
                 
                 if (element.params) {
                     for (var i = 0, len = element.params.length; i < len; i++) {
