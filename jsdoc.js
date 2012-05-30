@@ -113,7 +113,12 @@ function dump() {
 */
 function include(filepath) {
     try {
-        load(__dirname + '/' + filepath);
+        if (filepath.indexOf('/') === 0) {
+            load(filepath);
+        }
+        else {
+            load(__dirname + '/' + filepath);
+        }
     }
     catch (e) {
         console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
