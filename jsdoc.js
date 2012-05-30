@@ -66,6 +66,28 @@ env = {
     opts: {}
 };
 
+
+/** @global
+    @param {string} filepath The path to the script file to include (read and execute).
+*/
+function include(filepath) {
+    try {
+        filepath = include.resolve(filepath);
+        load(filepath);
+    }
+    catch (e) {
+        console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
+    }
+}
+include.resolve = function(filepath) {
+    if (filepath.indexOf('/') === 0) {
+        return filepath;
+    }
+    
+    return __dirname + '/' + filepath;
+}
+
+
 /**
     Data that must be shared across the entire application.
     @namespace
@@ -105,23 +127,6 @@ function print() {
 function dump() {
     for (var i = 0, leni = arguments.length; i < leni; i++) {
         print( require('jsdoc/util/dumper').dump(arguments[i]) );
-    }
-}
-
-/** @global
-    @param {string} filepath The path to the script file to include (read and execute).
-*/
-function include(filepath) {
-    try {
-        if (filepath.indexOf('/') === 0) {
-            load(filepath);
-        }
-        else {
-            load(__dirname + '/' + filepath);
-        }
-    }
-    catch (e) {
-        console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
     }
 }
 
