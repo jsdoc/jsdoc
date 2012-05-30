@@ -43,8 +43,6 @@
             return (element.memberof === parentLongname);
         })
         .forEach(function (element, i) {
-            console.log(element);
-          
             if (element.kind === 'namespace') {
                 if (! parentNode.namespaces) {
                     parentNode.namespaces = { };
