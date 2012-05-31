@@ -239,6 +239,9 @@
             seen = {};
         
         var moduleNames = find({kind: 'module'});
+        moduleNames.sort(function(a, b) {
+            return a.name > b.name;
+        });
         if (moduleNames.length) {
             nav += '<h3>Modules</h3><ul>';
             moduleNames.forEach(function(m) {
@@ -250,6 +253,9 @@
         }
         
         var externalNames = find({kind: 'external'});
+        externalNames.sort(function(a, b) {
+            return a.name > b.name;
+        });
         if (externalNames.length) {
             nav += '<h3>Externals</h3><ul>';
             externalNames.forEach(function(e) {
@@ -261,6 +267,9 @@
         }
     
         var classNames = find({kind: 'class'});
+        classNames.sort(function(a, b) {
+            return a.name > b.name;
+        });
         if (classNames.length) {
             nav += '<h3>Classes</h3><ul>';
             classNames.forEach(function(c) {
@@ -278,6 +287,9 @@
         }
         
         var namespaceNames = find({kind: 'namespace'});
+        namespaceNames.sort(function(a, b) {
+            return a.name > b.name;
+        });
         if (namespaceNames.length) {
             nav += '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
@@ -300,6 +312,9 @@
 //         }
         
         var mixinNames = find({kind: 'mixin'});
+        mixinNames.sort(function(a, b) {
+            return a.name > b.name;
+        });
         if (mixinNames.length) {
             nav += '<h3>Mixins</h3><ul>';
             mixinNames.forEach(function(m) {
@@ -320,9 +335,12 @@
         }
         
         var globalNames = find({kind: ['member', 'function', 'constant', 'typedef'], 'memberof': {'isUndefined': true}});
-
+        globalNames.sort(function(a, b) {
+            return a.name > b.name;
+        });
         if (globalNames.length) {
             nav += '<h3>Global</h3><ul>';
+            
             globalNames.forEach(function(g) {
                 if ( g.kind !== 'typedef' && !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
                 seen[g.longname] = true;
