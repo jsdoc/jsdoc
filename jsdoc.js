@@ -246,8 +246,8 @@ function main() {
         }
     }
     
-    if (env.opts.source.include) {
-        env.opts._ = (env.opts._ || []).concat(env.opts.source.include);
+    if (env.conf.source.include) {
+        env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
     }
     
     if (env.opts._.length > 0) { // are there any files to scan and parse?
