@@ -1,8 +1,10 @@
 describe("jsdoc/src/scanner", function() {
     var scanner = new (require('jsdoc/src/scanner').Scanner)(),
-        includeMatch = new RegExp(".+\\.js(doc)?$"),
-        excludeMatch = new RegExp("(^|\\/)_"),
-        sourceFiles = scanner.scan([__dirname+'/test/fixtures/src/'], 3, includeMatch, excludeMatch);
+        filter = new (require('jsdoc/src/filter').Filter)({
+            includePattern: new RegExp(".+\\.js(doc)?$"),
+            excludePattern: new RegExp("(^|\\/)_")
+        }),
+        sourceFiles = scanner.scan([__dirname+'/test/fixtures/src/'], 3, filter);
 
     sourceFiles = sourceFiles.map(function($) {
         return $.replace(__dirname, '');

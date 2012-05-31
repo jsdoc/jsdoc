@@ -28,7 +28,7 @@ common.mixin(exports.Scanner.prototype, common.events);
 	@param {number} [depth=1]
 	@fires sourceFileFound
  */
-exports.Scanner.prototype.scan = function(searchPaths, depth, includeMatch, excludeMatch) {
+exports.Scanner.prototype.scan = function(searchPaths, depth, filter) {
 	var filePaths = [],
 	    that = this;
 
@@ -45,15 +45,7 @@ exports.Scanner.prototype.scan = function(searchPaths, depth, includeMatch, excl
 	});
 	
 	filePaths = filePaths.filter(function($) {
-	    if (includeMatch && !includeMatch.test($)) {
-	        return false
-	    }
-	    
-	    if (excludeMatch && excludeMatch.test($)) {
-	        return false
-	    }
-	    
-	    return true;
+	    return filter.isIncluded($);
 	});
 	
 	filePaths = filePaths.filter(function($) {

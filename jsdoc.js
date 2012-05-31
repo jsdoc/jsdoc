@@ -245,13 +245,15 @@ function main() {
             env.opts._.splice(i--, 1);
         }
     }
-
+    
+    if (env.opts.source.include) {
+        env.opts._ = (env.opts._ || []).concat(env.opts.source.include);
+    }
+    
     if (env.opts._.length > 0) { // are there any files to scan and parse?
+        var filter = new (require('jsdoc/src/filter').Filter)(env.conf.source);
 
-        var includeMatch = (env.conf.source && env.conf.source.includePattern)? new RegExp(env.conf.source.includePattern) : null,
-            excludeMatch = (env.conf.source && env.conf.source.excludePattern)? new RegExp(env.conf.source.excludePattern) : null;
-
-        sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), includeMatch, excludeMatch);
+        sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), filter);
 
         require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
 
