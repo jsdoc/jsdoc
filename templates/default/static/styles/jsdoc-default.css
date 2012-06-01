@@ -86,6 +86,11 @@ nav ul {
     list-style-type:none;
 }
 
+nav h2 a, nav h2 a:visited {
+    color: #A35A00;
+    text-decoration: none;
+}
+
 nav h3 {
     margin-top: 12px;
 }

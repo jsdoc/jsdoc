@@ -235,7 +235,7 @@
 	        }
         });
         
-        var nav = '',
+        var nav = '<h2><a href="index.html">Index</a></h2>',
             seen = {};
         
         var moduleNames = find({kind: 'module'});
@@ -378,9 +378,12 @@
         }
 
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
-
+        
+        // index page displays information from package.json and lists files
+        var files = find({kind: 'file'}),
+            packages = find({kind: 'package'});
         generate('Index',
-			[{kind: 'mainpage', longname: (opts.mainpagetitle) ? opts.mainpagetitle : "Main Page"}]
+			[{kind: 'mainpage', longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}].concat(packages).concat(files)
 		, 'index.html');
         
         
