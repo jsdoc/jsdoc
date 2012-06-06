@@ -24,7 +24,7 @@ exports.resolve = function(doclet) {
         about = {},
         parentDoc;
 
-    doclet.name = name = name? (''+name).replace(/\.prototype\.?/g, '#') : '';
+    doclet.name = name = name? (''+name).replace(/(^|\.)prototype\.?/g, '#') : '';
     
     // member of a var in an outer scope?
     if (name && !memberof && doclet.meta.code && doclet.meta.code.funcscope) {
@@ -48,7 +48,7 @@ exports.resolve = function(doclet) {
     else { // no @memberof
          about = exports.shorten(name);
     }
-
+        
     if (about.name) {
         doclet.name = about.name;
     }
@@ -75,8 +75,12 @@ exports.resolve = function(doclet) {
     }
     else {
         if (doclet.name && doclet.memberof && !doclet.longname) {
-            doclet.scope = 'static'; // default scope when none is provided
-            
+            if ( /^([#.~])/.test(doclet.name) ) {
+                doclet.scope = puncToScope[RegExp.$1];
+                doclet.name = doclet.name.substr(1);
+            }
+            else doclet.scope = 'static'; // default scope when none is provided
+         
             doclet.setLongname(doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
         }
     }

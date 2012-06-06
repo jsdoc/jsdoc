@@ -40,6 +40,14 @@ describe("aliases", function() {
 
         expect(log.scope).toEqual('global');
     });
+    
+    it('When a symbol is documented as an instance member of <global> class it\'s scope is "instance" and not "static".', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal2.js'),
+            run = docSet.getByLongname('Test#run')[0];
+
+        expect(run.scope).toEqual('instance');
+        expect(run.memberof).toEqual('Test');
+    });
 
     describe("resolving", function() {
         it('When a local reference has alias, put all members into aliased definition. Local modifications should be visible to outside.', function() {
