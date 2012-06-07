@@ -6,7 +6,8 @@
 
 var _synonyms = {},
     _definitions = {},
-    _namespaces = [];
+    _namespaces = [],
+    hasOwnProperty = Object.prototype.hasOwnProperty;
 
 function _TagDefinition(title, etc) {
     etc = etc || {};
@@ -14,7 +15,7 @@ function _TagDefinition(title, etc) {
     this.title = dictionary.normalise(title);
     
     for (var p in etc) {
-        if (etc.hasOwnProperty(p)) {
+        if ( hasOwnProperty.call(etc, p) ) {
             this[p] = etc[p];
         }
     }
@@ -42,7 +43,7 @@ var dictionary = {
     lookUp: function(title) {
         title = dictionary.normalise(title);
         
-        if ( _definitions.hasOwnProperty(title) ) {
+        if ( hasOwnProperty.call(_definitions, title) ) {
            return _definitions[title];
         }
         
@@ -58,7 +59,7 @@ var dictionary = {
     normalise: function(title) {
         canonicalName = title.toLowerCase();
             
-        if ( _synonyms.hasOwnProperty(canonicalName) ) {
+        if ( hasOwnProperty.call(_synonyms, canonicalName) ) {
             return _synonyms[canonicalName];
         }
         
@@ -69,7 +70,7 @@ var dictionary = {
 require('jsdoc/tag/dictionary/definitions').defineTags(dictionary);
 
 for (var prop in dictionary) {
-    if (dictionary.hasOwnProperty(prop)) {
+    if ( hasOwnProperty.call(dictionary, prop) ) {
         exports[prop] = dictionary[prop];
     }
 }

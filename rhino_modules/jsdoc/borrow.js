@@ -48,6 +48,7 @@ exports.resolveBorrows = function(docs) {
     });
 }
 
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 /**
     Deep clone a simple object.
     @private
@@ -57,7 +58,7 @@ function doop(o) {
         var clone = o instanceof Array ? [] : {}, prop;
         
         for (prop in o){
-            if ( o.hasOwnProperty(prop) ) { 
+            if ( hasOwnProperty.call(o, prop) ) { 
                 clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop]; 
             }
         }

@@ -1,3 +1,5 @@
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
 exports.getDocSetFromFile = function(filename, parser) {
     var sourceCode = readFile(__dirname + '/' + filename),
         testParser = parser || new (require('jsdoc/src/parser')).Parser(),
@@ -26,7 +28,7 @@ exports.getDocSetFromFile = function(filename, parser) {
 exports.indexAll = function(docs) {
     var index = {};
     docs.forEach(function(doc) {
-        if (!index.hasOwnProperty(doc.longname)){index[doc.longname] = [];}
+        if (!hasOwnProperty.call(index, doc.longname)){index[doc.longname] = [];}
         index[doc.longname].push(doc);
     });
     docs.index = index;

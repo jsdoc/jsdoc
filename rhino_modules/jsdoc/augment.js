@@ -1,5 +1,6 @@
 
 (function() {
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
     
     exports.addInherited = function(docs) {
         var dependencies = mapDependencies(docs.index);
@@ -9,7 +10,7 @@
             var additions = getAdditions(doclets, docs);
             additions.forEach(function(doc) {
                 var name = doc.longname;
-                if (!(docs.index.hasOwnProperty(name))) {
+                if ( !hasOwnProperty.call(docs.index, name) ) {
                     docs.index[name] = [];
                 }
                 docs.index[name].push(doc);
@@ -78,7 +79,7 @@
             var clone = o instanceof Array ? [] : {}, prop;
             
             for (prop in o){
-                if ( o.hasOwnProperty(prop) ) { 
+                if ( hasOwnProperty.call(o, prop) ) { 
                     clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop]; 
                 }
             }

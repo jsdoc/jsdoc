@@ -266,10 +266,11 @@ function main() {
         docs.push(packageDocs);
 
         function indexAll(docs) {
-            var lookupTable = {};
+            var lookupTable = {},
+                hasOwnProperty = Object.prototype.hasOwnProperty;
 
             docs.forEach(function(doc) {
-                if ( !lookupTable.hasOwnProperty(doc.longname) ) {
+                if ( !hasOwnProperty.call(lookupTable, doc.longname) ) {
                     lookupTable[doc.longname] = [];
                 }
                 lookupTable[doc.longname].push(doc);
