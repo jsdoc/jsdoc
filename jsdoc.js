@@ -246,11 +246,11 @@ function main() {
         }
     }
     
-    if (env.conf.source.include) {
+    if (env.conf.source && env.conf.source.include) {
         env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
     }
     
-    if (env.opts._.length > 0) { // are there any files to scan and parse?
+    if (env.conf.source && env.opts._.length > 0) { // are there any files to scan and parse?
         var filter = new (require('jsdoc/src/filter').Filter)(env.conf.source);
 
         sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), filter);

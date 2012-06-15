@@ -1,10 +1,10 @@
 # How to use the Markdown plugin
 
-For most users, all you need to do is add the plugin to your JSDoc configuration (`conf.json`) as you would any other:
+For most users, all you need to do is add the plugin to your JSDoc configuration (`conf.json`) as you would any other, by adding a reference to it in the "plugins" entry of the configuration JSON:
 
-    {
-        "plugins": [ "plugins/markdown" ]
-    }
+    ...
+    "plugins": [ "plugins/markdown" ]
+    ...
 
 This will cause Markdown in `@description` tags (including implicit descriptions without tags), `@classdesc` tags, `@param` tags, `@property` tags, and `@returns` tags to be parsed.
 
@@ -12,39 +12,39 @@ This will cause Markdown in `@description` tags (including implicit descriptions
 
 The plugin also offers several configuration options for advanced users who want GitHub integration, extended tag support, etc.  All configuration for the Markdown plugin should be added to a `"markdown"` property in your JSDoc configuration:
 
-    {
-        "plugins": [ "plugins/markdown" ],
+    ...
+    "plugins": [ "plugins/markdown" ],
 
-        "markdown": {
-            "opt1": "value",
-            "opt2": [ "foo", "bar", "baz" ]
-        }
+    "markdown": {
+        "opt1": "value",
+        "opt2": [ "foo", "bar", "baz" ]
     }
+    ...
 
 ## Choosing a parser
 
 The plugin currently supports two Markdown parsers.  You can select which parser to use by adding a `"parser"` property to your Markdown configuration:
 
-    {
-        "plugins": [ "plugins/markdown" ],
+    ...
+    "plugins": [ "plugins/markdown" ],
 
-        "markdown": {
-            "parser": "gfm"
-        }
+    "markdown": {
+        "parser": "gfm"
     }
+    ...
 
 ### Dominic "evilstreak" Baggott's markdown-js
 
 The default parser is Dominic Baggott's excellent [markdown-js](https://github.com/evilstreak/markdown-js).  It can be explicitly selected by setting the `parser` to `evilstreak` and has one additional (and optional) configuration option, `dialect`, which can be used to select which of markdown-js' built-in dialects to use.  If omitted, markdown-js' default dialect will be used.
 
-    {
-        "plugins": [ "plugins/markdown" ],
+    ...
+    "plugins": [ "plugins/markdown" ],
 
-        "markdown": {
-            "parser": "evilstreak",
-            "dialect": "Maruku"
-        }
+    "markdown": {
+        "parser": "evilstreak",
+        "dialect": "Maruku"
     }
+    ...
 
 ### GitHib Flavored Markdown
 
@@ -54,14 +54,14 @@ The `hardwrap` option controls the hard wrapping of line ends.  Unlike standard 
 
 The `githubRepoName` and `githubRepoOwner` indicate which GitHub repo should be used for GitHub links which do not fully specify a repo.  These options have no effect unless used together and if they are omitted, several of GFM's default link types will be unavailable.  Conversely, if you supply both `github*` options but do not explicitly select `gfm` as your parser, it will be automatically selected for you.
 
-    {
-        "plugins": [ "plugins/markdown" ],
+    ...
+    "plugins": [ "plugins/markdown" ],
 
-        "markdown": {
-            "parser": "gfm",
-            "hardwrap": true
-        }
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": true
     }
+    ...
 
 ### Why two parsers?
 
@@ -73,12 +73,12 @@ In the future, if GFM support is made available for the "evilstreak" parser, thi
 
 While the Markdown plugin already supports JSDoc's default tags, if you're using other plugins, you may well have extra tags available.  You can tell the Markdown plugin to handle those extra tags as well using the `tags` property, which is an array of the tags* it should check in addition to the default set.
 
-    {
-        "plugins": [ "plugins/markdown" ],
+    ...
+    "plugins": [ "plugins/markdown" ],
 
-        "markdown": {
-            "tags": [ "foo", "bars", "bazzes" ]
-        }
+    "markdown": {
+        "tags": [ "foo", "bars", "bazzes" ]
     }
+    ...
 
 \* Because the Markdown plugin works with JSDoc's internal representation rather than with the source comments, the names you need to enter in the `tags` property aren't necessarily the same as the actual tag names.  For example, in the default set of tags, `@param` is stored under `params`.  If you are having trouble getting the Markdown plugin to work with your extra tags, either take a peek at the output of JSDoc's `--explain` command-line parameter (which displays the internal state which plugins work with) or ask the plugin author which "doclet properties" their plugin uses.  The Markdown plugin supports strings, arrays, and objects/subdoclets.

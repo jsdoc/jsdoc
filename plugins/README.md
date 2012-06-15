@@ -7,13 +7,13 @@ There are two steps required to install a new plugin:
 2. Include the name of that module in the "plugins" array of `conf.json`.
 
 For example, if your plugin source code was saved in the  "plugins/shout.js"
-file, you would include it in conf.json like so:
+file, you would include it by adding a reference to it in conf.json like so:
     
-    {
-        "plugins": [
-            "plugins/shout"
-        ]
-    }
+    ...
+    "plugins": [
+        "plugins/shout"
+    ]
+    ...
 
 Authoring JSDoc 3 Plugins
 ----
