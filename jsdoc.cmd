@@ -10,11 +10,13 @@ SET _BASEPATH=%_BASEPATH:~0,-1%
 REM for whatever reason, Rhino requires module paths to be valid URIs
 SET _URLPATH=file:/%_BASEPATH%
 
+IF "%_URLPATH%"=="%_URLPATH: =%" GOTO NO_SPACES
 :ESCAPE_SPACE
 SET _TRAILING=%_URLPATH:* =%
 CALL SET _URLPATH=%%_URLPATH: %_TRAILING%=%%
 SET _URLPATH=%_URLPATH%%%20%_TRAILING%
 IF NOT "%_URLPATH%"=="%_URLPATH: =%" GOTO ESCAPE_SPACE
+:NO_SPACES
 
 java -classpath "%_BASEPATH%/lib/js.jar" org.mozilla.javascript.tools.shell.Main -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/rhino_modules" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %* --dirname="%_BASEPATH%/
 
