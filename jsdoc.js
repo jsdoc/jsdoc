@@ -182,14 +182,13 @@ function main() {
             }
         },
         resolver,
-        fs = require('fs');
+        fs = require('fs'),
+        Config = require('jsdoc/config');
 
     env.opts = jsdoc.opts.parser.parse(env.args);
 
     try {
-        env.conf = JSON.parse(
-            fs.readFileSync( env.opts.configure || __dirname + '/conf.json' )
-        );
+        env.conf = new Config( fs.readFileSync( env.opts.configure || __dirname + '/conf.json' ) ).get();
     }
     catch (e) {
         try {
