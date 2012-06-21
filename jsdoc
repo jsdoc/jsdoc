@@ -23,5 +23,3 @@ else
     # normal mode should be quiet
     java -classpath ${BASEDIR}/lib/js.jar ${CMD} -modules ${BASEDIR}/node_modules -modules ${BASEDIR}/rhino_modules -modules ${BASEDIR} ${BASEDIR}/jsdoc.js --dirname=${BASEDIR} $@
 fi
-
-#java -classpath ${BASEDIR}/lib/js.jar ${CMD} -modules ${BASEDIR}/node_modules -modules ${BASEDIR}/rhino_modules -modules ${BASEDIR} ${BASEDIR}/jsdoc.js --dirname=${BASEDIR} $@
