@@ -387,8 +387,11 @@
         // index page displays information from package.json and lists files
         var files = find({kind: 'file'}),
             packages = find({kind: 'package'});
+
         generate('Index',
-			[{kind: 'mainpage', longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}].concat(packages).concat(files)
+			packages.concat(
+			    [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
+			).concat(files)
 		, 'index.html');
         
         

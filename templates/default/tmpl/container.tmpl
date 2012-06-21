@@ -3,10 +3,8 @@
     docs.forEach(function(doc, i) {
 ?>
 
-<?js if (doc.kind === 'mainpage') { ?>
-	
-	<?js= self.partial('mainpage.tmpl', doc) ?>
-
+<?js if (doc.kind === 'mainpage' || (doc.kind === 'package')) { ?>
+    <?js= self.partial('mainpage.tmpl', doc) ?>
 <?js } else { ?>
 
 <section>
