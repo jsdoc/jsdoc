@@ -143,17 +143,11 @@ function pretreat(code) {
         // make starbangstar comments look like real jsdoc comments
         .replace(/\/\*\!\*/g, '/**')
 
-        // make matching comment endings easier
-        .replace(/\*\//g, '»')
-
         // merge adjacent doclets
-        .replace(/»\/\*\*+/g, '@also')
+        .replace(/\*\/\/\*\*+/g, '@also')
         // make lent objectliterals documentable by giving them a dummy name
-        .replace(/(\/\*\*[^»]*?@lends\b[^»]*?»\s*)\{/g, '$1 ____ = {') // like return @lends {
-        .replace(/(\/\*\*[^»]*?@lends\b[^»]*?»)(\s*)return(\s*)\{/g, '$2$3 return $1 ____ = {') // like @lends return {
-
-        // make matching comment endings harder
-        .replace(/»/g, '*/');
+        .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/\s*)\{/g, '$1 ____ = {') // like return @lends {
+        .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/)(\s*)return(\s*)\{/g, '$2$3 return $1 ____ = {'); // like @lends return {
 }
 
 var tkn = { NAMEDFUNCTIONSTATEMENT: -1001 };
