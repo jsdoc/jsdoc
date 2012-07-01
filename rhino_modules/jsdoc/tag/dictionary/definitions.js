@@ -1,10 +1,99 @@
+/*global app:true, env:true */
 /**
-	Define tags that are known in JSDoc.
-	@module jsdoc/tag/dictionary/definitions
+    Define tags that are known in JSDoc.
+    @module jsdoc/tag/dictionary/definitions
 
-	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @author Michael Mathews <micmath@gmail.com>
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
+
+/** @private */
+function setDocletKindToTitle(doclet, tag) {
+    doclet.addTag( 'kind', tag.title );
+}
+
+function setDocletScopeToTitle(doclet, tag) {
+    doclet.addTag( 'scope', tag.title );
+}
+
+function setDocletNameToValue(doclet, tag) {
+    if (tag.value && tag.value.description) { // as in a long tag
+        doclet.addTag( 'name', tag.value.description);
+    }
+    else if (tag.text) { // or a short tag
+        doclet.addTag('name', tag.text);
+    }
+}
+
+function setDocletDescriptionToValue(doclet, tag) {
+    if (tag.value) {
+        doclet.addTag( 'description', tag.value );
+    }
+}
+
+function setNameToFile(doclet, tag) {
+    if (doclet.meta.filename) {
+        var name = 'file:';
+        if (doclet.meta.path) { name += doclet.meta.path + java.lang.System.getProperty("file.separator"); }
+        doclet.addTag( 'name', name + doclet.meta.filename );
+    }
+}
+
+function setDocletMemberof(doclet, tag) {
+    if (tag.value && tag.value !== '<global>') {
+        doclet.setMemberof(tag.value);
+    }
+}
+
+function applyNamespace(docletOrNs, tag) {
+    if (typeof docletOrNs === 'string') { // ns
+        tag.value = app.jsdoc.name.applyNamespace(tag.value, docletOrNs);
+    }
+    else { // doclet
+        if (!docletOrNs.name) {
+            return; // error?
+        }
+        
+        //doclet.displayname = doclet.name;
+        docletOrNs.longname = app.jsdoc.name.applyNamespace(docletOrNs.name, tag.title);
+    }
+}
+
+function setDocletNameToFilename(doclet, tag) {
+    var name = (doclet.meta.path ? (doclet.meta.path + java.lang.System.getProperty("file.separator")) : "") + doclet.meta.filename;
+    name = name.replace(/\.js$/i, '');
+    
+    for (var i = 0, len = env.opts._.length; i < len; i++) {
+        if (name.indexOf(env.opts._[i]) === 0) {
+            name = name.replace(env.opts._[0], '');
+            break;
+        }
+    }
+    doclet.name = name;
+}
+
+function parseBorrows(doclet, tag) {
+    var m = /^(\S+)(?:\s+as\s+(\S+))?$/.exec(tag.text);
+    if (m) {
+        if (m[1] && m[2]) {
+            return {
+                target: m[1],
+                source: m[2]
+            };
+        }
+        else if (m[1]) {
+            return {
+                target: m[1]
+            };
+        }
+    }
+}
+
+function firstWordOf(string) {
+    var m = /^(\S+)/.exec(string);
+    if (m) { return m[1]; }
+    else { return ''; }
+}
 
 /** Populate the given dictionary with all known JSDoc tag definitions.
     @param {module:jsdoc/tag/dictionary} dictionary
@@ -28,7 +117,7 @@ exports.defineTags = function(dictionary) {
                 doclet.access = tag.value.toLowerCase();
             }
             else {
-                delete doclet.access; 
+                delete doclet.access;
             }
         }
     });
@@ -54,8 +143,8 @@ exports.defineTags = function(dictionary) {
         // Allow augments value to be specified as a normal type, e.g. {Type}
         onTagText: function(text) {
             var type = require('jsdoc/tag/type'),
-                [tp, tx] = type.getTagType(text);
-            return tp || text;
+                tagType = type.getTagType(text);
+            return tagType.type || text;
         },
         onTagged: function(doclet, tag) {
             doclet.augment( firstWordOf(tag.value) );
@@ -67,8 +156,8 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('borrows', {
         mustHaveValue: true,
         onTagged: function(doclet, tag) {
-            var [target, source] = parseBorrows(doclet, tag);
-            doclet.borrow(target, source);
+            var borrows = parseBorrows(doclet, tag);
+            doclet.borrow(borrows.target, borrows.source);
         }
     });
     
@@ -138,31 +227,31 @@ exports.defineTags = function(dictionary) {
         }
     });
 
-	dictionary.defineTag('default', {
+    dictionary.defineTag('default', {
         onTagged: function(doclet, tag) {
             if (tag.value) {
-				doclet.defaultvalue = tag.value;
-			}
-			else if (doclet.meta && doclet.meta.code && typeof doclet.meta.code.value !== 'undefined') {
-				if (doclet.meta.code.type && /STRING|NUMBER|NAME|TRUE|FALSE/.test(doclet.meta.code.type)) {
-					doclet.defaultvalue = doclet.meta.code.value;
-					if (doclet.meta.code.type === 'STRING') {
-						// TODO: handle escaped quotes in values
-						doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"'
-					}
-					
-					if (doclet.defaultvalue === 'TRUE' || doclet.defaultvalue == 'FALSE') {
-					    doclet.defaultvalue = doclet.defaultvalue.toLowerCase();
-					}
-				}
-				else if (doclet.meta.code.type === 'NULL') {
-					// TODO: handle escaped quotes in values
-					doclet.defaultvalue = 'null'
-				}
-			}
+                doclet.defaultvalue = tag.value;
+            }
+            else if (doclet.meta && doclet.meta.code && typeof doclet.meta.code.value !== 'undefined') {
+                if (doclet.meta.code.type && /STRING|NUMBER|NAME|TRUE|FALSE/.test(doclet.meta.code.type)) {
+                    doclet.defaultvalue = doclet.meta.code.value;
+                    if (doclet.meta.code.type === 'STRING') {
+                        // TODO: handle escaped quotes in values
+                        doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"';
+                    }
+                    
+                    if (doclet.defaultvalue === 'TRUE' || doclet.defaultvalue == 'FALSE') {
+                        doclet.defaultvalue = doclet.defaultvalue.toLowerCase();
+                    }
+                }
+                else if (doclet.meta.code.type === 'NULL') {
+                    // TODO: handle escaped quotes in values
+                    doclet.defaultvalue = 'null';
+                }
+            }
         }
     })
-	.synonym('defaultvalue');
+    .synonym('defaultvalue');
     
     dictionary.defineTag('deprecated', {
         // value is optional
@@ -291,7 +380,7 @@ exports.defineTags = function(dictionary) {
     
     dictionary.defineTag('instance', {
         onTagged: function(doclet, tag) {
-            setDocletScopeToTitle(doclet, tag);  
+            setDocletScopeToTitle(doclet, tag);
         }
     });
     
@@ -353,7 +442,9 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             setDocletKindToTitle(doclet, tag);
             setDocletNameToValue(doclet, tag);
-            doclet.name || setDocletNameToFilename(doclet, tag);
+            if (!doclet.name) {
+                setDocletNameToFilename(doclet, tag);
+            }
             if (tag.value && tag.value.type) {
                 doclet.type = tag.value.type;
             }
@@ -465,7 +556,7 @@ exports.defineTags = function(dictionary) {
     
     dictionary.defineTag('static', {
         onTagged: function(doclet, tag) {
-            setDocletScopeToTitle(doclet, tag);  
+            setDocletScopeToTitle(doclet, tag);
         }
     });
     
@@ -513,7 +604,10 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             if (tag.value && tag.value.type) {
                 doclet.type = tag.value.type;
-                if (doclet.kind === 'function') doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
+                if (doclet.kind === 'function') {
+                    // for backwards compatibility we allow @type for functions to imply return type
+                    doclet.addTag('returns', tag.text);
+                }
             }
         }
     });
@@ -556,85 +650,5 @@ exports.defineTags = function(dictionary) {
             doclet.version = tag.value;
         }
     });
-}
+};
 
-/** @private */
-function setDocletKindToTitle(doclet, tag) {
-    doclet.addTag( 'kind', tag.title );
-}
-
-function setDocletScopeToTitle(doclet, tag) {
-    doclet.addTag( 'scope', tag.title );
-}
-
-function setDocletNameToValue(doclet, tag) {
-    if (tag.value && tag.value.description) { // as in a long tag
-        doclet.addTag( 'name', tag.value.description);
-    }
-    else if (tag.text) { // or a short tag
-        doclet.addTag('name', tag.text);
-    }
-}
-
-function setDocletDescriptionToValue(doclet, tag) {
-    if (tag.value) {
-        doclet.addTag( 'description', tag.value );
-    }
-}
-
-function setNameToFile(doclet, tag) {
-    if (doclet.meta.filename) { 
-        var name = 'file:';
-        if (doclet.meta.path) { name += doclet.meta.path + java.lang.System.getProperty("file.separator"); }
-        doclet.addTag( 'name', name + doclet.meta.filename );
-    }
-}
-
-function setDocletMemberof(doclet, tag) {
-    if (tag.value && tag.value !== '<global>') {
-        doclet.setMemberof(tag.value);
-    }
-}
-
-function applyNamespace(docletOrNs, tag) {
-    if (typeof docletOrNs === 'string') { // ns
-        tag.value = app.jsdoc.name.applyNamespace(tag.value, docletOrNs);
-    }
-    else { // doclet
-        if (!docletOrNs.name) return; // error?
-        
-        //doclet.displayname = doclet.name;
-        docletOrNs.longname = app.jsdoc.name.applyNamespace(docletOrNs.name, tag.title);
-    }
-}
-
-function setDocletNameToFilename(doclet, tag) {
-    var name = (doclet.meta.path ? (doclet.meta.path + java.lang.System.getProperty("file.separator")) : "") + doclet.meta.filename;
-    name = name.replace(/\.js$/i, '');
-    
-    for (var i = 0, len = env.opts._.length; i < len; i++) {
-        if (name.indexOf(env.opts._[i]) === 0) {
-            name = name.replace(env.opts._[0], '');
-            break
-        }
-    }
-    doclet.name = name;
-}
-
-function parseBorrows(doclet, tag) {
-    var m = /^(\S+)(?:\s+as\s+(\S+))?$/.exec(tag.text);
-    if (m) {
-        if (m[1] && m[2]) {
-            return [ m[1], m[2] ];
-        }
-        else if (m[1]) {
-            return [ m[1] ];
-        }
-    }
-}
-
-function firstWordOf(string) {
-    var m = /^(\S+)/.exec(string);
-    if (m) { return m[1]; }
-    else { return ''; }
-}

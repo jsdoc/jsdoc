@@ -8,7 +8,7 @@ module.exports = require('connect').createServer(
   Connect.favicon(),
   Connect.cache(),
   Connect.gzip(),
-  require('wheat')(__dirname)
+  require('wheat')(env.dirname)
 );
 
 /**

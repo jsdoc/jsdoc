@@ -39,7 +39,11 @@ exports.attachTo = function(parser) {
     });
 
     function newSymbolDoclet(docletSrc, e) {
-        var newDoclet = new jsdoc.doclet.Doclet(docletSrc, e);
+        var memberofName,
+            basename,
+            scope,
+            nameStartsWith,
+            newDoclet = new jsdoc.doclet.Doclet(docletSrc, e);
 
         // an undocumented symbol right after a virtual comment? rhino mistakenly connected the two
         if (newDoclet.name) { // there was a @name in comment
@@ -64,11 +68,11 @@ exports.attachTo = function(parser) {
         else if (e.code && e.code.name) { // we need to get the symbol name from code
             newDoclet.addTag('name', e.code.name);
             if (!newDoclet.memberof && e.astnode) {
-                var memberofName = null,
-                    basename = null,
-                    scope = '';
+                memberofName = null;
+                basename = null;
+                scope = '';
                 if ( /^((module.)?exports|this)(\.|$)/.test(newDoclet.name) ) {
-                    var nameStartsWith = RegExp.$1;
+                    nameStartsWith = RegExp.$1;
 
                     newDoclet.name = newDoclet.name.replace(/^(exports|this)(\.|$)/, '');
 
@@ -146,6 +150,7 @@ exports.attachTo = function(parser) {
     });
 
     function addDoclet(newDoclet) {
+        var e;
         if (newDoclet) {
             e = { doclet: newDoclet };
             this.fire('newDoclet', e);

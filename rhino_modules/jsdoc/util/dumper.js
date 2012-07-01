@@ -8,19 +8,10 @@
 /**
     @param {any} object
  */
-exports.dump = function(object) {
-    indentBy = 0;
-    output = '';
-    
-    walk(object);
-    outdent(false);
-    return output;
-}
+ var indentBy,
+     output;
 
 const INDENTATION = '    '; // 4 spaces
-var indentBy,
-    output;
-
 function pad(depth) {
     var padding = '';
     while (depth--) {
@@ -37,7 +28,9 @@ function pad(depth) {
  */
 function indent(openingBrace) {
     indentBy++;
-    if (openingBrace) output += openingBrace + '\n';
+    if (openingBrace) {
+        output += openingBrace + '\n';
+    }
 }
 
 /**
@@ -51,7 +44,9 @@ function outdent(closingBrace) {
     indentBy--;
     output = output.replace(/,\n$/, '\n'); // trim trailing comma
     if (closingBrace === false) { output = output.replace(/\n$/, ''); }
-    else if (closingBrace) output += pad(indentBy) + closingBrace + ',\n';
+    else if (closingBrace) {
+        output += pad(indentBy) + closingBrace + ',\n';
+    }
 }
 
 var seen = [];
@@ -60,22 +55,61 @@ seen.has = function(object) {
         if (seen[i] === object) { return true; }
     }
     return false;
+};
+
+function stringify(o) {
+    return JSON.stringify(o);
+}
+
+function getValue(o) { // see: https://developer.mozilla.org/en/JavaScript/Reference/Operators/Special/typeof
+    if (o === null) { return 'null'; }
+    if ( /^(string|boolean|number|undefined)$/.test(typeof o) ) {
+        return ''+stringify(o);
+    }
+}
+
+function isUnwalkable(o) { // some objects are unwalkable, like Java native objects
+    return (typeof o === 'object' && typeof o.constructor === 'undefined');
+}
+
+function isArray(o) {
+    return o && (o instanceof Array) || o.constructor === Array;
+}
+
+function isRegExp(o) {
+    return (o instanceof RegExp) ||
+         (typeof o.constructor !== 'undefined' && o.constructor.name === 'RegExp');
+}
+
+function isDate(o) {
+    return o && (o instanceof Date) ||
+           (typeof o.constructor !== 'undefined' && o.constructor.name === 'Date');
+}
+
+function isFunction(o) {
+    return o && (typeof o === 'function' || o instanceof Function);// ||
+           //(typeof o.constructor !== 'undefined' && (o.constructor||{}).name === 'Function');
+}
+
+function isObject(o) {
+  return o && o instanceof Object ||
+         (typeof o.constructor !== 'undefined' && o.constructor.name === 'Object');
 }
 
 function walk(object) {
-    var value;
+    var value = getValue(object);
     
-    if ( value = getValue(object) ) {
+    if ( value ) {
         output += value + ',\n';
     }
     else if ( isUnwalkable(object) ) {
-        output += '<Object>,\n'
+        output += '<Object>,\n';
     }
     else if ( isRegExp(object) ) {
-        output += '<RegExp ' + object + '>,\n'
+        output += '<RegExp ' + object + '>,\n';
     }
     else if ( isDate(object) ) {
-        output += '<Date ' + object.toUTCString() + '>,\n'
+        output += '<Date ' + object.toUTCString() + '>,\n';
     }
     else if ( isFunction(object) ) {
         output += '<Function' + (object.name? ' '+ object.name : '') + '>,\n';
@@ -116,42 +150,11 @@ function walk(object) {
     }
 }
 
-function getValue(o) { // see: https://developer.mozilla.org/en/JavaScript/Reference/Operators/Special/typeof
-    if (o === null) { return 'null'; }
-    if ( /^(string|boolean|number|undefined)$/.test(typeof o) ) {
-        return ''+stringify(o);
-    }
-}
-
-function stringify(o) {
-    return JSON.stringify(o);
-}
-
-function isUnwalkable(o) { // some objects are unwalkable, like Java native objects
-    return (typeof o === 'object' && typeof o.constructor === 'undefined');
-}
-
-function isArray(o) {
-    return o && (o instanceof Array) || o.constructor === Array;
-}
-
-function isRegExp(o) {
-    return (o instanceof RegExp) ||
-         (typeof o.constructor !== 'undefined' && o.constructor.name === 'RegExp');
-}
-
-function isDate(o) {
-    return o && (o instanceof Date) ||
-           (typeof o.constructor !== 'undefined' && o.constructor.name === 'Date');
-}
-
-function isFunction(o) {
-    return o && (typeof o === 'function' || o instanceof Function);// ||
-           //(typeof o.constructor !== 'undefined' && (o.constructor||{}).name === 'Function');
-}
-
-function isObject(o) {
-  return o && o instanceof Object ||
-         (typeof o.constructor !== 'undefined' && o.constructor.name === 'Object');
-}
-
+exports.dump = function(object) {
+    indentBy = 0;
+    output = '';
+    
+    walk(object);
+    outdent(false);
+    return output;
+};

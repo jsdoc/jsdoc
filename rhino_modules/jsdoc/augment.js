@@ -1,6 +1,5 @@
-
 (function() {
-    var hasOwnProperty = Object.prototype.hasOwnProperty;
+    var hasOwnProp = Object.prototype.hasOwnProperty;
     
     exports.addInherited = function(docs) {
         var dependencies = mapDependencies(docs.index);
@@ -10,26 +9,28 @@
             var additions = getAdditions(doclets, docs);
             additions.forEach(function(doc) {
                 var name = doc.longname;
-                if ( !hasOwnProperty.call(docs.index, name) ) {
+                if ( !hasOwnProp.call(docs.index, name) ) {
                     docs.index[name] = [];
                 }
                 docs.index[name].push(doc);
                 docs.push(doc);
             });
         });
-    }
+    };
 
     function mapDependencies(index) {
         var doclets, doc, len, dependencies = {};
         for (var name in index) {
-            doclets = index[name];
-            for (var i=0, ii=doclets.length; i<ii; ++i) {
-                doc = doclets[i];
-                if (doc.kind === "class") {
-                    dependencies[name] = {};
-                    len = doc.augments && doc.augments.length || 0;
-                    for (var j=0; j<len; ++j) {
-                        dependencies[name][doc.augments[j]] = true;
+            if ( hasOwnProp.call(index, name) ) {
+                doclets = index[name];
+                for (var i=0, ii=doclets.length; i<ii; ++i) {
+                    doc = doclets[i];
+                    if (doc.kind === "class") {
+                        dependencies[name] = {};
+                        len = doc.augments && doc.augments.length || 0;
+                        for (var j=0; j<len; ++j) {
+                            dependencies[name][doc.augments[j]] = true;
+                        }
                     }
                 }
             }
@@ -39,7 +40,7 @@
 
     function getAdditions(doclets, docs) {
         var additions = [];
-        var doc, parents, members, member;
+        var doc, parents, members, member, parts;
         for (var i=0, ii=doclets.length; i<ii; ++i) {
             doc = doclets[i];
             parents = doc.augments;
@@ -79,14 +80,14 @@
             var clone = o instanceof Array ? [] : {}, prop;
             
             for (prop in o){
-                if ( hasOwnProperty.call(o, prop) ) { 
-                    clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop]; 
+                if ( hasOwnProp.call(o, prop) ) {
+                    clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop];
                 }
             }
             return clone;
         }
         return o;
-    };
+    }
 
     var Sorter = function(dependencies) {
         this.dependencies = dependencies;
@@ -96,7 +97,9 @@
     Sorter.prototype = {
         sort: function() {
             for (var key in this.dependencies) {
-                this.visit(key);
+                if ( hasOwnProp.call(this.dependencies, key) ) {
+                    this.visit(key);
+                }
             }
             return this.sorted;
         },
@@ -107,7 +110,9 @@
                     throw new Error("Missing dependency: " + key);
                 }
                 for (var path in this.dependencies[key]) {
-                    this.visit(path);
+                    if (hasOwnProp.call(this.dependencies[key], path) ) {
+                        this.visit(path);
+                    }
                 }
                 this.sorted.push(key);
             }
@@ -117,7 +122,7 @@
     function sort(dependencies) {
         var sorter = new Sorter(dependencies);
         return sorter.sort();
-    };
+    }
 
     
-})();
+}());

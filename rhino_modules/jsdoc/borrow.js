@@ -2,8 +2,27 @@
     A collection of functions relating to resolving @borrows tags in JSDoc symbols.
     @module jsdoc/borrow
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
+
+var hasOwnProp = Object.prototype.hasOwnProperty;
+/**
+    Deep clone a simple object.
+    @private
+ */
+function doop(o) {
+    if (o instanceof Object && o.constructor != Function) {
+        var clone = o instanceof Array ? [] : {}, prop;
+
+        for (prop in o){
+            if ( hasOwnProp.call(o, prop) ) {
+                clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop];
+            }
+        }
+        return clone;
+    }
+    return o;
+}
 
 // requires docs to have been indexed: docs.index must be defined here
 /**
@@ -21,7 +40,7 @@ exports.resolveBorrows = function(docs) {
         if (doc.borrowed) {
             doc.borrowed.forEach(function(b, i) {
                 var lent = docs.index[b.from], // lent is an array
-                    asName = b['as'] || b.from;
+                    asName = b.as || b.from;
                     
                 if (lent) {
                     var cloned = doop(lent);
@@ -30,8 +49,12 @@ exports.resolveBorrows = function(docs) {
                         asName = asName.replace(/^prototype\./, '#');
                         var parts = asName.split('#');
                         
-                        if (parts.length === 2) clone.scope = 'instance';
-                        else clone.scope = 'static';
+                        if (parts.length === 2) {
+                            clone.scope = 'instance';
+                        }
+                        else {
+                            clone.scope = 'static';
+                        }
 
                         asName = parts.pop();
                         clone.name = asName;
@@ -46,23 +69,4 @@ exports.resolveBorrows = function(docs) {
             delete doc.borrowed;
         }
     });
-}
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-/**
-    Deep clone a simple object.
-    @private
- */
-function doop(o) {
-    if (o instanceof Object && o.constructor != Function) {
-        var clone = o instanceof Array ? [] : {}, prop;
-        
-        for (prop in o){
-            if ( hasOwnProperty.call(o, prop) ) { 
-                clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop]; 
-            }
-        }
-        return clone;
-    }
-    return o;
 };

@@ -1,6 +1,6 @@
 /**
     @overview
-    @author Rafał Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
+    @author Rafa&#322; Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
@@ -45,6 +45,7 @@ exports.load = function(path) {
         type,
         name,
         current,
+        content,
         files = fs.ls(path);
 
     // tutorials handling
@@ -75,6 +76,7 @@ exports.load = function(path) {
                 case 'js':
                 case 'json':
                     conf[name] = JSON.parse(content);
+                    break;
 
                 // how can it be? check `finder' regexp
                 default:
@@ -95,32 +97,34 @@ exports.resolve = function() {
     var item,
         current;
     for (var name in conf) {
-        // should we be restrictive here?
-        // what is someone just wants to keep sample sources in same directory with tutorials?
-        // I've decided to leave such cases alone
-        if (!(name in tutorials)) {
-            continue;
-        }
+        if (conf.hasOwnProperty(name)) {
+            // should we be restrictive here?
+            // what if someone just wants to keep sample sources in same directory with tutorials?
+            // I've decided to leave such cases alone
+            if (!(name in tutorials)) {
+                continue;
+            }
 
-        item = conf[name];
-        current = tutorials[name]
+            item = conf[name];
+            current = tutorials[name];
 
-        // set title
-        if (item.title) {
-            current.title = item.title;
-        }
+            // set title
+            if (item.title) {
+                current.title = item.title;
+            }
 
-        // add children
-        if (item.children) {
-            item.children.forEach(function(child) {
-                // I really didn't want to throw you an exception in most cases
-                // but now, user, you pissed me off ;)
-                if (!(child in tutorials)) {
-                    throw new Error("Missing child tutorial: " + child);
-                }
+            // add children
+            if (item.children) {
+                item.children.forEach(function(child) {
+                    // I really didn't want to throw you an exception in most cases
+                    // but now, user, you pissed me off ;)
+                    if (!(child in tutorials)) {
+                        throw new Error("Missing child tutorial: " + child);
+                    }
 
-                tutorials[child].setParent(current);
-            });
+                    tutorials[child].setParent(current);
+                });
+            }
         }
     }
 };

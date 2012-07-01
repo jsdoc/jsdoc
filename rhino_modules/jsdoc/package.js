@@ -1,12 +1,12 @@
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
-	@module jsdoc/package
-	@see http://wiki.commonjs.org/wiki/Packages/1.0
+    @module jsdoc/package
+    @see http://wiki.commonjs.org/wiki/Packages/1.0
  */
 
 /**
@@ -47,14 +47,14 @@ exports.Package = function(json) {
     */
     this.description = json.description;
     
-    /** 
+    /**
         The hash summary of the source file.
         @type {string}
         @since 3.2.0
     */
     this.version = json.version;
     
-    /** 
+    /**
      * The licenses of this package.
      * @type {Array<Object>}
      * @example
@@ -66,5 +66,5 @@ exports.Package = function(json) {
      * ]
      */
     this.licenses = json.licenses;
-}
+};
 

@@ -1,3 +1,4 @@
+/*global publish: true */
 /**
     @overview Builds a tree-like JSON string from the doclet data.
     @version 0.0.1
@@ -35,14 +36,17 @@
             console.log('The only -d destination option currently supported is "console"!');
         }
         
-    }
+    };
     
     function graft(parentNode, childNodes, parentLongname, parentName) {
         childNodes
-        .filter(function (element) {            
+        .filter(function (element) {
             return (element.memberof === parentLongname);
         })
-        .forEach(function (element, i) {
+        .forEach(function (element) {
+            var i,
+                len;
+            
             if (element.kind === 'namespace') {
                 if (! parentNode.namespaces) {
                     parentNode.namespaces = { };
@@ -93,13 +97,13 @@
                 }
                 
                 if (element.examples) {
-                    for (var i = 0, len = element.examples.length; i < len; i++) {
+                    for (i = 0, len = element.examples.length; i < len; i++) {
                         parentNode.functions[element.name].examples.push(element.examples[i]);
                     }
                 }
                 
                 if (element.params) {
-                    for (var i = 0, len = element.params.length; i < len; i++) {
+                    for (i = 0, len = element.params.length; i < len; i++) {
                         thisFunction.parameters.push({
                             'name': element.params[i].name,
                             'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
@@ -146,13 +150,13 @@
                 }
                 
                 if (element.examples) {
-                    for (var i = 0, len = element.examples.length; i < len; i++) {
+                    for (i = 0, len = element.examples.length; i < len; i++) {
                         thisEvent.examples.push(element.examples[i]);
                     }
                 }
                 
                 if (element.params) {
-                    for (var i = 0, len = element.params.length; i < len; i++) {
+                    for (i = 0, len = element.params.length; i < len; i++) {
                         thisEvent.parameters.push({
                             'name': element.params[i].name,
                             'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
@@ -186,13 +190,13 @@
                 };
                 
                 if (element.examples) {
-                    for (var i = 0, len = element.examples.length; i < len; i++) {
+                    for (i = 0, len = element.examples.length; i < len; i++) {
                         thisClass.constructor.examples.push(element.examples[i]);
                     }
                 }
                 
                 if (element.params) {
-                    for (var i = 0, len = element.params.length; i < len; i++) {
+                    for (i = 0, len = element.params.length; i < len; i++) {
                         thisClass.constructor.parameters.push({
                             'name': element.params[i].name,
                             'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
@@ -209,5 +213,4 @@
         });
     }
 
-})();
-
+}());

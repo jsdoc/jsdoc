@@ -1,3 +1,4 @@
+/*global env: true */
 /**
     @overview Translate doclet descriptions from MarkDown into HTML.
     @module plugins/markdown
@@ -38,7 +39,7 @@ function getParser(parser, conf) {
 
         return function(source) {
             return parser.renderJsonML(parser.toHTMLTree(source, conf.dialect));
-        }
+        };
     } else {
         throw "unknown Markdown parser: '" + parser + "'";
     }
