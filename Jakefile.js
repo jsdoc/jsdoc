@@ -1,8 +1,10 @@
+/*global desc: true, fail: true, Mustache: true, task: true */
 // see: https://github.com/mde/jake
 
 desc('Updating package.json revision.');
 task('default', [], function(params) {
-    var fs = require('fs'), sys = require('sys');
+    /*jshint evil: true */
+    var fs = require('fs');
 
     // import the Mustache template tool
     eval(fs.readFileSync('Jake/lib/mustache.js', 'utf8'));
@@ -29,7 +31,7 @@ task('default', [], function(params) {
 
 desc('Installs a plugin/template.');
 task('install', [], function(loc) {
-    var fs = require('fs'), util = require('util'), path = require('path'), wrench = require('wrench/wrench');
+    var fs = require('fs'), path = require('path'), wrench = require('wrench/wrench');
 
     if(!loc) {
         fail("You must specify the location of the plugin/template.");

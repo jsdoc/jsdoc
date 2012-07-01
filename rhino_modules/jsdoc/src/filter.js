@@ -1,8 +1,8 @@
 /**
-	@module jsdoc/src/filter
-	
-	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @module jsdoc/src/filter
+    
+    @author Michael Mathews <micmath@gmail.com>
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
@@ -14,13 +14,13 @@
  */
 exports.Filter = function(opts) {
     this.exclude = opts.exclude || null;
-    this.includePattern = opts.includePattern? 
+    this.includePattern = opts.includePattern?
                             typeof opts.includePattern === 'string'? new RegExp(opts.includePattern) : opts.includePattern
                             : null;
-    this.excludePattern = opts.excludePattern? 
+    this.excludePattern = opts.excludePattern?
                             typeof opts.excludePattern === 'string'? new RegExp(opts.excludePattern) : opts.excludePattern
                             : null;
-}
+};
 
 /**
     @param {string} filepath - The filepath to check.
@@ -40,4 +40,4 @@ exports.Filter.prototype.isIncluded = function(filepath) {
     }
     
     return true;
-}
+};

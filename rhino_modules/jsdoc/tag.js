@@ -1,15 +1,15 @@
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
     Functionality related to JSDoc tags.
-	@module jsdoc/tag
-	@requires jsdoc/tag/dictionary
-	@requires jsdoc/tag/validator
-	@requires jsdoc/tag/type
+    @module jsdoc/tag
+    @requires jsdoc/tag/dictionary
+    @requires jsdoc/tag/validator
+    @requires jsdoc/tag/type
  */
 
 	
@@ -21,6 +21,50 @@ var jsdoc = {
     }
 };
 
+function trim(text, newlines) {
+    if (!text) { return ''; }
+    
+    if (newlines) {
+        return text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
+    }
+    else {
+        return text.replace(/^\s+|\s+$/g, '');
+    }
+}
+
+/**
+    Parse the parameter name and parameter desc from the tag text.
+    @inner
+    @method parseParamText
+    @memberof module:jsdoc/tag
+    @param {string} tagText
+    @returns {{paramName: string, paramDesc: string, paramOptional: boolean, paramDefault: boolean}}
+ */
+function parseParamText(tagText) {
+    var pname, pdesc, poptional, pdefault;
+    
+    // like: pname, pname pdesc, or name - pdesc
+    tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
+    pname = RegExp.$1;
+    pdesc = RegExp.$3;
+
+    if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
+        pname = RegExp.$1;
+        poptional = true;
+        
+        if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
+            pname = RegExp.$1;
+            pdefault = RegExp.$2;
+        }
+    }
+    return {
+        paramName: pname,
+        paramDesc: pdesc,
+        paramOptional: poptional,
+        paramDefault: pdefault
+    };
+}
+
 /**
     Constructs a new tag object. Calls the tag validator.
     @class
@@ -30,9 +74,16 @@ var jsdoc = {
     @param {object=} meta
  */
 exports.Tag = function(tagTitle, tagBody, meta) {
-    var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle),
-        meta = meta  || {};
-    	
+    var parsed,
+        parsedParamText,
+        paramName,
+        paramDesc,
+        paramOptional,
+        paramDefault;
+    var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle);
+    
+    meta = meta || {};
+    
     this.originalTitle = trim(tagTitle);
     
     /** The title part of the tag: @title text */
@@ -52,28 +103,25 @@ exports.Tag = function(tagTitle, tagBody, meta) {
             /** The value property represents the result of parsing the tag text. */
             this.value = {};
             
-            var [
-                /*Array.<string>*/ typeNames,
-                /*any*/ remainingText,
-                /*?boolean*/ optional,
-                /*?boolean*/ nullable,
-                /*?boolean*/ variable
-            ] = jsdoc.tag.type.parse(this.text);
+            parsed = jsdoc.tag.type.parse(this.text);
 
-            if (typeNames.length) {
+            if (parsed.type.length) {
                 this.value.type = {
-                    names:    typeNames,
-                    optional: optional,
-                    nullable: nullable,
-                    variable: variable
+                    names:    parsed.type,
+                    optional: parsed.optional,
+                    nullable: parsed.nullable,
+                    variable: parsed.variable
                 };
             }
 
-            if (remainingText) {
+            if (parsed.text) {
                 if (tagDef.canHaveName) {
-                    var [paramName, paramDesc, paramOptional, paramDefault]
-                        = parseParamText(remainingText);
-                    
+                    parsedParamText = parseParamText(parsed.text);
+                    paramName = parsedParamText.paramName;
+                    paramDesc = parsedParamText.paramDesc;
+                    paramOptional = parsedParamText.paramOptional;
+                    paramDefault = parsedParamText.paramDefault;
+                     
                     // note the dash is a special case: as a param name it means "no name"
                     if (paramName && paramName !== '-') { this.value.name = paramName; }
                     
@@ -82,7 +130,7 @@ exports.Tag = function(tagTitle, tagBody, meta) {
                     if (paramDefault)  { this.value.defaultvalue = paramDefault; }
                 }
                 else {
-                    this.value.description = remainingText;
+                    this.value.description = parsed.text;
                 }
             }
         }
@@ -92,43 +140,4 @@ exports.Tag = function(tagTitle, tagBody, meta) {
     }
     
     jsdoc.tag.validator.validate(this, meta);
-}
-
-function trim(text, newlines) {
-	if (!text) { return ''; }
-	
-	if (newlines) {
-	    return text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
-	}
-	else {
-	    return text.replace(/^\s+|\s+$/g, '');
-	}
-}
-
-/**
-	Parse the parameter name and parameter desc from the tag text.
-	@inner
-	@method parseParamText
-	@memberof module:jsdoc/tag
-	@param {string} tagText
-	@returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
- */
-function parseParamText(tagText) {
-	var pname, pdesc, poptional, pdefault;
-	
-	// like: pname, pname pdesc, or name - pdesc
-	tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
-	pname = RegExp.$1;
-	pdesc = RegExp.$3;
-
-	if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
-		pname = RegExp.$1;
-		poptional = true;
-		
-		if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
-			pname = RegExp.$1;
-			pdefault = RegExp.$2;
-		}
-	}
-	return [pname, pdesc, poptional, pdefault];
-}
+};

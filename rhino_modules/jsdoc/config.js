@@ -1,12 +1,12 @@
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
-	@module jsdoc/config
-	@requires common/util
+    @module jsdoc/config
+    @requires common/util
  */
 
 // used to do recursive merge
@@ -21,15 +21,13 @@ const defaults = {
     "jsVersion": 180
 };
 
-module.exports = Config;
-
 /**
     @class
     @classdesc Represents a JSDoc application configuration.
     @param {string} [json] - The contents of config.json.
- */ 
+ */
 function Config(json) {
-    var json = JSON.parse( (json || "{}") );
+    json = JSON.parse( (json || "{}") );
     
     this._config = util.mergeRecurse(defaults, json);
 }
@@ -39,5 +37,6 @@ function Config(json) {
  */
 Config.prototype.get = function() {
     return this._config;
-}
+};
 
+module.exports = Config;

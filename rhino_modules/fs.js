@@ -1,7 +1,36 @@
+/*global Packages:true */
 exports.readFileSync = function(filename, encoding) {
     encoding = encoding || 'utf-8';
 
     return readFile(filename, encoding);
+};
+
+function exists(path) {
+    var f = new java.io.File(path);
+
+    if (f.isDirectory()){
+        return true;
+    }
+    if (!f.exists()){
+        return false;
+    }
+    if (!f.canRead()){
+        return false;
+    }
+    return true;
+}
+
+var stat = exports.stat = exports.statSync = function(path, encoding) {
+    var f = new java.io.File(path);
+    return {
+        isFile: function() {
+            return f.isFile();
+        },
+        isDirectory: function() {
+            return f.isDirectory();
+        }
+    };
+
 };
 
 var readdirSync = exports.readdirSync = function(path) {
@@ -63,50 +92,6 @@ var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     return _allFiles;
 };
 
-var stat = exports.stat = exports.statSync = function(path, encoding) {
-    var f = new java.io.File(path);
-    return {
-        isFile: function() {
-            return f.isFile();
-        },
-        isDirectory: function() {
-            return f.isDirectory();
-        }
-    };
-
-};
-
-exports.mkPath = function(/**Array*/ path) {
-    if (path.constructor != Array){path = path.split(/[\\\/]/);}
-    var make = "";
-    for (var i = 0, l = path.length; i < l; i++) {
-        make += path[i] + '/';
-        if (! exists(make)) {
-            makeDir(make);
-        }
-    }
-};
-
-function makeDir(/**string*/ path) {
-    var dirPath = toDir(path);
-    (new java.io.File(dirPath)).mkdir();
-}
-
-function exists(path) {
-    var f = new java.io.File(path);
-
-    if (f.isDirectory()){
-        return true;
-    }
-    if (!f.exists()){
-        return false;
-    }
-    if (!f.canRead()){
-        return false;
-    }
-    return true;
-}
-
 var toDir = exports.toDir = function(path) {
     var f = new java.io.File(path);
 
@@ -120,12 +105,33 @@ var toDir = exports.toDir = function(path) {
     return parts.join('/');
 };
 
+function makeDir(/**string*/ path) {
+    var dirPath = toDir(path);
+    (new java.io.File(dirPath)).mkdir();
+}
+
+exports.mkPath = function(/**Array*/ path) {
+    if (path.constructor != Array){path = path.split(/[\\\/]/);}
+    var make = "";
+    for (var i = 0, l = path.length; i < l; i++) {
+        make += path[i] + '/';
+        if (! exists(make)) {
+            makeDir(make);
+        }
+    }
+};
+
+var toFile = exports.toFile = function(path) {
+    var parts = path.split(/[\\\/]/);
+    return parts.pop();
+};
+
 exports.copyFile = function(inFile, outDir, fileName) {
     if (fileName == null){fileName = toFile(inFile);}
 
     outDir = toDir(outDir);
 
-    var inFile = new java.io.File(inFile);
+    inFile = new java.io.File(inFile);
     var outFile = new java.io.File(outDir+'/'+fileName);
 
     var bis = new Packages.java.io.BufferedInputStream(new Packages.java.io.FileInputStream(inFile), 4096);
@@ -136,11 +142,6 @@ exports.copyFile = function(inFile, outDir, fileName) {
     }
     bos.close();
     bis.close();
-};
-
-var toFile = exports.toFile = function(path) {
-    var parts = path.split(/[\\\/]/);
-    return parts.pop();
 };
 
 exports.writeFileSync = function(filename, data, encoding) {

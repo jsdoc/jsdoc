@@ -1,7 +1,7 @@
-var hasOwnProperty = Object.prototype.hasOwnProperty;
+var hasOwnProp = Object.prototype.hasOwnProperty;
 
 exports.getDocSetFromFile = function(filename, parser) {
-    var sourceCode = readFile(__dirname + '/' + filename),
+    var sourceCode = readFile(env.dirname + '/' + filename),
         testParser = parser || new (require('jsdoc/src/parser')).Parser(),
         doclets;
 
@@ -28,7 +28,7 @@ exports.getDocSetFromFile = function(filename, parser) {
 exports.indexAll = function(docs) {
     var index = {};
     docs.forEach(function(doc) {
-        if (!hasOwnProperty.call(index, doc.longname)){index[doc.longname] = [];}
+        if (!hasOwnProp.call(index, doc.longname)){index[doc.longname] = [];}
         index[doc.longname].push(doc);
     });
     docs.index = index;

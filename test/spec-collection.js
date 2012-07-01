@@ -33,7 +33,7 @@ exports.load = function(loadpath, matcher, clear) {
     }
     var wannaBeSpecs = wrench.readdirSyncRecursive(loadpath);
     for (var i = 0; i < wannaBeSpecs.length; i++) {
-        var file = path.join(__dirname, loadpath, wannaBeSpecs[i]);
+        var file = path.join(env.dirname, loadpath, wannaBeSpecs[i]);
         try {
             if (fs.statSync(file).isFile()) {
                 if (!/.*node_modules.*/.test(file) && matcher.test(path.filename(file))) {

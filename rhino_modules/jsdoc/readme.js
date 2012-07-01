@@ -1,20 +1,44 @@
+/*global env: true */
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
     Make the contents of a README file available to include in the output.
-	@module jsdoc/readme
-	@author Michael Mathews <micmath@gmail.com>
+    @module jsdoc/readme
+    @author Michael Mathews <micmath@gmail.com>
     @author Ben Blank <ben.blank@gmail.com>
  */
 
-module.exports = ReadMe;
-
 var fs = require('fs'),
     conf = env.conf.markdown;
+
+function getParser(parser, conf) {
+    conf = conf || {};
+
+    if (parser === 'gfm') {
+        parser = new (require('gfm/showdown').Converter)();
+        parser.githubRepoOwner = conf.githubRepoOwner;
+        parser.githubRepoName = conf.githubRepoName;
+        parser.hardwrap = !!conf.hardwrap;
+
+        return function(source) {
+            return parser.makeHtml(source);
+        };
+    }
+    else if (parser === 'evilstreak') {
+        parser = require('evilstreak/markdown');
+
+        return function(source) {
+            return parser.renderJsonML(parser.toHTMLTree(source, conf.dialect));
+        };
+    }
+    else {
+        throw 'unknown Markdown parser: "' + parser + '"';
+    }
+}
 
 /**
     @class
@@ -40,28 +64,4 @@ function ReadMe(path) {
     
 }
 
-function getParser(parser, conf) {
-    conf = conf || {};
-
-    if (parser === 'gfm') {
-        parser = new (require('gfm/showdown').Converter)();
-        parser.githubRepoOwner = conf.githubRepoOwner;
-        parser.githubRepoName = conf.githubRepoName;
-        parser.hardwrap = !!conf.hardwrap;
-
-        return function(source) {
-            return parser.makeHtml(source);
-        };
-    }
-    else if (parser === 'evilstreak') {
-        parser = require('evilstreak/markdown');
-
-        return function(source) {
-            return parser.renderJsonML(parser.toHTMLTree(source, conf.dialect));
-        }
-    }
-    else {
-        throw 'unknown Markdown parser: "' + parser + '"';
-    }
-}
-
+module.exports = ReadMe;

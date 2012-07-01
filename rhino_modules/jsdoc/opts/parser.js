@@ -1,22 +1,22 @@
 /**
-	@module jsdoc/opts/parser
-	@requires common/args
-	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @module jsdoc/opts/parser
+    @requires common/args
+    @author Michael Mathews <micmath@gmail.com>
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 var common = {
-	args: require('common/args')
+    args: require('common/args')
 };
 
 var argParser = new common.args.ArgParser(),
-	ourOptions,
-	defaults = {
-		destination: './out/'
-	};
+    ourOptions,
+    defaults = {
+        destination: './out/'
+    };
 
 argParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
-argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc __dirname + /conf.json');
+argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc env.dirname + /conf.json');
 argParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: utf-8');
 argParser.addOption('T', 'test',        false, 'Run all tests and quit.');
 argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
@@ -36,42 +36,42 @@ argParser.addOption(null, 'match',      true,  'only run tests containing <value
 argParser.addOption(null, 'coffee',     false,  'load coffee-script which allows execution .coffee files');
 
 /**
-	Set the options for this app.
-	@throws {Error} Illegal arguments will throw errors.
-	@param {string|String[]} args The command line arguments for this app.
+    Set the options for this app.
+    @throws {Error} Illegal arguments will throw errors.
+    @param {string|String[]} args The command line arguments for this app.
  */
 exports.parse = function(args) {
-	args = args || [];
+    args = args || [];
 
-	if (typeof args === 'string' || args.constructor === String) {
-		args = (''+args).split(/\s+/g);
-	}
+    if (typeof args === 'string' || args.constructor === String) {
+        args = (''+args).split(/\s+/g);
+    }
 
-	ourOptions = argParser.parse(args, defaults);
+    ourOptions = argParser.parse(args, defaults);
 
-	return ourOptions;
-}
+    return ourOptions;
+};
 
 /**
-	Display help message for options.
+    Display help message for options.
  */
 exports.help = function() {
     return argParser.help();
-}
+};
 
 /**
-	Get a named option.
-	@param {string} name The name of the option.
-	@return {string} The value associated with the given name.
+    Get a named option.
+    @param {string} name The name of the option.
+    @return {string} The value associated with the given name.
  *//**
-	Get all the options for this app.
-	@return {Object} A collection of key/values representing all the options.
+    Get all the options for this app.
+    @return {Object} A collection of key/values representing all the options.
  */
 exports.get = function(name) {
-	if (typeof name === 'undefined') {
-		return ourOptions;
-	}
-	else {
-		return ourOptions[name];
-	}
-}
+    if (typeof name === 'undefined') {
+        return ourOptions;
+    }
+    else {
+        return ourOptions[name];
+    }
+};

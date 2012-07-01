@@ -5,25 +5,13 @@
 var hash = require('pajhome/hash');
 var dictionary = require('jsdoc/tag/dictionary');
 
+// compute it here just once
+var nsprefix = /^(event|module|external):/;
+
+var files = {};
+
 exports.globalName = 'global';
 exports.fileExtension = '.html';
-
-/** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
-exports.resolveLinks = function(str) {
-    str = str.replace(/(?:\[(.+?)\])?\{@link +(.+?)\}/gi,
-        function(match, content, longname) {
-            return toLink(longname, content);
-        }
-    );
-
-    str = str.replace(/(?:\[(.+?)\])?\{@tutorial +(.+?)\}/gi,
-        function(match, content, tutorial) {
-            return toTutorial(tutorial, content);
-        }
-    );
-
-    return str;
-}
 
 // two-way lookup
 var linkMap = {
@@ -34,30 +22,10 @@ var linkMap = {
 exports.registerLink = function(longname, url) {
     linkMap.longnameToUrl[longname] = url;
     linkMap.urlToLongname[url] = longname;
-}
+};
 
 // each container gets its own html file
 var containers = ['class', 'module', 'external', 'namespace', 'mixin'];
-
-/** Turn a doclet into a URL. */
-exports.createLink = function(doclet) {
-    var url = '';
-    
-    if (containers.indexOf(doclet.kind) < 0) {
-        var longname = doclet.longname,
-            filename = strToFilename(doclet.memberof || exports.globalName);
-        
-        url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
-    }
-    else {
-        var longname = doclet.longname,
-            filename = strToFilename(longname);
-        
-        url = filename + exports.fileExtension;
-    }
-    
-    return url;
-}
 
 function getNamespace(kind) {
     if (dictionary.isNamespace(kind)) {
@@ -66,21 +34,6 @@ function getNamespace(kind) {
     return '';
 }
 
-// compute it here just once
-var nsprefix = /^(event|module|external):/;
-
-function strToFilename(str) {
-    // allow for namespace prefix
-    var basename = str.replace(nsprefix, '$1-');
-    
-    if ( /[^$a-z0-9._-]/i.test(basename) ) {
-        return hash.hex_md5(str).substr(0, 10);
-    }
-    return makeFilenameUnique(basename, str);
-}
-
-var files = {};
-
 function makeFilenameUnique(filename, str) {
     //add suffix underscore until filename gets unique
     while (filename in files && files[filename] !== str) {
@@ -88,6 +41,16 @@ function makeFilenameUnique(filename, str) {
     }
     files[filename] = str;
     return filename;
+}
+
+function strToFilename(str) {
+    // allow for namespace prefix
+    var basename = str.replace(nsprefix, '$1-');
+    
+    if ( /[^$a-z0-9._\-]/i.test(basename) ) {
+        return hash.hex_md5(str).substr(0, 10);
+    }
+    return makeFilenameUnique(basename, str);
 }
 
 function toLink(longname, content) {
@@ -108,8 +71,8 @@ function toLink(longname, content) {
         }
     }
     else {
-	    url = linkMap.longnameToUrl[longname];
-	}
+        url = linkMap.longnameToUrl[longname];
+    }
     
     content = content || longname;
     
@@ -121,17 +84,32 @@ function toLink(longname, content) {
     }
 }
 
+/** Turn a doclet into a URL. */
+exports.createLink = function(doclet) {
+    var url = '';
+    var longname;
+    var filename;
+    
+    if (containers.indexOf(doclet.kind) < 0) {
+        longname = doclet.longname;
+        filename = strToFilename(doclet.memberof || exports.globalName);
+        
+        url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
+    }
+    else {
+        longname = doclet.longname;
+        filename = strToFilename(longname);
+        
+        url = filename + exports.fileExtension;
+    }
+    
+    return url;
+};
+
 /** @external {jsdoc.tutorial.Tutorial} */
 var tutorials;
 
-/** Sets tutorials map.
-    @param {jsdoc.tutorial.Tutorial} root - Root tutorial node.
- */
-exports.setTutorials = function(root) {
-    tutorials = root;
-};
-
-exports.toTutorial = toTutorial = function(tutorial, content) {
+var toTutorial = exports.toTutorial = function(tutorial, content) {
     if (!tutorial) {
         throw new Error('Missing required parameter: tutorial');
     }
@@ -145,7 +123,31 @@ exports.toTutorial = toTutorial = function(tutorial, content) {
     content = content || node.title;
 
     return '<a href="'+exports.tutorialToUrl(tutorial)+'">'+content+'</a>';
-}
+};
+
+/** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
+exports.resolveLinks = function(str) {
+    str = str.replace(/(?:\[(.+?)\])?\{@link +(.+?)\}/gi,
+        function(match, content, longname) {
+            return toLink(longname, content);
+        }
+    );
+
+    str = str.replace(/(?:\[(.+?)\])?\{@tutorial +(.+?)\}/gi,
+        function(match, content, tutorial) {
+            return toTutorial(tutorial, content);
+        }
+    );
+
+    return str;
+};
+
+/** Sets tutorials map.
+    @param {jsdoc.tutorial.Tutorial} root - Root tutorial node.
+ */
+exports.setTutorials = function(root) {
+    tutorials = root;
+};
 
 exports.longnameToUrl = linkMap.longnameToUrl;
 

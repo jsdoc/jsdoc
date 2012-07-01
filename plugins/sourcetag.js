@@ -34,7 +34,7 @@ exports.handlers = {
                     throw new Error('@source tag expects a valid JSON value, like { "filename": "myfile.js", "lineno": 123 }.');
                 }
 
-                !e.doclet.meta && (e.doclet.meta = {});
+                e.doclet.meta = e.doclet.meta || {};
                 e.doclet.meta.filename = value.filename || '';
                 e.doclet.meta.lineno = value.lineno || '';
             }

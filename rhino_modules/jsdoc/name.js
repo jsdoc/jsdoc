@@ -1,3 +1,4 @@
+/*global Packages: true */
 /**
     A collection of functions relating to JSDoc symbol name manipulation.
     @module jsdoc/name
@@ -21,8 +22,7 @@ var puncToScope = { '.': 'static', '~': 'inner', '#': 'instance' },
 exports.resolve = function(doclet) {
     var name = doclet.name,
         memberof = doclet.memberof || '',
-        about = {},
-        parentDoc;
+        about = {};
 
     doclet.name = name = name? (''+name).replace(/(^|\.)prototype\.?/g, '#') : '';
     
@@ -79,7 +79,7 @@ exports.resolve = function(doclet) {
                 doclet.scope = puncToScope[RegExp.$1];
                 doclet.name = doclet.name.substr(1);
             }
-            else doclet.scope = 'static'; // default scope when none is provided
+            else { doclet.scope = 'static'; } // default scope when none is provided
          
             doclet.setLongname(doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
         }
@@ -88,7 +88,7 @@ exports.resolve = function(doclet) {
     if (about.variation) {
         doclet.variation = about.variation;
     }
-}
+};
 
 /**
     @inner
@@ -110,7 +110,7 @@ function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters
 RegExp.escape = RegExp.escape || function(str) {
     var specials = new RegExp("[.*+?|()\\[\\]{}\\\\]", "g"); // .*+?|()[]{}\
     return str.replace(specials, "\\$&");
-}
+};
 
 /**
     @method module:jsdoc/name.applyNamespace
@@ -120,15 +120,16 @@ RegExp.escape = RegExp.escape || function(str) {
  */
 exports.applyNamespace = function(longname, ns) {
     var nameParts = exports.shorten(longname),
-        name = nameParts.name,
-        longname = nameParts.longname;
+        name = nameParts.name;
+    
+    longname = nameParts.longname;
 
     if ( !/^[a-zA-Z]+?:.+$/i.test(name) ) {
         longname = longname.replace( new RegExp(RegExp.escape(name)+'$'), ns + ':' + name );
     }
     
     return longname;
-}
+};
 
 /**
     Given a longname like "a.b#c(2)", slice it up into ["a.b", "#", 'c', '2'],
@@ -139,7 +140,7 @@ exports.applyNamespace = function(longname, ns) {
  */
 exports.shorten = function(longname, forcedMemberof) {
     // quoted strings in a longname are atomic, convert to tokens
-    var atoms = [], token; 
+    var atoms = [], token;
     
     // handle quoted names like foo["bar"]
     longname = longname.replace(/(\[?".+?"\]?)/g, function($) {
@@ -158,21 +159,22 @@ exports.shorten = function(longname, forcedMemberof) {
     var name = '',
         scope = '', // ., ~, or #
         memberof =  '',
+        parts,
         variation;
     
     longname = longname.replace( /\.prototype\.?/g, '#' );
          
     if (typeof forcedMemberof !== 'undefined') {
         name = longname.substr(forcedMemberof.length);
-        var parts = forcedMemberof.match(/^(.*?)([#.~]?)$/);
+        parts = forcedMemberof.match(/^(.*?)([#.~]?)$/);
 
-        if (parts[1]) memberof = parts[1] || forcedMemberof;
-        if (parts[2]) scope = parts[2];
+        if (parts[1]) { memberof = parts[1] || forcedMemberof; }
+        if (parts[2]) { scope = parts[2]; }
     }
     else {
-        var parts = longname?
-                    (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
-                    : [''];
+        parts = longname?
+                (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
+                : [''];
         
         name = parts[0] || ''; // ensure name is always initialised to avoid error being thrown when calling replace on undefined [gh-24]
         scope = parts[1] || ''; // ., ~, or #
@@ -195,7 +197,7 @@ exports.shorten = function(longname, forcedMemberof) {
 
     ////
     return {longname: longname, memberof: memberof, scope: scope, name: name, variation: variation};
-}
+};
 
 /**
     Split a string that starts with a name and ends with a description, into its parts.
@@ -238,4 +240,4 @@ exports.splitName = function(nameDesc) {
     }
     
     return { name: name, description: desc };
-}
+};
