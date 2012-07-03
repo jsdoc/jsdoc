@@ -310,14 +310,17 @@ exports.Parser.prototype.addDocletRef = function(e) {
 }
 
 exports.Parser.prototype.resolveEnum = function(e) {
-    var parent = currentParser.resolvePropertyParent(e.code.node);
+    var doop = require("jsdoc/util/doop").doop,
+        parent = currentParser.resolvePropertyParent(e.code.node);
     if (parent && parent.doclet.isEnum) {
         if (!parent.doclet.properties) { parent.doclet.properties = []; }
         // members of an enum inherit the enum's type
         if (parent.doclet.type && !e.doclet.type) { e.doclet.type = parent.doclet.type; }
         delete e.doclet.undocumented;
         e.doclet.defaultvalue = e.doclet.meta.code.value;
-        parent.doclet.properties.push(e.doclet);
+        // add the doclet to the parent's properties
+        // use a copy of the doclet to avoid circular references
+        parent.doclet.properties.push( doop(e.doclet) );
     }
 }
 
