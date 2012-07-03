@@ -91,7 +91,17 @@ exports.Tag = function(tagTitle, tagBody, meta) {
         }
     }
     
-    jsdoc.tag.validator.validate(this, meta);
+    // validate the tag. for strict validation, throw an exception; otherwise, log a warning.
+    try {
+        jsdoc.tag.validator.validate(this, meta);
+    }
+    catch (e) {
+        if (env.opts.strict) {
+            throw e;
+        } else {
+            console.log(e);
+        }
+    }
 }
 
 function trim(text, newlines) {

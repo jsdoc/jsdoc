@@ -12,7 +12,8 @@ var common = {
 var argParser = new common.args.ArgParser(),
 	ourOptions,
 	defaults = {
-		destination: './out/'
+		destination: './out/',
+		strict: true
 	};
 
 argParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
@@ -22,6 +23,7 @@ argParser.addOption('T', 'test',        false, 'Run all tests and quit.');
 argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
 argParser.addOption('p', 'private',     false, 'Display symbols marked with the @private tag. Default: false.');
 argParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
+argParser.addOption('s', 'strict',      false, 'Exit immediately if a doclet is incomplete or contains errors. Default: true');
 argParser.addOption('h', 'help',        false, 'Print this message and quit.');
 argParser.addOption('X', 'explain',     false, 'Dump all found doclet internals to console and quit.');
 argParser.addOption('q', 'query',       true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
