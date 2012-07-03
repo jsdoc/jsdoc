@@ -1,3 +1,4 @@
+var doop = require("jsdoc/util/doop").doop;
 
 (function() {
     var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -73,20 +74,6 @@
         }
         return members;
     }
-
-    function doop(o) {
-        if (o instanceof Object && o.constructor != Function) {
-            var clone = o instanceof Array ? [] : {}, prop;
-            
-            for (prop in o){
-                if ( hasOwnProperty.call(o, prop) ) { 
-                    clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop]; 
-                }
-            }
-            return clone;
-        }
-        return o;
-    };
 
     var Sorter = function(dependencies) {
         this.dependencies = dependencies;

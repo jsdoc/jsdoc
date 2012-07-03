@@ -5,6 +5,8 @@
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
+var doop = require("jsdoc/util/doop").doop;
+
 // requires docs to have been indexed: docs.index must be defined here
 /**
     Take a copy of the docs for borrowed symbols and attach them to the
@@ -47,22 +49,3 @@ exports.resolveBorrows = function(docs) {
         }
     });
 }
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-/**
-    Deep clone a simple object.
-    @private
- */
-function doop(o) {
-    if (o instanceof Object && o.constructor != Function) {
-        var clone = o instanceof Array ? [] : {}, prop;
-        
-        for (prop in o){
-            if ( hasOwnProperty.call(o, prop) ) { 
-                clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop]; 
-            }
-        }
-        return clone;
-    }
-    return o;
-};
