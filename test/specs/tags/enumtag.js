@@ -22,4 +22,10 @@ describe("@enum tag", function() {
     it('If a @type is given for the property it is reflected in the property value.', function() {
         expect(tristate.properties[2].type.names.join(', ')).toEqual('boolean');
     });
+    
+    it('An enum does not contain any circular references.', function() {
+        var dump = require("jsdoc/util/dumper").dump;
+        
+        expect( dump(tristate) ).not.toMatch("<CircularRef>");
+    });
 });
