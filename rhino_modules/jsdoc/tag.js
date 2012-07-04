@@ -1,18 +1,18 @@
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
     Functionality related to JSDoc tags.
-	@module jsdoc/tag
-	@requires jsdoc/tag/dictionary
-	@requires jsdoc/tag/validator
-	@requires jsdoc/tag/type
+    @module jsdoc/tag
+    @requires jsdoc/tag/dictionary
+    @requires jsdoc/tag/validator
+    @requires jsdoc/tag/type
  */
 
-	
+
 var jsdoc = {
     tag: {
         dictionary: require('jsdoc/tag/dictionary'),
@@ -32,7 +32,7 @@ var jsdoc = {
 exports.Tag = function(tagTitle, tagBody, meta) {
     var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle),
         meta = meta  || {};
-    	
+    
     this.originalTitle = trim(tagTitle);
     
     /** The title part of the tag: @title text */
@@ -105,40 +105,40 @@ exports.Tag = function(tagTitle, tagBody, meta) {
 }
 
 function trim(text, newlines) {
-	if (!text) { return ''; }
-	
-	if (newlines) {
-	    return text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
-	}
-	else {
-	    return text.replace(/^\s+|\s+$/g, '');
-	}
+    if (!text) { return ''; }
+    
+    if (newlines) {
+        return text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
+    }
+    else {
+        return text.replace(/^\s+|\s+$/g, '');
+    }
 }
 
 /**
-	Parse the parameter name and parameter desc from the tag text.
-	@inner
-	@method parseParamText
-	@memberof module:jsdoc/tag
-	@param {string} tagText
-	@returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
+    Parse the parameter name and parameter desc from the tag text.
+    @inner
+    @method parseParamText
+    @memberof module:jsdoc/tag
+    @param {string} tagText
+    @returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
  */
 function parseParamText(tagText) {
-	var pname, pdesc, poptional, pdefault;
-	
-	// like: pname, pname pdesc, or name - pdesc
-	tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
-	pname = RegExp.$1;
-	pdesc = RegExp.$3;
+    var pname, pdesc, poptional, pdefault;
 
-	if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
-		pname = RegExp.$1;
-		poptional = true;
-		
-		if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
-			pname = RegExp.$1;
-			pdefault = RegExp.$2;
-		}
-	}
-	return [pname, pdesc, poptional, pdefault];
+    // like: pname, pname pdesc, or name - pdesc
+    tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
+    pname = RegExp.$1;
+    pdesc = RegExp.$3;
+
+    if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
+        pname = RegExp.$1;
+        poptional = true;
+        
+        if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
+            pname = RegExp.$1;
+            pdefault = RegExp.$2;
+        }
+    }
+    return [pname, pdesc, poptional, pdefault];
 }
