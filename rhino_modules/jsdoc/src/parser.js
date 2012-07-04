@@ -8,7 +8,7 @@
 var Token = Packages.org.mozilla.javascript.Token,
     currentParser = null,
     currentSourceName = '',
-    hasOwnProperty = Object.prototype.hasOwnProperty;
+    hasOwnProp = Object.prototype.hasOwnProperty;
 
 /**
  * @class
@@ -180,7 +180,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             id = 'astnode'+scope.enclosingFunction.hashCode();
             doclet = this.refs[id];
             if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
-                var alias = hasOwnProperty.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
+                var alias = hasOwnProp.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
                 if (alias !== false) {
                     return [alias, basename];
                 }
@@ -190,7 +190,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
         }
         //First check to see if we have a global scope alias
         doclet = this.refs["__global__"];
-        if (doclet && doclet.meta.vars && hasOwnProperty.call(doclet.meta.vars, basename)) {
+        if (doclet && doclet.meta.vars && hasOwnProp.call(doclet.meta.vars, basename)) {
             var alias = doclet.meta.vars[basename];
             if (alias !== false) {
                 return [alias, basename];
@@ -234,7 +234,7 @@ exports.Parser.prototype.resolveThis = function(node) {
         }
         else {
             if (node.enclosingFunction){
-                return this.resolveThis(node.enclosingFunction/*memberof.doclet.meta.code.val*/);
+                return this.resolveThis(node.enclosingFunction/* memberof.doclet.meta.code.val */);
             }
             else return ''; // TODO handle global this?
         }
@@ -321,12 +321,18 @@ exports.Parser.prototype.resolveEnum = function(e) {
 /** @private */
 function visitNode(node) {
     var e,
-        commentSrc;
+        nodeComments,
+        comment,
+        commentSrc,
+        i,
+        l;
 
     // look for stand-alone doc comments
     if (node.type === Token.SCRIPT && node.comments) {
         // note: ALL comments are seen in this block...
-        for each(var comment in node.comments.toArray()) {
+        nodeComments = node.comments.toArray();
+        for (i = 0, l = nodeComments.length; i < l; i++) {
+            comment = nodeComments[i];
             if (comment.commentType !== Token.CommentType.JSDOC) {
                 continue;
             }
@@ -578,7 +584,7 @@ function nodeToString(node) {
     }
 
     return '' + str;
-};
+}
 
 /** @private
     @memberof module:src/parser.Parser

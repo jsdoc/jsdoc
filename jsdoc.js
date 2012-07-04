@@ -8,33 +8,6 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-/** The absolute path to the base directory of the jsdoc application.
-    @type string
-    @global
- */
-__dirname = '.',
-args = Array.prototype.slice.call(arguments, 0);
-
-// rhino has no native way to get the base dirname of the currently running script
-// so this information must be manually passed in from the command line
-for (var i = 0; i < args.length; i++) {
-    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
-        if (RegExp.$1) {
-            __dirname = RegExp.$1; // last wins
-            args.splice(i--, 1); // remove --dirname opt from arguments
-        }
-        else {
-            __dirname = args[i + 1];
-            args.splice(i--, 2);
-        }
-    }
-}
-
-load(__dirname + '/lib/rhino-shim.js');
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-
-
 /** Data representing the environment in which this app is running.
     @namespace
 */
@@ -49,14 +22,19 @@ env = {
         The command line arguments passed into jsdoc.
         @type Array
     */
-    args: Array.prototype.slice.call(args, 0),
-
+    args: [],
 
     /**
         The parsed JSON data from the configuration file.
         @type Object
     */
     conf: {},
+
+    /** 
+        The absolute path to the base directory of the jsdoc application.
+        @type string
+    */
+    dirname: '.',
 
     /**
         The command line arguments, parsed into a key/value hash.
@@ -65,6 +43,29 @@ env = {
     */
     opts: {}
 };
+
+args = Array.prototype.slice.call(arguments, 0);
+
+// rhino has no native way to get the base dirname of the currently running script
+// so this information must be manually passed in from the command line
+for (var i = 0; i < args.length; i++) {
+    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
+        if (RegExp.$1) {
+            env.dirname = RegExp.$1; // last wins
+            args.splice(i--, 1); // remove --dirname opt from arguments
+        }
+        else {
+            env.dirname = args[i + 1];
+            args.splice(i--, 2);
+        }
+    }
+}
+
+env.args = args;
+
+load(env.dirname + '/lib/rhino-shim.js');
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
 /** @global
@@ -76,7 +77,7 @@ function include(filepath) {
         load(filepath);
     }
     catch (e) {
-        console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
+        console.log('Cannot include "' + env.dirname + '/' + filepath + '": '+e);
     }
 }
 include.resolve = function(filepath) {
@@ -84,7 +85,7 @@ include.resolve = function(filepath) {
         return filepath;
     }
     
-    return __dirname + '/' + filepath;
+    return env.dirname + '/' + filepath;
 }
 
 
@@ -166,6 +167,20 @@ function installPlugins(plugins, p) {
     }
 }
 
+function indexAll(docs) {
+    var lookupTable = {},
+        hasOwnProp = Object.prototype.hasOwnProperty;
+
+    docs.forEach(function(doc) {
+        if ( !hasOwnProp.call(lookupTable, doc.longname) ) {
+            lookupTable[doc.longname] = [];
+        }
+        lookupTable[doc.longname].push(doc);
+    });
+    docs.index = lookupTable;
+}
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
@@ -188,13 +203,13 @@ function main() {
     env.opts = jsdoc.opts.parser.parse(env.args);
 
     try {
-        env.conf = new Config( fs.readFileSync( env.opts.configure || __dirname + '/conf.json' ) ).get();
+        env.conf = new Config( fs.readFileSync( env.opts.configure || env.dirname + '/conf.json' ) ).get();
     }
     catch (e) {
         try {
             //Try to copy over the example conf
-            var example = fs.readFileSync(__dirname + '/conf.json.EXAMPLE', 'utf8');
-            fs.writeFileSync(__dirname + '/conf.json', example, 'utf8');
+            var example = fs.readFileSync(env.dirname + '/conf.json.EXAMPLE', 'utf8');
+            fs.writeFileSync(env.dirname + '/conf.json', example, 'utf8');
             env.conf = JSON.parse(example);
         }
         catch(e) {
@@ -269,19 +284,6 @@ function main() {
         var packageDocs = new (require('jsdoc/package').Package)(packageJson);
         packageDocs.files = sourceFiles || [];
         docs.push(packageDocs);
-
-        function indexAll(docs) {
-            var lookupTable = {},
-                hasOwnProperty = Object.prototype.hasOwnProperty;
-
-            docs.forEach(function(doc) {
-                if ( !hasOwnProperty.call(lookupTable, doc.longname) ) {
-                    lookupTable[doc.longname] = [];
-                }
-                lookupTable[doc.longname].push(doc);
-            });
-            docs.index = lookupTable;
-        }
 
         indexAll(docs);
 

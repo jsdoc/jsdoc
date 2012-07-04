@@ -1,6 +1,6 @@
 /**
     @overview
-    @author Rafał Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
+    @author Rafa&#322; Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
@@ -75,6 +75,8 @@ exports.load = function(path) {
                 case 'js':
                 case 'json':
                     conf[name] = JSON.parse(content);
+                    // don't add this as a tutorial
+                    return;
 
                 // how can it be? check `finder' regexp
                 default:
