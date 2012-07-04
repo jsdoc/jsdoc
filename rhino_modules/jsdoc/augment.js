@@ -113,4 +113,4 @@ var doop = require("jsdoc/util/doop").doop;
     }
 
     
-})();
+}());
