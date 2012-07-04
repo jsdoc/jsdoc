@@ -76,7 +76,7 @@ function include(filepath) {
         load(filepath);
     }
     catch (e) {
-        console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
+        console.log('Cannot include "' + filepath + '": '+e);
     }
 }
 include.resolve = function(filepath) {

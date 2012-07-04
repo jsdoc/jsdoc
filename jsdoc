@@ -8,6 +8,7 @@ BASEPATH="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 # for whatever reason, Rhino requires module paths to be valid URIs
 URLPATH="file://"$BASEPATH
 URLPATH=`echo "$URLPATH" | sed -e 's/ /%20/g'`
+ENCODEDBASEPATH=`echo "$BASEPATH" | sed -e 's/ /%20/g'`
 
 if test $1 = "--debug"
 then
