@@ -321,12 +321,18 @@ exports.Parser.prototype.resolveEnum = function(e) {
 /** @private */
 function visitNode(node) {
     var e,
-        commentSrc;
+        nodeComments,
+        comment,
+        commentSrc,
+        i,
+        l;
 
     // look for stand-alone doc comments
     if (node.type === Token.SCRIPT && node.comments) {
         // note: ALL comments are seen in this block...
-        for each(var comment in node.comments.toArray()) {
+        nodeComments = node.comments.toArray();
+        for (i = 0, l = nodeComments.length; i < l; i++) {
+            comment = nodeComments[i];
             if (comment.commentType !== Token.CommentType.JSDOC) {
                 continue;
             }
@@ -578,7 +584,7 @@ function nodeToString(node) {
     }
 
     return '' + str;
-};
+}
 
 /** @private
     @memberof module:src/parser.Parser

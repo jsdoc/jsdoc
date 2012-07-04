@@ -269,8 +269,8 @@ function toTags(docletSrc) {
     docletSrc = unwrap(docletSrc);
     tagSrcs = split(docletSrc);
     
-    for each(tagSrc in tagSrcs) {
-        tags.push( {title: tagSrc.title, text: tagSrc.text} );
+    for (var i = 0, l = tagSrcs.length; i < l; i++) {
+        tags.push( {title: tagSrcs[i].title, text: tagSrcs[i].text} );
     }
     
     return tags;
