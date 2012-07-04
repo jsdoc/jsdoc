@@ -40,7 +40,7 @@
     
     function graft(parentNode, childNodes, parentLongname, parentName) {
         childNodes
-        .filter(function (element) {            
+        .filter(function (element) {
             return (element.memberof === parentLongname);
         })
         .forEach(function (element, i) {

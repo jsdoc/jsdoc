@@ -29,7 +29,7 @@ exports.defineTags = function(dictionary) {
                 doclet.access = tag.value.toLowerCase();
             }
             else {
-                delete doclet.access; 
+                delete doclet.access;
             }
         }
     });
@@ -292,7 +292,7 @@ exports.defineTags = function(dictionary) {
     
     dictionary.defineTag('instance', {
         onTagged: function(doclet, tag) {
-            setDocletScopeToTitle(doclet, tag);  
+            setDocletScopeToTitle(doclet, tag);
         }
     });
     
@@ -466,7 +466,7 @@ exports.defineTags = function(dictionary) {
     
     dictionary.defineTag('static', {
         onTagged: function(doclet, tag) {
-            setDocletScopeToTitle(doclet, tag);  
+            setDocletScopeToTitle(doclet, tag);
         }
     });
     
@@ -586,7 +586,7 @@ function setDocletDescriptionToValue(doclet, tag) {
 }
 
 function setNameToFile(doclet, tag) {
-    if (doclet.meta.filename) { 
+    if (doclet.meta.filename) {
         var name = 'file:';
         if (doclet.meta.path) { name += doclet.meta.path + java.lang.System.getProperty("file.separator"); }
         doclet.addTag( 'name', name + doclet.meta.filename );

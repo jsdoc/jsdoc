@@ -142,7 +142,7 @@ exports.applyNamespace = function(longname, ns) {
  */
 exports.shorten = function(longname, forcedMemberof) {
     // quoted strings in a longname are atomic, convert to tokens
-    var atoms = [], token; 
+    var atoms = [], token;
     
     // handle quoted names like foo["bar"]
     longname = longname.replace(/(\[?".+?"\]?)/g, function($) {

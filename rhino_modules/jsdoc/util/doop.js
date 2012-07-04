@@ -10,8 +10,8 @@ var doop = exports.doop = function(o) {
         clone = o instanceof Array ? [] : {};
         
         for (prop in o){
-            if ( hasOwnProp.call(o, prop) ) { 
-                clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop]; 
+            if ( hasOwnProp.call(o, prop) ) {
+                clone[prop] = (o[prop] instanceof Object)? doop(o[prop]) : o[prop];
             }
         }
         return clone;

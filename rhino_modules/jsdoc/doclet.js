@@ -48,7 +48,7 @@ exports.Doclet = function(docletSrc, meta) {
 exports.Doclet.prototype.postProcess = function() {
     if (!this.preserveName) { jsdoc.name.resolve(this); }
     if (this.name && !this.longname) {
-        this.setLongname(this.name);  
+        this.setLongname(this.name);
     }
     if (this.memberof === '') {
         delete(this.memberof);
