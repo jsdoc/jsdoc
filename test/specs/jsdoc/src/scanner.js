@@ -4,10 +4,10 @@ describe("jsdoc/src/scanner", function() {
             includePattern: new RegExp(".+\\.js(doc)?$"),
             excludePattern: new RegExp("(^|\\/)_")
         }),
-        sourceFiles = scanner.scan([__dirname+'/test/fixtures/src/'], 3, filter);
+        sourceFiles = scanner.scan([env.dirname+'/test/fixtures/src/'], 3, filter);
 
     sourceFiles = sourceFiles.map(function($) {
-        return $.replace(__dirname, '');
+        return $.replace(env.dirname, '');
     });
 
     it("should return the correct source files", function() {

@@ -54,8 +54,8 @@ exports.defineTags = function(dictionary) {
         // Allow augments value to be specified as a normal type, e.g. {Type}
         onTagText: function(text) {
             var type = require('jsdoc/tag/type'),
-                [tp, tx] = type.getTagType(text);
-            return tp || text;
+                tagType = type.getTagType(text);
+            return tagType.type || text;
         },
         onTagged: function(doclet, tag) {
             doclet.augment( firstWordOf(tag.value) );
@@ -67,8 +67,8 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('borrows', {
         mustHaveValue: true,
         onTagged: function(doclet, tag) {
-            var [target, source] = parseBorrows(doclet, tag);
-            doclet.borrow(target, source);
+            var borrows = parseBorrows(doclet, tag);
+            doclet.borrow(borrows.target, borrows.source);
         }
     });
     
@@ -625,11 +625,13 @@ function parseBorrows(doclet, tag) {
     var m = /^(\S+)(?:\s+as\s+(\S+))?$/.exec(tag.text);
     if (m) {
         if (m[1] && m[2]) {
-            return [ m[1], m[2] ];
+            return { target: m[1], source: m[2] };
         }
         else if (m[1]) {
-            return [ m[1] ];
+            return { target: m[1] };
         }
+    } else {
+        return {};
     }
 }
 

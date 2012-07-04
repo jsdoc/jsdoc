@@ -8,27 +8,39 @@
 
 /**
 	@param {string} tagValue
-	@returns {Array.<string>}
+	@returns {object} Hash with type, text, optional, nullable, and variable properties
  */
 exports.parse = function(tagValue) {
 	if (typeof tagValue !== 'string') { tagValue = ''; }
 	var type = '',
 		text = '',
-		count = 0,
+		tagType,
 		optional,
 		nullable,
 		variable;
 	
-	[type, text] = getTagType(tagValue);
-	if (type === '') { text = tagValue; }
+	tagType = getTagType(tagValue);
+    type = tagType.type;
+    if (tagType.type === '') {
+        text = tagValue;
+    } else {
+        text = tagType.text;
+    }
 	
-	[type, optional] = parseOptional(type);
-	[type, nullable] = parseNullable(type);
-	[type, variable] = parseVariable(type);
+	optional = parseOptional(type);
+	nullable = parseNullable(type);
+	variable = parseVariable(type);
+	type = variable.type || nullable.type || optional.type;
 
 	type = parseTypes(type); // make it into an array
 
-	return [type, text, optional, nullable, variable];
+	return {
+	    type: type,
+	    text: text,
+	    optional: optional.optional,
+	    nullable: nullable.nullable,
+	    variable: variable.variable
+	};
 }
 
 function parseOptional(type) {
@@ -40,7 +52,7 @@ function parseOptional(type) {
 		optional = true;
 	}
 	
-	return [type, optional];
+	return { type: type, optional: optional };
 }
 
 function parseNullable(type) {
@@ -52,7 +64,7 @@ function parseNullable(type) {
 		nullable = (RegExp.$1 === '?')? true : false;
 	}
 	
-	return [type, nullable];
+	return { type: type, nullable: nullable };
 }
 
 function parseVariable(type) {
@@ -64,7 +76,7 @@ function parseVariable(type) {
 		variable = true;
 	}
 	
-	return [type, variable];
+	return { type: type, variable: variable };
 }
 
 function parseTypes(type) {
@@ -110,7 +122,7 @@ function getTagType(tagValue) {
             }
         }
     }
-    return [type, text];
+    return { type: type, text: text };
 }
 exports.getTagType = getTagType;
 

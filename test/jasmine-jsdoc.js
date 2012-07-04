@@ -15,7 +15,7 @@ jasmine.loadHelpersInFolder = function(folder, matcher) {
     helpers = helperCollection.getSpecs();
     for ( var i = 0, len = helpers.length; i < len; ++i) {
         var file = helpers[i].path();
-        var helper = require(file.replace(/\\/g, '/').replace(new RegExp('^' + __dirname + '/'), "").replace(/\.*$/, ""));
+        var helper = require(file.replace(/\\/g, '/').replace(new RegExp('^' + env.dirname + '/'), "").replace(/\.*$/, ""));
 
         for (var key in helper) {
             this[key] = helper[key];
@@ -79,7 +79,7 @@ jasmine.executeSpecsInFolder = function(folder, done, verbose, matcher) {
     var specsList = specs.getSpecs();
     for ( var i = 0, len = specsList.length; i < len; ++i) {
         var filename = specsList[i];
-        require(filename.path().replace(/\\/g, '/').replace(new RegExp('^' + __dirname + '/'), "").replace(/\.\w+$/, ""));
+        require(filename.path().replace(/\\/g, '/').replace(new RegExp('^' + env.dirname + '/'), "").replace(/\.\w+$/, ""));
     }
 
     //Run Jasmine
