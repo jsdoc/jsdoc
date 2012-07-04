@@ -52,7 +52,11 @@ var dictionary = {
     
     /** @function */
     isNamespace: function(kind) {
-        return ( ~ _namespaces.indexOf(kind) );
+        if ( _namespaces.indexOf(kind) !== -1) {
+            return true;
+        }
+        
+        return false;
     },
     
     /** @function */
