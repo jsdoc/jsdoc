@@ -1,7 +1,7 @@
 var doop = require("jsdoc/util/doop").doop;
 
 (function() {
-    var hasOwnProperty = Object.prototype.hasOwnProperty;
+    var hasOwnProp = Object.prototype.hasOwnProperty;
     
     exports.addInherited = function(docs) {
         var dependencies = mapDependencies(docs.index);
@@ -11,7 +11,7 @@ var doop = require("jsdoc/util/doop").doop;
             var additions = getAdditions(doclets, docs);
             additions.forEach(function(doc) {
                 var name = doc.longname;
-                if ( !hasOwnProperty.call(docs.index, name) ) {
+                if ( !hasOwnProp.call(docs.index, name) ) {
                     docs.index[name] = [];
                 }
                 docs.index[name].push(doc);
@@ -104,7 +104,7 @@ var doop = require("jsdoc/util/doop").doop;
     function sort(dependencies) {
         var sorter = new Sorter(dependencies);
         return sorter.sort();
-    };
+    }
 
     
 })();

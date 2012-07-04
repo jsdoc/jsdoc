@@ -1,8 +1,8 @@
 /**
-	@overview Schema for validating JSON produced by JSDoc Toolkit.
-	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
-	@see <http://tools.ietf.org/html/draft-zyp-json-schema-02>
+    @overview Schema for validating JSON produced by JSDoc Toolkit.
+    @author Michael Mathews <micmath@gmail.com>
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @see <http://tools.ietf.org/html/draft-zyp-json-schema-02>
  */
 
 exports.jsdocSchema = {
@@ -11,9 +11,9 @@ exports.jsdocSchema = {
             "type": "array",
             "items": {
                 "type": "object",
-				"additionalProperties": false,
+                "additionalProperties": false,
                 "properties": {
-                	"author": {
+                    "author": {
                         "type": ["string", "array"],
                         "optional": true,
                         "items": {
@@ -62,10 +62,10 @@ exports.jsdocSchema = {
                             "type": "string"
                         }
                     },
-					"deprecated": { // is usage of this symbol deprecated?
-						"type": ["string", "boolean"],
-						"optional": true
-					},
+                    "deprecated": { // is usage of this symbol deprecated?
+                        "type": ["string", "boolean"],
+                        "optional": true
+                    },
                     "scope": { // how is this symbol attached to it's enclosing scope?
                         "type": "string",
                         "maxItems": 1,
@@ -98,7 +98,7 @@ exports.jsdocSchema = {
                         }
                     },
                     "implements": {
-                    	"type": ["string", "array"],
+                        "type": ["string", "array"],
                         "optional": true,
                         "items": {
                             "type": "string"
@@ -137,40 +137,40 @@ exports.jsdocSchema = {
                         }
                     },
                     "exception" : {
-                    	"optional": true,
-                    	"type": "object",
-						"properties": {
-							"type": { // what is the type of the value thrown?
-								"type": "array",
-								"optional": true,
-								"items": {
-									"type": "string"
-								}
-							},
-							"description": { // a description of the thrown value
-								"type": "string",
-								"optional": true
-							}
-						},
-						"additionalProperties": false
+                        "optional": true,
+                        "type": "object",
+                        "properties": {
+                            "type": { // what is the type of the value thrown?
+                                "type": "array",
+                                "optional": true,
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "description": { // a description of the thrown value
+                                "type": "string",
+                                "optional": true
+                            }
+                        },
+                        "additionalProperties": false
                     },
                     "returns" : {
-                    	"optional": true,
-                    	"type": "object",
-						"properties": {
-							"type": { // what is the type of the value returned?
-								"type": ["string", "array"],
-								"optional": true,
-								"items": {
-									"type": "string"
-								}
-							},
-							"description": { // a description of the returned value
-								"type": "string",
-								"optional": true
-							}
-						},
-						"additionalProperties": false
+                        "optional": true,
+                        "type": "object",
+                        "properties": {
+                            "type": { // what is the type of the value returned?
+                                "type": ["string", "array"],
+                                "optional": true,
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "description": { // a description of the returned value
+                                "type": "string",
+                                "optional": true
+                            }
+                        },
+                        "additionalProperties": false
                     },
                     "param" : { // are there function parameters associated with this doc?
                         "type": "array",
@@ -207,11 +207,11 @@ exports.jsdocSchema = {
                                     "optional": true
                                 }
                             },
-							"additionalProperties": false
+                            "additionalProperties": false
                         }
                     },
                     "thisobj": {
-                    	"type": ["string", "array"],
+                        "type": ["string", "array"],
                         "optional": true,
                         "items": {
                             "type": "string"
@@ -237,18 +237,18 @@ exports.jsdocSchema = {
                         "optional": true,
                         "maxItems": 1,
                         "properties": {
-							"file": { // what is the name of the file this doc appears in?
-								"type": "string",
-								"optional": true,
-								"maxItems": 1
-							},
-							"line": { // on what line of the file does this doc appear?
-								"type": "number",
-								"optional": true,
-								"maxItems": 1
-							}
-						},
-						"additionalProperties": false
+                            "file": { // what is the name of the file this doc appears in?
+                                "type": "string",
+                                "optional": true,
+                                "maxItems": 1
+                            },
+                            "line": { // on what line of the file does this doc appear?
+                                "type": "number",
+                                "optional": true,
+                                "maxItems": 1
+                            }
+                        },
+                        "additionalProperties": false
                     }
                 }
             }
@@ -258,51 +258,51 @@ exports.jsdocSchema = {
             "optional": true,
             "maxItems": 1,
             "properties": {
-				"project": { // to what project does this doc belong?
-					"type": "object",
-					"optional": true,
-					"maxItems": 1,
-					"properties": {
-						"name": { // the name of the project
-							"type": "string",
-							"maxItems": 1
-						},
-						"uri": { // the URI of the project
-							"type": "string",
-							"maxItems": 1,
-							"format": "uri"
-						},
-						"version": { // the version of the project
-							"type": "string",
-							"maxItems": 1
-						},
-						"lang": { // the programming language used in the project
-							"type": "string",
-							"maxItems": 1
-						}
-					},
-					"additionalProperties": false
-				},
-				"generated": { // some information about the running of the doc generator
-					"type": "object",
-					"optional": true,
-					"maxItems": 1,
-					"properties": {
-						"date": { // on what date and time was the doc generated?
-							"type": "string",
-							"maxItems": 1,
-							"optional": true,
-							"format": "date-time"
-						},
-						"parser": { // what tool was used to generate the doc?
-							"type": "string",
-							"maxItems": 1,
-							"optional": true
-						}
-					},
-					"additionalProperties": false
-				}
-			}
+                "project": { // to what project does this doc belong?
+                    "type": "object",
+                    "optional": true,
+                    "maxItems": 1,
+                    "properties": {
+                        "name": { // the name of the project
+                            "type": "string",
+                            "maxItems": 1
+                        },
+                        "uri": { // the URI of the project
+                            "type": "string",
+                            "maxItems": 1,
+                            "format": "uri"
+                        },
+                        "version": { // the version of the project
+                            "type": "string",
+                            "maxItems": 1
+                        },
+                        "lang": { // the programming language used in the project
+                            "type": "string",
+                            "maxItems": 1
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "generated": { // some information about the running of the doc generator
+                    "type": "object",
+                    "optional": true,
+                    "maxItems": 1,
+                    "properties": {
+                        "date": { // on what date and time was the doc generated?
+                            "type": "string",
+                            "maxItems": 1,
+                            "optional": true,
+                            "format": "date-time"
+                        },
+                        "parser": { // what tool was used to generate the doc?
+                            "type": "string",
+                            "maxItems": 1,
+                            "optional": true
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            }
         }
     }
 };

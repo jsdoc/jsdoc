@@ -228,7 +228,7 @@ exports.splitName = function(nameDesc) {
         if (!inQuote) {
             if ( /\s/.test(thisChar) ) {
                 desc = nameDesc.substr(i);
-                desc = desc.replace(/^[\s-\s]+/, '').trim();
+                desc = desc.replace(/^[\s\-\s]+/, '').trim();
                 break;
             }
             else {

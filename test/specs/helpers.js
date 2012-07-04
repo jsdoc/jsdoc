@@ -1,7 +1,7 @@
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 exports.getDocSetFromFile = function(filename, parser) {
-    var sourceCode = readFile(__dirname + '/' + filename),
+    var sourceCode = readFile(env.dirname + '/' + filename),
         testParser = parser || new (require('jsdoc/src/parser')).Parser(),
         doclets;
 

@@ -4,7 +4,7 @@ describe("@overview tag", function() {
         doclets;
 
     require('jsdoc/src/handlers').attachTo(srcParser);
-    doclets = srcParser.parse(__dirname + '/test/fixtures/file.js');
+    doclets = srcParser.parse(env.dirname + '/test/fixtures/file.js');
 
     it('When a file overview tag appears in a doclet, the name of the doclet should start with file: and should end with the path to the file.', function() {
         expect(doclets[0].name).toMatch(/^.*([\/\\]fixtures[\/\\]file\.js)$/);
