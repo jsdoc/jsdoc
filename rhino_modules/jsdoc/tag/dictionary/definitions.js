@@ -1,3 +1,4 @@
+/*global app: true, env: true */
 /**
 	Define tags that are known in JSDoc.
 	@module jsdoc/tag/dictionary/definitions

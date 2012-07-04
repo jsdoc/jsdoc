@@ -300,7 +300,9 @@ function fixDescription(docletSrc) {
 }
 
 function split(docletSrc) {
-	var tagSrcs = [];
+    var tagSrcs = [],
+        tagText,
+        tagTitle;
           
 	// split out the basic tags, keep surrounding whitespace
 	// like: @tagTitle tagBody

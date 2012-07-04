@@ -42,7 +42,7 @@ var doop = require("jsdoc/util/doop").doop;
 
     function getAdditions(doclets, docs) {
         var additions = [];
-        var doc, parents, members, member;
+        var doc, parents, members, member, parts;
         for (var i=0, ii=doclets.length; i<ii; ++i) {
             doc = doclets[i];
             parents = doc.augments;

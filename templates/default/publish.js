@@ -1,3 +1,4 @@
+/*global env: true, publish: true */
 (function() {
 
     var template = require('jsdoc/template'),
@@ -14,7 +15,7 @@
      */
     publish = function(data, opts, tutorials) {
         var defaultTemplatePath = 'templates/default';
-        var templatePath = (opts.template) ? opts.template : defaultTemplate;
+        var templatePath = (opts.template) ? opts.template : defaultTemplatePath;
         var out = '',
             view = new template.Template(env.dirname + '/' + templatePath + '/tmpl');
         

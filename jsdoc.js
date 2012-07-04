@@ -1,3 +1,4 @@
+/*global app: true, args: true, env: true, publish: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>

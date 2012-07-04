@@ -63,7 +63,7 @@ var dictionary = {
     
     /** @function */
     normalise: function(title) {
-        canonicalName = title.toLowerCase();
+        var canonicalName = title.toLowerCase();
             
         if ( hasOwnProp.call(_synonyms, canonicalName) ) {
             return _synonyms[canonicalName];

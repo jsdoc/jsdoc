@@ -131,7 +131,7 @@ exports.setTutorials = function(root) {
     tutorials = root;
 };
 
-exports.toTutorial = toTutorial = function(tutorial, content) {
+var toTutorial = exports.toTutorial = function(tutorial, content) {
     if (!tutorial) {
         throw new Error('Missing required parameter: tutorial');
     }

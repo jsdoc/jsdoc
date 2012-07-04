@@ -45,6 +45,7 @@ exports.load = function(path) {
     var match,
         type,
         name,
+        content,
         current,
         files = fs.ls(path);
 

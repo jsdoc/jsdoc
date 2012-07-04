@@ -11,7 +11,7 @@
   "nonew":        true,
   "plusplus":     false,
   "regexp":       false,
-  "undef":        false,
+  "undef":        true,
   "strict":       false,
   "trailing":     false,
 

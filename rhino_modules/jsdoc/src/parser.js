@@ -1,3 +1,4 @@
+/*global Packages: true */
 /**
  * @module jsdoc/src/parser
  * @requires common/util
@@ -47,7 +48,9 @@ require('common/util').mixin(exports.Parser.prototype, require('common/events'))
 exports.Parser.prototype.parse = function(sourceFiles, encoding) {
     const SCHEMA = 'javascript:';
     var sourceCode = '',
-        filename = '';
+        filename = '',
+        i,
+        leni;
 
     if (typeof sourceFiles === 'string') { sourceFiles = [sourceFiles]; }
 
@@ -495,7 +498,7 @@ function parserFactory() {
  * @memberof module:src/parser.Parser
  */
 function aboutNode(node) {
-    about = {};
+    var about = {};
 
     if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         about.name = node.type == tkn.NAMEDFUNCTIONSTATEMENT? '' : '' + node.name;
