@@ -263,8 +263,8 @@ function main() {
         }
         
         if (/(\bREADME|\.md)$/i.test(env.opts._[i])) {
-            var readme = require('jsdoc/readme');
-            env.opts.readme = new readme(env.opts._[i]).html;
+            var Readme = require('jsdoc/readme');
+            env.opts.readme = new Readme(env.opts._[i]).html;
             env.opts._.splice(i--, 1);
         }
     }
