@@ -52,34 +52,29 @@ exports.Tag = function(tagTitle, tagBody, meta) {
             /** The value property represents the result of parsing the tag text. */
             this.value = {};
             
-            var [
-                /*Array.<string>*/ typeNames,
-                /*any*/ remainingText,
-                /*?boolean*/ optional,
-                /*?boolean*/ nullable,
-                /*?boolean*/ variable
-            ] = jsdoc.tag.type.parse(this.text);
+            var tagType = jsdoc.tag.type.parse(this.text);
 
-            if (typeNames.length) {
+            if (tagType.type && tagType.type.length) {
                 this.value.type = {
-                    names:    typeNames,
-                    optional: optional,
-                    nullable: nullable,
-                    variable: variable
+                    names:    tagType.type,
+                    optional: tagType.optional,
+                    nullable: tagType.nullable,
+                    variable: tagType.variable
                 };
             }
 
+            var remainingText = tagType.text;
+
             if (remainingText) {
                 if (tagDef.canHaveName) {
-                    var [paramName, paramDesc, paramOptional, paramDefault]
-                        = parseParamText(remainingText);
+                    var paramInfo = parseParamText(remainingText);
                     
                     // note the dash is a special case: as a param name it means "no name"
-                    if (paramName && paramName !== '-') { this.value.name = paramName; }
+                    if (paramInfo.name && paramInfo.name !== '-') { this.value.name = paramInfo.name; }
                     
-                    if (paramDesc)     { this.value.description = paramDesc; }
-                    if (paramOptional) { this.value.optional = paramOptional; }
-                    if (paramDefault)  { this.value.defaultvalue = paramDefault; }
+                    if (paramInfo.desc)     { this.value.description = paramInfo.desc; }
+                    if (paramInfo.optional) { this.value.optional = paramInfo.optional; }
+                    if (paramInfo.default)  { this.value.defaultvalue = paramInfo.default; }
                 }
                 else {
                     this.value.description = remainingText;
@@ -140,5 +135,5 @@ function parseParamText(tagText) {
             pdefault = RegExp.$2;
         }
     }
-    return [pname, pdesc, poptional, pdefault];
+    return { name: pname, desc: pdesc, optional: poptional, default: pdefault };
 }

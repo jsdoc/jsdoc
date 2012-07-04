@@ -312,7 +312,9 @@ function split(docletSrc) {
 	        var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
             
             if (parsedTag) {
-                var [, tagTitle, tagText] = parsedTag;
+                // we don't need parsedTag[0]
+                tagTitle = parsedTag[1];
+                tagText = parsedTag[2];
 
                 if (tagTitle) {
                     tagSrcs.push({
