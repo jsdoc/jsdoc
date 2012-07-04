@@ -75,6 +75,8 @@ exports.load = function(path) {
                 case 'js':
                 case 'json':
                     conf[name] = JSON.parse(content);
+                    // don't add this as a tutorial
+                    return;
 
                 // how can it be? check `finder' regexp
                 default:
