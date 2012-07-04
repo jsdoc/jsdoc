@@ -37,7 +37,7 @@ function pad(depth) {
  */
 function indent(openingBrace) {
     indentBy++;
-    if (openingBrace) output += openingBrace + '\n';
+    if (openingBrace) { output += openingBrace + '\n'; }
 }
 
 /**
@@ -51,7 +51,7 @@ function outdent(closingBrace) {
     indentBy--;
     output = output.replace(/,\n$/, '\n'); // trim trailing comma
     if (closingBrace === false) { output = output.replace(/\n$/, ''); }
-    else if (closingBrace) output += pad(indentBy) + closingBrace + ',\n';
+    else if (closingBrace) { output += pad(indentBy) + closingBrace + ',\n'; }
 }
 
 var seen = [];

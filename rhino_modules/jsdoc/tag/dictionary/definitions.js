@@ -513,7 +513,9 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             if (tag.value && tag.value.type) {
                 doclet.type = tag.value.type;
-                if (doclet.kind === 'function') doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
+                if (doclet.kind === 'function') {
+                    doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
+                }
             }
         }
     });
@@ -601,7 +603,9 @@ function applyNamespace(docletOrNs, tag) {
         tag.value = app.jsdoc.name.applyNamespace(tag.value, docletOrNs);
     }
     else { // doclet
-        if (!docletOrNs.name) return; // error?
+        if (!docletOrNs.name) {
+            return; // error?
+        }
         
         //doclet.displayname = doclet.name;
         docletOrNs.longname = app.jsdoc.name.applyNamespace(docletOrNs.name, tag.title);

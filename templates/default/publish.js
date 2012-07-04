@@ -53,7 +53,7 @@
             while (doc = doc.memberof) {
                 doc = find({longname: doc});
                 if (doc) { doc = doc[0]; }
-                if (!doc) break;
+                if (!doc) { break; }
                 ancestors.unshift( linkto(doc.longname, (scopeToPunc[doc.scope] || '') + doc.name) );
             }
             if (ancestors.length) {
@@ -109,11 +109,15 @@
             }
             
             if (f.scope && f.scope !== 'instance' && f.scope !== 'global') {
-                if (f.kind == 'function' || f.kind == 'member' || f.kind == 'constant') attribs.push(f.scope);
+                if (f.kind == 'function' || f.kind == 'member' || f.kind == 'constant') {
+                    attribs.push(f.scope);
+                }
             }
             
             if (f.readonly === true) {
-                if (f.kind == 'member') attribs.push('readonly');
+                if (f.kind == 'member') {
+                    attribs.push('readonly');
+                }
             }
             
             if (f.kind === 'constant') {
@@ -246,7 +250,9 @@
         if (moduleNames.length) {
             nav += '<h3>Modules</h3><ul>';
             moduleNames.forEach(function(m) {
-                if ( !hasOwnProp.call(seen, m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                if ( !hasOwnProp.call(seen, m.longname) ) {
+                    nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                }
                 seen[m.longname] = true;
             });
             
@@ -260,7 +266,9 @@
         if (externalNames.length) {
             nav += '<h3>Externals</h3><ul>';
             externalNames.forEach(function(e) {
-                if ( !hasOwnProp.call(seen, e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
+                if ( !hasOwnProp.call(seen, e.longname) ) {
+                    nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
+                }
                 seen[e.longname] = true;
             });
             
@@ -284,7 +292,9 @@
                     nav += '<h3>Classes</h3><ul>';
                     moduleClasses = -1;
                 }
-                if ( !hasOwnProp.call(seen, c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                if ( !hasOwnProp.call(seen, c.longname) ) {
+                    nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                }
                 seen[c.longname] = true;
             });
             
@@ -298,7 +308,9 @@
         if (namespaceNames.length) {
             nav += '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
-                if ( !hasOwnProp.call(seen, n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                if ( !hasOwnProp.call(seen, n.longname) ) {
+                    nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                }
                 seen[n.longname] = true;
             });
             
@@ -309,7 +321,9 @@
 //         if (constantNames.length) {
 //             nav += '<h3>Constants</h3><ul>';
 //             constantNames.forEach(function(c) {
-//                 if ( !hasOwnProp.call(seen, c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+//                 if ( !hasOwnProp.call(seen, c.longname) ) {
+//                     nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+//                 }
 //                 seen[c.longname] = true;
 //             });
 //             
@@ -323,7 +337,9 @@
         if (mixinNames.length) {
             nav += '<h3>Mixins</h3><ul>';
             mixinNames.forEach(function(m) {
-                if ( !hasOwnProp.call(seen, m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                if ( !hasOwnProp.call(seen, m.longname) ) {
+                    nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                }
                 seen[m.longname] = true;
             });
             
@@ -347,7 +363,9 @@
             nav += '<h3>Global</h3><ul>';
             
             globalNames.forEach(function(g) {
-                if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
+                    nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                }
                 seen[g.longname] = true;
             });
             
@@ -364,25 +382,25 @@
 
         for (var longname in helper.longnameToUrl) {
             var classes = find({kind: 'class', longname: longname});
-            if (classes.length) generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]);
+            if (classes.length) { generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]); }
         
             var modules = find({kind: 'module', longname: longname});
-            if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);
+            if (modules.length) { generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]); }
             
             var namespaces = find({kind: 'namespace', longname: longname});
-            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
+            if (namespaces.length) { generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]); }
             
 //             var constants = find({kind: 'constant', longname: longname});
-//             if (constants.length) generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]);        
+//             if (constants.length) { generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]); }
 
             var mixins = find({kind: 'mixin', longname: longname});
-            if (mixins.length) generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]);        
+            if (mixins.length) { generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]); }
         
             var externals = find({kind: 'external', longname: longname});
-            if (externals.length) generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]);
+            if (externals.length) { generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]); }
         }
 
-        if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
+        if (globals.length) { generate('Global', [{kind: 'globalobj'}], 'global.html'); }
         
         // index page displays information from package.json and lists files
         var files = find({kind: 'file'}),

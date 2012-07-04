@@ -126,7 +126,7 @@ exports.Doclet.prototype.setLongname = function(name) {
 */
 exports.Doclet.prototype.borrow = function(source, target) {
     var about = {from: source};
-    if (target) about.as = target;
+    if (target) { about.as = target; }
     
     if (!this.borrowed) {
         /**
@@ -203,7 +203,7 @@ exports.Doclet.prototype.setMeta = function(meta) {
         @namespace
      */
     this.meta.code = (this.meta.code || {});
-    if (meta.id) this.meta.code.id = meta.id;
+    if (meta.id) { this.meta.code.id = meta.id; }
     if (meta.code) {
         if (meta.code.name) {
             /** The name of the symbol in the source code. */
