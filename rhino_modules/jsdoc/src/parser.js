@@ -234,7 +234,7 @@ exports.Parser.prototype.resolveThis = function(node) {
         }
         else {
             if (node.enclosingFunction){
-                return this.resolveThis(node.enclosingFunction/*memberof.doclet.meta.code.val*/);
+                return this.resolveThis(node.enclosingFunction/* memberof.doclet.meta.code.val */);
             }
             else return ''; // TODO handle global this?
         }
