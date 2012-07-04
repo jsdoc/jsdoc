@@ -17,7 +17,6 @@ function jsHintCheck(filename, source, conf) {
 
 describe("jshint-clean", function() {
     it("should generate JSHint errors for bad code", function() {
-        
         var check = function() {
             jsHintCheck("dummyFile.js", "hasOwnProperty = 0");
         };
@@ -26,7 +25,7 @@ describe("jshint-clean", function() {
     
     it("should not generate JSHint errors for good code", function() {
         var check = function() {
-            jsHintCheck("dummy.js", "var foo = 0;");
+            jsHintCheck("dummyFile.js", "var foo = 0;");
         };
         expect(check).not.toThrow();
     });
@@ -47,7 +46,7 @@ describe("jshint-clean", function() {
         };
         filter = new (require('jsdoc/src/filter').Filter)(source);
 
-        files = app.jsdoc.scanner.scan([env.dirname], 10, filter);
+        files = app.jsdoc.scanner.scan([__dirname], 10, filter);
 
         check = function() {
             jsHintCheck(files[i]);
