@@ -104,7 +104,7 @@ var doop = require("jsdoc/util/doop").doop;
     function sort(dependencies) {
         var sorter = new Sorter(dependencies);
         return sorter.sort();
-    };
+    }
 
     
 })();
