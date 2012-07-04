@@ -8,7 +8,7 @@
 var Token = Packages.org.mozilla.javascript.Token,
     currentParser = null,
     currentSourceName = '',
-    hasOwnProperty = Object.prototype.hasOwnProperty;
+    hasOwnProp = Object.prototype.hasOwnProperty;
 
 /**
  * @class
@@ -180,7 +180,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             id = 'astnode'+scope.enclosingFunction.hashCode();
             doclet = this.refs[id];
             if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
-                var alias = hasOwnProperty.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
+                var alias = hasOwnProp.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
                 if (alias !== false) {
                     return [alias, basename];
                 }
@@ -190,7 +190,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
         }
         //First check to see if we have a global scope alias
         doclet = this.refs["__global__"];
-        if (doclet && doclet.meta.vars && hasOwnProperty.call(doclet.meta.vars, basename)) {
+        if (doclet && doclet.meta.vars && hasOwnProp.call(doclet.meta.vars, basename)) {
             var alias = doclet.meta.vars[basename];
             if (alias !== false) {
                 return [alias, basename];

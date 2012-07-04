@@ -4,7 +4,7 @@
         fs = require('fs'),
         helper = require('jsdoc/util/templateHelper'),
         scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' },
-        hasOwnProperty = Object.prototype.hasOwnProperty;
+        hasOwnProp = Object.prototype.hasOwnProperty;
     
     /**
         @global
@@ -246,7 +246,7 @@
         if (moduleNames.length) {
             nav += '<h3>Modules</h3><ul>';
             moduleNames.forEach(function(m) {
-                if ( !hasOwnProperty.call(seen, m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                if ( !hasOwnProp.call(seen, m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
                 seen[m.longname] = true;
             });
             
@@ -260,7 +260,7 @@
         if (externalNames.length) {
             nav += '<h3>Externals</h3><ul>';
             externalNames.forEach(function(e) {
-                if ( !hasOwnProperty.call(seen, e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
+                if ( !hasOwnProp.call(seen, e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
                 seen[e.longname] = true;
             });
             
@@ -284,7 +284,7 @@
                     nav += '<h3>Classes</h3><ul>';
                     moduleClasses = -1;
                 }
-                if ( !hasOwnProperty.call(seen, c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                if ( !hasOwnProp.call(seen, c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
                 seen[c.longname] = true;
             });
             
@@ -298,7 +298,7 @@
         if (namespaceNames.length) {
             nav += '<h3>Namespaces</h3><ul>';
             namespaceNames.forEach(function(n) {
-                if ( !hasOwnProperty.call(seen, n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                if ( !hasOwnProp.call(seen, n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
                 seen[n.longname] = true;
             });
             
@@ -309,7 +309,7 @@
 //         if (constantNames.length) {
 //             nav += '<h3>Constants</h3><ul>';
 //             constantNames.forEach(function(c) {
-//                 if ( !hasOwnProperty.call(seen, c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+//                 if ( !hasOwnProp.call(seen, c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
 //                 seen[c.longname] = true;
 //             });
 //             
@@ -323,7 +323,7 @@
         if (mixinNames.length) {
             nav += '<h3>Mixins</h3><ul>';
             mixinNames.forEach(function(m) {
-                if ( !hasOwnProperty.call(seen, m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                if ( !hasOwnProp.call(seen, m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
                 seen[m.longname] = true;
             });
             
@@ -347,7 +347,7 @@
             nav += '<h3>Global</h3><ul>';
             
             globalNames.forEach(function(g) {
-                if ( g.kind !== 'typedef' && !hasOwnProperty.call(seen, g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
                 seen[g.longname] = true;
             });
             
