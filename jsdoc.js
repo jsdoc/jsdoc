@@ -8,6 +8,8 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
 /** Data representing the environment in which this app is running.
     @namespace
 */
@@ -151,7 +153,9 @@ function installPlugins(plugins, p) {
         //...register event handlers
         if (plugin.handlers) {
             for (var eventName in plugin.handlers) {
-                parser.on(eventName, plugin.handlers[eventName]);
+                if ( hasOwnProp.call(plugin.handlers, eventName) ) {
+                    parser.on(eventName, plugin.handlers[eventName]);
+                }
             }
         }
 
@@ -168,8 +172,7 @@ function installPlugins(plugins, p) {
 }
 
 function indexAll(docs) {
-    var lookupTable = {},
-        hasOwnProp = Object.prototype.hasOwnProperty;
+    var lookupTable = {};
 
     docs.forEach(function(doc) {
         if ( !hasOwnProp.call(lookupTable, doc.longname) ) {

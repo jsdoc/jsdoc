@@ -10,6 +10,7 @@
 
 var tutorial = require('jsdoc/tutorial'),
     fs = require('fs'),
+    hasOwnProp = Object.prototype.hasOwnProperty,
     conf = {},
     tutorials = {},
     finder = /^(.*)\.(x(?:ht)?ml|html?|md|markdown|js(?:on)?)$/i;
@@ -97,32 +98,34 @@ exports.resolve = function() {
     var item,
         current;
     for (var name in conf) {
-        // should we be restrictive here?
-        // what is someone just wants to keep sample sources in same directory with tutorials?
-        // I've decided to leave such cases alone
-        if (!(name in tutorials)) {
-            continue;
-        }
+        if ( hasOwnProp.call(conf, name) ) {
+            // should we be restrictive here?
+            // what is someone just wants to keep sample sources in same directory with tutorials?
+            // I've decided to leave such cases alone
+            if (!(name in tutorials)) {
+                continue;
+            }
 
-        item = conf[name];
-        current = tutorials[name]
+            item = conf[name];
+            current = tutorials[name]
 
-        // set title
-        if (item.title) {
-            current.title = item.title;
-        }
+            // set title
+            if (item.title) {
+                current.title = item.title;
+            }
 
-        // add children
-        if (item.children) {
-            item.children.forEach(function(child) {
-                // I really didn't want to throw you an exception in most cases
-                // but now, user, you pissed me off ;)
-                if (!(child in tutorials)) {
-                    throw new Error("Missing child tutorial: " + child);
-                }
+            // add children
+            if (item.children) {
+                item.children.forEach(function(child) {
+                    // I really didn't want to throw you an exception in most cases
+                    // but now, user, you pissed me off ;)
+                    if (!(child in tutorials)) {
+                        throw new Error("Missing child tutorial: " + child);
+                    }
 
-                tutorials[child].setParent(current);
-            });
+                    tutorials[child].setParent(current);
+                });
+            }
         }
     }
 };

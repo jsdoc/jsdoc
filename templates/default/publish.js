@@ -381,23 +381,25 @@
         view.nav = nav;
 
         for (var longname in helper.longnameToUrl) {
-            var classes = find({kind: 'class', longname: longname});
-            if (classes.length) { generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]); }
+            if ( hasOwnProp.call(helper.longnameToUrl, longname) ) {
+                var classes = find({kind: 'class', longname: longname});
+                if (classes.length) { generate('Class: '+classes[0].name, classes, helper.longnameToUrl[longname]); }
         
-            var modules = find({kind: 'module', longname: longname});
-            if (modules.length) { generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]); }
+                var modules = find({kind: 'module', longname: longname});
+                if (modules.length) { generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]); }
             
-            var namespaces = find({kind: 'namespace', longname: longname});
-            if (namespaces.length) { generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]); }
+                var namespaces = find({kind: 'namespace', longname: longname});
+                if (namespaces.length) { generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]); }
             
-//             var constants = find({kind: 'constant', longname: longname});
-//             if (constants.length) { generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]); }
+//                var constants = find({kind: 'constant', longname: longname});
+//                if (constants.length) { generate('Constant: '+constants[0].name, constants, helper.longnameToUrl[longname]); }
 
-            var mixins = find({kind: 'mixin', longname: longname});
-            if (mixins.length) { generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]); }
+                var mixins = find({kind: 'mixin', longname: longname});
+                if (mixins.length) { generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]); }
         
-            var externals = find({kind: 'external', longname: longname});
-            if (externals.length) { generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]); }
+                var externals = find({kind: 'external', longname: longname});
+                if (externals.length) { generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]); }
+            }
         }
 
         if (globals.length) { generate('Global', [{kind: 'globalobj'}], 'global.html'); }
