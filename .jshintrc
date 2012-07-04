@@ -6,7 +6,7 @@
   "immed":        true,
   "latedef":      false,
   "newcap":       true,
-  "noarg":        false,
+  "noarg":        true,
   "noempty":      false,
   "nonew":        false,
   "plusplus":     false,
