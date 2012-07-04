@@ -167,6 +167,20 @@ function installPlugins(plugins, p) {
     }
 }
 
+function indexAll(docs) {
+    var lookupTable = {},
+        hasOwnProp = Object.prototype.hasOwnProperty;
+
+    docs.forEach(function(doc) {
+        if ( !hasOwnProp.call(lookupTable, doc.longname) ) {
+            lookupTable[doc.longname] = [];
+        }
+        lookupTable[doc.longname].push(doc);
+    });
+    docs.index = lookupTable;
+}
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
@@ -270,19 +284,6 @@ function main() {
         var packageDocs = new (require('jsdoc/package').Package)(packageJson);
         packageDocs.files = sourceFiles || [];
         docs.push(packageDocs);
-
-        function indexAll(docs) {
-            var lookupTable = {},
-                hasOwnProp = Object.prototype.hasOwnProperty;
-
-            docs.forEach(function(doc) {
-                if ( !hasOwnProp.call(lookupTable, doc.longname) ) {
-                    lookupTable[doc.longname] = [];
-                }
-                lookupTable[doc.longname].push(doc);
-            });
-            docs.index = lookupTable;
-        }
 
         indexAll(docs);
 
