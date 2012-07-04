@@ -2,7 +2,7 @@
 var fs = require("fs"),
     path = require("path");
 
-var config = JSON.parse( fs.readFileSync( path.join(__dirname, ".jshintrc"), "utf-8" ) );
+var config = JSON.parse( fs.readFileSync( path.join(env.dirname, ".jshintrc"), "utf-8" ) );
 
 function jsHintCheck(filename, source, conf) {
     var JSHINT = require("jshint/jshint").JSHINT;
@@ -46,7 +46,7 @@ describe("jshint-clean", function() {
         };
         filter = new (require('jsdoc/src/filter').Filter)(source);
 
-        files = app.jsdoc.scanner.scan([__dirname], 10, filter);
+        files = app.jsdoc.scanner.scan([env.dirname], 10, filter);
 
         check = function() {
             jsHintCheck(files[i]);

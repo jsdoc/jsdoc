@@ -16,7 +16,7 @@
         var defaultTemplatePath = 'templates/default';
         var templatePath = (opts.template) ? opts.template : defaultTemplate;
         var out = '',
-            view = new template.Template(__dirname + '/' + templatePath + '/tmpl');
+            view = new template.Template(env.dirname + '/' + templatePath + '/tmpl');
         
         // set up templating
         view.layout = 'layout.tmpl';
@@ -177,7 +177,7 @@
         fs.mkPath(outdir);
 
         // copy static files to outdir
-        var fromDir = __dirname + '/' + templatePath + '/static',
+        var fromDir = env.dirname + '/' + templatePath + '/static',
             staticFiles = fs.ls(fromDir, 3);
             
         staticFiles.forEach(function(fileName) {
