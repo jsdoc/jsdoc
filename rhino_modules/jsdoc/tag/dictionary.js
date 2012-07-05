@@ -9,7 +9,8 @@ var _synonyms = {},
     _namespaces = [],
     hasOwnProp = Object.prototype.hasOwnProperty;
 
-function _TagDefinition(title, etc) {
+/** @private */
+function TagDefinition(title, etc) {
     etc = etc || {};
     
     this.title = dictionary.normalise(title);
@@ -21,7 +22,8 @@ function _TagDefinition(title, etc) {
     }
 }
 
-_TagDefinition.prototype.synonym = function(synonymName) {
+/** @private */
+TagDefinition.prototype.synonym = function(synonymName) {
     _synonyms[synonymName.toLowerCase()] = this.title;
     return this; // chainable
 }
@@ -30,7 +32,7 @@ _TagDefinition.prototype.synonym = function(synonymName) {
 var dictionary = {
     /** @function */
     defineTag: function(title, opts) {
-        _definitions[title] = new _TagDefinition(title, opts);
+        _definitions[title] = new TagDefinition(title, opts);
         
         if (opts.isNamespace) {
             _namespaces.push(title);
@@ -52,12 +54,16 @@ var dictionary = {
     
     /** @function */
     isNamespace: function(kind) {
-        return ( ~ _namespaces.indexOf(kind) );
+        if ( _namespaces.indexOf(kind) !== -1) {
+            return true;
+        }
+        
+        return false;
     },
     
     /** @function */
     normalise: function(title) {
-        canonicalName = title.toLowerCase();
+        var canonicalName = title.toLowerCase();
             
         if ( hasOwnProp.call(_synonyms, canonicalName) ) {
             return _synonyms[canonicalName];

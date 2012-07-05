@@ -1,3 +1,4 @@
+/*global app: true, args: true, env: true, publish: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -7,6 +8,8 @@
 // try: $ java -classpath build-files/java/classes/js.jar org.mozilla.javascript.tools.shell.Main main.js `pwd` script/to/parse.js
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+var hasOwnProp = Object.prototype.hasOwnProperty;
 
 /** Data representing the environment in which this app is running.
     @namespace
@@ -30,7 +33,7 @@ env = {
     */
     conf: {},
 
-    /** 
+    /**
         The absolute path to the base directory of the jsdoc application.
         @type string
     */
@@ -151,7 +154,9 @@ function installPlugins(plugins, p) {
         //...register event handlers
         if (plugin.handlers) {
             for (var eventName in plugin.handlers) {
-                parser.on(eventName, plugin.handlers[eventName]);
+                if ( hasOwnProp.call(plugin.handlers, eventName) ) {
+                    parser.on(eventName, plugin.handlers[eventName]);
+                }
             }
         }
 
@@ -168,8 +173,7 @@ function installPlugins(plugins, p) {
 }
 
 function indexAll(docs) {
-    var lookupTable = {},
-        hasOwnProp = Object.prototype.hasOwnProperty;
+    var lookupTable = {};
 
     docs.forEach(function(doc) {
         if ( !hasOwnProp.call(lookupTable, doc.longname) ) {
@@ -260,8 +264,8 @@ function main() {
         }
         
         if (/(\bREADME|\.md)$/i.test(env.opts._[i])) {
-            var readme = require('jsdoc/readme');
-            env.opts.readme = new readme(env.opts._[i]).html;
+            var Readme = require('jsdoc/readme');
+            env.opts.readme = new Readme(env.opts._[i]).html;
             env.opts._.splice(i--, 1);
         }
     }

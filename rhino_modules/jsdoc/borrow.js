@@ -32,8 +32,8 @@ exports.resolveBorrows = function(docs) {
                         asName = asName.replace(/^prototype\./, '#');
                         var parts = asName.split('#');
                         
-                        if (parts.length === 2) clone.scope = 'instance';
-                        else clone.scope = 'static';
+                        if (parts.length === 2) { clone.scope = 'instance'; }
+                        else { clone.scope = 'static'; }
 
                         asName = parts.pop();
                         clone.name = asName;

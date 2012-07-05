@@ -27,7 +27,7 @@ module.exports = Config;
     @class
     @classdesc Represents a JSDoc application configuration.
     @param {string} [json] - The contents of config.json.
- */ 
+ */
 function Config(json) {
     var json = JSON.parse( (json || "{}") );
     

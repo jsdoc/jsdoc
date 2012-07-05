@@ -23,14 +23,16 @@ var doop = require("jsdoc/util/doop").doop;
     function mapDependencies(index) {
         var doclets, doc, len, dependencies = {};
         for (var name in index) {
-            doclets = index[name];
-            for (var i=0, ii=doclets.length; i<ii; ++i) {
-                doc = doclets[i];
-                if (doc.kind === "class") {
-                    dependencies[name] = {};
-                    len = doc.augments && doc.augments.length || 0;
-                    for (var j=0; j<len; ++j) {
-                        dependencies[name][doc.augments[j]] = true;
+            if ( hasOwnProp.call(index, name) ) {
+                doclets = index[name];
+                for (var i=0, ii=doclets.length; i<ii; ++i) {
+                    doc = doclets[i];
+                    if (doc.kind === "class") {
+                        dependencies[name] = {};
+                        len = doc.augments && doc.augments.length || 0;
+                        for (var j=0; j<len; ++j) {
+                            dependencies[name][doc.augments[j]] = true;
+                        }
                     }
                 }
             }
@@ -40,7 +42,7 @@ var doop = require("jsdoc/util/doop").doop;
 
     function getAdditions(doclets, docs) {
         var additions = [];
-        var doc, parents, members, member;
+        var doc, parents, members, member, parts;
         for (var i=0, ii=doclets.length; i<ii; ++i) {
             doc = doclets[i];
             parents = doc.augments;
@@ -83,7 +85,9 @@ var doop = require("jsdoc/util/doop").doop;
     Sorter.prototype = {
         sort: function() {
             for (var key in this.dependencies) {
-                this.visit(key);
+                if ( hasOwnProp.call(this.dependencies, key) ) {
+                    this.visit(key);
+                }
             }
             return this.sorted;
         },
@@ -94,7 +98,9 @@ var doop = require("jsdoc/util/doop").doop;
                     throw new Error("Missing dependency: " + key);
                 }
                 for (var path in this.dependencies[key]) {
-                    this.visit(path);
+                    if ( hasOwnProp.call(this.dependencies[key], path) ) {
+                        this.visit(path);
+                    }
                 }
                 this.sorted.push(key);
             }
@@ -107,4 +113,4 @@ var doop = require("jsdoc/util/doop").doop;
     }
 
     
-})();
+}());

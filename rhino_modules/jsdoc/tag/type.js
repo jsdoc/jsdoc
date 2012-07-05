@@ -82,7 +82,7 @@ function parseVariable(type) {
 function parseTypes(type) {
 	var types = [];
 	
-	if ( ~type.indexOf('|') ) {
+	if ( type.indexOf('|') !== -1 ) {
 		// remove optional parens, like: { ( string | number ) }
 		// see: http://code.google.com/closure/compiler/docs/js-for-compiler.html#types
 		if ( /^\s*\(\s*(.+)\s*\)\s*$/.test(type) ) {
