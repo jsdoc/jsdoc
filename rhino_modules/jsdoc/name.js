@@ -1,3 +1,4 @@
+/*global Packages: true */
 /**
     A collection of functions relating to JSDoc symbol name manipulation.
     @module jsdoc/name
@@ -79,7 +80,9 @@ exports.resolve = function(doclet) {
                 doclet.scope = puncToScope[RegExp.$1];
                 doclet.name = doclet.name.substr(1);
             }
-            else doclet.scope = 'static'; // default scope when none is provided
+            else {
+                doclet.scope = 'static'; // default scope when none is provided
+            }
          
             doclet.setLongname(doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
         }
@@ -139,7 +142,7 @@ exports.applyNamespace = function(longname, ns) {
  */
 exports.shorten = function(longname, forcedMemberof) {
     // quoted strings in a longname are atomic, convert to tokens
-    var atoms = [], token; 
+    var atoms = [], token;
     
     // handle quoted names like foo["bar"]
     longname = longname.replace(/(\[?".+?"\]?)/g, function($) {
@@ -166,8 +169,8 @@ exports.shorten = function(longname, forcedMemberof) {
         name = longname.substr(forcedMemberof.length);
         var parts = forcedMemberof.match(/^(.*?)([#.~]?)$/);
 
-        if (parts[1]) memberof = parts[1] || forcedMemberof;
-        if (parts[2]) scope = parts[2];
+        if (parts[1]) { memberof = parts[1] || forcedMemberof; }
+        if (parts[2]) { scope = parts[2]; }
     }
     else {
         var parts = longname?

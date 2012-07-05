@@ -1,3 +1,4 @@
+/*global app: true, env: true */
 /**
 	Define tags that are known in JSDoc.
 	@module jsdoc/tag/dictionary/definitions
@@ -28,7 +29,7 @@ exports.defineTags = function(dictionary) {
                 doclet.access = tag.value.toLowerCase();
             }
             else {
-                delete doclet.access; 
+                delete doclet.access;
             }
         }
     });
@@ -291,7 +292,7 @@ exports.defineTags = function(dictionary) {
     
     dictionary.defineTag('instance', {
         onTagged: function(doclet, tag) {
-            setDocletScopeToTitle(doclet, tag);  
+            setDocletScopeToTitle(doclet, tag);
         }
     });
     
@@ -465,7 +466,7 @@ exports.defineTags = function(dictionary) {
     
     dictionary.defineTag('static', {
         onTagged: function(doclet, tag) {
-            setDocletScopeToTitle(doclet, tag);  
+            setDocletScopeToTitle(doclet, tag);
         }
     });
     
@@ -513,7 +514,9 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             if (tag.value && tag.value.type) {
                 doclet.type = tag.value.type;
-                if (doclet.kind === 'function') doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
+                if (doclet.kind === 'function') {
+                    doclet.addTag('returns', tag.text); // for backwards compatibility we allow @type for functions to imply return type
+                }
             }
         }
     });
@@ -583,7 +586,7 @@ function setDocletDescriptionToValue(doclet, tag) {
 }
 
 function setNameToFile(doclet, tag) {
-    if (doclet.meta.filename) { 
+    if (doclet.meta.filename) {
         var name = 'file:';
         if (doclet.meta.path) { name += doclet.meta.path + java.lang.System.getProperty("file.separator"); }
         doclet.addTag( 'name', name + doclet.meta.filename );
@@ -601,7 +604,9 @@ function applyNamespace(docletOrNs, tag) {
         tag.value = app.jsdoc.name.applyNamespace(tag.value, docletOrNs);
     }
     else { // doclet
-        if (!docletOrNs.name) return; // error?
+        if (!docletOrNs.name) {
+            return; // error?
+        }
         
         //doclet.displayname = doclet.name;
         docletOrNs.longname = app.jsdoc.name.applyNamespace(docletOrNs.name, tag.title);

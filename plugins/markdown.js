@@ -1,3 +1,4 @@
+/*global env: true */
 /**
     @overview Translate doclet descriptions from MarkDown into HTML.
     @module plugins/markdown

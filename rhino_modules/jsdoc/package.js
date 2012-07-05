@@ -47,14 +47,14 @@ exports.Package = function(json) {
     */
     this.description = json.description;
     
-    /** 
+    /**
         The hash summary of the source file.
         @type {string}
         @since 3.2.0
     */
     this.version = json.version;
     
-    /** 
+    /**
      * The licenses of this package.
      * @type {Array<Object>}
      * @example

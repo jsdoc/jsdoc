@@ -48,7 +48,7 @@ exports.Doclet = function(docletSrc, meta) {
 exports.Doclet.prototype.postProcess = function() {
     if (!this.preserveName) { jsdoc.name.resolve(this); }
     if (this.name && !this.longname) {
-        this.setLongname(this.name);  
+        this.setLongname(this.name);
     }
     if (this.memberof === '') {
         delete(this.memberof);
@@ -126,7 +126,7 @@ exports.Doclet.prototype.setLongname = function(name) {
 */
 exports.Doclet.prototype.borrow = function(source, target) {
     var about = {from: source};
-    if (target) about.as = target;
+    if (target) { about.as = target; }
     
     if (!this.borrowed) {
         /**
@@ -203,7 +203,7 @@ exports.Doclet.prototype.setMeta = function(meta) {
         @namespace
      */
     this.meta.code = (this.meta.code || {});
-    if (meta.id) this.meta.code.id = meta.id;
+    if (meta.id) { this.meta.code.id = meta.id; }
     if (meta.code) {
         if (meta.code.name) {
             /** The name of the symbol in the source code. */
@@ -300,7 +300,9 @@ function fixDescription(docletSrc) {
 }
 
 function split(docletSrc) {
-	var tagSrcs = [];
+    var tagSrcs = [],
+        tagText,
+        tagTitle;
           
 	// split out the basic tags, keep surrounding whitespace
 	// like: @tagTitle tagBody

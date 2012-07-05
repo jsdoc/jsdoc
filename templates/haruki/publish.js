@@ -1,3 +1,4 @@
+/*global publish: true */
 /**
     @overview Builds a tree-like JSON string from the doclet data.
     @version 0.0.1
@@ -39,7 +40,7 @@
     
     function graft(parentNode, childNodes, parentLongname, parentName) {
         childNodes
-        .filter(function (element) {            
+        .filter(function (element) {
             return (element.memberof === parentLongname);
         })
         .forEach(function (element, i) {
@@ -209,5 +210,5 @@
         });
     }
 
-})();
+}());
 

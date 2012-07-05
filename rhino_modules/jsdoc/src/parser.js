@@ -1,3 +1,4 @@
+/*global Packages: true */
 /**
  * @module jsdoc/src/parser
  * @requires common/util
@@ -47,7 +48,9 @@ require('common/util').mixin(exports.Parser.prototype, require('common/events'))
 exports.Parser.prototype.parse = function(sourceFiles, encoding) {
     const SCHEMA = 'javascript:';
     var sourceCode = '',
-        filename = '';
+        filename = '',
+        i,
+        leni;
 
     if (typeof sourceFiles === 'string') { sourceFiles = [sourceFiles]; }
 
@@ -199,7 +202,9 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
 
         id = 'astnode'+node.parent.hashCode();
         doclet = this.refs[id];
-        if (!doclet) return ''; // global?
+        if (!doclet) {
+            return ''; // global?
+        }
         return doclet.longname||doclet.name;
     }
 }
@@ -236,16 +241,22 @@ exports.Parser.prototype.resolveThis = function(node) {
             if (node.enclosingFunction){
                 return this.resolveThis(node.enclosingFunction/* memberof.doclet.meta.code.val */);
             }
-            else return ''; // TODO handle global this?
+            else {
+                return ''; // TODO handle global this?
+            }
         }
     }
     else if (node.parent) {
         var parent = node.parent;
-        if (parent.type === Token.COLON) parent = parent.parent; // go up one more
+        if (parent.type === Token.COLON) {
+            parent = parent.parent; // go up one more
+        }
 
         memberof.id = 'astnode'+parent.hashCode();
         memberof.doclet = this.refs[memberof.id];
-        if (!memberof.doclet) return ''; // global?
+        if (!memberof.doclet) {
+            return ''; // global?
+        }
 
         return memberof.doclet.longname||memberof.doclet.name;
     }
@@ -262,7 +273,9 @@ exports.Parser.prototype.resolvePropertyParent = function(node) {
 
     if (node.parent) {
         var parent = node.parent;
-        if (parent.type === Token.COLON) parent = parent.parent; // go up one more
+        if (parent.type === Token.COLON) {
+            parent = parent.parent; // go up one more
+        }
 
         memberof.id = 'astnode'+parent.hashCode();
         memberof.doclet = this.refs[memberof.id];
@@ -366,7 +379,9 @@ function visitNode(node) {
 
         var basename = getBasename(e.code.name);
 
-        if (basename !== 'this') e.code.funcscope = currentParser.resolveVar(node, basename);
+        if (basename !== 'this') {
+            e.code.funcscope = currentParser.resolveVar(node, basename);
+        }
     }
     else if (node.type === Token.COLON) { // assignment within an object literal
         e = {
@@ -484,7 +499,7 @@ function parserFactory() {
  * @memberof module:src/parser.Parser
  */
 function aboutNode(node) {
-    about = {};
+    var about = {};
 
     if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         about.name = node.type == tkn.NAMEDFUNCTIONSTATEMENT? '' : '' + node.name;
@@ -554,7 +569,7 @@ function aboutNode(node) {
 function nodeToString(node) {
     var str;
 
-    if (!node) return;
+    if (!node) { return; }
 
     if (node.type === Token.GETPROP) {
         str = [nodeToString(node.target), node.property.string].join('.');

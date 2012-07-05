@@ -1,3 +1,4 @@
+/*global desc: true, fail: true, Mustache: true, task: true */
 // see: https://github.com/mde/jake
 
 desc('Updating package.json revision.');

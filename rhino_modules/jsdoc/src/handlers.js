@@ -146,6 +146,7 @@ exports.attachTo = function(parser) {
     });
 
     function addDoclet(newDoclet) {
+        var e;
         if (newDoclet) {
             e = { doclet: newDoclet };
             this.fire('newDoclet', e);

@@ -1,3 +1,4 @@
+/*global Packages: true */
 exports.readFileSync = function(filename, encoding) {
     encoding = encoding || 'utf-8';
 

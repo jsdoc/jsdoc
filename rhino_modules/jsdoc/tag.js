@@ -1,3 +1,4 @@
+/*global env: true */
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>

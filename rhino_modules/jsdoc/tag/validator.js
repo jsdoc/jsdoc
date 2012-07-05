@@ -1,3 +1,4 @@
+/*global env: true */
 /**
 	@module jsdoc/tag/validator
 	@requires jsdoc/tag/dictionary
