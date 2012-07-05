@@ -8,31 +8,29 @@ describe("jsdoc/tag", function() {
         return tag;
     }
 
-    it("has strict validation enabled by default", function() {
+    it("is strict, not lenient, by default", function() {
         expect(badTag).toThrow();
     });
 
-    it("throws an exception for bad tags if strict validation is enabled", function() {
-        var strict = !!env.opts.strict;
+    it("throws an exception for bad tags if the lenient option is not enabled", function() {
+        var lenient = !!env.opts.lenient;
         
-        env.opts.strict = true;
-        
+        env.opts.lenient = false;
         expect(badTag).toThrow();
         
-        env.opts.strict = strict;
+        env.opts.lenient = lenient;
     });
     
-    it("doesn't throw an exception for bad tags if strict validation is disabled", function() {
+    it("doesn't throw an exception for bad tags if the lenient option is enabled", function() {
         /*jshint evil: true */
-        var strict = !!env.opts.strict,
-            log = new Function(console.log);
-        
+        var lenient = !!env.opts.lenient,
+            log = eval(console.log);
         console.log = function() {};
-        env.opts.strict = false;
         
+        env.opts.lenient = true;
         expect(badTag).not.toThrow();
         
-        env.opts.strict = strict;
+        env.opts.lenient = lenient;
         console.log = log;
     });
 });
