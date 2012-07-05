@@ -368,7 +368,7 @@ function visitNode(node) {
     else if (node.type === Token.ASSIGN) {
         e = {
             id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
-            comment: String(node.jsDoc||'@undocumented'),
+            comment: String(node.getJsDoc()||'@undocumented'),
             lineno: node.left.getLineno(),
             filename: currentSourceName,
             astnode: node,
@@ -386,7 +386,7 @@ function visitNode(node) {
     else if (node.type === Token.COLON) { // assignment within an object literal
         e = {
             id: 'astnode'+node.hashCode(), // the id of the COLON node
-            comment: String(node.left.jsDoc||'@undocumented'),
+            comment: String(node.left.getJsDoc()||'@undocumented'),
             lineno: node.left.getLineno(),
             filename: currentSourceName,
             astnode: node,
@@ -403,12 +403,13 @@ function visitNode(node) {
 
         if (node.parent.variables.toArray()[0] === node) { // like /** blah */ var a=1, b=2, c=3;
             // the first var assignment gets any jsDoc before the whole var series
-            node.jsDoc = node.parent.jsDoc;
+            if (typeof node.setJsDoc !== 'undefined') { node.setJsDoc( node.parent.getJsDoc() ); }
+            //node.jsDoc = node.parent.jsDoc;
         }
 
         e = {
             id: 'astnode'+node.hashCode(), // the id of the VARIABLE node
-            comment: String(node.jsDoc||'@undocumented'),
+            comment: String(node.getJsDoc()||'@undocumented'),
             lineno: node.getLineno(),
             filename: currentSourceName,
             astnode: node,
@@ -433,7 +434,7 @@ function visitNode(node) {
     else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         e = {
             id: 'astnode'+node.hashCode(), // the id of the COLON node
-            comment: String(node.jsDoc||'@undocumented'),
+            comment: String(node.getJsDoc()||'@undocumented'),
             lineno: node.getLineno(),
             filename: currentSourceName,
             astnode: node,
