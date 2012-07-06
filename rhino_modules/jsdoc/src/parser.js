@@ -115,6 +115,337 @@ exports.Parser.prototype.getVisitors = function() {
     return this._visitors;
 }
 
+function pretreat(code) {
+    return code
+        // make starbangstar comments look like real jsdoc comments
+        .replace(/\/\*\!\*/g, '/**')
+
+        // merge adjacent doclets
+        .replace(/\*\/\/\*\*+/g, '@also')
+        // make lent objectliterals documentable by giving them a dummy name
+        .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/\s*)\{/g, '$1 ____ = {') // like return @lends {
+        .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/)(\s*)return(\s*)\{/g, '$2$3 return $1 ____ = {'); // like @lends return {
+}
+
+var tkn = { NAMEDFUNCTIONSTATEMENT: -1001 };
+exports.Parser.tkn = tkn;
+
+/** @private */
+function parserFactory() {
+    var cx = Packages.org.mozilla.javascript.Context.getCurrentContext();
+
+    var ce = new Packages.org.mozilla.javascript.CompilerEnvirons();
+    ce.setRecordingComments(true);
+    ce.setRecordingLocalJsDocComments(true);
+    ce.setLanguageVersion(180);
+
+    ce.initFromContext(cx);
+    return new Packages.org.mozilla.javascript.Parser(ce, ce.getErrorReporter());
+}
+
+/** @private
+    @memberof module:src/parser.Parser
+*/
+function getTypeName(node) {
+    var type = '';
+
+    if (node) {
+        type = ''+ Packages.org.mozilla.javascript.Token.typeToName(node.getType());
+    }
+
+    return type;
+}
+
+/** @private
+    @memberof module:src/parser.Parser
+*/
+function nodeToString(node) {
+    var str;
+
+    if (!node) { return; }
+
+    if (node.type === Token.GETPROP) {
+        str = [nodeToString(node.target), node.property.string].join('.');
+    }
+    else if (node.type === Token.VAR) {
+        str = nodeToString(node.target)
+    }
+    else if (node.type === Token.NAME) {
+        str = node.string;
+    }
+    else if (node.type === Token.STRING) {
+        str = node.value;
+    }
+    else if (node.type === Token.NUMBER) {
+        str = node.value;
+    }
+    else if (node.type === Token.THIS) {
+        str = 'this';
+    }
+    else if (node.type === Token.GETELEM) {
+        str = node.toSource(); // like: Foo['Bar']
+    }
+    else if (node.type === Token.NEG || node.type === Token.TRUE || node.type === Token.FALSE) {
+        str = node.toSource(); // like -1
+    }
+    else {
+        str = getTypeName(node);
+    }
+
+    return '' + str;
+}
+
+/**
+ * Attempts to find the name and type of the given node.
+ * @private
+ * @memberof module:src/parser.Parser
+ */
+function aboutNode(node) {
+    var about = {};
+
+    if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
+        about.name = node.type == tkn.NAMEDFUNCTIONSTATEMENT? '' : '' + node.name;
+        about.type = 'function';
+        about.node = node;
+    }
+    else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
+        about.name = nodeToString(node.target);
+        if (node.initializer) {  // like var i = 0;
+            about.node = node.initializer;
+            about.value = nodeToString(about.node);
+            about.type = getTypeName(node.initializer);
+            if (about.type === 'FUNCTION' && about.node.name) {
+                about.node.type = tkn.NAMEDFUNCTIONSTATEMENT;
+            }
+        }
+        else { // like var i;
+            about.node = node.target;
+            about.value = nodeToString(about.node);
+            about.type = 'undefined';
+        }
+    }
+    else if (node.type === Token.ASSIGN || node.type === Token.COLON) {
+        about.name = nodeToString(node.left);
+        if (node.type === Token.COLON) {
+
+             // objlit keys with unsafe variable-name characters must be quoted
+            if (!/^[$_a-z][$_a-z0-9]*$/i.test(about.name) ) {
+                about.name = '"'+about.name.replace(/"/g, '\\"')+'"';
+            }
+        }
+        about.node = node.right;
+        about.value = nodeToString(about.node);
+        about.type = getTypeName(node.right);
+
+        if (about.type === 'FUNCTION' && about.node.name) {
+            about.node.type = tkn.NAMEDFUNCTIONSTATEMENT;
+        }
+    }
+    else {
+        // type 39 (NAME)
+        var string = nodeToString(node);
+        if (string) {
+            about.name = string;
+        }
+    }
+
+    // get names of the formal parameters declared for this function
+    if (about.node && about.node.getParamCount) {
+        var paramCount = about.node.getParamCount();
+        if (typeof paramCount === 'number') {
+            about.node.flattenSymbolTable(true);
+            var paramNames = [];
+            for (var i = 0, len = paramCount; i < len; i++) {
+                paramNames.push(''+about.node.getParamOrVarName(i));
+            }
+            about.paramnames = paramNames;
+        }
+    }
+
+    return about;
+}
+
+/** @private
+    @memberof module:src/parser.Parser
+*/
+function isValidJsdoc(commentSrc) {
+    return commentSrc && commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
+}
+
+/** @private
+ * @memberof module:src/parser.Parser
+ */
+function makeVarsFinisher(funcDoc) {
+    var func = function(e) {
+        //no need to evaluate all things related to funcDoc again, just use it
+        if (funcDoc && e.doclet && e.doclet.alias) {
+            funcDoc.meta.vars[e.code.name] = e.doclet.longname;
+        }
+    }
+    return func;
+}
+
+/** @private
+ * @memberof module:src/parser.Parser
+ * @param {string} name Full symbol name.
+ * @return {string} Basename.
+ */
+function getBasename(name) {
+    if (name !== undefined) {
+        return name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+    }
+    return name;
+}
+
+/** @private */
+function visitNode(node) {
+    var e,
+        nodeComments,
+        comment,
+        commentSrc,
+        i,
+        l;
+
+    // look for stand-alone doc comments
+    if (node.type === Token.SCRIPT && node.comments) {
+        // note: ALL comments are seen in this block...
+        nodeComments = node.comments.toArray();
+        for (i = 0, l = nodeComments.length; i < l; i++) {
+            comment = nodeComments[i];
+            if (comment.commentType !== Token.CommentType.JSDOC) {
+                continue;
+            }
+
+            if (commentSrc = ''+comment.toSource()) {
+
+                e = {
+                    comment: commentSrc,
+                    lineno: comment.getLineno(),
+                    filename: currentSourceName
+                };
+
+                if ( isValidJsdoc(commentSrc) ) {
+                    currentParser.fire('jsdocCommentFound', e, currentParser);
+                }
+            }
+        }
+        e = null;
+    }
+    else if (node.type === Token.ASSIGN) {
+        e = {
+            id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
+            comment: String(node.getJsDoc()||'@undocumented'),
+            lineno: node.left.getLineno(),
+            filename: currentSourceName,
+            astnode: node,
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef]
+        };
+
+        var basename = getBasename(e.code.name);
+
+        if (basename !== 'this') {
+            e.code.funcscope = currentParser.resolveVar(node, basename);
+        }
+    }
+    else if (node.type === Token.COLON) { // assignment within an object literal
+        e = {
+            id: 'astnode'+node.hashCode(), // the id of the COLON node
+            comment: String(node.left.getJsDoc()||'@undocumented'),
+            lineno: node.left.getLineno(),
+            filename: currentSourceName,
+            astnode: node,
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef, currentParser.resolveEnum]
+        };
+    }
+    else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
+
+        if (node.variables) {
+            return true; // we'll get each var separately on future visits
+        }
+
+        if (node.parent.variables.toArray()[0] === node) { // like /** blah */ var a=1, b=2, c=3;
+            // the first var assignment gets any jsDoc before the whole var series
+            if (typeof node.setJsDoc !== 'undefined') { node.setJsDoc( node.parent.getJsDoc() ); }
+            //node.jsDoc = node.parent.jsDoc;
+        }
+
+        e = {
+            id: 'astnode'+node.hashCode(), // the id of the VARIABLE node
+            comment: String(node.getJsDoc()||'@undocumented'),
+            lineno: node.getLineno(),
+            filename: currentSourceName,
+            astnode: node,
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef]
+        };
+
+        // keep track of vars in a function or global scope
+        var func = "__global__",
+            funcDoc = null;
+        if (node.enclosingFunction) {
+            func = 'astnode'+node.enclosingFunction.hashCode();
+        }
+        funcDoc = currentParser.refs[func];
+        if (funcDoc) {
+            funcDoc.meta.vars = funcDoc.meta.vars || {};
+            funcDoc.meta.vars[e.code.name] = false;
+            e.finishers.push(makeVarsFinisher(funcDoc));
+        }
+    }
+    else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
+        e = {
+            id: 'astnode'+node.hashCode(), // the id of the COLON node
+            comment: String(node.getJsDoc()||'@undocumented'),
+            lineno: node.getLineno(),
+            filename: currentSourceName,
+            astnode: node,
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef]
+        };
+
+        e.code.name = (node.type == tkn.NAMEDFUNCTIONSTATEMENT)? '' : String(node.name) || '';
+        //console.log(':: e.code.name is', e.code.name);
+
+        // keep track of vars in a function or global scope
+        var func = "__global__",
+            funcDoc = null;
+        if (node.enclosingFunction) {
+            func = 'astnode'+node.enclosingFunction.hashCode();
+        }
+        funcDoc = currentParser.refs[func];
+        if (funcDoc) {
+            funcDoc.meta.vars = funcDoc.meta.vars || {};
+            funcDoc.meta.vars[e.code.name] = false;
+            e.finishers.push(makeVarsFinisher(funcDoc));
+        }
+
+        var basename = getBasename(e.code.name)
+        e.code.funcscope = currentParser.resolveVar(node, basename);
+    }
+
+    if (!e) { e = {finishers: []}; }
+    for(var i = 0, l = currentParser._visitors.length; i < l; i++) {
+        currentParser._visitors[i].visitNode(node, e, currentParser, currentSourceName);
+        if (e.stopPropagation) { break; }
+    }
+
+    if (!e.preventDefault && isValidJsdoc(e.comment)) {
+        currentParser.fire(e.event, e, currentParser);
+    }
+
+    for (var i = 0, l = e.finishers.length; i < l; i++) {
+        e.finishers[i].call(currentParser, e);
+    }
+
+    return true;
+}
+
 /** @private */
 exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
     var e = {filename: sourceName};
@@ -140,21 +471,6 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
 
     currentSourceName = '';
 }
-
-function pretreat(code) {
-    return code
-        // make starbangstar comments look like real jsdoc comments
-        .replace(/\/\*\!\*/g, '/**')
-
-        // merge adjacent doclets
-        .replace(/\*\/\/\*\*+/g, '@also')
-        // make lent objectliterals documentable by giving them a dummy name
-        .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/\s*)\{/g, '$1 ____ = {') // like return @lends {
-        .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/)(\s*)return(\s*)\{/g, '$2$3 return $1 ____ = {'); // like @lends return {
-}
-
-var tkn = { NAMEDFUNCTIONSTATEMENT: -1001 };
-exports.Parser.tkn = tkn;
 
 /**
  * Given a node, determine what the node is a member of.
@@ -329,322 +645,6 @@ exports.Parser.prototype.resolveEnum = function(e) {
         // use a copy of the doclet to avoid circular references
         parent.doclet.properties.push( doop(e.doclet) );
     }
-}
-
-/** @private */
-function visitNode(node) {
-    var e,
-        nodeComments,
-        comment,
-        commentSrc,
-        i,
-        l;
-
-    // look for stand-alone doc comments
-    if (node.type === Token.SCRIPT && node.comments) {
-        // note: ALL comments are seen in this block...
-        nodeComments = node.comments.toArray();
-        for (i = 0, l = nodeComments.length; i < l; i++) {
-            comment = nodeComments[i];
-            if (comment.commentType !== Token.CommentType.JSDOC) {
-                continue;
-            }
-
-            if (commentSrc = ''+comment.toSource()) {
-
-                e = {
-                    comment: commentSrc,
-                    lineno: comment.getLineno(),
-                    filename: currentSourceName
-                };
-
-                if ( isValidJsdoc(commentSrc) ) {
-                    currentParser.fire('jsdocCommentFound', e, currentParser);
-                }
-            }
-        }
-        e = null;
-    }
-    else if (node.type === Token.ASSIGN) {
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
-            comment: String(node.getJsDoc()||'@undocumented'),
-            lineno: node.left.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef]
-        };
-
-        var basename = getBasename(e.code.name);
-
-        if (basename !== 'this') {
-            e.code.funcscope = currentParser.resolveVar(node, basename);
-        }
-    }
-    else if (node.type === Token.COLON) { // assignment within an object literal
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the COLON node
-            comment: String(node.left.getJsDoc()||'@undocumented'),
-            lineno: node.left.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef, currentParser.resolveEnum]
-        };
-    }
-    else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
-
-        if (node.variables) {
-            return true; // we'll get each var separately on future visits
-        }
-
-        if (node.parent.variables.toArray()[0] === node) { // like /** blah */ var a=1, b=2, c=3;
-            // the first var assignment gets any jsDoc before the whole var series
-            if (typeof node.setJsDoc !== 'undefined') { node.setJsDoc( node.parent.getJsDoc() ); }
-            //node.jsDoc = node.parent.jsDoc;
-        }
-
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the VARIABLE node
-            comment: String(node.getJsDoc()||'@undocumented'),
-            lineno: node.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef]
-        };
-
-        // keep track of vars in a function or global scope
-        var func = "__global__",
-            funcDoc = null;
-        if (node.enclosingFunction) {
-            func = 'astnode'+node.enclosingFunction.hashCode();
-        }
-        funcDoc = currentParser.refs[func];
-        if (funcDoc) {
-            funcDoc.meta.vars = funcDoc.meta.vars || {};
-            funcDoc.meta.vars[e.code.name] = false;
-            e.finishers.push(makeVarsFinisher(funcDoc));
-        }
-    }
-    else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the COLON node
-            comment: String(node.getJsDoc()||'@undocumented'),
-            lineno: node.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef]
-        };
-
-        e.code.name = (node.type == tkn.NAMEDFUNCTIONSTATEMENT)? '' : String(node.name) || '';
-        //console.log(':: e.code.name is', e.code.name);
-
-        // keep track of vars in a function or global scope
-        var func = "__global__",
-            funcDoc = null;
-        if (node.enclosingFunction) {
-            func = 'astnode'+node.enclosingFunction.hashCode();
-        }
-        funcDoc = currentParser.refs[func];
-        if (funcDoc) {
-            funcDoc.meta.vars = funcDoc.meta.vars || {};
-            funcDoc.meta.vars[e.code.name] = false;
-            e.finishers.push(makeVarsFinisher(funcDoc));
-        }
-
-        var basename = getBasename(e.code.name)
-        e.code.funcscope = currentParser.resolveVar(node, basename);
-    }
-
-    if (!e) { e = {finishers: []}; }
-    for(var i = 0, l = currentParser._visitors.length; i < l; i++) {
-        currentParser._visitors[i].visitNode(node, e, currentParser, currentSourceName);
-        if (e.stopPropagation) { break; }
-    }
-
-    if (!e.preventDefault && isValidJsdoc(e.comment)) {
-        currentParser.fire(e.event, e, currentParser);
-    }
-
-    for (var i = 0, l = e.finishers.length; i < l; i++) {
-        e.finishers[i].call(currentParser, e);
-    }
-
-    return true;
-}
-
-/** @private */
-function parserFactory() {
-    var cx = Packages.org.mozilla.javascript.Context.getCurrentContext();
-
-    var ce = new Packages.org.mozilla.javascript.CompilerEnvirons();
-    ce.setRecordingComments(true);
-    ce.setRecordingLocalJsDocComments(true);
-    ce.setLanguageVersion(180);
-
-    ce.initFromContext(cx);
-    return new Packages.org.mozilla.javascript.Parser(ce, ce.getErrorReporter());
-}
-
-/**
- * Attempts to find the name and type of the given node.
- * @private
- * @memberof module:src/parser.Parser
- */
-function aboutNode(node) {
-    var about = {};
-
-    if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
-        about.name = node.type == tkn.NAMEDFUNCTIONSTATEMENT? '' : '' + node.name;
-        about.type = 'function';
-        about.node = node;
-    }
-    else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
-        about.name = nodeToString(node.target);
-        if (node.initializer) {  // like var i = 0;
-            about.node = node.initializer;
-            about.value = nodeToString(about.node);
-            about.type = getTypeName(node.initializer);
-            if (about.type === 'FUNCTION' && about.node.name) {
-                about.node.type = tkn.NAMEDFUNCTIONSTATEMENT;
-            }
-        }
-        else { // like var i;
-            about.node = node.target;
-            about.value = nodeToString(about.node);
-            about.type = 'undefined';
-        }
-    }
-    else if (node.type === Token.ASSIGN || node.type === Token.COLON) {
-        about.name = nodeToString(node.left);
-        if (node.type === Token.COLON) {
-
-             // objlit keys with unsafe variable-name characters must be quoted
-            if (!/^[$_a-z][$_a-z0-9]*$/i.test(about.name) ) {
-                about.name = '"'+about.name.replace(/"/g, '\\"')+'"';
-            }
-        }
-        about.node = node.right;
-        about.value = nodeToString(about.node);
-        about.type = getTypeName(node.right);
-
-        if (about.type === 'FUNCTION' && about.node.name) {
-            about.node.type = tkn.NAMEDFUNCTIONSTATEMENT;
-        }
-    }
-    else {
-        // type 39 (NAME)
-        var string = nodeToString(node);
-        if (string) {
-            about.name = string;
-        }
-    }
-
-    // get names of the formal parameters declared for this function
-    if (about.node && about.node.getParamCount) {
-        var paramCount = about.node.getParamCount();
-        if (typeof paramCount === 'number') {
-            about.node.flattenSymbolTable(true);
-            var paramNames = [];
-            for (var i = 0, len = paramCount; i < len; i++) {
-                paramNames.push(''+about.node.getParamOrVarName(i));
-            }
-            about.paramnames = paramNames;
-        }
-    }
-
-    return about;
-}
-
-/** @private
-    @memberof module:src/parser.Parser
-*/
-function nodeToString(node) {
-    var str;
-
-    if (!node) { return; }
-
-    if (node.type === Token.GETPROP) {
-        str = [nodeToString(node.target), node.property.string].join('.');
-    }
-    else if (node.type === Token.VAR) {
-        str = nodeToString(node.target)
-    }
-    else if (node.type === Token.NAME) {
-        str = node.string;
-    }
-    else if (node.type === Token.STRING) {
-        str = node.value;
-    }
-    else if (node.type === Token.NUMBER) {
-        str = node.value;
-    }
-    else if (node.type === Token.THIS) {
-        str = 'this';
-    }
-    else if (node.type === Token.GETELEM) {
-        str = node.toSource(); // like: Foo['Bar']
-    }
-    else if (node.type === Token.NEG || node.type === Token.TRUE || node.type === Token.FALSE) {
-        str = node.toSource(); // like -1
-    }
-    else {
-        str = getTypeName(node);
-    }
-
-    return '' + str;
-}
-
-/** @private
-    @memberof module:src/parser.Parser
-*/
-function getTypeName(node) {
-    var type = '';
-
-    if (node) {
-        type = ''+ Packages.org.mozilla.javascript.Token.typeToName(node.getType());
-    }
-
-    return type;
-}
-
-/** @private
-    @memberof module:src/parser.Parser
-*/
-function isValidJsdoc(commentSrc) {
-    return commentSrc && commentSrc.indexOf('/***') !== 0; /*** ignore comments that start with many stars ***/
-}
-
-/** @private
- * @memberof module:src/parser.Parser
- */
-function makeVarsFinisher(funcDoc) {
-    var func = function(e) {
-        //no need to evaluate all things related to funcDoc again, just use it
-        if (funcDoc && e.doclet && e.doclet.alias) {
-            funcDoc.meta.vars[e.code.name] = e.doclet.longname;
-        }
-    }
-    return func;
-}
-
-/** @private
- * @memberof module:src/parser.Parser
- * @param {string} name Full symbol name.
- * @return {string} Basename.
- */
-function getBasename(name) {
-    if (name !== undefined) {
-        return name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
-    }
-    return name;
 }
 
 /**

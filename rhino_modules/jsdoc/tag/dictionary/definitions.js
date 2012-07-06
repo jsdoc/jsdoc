@@ -7,6 +7,91 @@
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
+/** @private */
+function setDocletKindToTitle(doclet, tag) {
+    doclet.addTag( 'kind', tag.title );
+}
+
+function setDocletScopeToTitle(doclet, tag) {
+    doclet.addTag( 'scope', tag.title );
+}
+
+function setDocletNameToValue(doclet, tag) {
+    if (tag.value && tag.value.description) { // as in a long tag
+        doclet.addTag( 'name', tag.value.description);
+    }
+    else if (tag.text) { // or a short tag
+        doclet.addTag('name', tag.text);
+    }
+}
+
+function setDocletDescriptionToValue(doclet, tag) {
+    if (tag.value) {
+        doclet.addTag( 'description', tag.value );
+    }
+}
+
+function setNameToFile(doclet, tag) {
+    if (doclet.meta.filename) {
+        var name = 'file:';
+        if (doclet.meta.path) { name += doclet.meta.path + java.lang.System.getProperty("file.separator"); }
+        doclet.addTag( 'name', name + doclet.meta.filename );
+    }
+}
+
+function setDocletMemberof(doclet, tag) {
+    if (tag.value && tag.value !== '<global>') {
+        doclet.setMemberof(tag.value);
+    }
+}
+
+function applyNamespace(docletOrNs, tag) {
+    if (typeof docletOrNs === 'string') { // ns
+        tag.value = app.jsdoc.name.applyNamespace(tag.value, docletOrNs);
+    }
+    else { // doclet
+        if (!docletOrNs.name) {
+            return; // error?
+        }
+        
+        //doclet.displayname = doclet.name;
+        docletOrNs.longname = app.jsdoc.name.applyNamespace(docletOrNs.name, tag.title);
+    }
+}
+
+function setDocletNameToFilename(doclet, tag) {
+    var name = (doclet.meta.path ? (doclet.meta.path + java.lang.System.getProperty("file.separator")) : "") + doclet.meta.filename;
+    name = name.replace(/\.js$/i, '');
+    
+    for (var i = 0, len = env.opts._.length; i < len; i++) {
+        if (name.indexOf(env.opts._[i]) === 0) {
+            name = name.replace(env.opts._[0], '');
+            break
+        }
+    }
+    doclet.name = name;
+}
+
+function parseBorrows(doclet, tag) {
+    var m = /^(\S+)(?:\s+as\s+(\S+))?$/.exec(tag.text);
+    if (m) {
+        if (m[1] && m[2]) {
+            return { target: m[1], source: m[2] };
+        }
+        else if (m[1]) {
+            return { target: m[1] };
+        }
+    } else {
+        return {};
+    }
+}
+
+function firstWordOf(string) {
+    var m = /^(\S+)/.exec(string);
+    if (m) { return m[1]; }
+    else { return ''; }
+}
+
 /** Populate the given dictionary with all known JSDoc tag definitions.
     @param {module:jsdoc/tag/dictionary} dictionary
 */
@@ -559,89 +644,4 @@ exports.defineTags = function(dictionary) {
             doclet.version = tag.value;
         }
     });
-}
-
-/** @private */
-function setDocletKindToTitle(doclet, tag) {
-    doclet.addTag( 'kind', tag.title );
-}
-
-function setDocletScopeToTitle(doclet, tag) {
-    doclet.addTag( 'scope', tag.title );
-}
-
-function setDocletNameToValue(doclet, tag) {
-    if (tag.value && tag.value.description) { // as in a long tag
-        doclet.addTag( 'name', tag.value.description);
-    }
-    else if (tag.text) { // or a short tag
-        doclet.addTag('name', tag.text);
-    }
-}
-
-function setDocletDescriptionToValue(doclet, tag) {
-    if (tag.value) {
-        doclet.addTag( 'description', tag.value );
-    }
-}
-
-function setNameToFile(doclet, tag) {
-    if (doclet.meta.filename) {
-        var name = 'file:';
-        if (doclet.meta.path) { name += doclet.meta.path + java.lang.System.getProperty("file.separator"); }
-        doclet.addTag( 'name', name + doclet.meta.filename );
-    }
-}
-
-function setDocletMemberof(doclet, tag) {
-    if (tag.value && tag.value !== '<global>') {
-        doclet.setMemberof(tag.value);
-    }
-}
-
-function applyNamespace(docletOrNs, tag) {
-    if (typeof docletOrNs === 'string') { // ns
-        tag.value = app.jsdoc.name.applyNamespace(tag.value, docletOrNs);
-    }
-    else { // doclet
-        if (!docletOrNs.name) {
-            return; // error?
-        }
-        
-        //doclet.displayname = doclet.name;
-        docletOrNs.longname = app.jsdoc.name.applyNamespace(docletOrNs.name, tag.title);
-    }
-}
-
-function setDocletNameToFilename(doclet, tag) {
-    var name = (doclet.meta.path ? (doclet.meta.path + java.lang.System.getProperty("file.separator")) : "") + doclet.meta.filename;
-    name = name.replace(/\.js$/i, '');
-    
-    for (var i = 0, len = env.opts._.length; i < len; i++) {
-        if (name.indexOf(env.opts._[i]) === 0) {
-            name = name.replace(env.opts._[0], '');
-            break
-        }
-    }
-    doclet.name = name;
-}
-
-function parseBorrows(doclet, tag) {
-    var m = /^(\S+)(?:\s+as\s+(\S+))?$/.exec(tag.text);
-    if (m) {
-        if (m[1] && m[2]) {
-            return { target: m[1], source: m[2] };
-        }
-        else if (m[1]) {
-            return { target: m[1] };
-        }
-    } else {
-        return {};
-    }
-}
-
-function firstWordOf(string) {
-    var m = /^(\S+)/.exec(string);
-    if (m) { return m[1]; }
-    else { return ''; }
 }

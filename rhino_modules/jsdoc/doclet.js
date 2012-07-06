@@ -18,7 +18,109 @@ var jsdoc = {
     },
     name: require('jsdoc/name')
 };
+
+function applyTag(tag) {
+    if (tag.title === 'name') {
+        this.name = tag.value;
+    }
+
+    if (tag.title === 'kind') {
+        this.kind = tag.value;
+    }
+
+    if (tag.title === 'description') {
+        this.description = tag.value;
+    }
+
+    if (tag.title === 'scope') {
+        this.scope = tag.value;
+    }
+}
+
+// use the meta info about the source code to guess what the doclet kind should be
+function codetypeToKind(type) {
+    var kind = (type || '').toLowerCase();
+    
+    if (kind !== 'function') {
+        return 'member';
+    }
+    
+    return kind;
+}
+
+function unwrap(docletSrc) {
+    if (!docletSrc) { return ''; }
+
+	// note: keep trailing whitespace for @examples
+	// extra opening/closing stars are ignored
+	// left margin is considered a star and a space
+	// use the /m flag on regex to avoid having to guess what this platform's newline is
+	docletSrc =
+		docletSrc.replace(/^\/\*\*+/, '') // remove opening slash+stars
+		.replace(/\**\*\/$/, "\\Z")       // replace closing star slash with end-marker
+		.replace(/^\s*(\* ?|\\Z)/gm, '')  // remove left margin like: spaces+star or spaces+end-marker
+		.replace(/\s*\\Z$/g, '');         // remove end-marker
+
+	return docletSrc;
+}
+
+function split(docletSrc) {
+    var tagSrcs = [],
+        tagText,
+        tagTitle;
+          
+	// split out the basic tags, keep surrounding whitespace
+	// like: @tagTitle tagBody
+	docletSrc
+	.replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence
+	.split('\\@')                        // then split on that arbitrary sequence
+	.forEach(function($) {
+	    if ($) {
+	        var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
+            
+            if (parsedTag) {
+                // we don't need parsedTag[0]
+                tagTitle = parsedTag[1];
+                tagText = parsedTag[2];
+
+                if (tagTitle) {
+                    tagSrcs.push({
+                        title: tagTitle,
+                        text: tagText
+                    });
+                }
+            }
+        }
+	});
 	
+	return tagSrcs;
+}
+
+/**
+    Convert the raw source of the doclet comment into an array of Tag objects.
+    @private
+ */
+function toTags(docletSrc) {
+    var tagSrcs,
+        tags = [];
+    
+    docletSrc = unwrap(docletSrc);
+    tagSrcs = split(docletSrc);
+    
+    for (var i = 0, l = tagSrcs.length; i < l; i++) {
+        tags.push( {title: tagSrcs[i].title, text: tagSrcs[i].text} );
+    }
+    
+    return tags;
+}
+
+function fixDescription(docletSrc) {
+    if (!/^\s*@/.test(docletSrc)) {
+		docletSrc = '@description ' + docletSrc;
+	}
+	return docletSrc;
+}
+
 /**
     @class
     @classdesc Represents a single JSDoc comment.
@@ -227,106 +329,4 @@ exports.Doclet.prototype.setMeta = function(meta) {
             this.meta.code.paramnames = meta.code.paramnames.concat([]);
         }
     }
-}
-
-function applyTag(tag) {
-    if (tag.title === 'name') {
-        this.name = tag.value;
-    }
-    
-    if (tag.title === 'kind') {
-        this.kind = tag.value;
-    }
-    
-    if (tag.title === 'description') {
-        this.description = tag.value;
-    }
-    
-    if (tag.title === 'scope') {
-        this.scope = tag.value;
-    }
-}
-
-// use the meta info about the source code to guess what the doclet kind should be
-function codetypeToKind(type) {
-    var kind = (type || '').toLowerCase();
-    
-    if (kind !== 'function') {
-        return 'member';
-    }
-    
-    return kind;
-}
-
-/**
-    Convert the raw source of the doclet comment into an array of Tag objects.
-    @private
- */
-function toTags(docletSrc) {
-    var tagSrcs,
-        tags = [];
-    
-    docletSrc = unwrap(docletSrc);
-    tagSrcs = split(docletSrc);
-    
-    for (var i = 0, l = tagSrcs.length; i < l; i++) {
-        tags.push( {title: tagSrcs[i].title, text: tagSrcs[i].text} );
-    }
-    
-    return tags;
-}
-
-function unwrap(docletSrc) {
-    if (!docletSrc) { return ''; }
-
-	// note: keep trailing whitespace for @examples
-	// extra opening/closing stars are ignored
-	// left margin is considered a star and a space
-	// use the /m flag on regex to avoid having to guess what this platform's newline is
-	docletSrc =
-		docletSrc.replace(/^\/\*\*+/, '') // remove opening slash+stars
-		.replace(/\**\*\/$/, "\\Z")       // replace closing star slash with end-marker
-		.replace(/^\s*(\* ?|\\Z)/gm, '')  // remove left margin like: spaces+star or spaces+end-marker
-		.replace(/\s*\\Z$/g, '');         // remove end-marker
-
-	return docletSrc;
-}
-
-function fixDescription(docletSrc) {
-    if (!/^\s*@/.test(docletSrc)) {
-		docletSrc = '@description ' + docletSrc;
-	}
-	return docletSrc;
-}
-
-function split(docletSrc) {
-    var tagSrcs = [],
-        tagText,
-        tagTitle;
-          
-	// split out the basic tags, keep surrounding whitespace
-	// like: @tagTitle tagBody
-	docletSrc
-	.replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence
-	.split('\\@')                        // then split on that arbitrary sequence
-	.forEach(function($) {
-	    if ($) {
-	        var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
-            
-            if (parsedTag) {
-                // we don't need parsedTag[0]
-                tagTitle = parsedTag[1];
-                tagText = parsedTag[2];
-
-                if (tagTitle) {
-                    tagSrcs.push({
-                        title: tagTitle,
-                        text: tagText
-                    });
-                }
-            }
-        }
-	});
-	
-	return tagSrcs;
 }
