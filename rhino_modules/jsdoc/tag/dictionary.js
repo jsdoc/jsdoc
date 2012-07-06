@@ -7,6 +7,7 @@
 var _synonyms = {},
     _definitions = {},
     _namespaces = [],
+    dictionary,
     hasOwnProp = Object.prototype.hasOwnProperty;
 
 /** @private */
@@ -29,7 +30,7 @@ TagDefinition.prototype.synonym = function(synonymName) {
 }
 
 /** @exports jsdoc/tag/dictionary */
-var dictionary = {
+dictionary = {
     /** @function */
     defineTag: function(title, opts) {
         _definitions[title] = new TagDefinition(title, opts);

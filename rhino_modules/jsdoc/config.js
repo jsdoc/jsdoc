@@ -21,8 +21,6 @@ const defaults = {
     "jsVersion": 180
 };
 
-module.exports = Config;
-
 /**
     @class
     @classdesc Represents a JSDoc application configuration.
@@ -33,6 +31,8 @@ function Config(json) {
     
     this._config = util.mergeRecurse(defaults, json);
 }
+
+module.exports = Config;
 
 /**
     Get the merged configuration values.

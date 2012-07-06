@@ -22,6 +22,45 @@ var jsdoc = {
     }
 };
 
+function trim(text, newlines) {
+    if (!text) { return ''; }
+    
+    if (newlines) {
+        return text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
+    }
+    else {
+        return text.replace(/^\s+|\s+$/g, '');
+    }
+}
+
+/**
+    Parse the parameter name and parameter desc from the tag text.
+    @inner
+    @method parseParamText
+    @memberof module:jsdoc/tag
+    @param {string} tagText
+    @returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
+ */
+function parseParamText(tagText) {
+    var pname, pdesc, poptional, pdefault;
+
+    // like: pname, pname pdesc, or name - pdesc
+    tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
+    pname = RegExp.$1;
+    pdesc = RegExp.$3;
+
+    if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
+        pname = RegExp.$1;
+        poptional = true;
+        
+        if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
+            pname = RegExp.$1;
+            pdefault = RegExp.$2;
+        }
+    }
+    return { name: pname, desc: pdesc, optional: poptional, default: pdefault };
+}
+
 /**
     Constructs a new tag object. Calls the tag validator.
     @class
@@ -98,43 +137,4 @@ exports.Tag = function(tagTitle, tagBody, meta) {
             throw e;
         }
     }
-}
-
-function trim(text, newlines) {
-    if (!text) { return ''; }
-    
-    if (newlines) {
-        return text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
-    }
-    else {
-        return text.replace(/^\s+|\s+$/g, '');
-    }
-}
-
-/**
-    Parse the parameter name and parameter desc from the tag text.
-    @inner
-    @method parseParamText
-    @memberof module:jsdoc/tag
-    @param {string} tagText
-    @returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
- */
-function parseParamText(tagText) {
-    var pname, pdesc, poptional, pdefault;
-
-    // like: pname, pname pdesc, or name - pdesc
-    tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
-    pname = RegExp.$1;
-    pdesc = RegExp.$3;
-
-    if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
-        pname = RegExp.$1;
-        poptional = true;
-        
-        if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
-            pname = RegExp.$1;
-            pdefault = RegExp.$2;
-        }
-    }
-    return { name: pname, desc: pdesc, optional: poptional, default: pdefault };
 }
