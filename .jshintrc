@@ -4,7 +4,7 @@
   "eqeqeq":       false,
   "forin":        true,
   "immed":        true,
-  "latedef":      false,
+  "latedef":      true,
   "newcap":       true,
   "noarg":        true,
   "noempty":      false,

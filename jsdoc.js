@@ -91,29 +91,6 @@ include.resolve = function(filepath) {
     return env.dirname + '/' + filepath;
 }
 
-
-/**
-    Data that must be shared across the entire application.
-    @namespace
-*/
-app = {
-    jsdoc: {
-        scanner: new (require('jsdoc/src/scanner').Scanner)(),
-        parser: new (require('jsdoc/src/parser').Parser)(),
-        name: require('jsdoc/name')
-    }
-}
-
-try { main(); }
-catch(e) {
-     if (e.rhinoException != null) {
-         e.rhinoException.printStackTrace();
-     } else {
-        throw e;
-    }
-}
-finally { env.run.finish = new Date(); }
-
 /** Print string/s out to the console.
     @param {string} ... String/s to print out to console.
  */
@@ -182,6 +159,19 @@ function indexAll(docs) {
         lookupTable[doc.longname].push(doc);
     });
     docs.index = lookupTable;
+}
+
+
+/**
+    Data that must be shared across the entire application.
+    @namespace
+*/
+app = {
+    jsdoc: {
+        scanner: new (require('jsdoc/src/scanner').Scanner)(),
+        parser: new (require('jsdoc/src/parser').Parser)(),
+        name: require('jsdoc/name')
+    }
 }
 
 
@@ -324,3 +314,13 @@ function main() {
         }
     }
 }
+
+try { main(); }
+catch(e) {
+     if (e.rhinoException != null) {
+         e.rhinoException.printStackTrace();
+     } else {
+        throw e;
+    }
+}
+finally { env.run.finish = new Date(); }

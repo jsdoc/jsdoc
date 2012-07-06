@@ -381,6 +381,20 @@
         // once for all
         view.nav = nav;
 
+        function generate(title, docs, filename) {
+            var data = {
+                title: title,
+                docs: docs
+            };
+            
+            var path = outdir + '/' + filename,
+                html = view.render('container.tmpl', data);
+            
+            html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+            
+            fs.writeFileSync(path, html)
+        }
+        
         for (var longname in helper.longnameToUrl) {
             if ( hasOwnProp.call(helper.longnameToUrl, longname) ) {
                 var classes = find({kind: 'class', longname: longname});
@@ -415,20 +429,6 @@
 			).concat(files)
 		, 'index.html');
         
-        
-        function generate(title, docs, filename) {
-            var data = {
-                title: title,
-                docs: docs
-            };
-            
-            var path = outdir + '/' + filename,
-                html = view.render('container.tmpl', data);
-            
-            html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
-            
-            fs.writeFileSync(path, html)
-        }
         
         function generateTutorial(title, tutorial, filename) {
             var data = {

@@ -5,6 +5,19 @@ exports.readFileSync = function(filename, encoding) {
     return readFile(filename, encoding);
 };
 
+var stat = exports.stat = exports.statSync = function(path, encoding) {
+    var f = new java.io.File(path);
+    return {
+        isFile: function() {
+            return f.isFile();
+        },
+        isDirectory: function() {
+            return f.isDirectory();
+        }
+    };
+
+};
+
 var readdirSync = exports.readdirSync = function(path) {
     var dir,
         files;
@@ -64,28 +77,17 @@ var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     return _allFiles;
 };
 
-var stat = exports.stat = exports.statSync = function(path, encoding) {
+var toDir = exports.toDir = function(path) {
     var f = new java.io.File(path);
-    return {
-        isFile: function() {
-            return f.isFile();
-        },
-        isDirectory: function() {
-            return f.isDirectory();
-        }
-    };
 
-};
-
-exports.mkPath = function(/**Array*/ path) {
-    if (path.constructor != Array){path = path.split(/[\\\/]/);}
-    var make = "";
-    for (var i = 0, l = path.length; i < l; i++) {
-        make += path[i] + '/';
-        if (! exists(make)) {
-            makeDir(make);
-        }
+    if (f.isDirectory()){
+       return path;
     }
+
+    var parts = path.split(/[\\\/]/);
+    parts.pop();
+
+    return parts.join('/');
 };
 
 function makeDir(/**string*/ path) {
@@ -108,17 +110,20 @@ function exists(path) {
     return true;
 }
 
-var toDir = exports.toDir = function(path) {
-    var f = new java.io.File(path);
-
-    if (f.isDirectory()){
-       return path;
+exports.mkPath = function(/**Array*/ path) {
+    if (path.constructor != Array){path = path.split(/[\\\/]/);}
+    var make = "";
+    for (var i = 0, l = path.length; i < l; i++) {
+        make += path[i] + '/';
+        if (! exists(make)) {
+            makeDir(make);
+        }
     }
+};
 
+var toFile = exports.toFile = function(path) {
     var parts = path.split(/[\\\/]/);
-    parts.pop();
-
-    return parts.join('/');
+    return parts.pop();
 };
 
 exports.copyFile = function(inFile, outDir, fileName) {
@@ -137,11 +142,6 @@ exports.copyFile = function(inFile, outDir, fileName) {
     }
     bos.close();
     bis.close();
-};
-
-var toFile = exports.toFile = function(path) {
-    var parts = path.split(/[\\\/]/);
-    return parts.pop();
 };
 
 exports.writeFileSync = function(filename, data, encoding) {
