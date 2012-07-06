@@ -15,7 +15,7 @@
   "strict":       false,
   "trailing":     true,
 
-  "asi":          true,
+  "asi":          false,
   "boss":         true,
   "debug":        true,
   "eqnull":       true,

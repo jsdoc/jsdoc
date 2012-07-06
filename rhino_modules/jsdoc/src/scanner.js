@@ -19,7 +19,7 @@ var fs = require('fs');
     @mixes module:common.events
  */
 exports.Scanner = function() {
-}
+};
 common.mixin(exports.Scanner.prototype, common.events);
 
 /**
@@ -56,5 +56,4 @@ exports.Scanner.prototype.scan = function(searchPaths, depth, filter) {
 	});
 
 	return filePaths;
-}
-
+};

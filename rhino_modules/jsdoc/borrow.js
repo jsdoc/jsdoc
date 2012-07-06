@@ -48,4 +48,4 @@ exports.resolveBorrows = function(docs) {
             delete doc.borrowed;
         }
     });
-}
+};

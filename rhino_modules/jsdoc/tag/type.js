@@ -130,4 +130,4 @@ exports.parse = function(tagValue) {
 	    nullable: nullable.nullable,
 	    variable: variable.variable
 	};
-}
+};

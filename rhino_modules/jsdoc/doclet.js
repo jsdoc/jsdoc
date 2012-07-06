@@ -144,7 +144,7 @@ exports.Doclet = function(docletSrc, meta) {
     }
     
     this.postProcess();
-}
+};
 
 /** Called once after all tags have been added. */
 exports.Doclet.prototype.postProcess = function() {
@@ -172,7 +172,7 @@ exports.Doclet.prototype.postProcess = function() {
             }
         }
     }
-}
+};
 
 /** Add a tag to this doclet.
     @param {string} title - The title of the tag being added.
@@ -183,7 +183,7 @@ exports.Doclet.prototype.addTag = function(title, text) {
         newTag = new jsdoc.tag.Tag(title, text, this.meta);
 
     if (tagDef && tagDef.onTagged) {
-       tagDef.onTagged(this, newTag)
+       tagDef.onTagged(this, newTag);
     }
     
     if (!tagDef) {
@@ -192,7 +192,7 @@ exports.Doclet.prototype.addTag = function(title, text) {
     }
     
     applyTag.call(this, newTag);
-}
+};
 
 /** Set the `memberof` property of this doclet.
     @param {string} sid - The longname of the symbol that this doclet is a member of.
@@ -204,7 +204,7 @@ exports.Doclet.prototype.setMemberof = function(sid) {
         @type string
      */
     this.memberof = sid.replace(/\.prototype/g, '#');
-}
+};
 
 /** Set the `longname` property of this doclet.
     @param {string} name
@@ -220,7 +220,7 @@ exports.Doclet.prototype.setLongname = function(name) {
     if (jsdoc.tag.dictionary.isNamespace(this.kind)) {
         this.longname = jsdoc.name.applyNamespace(this.longname, this.kind);
     }
-}
+};
 
 /** Add a symbol to this doclet's `borrowed` array.
     @param {string} source - The longname of the symbol that is the source.
@@ -238,7 +238,7 @@ exports.Doclet.prototype.borrow = function(source, target) {
         this.borrowed = [];
     }
     this.borrowed.push(about);
-}
+};
 
 exports.Doclet.prototype.mix = function(source) {
     if (!this.mixes) {
@@ -249,7 +249,7 @@ exports.Doclet.prototype.mix = function(source) {
         this.mixes = [];
     }
     this.mixes.push(source);
-}
+};
 
 /** Add a symbol to this doclet's `augments` array.
     @param {string} base - The longname of the base symbol.
@@ -263,7 +263,7 @@ exports.Doclet.prototype.augment = function(base) {
         this.augments = [];
     }
     this.augments.push(base);
-}
+};
 
 /**
     Set the `meta` property of this doclet.
@@ -329,4 +329,4 @@ exports.Doclet.prototype.setMeta = function(meta) {
             this.meta.code.paramnames = meta.code.paramnames.concat([]);
         }
     }
-}
+};

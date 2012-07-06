@@ -61,7 +61,7 @@ var linkMap = {
 exports.registerLink = function(longname, url) {
     linkMap.longnameToUrl[longname] = url;
     linkMap.urlToLongname[url] = longname;
-}
+};
 
 function toLink(longname, content) {
     if (!longname) {
@@ -108,7 +108,7 @@ var toTutorial = exports.toTutorial = function(tutorial, content) {
     content = content || node.title;
 
     return '<a href="'+exports.tutorialToUrl(tutorial)+'">'+content+'</a>';
-}
+};
 
 /** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
 exports.resolveLinks = function(str) {
@@ -125,7 +125,7 @@ exports.resolveLinks = function(str) {
     );
 
     return str;
-}
+};
 
 /** Turn a doclet into a URL. */
 exports.createLink = function(doclet) {
@@ -145,7 +145,7 @@ exports.createLink = function(doclet) {
     }
     
     return url;
-}
+};
 
 exports.longnameToUrl = linkMap.longnameToUrl;
 

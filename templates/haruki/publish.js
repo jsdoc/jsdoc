@@ -36,7 +36,7 @@
             console.log('The only -d destination option currently supported is "console"!');
         }
         
-    }
+    };
     
     function graft(parentNode, childNodes, parentLongname, parentName) {
         childNodes

@@ -222,7 +222,7 @@
 	            addSignatureReturns(doclet);
 	            addAttribs(doclet);
 	        }
-	    })
+	    });
         
         // do this after the urls have all been generated
         data.forEach(function(doclet) {
@@ -232,12 +232,12 @@
 	        
 	        if (doclet.kind === 'member') {
 	            addSignatureType(doclet);
-	            addAttribs(doclet)
+	            addAttribs(doclet);
 	        }
 	        
 	        if (doclet.kind === 'constant') {
 	            addSignatureType(doclet);
-	            addAttribs(doclet)
+	            addAttribs(doclet);
 	        }
         });
         
@@ -392,7 +392,7 @@
             
             html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
             
-            fs.writeFileSync(path, html)
+            fs.writeFileSync(path, html);
         }
         
         for (var longname in helper.longnameToUrl) {
@@ -444,7 +444,7 @@
             // yes, you can use {@link} in tutorials too!
             html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
             
-            fs.writeFileSync(path, html)
+            fs.writeFileSync(path, html);
         }
         
         // tutorials can have only one parent so there is no risk for loops
@@ -455,7 +455,7 @@
             });
         }
         saveChildren(tutorials);
-    }
+    };
     
     function hashToLink(doclet, hash) {
         if ( !/^(#.+)/.test(hash) ) { return hash; }

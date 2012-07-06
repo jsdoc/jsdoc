@@ -51,14 +51,14 @@ exports.parse = function(args) {
 	ourOptions = argParser.parse(args, defaults);
 
 	return ourOptions;
-}
+};
 
 /**
 	Display help message for options.
  */
 exports.help = function() {
     return argParser.help();
-}
+};
 
 /**
 	Get a named option.
@@ -75,4 +75,4 @@ exports.get = function(name) {
 	else {
 		return ourOptions[name];
 	}
-}
+};

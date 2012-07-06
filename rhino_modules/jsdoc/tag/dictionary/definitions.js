@@ -66,7 +66,7 @@ function setDocletNameToFilename(doclet, tag) {
     for (var i = 0, len = env.opts._.length; i < len; i++) {
         if (name.indexOf(env.opts._[i]) === 0) {
             name = name.replace(env.opts._[0], '');
-            break
+            break;
         }
     }
     doclet.name = name;
@@ -234,7 +234,7 @@ exports.defineTags = function(dictionary) {
 					doclet.defaultvalue = doclet.meta.code.value;
 					if (doclet.meta.code.type === 'STRING') {
 						// TODO: handle escaped quotes in values
-						doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"'
+						doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"';
 					}
 					
 					if (doclet.defaultvalue === 'TRUE' || doclet.defaultvalue == 'FALSE') {
@@ -243,7 +243,7 @@ exports.defineTags = function(dictionary) {
 				}
 				else if (doclet.meta.code.type === 'NULL') {
 					// TODO: handle escaped quotes in values
-					doclet.defaultvalue = 'null'
+					doclet.defaultvalue = 'null';
 				}
 			}
         }
@@ -644,4 +644,4 @@ exports.defineTags = function(dictionary) {
             doclet.version = tag.value;
         }
     });
-}
+};

@@ -91,7 +91,7 @@ exports.resolve = function(doclet) {
     if (about.variation) {
         doclet.variation = about.variation;
     }
-}
+};
 
 /**
     @inner
@@ -113,7 +113,7 @@ function quoteUnsafe(name, kind) { // docspaced names may have unsafe characters
 RegExp.escape = RegExp.escape || function(str) {
     var specials = new RegExp("[.*+?|()\\[\\]{}\\\\]", "g"); // .*+?|()[]{}\
     return str.replace(specials, "\\$&");
-}
+};
 
 /**
     @method module:jsdoc/name.applyNamespace
@@ -131,7 +131,7 @@ exports.applyNamespace = function(longname, ns) {
     }
     
     return longname;
-}
+};
 
 /**
     Given a longname like "a.b#c(2)", slice it up into ["a.b", "#", 'c', '2'],
@@ -198,7 +198,7 @@ exports.shorten = function(longname, forcedMemberof) {
 
     ////
     return {longname: longname, memberof: memberof, scope: scope, name: name, variation: variation};
-}
+};
 
 /**
     Split a string that starts with a name and ends with a description, into its parts.
@@ -241,4 +241,4 @@ exports.splitName = function(nameDesc) {
     }
     
     return { name: name, description: desc };
-}
+};

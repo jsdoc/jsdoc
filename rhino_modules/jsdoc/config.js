@@ -39,5 +39,4 @@ module.exports = Config;
  */
 Config.prototype.get = function() {
     return this._config;
-}
-
+};
