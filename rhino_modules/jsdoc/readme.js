@@ -12,34 +12,8 @@
     @author Ben Blank <ben.blank@gmail.com>
  */
 
-module.exports = ReadMe;
-
 var fs = require('fs'),
     conf = env.conf.markdown;
-
-/**
-    @class
-    @classdesc Represents a README file.
-    @param {string} path - The filepath to the README.
- */
-function ReadMe(path) {
-    var content = fs.readFileSync(path),
-        parse;
-    
-    // determine which parser should be used based on configuration options, if any
-    if (conf && conf.parser) {
-        parse = getParser(conf.parser, conf);
-    } else if (conf && conf.githubRepoOwner && conf.githubRepoName) {
-        // use GitHub-friendly parser if GitHub-specific options are present
-        parse = getParser('gfm', conf);
-    } else {
-        // evilstreak is the default parser
-        parse = getParser('evilstreak', conf);
-    }
-    
-    this.html = parse(content);
-    
-}
 
 function getParser(parser, conf) {
     conf = conf || {};
@@ -66,3 +40,28 @@ function getParser(parser, conf) {
     }
 }
 
+/**
+    @class
+    @classdesc Represents a README file.
+    @param {string} path - The filepath to the README.
+ */
+function ReadMe(path) {
+    var content = fs.readFileSync(path),
+        parse;
+    
+    // determine which parser should be used based on configuration options, if any
+    if (conf && conf.parser) {
+        parse = getParser(conf.parser, conf);
+    } else if (conf && conf.githubRepoOwner && conf.githubRepoName) {
+        // use GitHub-friendly parser if GitHub-specific options are present
+        parse = getParser('gfm', conf);
+    } else {
+        // evilstreak is the default parser
+        parse = getParser('evilstreak', conf);
+    }
+    
+    this.html = parse(content);
+    
+}
+
+module.exports = ReadMe;
