@@ -25,7 +25,7 @@
   "expr":         false,
   "funcscope":    false,
   "globalstrict": false,
-  "iterator":     true,
+  "iterator":     false,
   "lastsemic":    true,
   "laxbreak":     true,
   "laxcomma":     true,
