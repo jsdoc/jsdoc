@@ -23,7 +23,7 @@
   "esnext":       true,
   "evil":         false,
   "expr":         false,
-  "funcscope":    true,
+  "funcscope":    false,
   "globalstrict": true,
   "iterator":     true,
   "lastsemic":    true,
