@@ -10,7 +10,9 @@ URLPATH="file://"$BASEPATH
 URLPATH=`echo "$URLPATH" | sed -e 's/ /%20/g'`
 ENCODEDBASEPATH=`echo "$BASEPATH" | sed -e 's/ /%20/g'`
 
-if test $1 = "--debug"
+ARGS="$@"
+
+if test "$1" = "--debug"
 then
     echo "Running Debug"
     CMD="org.mozilla.javascript.tools.debugger.Main -debug"
@@ -20,12 +22,12 @@ else
 fi
 
 #Conditionally execute different command lines depending on whether we're running tests or not
-if test $1 = "-T"
+if test "$1" = "-T"
 then
     echo "Running Tests"
-    java -classpath "${BASEPATH}/lib/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino_modules" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" $@ --dirname="${BASEPATH}/" 
+    java -classpath "${BASEPATH}/lib/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino_modules" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" $ARGS --dirname="${BASEPATH}/" 
 
 else
     # normal mode should be quiet
-    java -classpath "${BASEPATH}/lib/js.jar" ${CMD} -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino_modules" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" $@ --dirname="${BASEPATH}/" 
+    java -classpath "${BASEPATH}/lib/js.jar" ${CMD} -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino_modules" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" $ARGS --dirname="${BASEPATH}/" 
 fi

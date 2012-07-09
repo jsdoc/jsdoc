@@ -27,7 +27,7 @@ var doop = require("jsdoc/util/doop").doop;
                 doclets = index[name];
                 for (var i=0, ii=doclets.length; i<ii; ++i) {
                     doc = doclets[i];
-                    if (doc.kind === "class") {
+                    if (doc.kind === "class" || doc.kind === "external") {
                         dependencies[name] = {};
                         len = doc.augments && doc.augments.length || 0;
                         for (var j=0; j<len; ++j) {
@@ -94,6 +94,7 @@ var doop = require("jsdoc/util/doop").doop;
         visit: function(key) {
             if (!(key in this.visited)) {
                 this.visited[key] = true;
+                
                 if (!(key in this.dependencies)) {
                     throw new Error("Missing dependency: " + key);
                 }

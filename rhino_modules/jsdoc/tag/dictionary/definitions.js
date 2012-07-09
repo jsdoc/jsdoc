@@ -311,8 +311,9 @@ exports.defineTags = function(dictionary) {
             if (tag.value && tag.value.type) {
                 doclet.type = tag.value.type;
             }
-         }
-    });
+        }
+    })
+    .synonym('host');
     
     dictionary.defineTag('exports', {
         mustHaveValue: true,

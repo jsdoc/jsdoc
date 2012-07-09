@@ -36,11 +36,12 @@ exports.Scanner.prototype.scan = function(searchPaths, depth, filter) {
 	depth = depth || 1;
 
 	searchPaths.forEach(function($) {
-        if ( fs.stat($).isFile() ) {
-            filePaths.push($);
+	    var filepath = decodeURIComponent($);
+        if ( fs.stat(filepath).isFile() ) {
+            filePaths.push(filepath);
         }
         else {
-		    filePaths = filePaths.concat(fs.ls($, depth));
+            filePaths = filePaths.concat(fs.ls(filepath, depth));
 		}
 	});
 	
