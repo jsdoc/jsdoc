@@ -17,7 +17,7 @@
 
   "asi":          false,
   "boss":         false,
-  "debug":        true,
+  "debug":        false,
   "eqnull":       true,
   "es5":          true,
   "esnext":       true,
