@@ -24,7 +24,7 @@
   "evil":         false,
   "expr":         false,
   "funcscope":    false,
-  "globalstrict": true,
+  "globalstrict": false,
   "iterator":     true,
   "lastsemic":    true,
   "laxbreak":     true,
