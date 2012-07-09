@@ -22,7 +22,7 @@
   "es5":          true,
   "esnext":       true,
   "evil":         false,
-  "expr":         true,
+  "expr":         false,
   "funcscope":    true,
   "globalstrict": true,
   "iterator":     true,

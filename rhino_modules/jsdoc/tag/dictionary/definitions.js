@@ -440,7 +440,9 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             setDocletKindToTitle(doclet, tag);
             setDocletNameToValue(doclet, tag);
-            doclet.name || setDocletNameToFilename(doclet, tag);
+            if (!doclet.name) {
+                setDocletNameToFilename(doclet, tag);
+            }
             if (tag.value && tag.value.type) {
                 doclet.type = tag.value.type;
             }
