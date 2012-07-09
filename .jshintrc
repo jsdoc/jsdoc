@@ -21,7 +21,7 @@
   "eqnull":       true,
   "es5":          true,
   "esnext":       true,
-  "evil":         true,
+  "evil":         false,
   "expr":         true,
   "funcscope":    true,
   "globalstrict": true,
