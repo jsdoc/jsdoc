@@ -90,9 +90,8 @@ function isObject(o) {
 }
 
 function walk(object) {
-    var value;
-    
-    if ( value = getValue(object) ) {
+    var value = getValue(object);
+    if (value) {
         output += value + ',\n';
     }
     else if ( isUnwalkable(object) ) {

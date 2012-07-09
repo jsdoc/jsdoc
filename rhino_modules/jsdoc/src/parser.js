@@ -316,17 +316,16 @@ function visitNode(node) {
                 continue;
             }
 
-            if (commentSrc = ''+comment.toSource()) {
+            commentSrc = '' + comment.toSource();
 
+            if ( commentSrc && isValidJsdoc(commentSrc) ) {
                 e = {
                     comment: commentSrc,
                     lineno: comment.getLineno(),
                     filename: currentSourceName
                 };
 
-                if ( isValidJsdoc(commentSrc) ) {
-                    currentParser.fire('jsdocCommentFound', e, currentParser);
-                }
+                currentParser.fire('jsdocCommentFound', e, currentParser);
             }
         }
         e = null;

@@ -16,7 +16,7 @@
   "trailing":     true,
 
   "asi":          false,
-  "boss":         true,
+  "boss":         false,
   "debug":        true,
   "eqnull":       true,
   "es5":          true,
