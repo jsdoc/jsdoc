@@ -108,7 +108,7 @@ exports.resolve = function() {
             }
 
             item = conf[name];
-            current = tutorials[name]
+            current = tutorials[name];
 
             // set title
             if (item.title) {

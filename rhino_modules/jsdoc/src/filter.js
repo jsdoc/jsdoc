@@ -20,7 +20,7 @@ exports.Filter = function(opts) {
     this.excludePattern = opts.excludePattern?
                             typeof opts.excludePattern === 'string'? new RegExp(opts.excludePattern) : opts.excludePattern
                             : null;
-}
+};
 
 /**
     @param {string} filepath - The filepath to check.
@@ -40,4 +40,4 @@ exports.Filter.prototype.isIncluded = function(filepath) {
     }
     
     return true;
-}
+};

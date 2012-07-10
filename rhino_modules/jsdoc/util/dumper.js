@@ -48,7 +48,7 @@ seen.has = function(object) {
         if (seen[i] === object) { return true; }
     }
     return false;
-}
+};
 
 function stringify(o) {
     return JSON.stringify(o);
@@ -90,19 +90,18 @@ function isObject(o) {
 }
 
 function walk(object) {
-    var value;
-    
-    if ( value = getValue(object) ) {
+    var value = getValue(object);
+    if (value) {
         output += value + ',\n';
     }
     else if ( isUnwalkable(object) ) {
-        output += '<Object>,\n'
+        output += '<Object>,\n';
     }
     else if ( isRegExp(object) ) {
-        output += '<RegExp ' + object + '>,\n'
+        output += '<RegExp ' + object + '>,\n';
     }
     else if ( isDate(object) ) {
-        output += '<Date ' + object.toUTCString() + '>,\n'
+        output += '<Date ' + object.toUTCString() + '>,\n';
     }
     else if ( isFunction(object) ) {
         output += '<Function' + (object.name? ' '+ object.name : '') + '>,\n';
@@ -153,4 +152,4 @@ exports.dump = function(object) {
     walk(object);
     outdent(false);
     return output;
-}
+};

@@ -89,7 +89,7 @@ include.resolve = function(filepath) {
     }
     
     return env.dirname + '/' + filepath;
-}
+};
 
 /** Print string/s out to the console.
     @param {string} ... String/s to print out to console.
@@ -172,7 +172,7 @@ app = {
         parser: new (require('jsdoc/src/parser').Parser)(),
         name: require('jsdoc/name')
     }
-}
+};
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
