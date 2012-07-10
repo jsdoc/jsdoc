@@ -15,7 +15,7 @@ describe("common/args", function() {
     }
     
     argParser.addOption('s', 'strict', true,  'Throw error on invalid input.', false, trueFalse);
-    argParser.addOption('n', 'name', true,  'The name of the project.');
+    argParser.addOption('n', 'name', true,  'The name of the project.', false);
     
     ourOptions = argParser.parse(['-s', 'true', '-n', 'true']);
 
@@ -28,14 +28,4 @@ describe("common/args", function() {
         expect(ourOptions.name).toBeDefined();
         expect(ourOptions.name).toEqual('true');
     });
-    
-    function doParse() {
-        argParser.addOption('b', 'debug', false,  'Use debug mode.');
-        argParser.parse(['-b', 'yesplease']);
-    }
-    
-    it('should throw an error if an option does not accept a value and one is given', function() {
-        expect(doParse).toThrow();
-    });
-    
 });
