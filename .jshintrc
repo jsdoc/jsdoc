@@ -38,8 +38,8 @@
   "shadow":       false,
   "smarttabs":    false,
   "sub":          false,
-  "supernew":     true,
-  "validthis":    true,
+  "supernew":     false,
+  "validthis":    false,
 
   "browser":      false,
   "couch":        false,
