@@ -27,7 +27,7 @@ function TagDefinition(title, etc) {
 TagDefinition.prototype.synonym = function(synonymName) {
     _synonyms[synonymName.toLowerCase()] = this.title;
     return this; // chainable
-}
+};
 
 /** @exports jsdoc/tag/dictionary */
 dictionary = {

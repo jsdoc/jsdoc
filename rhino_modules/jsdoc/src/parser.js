@@ -83,14 +83,14 @@ exports.Parser.prototype.parse = function(sourceFiles, encoding) {
  */
 exports.Parser.prototype.results = function() {
     return this._resultBuffer;
-}
+};
 
 /**
  * @param {Object} o The parse result to add to the result buffer.
  */
 exports.Parser.prototype.addResult = function(o) {
     this._resultBuffer.push(o);
-}
+};
 
 /**
  * Empty any accumulated results of calls to parse.
@@ -99,21 +99,21 @@ exports.Parser.prototype.clear = function() {
     currentParser = null;
     currentSourceName = '';
     this._resultBuffer = [];
-}
+};
 
 /**
  * Adds a node visitor to use in parsing
  */
 exports.Parser.prototype.addNodeVisitor = function(visitor) {
     this._visitors.push(visitor);
-}
+};
 
 /**
  * Get the node visitors used in parsing
  */
 exports.Parser.prototype.getVisitors = function() {
     return this._visitors;
-}
+};
 
 function pretreat(code) {
     return code
@@ -168,7 +168,7 @@ function nodeToString(node) {
         str = [nodeToString(node.target), node.property.string].join('.');
     }
     else if (node.type === Token.VAR) {
-        str = nodeToString(node.target)
+        str = nodeToString(node.target);
     }
     else if (node.type === Token.NAME) {
         str = node.string;
@@ -281,7 +281,7 @@ function makeVarsFinisher(funcDoc) {
         if (funcDoc && e.doclet && e.doclet.alias) {
             funcDoc.meta.vars[e.code.name] = e.doclet.longname;
         }
-    }
+    };
     return func;
 }
 
@@ -303,6 +303,9 @@ function visitNode(node) {
         nodeComments,
         comment,
         commentSrc,
+        basename,
+        func,
+        funcDoc,
         i,
         l;
 
@@ -316,17 +319,16 @@ function visitNode(node) {
                 continue;
             }
 
-            if (commentSrc = ''+comment.toSource()) {
+            commentSrc = '' + comment.toSource();
 
+            if ( commentSrc && isValidJsdoc(commentSrc) ) {
                 e = {
                     comment: commentSrc,
                     lineno: comment.getLineno(),
                     filename: currentSourceName
                 };
 
-                if ( isValidJsdoc(commentSrc) ) {
-                    currentParser.fire('jsdocCommentFound', e, currentParser);
-                }
+                currentParser.fire('jsdocCommentFound', e, currentParser);
             }
         }
         e = null;
@@ -343,7 +345,7 @@ function visitNode(node) {
             finishers: [currentParser.addDocletRef]
         };
 
-        var basename = getBasename(e.code.name);
+        basename = getBasename(e.code.name);
 
         if (basename !== 'this') {
             e.code.funcscope = currentParser.resolveVar(node, basename);
@@ -385,8 +387,8 @@ function visitNode(node) {
         };
 
         // keep track of vars in a function or global scope
-        var func = "__global__",
-            funcDoc = null;
+        func = "__global__";
+        funcDoc = null;
         if (node.enclosingFunction) {
             func = 'astnode'+node.enclosingFunction.hashCode();
         }
@@ -413,8 +415,8 @@ function visitNode(node) {
         //console.log(':: e.code.name is', e.code.name);
 
         // keep track of vars in a function or global scope
-        var func = "__global__",
-            funcDoc = null;
+        func = "__global__";
+        funcDoc = null;
         if (node.enclosingFunction) {
             func = 'astnode'+node.enclosingFunction.hashCode();
         }
@@ -425,12 +427,12 @@ function visitNode(node) {
             e.finishers.push(makeVarsFinisher(funcDoc));
         }
 
-        var basename = getBasename(e.code.name)
+        basename = getBasename(e.code.name);
         e.code.funcscope = currentParser.resolveVar(node, basename);
     }
 
     if (!e) { e = {finishers: []}; }
-    for(var i = 0, l = currentParser._visitors.length; i < l; i++) {
+    for(i = 0, l = currentParser._visitors.length; i < l; i++) {
         currentParser._visitors[i].visitNode(node, e, currentParser, currentSourceName);
         if (e.stopPropagation) { break; }
     }
@@ -439,7 +441,7 @@ function visitNode(node) {
         currentParser.fire(e.event, e, currentParser);
     }
 
-    for (var i = 0, l = e.finishers.length; i < l; i++) {
+    for (i = 0, l = e.finishers.length; i < l; i++) {
         e.finishers[i].call(currentParser, e);
     }
 
@@ -470,7 +472,7 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
     this.fire('fileComplete', e);
 
     currentSourceName = '';
-}
+};
 
 /**
  * Given a node, determine what the node is a member of.
@@ -479,7 +481,8 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
  */
 exports.Parser.prototype.astnodeToMemberof = function(node) {
     var id,
-        doclet;
+        doclet,
+        alias;
 
     if (node.type === Token.VAR || node.type === Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         if (node.enclosingFunction) { // an inner var or func
@@ -499,7 +502,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             id = 'astnode'+scope.enclosingFunction.hashCode();
             doclet = this.refs[id];
             if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
-                var alias = hasOwnProp.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
+                alias = hasOwnProp.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
                 if (alias !== false) {
                     return [alias, basename];
                 }
@@ -508,9 +511,9 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             scope = scope.enclosingFunction;
         }
         //First check to see if we have a global scope alias
-        doclet = this.refs["__global__"];
+        doclet = this.refs.__global__;
         if (doclet && doclet.meta.vars && hasOwnProp.call(doclet.meta.vars, basename)) {
-            var alias = doclet.meta.vars[basename];
+            alias = doclet.meta.vars[basename];
             if (alias !== false) {
                 return [alias, basename];
             }
@@ -523,7 +526,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
         }
         return doclet.longname||doclet.name;
     }
-}
+};
 
 /**
  * Resolve what "this" refers too, relative to a node.
@@ -579,7 +582,7 @@ exports.Parser.prototype.resolveThis = function(node) {
     else {
         return ''; // global?
     }
-}
+};
 
 /**
     Given: foo = { x:1 }, find foo from x.
@@ -598,7 +601,7 @@ exports.Parser.prototype.resolvePropertyParent = function(node) {
 
         if (memberof.doclet) { return memberof; }
     }
-}
+};
 
 /**
  * Resolve what function a var is limited to.
@@ -617,7 +620,7 @@ exports.Parser.prototype.resolveVar = function(node, basename) {
     }
 
     return this.resolveVar(enclosingFunction, basename);
-}
+};
 
 exports.Parser.prototype.addDocletRef = function(e) {
     var node = e.code.node;
@@ -630,7 +633,7 @@ exports.Parser.prototype.addDocletRef = function(e) {
             meta: { code: e.code }
         };
     }
-}
+};
 
 exports.Parser.prototype.resolveEnum = function(e) {
     var doop = require("jsdoc/util/doop").doop,
@@ -645,7 +648,7 @@ exports.Parser.prototype.resolveEnum = function(e) {
         // use a copy of the doclet to avoid circular references
         parent.doclet.properties.push( doop(e.doclet) );
     }
-}
+};
 
 /**
     Fired whenever the parser encounters a JSDoc comment in the current source code.

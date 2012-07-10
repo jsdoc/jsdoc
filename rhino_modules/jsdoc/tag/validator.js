@@ -48,4 +48,4 @@ exports.validate = function(tag, meta) {
             throw new TagValueNotPermittedError(tag.title, meta);
         }
     }
-}
+};

@@ -66,5 +66,4 @@ exports.Package = function(json) {
      * ]
      */
     this.licenses = json.licenses;
-}
-
+};

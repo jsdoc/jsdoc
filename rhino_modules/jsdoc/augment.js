@@ -18,7 +18,7 @@ var doop = require("jsdoc/util/doop").doop;
                 docs.push(doc);
             });
         });
-    }
+    };
 
     function mapDependencies(index) {
         var doclets, doc, len, dependencies = {};

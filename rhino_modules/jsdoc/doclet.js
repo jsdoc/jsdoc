@@ -1,14 +1,14 @@
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
-	@module jsdoc/doclet
-	@requires jsdoc/tag
-	@requires jsdoc/name
-	@requires jsdoc/tag/dictionary
+    @module jsdoc/doclet
+    @requires jsdoc/tag
+    @requires jsdoc/name
+    @requires jsdoc/tag/dictionary
  */
 
 var jsdoc = {
@@ -51,17 +51,17 @@ function codetypeToKind(type) {
 function unwrap(docletSrc) {
     if (!docletSrc) { return ''; }
 
-	// note: keep trailing whitespace for @examples
-	// extra opening/closing stars are ignored
-	// left margin is considered a star and a space
-	// use the /m flag on regex to avoid having to guess what this platform's newline is
-	docletSrc =
-		docletSrc.replace(/^\/\*\*+/, '') // remove opening slash+stars
-		.replace(/\**\*\/$/, "\\Z")       // replace closing star slash with end-marker
-		.replace(/^\s*(\* ?|\\Z)/gm, '')  // remove left margin like: spaces+star or spaces+end-marker
-		.replace(/\s*\\Z$/g, '');         // remove end-marker
+    // note: keep trailing whitespace for @examples
+    // extra opening/closing stars are ignored
+    // left margin is considered a star and a space
+    // use the /m flag on regex to avoid having to guess what this platform's newline is
+    docletSrc =
+        docletSrc.replace(/^\/\*\*+/, '') // remove opening slash+stars
+        .replace(/\**\*\/$/, "\\Z")       // replace closing star slash with end-marker
+        .replace(/^\s*(\* ?|\\Z)/gm, '')  // remove left margin like: spaces+star or spaces+end-marker
+        .replace(/\s*\\Z$/g, '');         // remove end-marker
 
-	return docletSrc;
+    return docletSrc;
 }
 
 function split(docletSrc) {
@@ -69,14 +69,14 @@ function split(docletSrc) {
         tagText,
         tagTitle;
           
-	// split out the basic tags, keep surrounding whitespace
-	// like: @tagTitle tagBody
-	docletSrc
-	.replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence
-	.split('\\@')                        // then split on that arbitrary sequence
-	.forEach(function($) {
-	    if ($) {
-	        var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
+    // split out the basic tags, keep surrounding whitespace
+    // like: @tagTitle tagBody
+    docletSrc
+    .replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence
+    .split('\\@')                        // then split on that arbitrary sequence
+    .forEach(function($) {
+        if ($) {
+            var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
             
             if (parsedTag) {
                 // we don't need parsedTag[0]
@@ -91,9 +91,9 @@ function split(docletSrc) {
                 }
             }
         }
-	});
-	
-	return tagSrcs;
+    });
+    
+    return tagSrcs;
 }
 
 /**
@@ -116,9 +116,9 @@ function toTags(docletSrc) {
 
 function fixDescription(docletSrc) {
     if (!/^\s*@/.test(docletSrc)) {
-		docletSrc = '@description ' + docletSrc;
-	}
-	return docletSrc;
+        docletSrc = '@description ' + docletSrc;
+    }
+    return docletSrc;
 }
 
 /**
@@ -144,7 +144,7 @@ exports.Doclet = function(docletSrc, meta) {
     }
     
     this.postProcess();
-}
+};
 
 /** Called once after all tags have been added. */
 exports.Doclet.prototype.postProcess = function() {
@@ -172,7 +172,7 @@ exports.Doclet.prototype.postProcess = function() {
             }
         }
     }
-}
+};
 
 /** Add a tag to this doclet.
     @param {string} title - The title of the tag being added.
@@ -183,7 +183,7 @@ exports.Doclet.prototype.addTag = function(title, text) {
         newTag = new jsdoc.tag.Tag(title, text, this.meta);
 
     if (tagDef && tagDef.onTagged) {
-       tagDef.onTagged(this, newTag)
+       tagDef.onTagged(this, newTag);
     }
     
     if (!tagDef) {
@@ -192,7 +192,7 @@ exports.Doclet.prototype.addTag = function(title, text) {
     }
     
     applyTag.call(this, newTag);
-}
+};
 
 /** Set the `memberof` property of this doclet.
     @param {string} sid - The longname of the symbol that this doclet is a member of.
@@ -204,7 +204,7 @@ exports.Doclet.prototype.setMemberof = function(sid) {
         @type string
      */
     this.memberof = sid.replace(/\.prototype/g, '#');
-}
+};
 
 /** Set the `longname` property of this doclet.
     @param {string} name
@@ -220,7 +220,7 @@ exports.Doclet.prototype.setLongname = function(name) {
     if (jsdoc.tag.dictionary.isNamespace(this.kind)) {
         this.longname = jsdoc.name.applyNamespace(this.longname, this.kind);
     }
-}
+};
 
 /** Add a symbol to this doclet's `borrowed` array.
     @param {string} source - The longname of the symbol that is the source.
@@ -238,7 +238,7 @@ exports.Doclet.prototype.borrow = function(source, target) {
         this.borrowed = [];
     }
     this.borrowed.push(about);
-}
+};
 
 exports.Doclet.prototype.mix = function(source) {
     if (!this.mixes) {
@@ -249,7 +249,7 @@ exports.Doclet.prototype.mix = function(source) {
         this.mixes = [];
     }
     this.mixes.push(source);
-}
+};
 
 /** Add a symbol to this doclet's `augments` array.
     @param {string} base - The longname of the base symbol.
@@ -263,7 +263,7 @@ exports.Doclet.prototype.augment = function(base) {
         this.augments = [];
     }
     this.augments.push(base);
-}
+};
 
 /**
     Set the `meta` property of this doclet.
@@ -329,4 +329,4 @@ exports.Doclet.prototype.setMeta = function(meta) {
             this.meta.code.paramnames = meta.code.paramnames.concat([]);
         }
     }
-}
+};

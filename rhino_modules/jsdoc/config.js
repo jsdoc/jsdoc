@@ -27,7 +27,7 @@ const defaults = {
     @param {string} [json] - The contents of config.json.
  */
 function Config(json) {
-    var json = JSON.parse( (json || "{}") );
+    json = JSON.parse( (json || "{}") );
     
     this._config = util.mergeRecurse(defaults, json);
 }
@@ -39,5 +39,4 @@ module.exports = Config;
  */
 Config.prototype.get = function() {
     return this._config;
-}
-
+};

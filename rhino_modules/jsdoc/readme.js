@@ -33,7 +33,7 @@ function getParser(parser, conf) {
 
         return function(source) {
             return parser.renderJsonML(parser.toHTMLTree(source, conf.dialect));
-        }
+        };
     }
     else {
         throw 'unknown Markdown parser: "' + parser + '"';

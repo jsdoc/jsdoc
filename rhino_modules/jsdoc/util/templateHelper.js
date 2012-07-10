@@ -46,7 +46,7 @@ function strToFilename(str) {
     // allow for namespace prefix
     var basename = str.replace(nsprefix, '$1-');
     
-    if ( /[^$a-z0-9._-]/i.test(basename) ) {
+    if ( /[^$a-z0-9._\-]/i.test(basename) ) {
         return hash.hex_md5(str).substr(0, 10);
     }
     return makeFilenameUnique(basename, str);
@@ -61,7 +61,7 @@ var linkMap = {
 exports.registerLink = function(longname, url) {
     linkMap.longnameToUrl[longname] = url;
     linkMap.urlToLongname[url] = longname;
-}
+};
 
 function toLink(longname, content) {
     if (!longname) {
@@ -81,8 +81,8 @@ function toLink(longname, content) {
         }
     }
     else {
-	    url = linkMap.longnameToUrl[longname];
-	}
+        url = linkMap.longnameToUrl[longname];
+    }
     
     content = content || longname;
     
@@ -108,7 +108,7 @@ var toTutorial = exports.toTutorial = function(tutorial, content) {
     content = content || node.title;
 
     return '<a href="'+exports.tutorialToUrl(tutorial)+'">'+content+'</a>';
-}
+};
 
 /** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
 exports.resolveLinks = function(str) {
@@ -125,27 +125,29 @@ exports.resolveLinks = function(str) {
     );
 
     return str;
-}
+};
 
 /** Turn a doclet into a URL. */
 exports.createLink = function(doclet) {
-    var url = '';
+    var url = '',
+        longname,
+        filename;
     
     if (containers.indexOf(doclet.kind) < 0) {
-        var longname = doclet.longname,
-            filename = strToFilename(doclet.memberof || exports.globalName);
+        longname = doclet.longname;
+        filename = strToFilename(doclet.memberof || exports.globalName);
         
         url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
     }
     else {
-        var longname = doclet.longname,
-            filename = strToFilename(longname);
+        longname = doclet.longname;
+        filename = strToFilename(longname);
         
         url = filename + exports.fileExtension;
     }
     
     return url;
-}
+};
 
 exports.longnameToUrl = linkMap.longnameToUrl;
 
