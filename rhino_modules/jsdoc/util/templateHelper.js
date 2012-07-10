@@ -46,7 +46,7 @@ function strToFilename(str) {
     // allow for namespace prefix
     var basename = str.replace(nsprefix, '$1-');
     
-    if ( /[^$a-z0-9._-]/i.test(basename) ) {
+    if ( /[^$a-z0-9._\-]/i.test(basename) ) {
         return hash.hex_md5(str).substr(0, 10);
     }
     return makeFilenameUnique(basename, str);
