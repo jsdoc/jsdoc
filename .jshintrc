@@ -36,7 +36,7 @@
   "regexdash":    false,
   "scripturl":    true,
   "shadow":       false,
-  "smarttabs":    true,
+  "smarttabs":    false,
   "sub":          true,
   "supernew":     true,
   "validthis":    true,

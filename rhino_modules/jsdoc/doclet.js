@@ -1,14 +1,14 @@
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /**
-	@module jsdoc/doclet
-	@requires jsdoc/tag
-	@requires jsdoc/name
-	@requires jsdoc/tag/dictionary
+    @module jsdoc/doclet
+    @requires jsdoc/tag
+    @requires jsdoc/name
+    @requires jsdoc/tag/dictionary
  */
 
 var jsdoc = {
@@ -51,17 +51,17 @@ function codetypeToKind(type) {
 function unwrap(docletSrc) {
     if (!docletSrc) { return ''; }
 
-	// note: keep trailing whitespace for @examples
-	// extra opening/closing stars are ignored
-	// left margin is considered a star and a space
-	// use the /m flag on regex to avoid having to guess what this platform's newline is
-	docletSrc =
-		docletSrc.replace(/^\/\*\*+/, '') // remove opening slash+stars
-		.replace(/\**\*\/$/, "\\Z")       // replace closing star slash with end-marker
-		.replace(/^\s*(\* ?|\\Z)/gm, '')  // remove left margin like: spaces+star or spaces+end-marker
-		.replace(/\s*\\Z$/g, '');         // remove end-marker
+    // note: keep trailing whitespace for @examples
+    // extra opening/closing stars are ignored
+    // left margin is considered a star and a space
+    // use the /m flag on regex to avoid having to guess what this platform's newline is
+    docletSrc =
+        docletSrc.replace(/^\/\*\*+/, '') // remove opening slash+stars
+        .replace(/\**\*\/$/, "\\Z")       // replace closing star slash with end-marker
+        .replace(/^\s*(\* ?|\\Z)/gm, '')  // remove left margin like: spaces+star or spaces+end-marker
+        .replace(/\s*\\Z$/g, '');         // remove end-marker
 
-	return docletSrc;
+    return docletSrc;
 }
 
 function split(docletSrc) {
@@ -69,14 +69,14 @@ function split(docletSrc) {
         tagText,
         tagTitle;
           
-	// split out the basic tags, keep surrounding whitespace
-	// like: @tagTitle tagBody
-	docletSrc
-	.replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence
-	.split('\\@')                        // then split on that arbitrary sequence
-	.forEach(function($) {
-	    if ($) {
-	        var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
+    // split out the basic tags, keep surrounding whitespace
+    // like: @tagTitle tagBody
+    docletSrc
+    .replace(/^(\s*)@(\S)/gm, '$1\\@$2') // replace splitter ats with an arbitrary sequence
+    .split('\\@')                        // then split on that arbitrary sequence
+    .forEach(function($) {
+        if ($) {
+            var parsedTag = $.match(/^(\S+)(:?\s+(\S[\s\S]*))?/);
             
             if (parsedTag) {
                 // we don't need parsedTag[0]
@@ -91,9 +91,9 @@ function split(docletSrc) {
                 }
             }
         }
-	});
-	
-	return tagSrcs;
+    });
+    
+    return tagSrcs;
 }
 
 /**
@@ -116,9 +116,9 @@ function toTags(docletSrc) {
 
 function fixDescription(docletSrc) {
     if (!/^\s*@/.test(docletSrc)) {
-		docletSrc = '@description ' + docletSrc;
-	}
-	return docletSrc;
+        docletSrc = '@description ' + docletSrc;
+    }
+    return docletSrc;
 }
 
 /**

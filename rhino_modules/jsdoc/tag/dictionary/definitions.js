@@ -1,10 +1,10 @@
 /*global app: true, env: true */
 /**
-	Define tags that are known in JSDoc.
-	@module jsdoc/tag/dictionary/definitions
+    Define tags that are known in JSDoc.
+    @module jsdoc/tag/dictionary/definitions
 
-	@author Michael Mathews <micmath@gmail.com>
-	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
+    @author Michael Mathews <micmath@gmail.com>
+    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 /** @private */
@@ -224,31 +224,31 @@ exports.defineTags = function(dictionary) {
         }
     });
 
-	dictionary.defineTag('default', {
+    dictionary.defineTag('default', {
         onTagged: function(doclet, tag) {
             if (tag.value) {
-				doclet.defaultvalue = tag.value;
-			}
-			else if (doclet.meta && doclet.meta.code && typeof doclet.meta.code.value !== 'undefined') {
-				if (doclet.meta.code.type && /STRING|NUMBER|NAME|TRUE|FALSE/.test(doclet.meta.code.type)) {
-					doclet.defaultvalue = doclet.meta.code.value;
-					if (doclet.meta.code.type === 'STRING') {
-						// TODO: handle escaped quotes in values
-						doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"';
-					}
-					
-					if (doclet.defaultvalue === 'TRUE' || doclet.defaultvalue == 'FALSE') {
-					    doclet.defaultvalue = doclet.defaultvalue.toLowerCase();
-					}
-				}
-				else if (doclet.meta.code.type === 'NULL') {
-					// TODO: handle escaped quotes in values
-					doclet.defaultvalue = 'null';
-				}
-			}
+                doclet.defaultvalue = tag.value;
+            }
+            else if (doclet.meta && doclet.meta.code && typeof doclet.meta.code.value !== 'undefined') {
+                if (doclet.meta.code.type && /STRING|NUMBER|NAME|TRUE|FALSE/.test(doclet.meta.code.type)) {
+                    doclet.defaultvalue = doclet.meta.code.value;
+                    if (doclet.meta.code.type === 'STRING') {
+                        // TODO: handle escaped quotes in values
+                        doclet.defaultvalue = '"'+doclet.defaultvalue.replace(/"/g, '\\"')+'"';
+                    }
+                    
+                    if (doclet.defaultvalue === 'TRUE' || doclet.defaultvalue == 'FALSE') {
+                        doclet.defaultvalue = doclet.defaultvalue.toLowerCase();
+                    }
+                }
+                else if (doclet.meta.code.type === 'NULL') {
+                    // TODO: handle escaped quotes in values
+                    doclet.defaultvalue = 'null';
+                }
+            }
         }
     })
-	.synonym('defaultvalue');
+    .synonym('defaultvalue');
     
     dictionary.defineTag('deprecated', {
         // value is optional

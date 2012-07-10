@@ -81,8 +81,8 @@ function toLink(longname, content) {
         }
     }
     else {
-	    url = linkMap.longnameToUrl[longname];
-	}
+        url = linkMap.longnameToUrl[longname];
+    }
     
     content = content || longname;
     
