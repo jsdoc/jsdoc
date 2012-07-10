@@ -511,7 +511,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             scope = scope.enclosingFunction;
         }
         //First check to see if we have a global scope alias
-        doclet = this.refs["__global__"];
+        doclet = this.refs.__global__;
         if (doclet && doclet.meta.vars && hasOwnProp.call(doclet.meta.vars, basename)) {
             alias = doclet.meta.vars[basename];
             if (alias !== false) {

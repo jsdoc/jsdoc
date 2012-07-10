@@ -37,7 +37,7 @@
   "scripturl":    true,
   "shadow":       false,
   "smarttabs":    false,
-  "sub":          true,
+  "sub":          false,
   "supernew":     true,
   "validthis":    true,
 

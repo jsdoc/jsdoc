@@ -23,7 +23,7 @@ exports.resolveBorrows = function(docs) {
         if (doc.borrowed) {
             doc.borrowed.forEach(function(b, i) {
                 var lent = docs.index[b.from], // lent is an array
-                    asName = b['as'] || b.from;
+                    asName = b.as || b.from;
                     
                 if (lent) {
                     var cloned = doop(lent);
