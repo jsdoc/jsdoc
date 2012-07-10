@@ -70,8 +70,8 @@ function parseParamText(tagText) {
     @param {object=} meta
  */
 exports.Tag = function(tagTitle, tagBody, meta) {
-    var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle),
-        meta = meta  || {};
+    var tagDef = jsdoc.tag.dictionary.lookUp(tagTitle);
+    meta = meta  || {};
     
     this.originalTitle = trim(tagTitle);
     

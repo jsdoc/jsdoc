@@ -129,17 +129,19 @@ exports.resolveLinks = function(str) {
 
 /** Turn a doclet into a URL. */
 exports.createLink = function(doclet) {
-    var url = '';
+    var url = '',
+        longname,
+        filename;
     
     if (containers.indexOf(doclet.kind) < 0) {
-        var longname = doclet.longname,
-            filename = strToFilename(doclet.memberof || exports.globalName);
+        longname = doclet.longname;
+        filename = strToFilename(doclet.memberof || exports.globalName);
         
         url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
     }
     else {
-        var longname = doclet.longname,
-            filename = strToFilename(longname);
+        longname = doclet.longname;
+        filename = strToFilename(longname);
         
         url = filename + exports.fileExtension;
     }

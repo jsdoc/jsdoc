@@ -131,7 +131,7 @@ exports.copyFile = function(inFile, outDir, fileName) {
 
     outDir = toDir(outDir);
 
-    var inFile = new java.io.File(inFile);
+    inFile = new java.io.File(inFile);
     var outFile = new java.io.File(outDir+'/'+fileName);
 
     var bis = new Packages.java.io.BufferedInputStream(new Packages.java.io.FileInputStream(inFile), 4096);

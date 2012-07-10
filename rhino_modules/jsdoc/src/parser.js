@@ -303,6 +303,9 @@ function visitNode(node) {
         nodeComments,
         comment,
         commentSrc,
+        basename,
+        func,
+        funcDoc,
         i,
         l;
 
@@ -342,7 +345,7 @@ function visitNode(node) {
             finishers: [currentParser.addDocletRef]
         };
 
-        var basename = getBasename(e.code.name);
+        basename = getBasename(e.code.name);
 
         if (basename !== 'this') {
             e.code.funcscope = currentParser.resolveVar(node, basename);
@@ -384,8 +387,8 @@ function visitNode(node) {
         };
 
         // keep track of vars in a function or global scope
-        var func = "__global__",
-            funcDoc = null;
+        func = "__global__";
+        funcDoc = null;
         if (node.enclosingFunction) {
             func = 'astnode'+node.enclosingFunction.hashCode();
         }
@@ -412,8 +415,8 @@ function visitNode(node) {
         //console.log(':: e.code.name is', e.code.name);
 
         // keep track of vars in a function or global scope
-        var func = "__global__",
-            funcDoc = null;
+        func = "__global__";
+        funcDoc = null;
         if (node.enclosingFunction) {
             func = 'astnode'+node.enclosingFunction.hashCode();
         }
@@ -424,12 +427,12 @@ function visitNode(node) {
             e.finishers.push(makeVarsFinisher(funcDoc));
         }
 
-        var basename = getBasename(e.code.name);
+        basename = getBasename(e.code.name);
         e.code.funcscope = currentParser.resolveVar(node, basename);
     }
 
     if (!e) { e = {finishers: []}; }
-    for(var i = 0, l = currentParser._visitors.length; i < l; i++) {
+    for(i = 0, l = currentParser._visitors.length; i < l; i++) {
         currentParser._visitors[i].visitNode(node, e, currentParser, currentSourceName);
         if (e.stopPropagation) { break; }
     }
@@ -438,7 +441,7 @@ function visitNode(node) {
         currentParser.fire(e.event, e, currentParser);
     }
 
-    for (var i = 0, l = e.finishers.length; i < l; i++) {
+    for (i = 0, l = e.finishers.length; i < l; i++) {
         e.finishers[i].call(currentParser, e);
     }
 
@@ -478,7 +481,8 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
  */
 exports.Parser.prototype.astnodeToMemberof = function(node) {
     var id,
-        doclet;
+        doclet,
+        alias;
 
     if (node.type === Token.VAR || node.type === Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         if (node.enclosingFunction) { // an inner var or func
@@ -498,7 +502,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
             id = 'astnode'+scope.enclosingFunction.hashCode();
             doclet = this.refs[id];
             if (doclet && doclet.meta.vars && basename in doclet.meta.vars) {
-                var alias = hasOwnProp.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
+                alias = hasOwnProp.call(doclet.meta.vars, basename)? doclet.meta.vars[basename] : false;
                 if (alias !== false) {
                     return [alias, basename];
                 }
@@ -509,7 +513,7 @@ exports.Parser.prototype.astnodeToMemberof = function(node) {
         //First check to see if we have a global scope alias
         doclet = this.refs["__global__"];
         if (doclet && doclet.meta.vars && hasOwnProp.call(doclet.meta.vars, basename)) {
-            var alias = doclet.meta.vars[basename];
+            alias = doclet.meta.vars[basename];
             if (alias !== false) {
                 return [alias, basename];
             }

@@ -123,8 +123,8 @@ RegExp.escape = RegExp.escape || function(str) {
  */
 exports.applyNamespace = function(longname, ns) {
     var nameParts = exports.shorten(longname),
-        name = nameParts.name,
-        longname = nameParts.longname;
+        name = nameParts.name;
+    longname = nameParts.longname;
 
     if ( !/^[a-zA-Z]+?:.+$/i.test(name) ) {
         longname = longname.replace( new RegExp(RegExp.escape(name)+'$'), ns + ':' + name );
@@ -161,21 +161,22 @@ exports.shorten = function(longname, forcedMemberof) {
     var name = '',
         scope = '', // ., ~, or #
         memberof =  '',
+        parts,
         variation;
     
     longname = longname.replace( /\.prototype\.?/g, '#' );
          
     if (typeof forcedMemberof !== 'undefined') {
         name = longname.substr(forcedMemberof.length);
-        var parts = forcedMemberof.match(/^(.*?)([#.~]?)$/);
+        parts = forcedMemberof.match(/^(.*?)([#.~]?)$/);
 
         if (parts[1]) { memberof = parts[1] || forcedMemberof; }
         if (parts[2]) { scope = parts[2]; }
     }
     else {
-        var parts = longname?
-                    (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
-                    : [''];
+        parts = longname?
+                (longname.match( /^(:?(.+)([#.~]))?(.+?)$/ ) || []).reverse()
+                : [''];
         
         name = parts[0] || ''; // ensure name is always initialised to avoid error being thrown when calling replace on undefined [gh-24]
         scope = parts[1] || ''; // ., ~, or #

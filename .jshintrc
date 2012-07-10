@@ -35,7 +35,7 @@
   "proto":        false,
   "regexdash":    false,
   "scripturl":    true,
-  "shadow":       true,
+  "shadow":       false,
   "smarttabs":    true,
   "sub":          true,
   "supernew":     true,
