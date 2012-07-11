@@ -224,7 +224,8 @@ function aboutNode(node) {
             about.type = 'undefined';
         }
     }
-    else if (node.type === Token.ASSIGN || node.type === Token.COLON) {
+    else if (node.type === Token.ASSIGN || node.type === Token.COLON ||
+             node.type === Token.GET || node.type === Token.SET) {
         about.name = nodeToString(node.left);
         if (node.type === Token.COLON) {
 
@@ -235,7 +236,13 @@ function aboutNode(node) {
         }
         about.node = node.right;
         about.value = nodeToString(about.node);
-        about.type = getTypeName(node.right);
+
+        // Getter and setter functions should be treated as properties
+        if (node.type === Token.GET || node.type === Token.SET) {
+            about.type = nodeToString(node);
+        } else {
+            about.type = getTypeName(node.right);
+        }
 
         if (about.type === 'FUNCTION' && about.node.name) {
             about.node.type = tkn.NAMEDFUNCTIONSTATEMENT;
@@ -361,6 +368,18 @@ function visitNode(node) {
             code: aboutNode(node),
             event: "symbolFound",
             finishers: [currentParser.addDocletRef, currentParser.resolveEnum]
+        };
+    }
+    else if (node.type === Token.GET || node.type === Token.SET) { // assignment within an object literal
+        e = {
+            id: 'astnode'+node.hashCode(), // the id of the GET/SET node
+            comment: String(node.left.getJsDoc()||'@undocumented'),
+            lineno: node.left.getLineno(),
+            filename: currentSourceName,
+            astnode: node,
+            code: aboutNode(node),
+            event: "symbolFound",
+            finishers: [currentParser.addDocletRef]
         };
     }
     else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
