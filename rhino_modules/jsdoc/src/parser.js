@@ -239,7 +239,7 @@ function aboutNode(node) {
 
         // Getter and setter functions should be treated as properties
         if (node.type === Token.GET || node.type === Token.SET) {
-            about.type = nodeToString(node);
+            about.type = getTypeName(node);
         } else {
             about.type = getTypeName(node.right);
         }
