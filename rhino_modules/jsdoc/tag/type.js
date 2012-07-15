@@ -2,45 +2,9 @@
     @module jsdoc/tag/type
 
     @author Michael Mathews <micmath@gmail.com>
+    @author Jeff Williams <jeffrey.l.williams@gmail.com>
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
-
-
-function parseOptional(type) {
-    var optional = null;
-
-    // {sometype=} means optional
-    if ( /(.+)=$/.test(type) ) {
-        type = RegExp.$1;
-        optional = true;
-    }
-
-    return { type: type, optional: optional };
-}
-
-function parseNullable(type) {
-    var nullable = null;
-
-    // {?sometype} means nullable, {!sometype} means not-nullable
-    if ( /^([\?\!])(.+)$/.test(type) ) {
-        type = RegExp.$2;
-        nullable = (RegExp.$1 === '?')? true : false;
-    }
-
-    return { type: type, nullable: nullable };
-}
-
-function parseVariable(type) {
-    var variable = null;
-
-    // {...sometype} means variable number of that type
-    if ( /^(\.\.\.)(.+)$/.test(type) ) {
-        type = RegExp.$2;
-        variable = true;
-    }
-
-    return { type: type, variable: variable };
-}
 
 function parseTypes(type) {
     var types = [];
@@ -65,13 +29,14 @@ function trim(text) {
     return text.trim();
 }
 
-function getTagType(tagValue) {
-    var type = '',
-        text = '',
+var getTagInfo = exports.getTagInfo = function(tagValue, canHaveName, canHaveType) {
+    var name = '',
+        type = '',
+        text = tagValue,
         count = 0;
 
     // type expressions start with '{'
-    if (tagValue[0] === '{') {
+    if (canHaveType && tagValue[0] === '{') {
         count++;
 
         // find matching closer '}'
@@ -90,44 +55,40 @@ function getTagType(tagValue) {
             }
         }
     }
-    return { type: type, text: text };
-}
-exports.getTagType = getTagType;
+    
+    if (canHaveName) {
+        // like: name, [name], name text, [name] text, name - text, or [name] - text
+        text.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
+        name = RegExp.$1;
+        text = RegExp.$3;
+    }
+    
+    return { name: name, type: type, text: text };
+};
 
 
 /**
     @param {string} tagValue
-    @returns {object} Hash with type, text, optional, nullable, and variable properties
+    @param {boolean} canHaveName
+    @param {boolean} canHaveType
+    @returns {object} Hash with name, type, text, optional, nullable, variable, and default properties
  */
-exports.parse = function(tagValue) {
+exports.parse = function(tagValue, canHaveName, canHaveType) {
     if (typeof tagValue !== 'string') { tagValue = ''; }
-    var type = '',
-        text = '',
-        tagType,
-        optional,
-        nullable,
-        variable;
     
-    tagType = getTagType(tagValue);
-    type = tagType.type;
-    if (tagType.type === '') {
-        text = tagValue;
-    } else {
-        text = tagType.text;
-    }
+    var tagInfo = getTagInfo(tagValue, canHaveName, canHaveType);
     
-    optional = parseOptional(type);
-    nullable = parseNullable(type);
-    variable = parseVariable(type);
-    type = variable.type || nullable.type || optional.type;
-
-    type = parseTypes(type); // make it into an array
+    // extract JSDoc-style type info, then Closure Compiler-style type info
+    tagInfo = require('jsdoc/tag/type/jsdocType').parse(tagInfo);
+    tagInfo = require('jsdoc/tag/type/closureCompilerType').parse(tagInfo);
 
     return {
-        type: type,
-        text: text,
-        optional: optional.optional,
-        nullable: nullable.nullable,
-        variable: variable.variable
+        name: tagInfo.name,
+        type: parseTypes(tagInfo.type), // make it into an array
+        text: tagInfo.text,
+        optional: tagInfo.optional,
+        nullable: tagInfo.nullable,
+        variable: tagInfo.variable,
+        'default': tagInfo['default']
     };
 };
