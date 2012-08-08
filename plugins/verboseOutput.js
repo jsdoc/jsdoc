@@ -5,37 +5,18 @@
  * @author Michael Mathews <micmath@gmail.com> - Wrote the first itteration with me :)
  */
 
-
-var _config = {
-    prefix: {
-        fileBegin: "    > ",
-        newDoclet: "    > "
+exports.handlers = {
+    /**
+     * Logging the file name to the console.
+     */
+    fileBegin: function (data) {
+        console.log(data.filename);
     },
-    suffix: {
-        fileBegin: "",
-        newDoclet: ""
-    },
-    enable: {
-        fileBegin: true,
-        newDoclet: false
-    }
-};
-
-/**
- * Logging the file name to the console
- */
-exports.fileBegin = function (event) {
-    if (_config.enable.fileBegin) {
-        console.log(_config.prefix.fileBegin, event.filename, _config.suffix.fileBegin);
-    }
-};
-
-/**
- * Logging the doclet object to the console.  This will print out a lot of info,
- * so I suggest only using it for debugging.
- */
-exports.newDoclet = function (event) {
-    if (_config.enable.newDoclet) {
-        console.log(_config.prefix.newDoclet, event, _config.suffix.newDoclet);
+    /**
+     * Logging the doclet object to the console.  This will print out a lot of info,
+     * so I suggest only using it for debugging.
+     */
+    newDoclet: function (data) {
+        // console.log(data);
     }
 };
