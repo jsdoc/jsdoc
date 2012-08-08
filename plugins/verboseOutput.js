@@ -11,12 +11,5 @@ exports.handlers = {
      */
     fileBegin: function (data) {
         console.log(data.filename);
-    },
-    /**
-     * Logging the doclet object to the console.  This will print out a lot of info,
-     * so I suggest only using it for debugging.
-     */
-    newDoclet: function (data) {
-        // console.log(data);
     }
 };
