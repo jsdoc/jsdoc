@@ -1,7 +1,7 @@
 {
 	"name": "JSDoc",
 	"version": "3.0.0",
-	"revision": "1339743348712",
+	"revision": "1345064014682",
 	"description": "An automatic documentation generator for javascript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -29,10 +29,6 @@
         {
             "name": "Jannon Frank",
             "email": "jannon@jannon.net"
-        },
-        {
-            "name": "Jeff Williams",
-            "email": "jeffrey.l.williams@gmail.com"
         }
     ],
 	"maintainers": [
