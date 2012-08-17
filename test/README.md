@@ -16,7 +16,7 @@ and run the following command on Windows:
 If you can't get the short-form commands to work, try invoking Java directly:
 
     java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main -opt -1 \
-    -modules node_modules -modules rhino_modules -modules . \
+    -modules nodejs_modules -modules rhino_modules -modules . \
     jsdoc.js -T
 
 Writing Tests
