@@ -32,7 +32,7 @@ exports.root = new tutorial.Tutorial('', '');
 
 /** Additional instance method for root node.
     @param {string} name - Tutorial name.
-    @reutrn {tutorial.Tutorial} Tutorial instance.
+    @return {tutorial.Tutorial} Tutorial instance.
  */
 exports.root.getByName = function(name) {
     return tutorials[name];
@@ -93,7 +93,6 @@ exports.load = function(path) {
 };
 
 /** Resolves hierarchical structure.
-    @param {object} map - Contents map.
  */
 exports.resolve = function() {
     var item,
@@ -118,13 +117,12 @@ exports.resolve = function() {
             // add children
             if (item.children) {
                 item.children.forEach(function(child) {
-                    // I really didn't want to throw you an exception in most cases
-                    // but now, user, you pissed me off ;)
                     if (!(child in tutorials)) {
-                        throw new Error("Missing child tutorial: " + child);
+                        require('jsdoc/util/error').handle( new Error("Missing child tutorial: " + child) );
                     }
-
-                    tutorials[child].setParent(current);
+                    else {
+                        tutorials[child].setParent(current);
+                    }
                 });
             }
         }

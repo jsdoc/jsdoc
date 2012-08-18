@@ -65,6 +65,7 @@ exports.registerLink = function(longname, url) {
 
 function toLink(longname, content) {
     if (!longname) {
+        // if this happens, there's something wrong with the caller itself; the user can't fix this
         throw new Error('Missing required parameter: url');
     }
     
@@ -96,7 +97,8 @@ function toLink(longname, content) {
 
 var toTutorial = exports.toTutorial = function(tutorial, content) {
     if (!tutorial) {
-        throw new Error('Missing required parameter: tutorial');
+        require('jsdoc/util/error').handle( new Error('Missing required parameter: tutorial') );
+        return;
     }
 
     var node = tutorials.getByName(tutorial);
@@ -155,7 +157,8 @@ exports.tutorialToUrl = function(tutorial) {
     var node = tutorials.getByName(tutorial);
     // no such tutorial
     if (!node) {
-        throw new Error('No such tutorial: '+tutorial);
+        require('jsdoc/util/error').handle( new Error('No such tutorial: '+tutorial) );
+        return;
     }
 
     return 'tutorial-'+strToFilename(node.name)+exports.fileExtension;

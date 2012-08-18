@@ -1,3 +1,4 @@
+/*global describe: true, env: true, it: true */
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper');
     helper.registerLink('test', 'path/to/test.html');
@@ -137,5 +138,82 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    //TODO: tests for tutorial functions?
+    xdescribe("registerLink", function() {
+        // TODO
+    });
+
+    xdescribe("longnameToUrl", function() {
+        // TODO
+    });
+
+    xdescribe("setTutorials", function() {
+        // TODO
+    });
+
+    describe("toTutorial", function() {
+        /*jshint evil: true */
+        
+        // TODO: more tests
+
+        var lenient = !!env.opts.lenient,
+            log = eval(console.log);
+
+        function missingParam() {
+            helper.toTutorial();
+        }
+
+        afterEach(function() {
+            env.opts.lenient = lenient;
+            console.log = log;
+        });
+
+        it('throws an exception if the first param is missing and the lenient option is not enabled', function() {
+            env.opts.lenient = false;
+
+            expect(missingParam).toThrow();
+        });
+        
+        it('does not throw an exception if the first param is missing and the lenient option is enabled', function() {
+            console.log = function() {};
+            env.opts.lenient = true;
+
+            expect(missingParam).not.toThrow();
+        });
+    });
+
+    describe("tutorialToUrl", function() {
+        /*jshint evil: true */
+        
+        // TODO: more tests
+
+        var lenient = !!env.opts.lenient,
+            log = eval(console.log);
+
+        function missingTutorial() {
+            var url = helper.tutorialToUrl("be-a-perfect-person-in-just-three-days");
+        }
+
+        beforeEach(function() {
+            var root = require('jsdoc/tutorial/resolver').root;
+            helper.setTutorials(root);
+        });
+
+        afterEach(function() {
+            helper.setTutorials(null);
+            env.opts.lenient = lenient;
+            console.log = log;
+        });
+
+        it('throws an exception if the tutorial is missing and the lenient option is not enabled', function() {
+            env.opts.lenient = false;
+            expect(missingTutorial).toThrow();
+        });
+        
+        it('does not throw an exception if the tutorial is missing and the lenient option is enabled', function() {
+            console.log = function() {};
+            env.opts.lenient = true;
+
+            expect(missingTutorial).not.toThrow();
+        });
+    });
 });
