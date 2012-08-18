@@ -96,7 +96,8 @@ var doop = require("jsdoc/util/doop").doop;
                 this.visited[key] = true;
                 
                 if (!(key in this.dependencies)) {
-                    throw new Error("Missing dependency: " + key);
+                    require('jsdoc/util/error').handle( new Error("Missing dependency: " + key) );
+                    return;
                 }
                 for (var path in this.dependencies[key]) {
                     if ( hasOwnProp.call(this.dependencies[key], path) ) {
