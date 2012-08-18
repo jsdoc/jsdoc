@@ -123,7 +123,7 @@ function pretreat(code) {
         // merge adjacent doclets
         .replace(/\*\/\/\*\*+/g, '@also')
         // make lent objectliterals documentable by giving them a dummy name
-        .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/\s*)\{/g, '$1 ____ = {') // like return @lends {
+        .replace(/(\/\*\*[^\*\/]*?[\*\s]*@lends\s(?:[^\*]|\*(?!\/))*\*\/\s*)\{/g, '$1 ____ = {') // like return @lends {
         .replace(/(\/\*\*[^\*\/]*?@lends\b[^\*\/]*?\*\/)(\s*)return(\s*)\{/g, '$2$3 return $1 ____ = {'); // like @lends return {
 }
 
