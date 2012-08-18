@@ -35,17 +35,17 @@ exports.validate = function(tag, meta) {
     var tagDef = dictionary.lookUp(tag.title);
     
     if (!tagDef && !env.conf.tags.allowUnknownTags) {
-        throw new UnknownTagError(tag.title, meta);
+        require('jsdoc/util/error').handle( new UnknownTagError(tag.title, meta) );
     }
     
     if (!tag.text) {
         if (tagDef.mustHaveValue) {
-            throw new TagValueRequiredError(tag.title, meta);
+            require('jsdoc/util/error').handle( new TagValueRequiredError(tag.title, meta) );
         }
     }
     else {
         if (tagDef.mustNotHaveValue) {
-            throw new TagValueNotPermittedError(tag.title, meta);
+            require('jsdoc/util/error').handle( new TagValueNotPermittedError(tag.title, meta) );
         }
     }
 };
