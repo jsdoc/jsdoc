@@ -34,6 +34,20 @@ describe("lends", function() {
             });
         });
 
+        describe("case that uses @lends in a multiline doclet", function() {
+            var docSet = jasmine.getDocSetFromFile('test/fixtures/lends3.js'),
+                init = docSet.getByLongname('Person#initialize'),
+                name = docSet.getByLongname('Person#name');
+
+            it("The member should be documented as a member of the lendee", function() {
+                expect(init.length, 1);
+            });
+
+            it("The this member should be documented as a member of the lendee", function() {
+                expect(name.length, 1);
+            });
+        });
+
     });
 
     describe("when a documented member is inside an objlit associated with a @lends tag that has no value.", function() {
