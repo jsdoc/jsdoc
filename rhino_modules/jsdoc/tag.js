@@ -95,15 +95,5 @@ exports.Tag = function(tagTitle, tagBody, meta) {
         }
     }
     
-    // validate the tag. in lenient mode, log a warning; otherwise, throw an exception.
-    try {
-        jsdoc.tag.validator.validate(this, meta);
-    }
-    catch (e) {
-        if (env.opts.lenient) {
-            console.log(e);
-        } else {
-            throw e;
-        }
-    }
+    jsdoc.tag.validator.validate(this, meta);
 };
