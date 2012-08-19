@@ -1,12 +1,17 @@
 /*global Packages: true */
+var path = require('path');
+
 exports.readFileSync = function(filename, encoding) {
     encoding = encoding || 'utf-8';
 
     return readFile(filename, encoding);
 };
 
-var stat = exports.stat = exports.statSync = function(path, encoding) {
-    var f = new java.io.File(path);
+// in node 0.8, path.exists() and path.existsSync() moved to the "fs" module
+exports.existsSync = path.existsSync;
+
+var statSync = exports.statSync = function(_path) {
+    var f = new java.io.File(_path);
     return {
         isFile: function() {
             return f.isFile();
@@ -15,14 +20,13 @@ var stat = exports.stat = exports.statSync = function(path, encoding) {
             return f.isDirectory();
         }
     };
-
 };
 
-var readdirSync = exports.readdirSync = function(path) {
+var readdirSync = exports.readdirSync = function(_path) {
     var dir,
         files;
 
-    dir = new java.io.File(path);
+    dir = new java.io.File(_path);
     if (!dir.directory) { return [String(dir)]; }
 
     files = dir.list();
@@ -35,6 +39,8 @@ var readdirSync = exports.readdirSync = function(path) {
     return files;
 };
 
+// TODO: not part of node's "fs" module
+// for node, could use wrench.readdirSyncRecursive(), although it doesn't take a 'recurse' param
 var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     var files,
         file;
@@ -47,7 +53,7 @@ var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     if (_path.length === 0) { return _allFiles; }
     if (typeof recurse === 'undefined') { recurse = 1; }
 
-    if ( stat(dir).isFile(dir) ) {
+    if ( statSync(dir).isFile(dir) ) {
         files = [dir];
     }
     else {
@@ -77,57 +83,33 @@ var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     return _allFiles;
 };
 
-var toDir = exports.toDir = function(path) {
-    var f = new java.io.File(path);
+// TODO: not part of node's "fs" module
+var toDir = exports.toDir = function(_path) {
+    var f = new java.io.File(_path);
 
     if (f.isDirectory()){
-       return path;
-    }
-
-    var parts = path.split(/[\\\/]/);
-    parts.pop();
-
-    return parts.join('/');
-};
-
-function makeDir(/**string*/ path) {
-    var dirPath = toDir(path);
-    (new java.io.File(dirPath)).mkdir();
-}
-
-function exists(path) {
-    var f = new java.io.File(path);
-
-    if (f.isDirectory()){
-        return true;
-    }
-    if (!f.exists()){
-        return false;
-    }
-    if (!f.canRead()){
-        return false;
-    }
-    return true;
-}
-
-exports.mkPath = function(/**Array*/ path) {
-    if (path.constructor != Array){path = path.split(/[\\\/]/);}
-    var make = "";
-    for (var i = 0, l = path.length; i < l; i++) {
-        make += path[i] + '/';
-        if (! exists(make)) {
-            makeDir(make);
-        }
+       return _path;
+    } else {
+        return path.dirname(_path);
     }
 };
 
-var toFile = exports.toFile = function(path) {
-    var parts = path.split(/[\\\/]/);
-    return parts.pop();
+var mkdirSync = exports.mkdirSync = function(/**string*/ _path) {
+    var dir_path = toDir(_path);
+    (new java.io.File(dir_path)).mkdir();
 };
 
-exports.copyFile = function(inFile, outDir, fileName) {
-    if (fileName == null){fileName = toFile(inFile);}
+// TODO: not part of node's "fs" module
+// for node, could use: https://github.com/substack/node-mkdirp
+exports.mkPath = function(/**Array*/ _path) {
+    if (_path.constructor == Array) { _path = _path.join(""); }
+
+    (new java.io.File(_path)).mkdirs();
+};
+
+// TODO: not part of node's "fs" module
+exports.copyFileSync = function(inFile, outDir, fileName) {
+    if (fileName == null){fileName = path.basename(inFile);}
 
     outDir = toDir(outDir);
 

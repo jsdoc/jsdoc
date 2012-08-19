@@ -175,7 +175,7 @@
             mixins = find({kind: 'mixin'}),
 	        namespaces = find({kind: 'namespace'});
 
-        var outdir = opts.destination;
+        var outdir = env.dirname + '/' + opts.destination;
         if (packageInfo && packageInfo.name) {
             outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
         }
@@ -188,7 +188,7 @@
         staticFiles.forEach(function(fileName) {
             var toDir = fs.toDir(fileName.replace(fromDir, outdir));
             fs.mkPath(toDir);
-            fs.copyFile(fileName, toDir);
+            fs.copyFileSync(fileName, toDir);
         });
         
         function linkto(longname, linktext) {
