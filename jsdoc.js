@@ -179,7 +179,7 @@ app = {
 
 
 /**
-    Run the jsoc application.
+    Run the jsdoc application.
  */
 function main() {
     var sourceFiles,
@@ -300,17 +300,32 @@ function main() {
 
         env.opts.template = env.opts.template || 'templates/default';
 
-        // should define a global "publish" function
-        include(env.opts.template + '/publish.js');
+        // templates should include a publish.js file that exports a "publish" function
+        var template = require(env.opts.template + '/publish');
 
-        if (typeof publish === 'function') {
-            publish(
+        if (template.publish && typeof template.publish === 'function') {
+            template.publish(
                 new (require('typicaljoe/taffy'))(docs),
                 env.opts,
                 resolver.root
             );
         }
-        else { // TODO throw no publish warning?
+        else {
+            // old templates define a global "publish" function, which is deprecated
+            include(env.opts.template + '/publish.js');
+            if (publish && typeof publish === 'function') {
+                console.log( env.opts.template + ' uses a global "publish" function, which is ' +
+                    'deprecated and may not be supported in future versions. ' +
+                    'Please update the template so that it exports a "publish" function.' );
+                publish(
+                    new (require('typicaljoe/taffy'))(docs),
+                    env.opts,
+                    resolver.root
+                );
+            }
+            else {
+                throw new Error( env.opts.template + " does not export a 'publish' function." );
+            }
         }
     }
 }
