@@ -1,37 +1,48 @@
 
 var isWindows = java.lang.System.getProperty("os.name").toLowerCase().contains("windows");
-var fileSeparator = java.lang.System.getProperty("file.separator");
+var fileSeparator = exports.sep = java.lang.System.getProperty("file.separator");
 
 /**
  * Returns everything on a path except for the last item
  * e.g. if the path was 'path/to/something', the return value would be 'path/to'
  */
-exports.basename = function(path) {
-    var parts = path.split(fileSeparator);
+exports.dirname = function(_path) {
+    var parts = _path.split(fileSeparator);
     parts.pop();
-    path = parts.join(fileSeparator);
-    return path;
+    _path = parts.join(fileSeparator);
+    return _path;
 };
 
 /**
  *  Returns the last item on a path
  */
-exports.filename = function(path) {
-    var parts = path.split(fileSeparator);
+exports.basename = function(_path, ext) {
+    var base,
+        idx,
+        parts = _path.split(fileSeparator);
     if (parts.length > 0) {
-        return parts.pop();
+        base = parts.pop();
+        idx = ext ? base.indexOf(ext) : -1;
+        if (idx !== -1) {
+            base = Array.prototype.slice.call(base, 0, base.length - ext.length).join("");
+        }
     }
-    return null;
+    return base;
 };
 
-exports.existsSync = function(path) {
-    var file = new java.io.File(path);
+exports.existsSync = function(_path) {
+   var f = new java.io.File(_path);
 
-    if (file.isFile()) {
-       return true;
+    if (f.isDirectory()){
+        return true;
     }
-
-    return false;
+    if (!f.exists()){
+        return false;
+    }
+    if (!f.canRead()){
+        return false;
+    }
+    return true;
 };
 
 //Code below taken from node
@@ -73,8 +84,8 @@ if (isWindows) {
         /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/][^\\\/]+)?([\\\/])?([\s\S]*?)$/;
 
     // windows version
-    exports.normalize = function(path) {
-      var result = splitDeviceRe.exec(path),
+    exports.normalize = function(_path) {
+      var result = splitDeviceRe.exec(_path),
           device = result[1] || '',
           isUnc = device && device.charAt(1) !== ':',
           isAbsolute = !!result[2] || isUnc, // UNC paths are always absolute
@@ -102,44 +113,44 @@ if (isWindows) {
         return p && typeof p === 'string';
       }
 
-      var paths = Array.prototype.slice.call(arguments, 0).filter(f);
-      var joined = paths.join('\\');
+      var _paths = Array.prototype.slice.call(arguments, 0).filter(f);
+      var joined = _paths.join('\\');
 
       // Make sure that the joined path doesn't start with two slashes
       // - it will be mistaken for an unc path by normalize() -
-      // unless the paths[0] also starts with two slashes
-      if (/^[\\\/]{2}/.test(joined) && !/^[\\\/]{2}/.test(paths[0])) {
+      // unless the _paths[0] also starts with two slashes
+      if (/^[\\\/]{2}/.test(joined) && !/^[\\\/]{2}/.test(_paths[0])) {
         joined = joined.slice(1);
       }
 
       return exports.normalize(joined);
     };
 } else {
-    // path.normalize(path)
+    // path.normalize(_path)
     // posix version
-    exports.normalize = function(path) {
-      var isAbsolute = path.charAt(0) === '/',
-          trailingSlash = path.slice(-1) === '/';
+    exports.normalize = function(_path) {
+      var isAbsolute = _path.charAt(0) === '/',
+          trailingSlash = _path.slice(-1) === '/';
 
       // Normalize the path
-      path = normalizeArray(path.split('/').filter(function(p) {
+      _path = normalizeArray(_path.split('/').filter(function(p) {
         return !!p;
       }), !isAbsolute).join('/');
 
-      if (!path && !isAbsolute) {
-        path = '.';
+      if (!_path && !isAbsolute) {
+        _path = '.';
       }
-      if (path && trailingSlash) {
-        path += '/';
+      if (_path && trailingSlash) {
+        _path += '/';
       }
 
-      return (isAbsolute ? '/' : '') + path;
+      return (isAbsolute ? '/' : '') + _path;
     };
 
     // posix version
     exports.join = function() {
-      var paths = Array.prototype.slice.call(arguments, 0);
-      return exports.normalize(paths.filter(function(p, index) {
+      var _paths = Array.prototype.slice.call(arguments, 0);
+      return exports.normalize(_paths.filter(function(p, index) {
         return p && typeof p === 'string';
       }).join('/'));
     };
