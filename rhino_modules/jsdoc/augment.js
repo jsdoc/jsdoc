@@ -1,7 +1,6 @@
-var doop = require("jsdoc/util/doop").doop;
-
 (function() {
-    var hasOwnProp = Object.prototype.hasOwnProperty;
+    var doop = require("jsdoc/util/doop").doop,
+        hasOwnProp = Object.prototype.hasOwnProperty;
     
     exports.addInherited = function(docs) {
         var dependencies = mapDependencies(docs.index);
@@ -43,6 +42,10 @@ var doop = require("jsdoc/util/doop").doop;
     function getAdditions(doclets, docs) {
         var additions = [];
         var doc, parents, members, member, parts;
+
+        // doclets will be undefined if the inherited symbol isn't documented
+        doclets = doclets || [];
+
         for (var i=0, ii=doclets.length; i<ii; ++i) {
             doc = doclets[i];
             parents = doc.augments;
@@ -95,10 +98,6 @@ var doop = require("jsdoc/util/doop").doop;
             if (!(key in this.visited)) {
                 this.visited[key] = true;
                 
-                if (!(key in this.dependencies)) {
-                    require('jsdoc/util/error').handle( new Error("Missing dependency: " + key) );
-                    return;
-                }
                 for (var path in this.dependencies[key]) {
                     if ( hasOwnProp.call(this.dependencies[key], path) ) {
                         this.visit(path);
