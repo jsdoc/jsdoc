@@ -10,6 +10,7 @@
 
 var tutorial = require('jsdoc/tutorial'),
     fs = require('fs'),
+    path = require('path'),
     hasOwnProp = Object.prototype.hasOwnProperty,
     conf = {},
     tutorials = {},
@@ -39,15 +40,15 @@ exports.root.getByName = function(name) {
 };
 
 /** Load tutorials from given path.
-    @param {string} path - Tutorials directory.
+    @param {string} _path - Tutorials directory.
  */
-exports.load = function(path) {
+exports.load = function(_path) {
     var match,
         type,
         name,
         content,
         current,
-        files = fs.ls(path);
+        files = fs.ls(_path);
 
     // tutorials handling
     files.forEach(function(file) {
@@ -55,7 +56,7 @@ exports.load = function(path) {
 
         // any filetype that can apply to tutorials
         if (match) {
-            name = fs.toFile(match[1]);
+            name = path.basename(match[1]);
             content = fs.readFileSync(file);
 
             switch (match[2].toLowerCase()) {

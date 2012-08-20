@@ -176,7 +176,7 @@ exports.publish = function(data, opts, tutorials) {
     
     var globals = find( {kind: ['member', 'function', 'constant', 'typedef'], memberof: {isUndefined: true}} );
 
-    var outdir = opts.destination;
+    var outdir = env.dirname + '/' + opts.destination;
     if (packageInfo && packageInfo.name) {
         outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
     }
@@ -189,7 +189,7 @@ exports.publish = function(data, opts, tutorials) {
     staticFiles.forEach(function(fileName) {
         var toDir = fs.toDir(fileName.replace(fromDir, outdir));
         fs.mkPath(toDir);
-        fs.copyFile(fileName, toDir);
+        fs.copyFileSync(fileName, toDir);
     });
     
     function linkto(longname, linktext) {

@@ -36,7 +36,7 @@ exports.load = function(loadpath, matcher, clear) {
         var file = path.join(env.dirname, loadpath, wannaBeSpecs[i]);
         try {
             if (fs.statSync(file).isFile()) {
-                if (!/.*nodejs_modules.*/.test(file) && matcher.test(path.filename(file))) {
+                if (!/.*nodejs_modules.*/.test(file) && matcher.test(path.basename(file))) {
                     specs.push(createSpecObj(file));
                 }
             }

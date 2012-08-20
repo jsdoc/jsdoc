@@ -22,6 +22,12 @@ env = {
     },
 
     /**
+        The type of VM that is executing jsdoc.
+        @type string
+    */
+    vm: '',
+
+    /**
         The command line arguments passed into jsdoc.
         @type Array
     */
@@ -120,6 +126,23 @@ function exit(n) {
     java.lang.System.exit(n);
 }
 
+/**
+    Detect the type of VM running jsdoc.
+    **Note**: Rhino is the only VM that is currently supported.
+    @return {string} rhino|node
+ */
+function detectVm() {
+    if (typeof Packages === "object" &&
+        Object.prototype.toString.call(Packages) === "[object JavaPackage]") {
+        return "rhino";
+    } else if ( require && require.main && module && (require.main === module) ) {
+        return "node";
+    } else {
+        // unknown VM
+        return;
+    }
+}
+
 function installPlugins(plugins, p) {
     var dictionary = require('jsdoc/tag/dictionary'),
         parser = p || app.jsdoc.parser;
@@ -195,6 +218,8 @@ function main() {
         Config = require('jsdoc/config');
 
     env.opts = jsdoc.opts.parser.parse(env.args);
+
+    env.vm = detectVm();
 
     try {
         env.conf = new Config( fs.readFileSync( env.opts.configure || env.dirname + '/conf.json' ) ).get();
