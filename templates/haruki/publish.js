@@ -1,6 +1,6 @@
 /**
     @overview Builds a tree-like JSON string from the doclet data.
-    @version 0.0.2
+    @version 0.0.3
     @example
         ./jsdoc scratch/jsdoc_test.js -t templates/haruki -d console -q format=xml
  */
@@ -13,38 +13,42 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
     .forEach(function (element, i) {
         if (element.kind === 'namespace') {
             if (! parentNode.namespaces) {
-                parentNode.namespaces = { };
+                parentNode.namespaces = [];
             }
             
-            var thisNamespace = parentNode.namespaces[element.name] = {
+            var thisNamespace = {
                 'name': element.name,
                 'description': element.description || '',
                 'access': element.access || '',
                 'virtual': !!element.virtual
             };
+
+            parentNode.namespaces.push(thisNamespace);
             
             graft(thisNamespace, childNodes, element.longname, element.name);
         }
         else if (element.kind === 'mixin') {
             if (! parentNode.mixins) {
-                parentNode.mixins = { };
+                parentNode.mixins = [];
             }
             
-            var thisMixin = parentNode.mixins[element.name] = {
+            var thisMixin = {
                 'name': element.name,
                 'description': element.description || '',
                 'access': element.access || '',
                 'virtual': !!element.virtual
             };
+
+            parentNode.mixins.push(thisMixin);
             
             graft(thisMixin, childNodes, element.longname, element.name);
         }
         else if (element.kind === 'function') {
             if (! parentNode.functions) {
-                parentNode.functions = { };
+                parentNode.functions = [];
             }
             
-            var thisFunction = parentNode.functions[element.name] = {
+            var thisFunction = {
                 'name': element.name,
                 'access': element.access || '',
                 'virtual': !!element.virtual,
@@ -53,8 +57,10 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                 'examples': []
             };
 
+            parentNode.functions.push(thisFunction);
+
             if (element.returns) {
-                parentNode.functions[element.name].returns = {
+                thisFunction.returns = {
                     'type': element.returns[0].type? (element.returns[0].type.names.length === 1? element.returns[0].type.names[0] : element.returns[0].type.names) : '',
                     'description': element.returns[0].description || ''
                 };
@@ -62,7 +68,7 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             
             if (element.examples) {
                 for (var i = 0, len = element.examples.length; i < len; i++) {
-                    parentNode.functions[element.name].examples.push(element.examples[i]);
+                    thisFunction.examples.push(element.examples[i]);
                 }
             }
             
@@ -81,23 +87,23 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
         }
         else if (element.kind === 'member') {
             if (! parentNode.properties) {
-                parentNode.properties = { };
+                parentNode.properties = [];
             }
-            parentNode.properties[element.name] = {
+            parentNode.properties.push({
                 'name': element.name,
                 'access': element.access || '',
                 'virtual': !!element.virtual,
                 'description': element.description || '',
                 'type': element.type? (element.type.length === 1? element.type[0] : element.type) : ''
-            };
+            });
         }
         
         else if (element.kind === 'event') {
             if (! parentNode.events) {
-                parentNode.events = { };
+                parentNode.events = [];
             }
             
-            var thisEvent = parentNode.events[element.name] = {
+            var thisEvent = {
                 'name': element.name,
                 'access': element.access || '',
                 'virtual': !!element.virtual,
@@ -105,9 +111,11 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                 'parameters': [],
                 'examples': []
             };
+
+            parentNode.events.push(thisEvent);
             
             if (element.returns) {
-                parentNode.events[element.name].returns = {
+                thisEvent.returns = {
                     'type': element.returns.type? (element.returns.type.names.length === 1? element.returns.type.names[0] : element.returns.type.names) : '',
                     'description': element.returns.description || ''
                 };
@@ -134,10 +142,10 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
         }
         else if (element.kind === 'class') {
             if (! parentNode.classes) {
-                parentNode.classes = { };
+                parentNode.classes = [];
             }
             
-            var thisClass = parentNode.classes[element.name] = {
+            var thisClass = {
                 'name': element.name,
                 'description': element.classdesc || '',
                 'extends': element.augments || [],
@@ -152,6 +160,8 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                     'examples': []
                 }
             };
+
+            parentNode.classes.push(thisClass);
             
             if (element.examples) {
                 for (var i = 0, len = element.examples.length; i < len; i++) {
