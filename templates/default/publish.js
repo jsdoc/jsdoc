@@ -176,7 +176,7 @@ exports.publish = function(data, opts, tutorials) {
     
     var globals = find( {kind: ['member', 'function', 'constant', 'typedef'], memberof: {isUndefined: true}} );
 
-    var outdir = env.dirname + '/' + opts.destination;
+    var outdir = opts.destination;
     if (packageInfo && packageInfo.name) {
         outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
     }
