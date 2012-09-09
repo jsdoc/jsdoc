@@ -2,7 +2,6 @@
 /**
     @overview
     @author Michael Mathews <micmath@gmail.com>
-    @author Jeff Williams <jeffrey.l.williams@gmail.com>
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
@@ -68,12 +67,12 @@ exports.Tag = function(tagTitle, tagBody, meta) {
 
             if (tagType.type && tagType.type.length) {
                 this.value.type = {
-                    names:      tagType.type,
-                    optional:   tagType.optional,
-                    nullable:   tagType.nullable,
-                    variable:   tagType.variable,
-                    'default':  tagType['default']
+                    names: tagType.type
                 };
+                this.value.optional = tagType.optional;
+                this.value.nullable = tagType.nullable;
+                this.value.variable = tagType.variable;
+                this.value['default'] = tagType['default'];
             }
             
             if (tagType.text && tagType.text.length) {
@@ -83,11 +82,6 @@ exports.Tag = function(tagTitle, tagBody, meta) {
             if (tagDef.canHaveName) {
                 // note the dash is a special case: as a param name it means "no name"
                 if (tagType.name && tagType.name !== '-') { this.value.name = tagType.name; }
-                
-                // for backwards compatibility
-                // TODO: update templates/callers, then remove?
-                if (tagType.optional) { this.value.optional = tagType.optional; }
-                if (tagType.default) { this.value.defaultvalue = tagType.default; }
             }
         }
         else {
