@@ -1,4 +1,4 @@
-/*global app: true, args: true, env: true, publish: true */
+/*global app: true, args: true, env: true, Packages: true, publish: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -325,9 +325,15 @@ function main() {
 
         env.opts.template = env.opts.template || 'templates/default';
 
-        // templates should include a publish.js file that exports a "publish" function
-        var template = require(env.opts.template + '/publish');
+        var template;
+        try {
+            template = require(env.opts.template + '/publish');
+        }
+        catch(e) {
+            throw new Error("Unable to load template: Couldn't find publish.js in " + env.opts.template);
+        }
 
+        // templates should include a publish.js file that exports a "publish" function
         if (template.publish && typeof template.publish === 'function') {
             template.publish(
                 new (require('typicaljoe/taffy'))(docs),
@@ -341,7 +347,7 @@ function main() {
             if (publish && typeof publish === 'function') {
                 console.log( env.opts.template + ' uses a global "publish" function, which is ' +
                     'deprecated and may not be supported in future versions. ' +
-                    'Please update the template so that it exports a "publish" function.' );
+                    'Please update the template to use "exports.publish" instead.' );
                 publish(
                     new (require('typicaljoe/taffy'))(docs),
                     env.opts,
