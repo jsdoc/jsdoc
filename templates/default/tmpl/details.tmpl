@@ -20,6 +20,13 @@
 	<dt class="tag-since">Since:</dt>
 	<dd class="tag-since"><ul class="dummy"><li><?js= since ?></dd>
 	<?js } ?>
+
+	<?js if (data.inherited && data.inherits) { ?>
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<?js= this.linkto(data.inherits, this.htmlsafe(data.inherits)) ?>
+	</li></dd>
+	<?js } ?>
 	
 	<?js if (data.deprecated) { ?>
         <dt class="important tag-deprecated">Deprecated:</dt><?js
