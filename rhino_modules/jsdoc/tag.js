@@ -13,7 +13,6 @@
     @requires jsdoc/tag/type
  */
 
-
 var jsdoc = {
     tag: {
         dictionary: require('jsdoc/tag/dictionary'),
@@ -31,34 +30,6 @@ function trim(text, newlines) {
     else {
         return text.replace(/^\s+|\s+$/g, '');
     }
-}
-
-/**
-    Parse the parameter name and parameter desc from the tag text.
-    @inner
-    @method parseParamText
-    @memberof module:jsdoc/tag
-    @param {string} tagText
-    @returns {Array.<string, string, boolean, boolean>} [pname, pdesc, poptional, pdefault].
- */
-function parseParamText(tagText) {
-    var pname, pdesc, poptional, pdefault;
-
-    // like: pname, pname pdesc, or name - pdesc
-    tagText.match(/^(\[[^\]]+\]|\S+)((?:\s*\-\s*|\s+)(\S[\s\S]*))?$/);
-    pname = RegExp.$1;
-    pdesc = RegExp.$3;
-
-    if ( /^\[\s*(.+?)\s*\]$/.test(pname) ) {
-        pname = RegExp.$1;
-        poptional = true;
-        
-        if ( /^(.+?)\s*=\s*(.+)$/.test(pname) ) {
-            pname = RegExp.$1;
-            pdefault = RegExp.$2;
-        }
-    }
-    return { name: pname, desc: pdesc, optional: poptional, default: pdefault };
 }
 
 /**
@@ -87,38 +58,30 @@ exports.Tag = function(tagTitle, tagBody, meta) {
             this.text = tagDef.onTagText(this.text);
         }
         
-        if (tagDef.canHaveType) {
+        if (tagDef.canHaveType || tagDef.canHaveName) {
         
             /** The value property represents the result of parsing the tag text. */
             this.value = {};
             
-            var tagType = jsdoc.tag.type.parse(this.text);
+            var tagType = jsdoc.tag.type.parse(this.text, tagDef.canHaveName, tagDef.canHaveType);
 
             if (tagType.type && tagType.type.length) {
                 this.value.type = {
-                    names:    tagType.type,
-                    optional: tagType.optional,
-                    nullable: tagType.nullable,
-                    variable: tagType.variable
+                    names: tagType.type
                 };
+                this.value.optional = tagType.optional;
+                this.value.nullable = tagType.nullable;
+                this.value.variable = tagType.variable;
+                this.value['default'] = tagType['default'];
             }
-
-            var remainingText = tagType.text;
-
-            if (remainingText) {
-                if (tagDef.canHaveName) {
-                    var paramInfo = parseParamText(remainingText);
-                    
-                    // note the dash is a special case: as a param name it means "no name"
-                    if (paramInfo.name && paramInfo.name !== '-') { this.value.name = paramInfo.name; }
-                    
-                    if (paramInfo.desc)     { this.value.description = paramInfo.desc; }
-                    if (paramInfo.optional) { this.value.optional = paramInfo.optional; }
-                    if (paramInfo.default)  { this.value.defaultvalue = paramInfo.default; }
-                }
-                else {
-                    this.value.description = remainingText;
-                }
+            
+            if (tagType.text && tagType.text.length) {
+                this.value.description = tagType.text;
+            }
+            
+            if (tagDef.canHaveName) {
+                // note the dash is a special case: as a param name it means "no name"
+                if (tagType.name && tagType.name !== '-') { this.value.name = tagType.name; }
             }
         }
         else {

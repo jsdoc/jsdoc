@@ -178,9 +178,11 @@ exports.attachTo = function(parser) {
             for (var i = 0, len = newDoclet.properties.length; i < len; i++) {
                 var property = newDoclet.properties[i];
 
-                var parts = jsdoc.name.splitName(property.description);
-                property.name = parts.name;
-                property.description = parts.description;
+                if (property.description) {
+                    var parts = jsdoc.name.splitName(property.description);
+                    property.name = parts.name;
+                    property.description = parts.description;
+                }
             }
         }
     }

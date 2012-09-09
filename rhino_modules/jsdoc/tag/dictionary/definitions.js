@@ -140,7 +140,7 @@ exports.defineTags = function(dictionary) {
         // Allow augments value to be specified as a normal type, e.g. {Type}
         onTagText: function(text) {
             var type = require('jsdoc/tag/type'),
-                tagType = type.getTagType(text);
+                tagType = type.getTagInfo(text, false, true);
             return tagType.type || text;
         },
         onTagged: function(doclet, tag) {
@@ -486,6 +486,7 @@ exports.defineTags = function(dictionary) {
     dictionary.defineTag('property', {
         mustHaveValue: true,
         canHaveType: true,
+        canHaveName: true,
         onTagged: function(doclet, tag) {
             if (!doclet.properties) { doclet.properties = []; }
             doclet.properties.push(tag.value);
