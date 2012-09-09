@@ -1,6 +1,6 @@
-// Test for @augments tags that refer to undefined symbols
+// Test for @augments/@extends tags that refer to undefined symbols
 /**
  * @constructor
- * @extends Foo
+ * @extends UndocumentedThing
  */
-function Bar() {}
+function Qux() {}

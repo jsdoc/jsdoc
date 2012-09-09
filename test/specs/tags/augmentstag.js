@@ -1,4 +1,6 @@
-describe("@augments tag", function() {
+/*global describe: true, expect: true, it: true, jasmine: true */
+ describe("@augments tag", function() {
+    /*jshint unused: false */
     var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentstag.js'),
         foo = docSet.getByLongname('Foo')[0],
         fooProp1 = docSet.getByLongname('Foo#prop1')[0],
@@ -11,13 +13,16 @@ describe("@augments tag", function() {
         barProp2 = docSet.getByLongname('Bar#prop2')[0],
         barProp3 = docSet.getByLongname('Bar#prop3')[0],
         barMethod1 = docSet.getByLongname('Bar#method1')[0],
-        barMethod2 = docSet.getByLongname('Bar#method2')[0];
+        barMethod2 = docSet.getByLongname('Bar#method2')[0],
         bazProp1 = docSet.getByLongname('Baz#prop1')[0],
         bazProp2 = docSet.getByLongname('Baz#prop2')[0],
         bazProp3 = docSet.getByLongname('Baz#prop3')[0],
         bazMethod1 = docSet.getByLongname('Baz#method1')[0],
-        bazMethod2 = docSet.getByLongname('Baz#method2')[0];
-        bazMethod3 = docSet.getByLongname('Baz#method3')[0];
+        bazMethod2 = docSet.getByLongname('Baz#method2')[0],
+        bazMethod3 = docSet.getByLongname('Baz#method3')[0],
+
+        docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js'),
+        qux = docSet2.getByLongname('Qux')[0];
 
     it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
         expect(typeof bar.augments).toEqual('object');
@@ -61,5 +66,10 @@ describe("@augments tag", function() {
         expect(bazMethod1.memberof).toEqual("Baz");
         expect(bazMethod2.memberof).toEqual("Baz");
         expect(bazMethod3.memberof).toEqual("Baz");
+    });
+
+    it('When a symbol has an @augments tag, and the parent is not documented, the doclet still has an augments property', function() {
+        expect(typeof qux.augments).toEqual('object');
+        expect(qux.augments[0]).toEqual('UndocumentedThing');
     });
 });

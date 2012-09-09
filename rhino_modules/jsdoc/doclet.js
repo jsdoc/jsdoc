@@ -104,7 +104,6 @@ function toTags(docletSrc) {
     var tagSrcs,
         tags = [];
     
-    docletSrc = unwrap(docletSrc);
     tagSrcs = split(docletSrc);
     
     for (var i = 0, l = tagSrcs.length; i < l; i++) {

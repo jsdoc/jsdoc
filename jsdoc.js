@@ -1,4 +1,4 @@
-/*global app: true, args: true, env: true, publish: true */
+/*global app: true, args: true, env: true, Packages: true, publish: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -20,6 +20,12 @@ env = {
         start: new Date(),
         finish: null
     },
+
+    /**
+        The type of VM that is executing jsdoc.
+        @type string
+    */
+    vm: '',
 
     /**
         The command line arguments passed into jsdoc.
@@ -120,6 +126,23 @@ function exit(n) {
     java.lang.System.exit(n);
 }
 
+/**
+    Detect the type of VM running jsdoc.
+    **Note**: Rhino is the only VM that is currently supported.
+    @return {string} rhino|node
+ */
+function detectVm() {
+    if (typeof Packages === "object" &&
+        Object.prototype.toString.call(Packages) === "[object JavaPackage]") {
+        return "rhino";
+    } else if ( require && require.main && module && (require.main === module) ) {
+        return "node";
+    } else {
+        // unknown VM
+        return;
+    }
+}
+
 function installPlugins(plugins, p) {
     var dictionary = require('jsdoc/tag/dictionary'),
         parser = p || app.jsdoc.parser;
@@ -179,7 +202,7 @@ app = {
 
 
 /**
-    Run the jsoc application.
+    Run the jsdoc application.
  */
 function main() {
     var sourceFiles,
@@ -195,6 +218,8 @@ function main() {
         Config = require('jsdoc/config');
 
     env.opts = jsdoc.opts.parser.parse(env.args);
+
+    env.vm = detectVm();
 
     try {
         env.conf = new Config( fs.readFileSync( env.opts.configure || env.dirname + '/conf.json' ) ).get();
@@ -300,17 +325,38 @@ function main() {
 
         env.opts.template = env.opts.template || 'templates/default';
 
-        // should define a global "publish" function
-        include(env.opts.template + '/publish.js');
+        var template;
+        try {
+            template = require(env.opts.template + '/publish');
+        }
+        catch(e) {
+            throw new Error("Unable to load template: Couldn't find publish.js in " + env.opts.template);
+        }
 
-        if (typeof publish === 'function') {
-            publish(
+        // templates should include a publish.js file that exports a "publish" function
+        if (template.publish && typeof template.publish === 'function') {
+            template.publish(
                 new (require('typicaljoe/taffy'))(docs),
                 env.opts,
                 resolver.root
             );
         }
-        else { // TODO throw no publish warning?
+        else {
+            // old templates define a global "publish" function, which is deprecated
+            include(env.opts.template + '/publish.js');
+            if (publish && typeof publish === 'function') {
+                console.log( env.opts.template + ' uses a global "publish" function, which is ' +
+                    'deprecated and may not be supported in future versions. ' +
+                    'Please update the template to use "exports.publish" instead.' );
+                publish(
+                    new (require('typicaljoe/taffy'))(docs),
+                    env.opts,
+                    resolver.root
+                );
+            }
+            else {
+                throw new Error( env.opts.template + " does not export a 'publish' function." );
+            }
         }
     }
 }
