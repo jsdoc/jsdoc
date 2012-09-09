@@ -5,7 +5,7 @@
     var parentParam = null;
     params.forEach(function(param, i) {
         if (!param) { return; }
-        if ( parentParam && param.name.indexOf(parentParam.name + '.') === 0 ) {
+        if ( parentParam && param.name && param.name.indexOf(parentParam.name + '.') === 0 ) {
             param.name = param.name.substr(parentParam.name.length+1);
             parentParam.subparams = parentParam.subparams || [];
             parentParam.subparams.push(param);
