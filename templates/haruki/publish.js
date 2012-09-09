@@ -10,7 +10,10 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
     .filter(function (element) {
         return (element.memberof === parentLongname);
     })
-    .forEach(function (element, i) {
+    .forEach(function (element, index) {
+        var i,
+            len;
+
         if (element.kind === 'namespace') {
             if (! parentNode.namespaces) {
                 parentNode.namespaces = [];
@@ -67,13 +70,13 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             }
             
             if (element.examples) {
-                for (var i = 0, len = element.examples.length; i < len; i++) {
+                for (i = 0, len = element.examples.length; i < len; i++) {
                     thisFunction.examples.push(element.examples[i]);
                 }
             }
             
             if (element.params) {
-                for (var i = 0, len = element.params.length; i < len; i++) {
+                for (i = 0, len = element.params.length; i < len; i++) {
                     thisFunction.parameters.push({
                         'name': element.params[i].name,
                         'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
@@ -122,13 +125,13 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             }
             
             if (element.examples) {
-                for (var i = 0, len = element.examples.length; i < len; i++) {
+                for (i = 0, len = element.examples.length; i < len; i++) {
                     thisEvent.examples.push(element.examples[i]);
                 }
             }
             
             if (element.params) {
-                for (var i = 0, len = element.params.length; i < len; i++) {
+                for (i = 0, len = element.params.length; i < len; i++) {
                     thisEvent.parameters.push({
                         'name': element.params[i].name,
                         'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
@@ -164,13 +167,13 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             parentNode.classes.push(thisClass);
             
             if (element.examples) {
-                for (var i = 0, len = element.examples.length; i < len; i++) {
+                for (i = 0, len = element.examples.length; i < len; i++) {
                     thisClass.constructor.examples.push(element.examples[i]);
                 }
             }
             
             if (element.params) {
-                for (var i = 0, len = element.params.length; i < len; i++) {
+                for (i = 0, len = element.params.length; i < len; i++) {
                     thisClass.constructor.parameters.push({
                         'name': element.params[i].name,
                         'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
@@ -211,7 +214,7 @@ exports.publish = function(data, opts) {
         }
     }
     else {
-        console.log('The only -d destination option currently supported is "console"!');
+        console.log('This template only supports output to the console. Use the option "-d console" when you run JSDoc.');
     }
         
 };
