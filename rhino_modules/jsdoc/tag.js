@@ -72,7 +72,7 @@ exports.Tag = function(tagTitle, tagBody, meta) {
                 this.value.optional = tagType.optional;
                 this.value.nullable = tagType.nullable;
                 this.value.variable = tagType.variable;
-                this.value['default'] = tagType['default'];
+                this.value.defaultvalue = tagType.defaultvalue;
             }
             
             if (tagType.text && tagType.text.length) {

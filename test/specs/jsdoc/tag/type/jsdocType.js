@@ -20,27 +20,27 @@ describe("jsdoc/tag/type/jsdocType", function() {
             var info = jsdocType.parse( { name: "[foo]" } );
             expect(info.name).toEqual("foo");
             expect(info.optional).toEqual(true);
-            expect( info['default'] ).toEqual(null);
+            expect( info.defaultvalue ).toEqual(null);
             
             info = jsdocType.parse( { name: "[ bar   ]" } );
             expect(info.name).toEqual("bar");
             expect(info.optional).toEqual(true);
-            expect( info['default'] ).toEqual(null);
+            expect( info.defaultvalue ).toEqual(null);
         });
         
         it("should recognize optional properties with default values", function() {
             var info = jsdocType.parse( { name: "[foo=bar]" } );
             expect(info.name).toEqual("foo");
             expect(info.optional).toEqual(true);
-            expect( info['default'] ).toEqual("bar");
+            expect( info.defaultvalue ).toEqual("bar");
             
             info = jsdocType.parse( { name: "[     baz  =   qux ]" } );
             expect(info.name).toEqual("baz");
             expect(info.optional).toEqual(true);
-            expect( info['default'] ).toEqual("qux");
+            expect( info.defaultvalue ).toEqual("qux");
         });
         
-        it("should only change the `name`, `optional`, and `default` properties", function() {
+        it("should only change the `name`, `optional`, and `defaultvalue` properties", function() {
             var obj = {
                 name: "[foo=bar]",
                 type: "boolean|string",
@@ -48,9 +48,9 @@ describe("jsdoc/tag/type/jsdocType", function() {
                 optional: null,
                 nullable: null,
                 variable: null,
-                'default': null
+                defaultvalue: null
             };
-            var shouldChange = [ "name", "optional", "default" ];
+            var shouldChange = [ "name", "optional", "defaultvalue" ];
             
             var info = jsdocType.parse(obj);
             for (var key in info) {

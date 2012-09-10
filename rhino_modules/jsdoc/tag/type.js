@@ -71,7 +71,7 @@ var getTagInfo = exports.getTagInfo = function(tagValue, canHaveName, canHaveTyp
     @param {string} tagValue
     @param {boolean} canHaveName
     @param {boolean} canHaveType
-    @returns {object} Hash with name, type, text, optional, nullable, variable, and default properties
+    @returns {object} Hash with name, type, text, optional, nullable, variable, and defaultvalue properties
  */
 exports.parse = function(tagValue, canHaveName, canHaveType) {
     if (typeof tagValue !== 'string') { tagValue = ''; }
@@ -89,6 +89,6 @@ exports.parse = function(tagValue, canHaveName, canHaveType) {
         optional: tagInfo.optional,
         nullable: tagInfo.nullable,
         variable: tagInfo.variable,
-        'default': tagInfo['default']
+        defaultvalue: tagInfo['default']
     };
 };
