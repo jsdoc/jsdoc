@@ -59,6 +59,6 @@ exports.parse = function(tagInfo) {
         optional: tagInfo.optional || optional.optional, // don't override if already true
         nullable: nullable.nullable,
         variable: variable.variable,
-        'default': tagInfo['default']
+        defaultvalue: tagInfo.defaultvalue
     };
 };

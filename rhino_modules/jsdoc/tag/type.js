@@ -89,6 +89,6 @@ exports.parse = function(tagValue, canHaveName, canHaveType) {
         optional: tagInfo.optional,
         nullable: tagInfo.nullable,
         variable: tagInfo.variable,
-        defaultvalue: tagInfo['default']
+        defaultvalue: tagInfo.defaultvalue
     };
 };

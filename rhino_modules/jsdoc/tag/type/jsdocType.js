@@ -35,6 +35,6 @@ exports.parse = function(tagInfo) {
         optional: optional,
         nullable: tagInfo.nullable,
         variable: tagInfo.variable,
-        'default': tagDefault
+        defaultvalue: tagDefault
     };
 };
