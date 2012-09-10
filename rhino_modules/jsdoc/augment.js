@@ -5,9 +5,20 @@
     exports.addInherited = function(docs) {
         var dependencies = mapDependencies(docs.index);
         var sorted = sort(dependencies);
+        var longnames = [];
+
+        // only build the list of longnames if we'll actually need it
+        if (sorted.length) {
+            longnames = docs.map(function(doc) {
+                if (doc.longname) {
+                    return doc.longname;
+                }
+            });
+        }
+
         sorted.forEach(function(name) {
             var doclets = docs.index[name];
-            var additions = getAdditions(doclets, docs);
+            var additions = getAdditions(doclets, docs, longnames);
             additions.forEach(function(doc) {
                 var name = doc.longname;
                 if ( !hasOwnProp.call(docs.index, name) ) {
@@ -39,9 +50,13 @@
         return dependencies;
     }
 
-    function getAdditions(doclets, docs) {
-        var additions = [];
-        var doc, parents, members, member, parts;
+    function getAdditions(doclets, docs, longnames) {
+        var additions = [],
+            doc,
+            parents,
+            members,
+            member,
+            parts;
 
         // doclets will be undefined if the inherited symbol isn't documented
         doclets = doclets || [];
@@ -54,13 +69,20 @@
                     members = getMembers(parents[j], docs);
                     for (var k=0, kk=members.length; k<kk; ++k) {
                         member = doop(members[k]);
+
                         member.inherits = member.longname;
                         member.inherited = true;
+
                         member.memberof = doc.longname;
                         parts = member.longname.split("#");
                         parts[0] = doc.longname;
                         member.longname = parts.join("#");
-                        additions.push(member);
+
+                        // if the child doesn't override the parent member, add the parent member
+                        if ( longnames.indexOf(member.longname) === -1 ) {
+                            additions.push(member);
+                        }
+
                     }
 
                 }

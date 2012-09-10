@@ -14,7 +14,9 @@
         barProp3 = docSet.getByLongname('Bar#prop3')[0],
         barMethod1 = docSet.getByLongname('Bar#method1')[0],
         barMethod2 = docSet.getByLongname('Bar#method2')[0],
+        barMethod2All = docSet.getByLongname('Bar#method2'),
         bazProp1 = docSet.getByLongname('Baz#prop1')[0],
+        bazProp1All = docSet.getByLongname('Baz#prop1'),
         bazProp2 = docSet.getByLongname('Baz#prop2')[0],
         bazProp3 = docSet.getByLongname('Baz#prop3')[0],
         bazMethod1 = docSet.getByLongname('Baz#method1')[0],
@@ -58,6 +60,10 @@
         expect(barMethod2.description).toEqual("Second child method.");
     });
 
+    it('When an object is extended, and it overrides an ancestor method, the child does not include docs for the ancestor method.', function() {
+        expect(barMethod2All.length).toEqual(1);
+    });
+
     it('When an object is extended, it inherits properties set on grandparent prototype', function() {
         expect(fooProp1.memberof).toEqual("Foo");
         expect(barProp1.memberof).toEqual("Bar");
@@ -66,6 +72,10 @@
         expect(bazMethod1.memberof).toEqual("Baz");
         expect(bazMethod2.memberof).toEqual("Baz");
         expect(bazMethod3.memberof).toEqual("Baz");
+    });
+
+    it('When an object is extended, and it overrides an ancestor property, the child does not include docs for the ancestor property.', function() {
+        expect(bazProp1All.length).toEqual(1);
     });
 
     it('When a symbol has an @augments tag, and the parent is not documented, the doclet still has an augments property', function() {
