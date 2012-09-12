@@ -3,11 +3,18 @@
 # rhino discards the path to the current script file, so we must add it back
 SOURCE="$0"
 while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
-BASEPATH="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+# Get a Windows path under MinGW or Cygwin
+BASEPATH="$( cd -P "$( dirname "$SOURCE" )" && (pwd -W 2>/dev/null || cygpath -w $(pwd) 2>/dev/null || pwd))"
+if [ "${BASEPATH:0:1}" != "/" ] ; then
+  # We need a extra slash for URLs
+  UBASEPATH="/$BASEPATH"
+else
+  UBASEPATH="$BASEPATH"
+fi
 
 # for whatever reason, Rhino requires module paths to be valid URIs
-URLPATH="file://"$BASEPATH
-URLPATH=`echo "$URLPATH" | sed -e 's/ /%20/g'`
+URLPATH="file://$UBASEPATH"
+URLPATH=`echo "$URLPATH" | sed -e 's/ /%20/g' -e 's#\\\\#/#g'`
 ENCODEDBASEPATH=`echo "$BASEPATH" | sed -e 's/ /%20/g'`
 
 ARGS="$@"
