@@ -34,6 +34,7 @@ fi
 if test "$1" = "-T"
 then
     echo "Running Tests"
+    cd -P "$(dirname "$SOURCE")"
     java -classpath "${BASEPATH}/lib/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/nodejs_modules" -modules "${URLPATH}/rhino_modules" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" $ARGS --dirname="${BASEPATH}/" 
 
 else
