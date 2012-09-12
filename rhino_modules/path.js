@@ -7,24 +7,21 @@ var fileSeparator = exports.sep = java.lang.System.getProperty("file.separator")
  * e.g. if the path was 'path/to/something', the return value would be 'path/to'
  */
 exports.dirname = function(_path) {
-    var parts = _path.split(fileSeparator);
-    parts.pop();
-    _path = parts.join(fileSeparator);
-    return _path;
+    var f = new java.io.File(_path);
+    return String(f.getParent());
 };
 
 /**
  *  Returns the last item on a path
  */
 exports.basename = function(_path, ext) {
-    var base,
-        idx,
-        parts = _path.split(fileSeparator);
-    if (parts.length > 0) {
-        base = parts.pop();
-        idx = ext ? base.indexOf(ext) : -1;
+    var f = new java.io.File(_path);
+    var p = f.getParentFile();
+    var base = String(f.getName());
+    if (p != null) {
+        var idx = ext ? base.indexOf(ext) : -1;
         if (idx !== -1) {
-            base = Array.prototype.slice.call(base, 0, base.length - ext.length).join("");
+            base = base.substring(0, base.length - ext.length);
         }
     }
     return base;
