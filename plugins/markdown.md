@@ -8,6 +8,8 @@ For most users, all you need to do is add the plugin to your JSDoc configuration
 
 This will cause Markdown in `@description` tags (including implicit descriptions without tags), `@classdesc` tags, `@param` tags, `@property` tags, and `@returns` tags to be parsed.
 
+Also, be sure to use leading asterisks in your doc comments! If you omit the leading asterisks, JSDoc's code parser may remove other asterisks that are used for Markdown formatting.
+
 # Configuring the Markdown plugin
 
 The plugin also offers several configuration options for advanced users who want GitHub integration, extended tag support, etc.  All configuration for the Markdown plugin should be added to a `"markdown"` property in your JSDoc configuration:

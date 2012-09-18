@@ -1,4 +1,4 @@
-/*global describe: true, env: true, expect: true, it: true, jasmine: true, xit: true */
+/*global describe: true, env: true, expect: true, it: true, jasmine: true */
 describe("jsdoc/doclet", function() {
     // TODO: more tests
     
@@ -8,12 +8,6 @@ describe("jsdoc/doclet", function() {
 
     var expectStrong = "**Strong** is strong";
     var expectList = "* List item 1";
-
-    // TODO: reenable the test and make it pass, or remove the test
-    xit('does not mangle Markdown in a description that does not use leading asterisks', function() {
-        expect(test1.description.indexOf(expectStrong)).toBeGreaterThan(-1);
-        expect(test1.description.indexOf(expectList)).toBeGreaterThan(-1);
-    });
 
     it('does not mangle Markdown in a description that uses leading asterisks', function() {
         expect(test2.description.indexOf(expectStrong)).toBeGreaterThan(-1);
