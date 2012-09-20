@@ -7,7 +7,6 @@
  */
 
 var Token = Packages.org.mozilla.javascript.Token,
-    FunctionNode = Packages.org.mozilla.javascript.ast.FunctionNode,
     currentParser = null,
     currentSourceName = '',
     hasOwnProp = Object.prototype.hasOwnProperty;
