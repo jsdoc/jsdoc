@@ -126,23 +126,6 @@ function exit(n) {
     java.lang.System.exit(n);
 }
 
-/**
-    Detect the type of VM running jsdoc.
-    **Note**: Rhino is the only VM that is currently supported.
-    @return {string} rhino|node
- */
-function detectVm() {
-    if (typeof Packages === "object" &&
-        Object.prototype.toString.call(Packages) === "[object JavaPackage]") {
-        return "rhino";
-    } else if ( require && require.main && module && (require.main === module) ) {
-        return "node";
-    } else {
-        // unknown VM
-        return;
-    }
-}
-
 function installPlugins(plugins, p) {
     var dictionary = require('jsdoc/tag/dictionary'),
         parser = p || app.jsdoc.parser;
@@ -216,6 +199,23 @@ function main() {
         resolver,
         fs = require('fs'),
         Config = require('jsdoc/config');
+
+    /**
+        Detect the type of VM running jsdoc.
+        **Note**: Rhino is the only VM that is currently supported.
+        @return {string} rhino|node
+     */
+    function detectVm() {
+        if (typeof Packages === "object" &&
+            Object.prototype.toString.call(Packages) === "[object JavaPackage]") {
+            return "rhino";
+        } else if ( require && require.main && module && (require.main === module) ) {
+            return "node";
+        } else {
+            // unknown VM
+            return;
+        }
+    }
 
     env.opts = jsdoc.opts.parser.parse(env.args);
 
