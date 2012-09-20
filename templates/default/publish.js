@@ -237,7 +237,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     fs.mkPath(outdir);
 
     // copy static files to outdir
-    var fromDir = env.dirname + '/' + templatePath + '/static',
+    var fromDir = env.dirname.replace(/\\/g, "/") + '/' + templatePath + '/static',
         staticFiles = fs.ls(fromDir, 3);
         
     staticFiles.forEach(function(fileName) {
