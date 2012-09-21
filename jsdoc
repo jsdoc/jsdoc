@@ -5,7 +5,7 @@ SOURCE="$0"
 while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
 # Get a Windows path under MinGW or Cygwin
 BASEPATH="$( cd -P "$( dirname "$SOURCE" )" && (pwd -W 2>/dev/null || cygpath -w $(pwd) 2>/dev/null || pwd))"
-if [ "${BASEPATH:0:1}" != "/" ] ; then
+if [ "${BASEPATH%${BASEPATH#?}}" != "/" ] ; then
   BASEPATH="${BASEPATH//\\//}"
   # We need a extra slash for URLs
   UBASEPATH="/$BASEPATH"
