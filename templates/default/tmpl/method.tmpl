@@ -13,6 +13,15 @@
         <?js= data.description ?>
     </div>
     <?js } ?>
+
+    <?js if (kind === 'event' && data.type) {?>
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                <?js= self.partial('type.tmpl', data.type) ?>
+            </li>
+        </ul>
+    <?js } ?>
     
     <?js if (data['this']) { ?>
         <h5>This:</h5>

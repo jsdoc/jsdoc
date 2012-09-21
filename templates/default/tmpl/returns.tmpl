@@ -4,24 +4,13 @@
 </div>
 <?js } ?>
 
-<?js
-	if (data.type) {
-		with(type) {
-?>
-
+<?js if (data.type) {?>
 <dl>
 	<dt>
 		Type
 	</dt>
 	<dd>
-		<?js
-            var self = this;
-			names.forEach(function(name, i) { ?>
-		<span class="param-type"><?js= self.htmlsafe(name) ?></span> <?js if (i < names.length-1) { ?>|<?js } ?>
-		<?js }); ?>
+		<?js= this.partial('type.tmpl', data.type) ?>
 	</dd>
 </dl>
-<?js 
-		}
-	}
-?>
+<?js } ?>

@@ -72,14 +72,9 @@
             <?js } ?>
             
             <td class="type">
-            <?js
-                if (prop.type && prop.type.names) {
-                    prop.type.names.forEach(function(name, i) { ?>
-                        <?js= self.linkto(name, self.htmlsafe(name)) ?>
-                        <?js if (i < prop.type.names.length-1) { ?> | <?js } ?>
-                    <?js }); 
-                }
-            ?>
+            <?js if (prop.type) {?>
+                <?js= self.partial('type.tmpl', prop.type) ?>
+            <?js } ?>
             </td>
             
             <?js if (props.hasAttributes) {?>
