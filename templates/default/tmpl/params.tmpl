@@ -72,8 +72,8 @@
             <?js } ?>
             
             <td class="type">
-            <?js if (param.type) {?>
-                <?js= self.partial('type.tmpl', param.type) ?>
+            <?js if (param.type && param.type.names) {?>
+                <?js= self.partial('type.tmpl', param.type.names) ?>
             <?js } ?>
             </td>
             

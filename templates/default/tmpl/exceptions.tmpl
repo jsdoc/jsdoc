@@ -4,13 +4,13 @@
 </div>
 <?js } ?>
 
-<?js if (data.type) {?>
+<?js if (data.type && data.type.names) {?>
 <dl>
 	<dt>
 		Type
 	</dt>
 	<dd>
-		<?js= self.partial('type.tmpl', data.type) ?>
+		<?js= self.partial('type.tmpl', data.type.names) ?>
 	</dd>
 </dl>
 <?js } ?>

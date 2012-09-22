@@ -1,9 +1,6 @@
-<?js if (data.names) { ?>
-    <?js
-        var names = data.names,
-            self = this;
-        names.forEach(function(name, i) { ?>
-    <span class="param-type"><?js= self.linkto(name, self.htmlsafe(name)) ?></span>
-    <?js if (i < names.length-1) { ?>|<?js } ?>
-    <?js }); ?>
-<?js } ?>
+<?js
+    var self = this;
+    data.forEach(function(name, i) { ?>
+<span class="param-type"><?js= self.linkto(name, self.htmlsafe(name)) ?></span>
+<?js if (i < data.length-1) { ?>|<?js } ?>
+<?js }); ?>
