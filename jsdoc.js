@@ -229,24 +229,24 @@ function main() {
         var result;
         template = template || 'templates/default';
 
-        function noSuchPath(_path) {
+        function pathExists(_path) {
             try {
                 fs.readdirSync(_path);
             }
             catch(e) {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         // first, try resolving it relative to the current working directory (or just normalize it
         // if it's an absolute path)
         result = path.resolve(template);
-        if ( noSuchPath(result) ) {
+        if ( !pathExists(result) ) {
             // next, try resolving it relative to the JSDoc directory
             result = path.resolve(env.dirname, template);
-            if ( noSuchPath(result) ) {
+            if ( !pathExists(result) ) {
                 // restore the original value so the user gets a reasonable error message
                 result = template;
             }
