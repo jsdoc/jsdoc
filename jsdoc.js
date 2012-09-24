@@ -246,7 +246,7 @@ function main() {
         if ( noSuchPath(result) ) {
             // next, try resolving it relative to the JSDoc directory
             result = path.resolve(env.dirname, template);
-           if ( noSuchPath(result) ) {
+            if ( noSuchPath(result) ) {
                 // restore the original value so the user gets a reasonable error message
                 result = template;
             }
