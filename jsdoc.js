@@ -221,7 +221,7 @@ function main() {
     /**
         Retrieve the fully resolved path to the requested template.
 
-        @param {string} template - The path to the requested template. May be a fully resolved path;
+        @param {string} template - The path to the requested template. May be an absolute path;
         a path relative to the current working directory; or a path relative to the JSDoc directory.
         @return {string} The fully resolved path to the requested template.
      */
