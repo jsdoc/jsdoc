@@ -198,6 +198,7 @@ function main() {
         },
         resolver,
         fs = require('fs'),
+        path = require('path'),
         Config = require('jsdoc/config');
 
     /**
@@ -216,6 +217,44 @@ function main() {
             return;
         }
     }
+
+    /**
+        Retrieve the fully resolved path to the requested template.
+
+        @param {string} template - The path to the requested template. May be a fully resolved path;
+        a path relative to the current working directory; or a path relative to the JSDoc directory.
+        @return {string} The fully resolved path to the requested template.
+     */
+    function getTemplatePath(template) {
+        var result;
+        template = template || 'templates/default';
+
+        function noSuchPath(_path) {
+            try {
+                fs.readdirSync(_path);
+            }
+            catch(e) {
+                return true;
+            }
+
+            return false;
+        }
+
+        // first, try resolving it relative to the current working directory (or just normalize it
+        // if it's an absolute path)
+        result = path.resolve(template);
+        if ( noSuchPath(result) ) {
+            // next, try resolving it relative to the JSDoc directory
+            result = path.resolve(env.dirname, template);
+           if ( noSuchPath(result) ) {
+                // restore the original value so the user gets a reasonable error message
+                result = template;
+            }
+        }
+
+        return result;
+   }
+
 
     env.opts = jsdoc.opts.parser.parse(env.args);
 
@@ -323,7 +362,7 @@ function main() {
             resolver.resolve();
         }
 
-        env.opts.template = env.opts.template || 'templates/default';
+        env.opts.template = getTemplatePath(env.opts.template);
 
         var template;
         try {

@@ -1,6 +1,7 @@
 /*global env: true */
 var template = require('jsdoc/template'),
     fs = require('fs'),
+    path = require('path'),
     helper = require('jsdoc/util/templateHelper'),
     scopeToPunc = helper.scopeToPunc,
     hasOwnProp = Object.prototype.hasOwnProperty,
@@ -64,12 +65,12 @@ function generate(title, docs, filename) {
         docs: docs
     };
     
-    var path = outdir + '/' + filename,
+    var outpath = outdir + '/' + filename,
         html = view.render('container.tmpl', docData);
     
     html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
     
-    fs.writeFileSync(path, html);
+    fs.writeFileSync(outpath, html);
 }
 
 /**
@@ -191,9 +192,8 @@ function buildNav(members) {
 exports.publish = function(taffyData, opts, tutorials) {
     data = taffyData;
 
-    var defaultTemplatePath = 'templates/default',
-        templatePath = (opts.template) ? opts.template : defaultTemplatePath;
-    view = new template.Template(env.dirname + '/' + templatePath + '/tmpl');
+    var templatePath = opts.template;
+    view = new template.Template(templatePath + '/tmpl');
     
     // set up templating
     view.layout = 'layout.tmpl';
@@ -237,11 +237,11 @@ exports.publish = function(taffyData, opts, tutorials) {
     fs.mkPath(outdir);
 
     // copy static files to outdir
-    var fromDir = env.dirname.replace(/\\/g, "/") + '/' + templatePath + '/static',
+    var fromDir = templatePath + '/static',
         staticFiles = fs.ls(fromDir, 3);
         
     staticFiles.forEach(function(fileName) {
-        var toDir = fs.toDir(fileName.replace(fromDir, outdir));
+        var toDir = fs.toDir( fileName.replace(fromDir, outdir) );
         fs.mkPath(toDir);
         fs.copyFileSync(fileName, toDir);
     });
@@ -354,13 +354,13 @@ exports.publish = function(taffyData, opts, tutorials) {
             children: tutorial.children
         };
         
-        var path = outdir + '/' + filename,
+        var tutorialPath = outdir + '/' + filename,
             html = view.render('tutorial.tmpl', tutorialData);
         
         // yes, you can use {@link} in tutorials too!
         html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
         
-        fs.writeFileSync(path, html);
+        fs.writeFileSync(tutorialPath, html);
     }
     
     // tutorials can have only one parent so there is no risk for loops

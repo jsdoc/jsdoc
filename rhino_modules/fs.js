@@ -27,7 +27,9 @@ var readdirSync = exports.readdirSync = function(_path) {
         files;
 
     dir = new java.io.File(_path);
-    if (!dir.directory) { return [String(dir)]; }
+    if (!dir.directory) {
+        throw new Error("ENOENT, no such file or directory '" + _path + "'");
+    }
 
     files = dir.list();
 
