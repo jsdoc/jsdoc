@@ -198,6 +198,7 @@ function main() {
         },
         resolver,
         fs = require('fs'),
+        os = require('os'),
         path = require('path'),
         Config = require('jsdoc/config');
 
@@ -219,11 +220,58 @@ function main() {
     }
 
     /**
+     * If the current VM is Rhino, convert a path to a URI that meets the operating system's
+     * requirements. Otherwise, return the original path.
+     * @param {string} path The path to convert.
+     * @return {string} A URI that meets the operating system's requirements, or the original path.
+     */
+    function pathToUri(_path) {
+        var result = _path,
+            scheme;
+
+        if (env.vm === 'rhino') {
+            result = result.replace(/\\/g, '/').replace(/ /g, '%20');
+
+            scheme = 'file:';
+            if ( os.platform() === 'win32' ) {
+                scheme += '/';
+            }
+
+            result = scheme + result;
+        }
+
+        return result;
+    }
+
+    /**
+     * If the current VM is Rhino, convert a URI to a path that meets the operating system's
+     * requirements. Otherwise, assume the "URI" is really a path, and return the original path.
+     * @param {string} uri The URI to convert.
+     * @return {string} A path that meets the operating system's requirements.
+     */
+    function uriToPath(uri) {
+        var result = uri,
+            scheme;
+
+        if (env.vm === 'rhino') {
+            result = result.replace(/%20/g, ' ');
+
+            scheme = 'file:';
+            if ( os.platform() === 'win32' ) {
+                scheme += '/';
+            }
+            result = result.replace( new RegExp('^' + scheme), '' );
+        }
+
+        return result;
+    }
+
+    /**
         Retrieve the fully resolved path to the requested template.
 
         @param {string} template - The path to the requested template. May be an absolute path;
         a path relative to the current working directory; or a path relative to the JSDoc directory.
-        @return {string} The fully resolved path to the requested template.
+        @return {string} The fully resolved path (or, on Rhino, a URI) to the requested template.
      */
     function getTemplatePath(template) {
         var result;
@@ -247,13 +295,17 @@ function main() {
             // next, try resolving it relative to the JSDoc directory
             result = path.resolve(env.dirname, template);
             if ( !pathExists(result) ) {
-                // restore the original value so the user gets a reasonable error message
-                result = template;
+                result = null;
             }
         }
 
+        // this only messes with the path on Rhino
+        if (result) {
+            result = pathToUri(result);
+        }
+
         return result;
-   }
+    }
 
 
     env.opts = jsdoc.opts.parser.parse(env.args);
@@ -362,7 +414,7 @@ function main() {
             resolver.resolve();
         }
 
-        env.opts.template = getTemplatePath(env.opts.template);
+        env.opts.template = getTemplatePath(env.opts.template) || env.opts.template;
 
         var template;
         try {
@@ -374,6 +426,8 @@ function main() {
 
         // templates should include a publish.js file that exports a "publish" function
         if (template.publish && typeof template.publish === 'function') {
+            // convert this from a URI back to a path if necessary
+            env.opts.template = uriToPath(env.opts.template);
             template.publish(
                 new (require('typicaljoe/taffy'))(docs),
                 env.opts,
@@ -387,6 +441,8 @@ function main() {
                 console.log( env.opts.template + ' uses a global "publish" function, which is ' +
                     'deprecated and may not be supported in future versions. ' +
                     'Please update the template to use "exports.publish" instead.' );
+                // convert this from a URI back to a path if necessary
+                env.opts.template = uriToPath(env.opts.template);
                 publish(
                     new (require('typicaljoe/taffy'))(docs),
                     env.opts,
