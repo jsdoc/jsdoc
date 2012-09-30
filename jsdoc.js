@@ -198,7 +198,6 @@ function main() {
         },
         resolver,
         fs = require('fs'),
-        os = require('os'),
         path = require('path'),
         Config = require('jsdoc/config');
 
@@ -230,14 +229,7 @@ function main() {
             scheme;
 
         if (env.vm === 'rhino') {
-            result = result.replace(/\\/g, '/').replace(/ /g, '%20');
-
-            scheme = 'file:';
-            if ( os.platform() === 'win32' ) {
-                scheme += '/';
-            }
-
-            result = scheme + result;
+            result = new java.io.File(result).toURI() + '';
         }
 
         return result;
@@ -254,13 +246,7 @@ function main() {
             scheme;
 
         if (env.vm === 'rhino') {
-            result = result.replace(/%20/g, ' ');
-
-            scheme = 'file:';
-            if ( os.platform() === 'win32' ) {
-                scheme += '/';
-            }
-            result = result.replace( new RegExp('^' + scheme), '' );
+            result = new java.io.File( new java.net.URI(result) ) + '';
         }
 
         return result;
