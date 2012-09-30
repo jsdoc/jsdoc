@@ -421,7 +421,7 @@ function main() {
             template = require(env.opts.template + '/publish');
         }
         catch(e) {
-            throw new Error("Unable to load template: Couldn't find publish.js in " + env.opts.template);
+            throw new Error("Unable to load template: " + e.message || e);
         }
 
         // templates should include a publish.js file that exports a "publish" function
