@@ -14,10 +14,14 @@ var util = require('common/util');
 
 // required config values, override these defaults in your config.json if necessary
 const defaults = {
+    "tags": {
+        "allowUnknownTags": true
+    },
     "source": {
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/)_"
     },
+    "plugins": [],
     "jsVersion": 180
 };
 
@@ -28,7 +32,6 @@ const defaults = {
  */
 function Config(json) {
     json = JSON.parse( (json || "{}") );
-    
     this._config = util.mergeRecurse(defaults, json);
 }
 
