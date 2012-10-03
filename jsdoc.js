@@ -450,4 +450,7 @@ catch(e) {
         throw e;
     }
 }
-finally { env.run.finish = new Date(); }
+finally {
+    env.run.finish = new Date();
+    exit();
+}
