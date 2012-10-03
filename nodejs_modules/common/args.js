@@ -39,6 +39,7 @@
 	 * @param {string}    longName The equivalent long name of the option, entered like: --test.
 	 * @param {boolean}   hasValue Does this option require a value? Like: -t templatename
 	 * @param {string}    helpText
+	 * @param {boolean}   [canHaveMultiple=false]
 	 * @param {function}  [coercer] A function to coerce the given value to a specific type.
 	 * @example
 	 * myParser.addOption('t', 'template', true, 'The path to the template.');
