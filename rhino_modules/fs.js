@@ -77,7 +77,7 @@ var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
         }
         else { // it's a file
             _allFiles.push(
-                (_path.join('/') + '/' + file).replace(/[\/\\]+/g, '/')
+                path.normalize(_path.join('/') + '/' + file)
             );
         }
     }
