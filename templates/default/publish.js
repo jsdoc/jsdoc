@@ -232,12 +232,12 @@ exports.publish = function(taffyData, opts, tutorials) {
     // update outdir if necessary, then create outdir
     var packageInfo = ( find({kind: 'package'}, false) || [] ) [0];
     if (packageInfo && packageInfo.name) {
-        outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
+        outdir = path.join(outdir, packageInfo.name, packageInfo.version);
     }
     fs.mkPath(outdir);
 
     // copy static files to outdir
-    var fromDir = templatePath + '/static',
+    var fromDir = path.join(templatePath, 'static'),
         staticFiles = fs.ls(fromDir, 3);
         
     staticFiles.forEach(function(fileName) {
