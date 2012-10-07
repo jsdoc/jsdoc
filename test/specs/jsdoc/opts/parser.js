@@ -176,7 +176,7 @@ describe("jsdoc/opts/parser", function() {
             expect(r.tutorials).toEqual('mytutorials');
         });
 
-        it("should accept a naked option (i.e. no '-') and return an object with a '_' pproperty", function() {
+        it("should accept a naked option (i.e. no '-') and return an object with a '_' property", function() {
             opts.parse(['myfile1', 'myfile2']);
             var r = opts.get();
 
@@ -190,11 +190,11 @@ describe("jsdoc/opts/parser", function() {
             expect(r.verbose).toEqual(true);
         });
 
-        it("should accept a '--coffee' option and return an object with a 'coffee' property", function() {
-            opts.parse(['--coffee']);
+        it("should accept a '--nocolor' option and return an object with a 'nocolor' property", function() {
+            opts.parse(['--nocolor']);
             var r = opts.get();
 
-            expect(r.coffee).toEqual(true);
+            expect(r.nocolor).toEqual(true);
         });
 
         it("should accept a '--match' option and return an object with a 'match' property", function() {

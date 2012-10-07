@@ -33,8 +33,8 @@ argParser.addOption('u', 'tutorials',   true,  'Directory in which JSDoc should 
 
 //Here are options specific to tests
 argParser.addOption(null, 'verbose',    false, 'Display verbose output for tests');
-argParser.addOption(null, 'match',      true,  'only run tests containing <value>', true);
-argParser.addOption(null, 'coffee',     false,  'load coffee-script which allows execution .coffee files');
+argParser.addOption(null, 'match',      true,  'Only run tests containing <value>', true);
+argParser.addOption(null, 'nocolor',    false, 'Do not use color in console output from tests');
 
 /**
 	Set the options for this app.

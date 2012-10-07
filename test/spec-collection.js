@@ -1,24 +1,27 @@
+/*global env: true */
 var wrench = require('wrench/wrench');
 var path = require('path');
 var fs = require('fs');
 var specs = [];
 
-var createSpecObj = function(path, root) {
+var createSpecObj = function(_path, root) {
+    function relativePath() {
+        return _path.replace(root, '').replace(/^[\/\\]/, '').replace(/\\/g, '/');
+    }
+
     return {
-        path : function() {
-            return path;
+        path: function() {
+            return _path;
         },
-        relativePath : function() {
-            return path.replace(root, '').replace(/^[\/\\]/, '').replace(/\\/g, '/');
+        relativePath: relativePath,
+        directory: function() {
+            return _path.replace(/[\/\\][\s\w\.\-]*$/, "").replace(/\\/g, '/');
         },
-        directory : function() {
-            return path.replace(/[\/\\][\s\w\.-]*$/, "").replace(/\\/g, '/');
+        relativeDirectory: function() {
+            return relativePath().replace(/[\/\\][\s\w\.\-]*$/, "").replace(/\\/g, '/');
         },
-        relativeDirectory : function() {
-            return relativePath().replace(/[\/\\][\s\w\.-]*$/, "").replace(/\\/g, '/');
-        },
-        filename : function() {
-            return path.replace(/^.*[\\\/]/, '');
+        filename: function() {
+            return _path.replace(/^.*[\\\/]/, '');
         }
     };
 };
@@ -28,9 +31,10 @@ var clearSpecs = exports.clearSpecs = function() {
 };
 
 exports.load = function(loadpath, matcher, clear) {
-    if(clear === true) {
+    if (clear === true) {
         clearSpecs();
     }
+
     var wannaBeSpecs = wrench.readdirSyncRecursive(loadpath);
     for (var i = 0; i < wannaBeSpecs.length; i++) {
         var file = path.join(env.dirname, loadpath, wannaBeSpecs[i]);
