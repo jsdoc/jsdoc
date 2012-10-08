@@ -117,15 +117,6 @@ function dump() {
     }
 }
 
-/**
-    Cause the VM running jsdoc to exit running.
-    @param {number} [n = 0] The exit status.
- */
-function exit(n) {
-    n = n || 0;
-    java.lang.System.exit(n);
-}
-
 function installPlugins(plugins, p) {
     var dictionary = require('jsdoc/tag/dictionary'),
         parser = p || app.jsdoc.parser;
@@ -225,8 +216,7 @@ function main() {
      * @return {string} A URI that meets the operating system's requirements, or the original path.
      */
     function pathToUri(_path) {
-        var result = _path,
-            scheme;
+        var result = _path;
 
         if (env.vm === 'rhino') {
             result = new java.io.File(result).toURI() + '';
@@ -242,8 +232,7 @@ function main() {
      * @return {string} A path that meets the operating system's requirements.
      */
     function uriToPath(uri) {
-        var result = uri,
-            scheme;
+        var result = uri;
 
         if (env.vm === 'rhino') {
             result = new java.io.File( new java.net.URI(result) ) + '';
@@ -338,10 +327,10 @@ function main() {
 
     if (env.opts.help) {
         console.log( jsdoc.opts.parser.help() );
-        exit(0);
+        process.exit(0);
     } else if (env.opts.test) {
         include('test/runner.js');
-        exit(0);
+        process.exit(0);
     }
 
     if (env.conf.plugins) {
@@ -388,7 +377,7 @@ function main() {
 
         if (env.opts.explain) {
             console.log(docs);
-            exit(0);
+            process.exit(0);
         }
 
         // load this module anyway to ensure root instance exists
@@ -452,5 +441,5 @@ catch(e) {
 }
 finally {
     env.run.finish = new Date();
-    exit();
+    process.exit(0);
 }
