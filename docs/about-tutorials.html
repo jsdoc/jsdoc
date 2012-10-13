@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Additional longtext tutorials for your code."><title>Use JSDoc: Tutorials mechanism</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>Tutorials mechanism</h1>
+
+<h3>Tutorials</h3>
+
+<p>
+Tutorials mechanism allows you to include not only short code-related technical API documentation, but also longer, more explaining, full-page tutorials. It's a bit similar to phpDocumentor's one.
+</p>
+
+<p>
+With <code>-u</code> option you can specify a directory, which JSDoc will search for tutorials. It will treat any file with extension .xml, .xhtml, .html and .htm as tutorial content files. Also .md and .markdown extensions are supported and will be additionally parsed as Markdown and converted to HTML.
+</p>
+
+<p>
+By default each tutorial is top-level. Top-level tutorials are listed in navigation menu.
+</p>
+
+<h3>Configuration</h3>
+
+<p>
+Each tutorial file can have additional .js/.json file (with same name, just different extension) which will hold additional tutorial configuration. Two fields are supported:
+</p>
+
+<ul>
+    <li><code>title</code> overrides display name for tutorial with the one specified in it's value (default title for tutorial is it's filename).</li>
+    <li><code>children</code> which holds list of sub-tutorials identifiers.</li>
+</ul>
+
+<p>
+When tutorial has <code>children</code> property set, it's children will be listed in it's <em>ToC</em> as sub-articles instead of top-level navigation menu.
+</p>
+
+<h3>Identifiers</h3>
+
+<p>
+Tutorial is identified by it's filename (eg. <code>test.html</code> is named <code>test</code>). No matter to what you will change tutorial's title, it's identifier will be just <code>test</code>. Title is for displaying, name is for identifying. This allows you to link to tutorial without depending on it's variable display name.
+</p>
+
+<h3>@tutorial tag</h3>
+
+<p>
+Doclets can have assigned tutorials (similar to <code>@link</code> and <code>@see</code> tags) through @tutorial tag:
+</p>
+
+<dl class="example">
+<dt>Example of the @tutorial tag</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+ * Description.
+ *
+ * @class
+ * @tutorial test-tutorial
+ */</code></pre>
+</dd>
+</dl><p>
+@tutorial tag can also be handled in-line in descriptions:
+</p>
+
+<dl class="example">
+<dt>Using the tutorial tag in a description</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+ * Description {@tutorial test-tutorial}.
+ *
+ * @class
+ */</code></pre>
+</dd>
+</dl><h3>Tutorial content</h3>
+
+<p>
+Tutorial content is precessed with <code>resolveLinks()</code>, which means you can use both <code>{@link}</code> and <code>{@tutorial}</code> tags within tutorial text! They will be processed just like doclets descriptions.
+</p>
+
+<dl class="example">
+<dt>Using the @tutorial tag in content</dt>
+<dd>
+<pre><code class="prettyprint lang-js">&lt;p&gt;This is tutorial content. See {@link Class.create} for OOP info and {@tutorial class-create} tutorial.&lt;/p&gt;</code></pre>
+</dd>
+</dl><h3>Backward compatibility</h3>
+
+<p>
+It is purely additional feature - if one won't specify <code>-u</code> option it won't affect documentation building. Also template <code>publish()</code> method is not a problem, since tutorials are passed as last argument, so if template function is not prepared for tutorials it just won't process them.
+</p>
+
+<h5>Contributers to these docs</h5>
+
+<ul>
+    <li><a href="https://github.com/hegemonic">hegemonic</a></li>
+</ul>
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+

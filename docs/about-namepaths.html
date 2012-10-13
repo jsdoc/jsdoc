@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="A guide to using namepaths with JSDoc 3."><title>Use JSDoc: Using namepaths with JSDoc 3</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>Using namepaths with JSDoc 3</h1>
+
+<h3>Namepaths in JSDoc 3</h3>
+
+<p>
+When referring to a JavaScript variable that is elsewhere in your documentation, you must provide a unique identifier that maps to that variable. A namepath provides a way to do so and disambiguate between instance members, static members and inner variables.
+</p>
+
+<dl class="example">
+<dt>Basic Syntax Examples of Nameptahs in JSDoc 3</dt>
+<dd>
+<pre><code class="prettyprint lang-js">myFunction
+MyConstructor
+MyConstructor#instancMember
+MyConstructor.staticMember
+MyConstructor~innerMember // note that JSDoc 2 uses a dash</code></pre>
+</dd>
+</dl><p>
+The example below shows: an <em>instance</em> method named "say," an <em>inner</em> function also named "say," and a <em>static</em> method also named "say." These are three distinct methods that all exist independently of one another.
+</p>
+
+<dl class="example">
+<dt>Use a documentation tag to describe your code.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/** @constructor */
+Person = function() {
+    this.say = function() {
+        return "I'm an instance.";
+    }
+    
+    function say() {
+        return "I'm inner.";
+    }
+}
+Person.say = function() {
+    return "I'm static.";
+}
+
+var p = new Person();
+p.say();      // I'm an instance.
+Person.say(); // I'm static.
+// there is no way to directly access the inner function from here</code></pre>
+</dd>
+</dl><p>
+You would use three different namepath syntaxes to refer to the three different methods:
+</p>
+
+<dl class="example">
+<dt>Use a documentation tag to describe your code.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">Person#say  // the instance method named "say."
+Person.say  // the static method named "say."
+Person~say  // the inner method named "say."</code></pre>
+</dd>
+</dl><p>
+You might wonder why there is a syntax to refer to an inner method when that method isn't directly accessible from outside the function it is defined in. While that is true, and thus the "~" syntax is rarely used, it <em>is</em> possible to return a reference to an inner method from another method inside that container, so it is possible that some object elsewhere in your code might borrow an inner method.
+</p>
+
+<p>
+Note that if a constructor has an instance member that is also a constructor, you can simply chain the namepaths together to form a longer namepath:
+<p>
+
+<dl class="example">
+<dt>Use a documentation tag to describe your code.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/** @constructor */
+Person = function() {
+    /** @constructor */
+    this.Idea = function() {
+        this.consider = function(){
+            return "hmmm";
+        }
+    }
+}
+
+var p = new Person();
+var i = new p.Idea();
+i.consider();</code></pre>
+</dd>
+</dl><p>
+In this case, to refer to the method named "consider," you would use the following namepath:
+<code>Person#Idea#consider</code>
+</p>
+
+<p>
+This chaining can be used with any combination of the connecting symbols: <code># . ~</code>
+</p>
+
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+

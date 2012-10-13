@@ -1,0 +1,24 @@
+<!--{
+    "title":       "@mixes",
+    "out":         "tags-mixes.html",
+    "description": "[todo] This object mixes in all the members from another object."
+}-->
+<h3>Overview</h3>
+
+<p>
+</p>
+
+<h3>Examples</h3>
+
+<p>
+</p>
+
+{{#example}}Example goes here
+// todo
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="#">...</a></li>
+</ul>

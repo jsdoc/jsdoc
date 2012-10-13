@@ -1,0 +1,45 @@
+<!--{
+    "title":       "@enum",
+    "out":         "tags-enum.html",
+    "description": "Document a collection of related properties."
+}-->
+<h3>Syntax</h3>
+
+<code>@enum [&lt;type>]</code>
+
+<h3>Overview</h3>
+
+<p>
+    The @enum tag documents a collection of static properties whose values are all of the same type.
+</p>
+
+<p>
+    An enum is similar a collection of properties, except that an enum is documented in its own doc comment, whereas properties are documented within the doc comment of their container. Often this tag is used with @readonly, as an enum typically represents a collection of constants.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+    This shows how to document an object that represents a value with three possible states. Note that the enum members can have optional descriptions added if you wish. Also you can override the type, as is shown with "MAYBE" -- by default enum members will be documented with the same type as the enum itself.
+</p>
+
+{{#example}}A numeric enum, representing three states
+/**
+ * Enum for tri-state values.
+ * @readonly
+ * @enum {number}
+ */
+var triState = {
+    /** The true value */
+    TRUE: 1,
+    FALSE: -1,
+    /** @type {boolean} */
+    MAYBE: true
+};
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-property.html">@property</a></li>
+</ul>

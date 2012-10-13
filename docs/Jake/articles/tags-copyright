@@ -1,0 +1,32 @@
+<!--{
+    "title":       "@copyright",
+    "out":         "tags-copyright.html",
+    "description": "Document some copyright information."
+}-->
+<h3>Syntax</h3>
+
+<code>@overview<br>@copyright &lt;some copyright text></code>
+
+<h3>Overview</h3>
+
+<p>
+The @copyright tag is used to document copyright information in a file overview comment.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+</p>
+
+{{#example}}Example goes here
+/**
+ * @overview This is my cool script.
+ * @copyright Michael Mathews 2011
+ */
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-file.html">@overview</a></li>
+</ul>

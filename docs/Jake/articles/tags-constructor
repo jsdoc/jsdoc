@@ -1,0 +1,39 @@
+<!--{
+    "title":       "@constructor",
+    "out":         "tags-constructor.html",
+    "description": "This function is intended to be called with the \"new\" keyword."
+}-->
+<h3>Synonyms</h3>
+
+<ul>
+    <li>@class</li>
+</ul>
+
+<h3>Syntax</h3>
+
+<code>@constructor [&lt;type> &lt;name>]</code>
+
+<h3>Overview</h3>
+
+<p>
+    The @constructor tag marks an function as being a constructor, meant to be called with the new keyword to return an instance.
+</p>
+
+<h3>Examples</h3>
+
+{{#example}}A function that constructs Person instances.
+/**
+    Creates a new Person.
+    @constructor 
+*/ 
+Person = function() {
+}
+
+var p = new Person();
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-constructs.html">@constructs</a></li>
+</ul>

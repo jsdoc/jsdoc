@@ -1,0 +1,28 @@
+<!--{
+    "title":       "@default",
+    "out":         "tags-default.html",
+    "description": "Document the default value."
+}-->
+<h3>Syntax</h3>
+
+<code>@default [&lt;some value>]</code>
+
+<h3>Overview</h3>
+
+<p>
+The @default tag allows you to document the assigned value of a symbol. You can supply this tag with a value yourself or you can allow JSDoc to automatically document the value from the source code -- only possible when the documented symbol is being assigned a single, simple value that is either: a string, a number, a boolean or null.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+In this example a constant is documented. The value of the constant is <code>0xff0000</code>. By adding the @default tag this value is automatically added to the documentation.
+</p>
+
+{{#example}}Document the number value of a constant
+/**
+ *  @constant
+ *  @default
+ */
+const RED = 0xff0000;
+{{/example}}

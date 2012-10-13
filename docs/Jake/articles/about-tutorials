@@ -1,0 +1,88 @@
+<!--{
+    title:       'Tutorials mechanism',
+    out:         'about-tutorials.html',
+    description: 'Additional longtext tutorials for your code.'
+}-->
+<h3>Tutorials</h3>
+
+<p>
+Tutorials mechanism allows you to include not only short code-related technical API documentation, but also longer, more explaining, full-page tutorials. It's a bit similar to phpDocumentor's one.
+</p>
+
+<p>
+With <code>-u</code> option you can specify a directory, which JSDoc will search for tutorials. It will treat any file with extension .xml, .xhtml, .html and .htm as tutorial content files. Also .md and .markdown extensions are supported and will be additionally parsed as Markdown and converted to HTML.
+</p>
+
+<p>
+By default each tutorial is top-level. Top-level tutorials are listed in navigation menu.
+</p>
+
+<h3>Configuration</h3>
+
+<p>
+Each tutorial file can have additional .js/.json file (with same name, just different extension) which will hold additional tutorial configuration. Two fields are supported:
+</p>
+
+<ul>
+    <li><code>title</code> overrides display name for tutorial with the one specified in it's value (default title for tutorial is it's filename).</li>
+    <li><code>children</code> which holds list of sub-tutorials identifiers.</li>
+</ul>
+
+<p>
+When tutorial has <code>children</code> property set, it's children will be listed in it's <em>ToC</em> as sub-articles instead of top-level navigation menu.
+</p>
+
+<h3>Identifiers</h3>
+
+<p>
+Tutorial is identified by it's filename (eg. <code>test.html</code> is named <code>test</code>). No matter to what you will change tutorial's title, it's identifier will be just <code>test</code>. Title is for displaying, name is for identifying. This allows you to link to tutorial without depending on it's variable display name.
+</p>
+
+<h3>@tutorial tag</h3>
+
+<p>
+Doclets can have assigned tutorials (similar to <code>@link</code> and <code>@see</code> tags) through @tutorial tag:
+</p>
+
+{{#example}}Example of the @tutorial tag
+/**
+ * Description.
+ *
+ * @class
+ * @tutorial test-tutorial
+ */
+{{/example}}
+
+<p>
+@tutorial tag can also be handled in-line in descriptions:
+</p>
+
+{{#example}} Using the tutorial tag in a description
+/**
+ * Description {@tutorial test-tutorial}.
+ *
+ * @class
+ */
+{{/example}}
+
+<h3>Tutorial content</h3>
+
+<p>
+Tutorial content is precessed with <code>resolveLinks()</code>, which means you can use both <code>{@link}</code> and <code>{@tutorial}</code> tags within tutorial text! They will be processed just like doclets descriptions.
+</p>
+
+{{#example}}Using the @tutorial tag in content
+&lt;p&gt;This is tutorial content. See {@link Class.create} for OOP info and {@tutorial class-create} tutorial.&lt;/p&gt;
+{{/example}}
+
+<h3>Backward compatibility</h3>
+
+<p>
+It is purely additional feature - if one won't specify <code>-u</code> option it won't affect documentation building. Also template <code>publish()</code> method is not a problem, since tutorials are passed as last argument, so if template function is not prepared for tutorials it just won't process them.
+</p>
+
+<h5>Contributers to these docs</h5>
+
+<ul>
+    <li><a href="https://github.com/hegemonic">hegemonic</a></li>
+</ul>

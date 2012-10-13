@@ -1,0 +1,40 @@
+<!--{
+    "title":       "@version",
+    "out":         "tags-version.html",
+    "description": "Documents the version number of an item."
+}-->
+<h3>Overview</h3>
+
+<p>Documents the version of an item. The text following the @version tag 
+will be used to denote the version of the item.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+</p>
+
+{{#example}}Documenting an item's version.
+/**
+ * Solves equations of the form a * x = b
+ * @author Some Author
+ * @version 20121008
+ * @tutorial method1
+ */
+method1 = function (a,b) {
+	return b / a;
+}
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-author.html">@author</a></li>
+	<li><a href="tags-tutorial.html">@tutorial</a></li>
+</ul>
+
+<h5>Contributers to these docs</h5>
+
+<ul>
+    <li><a href="https://github.com/matthewkastor">matthewkastor</a></li>
+</ul>

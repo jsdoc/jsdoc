@@ -1,0 +1,39 @@
+<!--{
+    "title":       "Glorious Contributors",
+    "out":         "about-contributors.html",
+    "description": "Glorous Contributors to JSDoc3"
+}-->
+
+<h3>
+	Glorious Contributors
+</h3>
+
+<p>
+	Hial!
+</p>
+
+<p>
+	Now comes the list of those whose Magnificence shines, whose hours and hours of nerdist activity and O.C.D. produce this power tool that makes you smarter just for using it.
+</p>
+
+<ul>
+	<li>
+		<a href="https://github.com/micmath">Michael Mathews, "King Wobble.flam()"</a>
+	</li>
+
+	<li>
+		<a href="https://github.com/hegemonic">Jeff Williams, "Hegemonic"</a>
+	</li>
+
+	<li>
+		<a href="https://github.com/jannon">Jannon Frank, "jannon"</a>
+	</li>
+
+	<li>
+		<a href="https://github.com/tschaub">Tim Schaub, "tschaub"</a>
+	</li>
+
+	<li>
+		<a href="https://github.com/matthewkastor">Matthew Christopher Kastor-Inare III, "The Glorious"</a>
+	</li>
+</ul>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Markdown plugin usage instructions"><title>Use JSDoc: How To Use the Markdown Plugin</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>How To Use the Markdown Plugin</h1>
+
+
+<h1>How to use the Markdown plugin</h1>
+
+<p>For most users, all you need to do is add the plugin to your JSDoc configuration (<code>conf.json</code>) as you would any other, by adding a reference to it in the "plugins" entry of the configuration JSON:</p>
+
+<pre><code>...
+"plugins": [ "plugins/markdown" ]
+...</code></pre>
+
+<p>This will cause Markdown in <code>@description</code> tags (including implicit descriptions without tags), <code>@classdesc</code> tags, <code>@param</code> tags, <code>@property</code> tags, and <code>@returns</code> tags to be parsed.</p>
+
+<p>Also, be sure to use leading asterisks in your doc comments! If you omit the leading asterisks, JSDoc's code parser may remove other asterisks that are used for Markdown formatting.</p>
+
+<h1>Configuring the Markdown plugin</h1>
+
+<p>The plugin also offers several configuration options for advanced users who want GitHub integration, extended tag support, etc.  All configuration for the Markdown plugin should be added to a <code>"markdown"</code> property in your JSDoc configuration:</p>
+
+<pre><code>...
+"plugins": [ "plugins/markdown" ],
+
+"markdown": {
+    "opt1": "value",
+    "opt2": [ "foo", "bar", "baz" ]
+}
+...</code></pre>
+
+<h2>Choosing a parser</h2>
+
+<p>The plugin currently supports two Markdown parsers.  You can select which parser to use by adding a <code>"parser"</code> property to your Markdown configuration:</p>
+
+<pre><code>...
+"plugins": [ "plugins/markdown" ],
+
+"markdown": {
+    "parser": "gfm"
+}
+...</code></pre>
+
+<h3>Dominic "evilstreak" Baggott's markdown-js</h3>
+
+<p>The default parser is Dominic Baggott's excellent <a href="https://github.com/evilstreak/markdown-js">markdown-js</a>.  It can be explicitly selected by setting the <code>parser</code> to <code>evilstreak</code> and has one additional (and optional) configuration option, <code>dialect</code>, which can be used to select which of markdown-js' built-in dialects to use.  If omitted, markdown-js' default dialect will be used.</p>
+
+<pre><code>...
+"plugins": [ "plugins/markdown" ],
+
+"markdown": {
+    "parser": "evilstreak",
+    "dialect": "Maruku"
+}
+...</code></pre>
+
+<h3>GitHib Flavored Markdown</h3>
+
+<p>The alternative parser is the modified Showdown parser supplied by GitHub for their <a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a>.  GFM several enhancements to standard Markdown syntax (see its documentation) intended to be useful to developers.  It <em>also</em> has the ability to quickly link to GitHub repositories, files, and issues.  It can be selected by setting the <code>parser</code> to <code>gfm</code> and supports three additional (and optional) configuration options.</p>
+
+<p>The <code>hardwrap</code> option controls the hard wrapping of line ends.  Unlike standard Markdown, GFM considers a single newline to indicate a "hard break" in the paragraph, but this doesn't work well with the line length limitations commonly used with comment documentation, so is disabled by default.  If you want to turn hard wrapping back on, set <code>hardwrap</code> to <code>true</code> (or any non-falsy value).</p>
+
+<p>The <code>githubRepoName</code> and <code>githubRepoOwner</code> indicate which GitHub repo should be used for GitHub links which do not fully specify a repo.  These options have no effect unless used together and if they are omitted, several of GFM's default link types will be unavailable.  Conversely, if you supply both <code>github*</code> options but do not explicitly select <code>gfm</code> as your parser, it will be automatically selected for you.</p>
+
+<pre><code>...
+"plugins": [ "plugins/markdown" ],
+
+"markdown": {
+    "parser": "gfm",
+    "hardwrap": true
+}
+...</code></pre>
+
+<h3>Why two parsers?</h3>
+
+<p>The "evilstreak" parser is flexible, extensible, currently-maintained, and was the only parser available in earlier versions of the Markdown plugin, but doesn't support the useful GFM extensions.  The "gfm" parser is based on the no-longer-maintained Showdown parser, but is the actual library used for GitHub's <a href="http://github.github.com/github-flavored-markdown/preview.html">client-side previews</a>.</p>
+
+<p>In the future, if GFM support is made available for the "evilstreak" parser, this plugin will drop the "gfm" parser in favor of that support.</p>
+
+<h2>Extended tag support</h2>
+
+<p>While the Markdown plugin already supports JSDoc's default tags, if you're using other plugins, you may well have extra tags available.  You can tell the Markdown plugin to handle those extra tags as well using the <code>tags</code> property, which is an array of the tags* it should check in addition to the default set.</p>
+
+<pre><code>...
+"plugins": [ "plugins/markdown" ],
+
+"markdown": {
+    "tags": [ "foo", "bars", "bazzes" ]
+}
+...</code></pre>
+
+<p>* Because the Markdown plugin works with JSDoc's internal representation rather than with the source comments, the names you need to enter in the <code>tags</code> property aren't necessarily the same as the actual tag names.  For example, in the default set of tags, <code>@param</code> is stored under <code>params</code>.  If you are having trouble getting the Markdown plugin to work with your extra tags, either take a peek at the output of JSDoc's <code>--explain</code> command-line parameter (which displays the internal state which plugins work with) or ask the plugin author which "doclet properties" their plugin uses.  The Markdown plugin supports strings, arrays, and objects/subdoclets.</p>
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+

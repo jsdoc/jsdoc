@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="A quick-start guide to getting up and running with JSDoc 3."><title>Use JSDoc: Getting Started with JSDoc 3</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>Getting Started with JSDoc 3</h1>
+
+<h3>Getting Started</h3>
+
+<p>
+JSDoc 3 is an API documentation generator for JavaScript, similar to JavaDoc or PHPDoc. You add documentation comments directly to your source code, right along side the code itself. The JSDoc Tool will scan your source code, and generate a complete HTML documentation website for you.
+</p>
+
+<h3>Adding Documentation Comments to Your Code</h3>
+
+<p>
+JSDoc's purpose is to document the API of your JavaScript application or library. It is assumed that you will want to document things like: namespaces, classes, methods, method parameters, etc.
+</p>
+
+<p>
+JSDoc comments should generally be placed immediately before the code being documented. It must start with a <code>/**</code> sequence in order to be recognized by the JSDoc parser.
+</p>
+
+<dl class="example">
+<dt>The simplest documentation is just a description.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/** This is a description of the foo function. */
+function foo() {
+}</code></pre>
+</dd>
+</dl><p>
+Adding a description is simple, just type the description you want in the documentaton comment.
+</p>
+
+<p>
+Special "documentation tags" can be used to give more information. For example, if the function is a constructor, you can indicate this by adding a tag.
+</p>
+
+<dl class="example">
+<dt>Use a documentation tag to describe your code.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+    Represents a book.
+    @constructor
+ */
+function Book(title, author) {
+}</code></pre>
+</dd>
+</dl><p>
+More tags can be used to add more information. See the Tag Dictionary for a complete list of tags that are recognized by JSDoc 3.
+</p>
+
+<dl class="example">
+<dt>Adding more information with tags.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+    Represents a book.
+    @constructor
+    @param {string} title - The title of the book.
+    @param {string} author - The author of the book.
+ */
+function Book(title, author) {
+}</code></pre>
+</dd>
+</dl><h3>Generating A Website</h3>
+
+<p>
+Once your code is commented, you can use the JSDoc 3 Tool to generate an HTML website from the source.
+</p>
+
+<p>
+By default, JSDoc will use the "default" template to turn the documentation data into HTML. You can edit this template to suit your own needs, or create an entirely new template if that is what you prefer.
+</p>
+
+<dl class="example">
+<dt>Running the documentation generator on the command line.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">./jsdoc book.js</code></pre>
+</dd>
+</dl><p>
+This command will create a folder named "out" in the current working directory. Within that you will find the generated HTML pages.
+</p>
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+

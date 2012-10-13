@@ -1,0 +1,24 @@
+<!--{
+    "title":       "@license",
+    "out":         "tags-license.html",
+    "description": "[todo] Document the software license that applies to this code."
+}-->
+<h3>Overview</h3>
+
+<p>
+</p>
+
+<h3>Examples</h3>
+
+<p>
+</p>
+
+{{#example}}Example goes here
+// todo
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="#">...</a></li>
+</ul>

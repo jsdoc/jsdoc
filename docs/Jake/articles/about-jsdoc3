@@ -1,0 +1,95 @@
+<!--{
+    "title":       "Readme",
+    "out":         "about-jsdoc3.html",
+    "description": "General information about jsdoc3"
+}-->
+
+<h1>JSDoc 3</h1>
+
+<p>An inline API documentation processor for JavaScript. JSDoc 3 is intended to be
+an upgrade to JsDoc Toolkit (JSDoc 2).</p>
+
+<h3>Pull Requesters: Please read HOW<em>TO</em>CONTRIBUTE.md</h3>
+
+<h2>Installation</h2>
+
+<p>Download a copy of JSDoc 3 from the official Git Hub repository here:
+<a href="https://github.com/jsdoc3/jsdoc">https://github.com/jsdoc3/jsdoc</a></p>
+
+<p>To test that jsdoc is working, change your working directory to the jsdoc folder
+and run the following command on Windows:</p>
+
+<pre><code>jsdoc -T</code></pre>
+
+<p>... or on a Max OSX or *nix platform:</p>
+
+<pre><code>./jsdoc -T</code></pre>
+
+<p>If you can't get the short-form commands to work, try invoking Java directly:</p>
+
+<pre><code>java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main \
+-modules nodejs_modules -modules rhino_modules -modules . \
+jsdoc.js -T</code></pre>
+
+<h2>Usage</h2>
+
+<p>This example assumes that your working directory is the jsdoc application base
+directory:</p>
+
+<pre><code>./jsdoc yourSourceCodeFile.js</code></pre>
+
+<p>For help regarding the supported commandline options use the --help option.</p>
+
+<pre><code>./jsdoc --help</code></pre>
+
+<p>Generated documentation will appear in the folder specified by the --destination
+option, or in a folder named "out" by default.</p>
+
+<h2>Dependencies</h2>
+
+<p>JSDoc 3 utilises the Mozilla Rhino engine, which requires Java. JSDoc 3 is known
+to work with version 1.6.0_24 of Java.</p>
+
+<p>JSDoc 3 uses advanced features in the Rhino application which are only
+available in or after the 1.7 release 3. A copy of this version of Rhino is
+included in JSDoc so this is not normally an issue that the user needs to be
+concerned with. However, in rare cases, users may have their Java CLASSPATH
+configured to override that included Rhino and point to some older version of
+Rhino instead. If this is the case, simply correct the CLASSPATH to remove the
+older Rhino.</p>
+
+<p>The version of rhino distributed with JSDoc3 can be found here:  https://github.com/jannon/rhino</p>
+
+<h2>Debugging</h2>
+
+<p>Rhino is not always very friendly when it comes to reporting errors in
+JavaScript. Luckily it comes with a full-on debugger included that can be much
+more useful than a simple stack trace. To invoke JSDoc with the debugger try the
+following command:</p>
+
+<pre><code>jsdoc --debug</code></pre>
+
+<p>or the long form version:</p>
+
+<pre><code>$ java -classpath lib/js.jar \
+org.mozilla.javascript.tools.debugger.Main -debug \
+-modules nodejs_modules -modules rhino_modules -modules . \
+jsdoc.js \
+your/script.js</code></pre>
+
+<p>Note: <code>--debug</code> must be the first argument to the short form command</p>
+
+<p>This will open a debugging window. Choose "Break on Exceptions" from the "Debug"
+menu, then press the "Run" button. If there is an error, you should see exactly
+where it is in the source code.</p>
+
+<h2>See Also</h2>
+
+<p>Project Documentation: <a href="http://usejsdoc.org/">http://usejsdoc.org/</a> (under development)<br>Project Documentation Source: <a href="https://github.com/micmath/micmath.github.com">https://github.com/micmath/micmath.github.com</a><br>JSDoc User's Group: <a href="http://groups.google.com/group/jsdoc-users">http://groups.google.com/group/jsdoc-users</a><br>JSDoc3 Ant Task <a href="https://github.com/jannon/jsdoc3-ant-task">https://github.com/jannon/jsdoc3-ant-task</a><br>Project Annoncements: <a href="http://twitter.com/jsdoc3">http://twitter.com/jsdoc3</a></p>
+
+<h2>License</h2>
+
+<p>JSDoc 3 is copyright (c) 2011 Michael Mathews <a href="mailto:micmath@gmail.com">micmath@gmail.com</a></p>
+
+<p>See file "LICENSE.md" in this distribution for more details about
+terms of use.</p>
