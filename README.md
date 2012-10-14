@@ -48,7 +48,7 @@ Dependencies
 JSDoc 3 utilises the Mozilla Rhino engine, which requires Java. JSDoc 3 is known
 to work with version 1.6.0_24 of Java.
 
-JSDoc 3 uses advanced features in the Rhino application which are only
+JSDoc 3 uses advanced features in Mozilla Rhino that are only
 available in or after the 1.7 release 3. A copy of this version of Rhino is
 included in JSDoc so this is not normally an issue that the user needs to be
 concerned with. However, in rare cases, users may have their Java CLASSPATH
@@ -56,7 +56,7 @@ configured to override that included Rhino and point to some older version of
 Rhino instead. If this is the case, simply correct the CLASSPATH to remove the
 older Rhino.
 
-The version of rhino distributed with JSDoc3 can be found here:  https://github.com/jannon/rhino
+The version of Rhino distributed with JSDoc 3 can be found here: https://github.com/hegemonic/rhino
 
 Debugging
 ---------
@@ -88,8 +88,8 @@ See Also
 Project Documentation: <http://usejsdoc.org/> (under development)  
 Project Documentation Source: <https://github.com/micmath/micmath.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
-JSDoc3 Ant Task <https://github.com/jannon/jsdoc3-ant-task>  
-Project Annoncements: <http://twitter.com/jsdoc3>
+JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
+Project Announcements: <http://twitter.com/jsdoc3>
 
 License
 -------
