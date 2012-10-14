@@ -4,7 +4,7 @@
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
-var mdParser = require('evilstreak/markdown');
+var mdParser = require('markdown').markdown;
 
 /**
     @module jsdoc/tutorial

@@ -35,10 +35,10 @@ function getParser(parser, conf) {
             return parser.makeHtml(source);
         };
     } else if (parser === "evilstreak") {
-        parser = require("evilstreak/markdown");
+        parser = require("markdown").markdown;
 
         return function(source) {
-            return parser.renderJsonML(parser.toHTMLTree(source, conf.dialect));
+            return parser.toHTML(source, conf.dialect);
         };
     } else {
         throw "unknown Markdown parser: '" + parser + "'";
