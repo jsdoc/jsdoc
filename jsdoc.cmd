@@ -36,10 +36,10 @@ IF [%1]==[--debug] (
 
 IF [%1]==[-T] (
     ECHO Running Tests
-    java -classpath "%_BASEPATH%/lib/js.jar" %CMD% -opt -1 -modules "%_URLPATH%/nodejs_modules" -modules "%_URLPATH%/rhino_modules" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor --dirname="%_BASEPATH%/
+    java -classpath "%_BASEPATH%/lib/js.jar" %CMD% -opt -1 -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/nodejs_modules" -modules "%_URLPATH%/rhino_modules" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor --dirname="%_BASEPATH%/
 ) ELSE (
     REM normal mode should be quiet
-    java -classpath "%_BASEPATH%/lib/js.jar" %CMD% -modules "%_URLPATH%/nodejs_modules" -modules "%_URLPATH%/rhino_modules" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --dirname="%_BASEPATH%/
+    java -classpath "%_BASEPATH%/lib/js.jar" %CMD% -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/nodejs_modules" -modules "%_URLPATH%/rhino_modules" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --dirname="%_BASEPATH%/
 )
 
 ENDLOCAL
