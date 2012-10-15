@@ -199,8 +199,8 @@ exports.publish = function(data, opts) {
     var root = {},
         docs;
     
-    data.remove({undocumented: true});
-    docs = data.get(); // <-- an array of Doclet objects
+    data({undocumented: true}).remove();
+    docs = data().get(); // <-- an array of Doclet objects
 
     graft(root, docs);
     

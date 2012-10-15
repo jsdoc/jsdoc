@@ -1,7 +1,7 @@
 {
 	"name": "JSDoc",
 	"version": "3.0.0",
-	"revision": "1350231216174",
+	"revision": "1350303594542",
 	"description": "An automatic documentation generator for javascript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -17,7 +17,8 @@
 		}
 	],
 	"dependencies": {
-		"markdown": "0.4.0"
+		"markdown": "0.4.0",
+		"taffydb": "git://github.com/hegemonic/taffydb.git"
 	},
 	"bugs": "https://github.com/jsdoc3/jsdoc/issues",
 	"contributors" : [

@@ -2,6 +2,7 @@
 var template = require('jsdoc/template'),
     fs = require('fs'),
     path = require('path'),
+    taffy = require('taffydb').taffy,
     helper = require('jsdoc/util/templateHelper'),
     scopeToPunc = helper.scopeToPunc,
     hasOwnProp = Object.prototype.hasOwnProperty,
@@ -10,8 +11,8 @@ var template = require('jsdoc/template'),
     outdir = env.opts.destination;
 
 
-function find(spec, sort) {
-    return helper.find(data, spec, sort);
+function find(spec) {
+    return helper.find(data, spec);
 }
 
 function tutoriallink(tutorial) {
@@ -116,7 +117,7 @@ function buildNav(members) {
     if (members.classes.length) {
         var moduleClasses = 0;
         members.classes.forEach(function(c) {
-            var moduleSameName = find( {kind: 'module', longname: c.longname}, false );
+            var moduleSameName = find({kind: 'module', longname: c.longname});
             if (moduleSameName.length) {
                 c.name = c.name.replace('module:', 'require("')+'")';
                 moduleClasses++;
@@ -202,9 +203,9 @@ exports.publish = function(taffyData, opts, tutorials) {
     helper.setTutorials(tutorials);
 
     data = helper.prune(data);
-    data.orderBy(['longname', 'version', 'since']);
+    data.sort('longname, version, since');
 
-    data.forEach(function(doclet) {
+    data().each(function(doclet) {
          doclet.attribs = '';
         
         if (doclet.examples) {
@@ -230,7 +231,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     });
     
     // update outdir if necessary, then create outdir
-    var packageInfo = ( find({kind: 'package'}, false) || [] ) [0];
+    var packageInfo = ( find({kind: 'package'}) || [] ) [0];
     if (packageInfo && packageInfo.name) {
         outdir = path.join(outdir, packageInfo.name, packageInfo.version);
     }
@@ -246,12 +247,12 @@ exports.publish = function(taffyData, opts, tutorials) {
         fs.copyFileSync(fileName, toDir);
     });
     
-    data.forEach(function(doclet) {
+    data().each(function(doclet) {
         var url = helper.createLink(doclet);
         helper.registerLink(doclet.longname, url);
     });
     
-    data.forEach(function(doclet) {
+    data().each(function(doclet) {
         var url = helper.longnameToUrl[doclet.longname];
 
         if (url.indexOf('#') > -1) {
@@ -269,7 +270,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     });
     
     // do this after the urls have all been generated
-    data.forEach(function(doclet) {
+    data().each(function(doclet) {
         doclet.ancestors = getAncestorLinks(doclet);
 
         doclet.signature = '';
@@ -301,43 +302,43 @@ exports.publish = function(taffyData, opts, tutorials) {
     for (var longname in helper.longnameToUrl) {
         if ( hasOwnProp.call(helper.longnameToUrl, longname) ) {
             // reuse 'members', which speeds things up a bit
-            var classes = new (require('typicaljoe/taffy'))(members.classes);
-            classes = helper.find( classes, {longname: longname}, false );
+            var classes = taffy(members.classes);
+            classes = helper.find(classes, {longname: longname});
             if (classes.length) {
                 generate('Class: ' + classes[0].name, classes, helper.longnameToUrl[longname]);
             }
     
-            var modules = new (require('typicaljoe/taffy'))(members.modules);
-            modules = helper.find( modules, {longname: longname}, false );
+            var modules = taffy(members.modules);
+            modules = helper.find(modules, {longname: longname});
             if (modules.length) {
                 generate('Module: ' + modules[0].name, modules, helper.longnameToUrl[longname]);
             }
         
-            var namespaces = new (require('typicaljoe/taffy'))(members.namespaces);
-            namespaces = helper.find( namespaces, {longname: longname}, false );
+            var namespaces = taffy(members.namespaces);
+            namespaces = helper.find(namespaces, {longname: longname});
             if (namespaces.length) {
                 generate('Namespace: ' + namespaces[0].name, namespaces, helper.longnameToUrl[longname]);
             }
         
-            var mixins = new (require('typicaljoe/taffy'))(members.mixins);
-            mixins = helper.find( mixins, {longname: longname}, false );
+            var mixins = taffy(members.mixins);
+            mixins = helper.find(mixins, {longname: longname});
             if (mixins.length) {
                 generate('Mixin: ' + mixins[0].name, mixins, helper.longnameToUrl[longname]);
             }
     
-            var externals = new (require('typicaljoe/taffy'))(members.externals);
-            externals = helper.find( externals, {longname: longname}, false );
+            var externals = taffy(members.externals);
+            externals = helper.find(externals, {longname: longname});
             if (externals.length) {
                 generate('External: ' + externals[0].name, externals, helper.longnameToUrl[longname]);
             }
         }
     }
 
-    if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], 'global.html'); }
+    if (members.globals.length) { generate('Global', members.globals, 'global.html'); }
     
     // index page displays information from package.json and lists files
-    var files = find( {kind: 'file'}, false),
-        packages = find( {kind: 'package'}, false );
+    var files = find({kind: 'file'}),
+        packages = find({kind: 'package'});
 
     generate('Index',
 		packages.concat(

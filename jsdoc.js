@@ -190,6 +190,7 @@ function main() {
         resolver,
         fs = require('fs'),
         path = require('path'),
+        taffy = require('taffydb').taffy,
         Config = require('jsdoc/config');
 
     /**
@@ -404,7 +405,7 @@ function main() {
             // convert this from a URI back to a path if necessary
             env.opts.template = uriToPath(env.opts.template);
             template.publish(
-                new (require('typicaljoe/taffy'))(docs),
+                taffy(docs),
                 env.opts,
                 resolver.root
             );
@@ -419,7 +420,7 @@ function main() {
                 // convert this from a URI back to a path if necessary
                 env.opts.template = uriToPath(env.opts.template);
                 publish(
-                    new (require('typicaljoe/taffy'))(docs),
+                    taffy(docs),
                     env.opts,
                     resolver.root
                 );

@@ -74,22 +74,13 @@ var htmlsafe = exports.htmlsafe = function(str) {
 /**
  * Find items in a TaffyDB database that match the specified key-value pairs.
  * @param {TAFFY} data The TaffyDB database to search.
- * @param {object} spec Key-value pairs to match against (for example, `{ longname: 'foo' }`).
- * @param {boolean} [sort=true] Set to `true` to return alphabetized results or `false` to return
- * unsorted results.
+ * @param {object|function} spec Key-value pairs to match against (for example,
+ * `{ longname: 'foo' }`), or a function that returns `true` if a value matches or `false` if it
+ * does not match.
  * @return {array<object>} The matching items.
  */
-var find = exports.find = function(data, spec, sort) {
-    sort = sort === false ? sort : true;
-
-    var items = data.get( data.find(spec) );
-    if (sort) {
-        items.sort(function(a, b) {
-            return a.name > b.name;
-        });
-    }
-
-    return items;
+var find = exports.find = function(data, spec) {
+    return data(spec).get();
 };
 
 /**
@@ -111,9 +102,7 @@ exports.getMembers = function(data) {
         externals: find( data, {kind: 'external'} ),
         globals: find(data, {
             kind: ['member', 'function', 'constant', 'typedef'],
-            'memberof': {
-                'isUndefined': true
-            }
+            memberof: { isUndefined: true }
         }),
         mixins: find( data, {kind: 'mixin'} ),
         modules: find( data, {kind: 'module'} ),
@@ -268,10 +257,10 @@ exports.getAncestorLinks = function(data, doclet) {
  * @return {TAFFY} The pruned database.
  */
 exports.prune = function(data) {
-    data.remove({undocumented: true});
-    data.remove({ignore: true});
-    if (!env.opts.private) { data.remove({access: 'private'}); }
-    data.remove({memberof: '<anonymous>'});
+    data({undocumented: true}).remove();
+    data({ignore: true}).remove();
+    if (!env.opts.private) { data({access: 'private'}).remove(); }
+    data({memberof: '<anonymous>'}).remove();
 
     return data;
 };
