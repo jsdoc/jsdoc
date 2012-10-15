@@ -13,8 +13,6 @@ exports.handlers = {
      */
     newDoclet: function(e) {
         if (e.doclet.description) {
-			// filters EOL of source so evilstreak/markdown doesn't screw the pooch.
-            e.doclet.description = e.doclet.description.replace(/(\r\n|\n|\r)/g, '\n');
             e.doclet.description = mdParser.toHTML(e.doclet.description)
                 .replace( /&amp;/g, "&" ) // because markdown escapes these
                 .replace( /&lt;/g, "<" )

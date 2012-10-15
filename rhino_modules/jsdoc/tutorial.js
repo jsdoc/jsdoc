@@ -68,8 +68,6 @@ exports.Tutorial.prototype.parse = function() {
 
         // markdown
         case exports.TYPES.MARKDOWN:
-			// filters EOL of source so evilstreak/markdown doesn't screw the pooch.
-            this.content = this.content.replace(/(\r\n|\n|\r)/g, '\n');
             return mdParser.toHTML(this.content)
                 .replace(/&amp;/g, '&') // because markdown escapes these
                 .replace(/&lt;/g, '<')
