@@ -32,6 +32,8 @@ function getParser(parser, conf) {
         parser = require('evilstreak/markdown');
 
         return function(source) {
+            // filters EOL of source so evilstreak/markdown doesn't screw the pooch.
+            source = source.replace(/(\r\n|\n|\r)/g, '\n');
             return parser.renderJsonML(parser.toHTMLTree(source, conf.dialect));
         };
     }
