@@ -1,5 +1,5 @@
 /*global env: true */
-var wrench = require('wrench/wrench');
+var wrench = require('wrench');
 var path = require('path');
 var fs = require('fs');
 var specs = [];

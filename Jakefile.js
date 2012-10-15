@@ -30,7 +30,7 @@ task('default', [], function(params) {
 
 desc('Installs a plugin/template.');
 task('install', [], function(loc) {
-    var fs = require('fs'), util = require('util'), path = require('path'), wrench = require('wrench/wrench');
+    var fs = require('fs'), util = require('util'), path = require('path'), wrench = require('wrench');
 
     if(!loc) {
         fail("You must specify the location of the plugin/template.");
