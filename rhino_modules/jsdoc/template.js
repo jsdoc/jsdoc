@@ -4,12 +4,15 @@
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
-var template = require('underscore/template'),
-    fs = require('fs');
+var _ = require('underscore'),
+    fs = require('fs'),
+    path = require('path');
 
 // override default settings
-template.settings.evaluate    = /<\?js([\s\S]+?)\?>/g;
-template.settings.interpolate = /<\?js=([\s\S]+?)\?>/g;
+var settings = {
+    evaluate: /<\?js([\s\S]+?)\?>/g,
+    interpolate: /<\?js=([\s\S]+?)\?>/g
+};
 
 /**
     @module jsdoc/template
@@ -21,9 +24,7 @@ template.settings.interpolate = /<\?js=([\s\S]+?)\?>/g;
     @param {string} path - Templates directory.
  */
 exports.Template = function(path) {
-    // make sure path contains trailing slash
-    this.path = path.replace(/\/$/, '') + '/';
-
+    this.path = path;
     this.layout = null;
 };
 
@@ -32,7 +33,8 @@ exports.Template = function(path) {
     @return {function} Returns template closure.
  */
 exports.Template.prototype.load = function(file) {
-    return template.render(fs.readFileSync(this.path + file));
+    var _path = path.join(this.path, file);
+    return _.template(fs.readFileSync(_path), null, settings);
 };
 
 // templates cache
