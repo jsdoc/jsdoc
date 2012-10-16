@@ -62,12 +62,12 @@ var linkMap = {
 
 var longnameToUrl = exports.longnameToUrl = linkMap.longnameToUrl;
 
-var typedArray = /^array[\.]{0,1}<(.*)>/i;
+var typedArray = /^array[\.]{0,1}<(.*)>$/i;
 
 var linkto = exports.linkto = function(longname, linktext) {
     if (longname.match(typedArray) && longname.match(typedArray).length > 1)
         return linkto(longname.match(typedArray)[1], linktext);
-        
+
     var url = longnameToUrl[longname];
     return url ? '<a href="' + url + '">' + (linktext || longname) + '</a>' : (linktext || longname);
 };
