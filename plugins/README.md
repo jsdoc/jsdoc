@@ -76,7 +76,7 @@ source code being documented, like methods provided by a third-party superclass:
         }
     }
 
-#### Event: jsDocCommentFound
+#### Event: jsdocCommentFound
 
 This is fired whenever a jsdoc comment is found.  It may or may not be associated
 with any code.  You might use this to modify the contents of a comment before it
@@ -253,7 +253,7 @@ of the event parameter. In general the goal is to construct a comment and then
 get an event to fire.  After the parser lets all of the node visitors have a
 look at the node, it looks to see if the event object has a ```comment```
 property and an ```event``` property.  If it has both, the event named in the event
-property is fired.  The event is usually "symbolFound" or "jsDocCommentFound",
+property is fired.  The event is usually "symbolFound" or "jsdocCommentFound",
 but theoretically, a plugin could define its own events and handle them.
 
 #### Example
