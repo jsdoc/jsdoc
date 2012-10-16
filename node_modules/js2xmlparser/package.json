@@ -1,0 +1,30 @@
+{
+  "name": "js2xmlparser",
+  "description": "Parses JavaScript objects into XML",
+  "keywords": [
+    "convert",
+    "converter",
+    "js",
+    "json",
+    "object",
+    "objects",
+    "parse",
+    "parser",
+    "xml"
+  ],
+  "homepage": "http://www.kourlas.net",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael Kourlas",
+    "email": "michaelkourlas@gmail.com"
+  },
+  "main": "./lib/js2xmlparser.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/michaelkourlas/node-js2xmlparser.git"
+  },
+  "license": "MIT",
+  "readme": "# node-js2xmlparser #\r\n\r\n## Overview ##\r\n\r\njs2xmlparser is a Node.js module that parses JavaScript objects into XML.\r\n\r\n## Features ##\r\n\r\nSince XML is a data-interchange format, js2xmlparser is designed primarily for JSON-type objects, arrays and primitive\r\ndata types, like many of the other JavaScript to XML parsers currently available for Node.js.\r\n\r\nHowever, js2xmlparser is capable of parsing any object, including native JavaScript objects such as Date and RegExp, by\r\ntaking advantage of each object's toString function. Functions are a special case where the return value of the function\r\nitself is used instead of the toString function, if available.\r\n\r\njs2xmlparser also supports a number of constructs unique to XML:\r\n\r\n* attributes (through a unique attribute property in objects)\r\n* mixed content (through a unique value property in objects)\r\n* multiple elements with the same name (through arrays)\r\n\r\njs2xmlparser can also pretty-print the XML it outputs with the option of customizing the indent string.\r\n\r\n## Installation ##\r\n\r\nThe easiest way to install js2xmlparser is to use npm: `npm install js2xmlparser`.\r\n\r\nAlternatively, you may download the source from GitHub and copy it to a folder named \"js2xmlparser\" within your\r\n\"node_modules\" directory.\r\n\r\n## Usage ##\r\n\r\nThe js2xmlparser module contains one function which takes the following arguments:\r\n\r\n* `root` - string containing the root element of the XML\r\n* `data` - object or JSON string to be converted to XML\r\n* `options` - object containing options (optional)\r\n    * `declaration` - XML declaration options object (optional)\r\n        * `include` - boolean representing whether an XML declaration is included (optional, default: true)\r\n        * `encoding` - string representing the XML encoding for the corresponding attribute in the declaration; a value\r\n          of null represents no encoding attribute (optional, default: \"UTF-8\")\r\n    * `attributeString` - string containing the attribute property (optional, default: \"@\")\r\n    * `valueString` - string containing the value property (optional, default: \"#\")\r\n    * `prettyPrinting` - pretty-printing options object (optional)\r\n        * `enabled` - boolean representing whether pretty-printing is enabled (optional, default: true)\r\n        * `indentString` - string representing the indent (optional, default: \"\\t\")\r\n\r\n## Example ##\r\n\r\nThe following example illustrates the basic usage of js2xmlparser:\r\n\r\n    var js2xmlparser = require(\"js2xmlparser\");\r\n\r\n    var data = {\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"Smith\"\r\n    };\r\n\r\n    console.log(js2xmlparser(\"person\", data));\r\n\r\n    > <?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n    > <person>\r\n    >     <firstName>John</firstName>\r\n    >     <lastName>Smith</lastName>\r\n    > </person>\r\n\r\nHere's a more complex example that builds on the first:\r\n\r\n    var js2xmlparser = require(\"js2xmlparser\");\r\n\r\n    var data = {\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"Smith\",\r\n        \"dateOfBirth\": new Date(1964, 07, 26),\r\n        \"address\": {\r\n            \"@\": {\r\n                \"type\": \"home\"\r\n            },\r\n            \"streetAddress\": \"3212 22nd St\",\r\n            \"city\": \"Chicago\",\r\n            \"state\": \"Illinois\",\r\n            \"zip\": 10000\r\n        },\r\n        \"phone\": [\r\n            {\r\n                \"@\": {\r\n                    \"type\": \"home\"\r\n                },\r\n                \"#\": \"123-555-4567\"\r\n            },\r\n            {\r\n                \"@\": {\r\n                    \"type\": \"cell\"\r\n                },\r\n                \"#\": \"456-555-7890\"\r\n            }\r\n        ],\r\n        \"email\": function() {return \"john@smith.com\";}\r\n    }\r\n\r\n    console.log(js2xmlparser(\"person\", data));\r\n\r\n    > <?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n    > <person>\r\n    >     <firstName>John</firstName>\r\n    >     <lastName>Smith</lastName>\r\n    >     <dateOfBirth>Wed Aug 26 1964 00:00:00 GMT-0400 (Eastern Daylight Time)</dateOfBirth>\r\n    >     <address type=\"home\">\r\n    >         <streetAddress>3212 22nd St</streetAddress>\r\n    >         <city>Chicago</city>\r\n    >         <state>Illinois</state>\r\n    >         <zip>10000</zip>\r\n    >     </address>\r\n    >     <phone type=\"home\">123-555-4567</phone>\r\n    >     <phone type=\"cell\">456-555-7890</phone>\r\n    >     <email>john@smith.com</email>\r\n    > </person>",
+  "_id": "js2xmlparser@0.1.0",
+  "_from": "js2xmlparser"
+}

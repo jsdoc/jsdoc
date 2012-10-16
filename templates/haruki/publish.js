@@ -206,8 +206,8 @@ exports.publish = function(data, opts) {
     
     if (opts.destination === 'console') {
         if (opts.query && opts.query.format === 'xml') {
-            var xml = require('goessner/json2xml');
-            console.log( '<jsdoc>\n' + xml.convert(root) + '\n</jsdoc>' );
+            var xml = require('js2xmlparser');
+            console.log( xml('jsdoc', root) );
         }
         else {
             console.log(root);
