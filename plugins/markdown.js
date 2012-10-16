@@ -11,6 +11,12 @@ var defaultTags = [ "classdesc", "description", "params", "properties", "returns
 var parse;
 var tags;
 
+// Associate parser names with their actual module names.
+var parsers = {
+    evilstreak: "markdown",
+    gfm: "github-flavored-markdown"
+};
+
 /**
     Pull in the selected parser and wrap it in a common interface.
 
@@ -25,17 +31,19 @@ var tags;
 function getParser(parser, conf) {
     conf = conf || {};
 
-    if (parser === "gfm") {
-        parser = new (require("gfm/showdown").Converter)();
-        parser.githubRepoOwner = conf.githubRepoOwner;
-        parser.githubRepoName = conf.githubRepoName;
+    if (parser === parsers.gfm) {
+        parser = require(parser);
+        var githubConf = {
+            nameWithOwner: conf.githubRepoOwner + "/" + conf.githubRepoName,
+            repoName: conf.githubRepoName
+        };
         parser.hardwrap = !!conf.hardwrap;
 
         return function(source) {
-            return parser.makeHtml(source);
+            return parser.parse(source, githubConf);
         };
-    } else if (parser === "evilstreak") {
-        parser = require("markdown").markdown;
+    } else if (parser === parsers.evilstreak) {
+        parser = require(parser).markdown;
 
         return function(source) {
             return parser.toHTML(source, conf.dialect);
@@ -69,13 +77,13 @@ function process(doclet) {
 
 // determine which parser should be used based on configuration options, if any
 if (conf && conf.parser) {
-    parse = getParser(conf.parser, conf);
+    parse = getParser(parsers[conf.parser], conf);
 } else if (conf && conf.githubRepoOwner && conf.githubRepoName) {
     // use GitHub-friendly parser if GitHub-specific options are present
-    parse = getParser("gfm", conf);
+    parse = getParser(parsers.gfm, conf);
 } else {
     // evilstreak is the default parser
-    parse = getParser("evilstreak", conf);
+    parse = getParser(parsers.evilstreak, conf);
 }
 
 // set up the list of "tags" (properties) to process
