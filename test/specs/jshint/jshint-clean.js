@@ -5,7 +5,7 @@ var fs = require("fs"),
 var config = JSON.parse( fs.readFileSync( path.join(env.dirname, ".jshintrc"), "utf-8" ) );
 
 function jsHintCheck(filename, source, conf) {
-    var JSHINT = require("jshint/jshint").JSHINT;
+    var JSHINT = require("jshint").JSHINT;
     source = source || fs.readFileSync(filename, "utf-8");
     conf = conf || config;
     
