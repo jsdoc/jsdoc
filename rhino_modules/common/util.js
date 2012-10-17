@@ -2,7 +2,7 @@
     @module common/util
  */
 
-var hasOwnProperty = Object.prototype.hasOwnProperty;
+var hasOwnProp = Object.prototype.hasOwnProperty;
 
 exports.print = function() {
   for (var i = 0, len = arguments.length; i < len; ++i) {
@@ -61,11 +61,11 @@ exports.format = {
     } else {
       return str;
     }
-  },
+  }
+};
 
-    pad: function (n) {
-      return n < 10 ? '0' + n.toString(10) : n.toString(10);
-    }
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
 }
 
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
@@ -81,7 +81,7 @@ exports.timestamp = function() {
               pad(d.getMinutes()),
               pad(d.getSeconds())].join(':');
   return [d.getDate(), months[d.getMonth()], d.getFullYear(), time].join(' ');
-}
+};
 
 exports.log = function(msg) {
   exports.puts(exports.timestamp() + ' - ' + msg.toString());
@@ -111,7 +111,7 @@ exports.mixin = function(target, source /*...*/){
         source = arguments[i];
         
         for (sourceProperty in source) {
-            if ( hasOwnProperty.call(source, sourceProperty) ) {
+            if ( hasOwnProp.call(source, sourceProperty) ) {
                 target[sourceProperty] = source[sourceProperty]; // overwrites target property
             }
         }
@@ -122,7 +122,7 @@ exports.mixin = function(target, source /*...*/){
 
 exports.mergeRecurse = function mergeRecurse(target, source) {
     for (var p in source) {
-        if ( hasOwnProperty.call(source, p) ) {
+        if ( hasOwnProp.call(source, p) ) {
             if ( source[p].constructor === Object ) {
                 if ( !target[p] ) {  target[p] = {}; }
                 mergeRecurse(target[p], source[p]);
@@ -134,4 +134,4 @@ exports.mergeRecurse = function mergeRecurse(target, source) {
     }
     
     return target;
-}
+};

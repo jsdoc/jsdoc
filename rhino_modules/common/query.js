@@ -26,7 +26,7 @@
             querystring.replace(
                 new RegExp('([^?=&]+)(?:=([^&]*))?', 'g'),
                 function($0, key, val) {
-                    object[query._decode(key)] = 
+                    object[query._decode(key)] =
                         (typeof val !== 'undefined')? query._decode(val) : true;
                 }
             );
