@@ -61,12 +61,12 @@ exports.handlers = {
             outsource += '  <head>\n';
             outsource += '      <meta charset="utf-8">\n';
             outsource += '      <title>Source of : ' + outfile + '</title>\n';
-            oursource += '      <style type="text/css">\n';
-            oursource += '          pre, code\n';
+            outsource += '      <style type="text/css">\n';
+            outsource += '          pre, code\n';
             outsource += '          {\n';
             outsource += '              white-space: pre-wrap;\n';
             outsource += '          }\n';
-            oursource += '      </style>\n';
+            outsource += '      </style>\n';
             outsource += '      <script src="scripts/prettify/prettify.js"> </script>\n';
             outsource += '      <!--[if lt IE 9]>\n';
             outsource += '          <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>\n';
