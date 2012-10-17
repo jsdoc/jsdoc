@@ -57,10 +57,16 @@ exports.handlers = {
             var fs = require('fs');
             var outsource;
             
-            outsource = '<!DOCTYPE html>\n';
+            outsource  = '<!DOCTYPE html>\n';
             outsource += '  <head>\n';
             outsource += '      <meta charset="utf-8">\n';
             outsource += '      <title>Source of : ' + outfile + '</title>\n';
+            oursource += '      <style type="text/css">\n';
+            oursource += '          pre, code\n';
+            outsource += '          {\n';
+            outsource += '              white-space: pre-wrap;\n';
+            outsource += '          }\n';
+            oursource += '      </style>\n';
             outsource += '      <script src="scripts/prettify/prettify.js"> </script>\n';
             outsource += '      <!--[if lt IE 9]>\n';
             outsource += '          <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>\n';
@@ -74,8 +80,8 @@ exports.handlers = {
             outsource += '      <pre class="prettyprint lang-js linenums">\n';
             outsource += sourceContent;
             outsource += '      </pre>\n';
-            outsource += '      <script>prettyPrint();</script>';
-            outsource += '  </body>'
+            outsource += '      <script>prettyPrint();</script>\n';
+            outsource += '  </body>\n'
             outsource += '</html>\n';
             
             fs.mkPath(outDir);
