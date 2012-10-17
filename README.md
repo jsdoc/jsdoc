@@ -4,7 +4,8 @@ JSDoc 3
 An inline API documentation processor for JavaScript. JSDoc 3 is intended to be
 an upgrade to JsDoc Toolkit (JSDoc 2).
 
-### Pull Requesters: Please read HOW_TO_CONTRIBUTE.md 
+Want to contribute to JSDoc? Please read
+[HOW_TO_CONTRIBUTE.md](./HOW_TO_CONTRIBUTE.md).
 
 Installation
 ------------
@@ -17,14 +18,14 @@ and run the following command on Windows:
 
     jsdoc -T
 
-... or on a Max OSX or *nix platform:
+Or on OS X, Linux, and other POSIX-compliant platforms:
 
     ./jsdoc -T
 
 If you can't get the short-form commands to work, try invoking Java directly:
 
     java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main \
-    -modules nodejs_modules -modules rhino_modules -modules . \
+    -modules node_modules -modules rhino_modules -modules . \
     jsdoc.js -T
 
 Usage
@@ -35,52 +36,57 @@ directory:
 
     ./jsdoc yourSourceCodeFile.js
 
-For help regarding the supported commandline options use the --help option.
+For information about the supported command-line options, use the `--help`
+option.
 
     ./jsdoc --help
 
-Generated documentation will appear in the folder specified by the --destination
-option, or in a folder named "out" by default.
+Generated documentation will appear in the folder specified by the
+`--destination` option, or in a folder named "out" by default.
 
 Dependencies
 ------------
 
-JSDoc 3 utilises the Mozilla Rhino engine, which requires Java. JSDoc 3 is known
-to work with version 1.6.0_24 of Java.
+JSDoc 3 uses the Mozilla Rhino engine, which requires Java. JSDoc 3 is known to
+work with version 1.6.0_24 of Java.
 
-JSDoc 3 uses advanced features in Mozilla Rhino that are only
-available in or after the 1.7 release 3. A copy of this version of Rhino is
-included in JSDoc so this is not normally an issue that the user needs to be
-concerned with. However, in rare cases, users may have their Java CLASSPATH
-configured to override that included Rhino and point to some older version of
-Rhino instead. If this is the case, simply correct the CLASSPATH to remove the
-older Rhino.
+JSDoc 3 uses advanced features in Mozilla Rhino that are only available in or
+after version 1.7R3. In addition, JSDoc 3 requires several customizations to the
+standard Rhino distribution. The customized version of Rhino is included with
+JSDoc.
 
-The version of Rhino distributed with JSDoc 3 can be found here: https://github.com/hegemonic/rhino
+In rare cases, users may have their Java CLASSPATH configured to override the
+included Rhino and point to an older version of Rhino instead. If this is the
+case, simply correct the CLASSPATH to remove the older Rhino.
+
+The version of Rhino distributed with JSDoc 3 can be found here:
+https://github.com/hegemonic/rhino
 
 Debugging
 ---------
 
 Rhino is not always very friendly when it comes to reporting errors in
-JavaScript. Luckily it comes with a full-on debugger included that can be much
-more useful than a simple stack trace. To invoke JSDoc with the debugger try the
-following command:
+JavaScript. Luckily, it comes with a full-on debugger included that can be much
+more useful than a simple stack trace. To invoke JSDoc with the debugger, run
+the following command on Windows:
 
     jsdoc --debug
 
-or the long form version:
+Or on OS X, Linux, and other POSIX-compliant systems:
 
-    $ java -classpath lib/js.jar \
-    org.mozilla.javascript.tools.debugger.Main -debug \
-    -modules nodejs_modules -modules rhino_modules -modules . \
-    jsdoc.js \
-    your/script.js
+    ./jsdoc --debug
 
-Note: ```--debug``` must be the first argument to the short form command
+If you can't get the short-form commands to work, try invoking Java directly:
 
-This will open a debugging window. Choose "Break on Exceptions" from the "Debug"
-menu, then press the "Run" button. If there is an error, you should see exactly
-where it is in the source code.
+    java -cp lib/js.jar org.mozilla.javascript.tools.debugger.Main \
+    -debug -modules node_modules -modules rhino_modules -modules . \
+    jsdoc.js your/script.js
+
+Note: `--debug` must be the first argument to the short-form command.
+
+This will open a debugging window. Click Debug > Break on Exceptions, then click
+Run. If there is an error, you should see exactly where it is in the source
+code.
 
 See Also
 --------
@@ -94,7 +100,7 @@ Project Announcements: <http://twitter.com/jsdoc3>
 License
 -------
 
-JSDoc 3 is copyright (c) 2011 Michael Mathews <micmath@gmail.com>
+JSDoc 3 is copyright (c) 2011-2012 Michael Mathews <micmath@gmail.com>.
 
-See file "LICENSE.md" in this distribution for more details about
-terms of use.
+JSDoc 3 is free software, licensed under the Apache License, Version 2.0. See
+the file `LICENSE.md` in this distribution for more details.

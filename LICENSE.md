@@ -1,136 +1,309 @@
-License
-=======
+# License #
 
-JSDoc 3 is free software, licensed under the Apache License,
-Version 2.0 (the "License"); you MAY NOT use this software except in
-compliance with the License. You have permission to use it for commercial,
-non-commercial, or any other purpose you like, according to the
-License below.
+JSDoc 3 is free software, licensed under the Apache License, Version 2.0 (the
+"License"). Commercial and non-commercial use are permitted in compliance with
+the License.
 
-Copyright (c) 2011 Michael Mathews <micmath@gmail.com>
+Copyright (c) 2011-2012 Michael Mathews <micmath@gmail.com>
 All rights reserved.
 
-You may obtain a copy of the License at
+You may obtain a copy of the License at:
 http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied. See the License for the specific language governing
-permissions and limitations under the License.
+In addition, a copy of the License is included with this distribution.
 
-You may obtain the source code for JSDoc 3 at
-https://github.com/micmath/JSDoc
+As stated in Section 7, "Disclaimer of Warranty," of the License:
 
+> Licensor provides the Work (and each Contributor provides its Contributions)
+> on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+> express or implied, including, without limitation, any warranties or
+> conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+> PARTICULAR PURPOSE. You are solely responsible for determining the
+> appropriateness of using or redistributing the Work and assume any risks
+> associated with Your exercise of mpermissions under this License.
 
-In Addition
-===========
-
-Third party software is included, used-by or distributed along
-with JSDoc 3. Each is provided under its own license and has source
-available from other locations.
+The source code for JSDoc 3 is available at:
+https://github.com/jsdoc3/jsdoc
 
 
-Rhino
-----
+# Third-Party Software #
 
-Rhino is open source and licensed by Mozilla under the MPL 1.1 or
-later/GPL 2.0 or later licenses.
+JSDoc 3 includes or depends upon the following third-party software, either in
+whole or in part. Each third-party software package is provided under its own
+license.
 
-https://developer.mozilla.org/en/Rhino_License
+## MIT License ##
 
-You may obtain the source code for Rhino from the Mozilla web site at
-http://www.mozilla.org/rhino/download.html
+Several of the following software packages are distributed under the MIT
+license, which is reproduced below:
 
-markdown-js
-----
+> Permission is hereby granted, free of charge, to any person obtaining a copy
+> of this software and associated documentation files (the "Software"), to deal
+> in the Software without restriction, including without limitation the rights
+> to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> copies of the Software, and to permit persons to whom the Software is
+> furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all
+> copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+> SOFTWARE.
 
-markdown-js is released under the MIT license. You may obtain a copy of the
-License at http://www.opensource.org/licenses/mit-license.php
 
-Copyright (c) 2009-2010 Dominic Baggott
-Copyright (c) 2009-2010 Ash Berlin
+## github-flavored-markdown ##
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+github-flavored-markdown is distributed under the BSD 3-clause license:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+> Copyright (c) 2007, John Fraser <http://www.attacklab.net/> All rights
+> reserved.
+>
+> Original Markdown copyright (c) 2004, John Gruber <http://daringfireball.net/>
+> All rights reserved.
+>
+> Redistribution and use in source and binary forms, with or without
+> modification, are permitted provided that the following conditions are met:
+>
+> - Redistributions of source code must retain the above copyright notice,
+>   this list of conditions and the following disclaimer.
+>
+> - Redistributions in binary form must reproduce the above copyright notice,
+>   this list of conditions and the following disclaimer in the documentation
+>   and/or other materials provided with the distribution.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+> - Neither the name "Markdown" nor the names of its contributors may be used
+>   to endorse or promote products derived from this software without specific
+>   prior written permission.
+>
+> This software is provided by the copyright holders and contributors "as is"
+> and any express or implied warranties, including, but not limited to, the
+> implied warranties of merchantability and fitness for a particular purpose are
+> disclaimed. In no event shall the copyright owner or contributors be liable
+> for any direct, indirect, incidental, special, exemplary, or consequential
+> damages (including, but not limited to, procurement of substitute goods or
+> services; loss of use, data, or profits; or business interruption) however
+> caused and on any theory of liability, whether in contract, strict liability,
+> or tort (including negligence or otherwise) arising in any way out of the use
+> of this software, even if advised of the possibility of such damage.
 
-You may obtain the source code for markdown-js at
+The source code for github-flavored-markdown is available at:
+https://github.com/hegemonic/github-flavored-markdown
+
+
+## Jasmine ##
+
+Jasmine is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2008-2011 Pivotal Labs.
+
+The source code for Jasmine is available at:
+https://github.com/pivotal/jasmine
+
+
+## jasmine-node ##
+
+jasmine-node is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2010 Adam Abrons and Misko Hevery (http://getangular.com).
+
+The source code for jasmine-node is available at:
+https://github.com/mhevery/jasmine-node
+
+
+## js2xmlparser ##
+
+js2xmlparser is distributed under the MIT license, which is reproduced above.
+
+Copyright (C) 2012 Michael Kourlas.
+
+The source code for js2xmlparser is available at:
+https://github.com/michaelkourlas/node-js2xmlparser
+
+
+## JSHint ##
+
+JSHint is distributed under the MIT license, which is reproduced above.
+
+Portions of JSHint are derived from JSLint, which is distributed under a
+modified MIT license:
+
+> Copyright (c) 2002 Douglas Crockford  (www.JSLint.com)
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy
+> of this software and associated documentation files (the "Software"), to deal
+> in the Software without restriction, including without limitation the rights
+> to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> copies of the Software, and to permit persons to whom the Software is
+> furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all
+> copies or substantial portions of the Software.
+>
+> The Software shall be used for Good, not Evil.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+> SOFTWARE.
+
+The source code for JSHint is available at:
+https://github.com/jshint/jshint
+
+
+## jsMD5 ##
+
+jsMD5 is distributed under the BSD 2-clause license:
+
+> Copyright (c) 2011, Yoshinori Kohyama (http://algobit.jp/) All rights
+> reserved.
+>
+> Redistribution and use in source and binary forms, with or without
+> modification, are permitted provided that the following conditions are met:
+>
+> - Redistributions of source code must retain the above copyright notice,
+>   this list of conditions and the following disclaimer.
+>
+> - Redistributions in binary form must reproduce the above copyright notice,
+>   this list of conditions and the following disclaimer in the documentation
+>   and/or other materials provided with the distribution.
+>
+> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+> AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+> IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+> DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+> FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+> DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+> SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+> CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+> OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+> OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The source code for jsMD5 is available at:
+https://github.com/hegemonic/jsMD5
+
+
+## markdown-js ##
+
+markdown-js is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2009-2010 Dominic Baggott. Copyright (c) 2009-2010 Ash Berlin.
+Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com>
+(http://www.christophdorn.com).
+
+The source code for markdown-js is available at:
 https://github.com/evilstreak/markdown-js
 
-sqlitejdbc (build/java/classes/sqlitejdbc-v054.jar)
-----
 
-Copyright (c) 2007 David Crawshaw <david@zentus.com>
+## Node.js ##
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
+Portions of the Node.js source code are incorporated into the following files:
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+- `rhino_modules/fs.js`
+- `rhino_modules/util.js`
+- `rhino_modules/common/util.js`
 
-You may obtain the source code for sqlitejdbc at
-https://github.com/crawshaw/sqlitejdbc
+Node.js is distributed under the MIT license, which is reproduced above.
 
-Underscore Template
-----
+Copyright Joyent, Inc. and other Node contributors. All rights reserved.
 
-Underscore.js 1.1.4
+The source code for Node.js is available at:
+https://github.com/joyent/node
 
-Copyright (c) 2011 Jeremy Ashkenas, DocumentCloud Inc.
 
-Underscore is freely distributable under the MIT license.
-Portions of Underscore are inspired or borrowed from Prototype,
-Oliver Steele's Functional, and John Resig's Micro-Templating.
+## TaffyDB ##
 
-For all details and documentation:
-http://documentcloud.github.com/underscore/#template
+TaffyDB is distributed under a modified BSD license:
 
-TaffyDB
-----
+> All rights reserved.
+>
+> Redistribution and use of this software in source and binary forms, with or
+> without modification, are permitted provided that the following condition is
+> met:
+>
+> Redistributions of source code must retain the above copyright notice, this
+> list of conditions and the following disclaimer.
+>
+> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+> AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+> IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+> ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+> LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+> CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+> SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+> INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+> CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+> ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+> POSSIBILITY OF SUCH DAMAGE.
 
-Copyright (c) 2008 All rights reserved.
+The source code for TaffyDB is available at:
+https://github.com/hegemonic/taffydb
 
-Software License Agreement (BSD License)
 
-Redistribution and use of this software in source and binary forms,
-with or without modification, are permitted provided that the
-following condition is met:
+## Rhino ##
 
-Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
+Rhino is distributed under the following licenses:
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+### MPL/GPL License ###
+The majority of the source code for Rhino is available under a MPL 1.1/GPL 2.0
+license. JSDoc 3 uses the source code under the MPL 1.1 license, which is
+included in this distribution.
 
-You may obtain the source code for TaffyDB at
-https://github.com/typicaljoe/taffydb
+### License for portions of the Rhino debugger ###
+Additionally, some files are available under the BSD 3-clause license:
+
+> Copyright 1997, 1998 Sun Microsystems, Inc.  All Rights Reserved.
+>
+> Redistribution and use in source and binary forms, with or without
+> modification, are permitted provided that the following conditions are met:
+>
+> - Redistributions of source code must retain the above copyright notice,
+>   this list of conditions and the following disclaimer.
+> - Redistributions in binary form must reproduce the above copyright
+>   notice, this list of conditions and the following disclaimer in the
+>   documentation and/or other materials provided with the distribution.
+> - Neither the name of Sun Microsystems nor the names of its contributors
+>   may be used to endorse or promote products derived from this software
+>   without specific prior written permission.
+>
+> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+> AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+> IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+> DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+> FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+> DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+> SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+> CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+> OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+> OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+### Source Code ###
+The source code for Rhino is available at:
+https://github.com/hegemonic/rhino
+
+
+## Underscore.js ##
+
+Underscore.js is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2009-2012 Jeremy Ashkenas, DocumentCloud.
+
+The source code for Underscore.js is available at:
+https://github.com/documentcloud/underscore
+
+
+## wrench-js ##
+
+wrench-js is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2010 Ryan McGrath.
+
+The source code for wrench-js is available at:
+https://github.com/ryanmcgrath/wrench-js
