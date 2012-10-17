@@ -3,6 +3,7 @@
 
 desc('Updating package.json revision.');
 task('default', [], function(params) {
+    /*jshint evil: true */
     var fs = require('fs'), sys = require('sys');
 
     // import the Mustache template tool
@@ -13,7 +14,7 @@ task('default', [], function(params) {
     };
 
     var metadata = {
-        appname : 'JSDoc',
+        appname : 'jsdoc',
         appversion : '3.0.0',
         timestamp : '' + new Date().getTime()
     };
