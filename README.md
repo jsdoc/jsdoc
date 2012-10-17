@@ -7,26 +7,20 @@ an upgrade to JsDoc Toolkit (JSDoc 2).
 Want to contribute to JSDoc? Please read
 [HOW_TO_CONTRIBUTE.md](./HOW_TO_CONTRIBUTE.md).
 
+
 Installation
 ------------
 
-Download a copy of JSDoc 3 from the official Git Hub repository here:
-<https://github.com/jsdoc3/jsdoc>
+Download a copy of JSDoc 3 from the official GitHub repository:
+https://github.com/jsdoc3/jsdoc
 
-To test that jsdoc is working, change your working directory to the jsdoc folder
-and run the following command on Windows:
+Or if you have Node.js installed, use npm:
 
-    jsdoc -T
+    npm install -g git://github.com/jsdoc3/jsdoc.git
 
-Or on OS X, Linux, and other POSIX-compliant platforms:
+**Note**: Although you can install JSDoc with npm, JSDoc does not currently run
+on Node.js.
 
-    ./jsdoc -T
-
-If you can't get the short-form commands to work, try invoking Java directly:
-
-    java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main \
-    -modules node_modules -modules rhino_modules -modules . \
-    jsdoc.js -T
 
 Usage
 -----
@@ -43,6 +37,7 @@ option.
 
 Generated documentation will appear in the folder specified by the
 `--destination` option, or in a folder named "out" by default.
+
 
 Dependencies
 ------------
@@ -61,6 +56,7 @@ case, simply correct the CLASSPATH to remove the older Rhino.
 
 The version of Rhino distributed with JSDoc 3 can be found here:
 https://github.com/hegemonic/rhino
+
 
 Debugging
 ---------
@@ -88,6 +84,7 @@ This will open a debugging window. Click Debug > Break on Exceptions, then click
 Run. If there is an error, you should see exactly where it is in the source
 code.
 
+
 See Also
 --------
 
@@ -96,6 +93,7 @@ Project Documentation Source: <https://github.com/micmath/micmath.github.com>
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
 Project Announcements: <http://twitter.com/jsdoc3>
+
 
 License
 -------
