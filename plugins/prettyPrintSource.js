@@ -90,9 +90,7 @@ exports.handlers = {
             var outDir        = getOutputDirectory();
             var outfile       = outDir + outFileName;
             
-            // Debug 
-            /*
-            dump(fs);
+            /*// Debug 
             print('source file name = ' + sourceFileName);
             print('output file name = ' + outFileName);
             print('output directory = ' + outDir);
