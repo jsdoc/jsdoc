@@ -16,7 +16,7 @@ describe("jsdoc/src/handlers", function() {
     });
 
     describe("attachTo", function() {
-        it("should attach a 'jsDocCommentFound' handler to the parser", function() {
+        it("should attach a 'jsdocCommentFound' handler to the parser", function() {
             var callbacks = testParser.__bindings['jsdocCommentFound'];
             expect(callbacks).toBeDefined();
             expect(callbacks.length).toEqual(1);
