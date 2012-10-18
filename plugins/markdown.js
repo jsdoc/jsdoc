@@ -33,10 +33,14 @@ function getParser(parser, conf) {
 
     if (parser === parsers.gfm) {
         parser = require(parser);
+
         var githubConf = {
-            nameWithOwner: conf.githubRepoOwner + "/" + conf.githubRepoName,
             repoName: conf.githubRepoName
         };
+        if (conf.githubRepoOwner && conf.githubRepoName) {
+            githubConf.nameWithOwner = conf.githubRepoOwner + "/" + conf.githubRepoName;
+        }
+
         parser.hardwrap = !!conf.hardwrap;
 
         return function(source) {
