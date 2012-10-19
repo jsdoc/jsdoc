@@ -4,7 +4,7 @@
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
-var mdParser = require('markdown').markdown;
+var markdown = require('jsdoc/util/markdown');
 
 /**
     @module jsdoc/tutorial
@@ -68,7 +68,8 @@ exports.Tutorial.prototype.parse = function() {
 
         // markdown
         case exports.TYPES.MARKDOWN:
-            return mdParser.toHTML(this.content)
+            var mdParse = markdown.getParser();
+            return mdParse(this.content)
                 .replace(/&amp;/g, '&') // because markdown escapes these
                 .replace(/&lt;/g, '<')
                 .replace(/&gt;/g, '>');
