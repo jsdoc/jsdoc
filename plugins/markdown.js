@@ -50,6 +50,8 @@ function getParser(parser, conf) {
         parser = require(parser).markdown;
 
         return function(source) {
+            // filters EOL of source so evilstreak/markdown doesn't screw the pooch.
+            source = source.replace(/(\r\n|\n|\r)/g, '\n');
             return parser.toHTML(source, conf.dialect);
         };
     } else {
