@@ -1,19 +1,20 @@
 /**
-    @overview
-    @author Rafał Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
-    @license Apache License 2.0 - See file 'LICENSE.md' in this project.
+ * @file Wrapper for underscore's template utility to allow loading templates from files.
+ * @author Rafał Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
+ * @author <a href="mailto:matthewkastor@gmail.com">Matthew Christopher Kastor-Inare III</a>
+ * @license Apache License 2.0 - See file 'LICENSE.md' in this project.
+ * @change 2012-10-20 cache and settings are no longer private fields. 
+ * This was done so that plugins could use this class without messing up 
+ * the final output when template name collisions occur. i.e. each instance 
+ * has it's own template cache. The settings were made specific to each 
+ * instance so that users of this class could redefine the underscore 
+ * template settings if they want to. 
  */
 
 var _ = require('underscore'),
     fs = require('fs'),
     path = require('path');
 
-// override default settings
-var settings = {
-    evaluate: /<\?js([\s\S]+?)\?>/g,
-    interpolate: /<\?js=([\s\S]+?)\?>/g,
-    escape: /<\?js~([\s\S]+?)\?>/g
-};
 
 /**
     @module jsdoc/template
@@ -27,6 +28,14 @@ var settings = {
 exports.Template = function(path) {
     this.path = path;
     this.layout = null;
+    this.cache = {};
+    // override default template tag settings
+    this.settings = {
+        evaluate   : /<\?js([\s\S]+?)\?>/g,
+        interpolate: /<\?js=([\s\S]+?)\?>/g,
+        escape     : /<\?js~([\s\S]+?)\?>/g
+    };
+
 };
 
 /** Loads template from given file.
@@ -35,11 +44,9 @@ exports.Template = function(path) {
  */
 exports.Template.prototype.load = function(file) {
     var _path = path.join(this.path, file);
-    return _.template(fs.readFileSync(_path), null, settings);
+    return _.template(fs.readFileSync(_path), null, this.settings);
 };
 
-// templates cache
-var cache = {};
 
 /**
     Renders template using given data.
@@ -52,12 +59,12 @@ var cache = {};
  */
 exports.Template.prototype.partial = function(file, data) {
     // load template into cache
-    if (!(file in cache)) {
-        cache[file] = this.load(file);
+    if (!(file in this.cache)) {
+        this.cache[file] = this.load(file);
     }
 
     // keep template helper context
-    return cache[file].call(this, data);
+    return this.cache[file].call(this, data);
 };
 
 /**
