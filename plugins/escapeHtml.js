@@ -15,7 +15,7 @@ exports.handlers = {
             e.doclet.description = e.doclet.description
                                    .replace(/&/g,'&amp;')
                                    .replace(/</g,'&lt;')
-                                   .replace(/\n/g, '<br>');
+                                   .replace(/\r\n|\n|\r/g, '<br>');
         }
     }
 };
