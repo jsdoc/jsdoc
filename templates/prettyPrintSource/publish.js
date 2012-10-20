@@ -1,3 +1,4 @@
+/*global env: true */
 /**
  * Turn the data about your docs into file output.
  * @param {TAFFY} data A TaffyDB collection representing

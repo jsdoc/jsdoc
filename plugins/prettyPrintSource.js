@@ -1,5 +1,6 @@
+/*global env: true */
 /**
- * @file Adds pretty printed source code to 
+ * @file Adds pretty printed source code to
  * the output files.
  * @author <a href="mailto:matthewkastor@google.com">Matthew Christopher Kastor-Inare III</a>
  * Hial Atropa!!
@@ -71,7 +72,7 @@ exports.handlers = {
             var outputFileName  = makeOutputFileName(e.filename);
             var sourceCode      = e.source;
             
-            /*// Debug 
+            /*// Debug
             print('source file name = ' + e.filename);
             print('output file name = ' + outputFileName);
             print('output directory = ' + outputDirectory);
