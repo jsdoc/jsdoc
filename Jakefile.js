@@ -4,7 +4,8 @@
 desc('Updating package.json revision.');
 task('default', [], function(params) {
     /*jshint evil: true */
-    var fs = require('fs'), sys = require('sys');
+    var fs = require('fs'),
+        sys = require('sys');
 
     // import the Mustache template tool
     eval(fs.readFileSync('Jake/lib/mustache.js', 'utf8'));
@@ -31,20 +32,27 @@ task('default', [], function(params) {
 
 desc('Installs a plugin/template.');
 task('install', [], function(loc) {
-    var fs = require('fs'), util = require('util'), path = require('path'), wrench = require('wrench');
+    var fs = require('fs'),
+        util = require('util'),
+        path = require('path'),
+        wrench = require('wrench');
 
     if(!loc) {
         fail("You must specify the location of the plugin/template.");
     }
 
-    if(!path.existsSync(loc)) {
+    if(!fs.existsSync(loc)) {
         fail("plugin/template location [" + loc + "] is not valid.");
     }
 
-    var pluginLoc = path.join(loc, "plugins"), templateLoc = path.join(loc, "templates"), jsdocLoc = process.cwd(), name, config;
+    var pluginLoc = path.join(loc, "plugins"),
+        templateLoc = path.join(loc, "templates"),
+        jsdocLoc = process.cwd(),
+        name,
+        config;
 
     //First the plugin
-    if(path.existsSync(pluginLoc)) {
+    if(fs.existsSync(pluginLoc)) {
         //copy it over
         wrench.copyDirSyncRecursive(pluginLoc, path.join(jsdocLoc, "plugins"), {
             preserve : true
@@ -64,7 +72,7 @@ task('install', [], function(loc) {
     }
 
     //Then the template
-    if(path.existsSync(pluginLoc)) {
+    if(fs.existsSync(templateLoc)) {
         wrench.copyDirSyncRecursive(templateLoc, path.join(jsdocLoc, "templates"), {
             preserve : true
         });
