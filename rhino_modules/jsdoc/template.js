@@ -3,12 +3,6 @@
  * @author Rafał Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
  * @author <a href="mailto:matthewkastor@gmail.com">Matthew Christopher Kastor-Inare III</a>
  * @license Apache License 2.0 - See file 'LICENSE.md' in this project.
- * @change 2012-10-20 cache and settings are no longer private fields. 
- * This was done so that plugins could use this class without messing up 
- * the final output when template name collisions occur. i.e. each instance 
- * has it's own template cache. The settings were made specific to each 
- * instance so that users of this class could redefine the underscore 
- * template settings if they want to. 
  */
 
 var _ = require('underscore'),
