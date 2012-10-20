@@ -11,7 +11,8 @@ var _ = require('underscore'),
 // override default settings
 var settings = {
     evaluate: /<\?js([\s\S]+?)\?>/g,
-    interpolate: /<\?js=([\s\S]+?)\?>/g
+    interpolate: /<\?js=([\s\S]+?)\?>/g,
+    escape: /<\?js~([\s\S]+?)\?>/g
 };
 
 /**
