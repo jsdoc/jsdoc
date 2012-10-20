@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true */
 describe("jsdoc/config", function() {
     var jsdoc = {config: require('jsdoc/config') };
 
@@ -42,7 +43,6 @@ describe("jsdoc/config", function() {
             var config = new jsdoc.config('{"source":{"includePattern":"hello"}}').get();
 
             expect(config.source.includePattern).toEqual('hello');
-            expect(config.source.excludePattern).toEqual('(^|\\/)_');
         });
     });
 });
