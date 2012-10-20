@@ -31,12 +31,12 @@ exports.publish = function(outputDirectory, outputFileName, sourceCode) {
     var view               = new template.Template(templatePath);
     var outputContent      = view.render(templateName, templateData);
     
-    /*// Debug
+    /*
     console.log('templateData    : ' + templateData);
     console.log('outputDirectory : ' + outputDirectory);
     console.log('outputFile      : ' + outputFile);
     console.log('outputContent   : ' + outputContent);
-    //*/
+    */
     fs.mkPath(outputDirectory);
     fs.writeFileSync(outputFile, outputContent);
 };

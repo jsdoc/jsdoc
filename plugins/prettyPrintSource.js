@@ -50,7 +50,8 @@ exports.handlers = {
             
             sourceFileName  = toRelativePath(sourceFileName);
             sourceFileName  = relativePathToNamespace(sourceFileName);
-            return sourceFileName += extension;
+            sourceFileName = sourceFileName += extension;
+            return sourceFileName;
         }
         
         function getOutputDirectory() {
@@ -72,12 +73,12 @@ exports.handlers = {
             var outputFileName  = makeOutputFileName(e.filename);
             var sourceCode      = e.source;
             
-            /*// Debug
+            /*
             print('source file name = ' + e.filename);
             print('output file name = ' + outputFileName);
             print('output directory = ' + outputDirectory);
             print('sourceCode       = ' + sourceCode);
-            //*/
+            */
             
             // write source to file with a unique name
             generateHighlightedSourceFile(outputDirectory, outputFileName, sourceCode);
