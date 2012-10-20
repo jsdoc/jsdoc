@@ -3,7 +3,7 @@ describe("jsdoc/src/scanner", function() {
     var scanner = new (require('jsdoc/src/scanner').Scanner)(),
         filter = new (require('jsdoc/src/filter').Filter)({
             includePattern: new RegExp(".+\\.js(doc)?$"),
-            excludePattern: new RegExp("(^|\\/)_")
+            excludePattern: new RegExp("(^|\\/|\\\\)_")
         }),
         path = require('path'),
         sourceFiles = scanner.scan([path.join(env.dirname, 'test', 'fixtures', 'src')], 3, filter);
