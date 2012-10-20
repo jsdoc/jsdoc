@@ -1,5 +1,6 @@
+/*global env: true */
 /**
- * @file Adds pretty printed source code to 
+ * @file Adds pretty printed source code to
  * the output files.
  * @author <a href="mailto:matthewkastor@google.com">Matthew Christopher Kastor-Inare III</a>
  * Hial Atropa!!
@@ -36,7 +37,7 @@ exports.handlers = {
             
             out  = toRelativePath(sourceFileName);
             out  = slashesCollapseToDots(out);
-            out  = noDotPrefix(out) 
+            out  = noDotPrefix(out);
             out += extension;
             
             return out;
@@ -81,7 +82,7 @@ exports.handlers = {
             outsource += sourceContent;
             outsource += '      </pre>\n';
             outsource += '      <script>prettyPrint();</script>\n';
-            outsource += '  </body>\n'
+            outsource += '  </body>\n';
             outsource += '</html>\n';
             
             fs.mkPath(outDir);
@@ -96,7 +97,7 @@ exports.handlers = {
             var outDir        = getOutputDirectory();
             var outfile       = outDir + outFileName;
             
-            /*// Debug 
+            /*// Debug
             print('source file name = ' + sourceFileName);
             print('output file name = ' + outFileName);
             print('output directory = ' + outDir);
