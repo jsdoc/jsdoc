@@ -13,23 +13,25 @@
  */
 exports.publish = function(outputDirectory, outputFileName, sourceCode) {
     
-    var fs                 = require('fs');
-    var path               = require('path');
-    var helper             = require('jsdoc/util/templateHelper');
-    var template           = require('jsdoc/template');
+    var fs                     = require('fs');
+    var path                   = require('path');
+    var helper                 = require('jsdoc/util/templateHelper');
+    var template               = require('jsdoc/template');
     
-    outputDirectory        = path.resolve(outputDirectory);
-    var outputFile         = path.join(outputDirectory, outputFileName + '.html');
-    var templateName       = 'layout.tmpl';
-    var templatePath       = path.resolve(env.dirname + '/templates/prettyPrintSource/tmpl');
-    var templateData       = {};
-    templateData.title     = 'Source of : ' + outputFileName;
-    templateData.sourceCode= helper.htmlsafe(sourceCode);
+    outputDirectory            = path.resolve(outputDirectory);
     
+    var staticFilesDirectory   = path.resolve(env.dirname + '/templates/prettyPrintSource/static');
+    var outputFile             = path.join(outputDirectory, outputFileName + '.html');
+    var templateName           = 'layout.tmpl';
+    var templatePath           = path.resolve(env.dirname + '/templates/prettyPrintSource');
+    var temmplateFilesDirectory= path.join(templatePath, '/tmpl');
+    var templateData           = {};
     
+    templateData.title         = 'Source of : ' + outputFileName;
+    templateData.sourceCode    = helper.htmlsafe(sourceCode);
     
-    var view               = new template.Template(templatePath);
-    var outputContent      = view.render(templateName, templateData);
+    var view                   = new template.Template(temmplateFilesDirectory);
+    var outputContent          = view.render(templateName, templateData);
     
     /*
     console.log('templateData    : ' + templateData);
@@ -39,4 +41,18 @@ exports.publish = function(outputDirectory, outputFileName, sourceCode) {
     */
     fs.mkPath(outputDirectory);
     fs.writeFileSync(outputFile, outputContent);
+    
+    // copy static files to outdir
+    var fromDir                = path.join(templatePath, '/static');
+    var staticFiles            = fs.ls(fromDir, 3);
+        
+    staticFiles.forEach(function(fileName) {
+        var toDir              = fs.toDir(fileName.replace(fromDir, outputDirectory));
+        fs.mkPath(toDir);
+        if(!fs.existsSync(path.join(toDir, '/' + fileName))) {
+            fs.copyFileSync(fileName, toDir);
+        }
+    });
+    
+    
 };
