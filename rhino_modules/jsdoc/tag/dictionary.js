@@ -32,6 +32,24 @@ TagDefinition.prototype.synonym = function(synonymName) {
 /** @exports jsdoc/tag/dictionary */
 dictionary = {
     /** @function */
+    describeTags: function() {
+        var def, syn, tag, synonym, out;
+        out = {};
+        for(def in _definitions) {
+            if(_definitions.hasOwnProperty(def)) {
+                out[def] = { 'synonyms' : [] };
+            }
+        }
+        for(syn in _synonyms) {
+            if(_synonyms.hasOwnProperty(syn)) {
+                tag = _synonyms[syn];
+                synonym = syn;
+                out[tag].synonyms.push(synonym);
+            }
+        }
+        return out;
+    },
+    /** @function */
     defineTag: function(title, opts) {
         _definitions[title] = new TagDefinition(title, opts);
         
