@@ -5,10 +5,9 @@ var async = require('async'),
 
 var config = JSON.parse( fs.readFileSync( path.join(env.dirname, '.jshintrc'), 'utf-8' ) );
 
-var jshintErrors;
-
 function jsHintCheck(filename, callback) {
     var JSHINT = require('jshint').JSHINT;
+    var jsHintErrors;
 
     fs.readFile(filename, 'utf8', function(err, data) {
         if (err) {
@@ -16,44 +15,39 @@ function jsHintCheck(filename, callback) {
         } else {
             JSHINT(data, config);
             if (JSHINT.errors.length) {
-                jshintErrors += filename + ' is not JSHint clean: ' + JSON.stringify(JSHINT.errors);
+                jsHintErrors = filename + ' is not JSHint clean: ' + JSON.stringify(JSHINT.errors);
             }
 
-            callback();
+            callback(null, jsHintErrors);
         }
     });
 }
 
 describe('jshint-clean', function() {
-    beforeEach(function() {
-        jshintErrors = undefined;
-    });
-
     it('should generate JSHint errors for bad code', function(done) {
         var file = path.join(env.dirname, 'test', 'fixtures', 'jshint', 'badfile.js');
-        jsHintCheck(file, function(err) {
-            expect(err).toBeUndefined();
-            expect(jshintErrors).toBeDefined();
+
+        jsHintCheck(file, function(err, jsHintErrors) {
+            expect(err).toBeFalsy();
+            expect(jsHintErrors).toBeDefined();
             done();
         });
     });
     
     it('should not generate JSHint errors for good code', function(done) {
         var file = path.join(env.dirname, 'test', 'fixtures', 'jshint', 'goodfile.js');
-        jsHintCheck(file, function(err) {
-            expect(err).toBeUndefined();
-            expect(jshintErrors).toBeUndefined();
+
+        jsHintCheck(file, function(err, jsHintErrors) {
+            expect(err).toBeFalsy();
+            expect(jsHintErrors).toBeUndefined();
             done();
         });
     });
     
     it('should not find JSHint errors in JSDoc', function(done) {
-        var check,
-            files,
+        var files,
             filter,
-            source,
-            i,
-            l;
+            source;
 
         // check all .js files unless they're tests; rhino shim files that probably can't be
         // delinted; or third-party modules
@@ -65,6 +59,14 @@ describe('jshint-clean', function() {
 
         files = app.jsdoc.scanner.scan([env.dirname], 10, filter);
 
-        async.forEach(files, jsHintCheck, done);
+        async.forEachSeries(files, function(file, cb) {
+            jsHintCheck(file, function(err, jsHintErrors) {
+                expect(jsHintErrors).toBeUndefined();
+                cb(err);
+            });
+        }, function(err) {
+            expect(err).toBeFalsy();
+            done();
+        });
     });
 });
