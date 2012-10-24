@@ -27,7 +27,7 @@ argParser.addOption('h',  'help',           false, 'Print this message and quit.
 argParser.addOption('X',  'explain',        false, 'Dump all found doclet internals to console and quit.');
 argParser.addOption('q',  'query',          true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
 argParser.addOption('u',  'tutorials',      true,  'Directory in which JSDoc should search for tutorials.');
-argParser.addOption(null, 'describeTags',   false,  'Describes the supported tags.');
+argParser.addOption(null, 'describeTags',   true,  'Describes the supported tags. Accepts markdown, console, or raw as output format.');
 
 //TODO [-R, recurseonly] = a number representing the depth to recurse
 //TODO [-f, filter] = a regex to filter on <-- this can be better defined in the configs?

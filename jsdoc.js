@@ -340,8 +340,10 @@ function main() {
     
     if (env.opts.describeTags) {
         (function(){
-            var dictionary = require('jsdoc/tag/dictionary');
-            console.log(dictionary.describeTags());
+            var dictionary, outputFormat;
+            dictionary = require('jsdoc/tag/dictionary');
+            outputFormat = env.opts.describeTags;
+            console.log(dictionary.describeTags(outputFormat));
         }());
         process.exit(0);
     }

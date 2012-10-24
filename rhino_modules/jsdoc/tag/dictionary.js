@@ -32,12 +32,13 @@ TagDefinition.prototype.synonym = function(synonymName) {
 /** @exports jsdoc/tag/dictionary */
 dictionary = {
     /** @function */
-    describeTags: function() {
+    describeTags: function(outputFormat) {
         var def, syn, tag, synonym, out;
         out = {};
         for(def in _definitions) {
             if(_definitions.hasOwnProperty(def)) {
-                out[def] = { 'synonyms' : [] };
+                out[def] = _definitions[def];
+                out[def].synonyms = [];
             }
         }
         for(syn in _synonyms) {
@@ -46,6 +47,53 @@ dictionary = {
                 synonym = syn;
                 out[tag].synonyms.push(synonym);
             }
+        }
+        /** @function */
+        function toMarkdown(obj) {
+            var os, tag, prop, val, out;
+            os = require('os');
+            out = '';
+            for(tag in obj) {
+                if(obj.hasOwnProperty(tag)) {
+                    out += '## ' + tag + os.EOL;
+                    for(prop in obj[tag]) {
+                        if(obj[tag].hasOwnProperty(prop)) {
+                            out += '*' + prop + '* : ';
+                            val = obj[tag][prop];
+                            switch(typeof(val)) {
+                                case 'function':
+                                    val = os.EOL + '```javascript' + os.EOL + val.toString().trim() + os.EOL + '```';
+                                    break;
+                                
+                                case 'object':
+                                    val = val.toString().trim();
+                                    break;
+                                
+                                default:
+                                    val = val.toString().trim();
+                                    break;
+                            }
+                            out += val + os.EOL;
+                        }
+                    }
+                    out += os.EOL;
+                }
+            }
+            return out;
+        }
+        switch (outputFormat) {
+            case 'markdown':
+                out = toMarkdown(out);
+                break;
+            case 'console':
+                out = JSON.stringify(out, null, '    ');
+                break;
+            case 'raw':
+                out = out;
+                break;
+            default:
+                out = out;
+                break;
         }
         return out;
     },
