@@ -56,6 +56,16 @@ license, which is reproduced below:
 > SOFTWARE.
 
 
+## Async.js ##
+
+Async.js is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2010 Caolan McMahon.
+
+The source code for Async.js is available at:
+https://github.com/caolan/async
+
+
 ## github-flavored-markdown ##
 
 github-flavored-markdown is distributed under the BSD 3-clause license:

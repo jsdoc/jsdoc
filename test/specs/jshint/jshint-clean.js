@@ -1,36 +1,53 @@
-/*global app: true, describe: true, env: true, expect: true, it: true */
-var fs = require("fs"),
-    path = require("path");
+/*global app: true, beforeEach: true, describe: true, env: true, expect: true, it: true */
+var async = require('async'),
+    fs = require('fs'),
+    path = require('path');
 
-var config = JSON.parse( fs.readFileSync( path.join(env.dirname, ".jshintrc"), "utf-8" ) );
+var config = JSON.parse( fs.readFileSync( path.join(env.dirname, '.jshintrc'), 'utf-8' ) );
 
-function jsHintCheck(filename, source, conf) {
-    var JSHINT = require("jshint").JSHINT;
-    source = source || fs.readFileSync(filename, "utf-8");
-    conf = conf || config;
-    
-    JSHINT(source, conf);
-    if (JSHINT.errors.length) {
-        throw new Error( filename + " is not JSHint clean: " + JSON.stringify(JSHINT.errors) );
-    }
+var jshintErrors;
+
+function jsHintCheck(filename, callback) {
+    var JSHINT = require('jshint').JSHINT;
+
+    fs.readFile(filename, 'utf8', function(err, data) {
+        if (err) {
+            callback(err);
+        } else {
+            JSHINT(data, config);
+            if (JSHINT.errors.length) {
+                jshintErrors += filename + ' is not JSHint clean: ' + JSON.stringify(JSHINT.errors);
+            }
+
+            callback();
+        }
+    });
 }
 
-describe("jshint-clean", function() {
-    it("should generate JSHint errors for bad code", function() {
-        var check = function() {
-            jsHintCheck("dummyFile.js", "hasOwnProperty = 0");
-        };
-        expect(check).toThrow();
+describe('jshint-clean', function() {
+    beforeEach(function() {
+        jshintErrors = undefined;
+    });
+
+    it('should generate JSHint errors for bad code', function(done) {
+        var file = path.join(env.dirname, 'test', 'fixtures', 'jshint', 'badfile.js');
+        jsHintCheck(file, function(err) {
+            expect(err).toBeUndefined();
+            expect(jshintErrors).toBeDefined();
+            done();
+        });
     });
     
-    it("should not generate JSHint errors for good code", function() {
-        var check = function() {
-            jsHintCheck("dummyFile.js", "var foo = 0;");
-        };
-        expect(check).not.toThrow();
+    it('should not generate JSHint errors for good code', function(done) {
+        var file = path.join(env.dirname, 'test', 'fixtures', 'jshint', 'goodfile.js');
+        jsHintCheck(file, function(err) {
+            expect(err).toBeUndefined();
+            expect(jshintErrors).toBeUndefined();
+            done();
+        });
     });
     
-    it("should not find JSHint errors in JSDoc", function() {
+    it('should not find JSHint errors in JSDoc', function(done) {
         var check,
             files,
             filter,
@@ -48,12 +65,6 @@ describe("jshint-clean", function() {
 
         files = app.jsdoc.scanner.scan([env.dirname], 10, filter);
 
-        check = function() {
-            jsHintCheck(files[i]);
-        };
-
-        for (i = 0, l = files.length; i < l; i++) {
-            expect(check).not.toThrow();
-        }
+        async.forEach(files, jsHintCheck, done);
     });
 });

@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.0.0",
-	"revision": "1350490151758",
+	"revision": "1351054863206",
 	"description": "An automatic documentation generator for javascript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -17,6 +17,7 @@
 		}
 	],
 	"dependencies": {
+		"async": "0.1.22",
 		"github-flavored-markdown": "git://github.com/hegemonic/github-flavored-markdown.git",
 		"js2xmlparser": "0.1.0",
 		"jshint": "0.9.1",

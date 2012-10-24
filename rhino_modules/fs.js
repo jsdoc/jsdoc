@@ -1,10 +1,37 @@
 /*global Packages: true */
 var path = require('path');
 
+// TODO: Should fail if encoding isn't passed in; Node.js thinks this means you want a buffer
+// TODO: callers shouldn't use 'utf-8'--the method should map 'utf8' to 'utf-8'
 exports.readFileSync = function(filename, encoding) {
     encoding = encoding || 'utf-8';
 
     return readFile(filename, encoding);
+};
+
+exports.readFile = function(filename, encoding, callback) {
+    if (!encoding || typeof encoding === 'function') {
+        process.nextTick(function() {
+            callback('fs.readFile requires an encoding on Rhino!');
+        });
+    }
+
+    // Node.js wants 'utf8', but Java wants 'utf-8'
+    if (encoding === 'utf8') {
+        encoding = 'utf-8';
+    }
+
+    try {
+        var data = exports.readFileSync(filename, encoding);
+        process.nextTick(function() {
+            callback(null, data);
+        });
+    }
+    catch(e) {
+        process.nextTick(function() {
+            callback(e);
+        });
+    }
 };
 
 // in node 0.8, path.exists() and path.existsSync() moved to the "fs" module
