@@ -337,7 +337,15 @@ function main() {
     if (env.conf.plugins) {
         installPlugins(env.conf.plugins);
     }
-
+    
+    if (env.opts.describeTags) {
+        (function(){
+            var dictionary = require('jsdoc/tag/dictionary');
+            console.log(dictionary.describeTags());
+        }());
+        process.exit(0);
+    }
+    
     // any source file named package.json or README.md is treated special
     for (var i = 0, l = env.opts._.length; i < l; i++ ) {
         if (/\bpackage\.json$/i.test(env.opts._[i])) {
