@@ -340,10 +340,13 @@ function main() {
     
     if (env.opts.describeTags) {
         (function(){
-            var dictionary, outputFormat;
+            var dictionary, outputFormat, consoleOutput;
             dictionary = require('jsdoc/tag/dictionary');
             outputFormat = env.opts.describeTags;
-            console.log(dictionary.describeTags(outputFormat));
+            consoleOutput = dictionary.describeTags(outputFormat)
+            if(outputFormat !== 'markdownFiles') {
+                console.log(consoleOutput);
+            }
         }());
         process.exit(0);
     }

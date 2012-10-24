@@ -49,16 +49,21 @@ dictionary = {
             }
         }
         /** @function */
-        function toMarkdown(obj) {
-            var os, tag, prop, val, out;
+        function toMarkdown(obj, generateFiles) {
+            var os, fs, path, tag, thisTag, prop, val, out;
             os = require('os');
+            if(generateFiles === true) {
+                fs = require('fs');
+                path = require('path');
+            }
             out = '';
             for(tag in obj) {
+                thisTag = '';
                 if(obj.hasOwnProperty(tag)) {
-                    out += '## ' + tag + os.EOL;
+                    thisTag += '## ' + tag + os.EOL;
                     for(prop in obj[tag]) {
                         if(obj[tag].hasOwnProperty(prop)) {
-                            out += '*' + prop + '* : ';
+                            thisTag += '*' + prop + '* : ';
                             val = obj[tag][prop];
                             switch(typeof(val)) {
                                 case 'function':
@@ -73,10 +78,16 @@ dictionary = {
                                     val = val.toString().trim();
                                     break;
                             }
-                            out += val + os.EOL;
+                            thisTag += val + os.EOL;
                         }
                     }
-                    out += os.EOL;
+                    thisTag += os.EOL;
+                    if(generateFiles === true) {
+                        fs.mkPath(env.opts.destination);
+                        fs.writeFileSync(path.join(env.opts.destination, 'tags-' + tag + '.markdown') , thisTag, 'utf8');
+                    } else {
+                        out += thisTag;
+                    }
                 }
             }
             return out;
@@ -84,6 +95,9 @@ dictionary = {
         switch (outputFormat) {
             case 'markdown':
                 out = toMarkdown(out);
+                break;
+            case 'markdownFiles':
+                out = toMarkdown(out, true);
                 break;
             case 'console':
                 out = JSON.stringify(out, null, '    ');
