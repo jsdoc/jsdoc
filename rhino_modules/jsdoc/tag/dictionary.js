@@ -46,6 +46,16 @@ dictionary = {
                 tag = _synonyms[syn];
                 synonym = syn;
                 out[tag].synonyms.push(synonym);
+                // adding synonyms to the tag dictionary
+                if(out[syn] === undefined) {
+                    out[syn] = {
+                        'title' : syn
+                    };
+                }
+                if(out[syn].synonyms === undefined) {
+                    out[syn].synonyms = [];
+                }
+                out[syn].synonyms.push(tag);
             }
         }
         /** @function */
