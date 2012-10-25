@@ -79,27 +79,27 @@ exports.getParser = function(whichParser) {
     var out, filteredParser;
     // if the parser is specified in args and available
     if(whichParser && parsers[whichParser]) {
-        filteredParser = whichParser;
+        filteredParser = parsers[whichParser];
     // otherwise
     } else {
         // if conf exists 
-        if (conf) {
+        if (conf !== undefined) {
             //and the specified conf parser is available
             if (conf.parser && parsers[conf.parser]) {
                 filteredParser = parsers[conf.parser];
             // or GitHub-specific conf options are present
             } else if (conf.githubRepoOwner && conf.githubRepoName) {
                 filteredParser = parsers.gfm;
-            }
-        // but if conf isn't there
-        } else {
-            // evilstreak is the default parser
-            filteredParser = parsers.evilstreak;
+            } 
         }
+    }
+    // evilstreak is the default parser
+    if(!filteredParser) {
+        filteredParser = parsers.evilstreak;
     }
     
     // there is definitely an available parser specified at this point.
-    out = getParseFunction(parsers[filteredParser], conf);
+    out = getParseFunction(filteredParser, conf);
     
     return out;
 };
