@@ -70,20 +70,25 @@ function getParseFunction(parser, conf) {
  * or, the value of the `conf.json` file's `env.conf.markdown` property. The parsing function
  * accepts a single parameter containing Markdown source. The function uses the parser specified in 
  * `conf.json` to transform the Markdown source to HTML, then returns the HTML as a string.
- * @param {String} whichParser a string specifying which parser to use.
+ * @param {String} whichParser A string specifying which parser to use.
+ * @param {Object} parserConfiguration An object with configuration settings for the parser.
+ *  Defaults to `env.conf.markdown`.
  * @returns {Function} A function that accepts Markdown source, feeds it to the selected parser, and
  * returns the resulting HTML.
- * @throws {Error} If the value of `env.conf.markdown.parser` does not correspond to a known parser.
+ * @throws {Error} If the value of `whichParser`, `parserConfiguration.parser`, or
+ *  `env.conf.markdown.parser` does not correspond to a known parser.
  */
-exports.getParser = function(whichParser) {
-    var out, filteredParser;
+exports.getParser = function(whichParser, parserConfiguration) {
+    var out, filteredParser, conf;
+    conf = parserConfiguration || conf;
+    
     // if the parser is specified in args and available
     if(whichParser && parsers[whichParser]) {
         filteredParser = parsers[whichParser];
     // otherwise
     } else {
-        // if conf exists 
-        if (conf !== undefined) {
+        // if conf is trueish
+        if (conf) {
             //and the specified conf parser is available
             if (conf.parser && parsers[conf.parser]) {
                 filteredParser = parsers[conf.parser];
@@ -93,6 +98,7 @@ exports.getParser = function(whichParser) {
             } 
         }
     }
+    
     // evilstreak is the default parser
     if(!filteredParser) {
         filteredParser = parsers.evilstreak;
