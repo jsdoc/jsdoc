@@ -66,22 +66,40 @@ function getParseFunction(parser, conf) {
 }
 
 /**
- * Retrieve a Markdown parsing function based on the value of the `conf.json` file's
- * `env.conf.markdown` property. The parsing function accepts a single parameter containing Markdown
- * source. The function uses the parser specified in `conf.json` to transform the Markdown source to
- * HTML, then returns the HTML as a string.
+ * Retrieve a Markdown parsing function. The markdown parser used is based on either, the parser specified
+ * or, the value of the `conf.json` file's `env.conf.markdown` property. The parsing function
+ * accepts a single parameter containing Markdown source. The function uses the parser specified in 
+ * `conf.json` to transform the Markdown source to HTML, then returns the HTML as a string.
+ * @param {String} whichParser a string specifying which parser to use.
  * @returns {Function} A function that accepts Markdown source, feeds it to the selected parser, and
  * returns the resulting HTML.
  * @throws {Error} If the value of `env.conf.markdown.parser` does not correspond to a known parser.
  */
-exports.getParser = function() {
-    if (conf && conf.parser) {
-        return getParseFunction(parsers[conf.parser], conf);
-    } else if (conf && conf.githubRepoOwner && conf.githubRepoName) {
-        // use GitHub-friendly parser if GitHub-specific options are present
-        return getParseFunction(parsers.gfm, conf);
+exports.getParser = function(whichParser) {
+    var out, filteredParser;
+    // if the parser is specified in args and available
+    if(whichParser && parsers[whichParser]) {
+        filteredParser = whichParser;
+    // otherwise
     } else {
-        // evilstreak is the default parser
-        return getParseFunction(parsers.evilstreak, conf);
+        // if conf exists 
+        if (conf) {
+            //and the specified conf parser is available
+            if (conf.parser && parsers[conf.parser]) {
+                filteredParser = parsers[conf.parser];
+            // or GitHub-specific conf options are present
+            } else if (conf.githubRepoOwner && conf.githubRepoName) {
+                filteredParser = parsers.gfm;
+            }
+        // but if conf isn't there
+        } else {
+            // evilstreak is the default parser
+            filteredParser = parsers.evilstreak;
+        }
     }
+    
+    // there is definitely an available parser specified at this point.
+    out = getParseFunction(parsers[filteredParser], conf);
+    
+    return out;
 };
