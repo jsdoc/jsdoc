@@ -1,11 +1,11 @@
 /**
- * @file Wrapper for underscore's template utility to allow loading templates from files.
+ * @file Wrapper for lodash's template utility to allow loading templates from files.
  * @author Rafał Wrzeszcz <rafal.wrzeszcz@wrzasq.pl>
  * @author <a href="mailto:matthewkastor@gmail.com">Matthew Christopher Kastor-Inare III</a>
  * @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
-var _ = require('underscore'),
+var _ = require('lodash'),
     fs = require('fs'),
     path = require('path');
 
@@ -16,7 +16,7 @@ var _ = require('underscore'),
 
 /**
     @class
-    @classdesc Underscore template helper.
+    @classdesc Lo-Dash template helper.
     @param {string} path - Templates directory.
  */
 exports.Template = function(path) {

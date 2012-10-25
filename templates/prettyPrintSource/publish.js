@@ -7,7 +7,7 @@
  * @param {Tutorial} tutorialResolverRoot An object with information about included tutorials
  * @see http://www.taffydb.com/
  * @see http://www.taffydb.com/workingwithdata
- * @see http://underscorejs.org/#template
+ * @see http://lodash.com/docs#template
  * @see http://nodejs.org/api/fs.html
  * @see http://nodejs.org/api/path.html
  */
