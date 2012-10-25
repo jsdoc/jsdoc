@@ -24,7 +24,11 @@ exports.controls.describeTags.viewer = function() {
     out = dictionary.describeTags();
     switch (outputFormat) {
         case 'html':
-            out = JSDocSpy.views.tagDictionary.toHtml(out);
+            out = JSDocSpy.views.tagDictionary.toHtml(out, false);
+            out = out.join(os.EOL + os.EOL);
+            break;
+        case 'htmlFiles':
+            out = JSDocSpy.views.tagDictionary.toHtml(out, true);
             break;
         case 'markdown':
             out = JSDocSpy.views.tagDictionary.toMarkdown(out, false);
