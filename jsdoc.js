@@ -340,12 +340,37 @@ function main() {
     
     if (env.opts.describeTags) {
         (function(){
-            var dictionary, outputFormat, consoleOutput;
+            var os, dictionary, JSDocSpy, outputFormat, out, tmp;
+            os = require('os');
             dictionary = require('jsdoc/tag/dictionary');
+            JSDocSpy = require('plugins/JSDocSpy/views');
             outputFormat = env.opts.describeTags;
-            consoleOutput = dictionary.describeTags(outputFormat)
-            if(outputFormat !== 'markdownFiles') {
-                console.log(consoleOutput);
+            out = dictionary.describeTags();
+            switch (outputFormat) {
+                case 'html':
+                    out = JSDocSpy.views.tagDictionary.toMarkdown(out, false);
+                    out = JSDocSpy.views.tagDictionary.toHtml(out);
+                    break;
+                case 'markdown':
+                    out = JSDocSpy.views.tagDictionary.toMarkdown(out, false);
+                    out = out.join(os.EOL + os.EOL);
+                    break;
+                case 'markdownFiles':
+                    out = JSDocSpy.views.tagDictionary.toMarkdown(out, true);
+                    break;
+                case 'console':
+                    out = JSDocSpy.views.tagDictionary.toConsole(out);
+                    break;
+                case 'raw':
+                    out = out;
+                    break;
+                default:
+                    out = out;
+                    break;
+            }
+            // if outputting to files, don't send output to the console
+            if(outputFormat.indexOf('Files') === -1) {
+                console.log(out);
             }
         }());
         process.exit(0);

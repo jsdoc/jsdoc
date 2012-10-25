@@ -32,7 +32,7 @@ TagDefinition.prototype.synonym = function(synonymName) {
 /** @exports jsdoc/tag/dictionary */
 dictionary = {
     /** @function */
-    describeTags: function(outputFormat) {
+    describeTags: function() {
         var def, syn, tag, synonym, out;
         out = {};
         for(def in _definitions) {
@@ -57,67 +57,6 @@ dictionary = {
                 }
                 out[syn].synonyms.push(tag);
             }
-        }
-        /** @function */
-        function toMarkdown(obj, generateFiles) {
-            var os, fs, path, tag, thisTag, prop, val, out;
-            os = require('os');
-            if(generateFiles === true) {
-                fs = require('fs');
-                path = require('path');
-            }
-            out = '';
-            for(tag in obj) {
-                thisTag = '';
-                if(obj.hasOwnProperty(tag)) {
-                    thisTag += '## ' + tag + os.EOL;
-                    for(prop in obj[tag]) {
-                        if(obj[tag].hasOwnProperty(prop)) {
-                            thisTag += '*' + prop + '* : ';
-                            val = obj[tag][prop];
-                            switch(typeof(val)) {
-                                case 'function':
-                                    val = os.EOL + '```javascript' + os.EOL + val.toString().trim() + os.EOL + '```';
-                                    break;
-                                
-                                case 'object':
-                                    val = val.toString().trim();
-                                    break;
-                                
-                                default:
-                                    val = val.toString().trim();
-                                    break;
-                            }
-                            thisTag += val + os.EOL;
-                        }
-                    }
-                    thisTag += os.EOL;
-                    if(generateFiles === true) {
-                        fs.mkPath(env.opts.destination);
-                        fs.writeFileSync(path.join(env.opts.destination, 'tags-' + tag + '.markdown') , thisTag, 'utf8');
-                    } else {
-                        out += thisTag;
-                    }
-                }
-            }
-            return out;
-        }
-        switch (outputFormat) {
-            case 'markdown':
-                out = toMarkdown(out);
-                break;
-            case 'markdownFiles':
-                out = toMarkdown(out, true);
-                break;
-            case 'console':
-                out = JSON.stringify(out, null, '    ');
-                break;
-            case 'raw':
-                out = out;
-                break;
-            default:
-                out = out;
-                break;
         }
         return out;
     },
