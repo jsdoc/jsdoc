@@ -3,6 +3,7 @@
 /**
  * @file controllers used in generating docs from JSDoc 3 internals
  * @exports plugins/JSDocSpy/controllers
+ * @author <a href="mailto:matthewkastor@gmail.com">Matthew Kastor</a>
  */
 
 /** @namespace */

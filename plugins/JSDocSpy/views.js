@@ -3,6 +3,7 @@
 /**
  * @file views used in generating docs from JSDoc 3 internals
  * @exports plugins/JSDocSpy/views
+ * @author <a href="mailto:matthewkastor@gmail.com">Matthew Kastor</a>
  */
 
 /** @function */
