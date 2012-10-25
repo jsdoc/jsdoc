@@ -18,6 +18,7 @@ function gfmMarkdownToHtml(text) {
 exports.views = {
     /** @namespace */
     tagDictionary : {},
+    /** @namespace */
     gfmMarkdown : {}
 };
 
@@ -30,9 +31,10 @@ exports.views.gfmMarkdown.asHtml = function(text) {
 
 /** @function */
 exports.views.tagDictionary.toHtml = function(obj) {
-    var os, out;
+    var os, out, JSDocSpy;
     os = require('os');
-    out = obj;
+    JSDocSpy = require('plugins/JSDocSpy/views');
+    out = JSDocSpy.views.tagDictionary.toMarkdown(obj, false);
     out = out.map(function(entry) {
         return(gfmMarkdownToHtml(entry));
     });
