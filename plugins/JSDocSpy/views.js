@@ -30,19 +30,6 @@ exports.views.gfmMarkdown.asHtml = function(text) {
     return out;
 };
 
-/** @function 
-exports.views.tagDictionary.toHtml = function(obj) {
-    var os, out, JSDocSpy;
-    os = require('os');
-    JSDocSpy = require('plugins/JSDocSpy/views');
-    out = JSDocSpy.views.tagDictionary.toMarkdown(obj, false);
-    out = out.map(function(entry) {
-        return(gfmMarkdownToHtml(entry));
-    });
-    out = out.join(os.EOL + os.EOL);
-    return out;
-};*/
-
 /** @function */
 exports.views.tagDictionary.toConsole = function(obj) {
     var out;
@@ -117,22 +104,25 @@ exports.views.tagDictionary.toHtml = function(obj, generateFiles) {
     out = [];
     for(tag in obj) {
         if(obj.hasOwnProperty(tag)) {
-            thisTag = '';
+            thisTag  = '<div class="tags-definition" id="' + tag + '-definition">' + os.EOL;
             
             if(obj.hasOwnProperty(tag)) {
-                thisTag += '<h2>' + tag + '</h2>' + os.EOL;
-                thisTag += '<p>' + EOL;
+                thisTag += '<h3 class="tags-name">' + tag + '</h3>' + os.EOL;
+                thisTag += '<table><thead>' + os.EOL;
+                thisTag += '<tr><th>Property</th> <th>Value</th></tr>' + os.EOL;
+                thisTag += '</thead><tbody>' + os.EOL;
                 for(prop in obj[tag]) {
                     if(obj[tag].hasOwnProperty(prop)) {
-                        thisTag += '<b>' + prop + '</b> : ';
+                        thisTag += '<tr>' + os.EOL;
+                        thisTag += '<td class="tags-property-name" id="' + tag + '-' + prop + '-name"><b>' + prop + '</b></td> ';
                         val = obj[tag][prop];
                         tmp = val.toString().trim();
                         tmp = tmp.replace(/\r\n|\n|\r/g, os.EOL);
                         tmp = tmp.replace(/\t/g, '    ');
                         switch(typeof(val)) {
                             case 'function':
-                                val = EOL + '</p>' + os.EOL + '<pre class="prettyprint lang-js">';
-                                val += os.EOL + tmp + os.EOL + '</pre>' + '<p>' + os.EOL;
+                                val = os.EOL + os.EOL + '<pre class="prettyprint lang-js">';
+                                val += os.EOL + tmp + os.EOL + '</pre>' + os.EOL + os.EOL;
                                 break;
                             
                             case 'object':
@@ -143,11 +133,11 @@ exports.views.tagDictionary.toHtml = function(obj, generateFiles) {
                                 val = tmp;
                                 break;
                         }
-                        thisTag += val + EOL;
+                        thisTag += '<td class="tags-property-value" id="' + tag + '-' + prop + '-value">' + val + '</td>' + os.EOL + '</tr>' + os.EOL;
                     }
                 }
                 
-                thisTag += '</p>' + EOL;
+                thisTag += '</tbody></table></div>' + os.EOL;
                 if(generateFiles === true) {
                     fs.mkPath(env.opts.destination);
                     fs.writeFileSync(path.join(env.opts.destination, 'tags-' + tag + '.html') , thisTag, 'utf8');
