@@ -304,32 +304,6 @@ function getBasename(name) {
     return name;
 }
 
-/**
- * Dump an event to the console.
- * @private
- * @memberof module:src/parser.Parser
- * @param {object} e The event to dump.
- */
-function dumpEvent(e) {
-    for (var prop in e) {
-        // can't use hasOwnProp() on native objects, so let's just make JSHint happy
-        if (e[prop]) {
-            console.log("e." + prop + ": " + e[prop]);
-            // go one level down for e.code
-            if (prop === "code") {
-                for (prop in e.code) {
-                    // can't use hasOwnProp() on native objects, so let's just make JSHint happy
-                    if (e.code[prop]) {
-                        console.log("e.code." + prop + ": " + e.code[prop]);
-                    }
-                }
-            }
-        }
-    }
-
-    console.log("\n\n");
-}
-
 /** @private */
 function visitNode(node) {
     var e,
