@@ -49,12 +49,12 @@ function parseVariable(type) {
  */
 exports.parse = function(tagInfo) {
     var optional = parseOptional(tagInfo.type),
-        nullable = parseNullable(tagInfo.type),
-        variable = parseVariable(tagInfo.type);
+        nullable = parseNullable(optional.type),
+        variable = parseVariable(nullable.type);
 
     return {
         name: tagInfo.name,
-        type: variable.type || nullable.type || optional.type,
+        type: variable.type,
         text: tagInfo.text,
         optional: tagInfo.optional || optional.optional, // don't override if already true
         nullable: nullable.nullable,
