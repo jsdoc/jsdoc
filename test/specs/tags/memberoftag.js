@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("@memberof tag", function() {
 
     it('When a symbol has an @member tag, the doclet has a long name that includes the parent.', function() {
@@ -10,6 +11,22 @@ describe("@memberof tag", function() {
 
         expect(Data.memberof).toEqual('mathlib');
         expect(Data.name).toEqual('Data');
+    });
+
+    it('A symbol within a namespace for which no scope is specified.', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag4.js'),
+            doOtherStuff = docSet.getByLongname('doStuff.doOtherStuff')[0];
+        
+        expect(doOtherStuff).toBeDefined();
+        expect(doOtherStuff.scope).toEqual('static');
+    });
+
+    it('A symbol in which name === memberof.', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag4.js'),
+            doStuff = docSet.getByLongname('doStuff.doStuff')[0];
+        
+        expect(doStuff).toBeDefined();
+        expect(doStuff.scope).toEqual('static');
     });
 
     describe ("static", function() {

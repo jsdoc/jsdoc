@@ -59,7 +59,7 @@ describe('jshint-clean', function() {
 
         files = app.jsdoc.scanner.scan([env.dirname], 10, filter);
 
-        async.forEachSeries(files, function(file, cb) {
+        async.forEach(files, function(file, cb) {
             jsHintCheck(file, function(err, jsHintErrors) {
                 expect(jsHintErrors).toBeUndefined();
                 cb(err);
