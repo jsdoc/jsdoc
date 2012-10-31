@@ -339,7 +339,13 @@ function main() {
     if (env.conf.plugins) {
         installPlugins(env.conf.plugins);
     }
-
+    
+    if (env.opts.describeTags) {
+        JSDocSpy = require('plugins/JSDocSpy/controllers');
+        JSDocSpy.controls.describeTags.viewer();
+        process.exit(0);
+    }
+    
     // any source file named package.json or README.md is treated special
     for (var i = 0, l = env.opts._.length; i < l; i++ ) {
         if (/\bpackage\.json$/i.test(env.opts._[i])) {

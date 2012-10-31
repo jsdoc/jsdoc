@@ -15,18 +15,19 @@ var argParser = new common.args.ArgParser(),
 		destination: './out/'
 	};
 
-argParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
-argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc env.dirname + /conf.json');
-argParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: utf-8');
-argParser.addOption('T', 'test',        false, 'Run all tests and quit.');
-argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
-argParser.addOption('p', 'private',     false, 'Display symbols marked with the @private tag. Default: false.');
-argParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
-argParser.addOption('l', 'lenient',     false, 'Continue to generate output if a doclet is incomplete or contains errors. Default: false.');
-argParser.addOption('h', 'help',        false, 'Print this message and quit.');
-argParser.addOption('X', 'explain',     false, 'Dump all found doclet internals to console and quit.');
-argParser.addOption('q', 'query',       true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
-argParser.addOption('u', 'tutorials',   true,  'Directory in which JSDoc should search for tutorials.');
+argParser.addOption('t',  'template',       true,  'The name of the template to use. Default: the "default" template');
+argParser.addOption('c',  'configure',      true,  'The path to the configuration file. Default: jsdoc env.dirname + /conf.json');
+argParser.addOption('e',  'encoding',       true,  'Assume this encoding when reading all source files. Default: utf-8');
+argParser.addOption('T',  'test',           false, 'Run all tests and quit.');
+argParser.addOption('d',  'destination',    true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
+argParser.addOption('p',  'private',        false, 'Display symbols marked with the @private tag. Default: false.');
+argParser.addOption('r',  'recurse',        false, 'Recurse into subdirectories when scanning for source code files.');
+argParser.addOption('l',  'lenient',        false, 'Continue to generate output if a doclet is incomplete or contains errors. Default: false.');
+argParser.addOption('h',  'help',           false, 'Print this message and quit.');
+argParser.addOption('X',  'explain',        false, 'Dump all found doclet internals to console and quit.');
+argParser.addOption('q',  'query',          true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
+argParser.addOption('u',  'tutorials',      true,  'Directory in which JSDoc should search for tutorials.');
+argParser.addOption(null, 'describeTags',   true,  'Describes the supported tags. Accepts markdown, markdownFiles, console, or raw as output format.');
 
 //TODO [-R, recurseonly] = a number representing the depth to recurse
 //TODO [-f, filter] = a regex to filter on <-- this can be better defined in the configs?
