@@ -149,7 +149,7 @@ exports.attachTo = function(parser) {
         var e;
         if (newDoclet) {
             e = { doclet: newDoclet };
-            this.fire('newDoclet', e);
+            this.emit('newDoclet', e);
 
             if (!e.defaultPrevented) {
                 if ( !filter(newDoclet) ) {

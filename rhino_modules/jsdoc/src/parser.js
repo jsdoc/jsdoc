@@ -2,8 +2,8 @@
 /**
  * @module jsdoc/src/parser
  * @requires common/util
- * @requires common/fs
- * @requires common/events
+ * @requires fs
+ * @requires events
  */
 
 var Token = Packages.org.mozilla.javascript.Token,
@@ -13,7 +13,7 @@ var Token = Packages.org.mozilla.javascript.Token,
 
 /**
  * @class
- * @mixes module:common/events
+ * @mixes module:events
  *
  * @example <caption>Create a new parser.</caption>
  * var jsdocParser = new (require('jsdoc/src/parser').Parser)();
@@ -28,7 +28,7 @@ exports.Parser = function() {
     };
     this._visitors = [];
 };
-require('common/util').mixin(exports.Parser.prototype, require('common/events'));
+exports.Parser.prototype = Object.create( require('events').EventEmitter.prototype );
 
 /**
  * Parse the given source files for JSDoc comments.
@@ -335,7 +335,7 @@ function visitNode(node) {
                     filename: currentSourceName
                 };
 
-                currentParser.fire('jsdocCommentFound', e, currentParser);
+                currentParser.emit('jsdocCommentFound', e, currentParser);
             }
         }
         e = null;
@@ -457,7 +457,7 @@ function visitNode(node) {
     }
 
     if (!e.preventDefault && isValidJsdoc(e.comment)) {
-        currentParser.fire(e.event, e, currentParser);
+        currentParser.emit(e.event, e, currentParser);
     }
 
     for (i = 0, l = e.finishers.length; i < l; i++) {
@@ -470,11 +470,11 @@ function visitNode(node) {
 /** @private */
 exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
     var e = {filename: sourceName};
-    this.fire('fileBegin', e);
+    this.emit('fileBegin', e);
 
     if (!e.defaultPrevented) {
         e = {filename: sourceName, source: sourceCode};
-        this.fire('beforeParse', e);
+        this.emit('beforeParse', e);
         sourceCode = e.source;
         currentSourceName = sourceName = e.filename;
 
@@ -488,7 +488,7 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         );
     }
 
-    this.fire('fileComplete', e);
+    this.emit('fileComplete', e);
 
     currentSourceName = '';
 };

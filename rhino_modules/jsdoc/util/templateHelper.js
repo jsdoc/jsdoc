@@ -3,7 +3,7 @@
  * @module jsdoc/util/templateHelper
  */
 
-var md5 = require('jsMD5').digest_s;
+var crypto = require('crypto');
 var dictionary = require('jsdoc/tag/dictionary');
 
 var files = {};
@@ -49,7 +49,7 @@ function strToFilename(str) {
     var basename = str.replace(nsprefix, '$1-');
     
     if ( /[^$a-z0-9._\-]/i.test(basename) ) {
-        return md5(str).substr(0, 10);
+        return crypto.createHash('sha1').update(str).digest('hex').substr(0, 10);
     }
     return makeFilenameUnique(basename, str);
 }
