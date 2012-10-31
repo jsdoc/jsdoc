@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true, jasmine: true, xit: true */
 /**
  * @author Rob Taylor [manix84@gmail.com]
  */
@@ -7,10 +8,11 @@ describe("verbose output plugin", function () {
         plugin = require('plugins/verboseOutput'),
         docSet;
 
-    installPlugins(['plugins/verboseOutput'], parser);
+    //installPlugins(['plugins/verboseOutput'], parser);
     docSet = jasmine.getDocSetFromFile("plugins/verboseOutput.js", parser);
 
-    it("should log file names to console", function() {
+    xit("should log file names to console", function() {
+        // TODO: this doesn't actually test the plugin...
         var fileBegin = docSet.getByLongname("module:plugins/verboseOutput.handlers.fileBegin");
         expect(fileBegin[0].description).toEqual("Logging the file name to the console.");
     });
