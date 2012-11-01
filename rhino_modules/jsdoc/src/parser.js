@@ -304,9 +304,57 @@ function getBasename(name) {
     return name;
 }
 
+/** @private
+ * @memberof module:src/parser.Parser
+ */
+function makeEvent(node, extras) {
+    extras = extras || {};
+    
+    // fill in default values as needed. if we're overriding a property, don't execute the default
+    // code for that property, since it might blow up.
+    var result = {
+        id: extras.id || 'astnode' + node.hashCode(),
+        comment: extras.comment || String(node.getJsDoc() || '@undocumented'),
+        lineno: extras.lineno || node.left.getLineno(),
+        filename: extras.filename || currentSourceName,
+        astnode: extras.astnode || node,
+        code: extras.code || aboutNode(node),
+        event: extras.event || 'symbolFound',
+        finishers: extras.finishers || [currentParser.addDocletRef]
+    };
+
+    // make sure the result includes extras that don't have default values
+    for (var prop in extras) {
+        if ( hasOwnProp.call(extras, prop) ) {
+            result[prop] = extras[prop];
+        }
+    }
+    
+    return result;
+}
+
+/** @private
+ * @memberof module:src/parser.Parser
+ */
+function trackVars(node, e) {
+    // keep track of vars in a function or global scope
+    var func = "__global__";
+    var funcDoc = null;
+    if (node.enclosingFunction) {
+        func = 'astnode'+node.enclosingFunction.hashCode();
+    }
+    funcDoc = currentParser.refs[func];
+    if (funcDoc) {
+        funcDoc.meta.vars = funcDoc.meta.vars || {};
+        funcDoc.meta.vars[e.code.name] = false;
+        e.finishers.push(makeVarsFinisher(funcDoc));
+    }
+}
+
 /** @private */
 function visitNode(node) {
     var e,
+        extras,
         nodeComments,
         comment,
         commentSrc,
@@ -341,16 +389,7 @@ function visitNode(node) {
         e = null;
     }
     else if (node.type === Token.ASSIGN) {
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the ASSIGN node
-            comment: String(node.getJsDoc()||'@undocumented'),
-            lineno: node.left.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef]
-        };
+        e = makeEvent(node);
 
         basename = getBasename(e.code.name);
 
@@ -359,28 +398,17 @@ function visitNode(node) {
         }
     }
     else if (node.type === Token.COLON) { // assignment within an object literal
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the COLON node
-            comment: String(node.left.getJsDoc()||'@undocumented'),
-            lineno: node.left.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
+        extras = {
+            comment: String(node.left.getJsDoc() || '@undocumented'),
             finishers: [currentParser.addDocletRef, currentParser.resolveEnum]
         };
+        e = makeEvent(node, extras);
     }
     else if (node.type === Token.GET || node.type === Token.SET) { // assignment within an object literal
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the GET/SET node
-            comment: String(node.left.getJsDoc()||'@undocumented'),
-            lineno: node.left.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef]
+        extras = {
+            comment: String(node.left.getJsDoc() || '@undocumented')
         };
+        e = makeEvent(node, extras);
     }
     else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
 
@@ -394,57 +422,22 @@ function visitNode(node) {
             //node.jsDoc = node.parent.jsDoc;
         }
 
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the VARIABLE node
-            comment: String(node.getJsDoc()||'@undocumented'),
-            lineno: node.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef]
+        extras = {
+            lineno: node.getLineno()
         };
+        e = makeEvent(node, extras);
 
-        // keep track of vars in a function or global scope
-        func = "__global__";
-        funcDoc = null;
-        if (node.enclosingFunction) {
-            func = 'astnode'+node.enclosingFunction.hashCode();
-        }
-        funcDoc = currentParser.refs[func];
-        if (funcDoc) {
-            funcDoc.meta.vars = funcDoc.meta.vars || {};
-            funcDoc.meta.vars[e.code.name] = false;
-            e.finishers.push(makeVarsFinisher(funcDoc));
-        }
+        trackVars(node, e);
     }
     else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
-        e = {
-            id: 'astnode'+node.hashCode(), // the id of the COLON node
-            comment: String(node.getJsDoc()||'@undocumented'),
-            lineno: node.getLineno(),
-            filename: currentSourceName,
-            astnode: node,
-            code: aboutNode(node),
-            event: "symbolFound",
-            finishers: [currentParser.addDocletRef]
+        extras = {
+            lineno: node.getLineno()
         };
+        e = makeEvent(node, extras);
 
         e.code.name = (node.type == tkn.NAMEDFUNCTIONSTATEMENT)? '' : String(node.name) || '';
-        //console.log(':: e.code.name is', e.code.name);
 
-        // keep track of vars in a function or global scope
-        func = "__global__";
-        funcDoc = null;
-        if (node.enclosingFunction) {
-            func = 'astnode'+node.enclosingFunction.hashCode();
-        }
-        funcDoc = currentParser.refs[func];
-        if (funcDoc) {
-            funcDoc.meta.vars = funcDoc.meta.vars || {};
-            funcDoc.meta.vars[e.code.name] = false;
-            e.finishers.push(makeVarsFinisher(funcDoc));
-        }
+        trackVars(node, e);
 
         basename = getBasename(e.code.name);
         e.code.funcscope = currentParser.resolveVar(node, basename);
