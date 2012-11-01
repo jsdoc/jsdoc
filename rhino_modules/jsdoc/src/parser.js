@@ -6,10 +6,8 @@
  * @requires events
  */
 
-var Token = Packages.org.mozilla.javascript.Token,
-    currentParser = null,
-    currentSourceName = '',
-    hasOwnProp = Object.prototype.hasOwnProperty;
+var Token = Packages.org.mozilla.javascript.Token;
+var hasOwnProp = Object.prototype.hasOwnProperty;
 
 /**
  * @class
@@ -19,6 +17,7 @@ var Token = Packages.org.mozilla.javascript.Token,
  * var jsdocParser = new (require('jsdoc/src/parser').Parser)();
  */
 exports.Parser = function() {
+    this._currentSourceName = '';
     this._resultBuffer = [];
     //Initialize a global ref to store global members
     this.refs = {
@@ -70,9 +69,7 @@ exports.Parser.prototype.parse = function(sourceFiles, encoding) {
             }
         }
 
-        currentParser = this;
         this._parseSourceCode(sourceCode, filename);
-        currentParser = null;
     }
 
     return this._resultBuffer;
@@ -96,8 +93,7 @@ exports.Parser.prototype.addResult = function(o) {
  * Empty any accumulated results of calls to parse.
  */
 exports.Parser.prototype.clear = function() {
-    currentParser = null;
-    currentSourceName = '';
+    this._currentSourceName = '';
     this._resultBuffer = [];
 };
 
@@ -307,7 +303,7 @@ function getBasename(name) {
 /** @private
  * @memberof module:src/parser.Parser
  */
-function makeEvent(node, extras) {
+exports.Parser.prototype._makeEvent = function(node, extras) {
     extras = extras || {};
     
     // fill in default values as needed. if we're overriding a property, don't execute the default
@@ -316,11 +312,11 @@ function makeEvent(node, extras) {
         id: extras.id || 'astnode' + node.hashCode(),
         comment: extras.comment || String(node.getJsDoc() || '@undocumented'),
         lineno: extras.lineno || node.left.getLineno(),
-        filename: extras.filename || currentSourceName,
+        filename: extras.filename || this._currentSourceName,
         astnode: extras.astnode || node,
         code: extras.code || aboutNode(node),
         event: extras.event || 'symbolFound',
-        finishers: extras.finishers || [currentParser.addDocletRef]
+        finishers: extras.finishers || [this.addDocletRef]
     };
 
     // make sure the result includes extras that don't have default values
@@ -331,28 +327,28 @@ function makeEvent(node, extras) {
     }
     
     return result;
-}
+};
 
 /** @private
  * @memberof module:src/parser.Parser
  */
-function trackVars(node, e) {
+exports.Parser.prototype._trackVars = function(node, e) {
     // keep track of vars in a function or global scope
     var func = "__global__";
     var funcDoc = null;
     if (node.enclosingFunction) {
         func = 'astnode'+node.enclosingFunction.hashCode();
     }
-    funcDoc = currentParser.refs[func];
+    funcDoc = this.refs[func];
     if (funcDoc) {
         funcDoc.meta.vars = funcDoc.meta.vars || {};
         funcDoc.meta.vars[e.code.name] = false;
         e.finishers.push(makeVarsFinisher(funcDoc));
     }
-}
+};
 
 /** @private */
-function visitNode(node) {
+exports.Parser.prototype._visitNode = function(node) {
     var e,
         extras,
         nodeComments,
@@ -380,35 +376,35 @@ function visitNode(node) {
                 e = {
                     comment: commentSrc,
                     lineno: comment.getLineno(),
-                    filename: currentSourceName
+                    filename: this._currentSourceName
                 };
 
-                currentParser.emit('jsdocCommentFound', e, currentParser);
+                this.emit('jsdocCommentFound', e, this);
             }
         }
         e = null;
     }
     else if (node.type === Token.ASSIGN) {
-        e = makeEvent(node);
+        e = this._makeEvent(node);
 
         basename = getBasename(e.code.name);
 
         if (basename !== 'this') {
-            e.code.funcscope = currentParser.resolveVar(node, basename);
+            e.code.funcscope = this.resolveVar(node, basename);
         }
     }
     else if (node.type === Token.COLON) { // assignment within an object literal
         extras = {
             comment: String(node.left.getJsDoc() || '@undocumented'),
-            finishers: [currentParser.addDocletRef, currentParser.resolveEnum]
+            finishers: [this.addDocletRef, this.resolveEnum]
         };
-        e = makeEvent(node, extras);
+        e = this._makeEvent(node, extras);
     }
     else if (node.type === Token.GET || node.type === Token.SET) { // assignment within an object literal
         extras = {
             comment: String(node.left.getJsDoc() || '@undocumented')
         };
-        e = makeEvent(node, extras);
+        e = this._makeEvent(node, extras);
     }
     else if (node.type == Token.VAR || node.type == Token.LET || node.type == Token.CONST) {
 
@@ -425,40 +421,40 @@ function visitNode(node) {
         extras = {
             lineno: node.getLineno()
         };
-        e = makeEvent(node, extras);
+        e = this._makeEvent(node, extras);
 
-        trackVars(node, e);
+        this._trackVars(node, e);
     }
     else if (node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) {
         extras = {
             lineno: node.getLineno()
         };
-        e = makeEvent(node, extras);
+        e = this._makeEvent(node, extras);
 
         e.code.name = (node.type == tkn.NAMEDFUNCTIONSTATEMENT)? '' : String(node.name) || '';
 
-        trackVars(node, e);
+        this._trackVars(node, e);
 
         basename = getBasename(e.code.name);
-        e.code.funcscope = currentParser.resolveVar(node, basename);
+        e.code.funcscope = this.resolveVar(node, basename);
     }
 
     if (!e) { e = {finishers: []}; }
-    for(i = 0, l = currentParser._visitors.length; i < l; i++) {
-        currentParser._visitors[i].visitNode(node, e, currentParser, currentSourceName);
+    for(i = 0, l = this._visitors.length; i < l; i++) {
+        this._visitors[i].visitNode(node, e, this, this._currentSourceName);
         if (e.stopPropagation) { break; }
     }
 
     if (!e.preventDefault && isValidJsdoc(e.comment)) {
-        currentParser.emit(e.event, e, currentParser);
+        this.emit(e.event, e, this);
     }
 
     for (i = 0, l = e.finishers.length; i < l; i++) {
-        e.finishers[i].call(currentParser, e);
+        e.finishers[i].call(this, e);
     }
 
     return true;
-}
+};
 
 /** @private */
 exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
@@ -469,21 +465,21 @@ exports.Parser.prototype._parseSourceCode = function(sourceCode, sourceName) {
         e = {filename: sourceName, source: sourceCode};
         this.emit('beforeParse', e);
         sourceCode = e.source;
-        currentSourceName = sourceName = e.filename;
+        this._currentSourceName = sourceName = e.filename;
 
         sourceCode = pretreat(e.source);
 
         var ast = parserFactory().parse(sourceCode, sourceName, 1);
         ast.visit(
             new Packages.org.mozilla.javascript.ast.NodeVisitor({
-                visit: visitNode
+                visit: this._visitNode.bind(this)
             })
         );
     }
 
     this.emit('fileComplete', e);
 
-    currentSourceName = '';
+    this._currentSourceName = '';
 };
 
 /**
@@ -637,10 +633,10 @@ exports.Parser.prototype.resolveVar = function(node, basename) {
 exports.Parser.prototype.addDocletRef = function(e) {
     var node = e.code.node;
     if (e.doclet) {
-        currentParser.refs['astnode'+node.hashCode()] = e.doclet; // allow lookup from value => doclet
+        this.refs['astnode'+node.hashCode()] = e.doclet; // allow lookup from value => doclet
     }
-    else if ((node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) && !currentParser.refs['astnode'+node.hashCode()]) { // keep references to undocumented anonymous functions too as they might have scoped vars
-        currentParser.refs['astnode'+node.hashCode()] = {
+    else if ((node.type == Token.FUNCTION || node.type == tkn.NAMEDFUNCTIONSTATEMENT) && !this.refs['astnode'+node.hashCode()]) { // keep references to undocumented anonymous functions too as they might have scoped vars
+        this.refs['astnode'+node.hashCode()] = {
             longname: '<anonymous>',
             meta: { code: e.code }
         };
@@ -649,7 +645,7 @@ exports.Parser.prototype.addDocletRef = function(e) {
 
 exports.Parser.prototype.resolveEnum = function(e) {
     var doop = require("jsdoc/util/doop").doop,
-        parent = currentParser.resolvePropertyParent(e.code.node);
+        parent = this.resolvePropertyParent(e.code.node);
     if (parent && parent.doclet.isEnum) {
         if (!parent.doclet.properties) { parent.doclet.properties = []; }
         // members of an enum inherit the enum's type
