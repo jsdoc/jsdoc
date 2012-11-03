@@ -1,4 +1,4 @@
 language: java
 
-test:
+script:
   - "jsdoc -T"
