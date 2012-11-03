@@ -1,4 +1,4 @@
 language: java
 
 script:
-  - "jsdoc -T"
+  - "./jsdoc -T"
