@@ -88,7 +88,7 @@ See Also
 --------
 
 Project Documentation: <http://usejsdoc.org/> (under development)  
-Project Documentation Source: <https://github.com/micmath/micmath.github.com>  
+Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
 Project Announcements: <http://twitter.com/jsdoc3>
