@@ -1,4 +1,3 @@
-/*global Packages: true */
 /**
     A collection of functions relating to JSDoc symbol name manipulation.
     @module jsdoc/name
@@ -8,12 +7,11 @@
  */
 
 var jsdoc = {
-        tagDictionary: require('jsdoc/tag/dictionary')
-    };
+    tagDictionary: require('jsdoc/tag/dictionary')
+};
 
 var puncToScope = { '.': 'static', '~': 'inner', '#': 'instance' },
-    scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' },
-    Token  = Packages.org.mozilla.javascript.Token;
+    scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' };
 
 var DEFAULT_SCOPE = 'static';
 
