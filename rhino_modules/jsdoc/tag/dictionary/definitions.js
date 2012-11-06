@@ -7,6 +7,8 @@
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
+var path = require('path');
+
 /** @private */
 function setDocletKindToTitle(doclet, tag) {
     doclet.addTag( 'kind', tag.title );
@@ -33,9 +35,8 @@ function setDocletDescriptionToValue(doclet, tag) {
 
 function setNameToFile(doclet, tag) {
     if (doclet.meta.filename) {
-        var name = 'file:';
-        if (doclet.meta.path) { name += doclet.meta.path + java.lang.System.getProperty("file.separator"); }
-        doclet.addTag( 'name', name + doclet.meta.filename );
+        var name = doclet.meta.path || '';
+        doclet.addTag( 'name', path.join(name, doclet.meta.filename) );
     }
 }
 
@@ -60,7 +61,8 @@ function applyNamespace(docletOrNs, tag) {
 }
 
 function setDocletNameToFilename(doclet, tag) {
-    var name = (doclet.meta.path ? (doclet.meta.path + java.lang.System.getProperty("file.separator")) : "") + doclet.meta.filename;
+    var name = doclet.meta.path || '';
+    name = path.join(name, doclet.meta.filename);
     name = name.replace(/\.js$/i, '');
     
     for (var i = 0, len = env.opts._.length; i < len; i++) {
