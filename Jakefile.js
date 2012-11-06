@@ -4,8 +4,7 @@
 desc('Updating package.json revision.');
 task('default', [], function(params) {
     /*jshint evil: true */
-    var fs = require('fs'),
-        sys = require('sys');
+    var fs = require('fs');
 
     // import the Mustache template tool
     eval(fs.readFileSync('Jake/lib/mustache.js', 'utf8'));
