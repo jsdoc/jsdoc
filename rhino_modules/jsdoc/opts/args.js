@@ -1,15 +1,12 @@
 /**
-	@module jsdoc/opts/parser
-	@requires common/args
+	@module jsdoc/opts/args
+	@requires jsdoc/opts/argparser
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
-var common = {
-	args: require('common/args')
-};
-
-var argParser = new common.args.ArgParser(),
+var ArgParser = require('jsdoc/opts/argparser'),
+	argParser = new ArgParser(),
 	ourOptions,
 	defaults = {
 		destination: './out/'

@@ -186,7 +186,7 @@ function main() {
         docs,
         jsdoc = {
             opts: {
-                parser: require('jsdoc/opts/parser'),
+                args: require('jsdoc/opts/args'),
             }
         },
         resolver,
@@ -286,7 +286,7 @@ function main() {
     }
 
 
-    env.opts = jsdoc.opts.parser.parse(env.args);
+    env.opts = jsdoc.opts.args.parse(env.args);
 
     env.vm = detectVm();
 

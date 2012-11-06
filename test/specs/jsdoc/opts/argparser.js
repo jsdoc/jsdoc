@@ -1,6 +1,7 @@
-describe("common/args", function() {
-    var common = {args: require('common/args')},
-        argParser = new common.args.ArgParser(),
+/*global describe: true, expect: true, it: true */
+describe("jsdoc/opts/argparser", function() {
+    var ArgParser = require('jsdoc/opts/argparser'),
+        argParser = new ArgParser(),
         ourOptions;
         
     function trueFalse(v) {
@@ -19,12 +20,12 @@ describe("common/args", function() {
     
     ourOptions = argParser.parse(['-s', 'true', '-n', 'true']);
 
-    it('should corece a true value if a coercer is provided', function() {
+    it('should coerce a true value if a coercer is provided', function() {
         expect(ourOptions.strict).toBeDefined();
         expect(ourOptions.strict).toEqual(true);
     });
     
-    it('should corece a string value if a no coercer is provided', function() {
+    it('should coerce a string value if no coercer is provided', function() {
         expect(ourOptions.name).toBeDefined();
         expect(ourOptions.name).toEqual('true');
     });
