@@ -1,4 +1,4 @@
-/*global describe: true, env: true, it: true */
+/*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true, xdescribe: true */
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper');
     helper.registerLink('test', 'path/to/test.html');
@@ -134,7 +134,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('9305caaec5.html#"*foo"');
+            expect(url).toEqual('be9d9563a3.html#"*foo"');
         });
     });
 

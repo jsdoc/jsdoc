@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true */
 describe("jsdoc/src/handlers", function() {
     var jsdoc = {src: { parser: require('jsdoc/src/parser')}},
         testParser = new jsdoc.src.parser.Parser(),
@@ -17,24 +18,24 @@ describe("jsdoc/src/handlers", function() {
 
     describe("attachTo", function() {
         it("should attach a 'jsdocCommentFound' handler to the parser", function() {
-            var callbacks = testParser.__bindings['jsdocCommentFound'];
+            var callbacks = testParser.listeners("jsdocCommentFound");
             expect(callbacks).toBeDefined();
             expect(callbacks.length).toEqual(1);
-            expect(typeof callbacks[0].handler).toEqual("function");
+            expect(typeof callbacks[0]).toEqual("function");
         });
 
         it("should attach a 'symbolFound' handler to the parser", function() {
-            var callbacks = testParser.__bindings['symbolFound'];
+            var callbacks = testParser.listeners("symbolFound");
             expect(callbacks).toBeDefined();
             expect(callbacks.length).toEqual(1);
-            expect(typeof callbacks[0].handler).toEqual("function");
+            expect(typeof callbacks[0]).toEqual("function");
         });
 
         it("should attach a 'fileComplete' handler to the parser", function() {
-            var callbacks = testParser.__bindings['fileComplete'];
+            var callbacks = testParser.listeners("fileComplete");
             expect(callbacks).toBeDefined();
             expect(callbacks.length).toEqual(1);
-            expect(typeof callbacks[0].handler).toEqual("function");
+            expect(typeof callbacks[0]).toEqual("function");
         });
     });
 

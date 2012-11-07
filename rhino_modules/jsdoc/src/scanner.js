@@ -1,26 +1,20 @@
 /**
     @module jsdoc/src/scanner
-    @requires module:common/fs
+    @requires module:fs
     
     @author Michael Mathews <micmath@gmail.com>
     @license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
 
 
-var common = {
-    mixin: require('common/util').mixin,
-    events: require('common/events')
-};
-
 var fs = require('fs');
 
 /**
     @constructor
-    @mixes module:common.events
+    @mixes module:events
  */
-exports.Scanner = function() {
-};
-common.mixin(exports.Scanner.prototype, common.events);
+exports.Scanner = function() {};
+exports.Scanner.prototype = Object.create( require('events').EventEmitter.prototype );
 
 /**
     Recursively searches the given searchPaths for js files.
@@ -30,7 +24,7 @@ common.mixin(exports.Scanner.prototype, common.events);
  */
 exports.Scanner.prototype.scan = function(searchPaths, depth, filter) {
     var filePaths = [],
-        that = this;
+        self = this;
 
     searchPaths = searchPaths || [];
     depth = depth || 1;
@@ -51,7 +45,7 @@ exports.Scanner.prototype.scan = function(searchPaths, depth, filter) {
     
     filePaths = filePaths.filter(function($) {
         var e = { fileName: $ };
-        that.fire('sourceFileFound', e);
+        self.emit('sourceFileFound', e);
         
         return !e.defaultPrevented;
     });

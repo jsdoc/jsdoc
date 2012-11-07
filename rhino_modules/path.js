@@ -1,6 +1,5 @@
-
 var isWindows = java.lang.System.getProperty("os.name").toLowerCase().contains("windows");
-var fileSeparator = exports.sep = java.lang.System.getProperty("file.separator");
+var fileSeparator = exports.sep = String( java.lang.System.getProperty("file.separator") );
 
 /**
  * Returns everything on a path except for the last item

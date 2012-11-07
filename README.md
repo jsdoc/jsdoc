@@ -1,10 +1,11 @@
 JSDoc 3
 =======
+[![Build Status](https://secure.travis-ci.org/jsdoc3/jsdoc.png)](http://travis-ci.org/jsdoc3/jsdoc)
 
 An inline API documentation processor for JavaScript. JSDoc 3 is intended to be
 an upgrade to JsDoc Toolkit (JSDoc 2).
 
-Want to contribute to JSDoc? Please read `HOW_TO_CONTRIBUTE.md`.
+Want to contribute to JSDoc? Please read `CONTRIBUTING.md`.
 
 
 Installation
@@ -88,7 +89,7 @@ See Also
 --------
 
 Project Documentation: <http://usejsdoc.org/> (under development)  
-Project Documentation Source: <https://github.com/micmath/micmath.github.com>  
+Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
 Project Announcements: <http://twitter.com/jsdoc3>

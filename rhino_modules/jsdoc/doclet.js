@@ -18,6 +18,8 @@ var jsdoc = {
     },
     name: require('jsdoc/name')
 };
+var path = require('path');
+
 
 function applyTag(tag) {
     if (tag.title === 'name') {
@@ -290,12 +292,11 @@ exports.Doclet.prototype.setMeta = function(meta) {
             The name of the file containing the code associated with this doclet.
             @type string
          */
-        var idx = meta.filename.lastIndexOf(String(java.lang.System.getProperty("file.separator")));
-        if (idx != -1) {
-            this.meta.path = meta.filename.substring(0, idx);
-            this.meta.filename = meta.filename.substring(idx + 1);
-        } else {
-            this.meta.filename = meta.filename;
+        this.meta.filename = path.basename(meta.filename);
+
+        var pathname = path.dirname(meta.filename);
+        if (pathname && pathname !== '.') {
+            this.meta.path = pathname;
         }
     }
     

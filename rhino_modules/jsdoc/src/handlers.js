@@ -78,8 +78,8 @@ exports.attachTo = function(parser) {
                         scope = 'static';
                     }
                     else if (newDoclet.name === 'module.exports' && currentModule) {
-                            newDoclet.addTag('name', currentModule);
-                            newDoclet.postProcess();
+                        newDoclet.addTag('name', currentModule);
+                        newDoclet.postProcess();
                     }
                     else {
                         // like /** @module foo */ exports = {bar: 1};
@@ -149,7 +149,7 @@ exports.attachTo = function(parser) {
         var e;
         if (newDoclet) {
             e = { doclet: newDoclet };
-            this.fire('newDoclet', e);
+            this.emit('newDoclet', e);
 
             if (!e.defaultPrevented) {
                 if ( !filter(newDoclet) ) {

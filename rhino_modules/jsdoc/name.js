@@ -1,4 +1,3 @@
-/*global Packages: true */
 /**
     A collection of functions relating to JSDoc symbol name manipulation.
     @module jsdoc/name
@@ -8,13 +7,14 @@
  */
 
 var jsdoc = {
-        tagDictionary: require('jsdoc/tag/dictionary')
-    };
+    tagDictionary: require('jsdoc/tag/dictionary')
+};
 
 var puncToScope = { '.': 'static', '~': 'inner', '#': 'instance' },
-    scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' },
-    Token  = Packages.org.mozilla.javascript.Token;
-    
+    scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' };
+
+var DEFAULT_SCOPE = 'static';
+
 /**
     Resolves the longname, memberof, variation and name values of the given doclet.
     @param {module:jsdoc/doclet.Doclet} doclet
@@ -36,14 +36,27 @@ exports.resolve = function(doclet) {
         memberof = ('' || memberof).replace(/\.prototype\.?/g, '#');
         
         // the name is a fullname, like @name foo.bar, @memberof foo
-        if (name && name.indexOf(memberof) === 0) {
-            about = exports.shorten(name, (doclet.forceMemberof? memberof : undefined));
+        if (name && name.indexOf(memberof) === 0 && name !== memberof) {
+            about = exports.shorten(name, (doclet.forceMemberof ? memberof : undefined));
         }
-        else if (name && /([#.~])$/.test(memberof) ) { // like @memberof foo# or @memberof foo~
-            about = exports.shorten(memberof + name, (doclet.forceMemberof? memberof : undefined));
+        // the name and memberof are identical and refer to a module,
+        // like @name module:foo, @memberof module:foo (probably a member like 'var exports')
+        else if (name && name === memberof && name.indexOf('module:') === 0) {
+            about = exports.shorten(name, (doclet.forceMemberof ? memberof : undefined));
         }
-        else if (name && doclet.scope ) { // like @memberof foo# or @memberof foo~
-            about = exports.shorten(memberof + (scopeToPunc[doclet.scope]||'') + name, (doclet.forceMemberof? memberof : undefined));
+        // the name and memberof are identical, like @name foo, @memberof foo
+        else if (name && name === memberof) {
+            doclet.scope = doclet.scope || DEFAULT_SCOPE;
+            name = memberof + scopeToPunc[doclet.scope] + name;
+            about = exports.shorten(name, (doclet.forceMemberof ? memberof : undefined));
+        }
+        // like @memberof foo# or @memberof foo~
+        else if (name && /([#.~])$/.test(memberof) ) {
+            about = exports.shorten(memberof + name, (doclet.forceMemberof ? memberof : undefined));
+        }
+        else if (name && doclet.scope) {
+            about = exports.shorten(memberof + (scopeToPunc[doclet.scope] || '') + name,
+                (doclet.forceMemberof ? memberof : undefined));
         }
     }
     else { // no @memberof
@@ -81,9 +94,9 @@ exports.resolve = function(doclet) {
                 doclet.name = doclet.name.substr(1);
             }
             else {
-                doclet.scope = 'static'; // default scope when none is provided
+                doclet.scope = DEFAULT_SCOPE;
             }
-         
+
             doclet.setLongname(doclet.memberof + scopeToPunc[doclet.scope] + doclet.name);
         }
     }

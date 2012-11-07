@@ -112,8 +112,10 @@ function print() {
     @param {Object} ... Object/s to dump out to console.
  */
 function dump() {
-    for (var i = 0, leni = arguments.length; i < leni; i++) {
-        print( require('jsdoc/util/dumper').dump(arguments[i]) );
+    var doop = require('jsdoc/util/doop').doop;
+    var _dump = require('jsdoc/util/dumper').dump;
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        print( _dump(doop(arguments[i])) );
     }
 }
 
@@ -318,7 +320,7 @@ function main() {
     }
 
     if (env.opts.query) {
-        env.opts.query = require('common/query').toObject(env.opts.query);
+        env.opts.query = require('querystring').parse(env.opts.query);
     }
 
     // which version of javascript will be supported? (rhino only)
