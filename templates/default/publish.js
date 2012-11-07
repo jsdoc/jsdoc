@@ -273,8 +273,6 @@ exports.publish = function(taffyData, opts, tutorials) {
     data().each(function(doclet) {
         doclet.ancestors = getAncestorLinks(doclet);
 
-        doclet.signature = '';
-        
         if (doclet.kind === 'member') {
             addSignatureTypes(doclet);
             addAttribs(doclet);

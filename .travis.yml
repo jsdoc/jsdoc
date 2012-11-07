@@ -1,0 +1,4 @@
+language: java
+
+script:
+  - "./jsdoc -T"
