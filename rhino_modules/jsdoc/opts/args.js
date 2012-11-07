@@ -10,10 +10,7 @@ var ArgParser = require('jsdoc/opts/argparser'),
 	hasOwnProp = Object.prototype.hasOwnProperty,
 	ourOptions,
 	querystring = require('querystring'),
-	util = require('util'),
-	defaults = {
-		destination: './out/'
-	};
+	util = require('util');
 
 
 // cast strings to booleans or integers where appropriate
@@ -74,7 +71,7 @@ argParser.addOption('t', 'template',    true,  'The name of the template to use.
 argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc env.dirname + /conf.json');
 argParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: utf-8');
 argParser.addOption('T', 'test',        false, 'Run all tests and quit.');
-argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
+argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: ./out/');
 argParser.addOption('p', 'private',     false, 'Display symbols marked with the @private tag. Default: false');
 argParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
 argParser.addOption('l', 'lenient',     false, 'Continue to generate output if a doclet is incomplete or contains errors. Default: false');
@@ -103,7 +100,7 @@ exports.parse = function(args) {
 		args = (''+args).split(/\s+/g);
 	}
 
-	ourOptions = argParser.parse(args, defaults);
+	ourOptions = argParser.parse(args);
 
 	return ourOptions;
 };

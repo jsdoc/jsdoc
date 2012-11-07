@@ -190,6 +190,7 @@ function main() {
             }
         },
         resolver,
+        _ = require('underscore'),
         fs = require('fs'),
         path = require('path'),
         taffy = require('taffydb').taffy,
@@ -285,10 +286,13 @@ function main() {
         return result;
     }
 
+    env.vm = detectVm();
+
+    var defaultOpts = {
+        destination: './out/'
+    };
 
     env.opts = jsdoc.opts.args.parse(env.args);
-
-    env.vm = detectVm();
 
     try {
         env.conf = new Config( fs.readFileSync( env.opts.configure || env.dirname + '/conf.json' ) ).get();
@@ -305,19 +309,8 @@ function main() {
         }
     }
 
-    // allow to pass arguments from configuration file
-    if (env.conf.opts) {
-        for (var opt in env.conf.opts) {
-            // arguments passed in command are more important
-            if (!(opt in env.opts)) {
-                env.opts[opt] = env.conf.opts[opt];
-            }
-        }
-        // command file list is concatenated after conf list
-        if( env.conf.opts._ ){
-            env.opts._ = env.conf.opts._.concat( env.opts._ );
-        }
-    }
+    // look for options on the command line, in the config file, and in the defaults, in that order
+    env.opts = _.defaults(env.opts, env.conf.opts, defaultOpts);
 
     // which version of javascript will be supported? (rhino only)
     if (typeof version === 'function') {
