@@ -319,17 +319,13 @@ function main() {
         }
     }
 
-    if (env.opts.query) {
-        env.opts.query = require('querystring').parse(env.opts.query);
-    }
-
     // which version of javascript will be supported? (rhino only)
     if (typeof version === 'function') {
         version(env.conf.jsVersion || 180);
     }
 
     if (env.opts.help) {
-        console.log( jsdoc.opts.parser.help() );
+        console.log( jsdoc.opts.args.help() );
         process.exit(0);
     } else if (env.opts.test) {
         include('test/runner.js');

@@ -1,6 +1,7 @@
 /*global describe: true, expect: true, it: true */
 describe("jsdoc/opts/args", function() {
     var args = require('jsdoc/opts/args');
+    var querystring = require('querystring');
 
     it("should exist", function() {
         expect(args).toBeDefined();
@@ -121,6 +122,20 @@ describe("jsdoc/opts/args", function() {
             expect(r.recurse).toEqual(true);
         });
 
+        it("should accept a '-l' option and return an object with a 'lenient' property", function() {
+            args.parse(['-l']);
+            var r = args.get();
+
+            expect(r.lenient).toEqual(true);
+        });
+
+        it("should accept a '--lenient' option and return an object with a 'lenient' property", function() {
+            args.parse(['--lenient']);
+            var r = args.get();
+
+            expect(r.lenient).toEqual(true);
+        });
+
         it("should accept a '-h' option and return an object with a 'help' property", function() {
             args.parse(['-h']);
             var r = args.get();
@@ -153,14 +168,27 @@ describe("jsdoc/opts/args", function() {
             args.parse(['-q', 'foo=bar&fab=baz']);
             var r = args.get();
 
-            expect(r.query).toEqual('foo=bar&fab=baz');
+            expect(r.query).toEqual({ foo: 'bar', fab: 'baz' });
         });
 
         it("should accept a '--query' option and return an object with a 'query' property", function() {
             args.parse(['--query', 'foo=bar&fab=baz']);
             var r = args.get();
 
-            expect(r.query).toEqual('foo=bar&fab=baz');
+            expect(r.query).toEqual({ foo: 'bar', fab: 'baz' });
+        });
+
+        it("should use type coercion on the 'query' property so it has real booleans and numbers", function() {
+            var obj = {
+                foo: 'fab',
+                bar: true,
+                baz: false,
+                qux: [1, -97]
+            };
+            args.parse(['-q', querystring.stringify(obj)]);
+            var r = args.get();
+
+            expect(r.query).toEqual(obj);
         });
 
         it("should accept a '-t' option and return an object with a 'tutorials' property", function() {
@@ -177,25 +205,11 @@ describe("jsdoc/opts/args", function() {
             expect(r.tutorials).toEqual('mytutorials');
         });
 
-        it("should accept a naked option (i.e. no '-') and return an object with a '_' property", function() {
-            args.parse(['myfile1', 'myfile2']);
-            var r = args.get();
-
-            expect(r._).toEqual(['myfile1', 'myfile2']);
-        });
-
         it("should accept a '--verbose' option and return an object with a 'verbose' property", function() {
             args.parse(['--verbose']);
             var r = args.get();
 
             expect(r.verbose).toEqual(true);
-        });
-
-        it("should accept a '--nocolor' option and return an object with a 'nocolor' property", function() {
-            args.parse(['--nocolor']);
-            var r = args.get();
-
-            expect(r.nocolor).toEqual(true);
         });
 
         it("should accept a '--match' option and return an object with a 'match' property", function() {
@@ -205,11 +219,25 @@ describe("jsdoc/opts/args", function() {
             expect(r.match).toEqual('.*tag');
         });
 
-        it("should accept a multiple '--match' options and return an object with a 'match' property", function() {
+        it("should accept multiple '--match' options and return an object with a 'match' property", function() {
             args.parse(['--match', '.*tag', '--match', 'parser']);
             var r = args.get();
 
             expect(r.match).toEqual(['.*tag', 'parser']);
+        });
+
+        it("should accept a '--nocolor' option and return an object with a 'nocolor' property", function() {
+            args.parse(['--nocolor']);
+            var r = args.get();
+
+            expect(r.nocolor).toEqual(true);
+        });
+
+        it("should accept a naked option (i.e. no '-') and return an object with a '_' property", function() {
+            args.parse(['myfile1', 'myfile2']);
+            var r = args.get();
+
+            expect(r._).toEqual(['myfile1', 'myfile2']);
         });
 
         //TODO: tests for args that must have values

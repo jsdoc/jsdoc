@@ -7,22 +7,80 @@
 
 var ArgParser = require('jsdoc/opts/argparser'),
 	argParser = new ArgParser(),
+	hasOwnProp = Object.prototype.hasOwnProperty,
 	ourOptions,
+	querystring = require('querystring'),
+	util = require('util'),
 	defaults = {
 		destination: './out/'
 	};
+
+
+// cast strings to booleans or integers where appropriate
+function castTypes(item) {
+	var result = item;
+
+	switch (result) {
+		case 'true':
+			return true;
+		case 'false':
+			return false;
+		default:
+			// might be an integer
+			var integer = parseInt(result, 10);
+			if (String(integer) === result && integer !== 'NaN') {
+				return integer;
+			} else {
+				return result;
+			}
+	}
+}
+
+// check for strings that we need to cast to other types
+function fixTypes(item) {
+	var result = item;
+
+	// recursively process arrays and objects
+	if ( util.isArray(result) ) {
+		for (var i = 0, l = result.length; i < l; i++) {
+			result[i] = fixTypes(result[i]);
+		}
+	} else if (typeof result === 'object') {
+		for (var prop in result) {
+			if ( hasOwnProp.call(result, prop) ) {
+				result[prop] = fixTypes(result[prop]);
+			}
+		}
+	} else {
+		result = castTypes(result);
+	}
+
+	return result;
+}
+
+function parseQuery(str) {
+	var result = querystring.parse(str);
+
+	for (var prop in result) {
+		if ( hasOwnProp.call(result, prop) ) {
+			result[prop] = fixTypes(result[prop]);
+		}
+	}
+
+	return result;
+}
 
 argParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
 argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc env.dirname + /conf.json');
 argParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: utf-8');
 argParser.addOption('T', 'test',        false, 'Run all tests and quit.');
 argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: console');
-argParser.addOption('p', 'private',     false, 'Display symbols marked with the @private tag. Default: false.');
+argParser.addOption('p', 'private',     false, 'Display symbols marked with the @private tag. Default: false');
 argParser.addOption('r', 'recurse',     false, 'Recurse into subdirectories when scanning for source code files.');
-argParser.addOption('l', 'lenient',     false, 'Continue to generate output if a doclet is incomplete or contains errors. Default: false.');
+argParser.addOption('l', 'lenient',     false, 'Continue to generate output if a doclet is incomplete or contains errors. Default: false');
 argParser.addOption('h', 'help',        false, 'Print this message and quit.');
 argParser.addOption('X', 'explain',     false, 'Dump all found doclet internals to console and quit.');
-argParser.addOption('q', 'query',       true,  'Provide a querystring to define custom variable names/values to add to the options hash.');
+argParser.addOption('q', 'query',       true,  'A query string to parse and store in env.opts.query. Example: foo=bar&baz=true', false, parseQuery);
 argParser.addOption('u', 'tutorials',   true,  'Directory in which JSDoc should search for tutorials.');
 
 //TODO [-R, recurseonly] = a number representing the depth to recurse
