@@ -5,6 +5,7 @@
 
 var crypto = require('crypto');
 var dictionary = require('jsdoc/tag/dictionary');
+var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var files = {};
 
@@ -33,26 +34,51 @@ function getNamespace(kind) {
 }
 
 function makeFilenameUnique(filename, str) {
-    //add suffix underscore until filename gets unique
-    while (filename in files && files[filename] !== str) {
-        filename += '_';
+    var key = filename.toLowerCase();
+    var nonUnique = true;
+
+    // append enough underscores to make the filename unique
+    while (nonUnique) {
+        if ( files[key] && hasOwnProp.call(files, key) ) {
+            filename += '_';
+            key = filename.toLowerCase();
+        } else {
+            nonUnique = false;
+        }
     }
-    files[filename] = str;
+
+    files[key] = str;
     return filename;
 }
 
 // compute it here just once
 var nsprefix = /^(event|module|external):/;
 
-function strToFilename(str) {
+/**
+ * Convert a string to a unique filename, including an extension.
+ *
+ * Filenames are cached to ensure that they are used only once. For example, if the same string is
+ * passed in twice, two different filenames will be returned.
+ *
+ * Also, filenames are not considered unique if they are capitalized differently but are otherwise
+ * identical.
+ * @param {string} str The string to convert.
+ * @return {string} The filename to use for the string.
+ */
+var getUniqueFilename = exports.getUniqueFilename = function(str) {
+    var result;
+
     // allow for namespace prefix
     var basename = str.replace(nsprefix, '$1-');
     
     if ( /[^$a-z0-9._\-]/i.test(basename) ) {
-        return crypto.createHash('sha1').update(str).digest('hex').substr(0, 10);
+        result = crypto.createHash('sha1').update(str).digest('hex').substr(0, 10);
+    } else {
+        result = makeFilenameUnique(basename, str);
     }
-    return makeFilenameUnique(basename, str);
-}
+
+    return result + exports.fileExtension;
+};
 
 // two-way lookup
 var linkMap = {
@@ -310,7 +336,7 @@ var tutorialToUrl = exports.tutorialToUrl = function(tutorial) {
         return;
     }
 
-    return 'tutorial-' + strToFilename(node.name) + exports.fileExtension;
+    return 'tutorial-' + getUniqueFilename(node.name);
 };
 
 /**
@@ -380,15 +406,13 @@ exports.createLink = function(doclet) {
     
     if (containers.indexOf(doclet.kind) < 0) {
         longname = doclet.longname;
-        filename = strToFilename(doclet.memberof || exports.globalName);
+        filename = getUniqueFilename(doclet.memberof || exports.globalName);
         
-        url = filename + exports.fileExtension + '#' + getNamespace(doclet.kind) + doclet.name;
+        url = filename + '#' + getNamespace(doclet.kind) + doclet.name;
     }
     else {
         longname = doclet.longname;
-        filename = strToFilename(longname);
-        
-        url = filename + exports.fileExtension;
+        url = getUniqueFilename(longname);
     }
     
     return url;

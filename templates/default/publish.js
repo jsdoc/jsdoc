@@ -4,6 +4,8 @@ var template = require('jsdoc/template'),
     path = require('path'),
     taffy = require('taffydb').taffy,
     helper = require('jsdoc/util/templateHelper'),
+    htmlsafe = helper.htmlsafe,
+    linkto = helper.linkto,
     scopeToPunc = helper.scopeToPunc,
     hasOwnProp = Object.prototype.hasOwnProperty,
     data,
@@ -22,10 +24,6 @@ function tutoriallink(tutorial) {
 function getAncestorLinks(doclet) {
     return helper.getAncestorLinks(data, doclet);
 }
-
-var linkto = helper.linkto;
-
-var htmlsafe = helper.htmlsafe;
 
 function hashToLink(doclet, hash) {
     if ( !/^(#.+)/.test(hash) ) { return hash; }
@@ -196,6 +194,11 @@ exports.publish = function(taffyData, opts, tutorials) {
     var templatePath = opts.template;
     view = new template.Template(templatePath + '/tmpl');
     
+    // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
+    // doesn't try to hand them out later
+    helper.getUniqueFilename('index');
+    helper.getUniqueFilename('global');
+
     // set up templating
     view.layout = 'layout.tmpl';
 
@@ -297,53 +300,54 @@ exports.publish = function(taffyData, opts, tutorials) {
     // once for all
     view.nav = buildNav(members);
 
-    for (var longname in helper.longnameToUrl) {
-        if ( hasOwnProp.call(helper.longnameToUrl, longname) ) {
-            // reuse 'members', which speeds things up a bit
-            var classes = taffy(members.classes);
-            classes = helper.find(classes, {longname: longname});
-            if (classes.length) {
-                generate('Class: ' + classes[0].name, classes, helper.longnameToUrl[longname]);
-            }
-    
-            var modules = taffy(members.modules);
-            modules = helper.find(modules, {longname: longname});
-            if (modules.length) {
-                generate('Module: ' + modules[0].name, modules, helper.longnameToUrl[longname]);
-            }
-        
-            var namespaces = taffy(members.namespaces);
-            namespaces = helper.find(namespaces, {longname: longname});
-            if (namespaces.length) {
-                generate('Namespace: ' + namespaces[0].name, namespaces, helper.longnameToUrl[longname]);
-            }
-        
-            var mixins = taffy(members.mixins);
-            mixins = helper.find(mixins, {longname: longname});
-            if (mixins.length) {
-                generate('Mixin: ' + mixins[0].name, mixins, helper.longnameToUrl[longname]);
-            }
-    
-            var externals = taffy(members.externals);
-            externals = helper.find(externals, {longname: longname});
-            if (externals.length) {
-                generate('External: ' + externals[0].name, externals, helper.longnameToUrl[longname]);
-            }
-        }
-    }
-
-    if (members.globals.length) { generate('Global', members.globals, 'global.html'); }
+    if (members.globals.length) { generate('Global', members.globals, 'global' + helper.fileExtension); }
     
     // index page displays information from package.json and lists files
     var files = find({kind: 'file'}),
         packages = find({kind: 'package'});
 
     generate('Index',
-		packages.concat(
+        packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
-		).concat(files),
-	'index.html');
+        ).concat(files),
+    'index' + helper.fileExtension);
+
+    // set up the lists that we'll use to generate pages
+    var classes = taffy(members.classes);
+    var modules = taffy(members.modules);
+    var namespaces = taffy(members.namespaces);
+    var mixins = taffy(members.mixins);
+    var externals = taffy(members.externals);
     
+    for (var longname in helper.longnameToUrl) {
+        if ( hasOwnProp.call(helper.longnameToUrl, longname) ) {
+            var myClasses = helper.find(classes, {longname: longname});
+            if (myClasses.length) {
+                generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
+            }
+            
+            var myModules = helper.find(modules, {longname: longname});
+            if (myModules.length) {
+                generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
+            }
+
+            var myNamespaces = helper.find(namespaces, {longname: longname});
+            if (myNamespaces.length) {
+                generate('Namespace: ' + myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
+            }
+            
+            var myMixins = helper.find(mixins, {longname: longname});
+            if (myMixins.length) {
+                generate('Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
+            }
+
+            var myExternals = helper.find(externals, {longname: longname});
+            if (myExternals.length) {
+                generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
+            }
+        }
+    }
+
     // TODO: move the tutorial functions to templateHelper.js
     function generateTutorial(title, tutorial, filename) {
         var tutorialData = {
