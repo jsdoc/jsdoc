@@ -9,24 +9,37 @@
 
 
 var dictionary = require('jsdoc/tag/dictionary');
+var format = require('util').format;
+
+function buildMessage(tagName, meta, desc) {
+    var result = format('The @%s tag %s. File: %s, line: %s', tagName, desc, meta.filename,
+        meta.lineno);
+    if (meta.comment) {
+        result += '\n' + meta.comment;
+    }
+    return result;
+}
 
 function UnknownTagError(tagName, meta) {
     this.name = 'UnknownTagError';
-    this.message = 'The @' + tagName + ' tag is not a known tag. File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
+    this.message = buildMessage(tagName, meta, 'is not a known tag');
 }
-UnknownTagError.prototype = Error.prototype;
+UnknownTagError.prototype = new Error();
+UnknownTagError.prototype.constructor = UnknownTagError;
 
 function TagValueRequiredError(tagName, meta) {
     this.name = 'TagValueRequiredError';
-    this.message = 'The @' + tagName + ' tag requires a value. File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
+    this.message = buildMessage(tagName, meta, 'requires a value');
 }
-TagValueRequiredError.prototype = Error.prototype;
+TagValueRequiredError.prototype = new Error();
+TagValueRequiredError.prototype.constructor = TagValueRequiredError;
 
 function TagValueNotPermittedError(tagName, meta) {
     this.name = 'TagValueNotPermittedError';
-    this.message = 'The @' + tagName + ' tag does not permit a value. File: ' + meta.filename + ', Line: ' + meta.lineno + '\n' + meta.comment;
+    this.message = buildMessage(tagName, meta, 'does not permit a value');
 }
-TagValueNotPermittedError.prototype = Error.prototype;
+TagValueNotPermittedError.prototype = new Error();
+TagValueNotPermittedError.prototype.constructor = TagValueNotPermittedError;
 
 /**
     Validate the given tag.

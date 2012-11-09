@@ -21,7 +21,7 @@ exports.handle = function(e) {
 
 		// include the error type if it's an Error object
 		if (e instanceof Error) {
-			msg = e.constructor.name + ": " + msg;
+			msg = e.name + ': ' + msg;
 		}
 
 		console.log(msg);
