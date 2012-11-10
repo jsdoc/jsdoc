@@ -1,4 +1,4 @@
-/*global app: true, args: true, env: true, Packages: true, publish: true */
+/*global __timerPool: true, app: true, args: true, env: true, Packages: true, publish: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -433,5 +433,8 @@ catch(e) {
 }
 finally {
     env.run.finish = new Date();
-    process.exit(0);
+    // on Rhino, we never exit unless we shut down the timer pool
+    if (__timerPool) {
+        __timerPool.shutdownNow();
+    }
 }
