@@ -426,12 +426,12 @@ function main() {
 try { main(); }
 catch(e) {
      if (e.rhinoException != null) {
-        // TODO: print to stderr
-        e.rhinoException.printStackTrace();
+         e.rhinoException.printStackTrace();
      } else {
         throw e;
     }
 }
 finally {
     env.run.finish = new Date();
+    process.exit(0);
 }
