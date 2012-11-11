@@ -423,18 +423,16 @@ function main() {
     }
 }
 
-try { main(); }
-catch(e) {
-     if (e.rhinoException != null) {
-         e.rhinoException.printStackTrace();
-     } else {
-        throw e;
-    }
-}
-finally {
+try {
+    main();
     env.run.finish = new Date();
-    // on Rhino, we never exit unless we shut down the timer pool
-    if (__timerPool) {
-        __timerPool.shutdownNow();
+    process.exit(0);
+}
+catch(e) {
+    env.run.finish = new Date();
+    if (e.rhinoException != null) {
+        e.rhinoException.printStackTrace();
+    } else {
+        throw e;
     }
 }
