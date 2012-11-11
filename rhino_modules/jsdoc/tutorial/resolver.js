@@ -14,7 +14,7 @@ var tutorial = require('jsdoc/tutorial'),
     hasOwnProp = Object.prototype.hasOwnProperty,
     conf = {},
     tutorials = {},
-    finder = /^(.*)\.(x(?:ht)?ml|html?|md|markdown|js(?:on)?)$/i;
+    finder = /^(.*)\.(x(?:ht)?ml|html?|md|markdown|json)$/i;
 
 /** Adds new tutorial.
     @param {tutorial.Tutorial} current - New tutorial.
@@ -75,7 +75,6 @@ exports.load = function(_path) {
                     break;
 
                 // configuration file
-                case 'js':
                 case 'json':
                     conf[name] = JSON.parse(content);
                     // don't add this as a tutorial
@@ -100,9 +99,7 @@ exports.resolve = function() {
         current;
     for (var name in conf) {
         if ( hasOwnProp.call(conf, name) ) {
-            // should we be restrictive here?
-            // what is someone just wants to keep sample sources in same directory with tutorials?
-            // I've decided to leave such cases alone
+            // TODO: should we complain about this?
             if (!(name in tutorials)) {
                 continue;
             }

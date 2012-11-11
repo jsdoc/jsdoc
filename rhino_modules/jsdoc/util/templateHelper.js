@@ -86,6 +86,11 @@ var linkMap = {
     urlToLongname: {}
 };
 
+var tutorialLinkMap = {
+    nameToUrl: {},
+    urlToName: {}
+};
+
 var longnameToUrl = exports.longnameToUrl = linkMap.longnameToUrl;
 
 var linkto = exports.linkto = function(longname, linktext) {
@@ -336,7 +341,15 @@ var tutorialToUrl = exports.tutorialToUrl = function(tutorial) {
         return;
     }
 
-    return 'tutorial-' + getUniqueFilename(node.name);
+    var url;
+    // define the URL if necessary
+    if (!tutorialLinkMap.nameToUrl[node.name]) {
+        url = 'tutorial-' + getUniqueFilename(node.name);
+        tutorialLinkMap.nameToUrl[node.name] = url;
+        tutorialLinkMap.urlToName[url] = node.name;
+    }
+
+    return tutorialLinkMap.nameToUrl[node.name];
 };
 
 /**
