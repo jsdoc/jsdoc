@@ -9,6 +9,11 @@ describe("jsdoc/util/templateHelper", function() {
         expect(typeof helper).toEqual('object');
     });
 
+    it("should export a 'setTutorials' function", function() {
+        expect(helper.setTutorials).toBeDefined();
+        expect(typeof helper.setTutorials).toEqual("function");
+    });
+
     it("should export a 'globalName' property", function() {
         expect(helper.globalName).toBeDefined();
         expect(typeof helper.globalName).toEqual("string");
@@ -29,6 +34,76 @@ describe("jsdoc/util/templateHelper", function() {
         expect(typeof helper.getUniqueFilename).toEqual("function");
     });
 
+    it("should export a 'longnameToUrl' property", function() {
+        expect(helper.longnameToUrl).toBeDefined();
+        expect(typeof helper.longnameToUrl).toEqual("object");
+    });
+
+    it("should export a 'linkto' function", function() {
+        expect(helper.linkto).toBeDefined();
+        expect(typeof helper.linkto).toEqual("function");
+    });
+
+    it("should export an 'htmlsafe' function", function() {
+        expect(helper.htmlsafe).toBeDefined();
+        expect(typeof helper.htmlsafe).toEqual("function");
+    });
+
+    it("should export a 'find' function", function() {
+        expect(helper.find).toBeDefined();
+        expect(typeof helper.find).toEqual("function");
+    });
+
+    it("should export a 'getMembers' function", function() {
+        expect(helper.getMembers).toBeDefined();
+        expect(typeof helper.getMembers).toEqual("function");
+    });
+
+    it("should export a 'getAttribs' function", function() {
+        expect(helper.getAttribs).toBeDefined();
+        expect(typeof helper.getAttribs).toEqual("function");
+    });
+
+    it("should export a 'getSignatureTypes' function", function() {
+        expect(helper.getSignatureTypes).toBeDefined();
+        expect(typeof helper.getSignatureTypes).toEqual("function");
+    });
+
+    it("should export a 'getSignatureParams' function", function() {
+        expect(helper.getSignatureParams).toBeDefined();
+        expect(typeof helper.getSignatureParams).toEqual("function");
+    });
+
+    it("should export a 'getSignatureReturns' function", function() {
+        expect(helper.getSignatureReturns).toBeDefined();
+        expect(typeof helper.getSignatureReturns).toEqual("function");
+    });
+
+    it("should export a 'getAncestorLinks' function", function() {
+        expect(helper.getAncestorLinks).toBeDefined();
+        expect(typeof helper.getAncestorLinks).toEqual("function");
+    });
+
+    it("should export a 'prune' function", function() {
+        expect(helper.prune).toBeDefined();
+        expect(typeof helper.prune).toEqual("function");
+    });
+
+    it("should export a 'registerLink' function", function() {
+        expect(helper.registerLink).toBeDefined();
+        expect(typeof helper.registerLink).toEqual("function");
+    });
+
+    it("should export a 'tutorialToUrl' function", function() {
+        expect(helper.tutorialToUrl).toBeDefined();
+        expect(typeof helper.tutorialToUrl).toEqual("function");
+    });
+
+    it("should export a 'toTutorial' function", function() {
+        expect(helper.toTutorial).toBeDefined();
+        expect(typeof helper.toTutorial).toEqual("function");
+    });
+
     it("should export a 'resolveLinks' function", function() {
         expect(helper.resolveLinks).toBeDefined();
         expect(typeof helper.resolveLinks).toEqual("function");
@@ -39,21 +114,10 @@ describe("jsdoc/util/templateHelper", function() {
         expect(typeof helper.createLink).toEqual("function");
     });
 
-    it("should export a 'setTutorials' function", function() {
-        expect(helper.setTutorials).toBeDefined();
-        expect(typeof helper.setTutorials).toEqual("function");
-    });
 
-    it("should export a 'toTutorial' function", function() {
-        expect(helper.toTutorial).toBeDefined();
-        expect(typeof helper.toTutorial).toEqual("function");
+    xdescribe("setTutorials", function() {
+        // TODO
     });
-
-    it("should export a 'tutorialToUrl' function", function() {
-        expect(helper.tutorialToUrl).toBeDefined();
-        expect(typeof helper.tutorialToUrl).toEqual("function");
-    });
-
 
     describe("globalName", function() {
         it("should equal 'global'", function() {
@@ -99,6 +163,121 @@ describe("jsdoc/util/templateHelper", function() {
             var filename2 = helper.getUniqueFilename(pascal);
 
             expect( filename1.toLowerCase() ).not.toEqual( filename2.toLowerCase() );
+        });
+    });
+
+    xdescribe("longnameToUrl", function() {
+        // TODO
+    });
+
+    xdescribe("linkto", function() {
+        // TODO
+    });
+
+    xdescribe("htmlsafe", function() {
+        // TODO
+    });
+
+    xdescribe("find", function() {
+        // TODO
+    });
+
+    xdescribe("getMembers", function() {
+        // TODO
+    });
+
+    xdescribe("getAttribs", function() {
+        // TODO
+    });
+
+    xdescribe("getSignatureTypes", function() {
+        // TODO
+    });
+
+    xdescribe("getSignatureParams", function() {
+        // TODO
+    });
+
+    xdescribe("getSignatureReturns", function() {
+        // TODO
+    });
+
+    xdescribe("getAncestorLinks", function() {
+        // TODO
+    });
+
+    xdescribe("prune", function() {
+        // TODO
+    });
+
+    xdescribe("registerLink", function() {
+        // TODO
+    });
+
+    describe("tutorialToUrl", function() {
+        /*jshint evil: true */
+        
+        // TODO: more tests
+
+        var lenient = !!env.opts.lenient,
+            log = eval(console.log);
+
+        function missingTutorial() {
+            var url = helper.tutorialToUrl("be-a-perfect-person-in-just-three-days");
+        }
+
+        beforeEach(function() {
+            var root = require('jsdoc/tutorial/resolver').root;
+            helper.setTutorials(root);
+        });
+
+        afterEach(function() {
+            helper.setTutorials(null);
+            env.opts.lenient = lenient;
+            console.log = log;
+        });
+
+        it('throws an exception if the tutorial is missing and the lenient option is not enabled', function() {
+            env.opts.lenient = false;
+            expect(missingTutorial).toThrow();
+        });
+        
+        it('does not throw an exception if the tutorial is missing and the lenient option is enabled', function() {
+            console.log = function() {};
+            env.opts.lenient = true;
+
+            expect(missingTutorial).not.toThrow();
+        });
+    });
+
+    describe("toTutorial", function() {
+        /*jshint evil: true */
+        
+        // TODO: more tests
+
+        var lenient = !!env.opts.lenient,
+            log = eval(console.log);
+
+        function missingParam() {
+            helper.toTutorial();
+        }
+
+        afterEach(function() {
+            env.opts.lenient = lenient;
+            console.log = log;
+        });
+
+        it('throws an exception if the first param is missing and the lenient option is not enabled', function() {
+            env.opts.lenient = false;
+
+            expect(missingParam).toThrow();
+        });
+        
+        it('does not throw an exception if the first param is missing and the lenient option is enabled', function() {
+            console.log = function() {};
+            env.opts.lenient = true;
+
+            expect(missingParam).not.toThrow();
         });
     });
 
@@ -205,85 +384,6 @@ describe("jsdoc/util/templateHelper", function() {
                 url = helper.createLink(mockDoclet);
 
             expect(url).toEqual('be9d9563a3.html#"*foo"');
-        });
-    });
-
-    xdescribe("registerLink", function() {
-        // TODO
-    });
-
-    xdescribe("longnameToUrl", function() {
-        // TODO
-    });
-
-    xdescribe("setTutorials", function() {
-        // TODO
-    });
-
-    describe("toTutorial", function() {
-        /*jshint evil: true */
-        
-        // TODO: more tests
-
-        var lenient = !!env.opts.lenient,
-            log = eval(console.log);
-
-        function missingParam() {
-            helper.toTutorial();
-        }
-
-        afterEach(function() {
-            env.opts.lenient = lenient;
-            console.log = log;
-        });
-
-        it('throws an exception if the first param is missing and the lenient option is not enabled', function() {
-            env.opts.lenient = false;
-
-            expect(missingParam).toThrow();
-        });
-        
-        it('does not throw an exception if the first param is missing and the lenient option is enabled', function() {
-            console.log = function() {};
-            env.opts.lenient = true;
-
-            expect(missingParam).not.toThrow();
-        });
-    });
-
-    describe("tutorialToUrl", function() {
-        /*jshint evil: true */
-        
-        // TODO: more tests
-
-        var lenient = !!env.opts.lenient,
-            log = eval(console.log);
-
-        function missingTutorial() {
-            var url = helper.tutorialToUrl("be-a-perfect-person-in-just-three-days");
-        }
-
-        beforeEach(function() {
-            var root = require('jsdoc/tutorial/resolver').root;
-            helper.setTutorials(root);
-        });
-
-        afterEach(function() {
-            helper.setTutorials(null);
-            env.opts.lenient = lenient;
-            console.log = log;
-        });
-
-        it('throws an exception if the tutorial is missing and the lenient option is not enabled', function() {
-            env.opts.lenient = false;
-            expect(missingTutorial).toThrow();
-        });
-        
-        it('does not throw an exception if the tutorial is missing and the lenient option is enabled', function() {
-            console.log = function() {};
-            env.opts.lenient = true;
-
-            expect(missingTutorial).not.toThrow();
         });
     });
 });
