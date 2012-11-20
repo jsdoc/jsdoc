@@ -7,8 +7,6 @@
  * @author Ben Blank <ben.blank@gmail.com>
  */
 
-var conf = env.conf.markdown;
-
 /**
  * Enumeration of Markdown parsers that are available.
  * @enum {String}
@@ -50,12 +48,24 @@ function getParseFunction(parser, conf) {
         parser.hardwrap = !!conf.hardwrap;
 
         return function(source) {
+            // 1. protect underscores within inline tags {@....}
+            source = source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
+                return wholeMatch.replace(/(^|[^\\])_/g, '$1\\_');
+            });
+            // 2. send through markdown (the protective '\' will be removed
+            // by the parser)
             return parser.parse(source, githubConf);
         };
     } else if (parser === parsers.evilstreak) {
         parser = require(parser).markdown;
 
         return function(source) {
+            // 1. protect underscores within inline tags {@....}
+            source = source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
+                return wholeMatch.replace(/(^|[^\\])_/g, '$1\\_');
+            });
+            // 2. send through markdown (the protective '\' will be removed
+            // by the parser)
             // evilstreak parser expects line endings to be \n
             source = source.replace(/\r\n|\r/g, '\n');
             return parser.toHTML(source, conf.dialect);
@@ -75,6 +85,7 @@ function getParseFunction(parser, conf) {
  * @throws {Error} If the value of `env.conf.markdown.parser` does not correspond to a known parser.
  */
 exports.getParser = function() {
+    var conf = env.conf.markdown;
     if (conf && conf.parser) {
         return getParseFunction(parsers[conf.parser], conf);
     } else if (conf && conf.githubRepoOwner && conf.githubRepoName) {
