@@ -63,7 +63,6 @@ function getParseFunction(parser, conf) {
 
         return function(source) {
             source = escapeUnderscores(source);
-            // by the parser)
             return parser.parse(source, githubConf);
         };
     } else if (parser === parsers.evilstreak) {
