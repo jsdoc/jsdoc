@@ -7,8 +7,6 @@
  * @author Ben Blank <ben.blank@gmail.com>
  */
 
-var conf = env.conf.markdown;
-
 /**
  * Enumeration of Markdown parsers that are available.
  * @enum {String}
@@ -22,6 +20,20 @@ var parsers = {
      */
     gfm: "github-flavored-markdown"
 };
+
+/**
+ * Escape underscores that occur within {@ ... } in order to protect them
+ * from the markdown parser(s).
+ * @param {String} source the source text to sanitize.
+ * @returns {String} `source` where underscores within {@ ... } have been
+ * protected with a preceding backslash (i.e. \_) -- the markdown parsers
+ * will strip the backslash and protect the underscore.
+ */
+function escapeUnderscores(source) {
+    return source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
+        return wholeMatch.replace(/(^|[^\\])_/g, '$1\\_');
+    });
+}
 
 /**
  * Retrieve a function that accepts a single parameter containing Markdown source. The function uses
@@ -50,12 +62,14 @@ function getParseFunction(parser, conf) {
         parser.hardwrap = !!conf.hardwrap;
 
         return function(source) {
+            source = escapeUnderscores(source);
             return parser.parse(source, githubConf);
         };
     } else if (parser === parsers.evilstreak) {
         parser = require(parser).markdown;
 
         return function(source) {
+            source = escapeUnderscores(source);
             // evilstreak parser expects line endings to be \n
             source = source.replace(/\r\n|\r/g, '\n');
             return parser.toHTML(source, conf.dialect);
@@ -75,6 +89,7 @@ function getParseFunction(parser, conf) {
  * @throws {Error} If the value of `env.conf.markdown.parser` does not correspond to a known parser.
  */
 exports.getParser = function() {
+    var conf = env.conf.markdown;
     if (conf && conf.parser) {
         return getParseFunction(parsers[conf.parser], conf);
     } else if (conf && conf.githubRepoOwner && conf.githubRepoName) {
