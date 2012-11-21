@@ -5,6 +5,8 @@
 
 var crypto = require('crypto');
 var dictionary = require('jsdoc/tag/dictionary');
+var util = require('util');
+
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var files = {};
@@ -103,15 +105,128 @@ var htmlsafe = exports.htmlsafe = function(str) {
 };
 
 /**
- * Find items in a TaffyDB database that match the specified key-value pairs.
- * @param {TAFFY} data The TaffyDB database to search.
- * @param {object|function} spec Key-value pairs to match against (for example,
- * `{ longname: 'foo' }`), or a function that returns `true` if a value matches or `false` if it
- * does not match.
- * @return {array<object>} The matching items.
+ * Check whether `data` is a TaffyDB or an array of objects.
+ * @private
+ * @param {TAFFY|Array.<Object>} data A TaffyDB or array of objects.
+ * @return {boolean} Set to `true` if `data` is a TaffyDB or `false` if `data` is an array of
+ * objects.
  */
-var find = exports.find = function(data, spec) {
-    return data(spec).get();
+function isTaffy(data) {
+    // reliable enough for our purposes
+    return !util.isArray(data);
+}
+
+/**
+ * Find items in a TaffyDB database or array of objects that match all of the specified properties,
+ * or that cause the specified function to return `true`.
+ *
+ * This function gives special treatment to certain types of spec properties:
+ *
+ * + If a property in the spec contains an array, the function will test the item against each value
+ * in the array.
+ * + If a property in the spec contains an object, the item will be returned only if it also
+ * contains an object that matches all of the properties in the spec's child object.
+ *
+ * For example, the spec `{ number: [1, 2, 3], letters: {A: [true, 'maybe']} }` would match
+ * any of the following:
+ *
+ * + `{ number: 2, letters: {A: true} }`
+ * + `{ number: 1, letters: {A: true, D: 'hello', Q: false} }`
+ * + `{ number: 3, letters: {A: 'maybe'}, squiggle: '?' }`
+ * @param {TAFFY|Array.<Object>} data The TaffyDB or array of objects to search.
+ * @param {Object|Function} spec The key-value pairs to match against (for example,
+ * `{longname: 'foo'}`), or a function that returns `true` if a value matches or `false` if it does
+ * not match.
+ * @param {boolean} invert Set to `true` to return only objects that _do not match_ any of the
+ * specified properties.
+ * @return {Array.<Object>} The objects that match the spec.
+ */
+var find = exports.find = function(data, spec, invert) {
+    // remove TaffyDB crud
+    function detaffy(item) {
+        delete item.___id;
+        delete item.___s;
+        return item;
+    }
+
+    function defaultMatcher(item) {
+        item = detaffy(item);
+
+        // do we have a match?
+        var match = true;
+
+        for (var prop in spec) {
+            // the item must contain each property in the spec
+            if ( hasOwnProp.call(spec, prop) && hasOwnProp.call(item, prop) ) {
+                // if the spec property is an array, we accept any value in the array
+                if ( util.isArray(spec[prop]) ) {
+                    match = spec[prop].indexOf(item[prop]) !== -1;
+                }
+                // if the spec property is an object, we recurse into the object
+                else if (typeof spec[prop] === 'object') {
+                    // if we get a result back, it's a match
+                    match = Object.keys( find([item[prop]], spec[prop]) ).length > 0;
+                }
+                // for all other types, we just check equality
+                else {
+                    match = spec[prop] === item[prop];
+                }
+
+                // no need to keep checking if we know there's not a match
+                if (!match) {
+                    return false;
+                }
+            }
+            // if a property is missing, it can't be a match
+            else {
+                return false;
+            }
+        }
+
+        // it's a match!
+        return true;
+    }
+
+    if ( isTaffy(data) ) {
+        data = data().get();
+    }
+
+    // if a function was passed in, use it, but also remove TaffyDB crud if necessary
+    var matcher = typeof spec !== 'function' ? defaultMatcher : function(item) {
+        return spec.call(this, detaffy(item));
+    };
+
+    var matches = data.filter(matcher);
+    var nonmatches = [];
+    
+    if (!invert) {
+        return matches;
+    }
+    else {
+        for (var i = 0, l = data.length; i < l; i++) {
+            if (matches.indexOf(data[i]) === -1) {
+                nonmatches.push(data[i]);
+            }
+        }
+
+        return nonmatches;
+    }
+};
+
+/**
+ * Find items in a TaffyDB database or array of objects that do not match any of the specified
+ * properties, or that cause the specified function to return `false`.
+ *
+ * Calling this function is equivalent to calling `find()` and setting the `invert` parameter to
+ * `true`.
+ * @param {TAFFY|Array.<Object>} data The TaffyDB or array of objects to search.
+ * @param {Object|Function} spec The key-value pairs to match against (for example,
+ * `{longname: 'foo'}`), or a function that returns `false` if a value matches or `true` if it does
+ * not match.
+ * @return {Array.<Object>} The objects that do not match any properties of the spec.
+ */
+var remove = exports.remove = function(data, spec) {
+    return find(data, spec, true);
 };
 
 /**
@@ -284,15 +399,24 @@ exports.getAncestorLinks = function(data, doclet) {
  * + Members tagged `@ignore`.
  * + Members of anonymous classes.
  * + Members tagged `@private`, unless the `private` option is enabled.
- * @param {TAFFY} data The TaffyDB database to prune.
- * @return {TAFFY} The pruned database.
+ * @param {TAFFY|Array.<Object>} data The TaffyDB or array of objects to prune.
+ * @return {TAFFY|Array.<Object>} The pruned TaffyDB or array of objects.
  */
 exports.prune = function(data) {
-    data({undocumented: true}).remove();
-    data({ignore: true}).remove();
-    if (!env.opts.private) { data({access: 'private'}).remove(); }
-    data({memberof: '<anonymous>'}).remove();
+    var taffy = isTaffy(data);
 
+    data = remove(data, {undocumented: true});
+    data = remove(data, {ignore: true});
+    data = remove(data, {memberof: '<anonymous>'});
+
+    if (!env.opts.private) {
+        data = remove(data, {access: 'private'});
+    }
+ 
+    // if the caller gave us a TaffyDB, we need to return a TaffyDB
+    if (taffy) {
+        data = require('taffydb').taffy(data);
+    }
     return data;
 };
 
