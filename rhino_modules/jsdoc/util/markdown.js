@@ -22,6 +22,20 @@ var parsers = {
 };
 
 /**
+ * Escape underscores that occur within {@ ... } in order to protect them
+ * from the markdown parser(s).
+ * @param {String} source the source text to sanitize.
+ * @returns {String} `source` where underscores within {@ ... } have been
+ * protected with a preceding backslash (i.e. \_) -- the markdown parsers
+ * will strip the backslash and protect the underscore.
+ */
+function escapeUnderscores(source) {
+    return source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
+        return wholeMatch.replace(/(^|[^\\])_/g, '$1\\_');
+    });
+}
+
+/**
  * Retrieve a function that accepts a single parameter containing Markdown source. The function uses
  * the specified parser to transform the Markdown source to HTML, then returns the HTML as a string.
  *
@@ -48,11 +62,7 @@ function getParseFunction(parser, conf) {
         parser.hardwrap = !!conf.hardwrap;
 
         return function(source) {
-            // 1. protect underscores within inline tags {@....}
-            source = source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
-                return wholeMatch.replace(/(^|[^\\])_/g, '$1\\_');
-            });
-            // 2. send through markdown (the protective '\' will be removed
+            source = escapeUnderscores(source);
             // by the parser)
             return parser.parse(source, githubConf);
         };
@@ -60,12 +70,7 @@ function getParseFunction(parser, conf) {
         parser = require(parser).markdown;
 
         return function(source) {
-            // 1. protect underscores within inline tags {@....}
-            source = source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
-                return wholeMatch.replace(/(^|[^\\])_/g, '$1\\_');
-            });
-            // 2. send through markdown (the protective '\' will be removed
-            // by the parser)
+            source = escapeUnderscores(source);
             // evilstreak parser expects line endings to be \n
             source = source.replace(/\r\n|\r/g, '\n');
             return parser.toHTML(source, conf.dialect);
