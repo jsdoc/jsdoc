@@ -425,6 +425,24 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(output).toEqual(input);
         });
+
+        it('should translate http links in the tag', function() {
+            var input = 'Link to {@link http://github.com}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="http://github.com">http://github.com</a>');
+        });
+
+        it('should translate ftp links in the tag', function() {
+            var input = 'Link to {@link ftp://foo.bar}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="ftp://foo.bar">ftp://foo.bar</a>');
+        });
+
+        it('should allow pipe to be used as delimiter between href and text', function() {
+            var input = 'Link to {@link http://github.com|Github}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="http://github.com">Github</a>');
+        });
     });
 
     // disabled because Jasmine appears to execute this code twice, which causes createLink to
