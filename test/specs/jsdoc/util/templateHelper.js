@@ -8,13 +8,13 @@ function setConfTagsVariables(hash) {
         storage[keys[i]] = env.conf.tags[keys[i]];
         // works because hash[key] is a scalar not an array/object
         env.conf.tags[keys[i]] = hash[keys[i]];
-        console.log(keys[i] + ': ' + env.conf.tags.keys[i] + ' (' + hash[keys[i]] + ')');
+        //console.log(keys[i] + ': ' + env.conf.tags[keys[i]] + ' (' + hash[keys[i]] + ')');
     }
     return storage;
 }
 
 function restoreConfTags(storage) {
-    var keys = Object.keys(hash);
+    var keys = Object.keys(storage);
     for (var i = 0; i < keys.length; ++i) {
         env.conf.tags[keys[i]] = storage[keys[i]];
     }

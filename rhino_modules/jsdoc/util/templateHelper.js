@@ -432,9 +432,6 @@ function toLink(longname, content, monospace) {
     }
     var monospaceLinks = env.conf.tags.monospaceLinks;
     var cleverLinks = env.conf.tags.cleverLinks;
-    //console.log('monospaceLinks: ' + monospaceLinks);
-    //console.log('cleverLinks: ' + cleverLinks);
-
   
     // Split into URL and content.
     // Has link text been specified {@link link|content}, e.g.
