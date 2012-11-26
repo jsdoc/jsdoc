@@ -430,8 +430,8 @@ function toLink(longname, content, monospace) {
         // if this happens, there's something wrong with the caller itself; the user can't fix this
         throw new Error('Missing required parameter: url');
     }
-    var monospaceLinks = env.conf.tags.monospaceLinks;
-    var cleverLinks = env.conf.tags.cleverLinks;
+    var monospaceLinks = env.conf.templates.monospaceLinks;
+    var cleverLinks = env.conf.templates.cleverLinks;
   
     // Split into URL and content.
     // Has link text been specified {@link link|content}, e.g.

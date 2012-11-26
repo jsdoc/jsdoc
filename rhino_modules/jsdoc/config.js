@@ -15,7 +15,9 @@ var util = require('common/util');
 // required config values, override these defaults in your config.json if necessary
 const defaults = {
     "tags": {
-        "allowUnknownTags": true,
+        "allowUnknownTags": true
+    },
+    "templates": {
         "monospaceLinks": false,
         "cleverLinks": false
     },
