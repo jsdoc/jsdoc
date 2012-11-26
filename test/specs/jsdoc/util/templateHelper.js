@@ -1,5 +1,24 @@
 /*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true,
 xdescribe: true, xit: true */
+
+function setConfTagsVariables(hash) {
+    var keys = Object.keys(hash);
+    var storage = {};
+    for (var i = 0; i < keys.length; ++i) {
+        storage[keys[i]] = env.conf.tags[keys[i]];
+        // works because hash[key] is a scalar not an array/object
+        env.conf.tags[keys[i]] = hash[keys[i]];
+        console.log(keys[i] + ': ' + env.conf.tags.keys[i] + ' (' + hash[keys[i]] + ')');
+    }
+    return storage;
+}
+
+function restoreConfTags(storage) {
+    var keys = Object.keys(hash);
+    for (var i = 0; i < keys.length; ++i) {
+        env.conf.tags[keys[i]] = storage[keys[i]];
+    }
+}
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper');
     helper.registerLink('test', 'path/to/test.html');
@@ -466,6 +485,91 @@ describe("jsdoc/util/templateHelper", function() {
             var input = 'Link to {@link test|My Caption}',
                 output = helper.resolveLinks(input);
             expect(output).toEqual('Link to <a href="path/to/test.html">My Caption</a>');
+        });
+
+        it('Test of {@linkcode } which should be in monospace', function() {
+            var input = 'Link to {@linkcode test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+        });
+
+        it('Test of {@linkplain } which should be in normal font', function() {
+            var input = 'Link to {@linkplain test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html">test</a>');
+        });
+
+        // conf.monospaceLinks. check that
+        // a) it works
+        it('if conf.monospaceLinks is true, all {@link} should be monospace', function () {
+            var storage = setConfTagsVariables({monospaceLinks: true});
+            env.conf.tags.monospaceLinks = true;
+            var input = 'Link to {@link test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            restoreConfTags(storage);
+        });
+
+        // b) linkcode and linkplain are still respected
+        it('if conf.monospaceLinks is true, all {@linkcode} should still be monospace', function () {
+            var storage = setConfTagsVariables({monospaceLinks: true});
+            var input = 'Link to {@linkcode test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            restoreConfTags(storage);
+        });
+
+        it('if conf.monospaceLinks is true, all {@linkplain} should still be plain', function () {
+            var storage = setConfTagsVariables({monospaceLinks: true});
+            var input = 'Link to {@linkplain test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html">test</a>');
+            restoreConfTags(storage);
+        });
+
+        // conf.cleverLinks. check that
+        // a) it works
+        it('if conf.cleverLinks is true, {@link symbol} should be in monospace', function () {
+            var storage = setConfTagsVariables({cleverLinks: true});
+            var input = 'Link to {@link test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            restoreConfTags(storage);
+        });
+
+        it('if conf.cleverLinks is true, {@link URL} should be in plain text', function () {
+            var storage = setConfTagsVariables({cleverLinks: true});
+            var input = 'Link to {@link http://github.com}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="http://github.com">http://github.com</a>');
+            restoreConfTags(storage);
+        });
+
+        // b) linkcode and linkplain are still respected
+        it('if conf.cleverLinks is true, all {@linkcode} should still be clever', function () {
+            var storage = setConfTagsVariables({cleverLinks: true});
+            var input = 'Link to {@linkcode test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            restoreConfTags(storage);
+        });
+
+        it('if conf.cleverLinks is true, all {@linkplain} should still be plain', function () {
+            var storage = setConfTagsVariables({cleverLinks: true});
+            var input = 'Link to {@linkplain test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html">test</a>');
+            restoreConfTags(storage);
+        });
+
+        // c) if monospaceLinks is additionally `true` it is ignored in favour
+        //    of cleverLinks
+        it('if conf.cleverLinks is true and so is conf.monospaceLinks, cleverLinks overrides', function () {
+            var storage = setConfTagsVariables({cleverLinks: true, monospaceLinks: true});
+            var input = 'Link to {@link test} and {@link http://github.com}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a> and <a href="http://github.com">http://github.com</a>');
+            restoreConfTags(storage);
         });
 
     });

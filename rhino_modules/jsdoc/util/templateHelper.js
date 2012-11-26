@@ -425,11 +425,16 @@ exports.registerLink = function(longname, url) {
     linkMap.urlToLongname[url] = longname;
 };
 
-function toLink(longname, content) {
+function toLink(longname, content, monospace) {
     if (!longname) {
         // if this happens, there's something wrong with the caller itself; the user can't fix this
         throw new Error('Missing required parameter: url');
     }
+    var monospaceLinks = env.conf.tags.monospaceLinks;
+    var cleverLinks = env.conf.tags.cleverLinks;
+    //console.log('monospaceLinks: ' + monospaceLinks);
+    //console.log('cleverLinks: ' + cleverLinks);
+
   
     // Split into URL and content.
     // Has link text been specified {@link link|content}, e.g.
@@ -448,8 +453,10 @@ function toLink(longname, content) {
     }
 
     var url;
+    var isURL = false;
     // Has link been specified manually?
     if (/^(http|ftp)s?:/.test(longname)) {
+        isURL = true;
         url = longname;
     }
     else {
@@ -463,6 +470,20 @@ function toLink(longname, content) {
         return content;
     }
     else {
+        if (monospace === undefined) {
+            // cleverLinks takes precedence. if cleverLinks is true
+            // we ignore monospaceLinks.
+            // If it's a symbol we use monospace font.
+            // Otherwise if cleverLinks is `false` we use monospaceLinks.
+            if (cleverLinks) {
+                monospace = !isURL;
+            } else {
+                monospace = monospaceLinks;
+            }
+        }
+        if (monospace) {
+            content = '<code>' + content + '</code>';
+        }
         return '<a href="'+url+'">'+content+'</a>';
     }
 }
@@ -530,9 +551,16 @@ var toTutorial = exports.toTutorial = function(tutorial, content, missingOpts) {
 
 /** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
 exports.resolveLinks = function(str) {
-    str = str.replace(/(?:\[(.+?)\])?\{@link +(.+?)\}/gi,
-        function(match, content, longname) {
-            return toLink(longname, content);
+    str = str.replace(/(?:\[(.+?)\])?\{@link(plain|code)? +(.+?)\}/gi,
+        function(match, content, monospace, longname) {
+            if (monospace === 'plain') {
+                monospace = false;
+            } else if (monospace === 'code') {
+                monospace = true;
+            } else {
+                monospace = undefined;
+            }
+            return toLink(longname, content, monospace);
         }
     );
 
