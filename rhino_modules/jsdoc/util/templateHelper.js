@@ -430,23 +430,33 @@ function toLink(longname, content) {
         // if this happens, there's something wrong with the caller itself; the user can't fix this
         throw new Error('Missing required parameter: url');
     }
-    
-    // Has link been specified manually?
+  
+    // Split into URL and content.
+    // Has link text been specified {@link link|content}, e.g.
+    // {@link http://github.com|Github} or {@link MyNamespace.method|Method}
+    // Note: only do if `content` has not been supplied, i.e. in the case of
+    // [content]{@link ...} we use `content`.
+    //
+    // If pipe is not presence we use the first space.
+    var split = longname.indexOf('|');
+    if (split === -1) {
+       split = longname.indexOf(' ');
+    }
+    if (split !== -1 && !content) {
+        content = longname.substr(split + 1);
+        longname = longname.substr(0, split);
+    }
+
     var url;
+    // Has link been specified manually?
     if (/^(http|ftp)s?:/.test(longname)) {
         url = longname;
-        
-        // Has link text been specified {@link http://github.com|GitHub Website}
-        var split = url.indexOf('|');
-        if (split !== -1) {
-            content = url.substr(split + 1);
-            url = url.substr(0, split);
-        }
     }
     else {
+        // the actual longname is stored in `url` if there was a delimiter.
         url = linkMap.longnameToUrl[longname];
     }
-    
+
     content = content || longname;
     
     if (!url) {

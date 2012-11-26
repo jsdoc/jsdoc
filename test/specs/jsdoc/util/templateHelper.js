@@ -391,7 +391,7 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toEqual('This is a <a href="path/to/test.html">test</a>.');
         });
 
-        it('should translate {@link test."long blah"/blah} into a HTML link.', function() {
+        xit('should translate {@link test."long blah"/blah} into a HTML link.', function() {
             var input = 'This is a {@link test."long blah"/blah}.',
                 output = helper.resolveLinks(input);
 
@@ -438,11 +438,36 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toEqual('Link to <a href="ftp://foo.bar">ftp://foo.bar</a>');
         });
 
-        it('should allow pipe to be used as delimiter between href and text', function() {
+        it('should allow pipe to be used as delimiter between href and text (external link)', function() {
             var input = 'Link to {@link http://github.com|Github}',
                 output = helper.resolveLinks(input);
             expect(output).toEqual('Link to <a href="http://github.com">Github</a>');
         });
+
+        it('should allow pipe to be used as delimiter between href and text (symbol link)', function() {
+            var input = 'Link to {@link test|Test}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html">Test</a>');
+        });
+
+        it('should allow first space to be used as delimiter between href and text (external link)', function() {
+            var input = 'Link to {@link http://github.com Github}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="http://github.com">Github</a>');
+        });
+
+        it('should allow first space to be used as delimiter between href and text (symbol link)', function() {
+            var input = 'Link to {@link test My Caption}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html">My Caption</a>');
+        });
+
+        it('if pipe and space are present in link tag, use pipe as the delimiter', function() {
+            var input = 'Link to {@link test|My Caption}',
+                output = helper.resolveLinks(input);
+            expect(output).toEqual('Link to <a href="path/to/test.html">My Caption</a>');
+        });
+
     });
 
     // disabled because Jasmine appears to execute this code twice, which causes createLink to
