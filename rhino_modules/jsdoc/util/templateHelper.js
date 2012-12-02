@@ -420,7 +420,7 @@ exports.prune = function(data) {
     return data;
 };
 
-exports.registerLink = function(longname, url) {
+var registerLink = exports.registerLink = function(longname, url) {
     linkMap.longnameToUrl[longname] = url;
     linkMap.urlToLongname[url] = longname;
 };
@@ -535,21 +535,39 @@ exports.resolveLinks = function(str) {
     return str;
 };
 
+/**
+ * Get a longname's filename if one has been registered; otherwise, generate a unique filename, then
+ * register the filename.
+ * @private
+ */
+function getFilename(longname) {
+    var url;
+
+    if ( longnameToUrl[longname] && hasOwnProp.call(longnameToUrl, longname) ) {
+        url = longnameToUrl[longname];
+    } else {
+        url = getUniqueFilename(longname);
+        registerLink(longname, url);
+    }
+
+    return url;
+}
+
 /** Turn a doclet into a URL. */
 exports.createLink = function(doclet) {
-    var url = '',
-        longname,
-        filename;
+    var url = '';
+    var longname;
+    var filename;
     
     if (containers.indexOf(doclet.kind) < 0) {
         longname = doclet.longname;
-        filename = getUniqueFilename(doclet.memberof || exports.globalName);
+        filename = getFilename(doclet.memberof || exports.globalName);
         
         url = filename + '#' + getNamespace(doclet.kind) + doclet.name;
     }
     else {
         longname = doclet.longname;
-        url = getUniqueFilename(longname);
+        url = getFilename(longname);
     }
     
     return url;

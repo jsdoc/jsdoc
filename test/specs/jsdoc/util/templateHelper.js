@@ -427,9 +427,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    // disabled because Jasmine appears to execute this code twice, which causes createLink to
-    // return an unexpected variation on the name the second time
-    xdescribe("createLink", function() {
+    describe("createLink", function() {
         it('should create a url for a simple global.', function() {
             var mockDoclet = {
                     kind: 'function',
@@ -464,16 +462,23 @@ describe("jsdoc/util/templateHelper", function() {
             expect(url).toEqual('ns.html#foo');
         });
 
-        it('should create a url for a member of a nested namespace.', function() {
-            var mockDoclet = {
-                    kind: 'function',
-                    longname: 'ns1.ns2.foo',
-                    name: 'foo',
-                    memberof: 'ns1.ns2'
-                },
-                url = helper.createLink(mockDoclet);
+        var nestedNamespaceDoclet = {
+            kind: 'function',
+            longname: 'ns1.ns2.foo',
+            name: 'foo',
+            memberof: 'ns1.ns2'
+        };
+        var nestedNamespaceUrl;
 
-            expect(url).toEqual('ns1.ns2.html#foo');
+        it('should create a url for a member of a nested namespace.', function() {
+            nestedNamespaceUrl = helper.createLink(nestedNamespaceDoclet);
+
+            expect(nestedNamespaceUrl).toEqual('ns1.ns2.html#foo');
+        });
+
+        it('should return the same value when called twice with the same doclet.', function() {
+            var newUrl = helper.createLink(nestedNamespaceDoclet);
+            expect(newUrl).toEqual(nestedNamespaceUrl);
         });
 
         it('should create a url for a name with invalid characters using a digest.', function() {

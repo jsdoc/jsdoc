@@ -196,8 +196,11 @@ exports.publish = function(taffyData, opts, tutorials) {
     
     // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
     // doesn't try to hand them out later
-    helper.getUniqueFilename('index');
-    helper.getUniqueFilename('global');
+    var indexUrl = helper.getUniqueFilename('index');
+    // don't call registerLink() on this one! 'index' is also a valid longname
+
+    var globalUrl = helper.getUniqueFilename('global');
+    helper.registerLink('global', globalUrl);
 
     // set up templating
     view.layout = 'layout.tmpl';
@@ -300,7 +303,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     // once for all
     view.nav = buildNav(members);
 
-    if (members.globals.length) { generate('Global', members.globals, 'global' + helper.fileExtension); }
+    if (members.globals.length) { generate('Global', members.globals, globalUrl); }
     
     // index page displays information from package.json and lists files
     var files = find({kind: 'file'}),
@@ -310,7 +313,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
         ).concat(files),
-    'index' + helper.fileExtension);
+    indexUrl);
 
     // set up the lists that we'll use to generate pages
     var classes = taffy(members.classes);
