@@ -439,7 +439,7 @@ function toLink(longname, content, monospace) {
     // Note: only do if `content` has not been supplied, i.e. in the case of
     // [content]{@link ...} we use `content`.
     //
-    // If pipe is not presence we use the first space.
+    // If pipe is not present we use the first space.
     var split = longname.indexOf('|');
     if (split === -1) {
        split = longname.indexOf(' ');

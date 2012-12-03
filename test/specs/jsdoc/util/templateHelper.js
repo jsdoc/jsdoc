@@ -412,13 +412,6 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toEqual('This is a <a href="path/to/test.html">test</a>.');
         });
 
-        xit('should translate {@link test."long blah"/blah} into a HTML link.', function() {
-            var input = 'This is a {@link test."long blah"/blah}.',
-                output = helper.resolveLinks(input);
-
-            expect(output).toEqual('This is a <a href="path/to/test_long_blah_blah.html">test."long blah"/blah</a>.');
-        });
-
         it('should translate {@link unknown} into a simple text.', function() {
             var input = 'This is a {@link unknown}.',
                 output = helper.resolveLinks(input);

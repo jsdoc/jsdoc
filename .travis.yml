@@ -2,6 +2,3 @@ language: java
 
 script:
   - "./jsdoc -T"
-
-jdk:
-  - openjdk6
