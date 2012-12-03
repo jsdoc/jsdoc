@@ -425,34 +425,62 @@ var registerLink = exports.registerLink = function(longname, url) {
     linkMap.urlToLongname[url] = longname;
 };
 
-function toLink(longname, content) {
+function toLink(longname, content, monospace) {
     if (!longname) {
         // if this happens, there's something wrong with the caller itself; the user can't fix this
         throw new Error('Missing required parameter: url');
     }
-    
-    // Has link been specified manually?
+    var monospaceLinks = env.conf.templates.monospaceLinks;
+    var cleverLinks = env.conf.templates.cleverLinks;
+  
+    // Split into URL and content.
+    // Has link text been specified {@link link|content}, e.g.
+    // {@link http://github.com|Github} or {@link MyNamespace.method|Method}
+    // Note: only do if `content` has not been supplied, i.e. in the case of
+    // [content]{@link ...} we use `content`.
+    //
+    // If pipe is not presence we use the first space.
+    var split = longname.indexOf('|');
+    if (split === -1) {
+       split = longname.indexOf(' ');
+    }
+    if (split !== -1 && !content) {
+        content = longname.substr(split + 1);
+        longname = longname.substr(0, split);
+    }
+
     var url;
+    var isURL = false;
+    // Has link been specified manually?
     if (/^(http|ftp)s?:/.test(longname)) {
+        isURL = true;
         url = longname;
-        
-        // Has link text been specified {@link http://github.com|GitHub Website}
-        var split = url.indexOf('|');
-        if (split !== -1) {
-            content = url.substr(split + 1);
-            url = url.substr(0, split);
-        }
     }
     else {
+        // the actual longname is stored in `url` if there was a delimiter.
         url = linkMap.longnameToUrl[longname];
     }
-    
+
     content = content || longname;
     
     if (!url) {
         return content;
     }
     else {
+        if (monospace === undefined) {
+            // cleverLinks takes precedence. if cleverLinks is true
+            // we ignore monospaceLinks.
+            // If it's a symbol we use monospace font.
+            // Otherwise if cleverLinks is `false` we use monospaceLinks.
+            if (cleverLinks) {
+                monospace = !isURL;
+            } else {
+                monospace = monospaceLinks;
+            }
+        }
+        if (monospace) {
+            content = '<code>' + content + '</code>';
+        }
         return '<a href="'+url+'">'+content+'</a>';
     }
 }
@@ -520,9 +548,16 @@ var toTutorial = exports.toTutorial = function(tutorial, content, missingOpts) {
 
 /** Find symbol {@link ...} and {@tutorial ...} strings in text and turn into html links */
 exports.resolveLinks = function(str) {
-    str = str.replace(/(?:\[(.+?)\])?\{@link +(.+?)\}/gi,
-        function(match, content, longname) {
-            return toLink(longname, content);
+    str = str.replace(/(?:\[(.+?)\])?\{@link(plain|code)? +(.+?)\}/gi,
+        function(match, content, monospace, longname) {
+            if (monospace === 'plain') {
+                monospace = false;
+            } else if (monospace === 'code') {
+                monospace = true;
+            } else {
+                monospace = undefined;
+            }
+            return toLink(longname, content, monospace);
         }
     );
 

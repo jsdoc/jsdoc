@@ -17,6 +17,10 @@ const defaults = {
     "tags": {
         "allowUnknownTags": true
     },
+    "templates": {
+        "monospaceLinks": false,
+        "cleverLinks": false
+    },
     "source": {
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/)_"
