@@ -7,5 +7,10 @@
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "plugins": [],
+    "templates": {
+        "docletFormat": "taffydb",
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
     "jsVersion": 180
 }

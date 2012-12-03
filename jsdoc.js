@@ -310,13 +310,12 @@ function main() {
     env.opts = jsdoc.opts.args.parse(env.args);
 
     try {
-        env.conf = new Config( fs.readFileSync( env.opts.configure || env.dirname + '/conf.json' ) ).get();
+        env.conf = new Config( fs.readFileSync( path.join(env.opts.configure || env.dirname, 'conf.json') ) ).get();
     }
     catch (e) {
         try {
-            //Try to copy over the example conf
-            var example = fs.readFileSync(env.dirname + '/conf.json.EXAMPLE', 'utf8');
-            fs.writeFileSync(env.dirname + '/conf.json', example, 'utf8');
+            // Use the example file if possible
+            var example = fs.readFileSync(path.join(env.dirname, 'conf.json.EXAMPLE'), 'utf8');
             env.conf = JSON.parse(example);
         }
         catch(e) {
