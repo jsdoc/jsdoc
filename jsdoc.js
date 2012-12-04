@@ -1,4 +1,4 @@
-/*global __timerPool: true, app: true, args: true, env: true, Packages: true, publish: true */
+/*global app: true, args: true, env: true, Packages: true, publish: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -310,7 +310,7 @@ function main() {
     env.opts = jsdoc.opts.args.parse(env.args);
 
     try {
-        env.conf = new Config( fs.readFileSync( path.join(env.opts.configure || env.dirname, 'conf.json') ) ).get();
+        env.conf = new Config( fs.readFileSync( env.opts.configure || path.join(env.dirname, 'conf.json') ) ).get();
     }
     catch (e) {
         try {
