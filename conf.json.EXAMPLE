@@ -8,7 +8,6 @@
     },
     "plugins": [],
     "templates": {
-        "docletFormat": "taffydb",
         "cleverLinks": false,
         "monospaceLinks": false
     },
