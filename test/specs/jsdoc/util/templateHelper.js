@@ -1,4 +1,6 @@
 /*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true, xdescribe: true */
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper');
     helper.registerLink('test', 'path/to/test.html');
@@ -178,8 +180,26 @@ describe("jsdoc/util/templateHelper", function() {
         // TODO
     });
 
-    xdescribe("find", function() {
-        // TODO
+    describe("find", function() {
+        var array = [
+            // match
+            { number: 2, A: true },
+            // match
+            { number: 1, A: true, D: 'hello', Q: false },
+            // match
+            { number: 3, A: 'maybe', squiggle: '?' },
+            // no match (number not in spec)
+            { number: 4, A: true },
+            // no match (missing top-level property)
+            { A: true }
+        ];
+        var matches = array.slice(0, 3);
+        var taffy = require('taffydb').taffy(array);
+        var spec = { number: [1, 2, 3], A: [true, 'maybe'] };
+
+        it('should find the requested items', function() {
+            expect( helper.find(taffy, spec) ).toEqual(matches);
+        });
     });
 
     xdescribe("getMembers", function() {
@@ -206,8 +226,69 @@ describe("jsdoc/util/templateHelper", function() {
         // TODO
     });
 
-    xdescribe("prune", function() {
-        // TODO
+    describe("prune", function() {
+        // we can't use toEqual() because TaffyDB adds its own stuff to the array it returns.
+        // instead, we make sure arrays a and b are the same length, and that each object in
+        // array b has all the properties of the corresponding object in array a
+        function compareObjectArrays(a, b) {
+            expect(a.length).toEqual(b.length);
+
+            for (var i = 0, l = a.length; i < l; i++) {
+                for (var prop in a[i]) {
+                    if ( hasOwnProp.call(a[i], prop) ) {
+                        expect(b[i][prop]).toBeDefined();
+                        expect(a[i][prop]).toEqual(b[i][prop]);
+                    }
+                }
+            }
+        }
+
+        var taffy = require('taffydb').taffy;
+
+        var array = [
+            // keep
+            {undocumented: false},
+            // keep
+            {ignore: false},
+            // keep
+            {memberof: 'SomeClass'},
+            // prune
+            {undocumented: true},
+            // prune
+            {ignore: true},
+            // prune
+            {memberof: '<anonymous>'}
+        ];
+        var arrayPrivate = [
+            // prune (unless env.opts.private is truthy)
+            {access: 'private'}
+        ];
+        var keep = array.slice(0, 3);
+
+        it('should prune the correct members', function() {
+            var pruned = helper.prune( taffy(array) )().get();
+            compareObjectArrays(keep, pruned);
+        });
+
+        it('should prune private members if env.opts.private is falsy', function() {
+            var priv = !!env.opts['private'];
+
+            env.opts['private'] = false;
+            var pruned = helper.prune( taffy(arrayPrivate) )().get();
+            compareObjectArrays([], pruned);
+
+            env.opts['private'] = !!priv;
+        });
+
+        it('should not prune private members if env.opts.private is truthy', function() {
+            var priv = !!env.opts['private'];
+
+            env.opts['private'] = true;
+            var pruned = helper.prune( taffy(arrayPrivate) )().get();
+            compareObjectArrays(arrayPrivate, pruned);
+
+            env.opts['private'] = !!priv;
+        });
     });
 
     xdescribe("registerLink", function() {
