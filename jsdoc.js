@@ -193,6 +193,7 @@ function main() {
         _ = require('underscore'),
         fs = require('fs'),
         path = require('path'),
+        taffy = require('taffydb').taffy,
         Config = require('jsdoc/config');
 
     /**
@@ -283,22 +284,6 @@ function main() {
         }
 
         return result;
-    }
-
-    /**
-     * Convert the doclets to the format that the template is expecting. The format is specified in
-     * `env.conf.templates.docletFormat`. Supported formats are `taffydb` (a TaffyDB container) and
-     * and `array` (the raw array of doclets). The default value is `taffydb`.
-     * @param {Array.<Object>} doclets The array of doclets.
-     * @return {TAFFY|Array.<Object>} The converted doclets.
-     */
-    function convertDoclets(doclets) {
-        if (env.conf.templates && env.conf.templates.docletFormat &&
-            env.conf.templates.docletFormat === 'array') {
-            return doclets;
-        } else {
-            return require('taffydb').taffy(doclets);
-        }
     }
 
     env.vm = detectVm();
@@ -410,7 +395,7 @@ function main() {
             // convert this from a URI back to a path if necessary
             env.opts.template = uriToPath(env.opts.template);
             template.publish(
-                convertDoclets(docs),
+                taffy(docs),
                 env.opts,
                 resolver.root
             );
@@ -425,7 +410,7 @@ function main() {
                 // convert this from a URI back to a path if necessary
                 env.opts.template = uriToPath(env.opts.template);
                 publish(
-                    convertDoclets(docs),
+                    taffy(docs),
                     env.opts,
                     resolver.root
                 );

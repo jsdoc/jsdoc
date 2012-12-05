@@ -1,6 +1,4 @@
-/*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true,
-xdescribe: true, xit: true */
-
+/*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true, xdescribe: true */
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper');
     helper.registerLink('test', 'path/to/test.html');
@@ -54,11 +52,6 @@ describe("jsdoc/util/templateHelper", function() {
     it("should export a 'find' function", function() {
         expect(helper.find).toBeDefined();
         expect(typeof helper.find).toEqual("function");
-    });
-
-    it("should export a 'remove' function", function() {
-        expect(helper.remove).toBeDefined();
-        expect(typeof helper.remove).toEqual("function");
     });
 
     it("should export a 'getMembers' function", function() {
@@ -185,42 +178,8 @@ describe("jsdoc/util/templateHelper", function() {
         // TODO
     });
 
-    describe("find", function() {
-        var doop = require('jsdoc/util/doop').doop;
-        var array = [
-            // match
-            { number: 2, letters: {A: true} },
-            // match
-            { number: 1, letters: {A: true, D: 'hello', Q: false} },
-            // match
-            { number: 3, letters: {A: 'maybe'}, squiggle: '?' },
-            // no match (number not in spec)
-            { number: 4, letters: {A: true} },
-            // no match (missing top-level property)
-            { letters: {A: true} },
-            // no match (missing property in child object)
-            { number: 2, letters: {D: 'maybe'} }
-        ];
-        var matches = doop(array).slice(0, 3);
-        var invertMatches = doop(array).slice(3);
-        var taffy = require('taffydb').taffy( doop(array) );
-        var spec = { number: [1, 2, 3], letters: {A: [true, 'maybe']} };
-
-        it('should find the requested items in an array', function() {
-            expect( helper.find(doop(array), spec) ).toEqual(matches);
-        });
-
-        it('should find the requested items in a TaffyDB object', function() {
-            expect( helper.find(taffy, spec) ).toEqual(matches);
-        });
-
-        it('should return items that do not match the spec if invert is true', function(){
-            expect( helper.find(doop(array), spec, true) ).toEqual(invertMatches);
-        });
-    });
-
-    describe("remove", function() {
-        // alias to "find"; covered by "find" spec
+    xdescribe("find", function() {
+        // TODO
     });
 
     xdescribe("getMembers", function() {
@@ -247,70 +206,8 @@ describe("jsdoc/util/templateHelper", function() {
         // TODO
     });
 
-    describe("prune", function() {
-        var doop = require('jsdoc/util/doop').doop;
-        var taffy = require('taffydb').taffy;
-        var isArray = require('util').isArray;
-
-        var array = [
-            // keep
-            {undocumented: false},
-            // keep
-            {ignore: false},
-            // keep
-            {memberof: 'SomeClass'},
-            // prune
-            {undocumented: true},
-            // prune
-            {ignore: true},
-            // prune
-            {memberof: '<anonymous>'}
-        ];
-        var arrayPrivate = [
-            // prune (unless env.opts.private is truthy)
-            {access: 'private'}
-        ];
-        var keep = doop(array).slice(0, 3);
-        var privateKeep = doop(arrayPrivate);
-
-        it('should prune the correct members with a TaffyDB', function() {
-            function prune() {
-                return helper.prune( taffy(array) );
-            }
-
-            expect(prune).not.toThrow();
-            expect( isArray(prune()) ).toEqual(false);
-            // we use helper.find() to strip out the TaffyDB junk
-            expect( helper.find(prune()().get(), {}) ).toEqual(keep);
-        });
-
-        it('should prune the correct members with an array of objects', function() {
-            function prune() {
-                return helper.prune(array);
-            }
-
-            expect(prune).not.toThrow();
-            expect( isArray(prune()) ).toEqual(true);
-            expect( prune() ).toEqual(keep);
-        });
-
-        it('should prune private members if env.opts.private is falsy', function() {
-            var priv = !!env.opts['private'];
-
-            env.opts['private'] = false;
-            expect( helper.prune(arrayPrivate) ).toEqual([]);
-
-            env.opts['private'] = !!priv;
-        });
-
-        it('should not prune private members if env.opts.private is truthy', function() {
-            var priv = !!env.opts['private'];
-
-            env.opts['private'] = true;
-            expect( helper.prune(arrayPrivate) ).toEqual(privateKeep);
-
-            env.opts['private'] = !!priv;
-        });
+    xdescribe("prune", function() {
+        // TODO
     });
 
     xdescribe("registerLink", function() {
