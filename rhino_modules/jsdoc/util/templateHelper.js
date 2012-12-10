@@ -123,14 +123,16 @@ var find = exports.find = function(data, spec) {
  * + Mixins
  * + Modules
  * + Namespaces
+ * + Events
  * @param {TAFFY} data The TaffyDB database to search.
- * @return {object} An object with `classes`, `externals`, `globals`, `mixins`, `modules`, and
- * `namespaces` properties. Each property contains an array of objects.
+ * @return {object} An object with `classes`, `externals`, `globals`, `mixins`, `modules`,
+ * `events`, and `namespaces` properties. Each property contains an array of objects.
  */
 exports.getMembers = function(data) {
     return {
         classes: find( data, {kind: 'class'} ),
         externals: find( data, {kind: 'external'} ),
+        events: find( data, {kind: 'event'} ),
         globals: find(data, {
             kind: ['member', 'function', 'constant', 'typedef'],
             memberof: { isUndefined: true }
