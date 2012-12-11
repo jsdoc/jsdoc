@@ -202,8 +202,111 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe("getMembers", function() {
-        // TODO
+    // we can't use toEqual() because TaffyDB adds its own stuff to the array it returns.
+    // instead, we make sure arrays a and b are the same length, and that each object in
+    // array b has all the properties of the corresponding object in array a
+    // used for getMembers and prune tests.
+    function compareObjectArrays(a, b) {
+        expect(a.length).toEqual(b.length);
+
+        for (var i = 0, l = a.length; i < l; i++) {
+            for (var prop in a[i]) {
+                if ( hasOwnProp.call(a[i], prop) ) {
+                    expect(b[i][prop]).toBeDefined();
+                    expect(a[i][prop]).toEqual(b[i][prop]);
+                }
+            }
+        }
+    }
+    describe("getMembers", function() {
+        // instead parse a file from fixtures and verify it?
+        var classes = [
+            {kind: 'class'}, // global
+            {kind: 'class', memberof: 'SomeNamespace'}, // not global
+        ];
+        var externals = [
+            {kind: 'external'},
+        ];
+        var events = [
+            {kind: 'event'},
+        ];
+        var mixins = [
+            {kind: 'mixin'},
+        ];
+        var modules = [
+            {kind: 'module'},
+        ];
+        var namespaces = [
+            {kind: 'namespace'},
+        ];
+        var misc = [
+            {kind: 'function'}, // global
+            {kind: 'member'}, // global
+            {kind: 'constant'}, // global
+            {kind: 'typedef'}, // global
+            {kind: 'constant', memberof: 'module:one/two'}, // not global
+        ];
+        var array = classes.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc))))));
+        var data = require('taffydb').taffy(array);
+        var members = helper.getMembers(data);
+
+        // check the output object has properties as expected.
+        it("should have a 'classes' property", function() {
+            expect(members.classes).toBeDefined();
+        });
+
+        it("should have a 'externals' property", function() {
+            expect(members.externals).toBeDefined();
+        });
+
+        it("should have a 'events' property", function() {
+            expect(members.events).toBeDefined();
+        });
+
+        it("should have a 'globals' property", function() {
+            expect(members.globals).toBeDefined();
+        });
+
+        it("should have a 'mixins' property", function() {
+            expect(members.mixins).toBeDefined();
+        });
+
+        it("should have a 'modules' property", function() {
+            expect(members.modules).toBeDefined();
+        });
+
+        it("should have a 'namespaces' property", function() {
+            expect(members.namespaces).toBeDefined();
+        });
+
+        // check that things were found properly.
+        it("classes are detected", function() {
+            compareObjectArrays(classes, members.classes);
+        });
+
+        it("externals are detected", function() {
+            compareObjectArrays(externals, members.externals);
+        });
+
+        it("events are detected", function() {
+            compareObjectArrays(events, members.events);
+        });
+
+        it("mixins are detected", function() {
+            compareObjectArrays(mixins, members.mixins);
+        });
+
+        it("modules are detected", function() {
+            compareObjectArrays(modules, members.modules);
+        });
+
+        it("namespaces are detected", function() {
+            compareObjectArrays(namespaces, members.namespaces);
+        });
+
+        it("globals are detected", function() {
+            compareObjectArrays(misc.slice(0, -1), members.globals);
+        });
     });
 
     xdescribe("getAttribs", function() {
@@ -227,21 +330,6 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("prune", function() {
-        // we can't use toEqual() because TaffyDB adds its own stuff to the array it returns.
-        // instead, we make sure arrays a and b are the same length, and that each object in
-        // array b has all the properties of the corresponding object in array a
-        function compareObjectArrays(a, b) {
-            expect(a.length).toEqual(b.length);
-
-            for (var i = 0, l = a.length; i < l; i++) {
-                for (var prop in a[i]) {
-                    if ( hasOwnProp.call(a[i], prop) ) {
-                        expect(b[i][prop]).toBeDefined();
-                        expect(a[i][prop]).toEqual(b[i][prop]);
-                    }
-                }
-            }
-        }
 
         var taffy = require('taffydb').taffy;
 
