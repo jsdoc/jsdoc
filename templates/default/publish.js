@@ -303,7 +303,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     // once for all
     view.nav = buildNav(members);
 
-    if (members.globals.length) { generate('Global', members.globals, globalUrl); }
+    if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl); }
     
     // index page displays information from package.json and lists files
     var files = find({kind: 'file'}),
