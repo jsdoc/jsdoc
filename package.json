@@ -51,5 +51,8 @@
 			"name": "Jeff Williams",
 			"email": "jeffrey.l.williams@gmail.com"
 		}
-	]
+	],
+	"bin" : {
+		"jsdoc": "./jsdoc"
+	}
 }
