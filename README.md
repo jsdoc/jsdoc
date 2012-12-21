@@ -11,21 +11,27 @@ Want to contribute to JSDoc? Please read `CONTRIBUTING.md`.
 Installation
 ------------
 
-Download a copy of JSDoc 3 from the official GitHub repository:
-https://github.com/jsdoc3/jsdoc
+Use git to clone the [official JSDoc repository](https://github.com/jsdoc3/jsdoc):
 
-Or if you have Node.js installed, use npm:
+    git clone git@github.com:jsdoc3/jsdoc.git
 
-    npm install -g git://github.com/jsdoc3/jsdoc.git
+Alternatively, you can download a .zip file for the
+[latest development version](https://github.com/jsdoc3/jsdoc/archive/master.zip)
+or a [previous release](https://github.com/jsdoc3/jsdoc/tags).
+
+You can also install JSDoc within a Node.js project using npm:
+
+    npm install git://github.com/jsdoc3/jsdoc.git
 
 **Note**: Although you can install JSDoc with npm, JSDoc does not currently run
-on Node.js.
+on Node.js. In addition, installing JSDoc globally with `npm install -g` is not
+currently supported.
 
 
 Usage
 -----
 
-This example assumes that your working directory is the jsdoc application base
+This example assumes that your working directory is the JSDoc application base
 directory:
 
     ./jsdoc yourSourceCodeFile.js
