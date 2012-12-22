@@ -34,9 +34,12 @@ function setDocletDescriptionToValue(doclet, tag) {
 }
 
 function setNameToFile(doclet, tag) {
+    var name = '';
     if (doclet.meta.filename) {
-        var name = doclet.meta.path || '';
-        doclet.addTag( 'name', path.join(name, doclet.meta.filename) );
+        // TODO: find the shortest path shared by all input files, and remove that from
+        // doclet.meta.path
+        name += path.basename(doclet.meta.path) + '/';
+        doclet.addTag( 'name', name + doclet.meta.filename );
     }
 }
 
@@ -61,8 +64,9 @@ function applyNamespace(docletOrNs, tag) {
 }
 
 function setDocletNameToFilename(doclet, tag) {
-    var name = doclet.meta.path || '';
-    name = path.join(name, doclet.meta.filename);
+    // TODO: find the shortest path shared by all input files, and remove that from doclet.meta.path
+    var name = doclet.meta.path ? path.basename(doclet.meta.path) + '/' : '';
+    name += doclet.meta.filename;
     name = name.replace(/\.js$/i, '');
     
     for (var i = 0, len = env.opts._.length; i < len; i++) {
