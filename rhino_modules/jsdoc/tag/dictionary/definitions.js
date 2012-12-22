@@ -282,7 +282,6 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             setDocletKindToTitle(doclet, tag);
             setDocletNameToValue(doclet, tag);
-            applyNamespace(doclet, tag);
         }
     });
     
