@@ -19,7 +19,9 @@ Alternatively, you can download a .zip file for the
 [latest development version](https://github.com/jsdoc3/jsdoc/archive/master.zip)
 or a [previous release](https://github.com/jsdoc3/jsdoc/tags).
 
-You can also install JSDoc within a Node.js project using npm:
+You can also install JSDoc within a Node.js project's `node_modules` directory
+using npm. To install the latest development version, change directories to your
+Node.js project, then run the following command:
 
     npm install git://github.com/jsdoc3/jsdoc.git
 
