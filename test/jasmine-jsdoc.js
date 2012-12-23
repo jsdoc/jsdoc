@@ -4,6 +4,8 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util');
 
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
 var jasmineAll = require('test/lib/jasmine');
 var jasmine = jasmineAll.jasmine;
 
@@ -34,7 +36,7 @@ jasmine.loadHelpersInFolder = function(folder, matcher) {
             replace(/\.*$/, ""));
 
         for (var key in helper) {
-            if ( helper.hasOwnProperty(key) ) {
+            if ( hasOwnProp.call(helper, key) ) {
                 this[key] = helper[key];
             }
         }
@@ -45,7 +47,7 @@ var reporter = null;
 jasmine.initialize = function(done, verbose) {
     var jasmineEnv = jasmine.getEnv();
 
-   if (reporter !== null) {
+    if (reporter !== null) {
         // If we've run before, we need to reset the runner
         jasmineEnv.currentRunner_ = new jasmine.Runner(jasmineEnv);
         // And clear the reporter
@@ -129,7 +131,7 @@ jasmine.asyncSpecDone = function() {
 };
 
 for (var key in jasmine) {
-    if ( jasmine.hasOwnProperty(key) ) {
+    if ( hasOwnProp.call(jasmine, key) ) {
         exports[key] = jasmine[key];
     }
 }
