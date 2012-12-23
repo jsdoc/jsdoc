@@ -6,11 +6,25 @@
 
 /**
 	@module jsdoc/config
-	@requires common/util
  */
 
-// used to do recursive merge
-var util = require('common/util');
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
+function mergeRecurse(target, source) {
+    for (var p in source) {
+        if ( hasOwnProp.call(source, p) ) {
+            if ( source[p].constructor === Object ) {
+                if ( !target[p] ) {  target[p] = {}; }
+                mergeRecurse(target[p], source[p]);
+            }
+            else {
+                target[p] = source[p];
+            }
+        }
+    }
+    
+    return target;
+}
 
 // required config values, override these defaults in your config.json if necessary
 const defaults = {
@@ -36,7 +50,7 @@ const defaults = {
  */
 function Config(json) {
     json = JSON.parse( (json || "{}") );
-    this._config = util.mergeRecurse(defaults, json);
+    this._config = mergeRecurse(defaults, json);
 }
 
 module.exports = Config;

@@ -4,6 +4,9 @@
 	@author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
+
+var _ = require('underscore');
+
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 /**
@@ -102,8 +105,7 @@ ArgParser.prototype.help = function() {
 	provided, or `true` if the option accepts no value.
  */
 ArgParser.prototype.parse = function(args, defaults) {
-	var util = require('common/util'),
-		result = defaults && util.mixin({}, defaults) || {};
+	var result = defaults && _.defaults({}, defaults) || {};
 
 	result._ = [];
 	for (var i = 0, leni = args.length; i < leni; i++) {

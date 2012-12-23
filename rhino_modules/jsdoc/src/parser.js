@@ -1,7 +1,6 @@
 /*global Packages: true */
 /**
  * @module jsdoc/src/parser
- * @requires common/util
  * @requires fs
  * @requires events
  */
