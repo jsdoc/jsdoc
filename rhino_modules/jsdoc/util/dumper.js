@@ -1,6 +1,6 @@
 /**
     Recursively print out all names and values in a data structure.
-    @module common/dumper
+    @module jsdoc/util/dumper
     @author Michael Mathews <micmath@gmail.com>
 	@license Apache License 2.0 - See file 'LICENSE.md' in this project.
  */
@@ -21,7 +21,7 @@ function pad(depth) {
     @param {string} openingBrace - The opening brace to add, like "{".
     @private
     @inner
-    @memberof module:common/dumper
+    @memberof module:jsdoc/util/dumper
  */
 function indent(openingBrace) {
     indentBy++;
@@ -33,7 +33,7 @@ function indent(openingBrace) {
     `false` no closing brace or trailing newline.
     @private
     @inner
-    @memberof module:common/dumper
+    @memberof module:jsdoc/util/dumper
  */
 function outdent(closingBrace) {
     indentBy--;
