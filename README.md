@@ -83,7 +83,7 @@ Or on OS X, Linux, and other POSIX-compliant systems:
 If you can't get the short-form commands to work, try invoking Java directly:
 
     java -cp lib/js.jar org.mozilla.javascript.tools.debugger.Main \
-    -debug -modules node_modules -modules rhino_modules -modules . \
+    -debug -modules node_modules -modules rhino -modules lib -modules . \
     jsdoc.js your/script.js
 
 Note: `--debug` must be the first argument to the short-form command.

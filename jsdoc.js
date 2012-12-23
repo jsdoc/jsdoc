@@ -22,10 +22,25 @@ env = {
     },
 
     /**
-        The type of VM that is executing jsdoc.
-        @type string
-    */
-    vm: '',
+     * The type of VM that is executing jsdoc:
+     *
+     * + `rhino`: Mozilla Rhino.
+     * + `node`: Node.js.
+     *
+     * **Note**: Rhino is the only VM that is currently supported.
+     * @type string
+     */
+    vm: (function() {
+        if (typeof Packages === 'object' &&
+            Object.prototype.toString.call(Packages) === '[object JavaPackage]') {
+            return 'rhino';
+        } else if ( require && require.main && module && (require.main === module) ) {
+            return 'node';
+        } else {
+            // unknown VM
+            throw new Error('Unable to identify the current JavaScript runtime.');
+        }
+    })(),
 
     /**
         The command line arguments passed into jsdoc.
@@ -56,8 +71,9 @@ env = {
 
 args = Array.prototype.slice.call(arguments, 0);
 
-// rhino has no native way to get the base dirname of the currently running script
-// so this information must be manually passed in from the command line
+// Rhino has no native way to get the base dirname of the current script,
+// so this information must be manually passed in from the command line.
+// TODO: should only run this on Rhino
 for (var i = 0; i < args.length; i++) {
     if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
         if (RegExp.$1) {
@@ -70,9 +86,9 @@ for (var i = 0; i < args.length; i++) {
         }
     }
 }
-
 env.args = args;
 
+// TODO: should only run this on Rhino
 load(env.dirname + '/rhino/rhino-shim.js');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
@@ -198,23 +214,6 @@ function main() {
         Config = require('jsdoc/config');
 
     /**
-        Detect the type of VM running jsdoc.
-        **Note**: Rhino is the only VM that is currently supported.
-        @return {string} rhino|node
-     */
-    function detectVm() {
-        if (typeof Packages === "object" &&
-            Object.prototype.toString.call(Packages) === "[object JavaPackage]") {
-            return "rhino";
-        } else if ( require && require.main && module && (require.main === module) ) {
-            return "node";
-        } else {
-            // unknown VM
-            return;
-        }
-    }
-
-    /**
      * If the current VM is Rhino, convert a path to a URI that meets the operating system's
      * requirements. Otherwise, return the original path.
      * @param {string} path The path to convert.
@@ -286,8 +285,6 @@ function main() {
 
         return result;
     }
-
-    env.vm = detectVm();
 
     var defaultOpts = {
         destination: './out/'

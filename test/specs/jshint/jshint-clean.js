@@ -52,8 +52,8 @@ describe('jshint-clean', function() {
         // check all .js files unless they're tests; rhino shim files that probably can't be
         // delinted; or third-party modules
         source = {
-            includePattern: '.+[\\|/]rhino_modules[\\|/].+\\.js$|.+[\\|/]plugins[\\|/]\\w+\\.js$',
-            excludePattern: '.+[\\|/]test[\\|/].+'
+            includePattern: '.+[\\|/]lib[\\|/].+\\.js$|.+[\\|/]plugins[\\|/]\\w+\\.js$',
+            excludePattern: '.+[\\|/]test[\\|/].+|.+[\\|/]node_modules[\\|/].+|.+[\\|/]Jake[\\|/].+'
         };
         filter = new (require('jsdoc/src/filter').Filter)(source);
 
