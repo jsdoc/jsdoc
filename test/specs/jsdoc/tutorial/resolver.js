@@ -1,4 +1,4 @@
-/*global describe: true, env: true, it: true */
+/*global afterEach: true, describe: true, env: true, expect: true, it: true */
 describe("jsdoc/tutorial/resolver", function() {
     /*jshint evil: true */
     
@@ -9,8 +9,8 @@ describe("jsdoc/tutorial/resolver", function() {
         log = eval(console.log);
 
     function missingTutorial() {
-    	resolver.load(env.dirname + "/test/tutorials/incomplete");
-    	resolver.resolve();
+        resolver.load(__dirname + "/test/tutorials/incomplete");
+        resolver.resolve();
     }
 
     afterEach(function() {

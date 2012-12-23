@@ -20,10 +20,10 @@ exports.publish = function(outputDirectory, outputFileName, sourceCode) {
     
     outputDirectory            = path.resolve(outputDirectory);
     
-    var staticFilesDirectory   = path.resolve(env.dirname + '/templates/prettyPrintSource/static');
+    var staticFilesDirectory   = path.resolve(__dirname + '/templates/prettyPrintSource/static');
     var outputFile             = path.join(outputDirectory, outputFileName + '.html');
     var templateName           = 'layout.tmpl';
-    var templatePath           = path.resolve(env.dirname + '/templates/prettyPrintSource');
+    var templatePath           = path.resolve(__dirname + '/templates/prettyPrintSource');
     var temmplateFilesDirectory= path.join(templatePath, '/tmpl');
     var templateData           = {};
     

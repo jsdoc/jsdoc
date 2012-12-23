@@ -68,7 +68,7 @@ function parseQuery(str) {
 }
 
 argParser.addOption('t', 'template',    true,  'The name of the template to use. Default: the "default" template');
-argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc env.dirname + /conf.json');
+argParser.addOption('c', 'configure',   true,  'The path to the configuration file. Default: jsdoc __dirname + /conf.json');
 argParser.addOption('e', 'encoding',    true,  'Assume this encoding when reading all source files. Default: utf-8');
 argParser.addOption('T', 'test',        false, 'Run all tests and quit.');
 argParser.addOption('d', 'destination', true,  'The path to the output folder. Use "console" to dump data to the console. Default: ./out/');

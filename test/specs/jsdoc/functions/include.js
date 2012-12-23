@@ -1,4 +1,4 @@
-
+/*global describe: true, env: true, expect: true, include: true, it: true */
 describe("include", function() {
     
     it("should be a function", function() {
@@ -15,8 +15,8 @@ describe("include", function() {
         expect( include.resolve('/a/b/c.js') ).toEqual('/a/b/c.js');
     });
     
-    it("should resolve relative filepaths relative to the env.dirname", function() {
-        expect( include.resolve('a/b/c') ).toEqual(env.dirname+'/'+'a/b/c');
+    it("should resolve relative filepaths relative to the __dirname", function() {
+        expect( include.resolve('a/b/c') ).toEqual(__dirname + '/' + 'a/b/c');
     });
     
 });

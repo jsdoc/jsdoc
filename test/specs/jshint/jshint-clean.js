@@ -3,7 +3,7 @@ var async = require('async'),
     fs = require('fs'),
     path = require('path');
 
-var config = JSON.parse( fs.readFileSync( path.join(env.dirname, '.jshintrc'), 'utf-8' ) );
+var config = JSON.parse( fs.readFileSync( path.join(__dirname, '.jshintrc'), 'utf-8' ) );
 
 function jsHintCheck(filename, callback) {
     var JSHINT = require('jshint').JSHINT;
@@ -25,7 +25,7 @@ function jsHintCheck(filename, callback) {
 
 describe('jshint-clean', function() {
     it('should generate JSHint errors for bad code', function(done) {
-        var file = path.join(env.dirname, 'test', 'fixtures', 'jshint', 'badfile.js');
+        var file = path.join(__dirname, 'test', 'fixtures', 'jshint', 'badfile.js');
 
         jsHintCheck(file, function(err, jsHintErrors) {
             expect(err).toBeFalsy();
@@ -35,7 +35,7 @@ describe('jshint-clean', function() {
     });
     
     it('should not generate JSHint errors for good code', function(done) {
-        var file = path.join(env.dirname, 'test', 'fixtures', 'jshint', 'goodfile.js');
+        var file = path.join(__dirname, 'test', 'fixtures', 'jshint', 'goodfile.js');
 
         jsHintCheck(file, function(err, jsHintErrors) {
             expect(err).toBeFalsy();
@@ -57,7 +57,7 @@ describe('jshint-clean', function() {
         };
         filter = new (require('jsdoc/src/filter').Filter)(source);
 
-        files = app.jsdoc.scanner.scan([env.dirname], 10, filter);
+        files = app.jsdoc.scanner.scan([__dirname], 10, filter);
 
         async.forEach(files, function(file, cb) {
             jsHintCheck(file, function(err, jsHintErrors) {

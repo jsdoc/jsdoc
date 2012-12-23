@@ -41,6 +41,7 @@ env = {
 
     /**
         The absolute path to the base directory of the jsdoc application.
+        @deprecated Use `__dirname` instead.
         @type string
     */
     dirname: '.',
@@ -86,7 +87,7 @@ function include(filepath) {
         load(filepath);
     }
     catch (e) {
-        console.log('Cannot include "' + env.dirname + '/' + filepath + '": '+e);
+        console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
     }
 }
 include.resolve = function(filepath) {
@@ -94,7 +95,7 @@ include.resolve = function(filepath) {
         return filepath;
     }
     
-    return env.dirname + '/' + filepath;
+    return __dirname + '/' + filepath;
 };
 
 /** Print string/s out to the console.
@@ -272,7 +273,7 @@ function main() {
         result = path.resolve(template);
         if ( !pathExists(result) ) {
             // next, try resolving it relative to the JSDoc directory
-            result = path.resolve(env.dirname, template);
+            result = path.resolve(__dirname, template);
             if ( !pathExists(result) ) {
                 result = null;
             }
@@ -295,12 +296,12 @@ function main() {
     env.opts = jsdoc.opts.args.parse(env.args);
 
     try {
-        env.conf = new Config( fs.readFileSync( env.opts.configure || path.join(env.dirname, 'conf.json') ) ).get();
+        env.conf = new Config( fs.readFileSync( env.opts.configure || path.join(__dirname, 'conf.json') ) ).get();
     }
     catch (e) {
         try {
             // Use the example file if possible
-            var example = fs.readFileSync(path.join(env.dirname, 'conf.json.EXAMPLE'), 'utf8');
+            var example = fs.readFileSync(path.join(__dirname, 'conf.json.EXAMPLE'), 'utf8');
             env.conf = JSON.parse(example);
         }
         catch(e) {

@@ -10,7 +10,7 @@ var jasmineAll = require('test/lib/jasmine');
 var jasmine = jasmineAll.jasmine;
 
 // due to scoping issues, requiring this file doesn't work
-eval( fs.readFileSync(env.dirname + '/test/async-callback.js') );
+eval( fs.readFileSync(__dirname + '/test/async-callback.js') );
 
 var jasmineNode = require('test/reporter').jasmineNode;
 
@@ -32,7 +32,7 @@ jasmine.loadHelpersInFolder = function(folder, matcher) {
     for ( var i = 0, len = helpers.length; i < len; ++i) {
         var file = helpers[i].path();
         var helper = require(file.replace(/\\/g, '/').
-            replace(new RegExp('^' + env.dirname + '/'), "").
+            replace(new RegExp('^' + __dirname + '/'), "").
             replace(/\.*$/, ""));
 
         for (var key in helper) {
@@ -96,7 +96,7 @@ jasmine.executeSpecsInFolder = function(folder, done, opts) {
     for (var i = 0, len = specsList.length; i < len; ++i) {
         filename = specsList[i];
         require(filename.path().replace(/\\/g, '/').
-            replace(new RegExp('^' + env.dirname + '/'), "").
+            replace(new RegExp('^' + __dirname + '/'), "").
             replace(/\.\w+$/, ""));
     }
 

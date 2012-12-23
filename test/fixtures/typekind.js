@@ -1,5 +1,5 @@
 /**
-    @module {ConnectServer} blog/server 
+    @module {ConnectServer} blog/server
 */
 
 module.exports = require('connect').createServer(
@@ -8,7 +8,7 @@ module.exports = require('connect').createServer(
   Connect.favicon(),
   Connect.cache(),
   Connect.gzip(),
-  require('wheat')(env.dirname)
+  require('wheat')(__dirname)
 );
 
 /**

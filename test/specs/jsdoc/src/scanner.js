@@ -6,10 +6,10 @@ describe("jsdoc/src/scanner", function() {
             excludePattern: new RegExp("(^|\\/|\\\\)_")
         }),
         path = require('path'),
-        sourceFiles = scanner.scan([path.join(env.dirname, 'test', 'fixtures', 'src')], 3, filter);
+        sourceFiles = scanner.scan([path.join(__dirname, 'test', 'fixtures', 'src')], 3, filter);
 
     sourceFiles = sourceFiles.map(function($) {
-        return path.relative(env.dirname, $);
+        return path.relative(__dirname, $);
     });
 
     it("should return the correct source files", function() {
