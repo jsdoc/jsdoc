@@ -194,11 +194,10 @@ https://github.com/evilstreak/markdown-js
 
 Portions of the Node.js source code are incorporated into the following files:
 
-- `rhino_modules/fs.js`
-- `rhino_modules/path.js`
-- `rhino_modules/querystring.js`
-- `rhino_modules/util.js`
-- `rhino_modules/common/util.js`
+- `rhino/fs.js`
+- `rhino/path.js`
+- `rhino/querystring.js`
+- `rhino/util.js`
 
 Node.js is distributed under the MIT license, which is reproduced above.
 
@@ -213,7 +212,7 @@ https://github.com/joyent/node
 Portions of the node-browserify source code are incorporated into the following
 files:
 
-- `rhino_modules/events.js`
+- `rhino/events.js`
 
 node-browserify is distributed under the MIT license, which is reproduced above.
 
