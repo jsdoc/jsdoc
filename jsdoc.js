@@ -73,7 +73,7 @@ for (var i = 0; i < args.length; i++) {
 
 env.args = args;
 
-load(env.dirname + '/lib/rhino-shim.js');
+load(env.dirname + '/rhino/rhino-shim.js');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
