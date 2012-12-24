@@ -11,6 +11,8 @@
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
+args = Array.prototype.slice.call(arguments, 0);
+
 /** Data representing the environment in which this app is running.
     @namespace
 */
@@ -24,23 +26,13 @@ env = {
     /**
      * The type of VM that is executing jsdoc:
      *
-     * + `rhino`: Mozilla Rhino.
-     * + `node`: Node.js.
+     * + {@link modules:jsdoc/util/vm.RHINO}: Mozilla Rhino.
+     * + {@link modules:jsdoc/util/vm.NODEJS}: Node.js.
      *
      * **Note**: Rhino is the only VM that is currently supported.
      * @type string
      */
-    vm: (function() {
-        if (typeof Packages === 'object' &&
-            Object.prototype.toString.call(Packages) === '[object JavaPackage]') {
-            return 'rhino';
-        } else if ( require && require.main && module && (require.main === module) ) {
-            return 'node';
-        } else {
-            // unknown VM
-            throw new Error('Unable to identify the current JavaScript runtime.');
-        }
-    })(),
+    vm: '',
 
     /**
         The command line arguments passed into jsdoc.
@@ -69,27 +61,40 @@ env = {
     opts: {}
 };
 
-args = Array.prototype.slice.call(arguments, 0);
+var vm = require('jsdoc/util/vm');
 
-// Rhino has no native way to get the base dirname of the current script,
-// so this information must be manually passed in from the command line.
-// TODO: should only run this on Rhino
-for (var i = 0; i < args.length; i++) {
-    if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
-        if (RegExp.$1) {
-            env.dirname = RegExp.$1; // last wins
-            args.splice(i--, 1); // remove --dirname opt from arguments
-        }
-        else {
-            env.dirname = args[i + 1];
-            args.splice(i--, 2);
-        }
-    }
-}
 env.args = args;
+env.vm = vm.getVm();
 
-// TODO: should only run this on Rhino
-load(env.dirname + '/rhino/rhino-shim.js');
+env.dirname = (function() {
+    var dirname;
+
+    if ( vm.isRhino() ) {
+        // Rhino has no native way to get the base dirname of the current script,
+        // so this information must be manually passed in from the command line.
+        for (var i = 0; i < args.length; i++) {
+            if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
+                if (RegExp.$1) {
+                    dirname = RegExp.$1; // last wins
+                    args.splice(i--, 1); // remove --dirname opt from arguments
+                }
+                else {
+                    dirname = args[i + 1];
+                    args.splice(i--, 2);
+                }
+            }
+        }
+    } else {
+        // TODO: can't assign to __dirname here because on Rhino, it's not defined yet
+        // dirname = __dirname;
+    }
+
+    return dirname;
+})();
+
+if ( vm.isRhino() ) {
+    load(env.dirname + '/rhino/rhino-shim.js');
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
@@ -211,7 +216,8 @@ function main() {
         fs = require('fs'),
         path = require('path'),
         taffy = require('taffydb').taffy,
-        Config = require('jsdoc/config');
+        Config = require('jsdoc/config'),
+        vm = require('jsdoc/util/vm');
 
     /**
      * If the current VM is Rhino, convert a path to a URI that meets the operating system's
@@ -222,7 +228,7 @@ function main() {
     function pathToUri(_path) {
         var result = _path;
 
-        if (env.vm === 'rhino') {
+        if ( vm.isRhino() ) {
             result = new java.io.File(result).toURI() + '';
         }
 
@@ -238,7 +244,7 @@ function main() {
     function uriToPath(uri) {
         var result = uri;
 
-        if (env.vm === 'rhino') {
+        if ( vm.isRhino() ) {
             result = new java.io.File( new java.net.URI(result) ) + '';
         }
 
