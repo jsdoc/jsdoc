@@ -73,13 +73,6 @@ exports.handlers = {
             var outputFileName  = makeOutputFileName(e.filename);
             var sourceCode      = e.source;
             
-            /*
-            print('source file name = ' + e.filename);
-            print('output file name = ' + outputFileName);
-            print('output directory = ' + outputDirectory);
-            print('sourceCode       = ' + sourceCode);
-            */
-            
             // write source to file with a unique name
             generateHighlightedSourceFile(outputDirectory, outputFileName, sourceCode);
             // link to source in documentation somehow

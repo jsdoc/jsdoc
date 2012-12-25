@@ -6,22 +6,20 @@ var util = require('util');
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
-var jasmineAll = require('test/lib/jasmine');
-var jasmine = jasmineAll.jasmine;
+var myGlobal = require('jsdoc/util/global');
+
+var jasmineAll = myGlobal.jasmineAll = require('test/lib/jasmine');
+var jasmine = myGlobal.jasmine = jasmineAll.jasmine;
 
 // due to scoping issues, requiring this file doesn't work
-eval( fs.readFileSync(__dirname + '/test/async-callback.js') );
+eval( fs.readFileSync(__dirname + '/test/async-callback.js'), 'utf8' );
 
 var jasmineNode = require('test/reporter').jasmineNode;
-
-var globalRoot = (function() {
-    return this;
-}).call(null);
 
 // set up jasmine's global functions
 ['spyOn', 'it', 'xit', 'expect', 'runs', 'waitsFor', 'beforeEach', 'afterEach', 'describe',
     'xdescribe'].forEach(function(item) {
-    globalRoot[item] = jasmineAll[item];
+    myGlobal[item] = jasmineAll[item];
 });
 
 jasmine.loadHelpersInFolder = function(folder, matcher) {
@@ -128,6 +126,32 @@ jasmine.asyncSpecWait = function() {
 jasmine.asyncSpecWait.timeout = 4 * 1000;
 jasmine.asyncSpecDone = function() {
     jasmine.asyncSpecWait.done = true;
+};
+
+jasmine.getDocSetFromFile = function(filename, parser) {
+    var sourceCode = fs.readFileSync(__dirname + '/' + filename, 'utf8'),
+        testParser = parser || new (require('jsdoc/src/parser')).Parser(),
+        indexAll = require('jsdoc/borrow').indexAll,
+        doclets;
+
+    require('jsdoc/src/handlers').attachTo(testParser);
+
+    doclets = testParser.parse('javascript:' + sourceCode);
+    indexAll(doclets);
+
+    require('jsdoc/augment').addInherited(doclets);
+
+    // test assume borrows have not yet been resolved
+    // require('jsdoc/borrow').resolveBorrows(doclets);
+
+    return {
+        doclets: doclets,
+        getByLongname: function(longname) {
+            return doclets.filter(function(doclet) {
+                return (doclet.longname || doclet.name) === longname;
+            });
+        }
+    };
 };
 
 for (var key in jasmine) {

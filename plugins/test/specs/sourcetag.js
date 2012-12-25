@@ -1,9 +1,10 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("sourcetag plugin", function() {
     var parser = new (require("jsdoc/src/parser")).Parser(),
         plugin = require('plugins/sourcetag'),
         docSet;
 
-    installPlugins(['plugins/sourcetag'], parser);
+    require('jsdoc/plugins').installPlugins(['plugins/sourcetag'], parser);
     docSet = jasmine.getDocSetFromFile("plugins/sourcetag.js", parser);
 
     it("should set the lineno and filename of the doclet's meta property", function() {

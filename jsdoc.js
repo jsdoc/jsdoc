@@ -1,4 +1,4 @@
-/*global app: true, args: true, env: true, Packages: true, publish: true */
+/*global app: true, args: true, env: true, publish: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -8,10 +8,6 @@
 // try: $ java -classpath build-files/java/classes/js.jar org.mozilla.javascript.tools.shell.Main main.js `pwd` script/to/parse.js
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-
-var hasOwnProp = Object.prototype.hasOwnProperty;
-
-args = Array.prototype.slice.call(arguments, 0);
 
 /** Data representing the environment in which this app is running.
     @namespace
@@ -32,7 +28,7 @@ env = {
      * **Note**: Rhino is the only VM that is currently supported.
      * @type string
      */
-    vm: '',
+    vm: require('jsdoc/util/vm').vm,
 
     /**
         The command line arguments passed into jsdoc.
@@ -61,15 +57,11 @@ env = {
     opts: {}
 };
 
-var vm = require('jsdoc/util/vm');
-
-env.args = args;
-env.vm = vm.getVm();
-
+var args = Array.prototype.slice.call(arguments, 0);
 env.dirname = (function() {
     var dirname;
 
-    if ( vm.isRhino() ) {
+    if ( require('jsdoc/util/vm').isRhino() ) {
         // Rhino has no native way to get the base dirname of the current script,
         // so this information must be manually passed in from the command line.
         for (var i = 0; i < args.length; i++) {
@@ -91,102 +83,21 @@ env.dirname = (function() {
 
     return dirname;
 })();
+// must be assigned after env.dirname, which modifies args
+env.args = args;
+args = undefined;
 
-if ( vm.isRhino() ) {
-    load(env.dirname + '/rhino/rhino-shim.js');
+// TODO: consider always including an initializer for the current VM
+if ( require('jsdoc/util/vm').isRhino() ) {
+    require('jsdoc/util/include')(env.dirname + '/rhino/rhino-shim.js');
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-
-/** @global
-    @param {string} filepath The path to the script file to include (read and execute).
-*/
-function include(filepath) {
-    try {
-        filepath = include.resolve(filepath);
-        load(filepath);
-    }
-    catch (e) {
-        console.log('Cannot include "' + __dirname + '/' + filepath + '": '+e);
-    }
-}
-include.resolve = function(filepath) {
-    if (filepath.indexOf('/') === 0) {
-        return filepath;
-    }
-    
-    return __dirname + '/' + filepath;
-};
-
-/** Print string/s out to the console.
-    @param {string} ... String/s to print out to console.
- */
-function print() {
-    for (var i = 0, leni = arguments.length; i < leni; i++) {
-        java.lang.System.out.println('' + arguments[i]);
-    }
-}
-
 /**
-    Try to recursively print out all key/values in an object.
-    @global
-    @param {Object} ... Object/s to dump out to console.
+ * Data that must be shared across the entire application.
+ * @namespace
  */
-function dump() {
-    var doop = require('jsdoc/util/doop').doop;
-    var _dump = require('jsdoc/util/dumper').dump;
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        print( _dump(doop(arguments[i])) );
-    }
-}
-
-function installPlugins(plugins, p) {
-    var dictionary = require('jsdoc/tag/dictionary'),
-        parser = p || app.jsdoc.parser;
-
-    // allow user-defined plugins to...
-    for (var i = 0, leni = plugins.length; i < leni; i++) {
-        var plugin = require(plugins[i]);
-
-        //...register event handlers
-        if (plugin.handlers) {
-            for (var eventName in plugin.handlers) {
-                if ( hasOwnProp.call(plugin.handlers, eventName) ) {
-                    parser.on(eventName, plugin.handlers[eventName]);
-                }
-            }
-        }
-
-        //...define tags
-        if (plugin.defineTags) {
-            plugin.defineTags(dictionary);
-        }
-
-        //...add a node visitor
-        if (plugin.nodeVisitor) {
-            parser.addNodeVisitor(plugin.nodeVisitor);
-        }
-    }
-}
-
-function indexAll(docs) {
-    var lookupTable = {};
-
-    docs.forEach(function(doc) {
-        if ( !hasOwnProp.call(lookupTable, doc.longname) ) {
-            lookupTable[doc.longname] = [];
-        }
-        lookupTable[doc.longname].push(doc);
-    });
-    docs.index = lookupTable;
-}
-
-
-/**
-    Data that must be shared across the entire application.
-    @namespace
-*/
 app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
@@ -195,29 +106,57 @@ app = {
     }
 };
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+/**
+    Try to recursively print out all key/values in an object.
+    @global
+    @private
+    @param {Object} ... Object/s to dump out to console.
+ */
+function dump() {
+    var doop = require('jsdoc/util/doop').doop;
+    var _dump = require('jsdoc/util/dumper').dump;
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        console.log( _dump(doop(arguments[i])) );
+    }
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-
 /**
-    Run the jsdoc application.
+ * Run the jsdoc application.
+ * @todo Refactor function (and require statements) into smaller functions
  */
 function main() {
-    var sourceFiles,
-        packageJson,
-        docs,
-        jsdoc = {
-            opts: {
-                args: require('jsdoc/opts/args'),
-            }
-        },
-        resolver,
-        _ = require('underscore'),
-        fs = require('fs'),
-        path = require('path'),
-        taffy = require('taffydb').taffy,
-        Config = require('jsdoc/config'),
-        vm = require('jsdoc/util/vm');
+    var _ = require('underscore');
+    var args = require('jsdoc/opts/args');
+    var augment = require('jsdoc/augment');
+    var borrow = require('jsdoc/borrow');
+    var Config = require('jsdoc/config');
+    var Filter = require('jsdoc/src/filter').Filter;
+    var fs = require('fs');
+    var handlers = require('jsdoc/src/handlers');
+    var include = require('jsdoc/util/include');
+    var Package = require('jsdoc/package').Package;
+    var path = require('path');
+    var plugins = require('jsdoc/plugins');
+    var Readme = require('jsdoc/readme');
+    var resolver = require('jsdoc/tutorial/resolver');
+    var taffy = require('taffydb').taffy;
+    var vm = require('jsdoc/util/vm');
+
+    var defaultOpts;
+    var docs;
+    var exampleConf;
+    var filter;
+    var i;
+    var l;
+    var packageDocs;
+    var packageJson;
+    var sourceFiles;
+    var template;
+
 
     /**
      * If the current VM is Rhino, convert a path to a URI that meets the operating system's
@@ -292,11 +231,11 @@ function main() {
         return result;
     }
 
-    var defaultOpts = {
+    defaultOpts = {
         destination: './out/'
     };
 
-    env.opts = jsdoc.opts.args.parse(env.args);
+    env.opts = args.parse(env.args);
 
     try {
         env.conf = new Config( fs.readFileSync( env.opts.configure || path.join(__dirname, 'conf.json') ) ).get();
@@ -304,8 +243,8 @@ function main() {
     catch (e) {
         try {
             // Use the example file if possible
-            var example = fs.readFileSync(path.join(__dirname, 'conf.json.EXAMPLE'), 'utf8');
-            env.conf = JSON.parse(example);
+            exampleConf = fs.readFileSync(path.join(__dirname, 'conf.json.EXAMPLE'), 'utf8');
+            env.conf = JSON.parse(exampleConf);
         }
         catch(e) {
             throw('Configuration file cannot be evaluated. ' + e);
@@ -321,7 +260,7 @@ function main() {
     }
 
     if (env.opts.help) {
-        console.log( jsdoc.opts.args.help() );
+        console.log( args.help() );
         process.exit(0);
     } else if (env.opts.test) {
         include('test/runner.js');
@@ -329,18 +268,17 @@ function main() {
     }
 
     if (env.conf.plugins) {
-        installPlugins(env.conf.plugins);
+        plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
     }
 
     // any source file named package.json or README.md is treated special
-    for (var i = 0, l = env.opts._.length; i < l; i++ ) {
+    for (i = 0, l = env.opts._.length; i < l; i++ ) {
         if (/\bpackage\.json$/i.test(env.opts._[i])) {
             packageJson = require('fs').readFileSync( env.opts._[i] );
             env.opts._.splice(i--, 1);
         }
         
         if (/(\bREADME|\.md)$/i.test(env.opts._[i])) {
-            var Readme = require('jsdoc/readme');
             env.opts.readme = new Readme(env.opts._[i]).html;
             env.opts._.splice(i--, 1);
         }
@@ -351,33 +289,29 @@ function main() {
     }
     
     if (env.conf.source && env.opts._.length > 0) { // are there any files to scan and parse?
-        var filter = new (require('jsdoc/src/filter').Filter)(env.conf.source);
+        filter = new Filter(env.conf.source);
 
         sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), filter);
 
-        require('jsdoc/src/handlers').attachTo(app.jsdoc.parser);
+        handlers.attachTo(app.jsdoc.parser);
 
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
 
         //The files are ALWAYS useful for the templates to have
         //If there is no package.json, just create an empty package
-        var packageDocs = new (require('jsdoc/package').Package)(packageJson);
+        packageDocs = new Package(packageJson);
         packageDocs.files = sourceFiles || [];
         docs.push(packageDocs);
 
-        indexAll(docs);
+        borrow.indexAll(docs);
 
-        require('jsdoc/augment').addInherited(docs);
-        require('jsdoc/borrow').resolveBorrows(docs);
+        augment.addInherited(docs);
+        borrow.resolveBorrows(docs);
 
         if (env.opts.explain) {
             console.log(docs);
             process.exit(0);
         }
-
-        // load this module anyway to ensure root instance exists
-        // it's not a problem since without tutorials root node will have empty children list
-        resolver = require('jsdoc/tutorial/resolver');
 
         if (env.opts.tutorials) {
             resolver.load(env.opts.tutorials);
@@ -386,7 +320,6 @@ function main() {
 
         env.opts.template = getTemplatePath(env.opts.template) || env.opts.template;
 
-        var template;
         try {
             template = require(env.opts.template + '/publish');
         }

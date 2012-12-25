@@ -1,9 +1,10 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("escapeHtml plugin", function() {
     var parser = new (require("jsdoc/src/parser")).Parser(),
         plugin = require('plugins/escapeHtml'),
         docSet;
 
-    installPlugins(['plugins/escapeHtml'], parser);
+    require('jsdoc/plugins').installPlugins(['plugins/escapeHtml'], parser);
     docSet = jasmine.getDocSetFromFile("plugins/escapeHtml.js", parser);
 
     it("should escape '&', '<' and newlines in doclet descriptions", function() {

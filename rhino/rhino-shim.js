@@ -80,7 +80,7 @@ console = {
             }
         }
 
-        print( args.join(' ') );
+        java.lang.System.out.println( args.join(' ') );
     },
     trace: function() {
         // TODO

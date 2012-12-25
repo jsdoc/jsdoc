@@ -8,7 +8,7 @@ describe("verbose output plugin", function () {
         plugin = require('plugins/verboseOutput'),
         docSet;
 
-    //installPlugins(['plugins/verboseOutput'], parser);
+    //require('jsdoc/plugins').installPlugins(['plugins/verboseOutput'], parser);
     docSet = jasmine.getDocSetFromFile("plugins/verboseOutput.js", parser);
 
     xit("should log file names to console", function() {

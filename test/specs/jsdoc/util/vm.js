@@ -1,4 +1,4 @@
-/*global describe: true, env: true, expect: true, it: true, xit: true */
+/*global describe: true, expect: true, it: true, xit: true */
 describe("jsdoc/util/vm", function() {
     var vm = require('jsdoc/util/vm');
 
@@ -17,9 +17,9 @@ describe("jsdoc/util/vm", function() {
         expect(typeof vm.NODEJS).toEqual('string');
     });
 
-    it("should export a 'getVm' function", function() {
-        expect(vm.getVm).toBeDefined();
-        expect(typeof vm.getVm).toEqual('function');
+    it("should export a 'vm' property", function() {
+        expect(vm.vm).toBeDefined();
+        expect(typeof vm.vm).toEqual('string');
     });
 
     it("should export an 'isRhino' function", function() {
@@ -33,9 +33,9 @@ describe("jsdoc/util/vm", function() {
     });
 
 
-    describe("getVm", function() {
-        it("should return either 'vm.RHINO' or 'vm.NODEJS'", function() {
-            expect( vm.getVm() ).toEqual(vm.RHINO || vm.NODEJS);
+    describe("vm", function() {
+        it("should match either 'vm.RHINO' or 'vm.NODEJS'", function() {
+            expect(vm.vm).toEqual(vm.RHINO || vm.NODEJS);
         });
 
         xit("should return the correct value for the current VM", function() {
@@ -48,8 +48,8 @@ describe("jsdoc/util/vm", function() {
             expect( typeof vm.isRhino() ).toEqual('boolean');
         });
 
-        it("should reflect the value of 'env.vm'", function() {
-            expect( vm.isRhino() ).toEqual(env.vm === vm.RHINO ? true : false);
+        it("should reflect the value of 'vm.vm'", function() {
+            expect( vm.isRhino() ).toEqual(vm.vm === vm.RHINO ? true : false);
         });
     });
 
@@ -58,8 +58,8 @@ describe("jsdoc/util/vm", function() {
             expect( typeof vm.isNodejs() ).toEqual('boolean');
         });
 
-        it("should reflect the value of 'env.vm'", function() {
-            expect( vm.isNodejs() ).toEqual(env.vm === vm.NODEJS ? true : false);
+        it("should reflect the value of 'vm.vm'", function() {
+            expect( vm.isNodejs() ).toEqual(vm.vm === vm.NODEJS ? true : false);
         });
     });
 

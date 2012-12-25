@@ -1,3 +1,4 @@
+/*global jasmine: true */
 (function() {
   var withoutAsync = {};
 
@@ -51,6 +52,6 @@
         return true;
       }
     }, "spec to complete", timeout);
-  };
+  }
 
 }).call(this);

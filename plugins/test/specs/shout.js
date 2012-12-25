@@ -1,9 +1,10 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("shout plugin", function() {
     var parser = new (require("jsdoc/src/parser")).Parser(),
         plugin = require('plugins/shout'),
         docSet;
 
-    installPlugins(['plugins/shout'], parser);
+    require('jsdoc/plugins').installPlugins(['plugins/shout'], parser);
     docSet = jasmine.getDocSetFromFile("plugins/shout.js", parser);
 
     it("should make the description uppercase", function() {
