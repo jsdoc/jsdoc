@@ -1,6 +1,6 @@
 /*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true,
 __globalForIncludeTest__: true */
-describe("include", function() {
+describe("jsdoc/util/include", function() {
     var include = require('jsdoc/util/include');
     var myGlobal = require('jsdoc/util/global');
     var path = require('path');
@@ -15,7 +15,7 @@ describe("include", function() {
         myGlobal.__globalForIncludeTest__ = undefined;
     });
 
-    it("should be a function", function() {
+    it("should exist", function() {
         expect(include).toBeDefined();
         expect(typeof include).toEqual('function');
     });
