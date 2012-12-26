@@ -5,13 +5,6 @@
  */
 
 /**
- * Emulate Node.js globals.
- * @see http://nodejs.org/api/globals.html
- */
-
-__dirname = env.dirname;
-
-/**
  * Emulate DOM timeout/interval functions.
  * @see https://developer.mozilla.org/en-US/docs/DOM/window#Methods
  */

@@ -20,17 +20,6 @@ env = {
     },
 
     /**
-     * The type of VM that is executing jsdoc:
-     *
-     * + {@link modules:jsdoc/util/vm.RHINO}: Mozilla Rhino.
-     * + {@link modules:jsdoc/util/vm.NODEJS}: Node.js.
-     *
-     * **Note**: Rhino is the only VM that is currently supported.
-     * @type string
-     */
-    vm: require('jsdoc/util/vm').vm,
-
-    /**
         The command line arguments passed into jsdoc.
         @type Array
     */
@@ -44,6 +33,7 @@ env = {
 
     /**
         The absolute path to the base directory of the jsdoc application.
+        @private
         @deprecated Use `__dirname` instead.
         @type string
     */
@@ -57,40 +47,12 @@ env = {
     opts: {}
 };
 
-var args = Array.prototype.slice.call(arguments, 0);
-env.dirname = (function() {
-    var dirname;
-
-    if ( require('jsdoc/util/vm').isRhino() ) {
-        // Rhino has no native way to get the base dirname of the current script,
-        // so this information must be manually passed in from the command line.
-        for (var i = 0; i < args.length; i++) {
-            if ( /^--dirname(?:=(.+?)(\/|\/\.)?)?$/i.test(args[i]) ) {
-                if (RegExp.$1) {
-                    dirname = RegExp.$1; // last wins
-                    args.splice(i--, 1); // remove --dirname opt from arguments
-                }
-                else {
-                    dirname = args[i + 1];
-                    args.splice(i--, 2);
-                }
-            }
-        }
-    } else {
-        // TODO: can't assign to __dirname here because on Rhino, it's not defined yet
-        // dirname = __dirname;
-    }
-
-    return dirname;
-})();
-// must be assigned after env.dirname, which modifies args
-env.args = args;
-args = undefined;
-
-// TODO: consider always including an initializer for the current VM
-if ( require('jsdoc/util/vm').isRhino() ) {
-    require('jsdoc/util/include')(env.dirname + '/rhino/rhino-shim.js');
-}
+// initialize the environment for the current JavaScript VM
+(function(args) {
+    var vm = require('jsdoc/util/vm').vm;
+    // TODO: may need to move this file to support Node.js
+    require('initialize')[vm](args);
+})( Array.prototype.slice.call(arguments, 0) );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
@@ -159,36 +121,22 @@ function main() {
 
 
     /**
-     * If the current VM is Rhino, convert a path to a URI that meets the operating system's
+     * If required by the current VM, convert a path to a URI that meets the operating system's
      * requirements. Otherwise, return the original path.
+     * @function
      * @param {string} path The path to convert.
      * @return {string} A URI that meets the operating system's requirements, or the original path.
      */
-    function pathToUri(_path) {
-        var result = _path;
-
-        if ( vm.isRhino() ) {
-            result = new java.io.File(result).toURI() + '';
-        }
-
-        return result;
-    }
+    var pathToUri = vm.getModule('jsdoc').pathToUri;
 
     /**
-     * If the current VM is Rhino, convert a URI to a path that meets the operating system's
+     * If required by the current VM, convert a URI to a path that meets the operating system's
      * requirements. Otherwise, assume the "URI" is really a path, and return the original path.
+     * @function
      * @param {string} uri The URI to convert.
      * @return {string} A path that meets the operating system's requirements.
      */
-    function uriToPath(uri) {
-        var result = uri;
-
-        if ( vm.isRhino() ) {
-            result = new java.io.File( new java.net.URI(result) ) + '';
-        }
-
-        return result;
-    }
+    var uriToPath = vm.getModule('jsdoc').uriToPath;
 
     /**
         Retrieve the fully resolved path to the requested template.
@@ -223,7 +171,6 @@ function main() {
             }
         }
 
-        // this only messes with the path on Rhino
         if (result) {
             result = pathToUri(result);
         }
