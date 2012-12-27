@@ -97,7 +97,7 @@ function main() {
     var borrow = require('jsdoc/borrow');
     var Config = require('jsdoc/config');
     var Filter = require('jsdoc/src/filter').Filter;
-    var fs = require('fs');
+    var fs = require('jsdoc/fs');
     var handlers = require('jsdoc/src/handlers');
     var include = require('jsdoc/util/include');
     var Package = require('jsdoc/package').Package;
@@ -179,13 +179,16 @@ function main() {
     }
 
     defaultOpts = {
-        destination: './out/'
+        destination: './out/',
+        encoding: 'utf8'
     };
 
     env.opts = args.parse(env.args);
 
     try {
-        env.conf = new Config( fs.readFileSync( env.opts.configure || path.join(__dirname, 'conf.json') ) ).get();
+        env.conf = new Config(
+            fs.readFileSync( env.opts.configure || path.join(__dirname, 'conf.json'), 'utf8' )
+        ).get();
     }
     catch (e) {
         try {
@@ -221,7 +224,7 @@ function main() {
     // any source file named package.json or README.md is treated special
     for (i = 0, l = env.opts._.length; i < l; i++ ) {
         if (/\bpackage\.json$/i.test(env.opts._[i])) {
-            packageJson = require('fs').readFileSync( env.opts._[i] );
+            packageJson = fs.readFileSync( env.opts._[i], 'utf8' );
             env.opts._.splice(i--, 1);
         }
         

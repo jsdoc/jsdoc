@@ -1,9 +1,9 @@
 /*global app: true, beforeEach: true, describe: true, env: true, expect: true, it: true */
 var async = require('async'),
-    fs = require('fs'),
+    fs = require('jsdoc/fs'),
     path = require('path');
 
-var config = JSON.parse( fs.readFileSync( path.join(__dirname, '.jshintrc'), 'utf-8' ) );
+var config = JSON.parse( fs.readFileSync( path.join(__dirname, '.jshintrc'), 'utf8' ) );
 
 function jsHintCheck(filename, callback) {
     var JSHINT = require('jshint').JSHINT;

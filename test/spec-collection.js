@@ -1,7 +1,7 @@
 /*global env: true */
 var wrench = require('wrench');
 var path = require('path');
-var fs = require('fs');
+var fs = require('jsdoc/fs');
 var specs = [];
 
 var createSpecObj = function(_path, root) {

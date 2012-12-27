@@ -1,6 +1,6 @@
 /*global env: true, expect: true, runs: true, waits: true */
 /*jshint evil: true */
-var fs = require('fs');
+var fs = require('jsdoc/fs');
 var path = require('path');
 var util = require('util');
 
@@ -12,7 +12,7 @@ var jasmineAll = myGlobal.jasmineAll = require('test/lib/jasmine');
 var jasmine = myGlobal.jasmine = jasmineAll.jasmine;
 
 // due to scoping issues, requiring this file doesn't work
-eval( fs.readFileSync(__dirname + '/test/async-callback.js'), 'utf8' );
+eval( fs.readFileSync(__dirname + '/test/async-callback.js', 'utf8') );
 
 var jasmineNode = require('test/reporter').jasmineNode;
 

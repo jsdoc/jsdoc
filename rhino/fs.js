@@ -1,26 +1,34 @@
 /*global Packages: true */
+
+/**
+ * Partial Rhino shim for Node.js' `fs` module.
+ * @see http://nodejs.org/api/fs.html
+ */
+
 var path = require('path');
 
-// TODO: Should fail if encoding isn't passed in; Node.js thinks this means you want a buffer
-// TODO: callers shouldn't use 'utf-8'--the method should map 'utf8' to 'utf-8'
+function checkEncoding(enc, name) {
+    // we require the `encoding` parameter for Node.js compatibility; on Node.js, if you omit the
+    // encoding, you get a stream instead of a string
+    if (!enc || typeof enc === 'function') {
+        throw new Error(name + ' requires an encoding on Rhino!');
+    }
+
+    // Node.js wants 'utf8', but Java wants 'utf-8'
+    if (enc === 'utf8') {
+        enc = 'utf-8';
+    }
+
+    return enc;
+}
+
 exports.readFileSync = function(filename, encoding) {
-    encoding = encoding || 'utf-8';
+    encoding = checkEncoding(encoding, 'fs.readFileSync');
 
     return readFile(filename, encoding);
 };
 
 exports.readFile = function(filename, encoding, callback) {
-    if (!encoding || typeof encoding === 'function') {
-        process.nextTick(function() {
-            callback('fs.readFile requires an encoding on Rhino!');
-        });
-    }
-
-    // Node.js wants 'utf8', but Java wants 'utf-8'
-    if (encoding === 'utf8') {
-        encoding = 'utf-8';
-    }
-
     try {
         var data = exports.readFileSync(filename, encoding);
         process.nextTick(function() {
@@ -50,8 +58,8 @@ var statSync = exports.statSync = function(_path) {
 };
 
 var readdirSync = exports.readdirSync = function(_path) {
-    var dir,
-        files;
+    var dir;
+    var files;
 
     dir = new java.io.File(_path);
     if (!dir.directory) {
@@ -60,7 +68,7 @@ var readdirSync = exports.readdirSync = function(_path) {
 
     files = dir.list();
 
-    //Convert files to Javascript strings so they play nice with node modules
+    // Convert files to Javascript strings so they play nice with node modules
     files = files.map(function(fileName) {
         return String(fileName);
     });
@@ -68,8 +76,7 @@ var readdirSync = exports.readdirSync = function(_path) {
     return files;
 };
 
-// TODO: not part of node's "fs" module
-// for node, could use wrench.readdirSyncRecursive(), although it doesn't take a 'recurse' param
+// JSDoc extension to `fs` module
 var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     var files,
         file;
@@ -112,7 +119,7 @@ var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
     return _allFiles;
 };
 
-// TODO: not part of node's "fs" module
+// JSDoc extension to `fs` module
 var toDir = exports.toDir = function(_path) {
     var f = new java.io.File(_path);
 
@@ -123,20 +130,19 @@ var toDir = exports.toDir = function(_path) {
     }
 };
 
-var mkdirSync = exports.mkdirSync = function(/**string*/ _path) {
+var mkdirSync = exports.mkdirSync = function(_path) {
     var dir_path = toDir(_path);
     (new java.io.File(dir_path)).mkdir();
 };
 
-// TODO: not part of node's "fs" module
-// for node, could use: https://github.com/substack/node-mkdirp
+// JSDoc extension to `fs` module
 exports.mkPath = function(/**Array*/ _path) {
-    if (_path.constructor == Array) { _path = _path.join(""); }
+    if (_path.constructor == Array) { _path = _path.join(''); }
 
     (new java.io.File(_path)).mkdirs();
 };
 
-// TODO: not part of node's "fs" module
+// JSDoc extension to `fs` module
 exports.copyFileSync = function(inFile, outDir, fileName) {
     if (fileName == null){fileName = path.basename(inFile);}
 
@@ -156,7 +162,7 @@ exports.copyFileSync = function(inFile, outDir, fileName) {
 };
 
 exports.writeFileSync = function(filename, data, encoding) {
-    encoding = encoding || 'utf-8';
+    encoding = checkEncoding(encoding);
 
     var out = new Packages.java.io.PrintWriter(
         new Packages.java.io.OutputStreamWriter(

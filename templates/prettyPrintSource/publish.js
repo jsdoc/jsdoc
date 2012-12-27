@@ -13,7 +13,7 @@
  */
 exports.publish = function(outputDirectory, outputFileName, sourceCode) {
     
-    var fs                     = require('fs');
+    var fs                     = require('jsdoc/fs');
     var path                   = require('path');
     var helper                 = require('jsdoc/util/templateHelper');
     var template               = require('jsdoc/template');
@@ -40,7 +40,7 @@ exports.publish = function(outputDirectory, outputFileName, sourceCode) {
     console.log('outputContent   : ' + outputContent);
     */
     fs.mkPath(outputDirectory);
-    fs.writeFileSync(outputFile, outputContent);
+    fs.writeFileSync(outputFile, outputContent, 'utf8');
     
     // copy static files to outdir
     var fromDir                = path.join(templatePath, '/static');

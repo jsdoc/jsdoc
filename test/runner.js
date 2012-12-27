@@ -6,7 +6,7 @@
  * 3. Get the list of directories to run tests from
  * 4. Run Jasmine on each directory
  */
-var fs = require('fs');
+var fs = require('jsdoc/fs');
 var jasmine = require('test/jasmine-jsdoc');
 var path = require('path');
 

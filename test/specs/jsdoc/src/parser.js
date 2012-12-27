@@ -42,10 +42,10 @@ describe("jsdoc/src/parser", function() {
             });
             
             it("should be able to parse its own source file", function() {
-                var fs = require("fs"),
-                    path = require("path"),
-                    parserSrc = "javascript:" + fs.readFileSync( path.join(__dirname,
-                        "lib", "jsdoc", "src", "parser.js") ),
+                var fs = require('jsdoc/fs'),
+                    path = require('path'),
+                    parserSrc = 'javascript:' + fs.readFileSync( path.join(__dirname,
+                        'lib', 'jsdoc', 'src', 'parser.js'), 'utf8' ),
                     parse = function() {
                         parser.parse(parserSrc);
                     };

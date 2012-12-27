@@ -1,10 +1,11 @@
+/*global env: true */
 /**
     @overview Adds support for reusable partial jsdoc files.
     @module plugins/partial
     @author Ludo Antonov <ludo@hulu.com>
  */
 
-var fs = require('fs');
+var fs = require('jsdoc/fs');
 var path = require('path');
 
 exports.handlers = {
@@ -22,7 +23,7 @@ exports.handlers = {
             var pathArg = $.match(/\".*\"/)[0].replace(/"/g,'');
             var fullPath =  path.join(e.filename , '..', pathArg);
 
-            var partialData = fs.readFileSync(fullPath);
+            var partialData = fs.readFileSync(fullPath, env.opts.encoding);
 
             return partialData;
         });
