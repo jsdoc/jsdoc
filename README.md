@@ -1,6 +1,6 @@
 JSDoc 3
 =======
-[![Build Status](https://secure.travis-ci.org/jsdoc3/jsdoc.png)](http://travis-ci.org/jsdoc3/jsdoc)
+[![Build Status](https://secure.travis-ci.org/jsdoc3/jsdoc.png?master)](http://travis-ci.org/jsdoc3/jsdoc)
 
 An inline API documentation processor for JavaScript. JSDoc 3 is intended to be
 an upgrade to JsDoc Toolkit (JSDoc 2).
