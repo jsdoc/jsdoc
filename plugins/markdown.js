@@ -23,7 +23,7 @@ function process(doclet) {
         }
 
         if (typeof doclet[tag] === "string" &&
-		      (tag != 'see' ||
+              (tag != 'see' ||
                   // treat '@see' specially, since we only want to process @see text that contains links
                   (tag == 'see' && doclet[tag].indexOf('[') != -1))) {
             doclet[tag] = parse(doclet[tag]);
