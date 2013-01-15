@@ -11,6 +11,5 @@ exports.handlers = {
         // a JSDoc comment looks like: /**[one or more chars]*/
         var comments = e.source.match(/\/\*\*[\s\S]+?\*\//g);
         e.source = comments.join('\n\n');
-        console.log('source: ' + e.source);
     }
 };
