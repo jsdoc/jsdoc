@@ -321,8 +321,26 @@ describe("jsdoc/util/templateHelper", function() {
         // TODO
     });
 
-    xdescribe("getSignatureReturns", function() {
-        // TODO
+    describe("getSignatureReturns", function() {
+        // TODO: more tests
+        
+        it("returns a value with correctly escaped HTML", function() {
+            var mockDoclet = {
+                returns: [
+                    {
+                        type: {
+                            names: [
+                                'Array.<string>'
+                            ]
+                        }
+                    }
+                ]
+            };
+
+            var html = helper.getSignatureReturns(mockDoclet);
+            expect( html.indexOf('Array.<string>') ).toEqual(-1);
+            expect( html.indexOf('Array.&lt;string>') ).toBeGreaterThan(-1);
+        });
     });
 
     xdescribe("getAncestorLinks", function() {
