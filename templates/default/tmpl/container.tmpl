@@ -93,7 +93,7 @@
     <?js } ?>
     
     <?js
-        var members = self.find({kind: 'member', memberof: title === 'Global'? {isUndefined: true} : doc.longname});
+        var members = self.find({kind: 'member', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
         if (members && members.length && members.forEach) { 
     ?>
         <h3 class="subsection-title">Members</h3>
@@ -104,7 +104,7 @@
     <?js } ?>
     
     <?js
-        var methods = self.find({kind: 'function', memberof: title === 'Global'? {isUndefined: true} : doc.longname});
+        var methods = self.find({kind: 'function', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
         if (methods && methods.length && methods.forEach) { 
     ?>
         <h3 class="subsection-title">Methods</h3>
@@ -115,7 +115,7 @@
     <?js } ?>
     
     <?js
-        var typedefs = self.find({kind: 'typedef', memberof: doc.longname}); 
+        var typedefs = self.find({kind: 'typedef', memberof: title === 'Global' ? {isUndefined: true} : doc.longname}); 
         if (typedefs && typedefs.length && typedefs.forEach) { 
     ?>
         <h3 class="subsection-title">TypeDefs</h3>
@@ -126,7 +126,7 @@
     <?js } ?>
     
     <?js
-        var events = self.find({kind: 'event', memberof: doc.longname}); 
+        var events = self.find({kind: 'event', memberof: title === 'Global' ? {isUndefined: true} : doc.longname}); 
         if (events && events.length && events.forEach) { 
     ?>
         <h3 class="subsection-title">Events</h3>

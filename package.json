@@ -1,8 +1,8 @@
 {
 	"name": "jsdoc",
-	"version": "3.0.0",
-	"revision": "1351661862323",
-	"description": "An automatic documentation generator for javascript.",
+	"version": "3.1.0-dev",
+	"revision": "1358265302670",
+	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
 		{
@@ -32,24 +32,13 @@
 		"name":  "Michael Mathews",
 		"email": "micmath@gmail.com"
 	},
-	"contributors" : [
+	"contributors": [
 		{
-			"name":  "Rafa\u0105 Wrzeszcz",
-			"email": "rafal.wrzeszcz@wrzasq.pl"
-		},
-		{
-			"name": "Jannon Frank",
-			"email": "jannon@jannon.net"
+			"url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
 		}
 	],
-	"maintainers": [
-		{
-			"name": "Jannon Frank",
-			"email": "jannon@jannon.net"
-		},
-		{
-			"name": "Jeff Williams",
-			"email": "jeffrey.l.williams@gmail.com"
-		}
-	]
+	"maintainers": {
+		"name": "Jeff Williams",
+		"email": "jeffrey.l.williams@gmail.com"
+	}
 }
