@@ -233,6 +233,13 @@ describe("jsdoc/opts/args", function() {
             expect(r.nocolor).toEqual(true);
         });
 
+        it("should accept a '-v' option and return an object with a 'version' property", function() {
+            args.parse(['-v']);
+            var r = args.get();
+
+            expect(r.version).toEqual(true);
+        });
+
         it("should accept a '--version' option and return an object with a 'version' property", function() {
             args.parse(['--version']);
             var r = args.get();

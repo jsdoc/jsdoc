@@ -113,6 +113,7 @@ function main() {
     var exampleConf;
     var filter;
     var i;
+    var info;
     var l;
     var packageDocs;
     var packageJson;
@@ -216,8 +217,9 @@ function main() {
         include('test/runner.js');
         process.exit(0);
     } else if (env.opts.version) {
-        var info = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
-        console.log(info.version);
+        info = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+        info.revision = new Date(parseInt(info.revision, 10)).toUTCString();
+        console.log('JSDoc ' + info.version + ' (' + info.revision + ')');
         process.exit(0);
     }
 
