@@ -215,6 +215,10 @@ function main() {
     } else if (env.opts.test) {
         include('test/runner.js');
         process.exit(0);
+    } else if (env.opts.version) {
+        var info = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+        console.log(info.version);
+        process.exit(0);
     }
 
     if (env.conf.plugins) {
