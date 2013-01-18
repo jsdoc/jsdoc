@@ -343,6 +343,17 @@ conf.json file.  A plugin can stop later plugins from visiting a node by
 setting a ```stopPropagation``` property on the event object (e.stopPropagation = true).
 A plugin can stop the event from firing setting a ```preventDefault``` property.
 
+### Throwing Errors
+
+If you wish your plugin to throw an error, do it using the `handle` function in
+the `jsdoc/util/error` module:
+
+    require('jsdoc/util/error').handle( new Error('I do not like green eggs and ham!') );
+
+By default this will throw the error, halting the execution of `jsdoc`. However,
+if the user used the `--lenient` switch when they ran `jsdoc` it will simply log
+the error to the console and continue.
+
 Packaging JSDoc 3 Plugins
 ----
 
