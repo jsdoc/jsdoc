@@ -46,8 +46,29 @@ If you want more control check out the documentation in
 available (including examples!). One day we'll get the docs generated
 and hosted somewhere for nicer browsing.
 
-We're yet to try it out in a browser, though it's high up on our list of
-things to sort out for this project.
+It also works in a browser; here is a complete example:
+
+    <!DOCTYPE html>
+    <html>
+      <body>
+        <textarea id="text-input" oninput="this.editor.update()"
+                  rows="6" cols="60">Type **Markdown** here.</textarea>
+        <div id="preview"> </div>
+        <script src="lib/markdown.js"></script>
+        <script>
+          function Editor(input, preview)
+          {
+            this.update = function () {
+              preview.innerHTML = markdown.toHTML(input.value);
+            }
+            input.editor = this;
+            this.update();
+          }
+          var $ = function (id) { return document.getElementById(id); };
+          new Editor($("text-input"), $("preview"));
+        </script>
+      </body>
+    </html>
 
 ### md2html
 
