@@ -9,7 +9,10 @@
     "plugins": [],
     "templates": {
         "cleverLinks": false,
-        "monospaceLinks": false
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": true
+        }
     },
     "jsVersion": 180
 }

@@ -115,6 +115,17 @@ The source code for github-flavored-markdown is available at:
 https://github.com/hegemonic/github-flavored-markdown
 
 
+## Google Code Prettify ##
+
+Google Code Prettify is distributed under the Apache License 2.0, which is
+included with this package.
+
+Copyright (c) 2006 Google Inc.
+
+The source code for Google Code Prettify is available at:
+https://code.google.com/p/google-code-prettify/
+
+
 ## Jasmine ##
 
 Jasmine is distributed under the MIT license, which is reproduced above.
@@ -139,7 +150,7 @@ https://github.com/mhevery/jasmine-node
 
 js2xmlparser is distributed under the MIT license, which is reproduced above.
 
-Copyright (C) 2012 Michael Kourlas.
+Copyright (c) 2012 Michael Kourlas.
 
 The source code for js2xmlparser is available at:
 https://github.com/michaelkourlas/node-js2xmlparser
@@ -247,6 +258,18 @@ TaffyDB is distributed under a modified BSD license:
 
 The source code for TaffyDB is available at:
 https://github.com/hegemonic/taffydb
+
+
+## Tomorrow Theme for Google Code Prettify ##
+
+License information for the Tomorrow Theme for Google Code Prettify is not
+available. It is assumed that the package is distributed under an open source
+license that is compatible with the Apache License 2.0.
+
+Copyright (c) Yoshihide Jimbo.
+
+The source code for the Tomorrow Theme is available at:
+https://github.com/jmblog/color-themes-for-google-code-prettify
 
 
 ## Rhino ##

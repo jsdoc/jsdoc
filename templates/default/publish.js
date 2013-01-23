@@ -1,8 +1,9 @@
 /*global env: true */
 var template = require('jsdoc/template'),
     fs = require('jsdoc/fs'),
-    path = require('path'),
+    path = require('jsdoc/path'),
     taffy = require('taffydb').taffy,
+    handle = require('jsdoc/util/error').handle,
     helper = require('jsdoc/util/templateHelper'),
     htmlsafe = helper.htmlsafe,
     linkto = helper.linkto,
@@ -57,8 +58,38 @@ function addAttribs(f) {
     
     f.attribs = '<span class="type-signature">'+htmlsafe(attribs.length? '<'+attribs.join(', ')+'> ' : '')+'</span>';
 }
+
+function shortenPaths(files, commonPrefix) {
+    // always use forward slashes
+    var regexp = new RegExp('\\\\', 'g');
+
+    Object.keys(files).forEach(function(file) {
+        files[file].shortened = files[file].resolved.replace(commonPrefix, '')
+            .replace(regexp, '/');
+    });
+
+    return files;
+}
+
+function resolveSourcePath(filepath) {
+    return path.resolve(process.cwd(), filepath);
+}
+
+function getPathFromDoclet(doclet) {
+    if (!doclet.meta) {
+        return;
+    }
+
+    var filepath = doclet.meta.path && doclet.meta.path !== 'null' ?
+        doclet.meta.path + '/' + doclet.meta.filename :
+        doclet.meta.filename;
+
+    return filepath;
+}
     
-function generate(title, docs, filename) {
+function generate(title, docs, filename, resolveLinks) {
+    resolveLinks = resolveLinks === false ? false : true;
+
     var docData = {
         title: title,
         docs: docs
@@ -67,9 +98,33 @@ function generate(title, docs, filename) {
     var outpath = path.join(outdir, filename),
         html = view.render('container.tmpl', docData);
     
-    html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+    if (resolveLinks) {
+        html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+    }
     
     fs.writeFileSync(outpath, html, 'utf8');
+}
+
+function generateSourceFiles(sourceFiles) {
+    Object.keys(sourceFiles).forEach(function(file) {
+        var source;
+        // links are keyed to the shortened path in each doclet's `meta.filename` property
+        var sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened);
+        helper.registerLink(sourceFiles[file].shortened, sourceOutfile);
+
+        try {
+            source = {
+                kind: 'source',
+                code: helper.htmlsafe( fs.readFileSync(sourceFiles[file].resolved, 'utf8') )
+            };
+        }
+        catch(e) {
+            handle(e);
+        }
+
+        generate('Source: ' + sourceFiles[file].shortened, [source], sourceOutfile,
+            false);
+    });
 }
 
 /**
@@ -204,6 +259,9 @@ function buildNav(members) {
 exports.publish = function(taffyData, opts, tutorials) {
     data = taffyData;
 
+    var conf = env.conf.templates || {};
+    conf['default'] = conf['default'] || {};
+
     var templatePath = opts.template;
     view = new template.Template(templatePath + '/tmpl');
     
@@ -224,6 +282,8 @@ exports.publish = function(taffyData, opts, tutorials) {
     data = helper.prune(data);
     data.sort('longname, version, since');
 
+    var sourceFiles = {};
+    var sourceFilePaths = [];
     data().each(function(doclet) {
          doclet.attribs = '';
         
@@ -247,6 +307,19 @@ exports.publish = function(taffyData, opts, tutorials) {
                 doclet.see[i] = hashToLink(doclet, seeItem);
             });
         }
+
+        // build a list of source files
+        var sourcePath;
+        var resolvedSourcePath;
+        if (doclet.meta) {
+            sourcePath = getPathFromDoclet(doclet);
+            resolvedSourcePath = resolveSourcePath(sourcePath);
+            sourceFiles[sourcePath] = {
+                resolved: resolvedSourcePath,
+                shortened: null
+            };
+            sourceFilePaths.push(resolvedSourcePath);
+        }
     });
     
     // update outdir if necessary, then create outdir
@@ -266,9 +339,20 @@ exports.publish = function(taffyData, opts, tutorials) {
         fs.copyFileSync(fileName, toDir);
     });
     
+    sourceFiles = shortenPaths( sourceFiles, path.commonPrefix(sourceFilePaths) );
     data().each(function(doclet) {
         var url = helper.createLink(doclet);
         helper.registerLink(doclet.longname, url);
+
+        // replace the filename with a shortened version of the full path
+        var docletPath;
+        if (doclet.meta) {
+            docletPath = getPathFromDoclet(doclet);
+            docletPath = sourceFiles[docletPath].shortened;
+            if (docletPath) {
+                doclet.meta.filename = docletPath;
+            }
+        }
     });
     
     data().each(function(doclet) {
@@ -315,6 +399,12 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     // once for all
     view.nav = buildNav(members);
+
+    // only output pretty-printed source files if requested; do this before generating any other
+    // pages, so the other pages can link to the source files
+    if (conf['default'].outputSourceFiles) {
+        generateSourceFiles(sourceFiles);
+    }
 
     if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl); }
     

@@ -220,6 +220,11 @@ h6
 {
 	border: 1px solid #ddd;
 	width: 80%;
+    overflow: auto;
+}
+
+.prettyprint.source {
+    width: inherit;
 }
 
 .prettyprint code
