@@ -35,6 +35,27 @@ function hashToLink(doclet, hash) {
     return '<a href="' + url + '">' + hash + '</a>';
 }
 
+function needsSignature(doclet) {
+    var needsSig = false;
+
+    // function and class definitions always get a signature
+    if ( doclet.kind === ('function' || 'class') ) {
+        needsSig = true;
+    }
+    // typedefs that contain functions get a signature, too
+    else if (doclet.kind === 'typedef' && doclet.type && doclet.type.names &&
+        doclet.type.names.length) {
+        for (var i = 0, l = doclet.type.names.length; i < l; i++) {
+            if (doclet.type.names[i].toLowerCase() === 'function') {
+                needsSig = true;
+                break;
+            }
+        }
+    }
+
+    return needsSig;
+}
+
 function addSignatureParams(f) {
     var params = helper.getSignatureParams(f, 'optional');
     
@@ -365,7 +386,7 @@ exports.publish = function(taffyData, opts, tutorials) {
             doclet.id = doclet.name;
         }
         
-        if (doclet.kind === 'function' || doclet.kind === 'class') {
+        if ( needsSignature(doclet) ) {
             addSignatureParams(doclet);
             addSignatureReturns(doclet);
             addAttribs(doclet);

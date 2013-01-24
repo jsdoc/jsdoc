@@ -120,11 +120,20 @@
         var typedefs = self.find({kind: 'typedef', memberof: title === 'Global' ? {isUndefined: true} : doc.longname}); 
         if (typedefs && typedefs.length && typedefs.forEach) { 
     ?>
-        <h3 class="subsection-title">TypeDefs</h3>
+        <h3 class="subsection-title">Type Definitions</h3>
         
-        <dl><?js typedefs.forEach(function(e) { ?>
-            <?js= self.partial('members.tmpl', e) ?>
-        <?js }); ?></dl>
+        <dl><?js typedefs.forEach(function(e) {
+                if (e.signature) {
+            ?>
+                <?js= self.partial('method.tmpl', e) ?>
+            <?js
+                }
+                else {
+            ?>
+                <?js= self.partial('members.tmpl', e) ?>
+            <?js
+                }
+            }); ?></dl>
     <?js } ?>
     
     <?js
