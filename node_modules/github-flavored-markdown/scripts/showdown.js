@@ -151,7 +151,7 @@ this.makeHtml = function(text, gh) {
 	g_html_blocks = new Array();
 
 	// benblank - Allow hardwrapping to be disabled.
-	g_hardwrap = typeof this.hardwrap === "undefined" || this.hardwrap;
+	g_hardwrap = (typeof exports.hardwrap === "undefined" || exports.hardwrap);
 
 	// attacklab: Replace ~ with ~T
 	// This lets us use tilde as an escape char to avoid md5 hashes
