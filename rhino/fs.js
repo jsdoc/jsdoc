@@ -162,7 +162,7 @@ exports.copyFileSync = function(inFile, outDir, fileName) {
 };
 
 exports.writeFileSync = function(filename, data, encoding) {
-    encoding = checkEncoding(encoding);
+    encoding = checkEncoding(encoding, 'fs.writeFileSync');
 
     var out = new Packages.java.io.PrintWriter(
         new Packages.java.io.OutputStreamWriter(
