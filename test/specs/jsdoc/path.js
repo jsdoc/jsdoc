@@ -1,4 +1,4 @@
-/*global beforeEach: true, describe: true, expect: true, it: true, spyOn: true */
+/*global beforeEach: true, describe: true, expect: true, it: true, spyOn: true, xdescribe: true */
 
 describe('jsdoc/path', function() {
     var os = require('os');
@@ -22,6 +22,11 @@ describe('jsdoc/path', function() {
     it('should export a "commonPrefix" function', function() {
         expect(path.commonPrefix).toBeDefined();
         expect(typeof path.commonPrefix).toEqual('function');
+    });
+
+    it('should export a "getResourcePath" function', function() {
+        expect(path.getResourcePath).toBeDefined();
+        expect(typeof path.getResourcePath).toEqual('function');
     });
 
     describe('commonPrefix', function() {
@@ -82,5 +87,9 @@ describe('jsdoc/path', function() {
                 expect( path.commonPrefix(paths) ).toEqual('');
             }
         });
+    });
+
+    xdescribe('getResourcePath', function() {
+        // TODO
     });
 });

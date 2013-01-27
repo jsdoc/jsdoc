@@ -1,10 +1,25 @@
+var myGlobal = require('jsdoc/util/global');
+myGlobal.jsdocPluginsTest.plugin1 = {};
+
 exports.handlers = {
-    fileBegin: jasmine.createSpy('fileBegin'),
-    beforeParse: jasmine.createSpy('beforeParse'),
-    jsdocCommentFound: jasmine.createSpy('jsdocCommentFound'),
-    symbolFound: jasmine.createSpy('symbolFound'),
-    newDoclet: jasmine.createSpy('newDoclet'),
-    fileComplete: jasmine.createSpy('fileComplete')
+    fileBegin: function() {
+        myGlobal.jsdocPluginsTest.plugin1.fileBegin = true;
+    },
+    beforeParse: function() {
+        myGlobal.jsdocPluginsTest.plugin1.beforeParse = true;
+    },
+    jsdocCommentFound: function() {
+        myGlobal.jsdocPluginsTest.plugin1.jsdocCommentFound = true;
+    },
+    symbolFound: function() {
+        myGlobal.jsdocPluginsTest.plugin1.symbolFound = true;
+    },
+    newDoclet: function() {
+        myGlobal.jsdocPluginsTest.plugin1.newDoclet = true;
+    },
+    fileComplete: function() {
+        myGlobal.jsdocPluginsTest.plugin1.fileComplete = true;
+    }
 };
 
 exports.defineTags = function(dictionary) {
@@ -17,7 +32,8 @@ exports.defineTags = function(dictionary) {
 };
 
 exports.nodeVisitor = {
-    visitNode: jasmine.createSpy("plugin 1 visitNode").andCallFake(function(node, e, parser, currentSourceName) {
+    visitNode: function(node, e, parser, currentSourceName) {
+        myGlobal.jsdocPluginsTest.plugin1.visitNode = true;
         e.stopPropagation = true;
-    })
+    }
 };

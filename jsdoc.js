@@ -42,7 +42,7 @@ env = {
     /**
         The command line arguments, parsed into a key/value hash.
         @type Object
-        @example if (env.opts.help) { print 'Helpful message.'; }
+        @example if (env.opts.help) { console.log('Helpful message.'); }
     */
     opts: {}
 };
@@ -101,7 +101,7 @@ function main() {
     var handlers = require('jsdoc/src/handlers');
     var include = require('jsdoc/util/include');
     var Package = require('jsdoc/package').Package;
-    var path = require('path');
+    var path = require('jsdoc/path');
     var plugins = require('jsdoc/plugins');
     var Readme = require('jsdoc/readme');
     var resolver = require('jsdoc/tutorial/resolver');
@@ -120,64 +120,6 @@ function main() {
     var sourceFiles;
     var template;
 
-
-    /**
-     * If required by the current VM, convert a path to a URI that meets the operating system's
-     * requirements. Otherwise, return the original path.
-     * @function
-     * @param {string} path The path to convert.
-     * @return {string} A URI that meets the operating system's requirements, or the original path.
-     */
-    var pathToUri = vm.getModule('jsdoc').pathToUri;
-
-    /**
-     * If required by the current VM, convert a URI to a path that meets the operating system's
-     * requirements. Otherwise, assume the "URI" is really a path, and return the original path.
-     * @function
-     * @param {string} uri The URI to convert.
-     * @return {string} A path that meets the operating system's requirements.
-     */
-    var uriToPath = vm.getModule('jsdoc').uriToPath;
-
-    /**
-        Retrieve the fully resolved path to the requested template.
-
-        @param {string} template - The path to the requested template. May be an absolute path;
-        a path relative to the current working directory; or a path relative to the JSDoc directory.
-        @return {string} The fully resolved path (or, on Rhino, a URI) to the requested template.
-     */
-    function getTemplatePath(template) {
-        var result;
-        template = template || 'templates/default';
-
-        function pathExists(_path) {
-            try {
-                fs.readdirSync(_path);
-            }
-            catch(e) {
-                return false;
-            }
-
-            return true;
-        }
-
-        // first, try resolving it relative to the current working directory (or just normalize it
-        // if it's an absolute path)
-        result = path.resolve(template);
-        if ( !pathExists(result) ) {
-            // next, try resolving it relative to the JSDoc directory
-            result = path.resolve(__dirname, template);
-            if ( !pathExists(result) ) {
-                result = null;
-            }
-        }
-
-        if (result) {
-            result = pathToUri(result);
-        }
-
-        return result;
-    }
 
     defaultOpts = {
         destination: './out/',
@@ -274,19 +216,23 @@ function main() {
             resolver.resolve();
         }
 
-        env.opts.template = getTemplatePath(env.opts.template) || env.opts.template;
+        env.opts.template = (function() {
+            var publish = env.opts.template || 'templates/default';
+            // if we don't find it, keep the user-specified value so the error message is useful
+            return path.getResourcePath(publish) || env.opts.template;
+        })();
 
         try {
             template = require(env.opts.template + '/publish');
         }
         catch(e) {
-            throw new Error("Unable to load template: " + e.message || e);
+            throw new Error('Unable to load template: ' + e.message || e);
         }
 
         // templates should include a publish.js file that exports a "publish" function
         if (template.publish && typeof template.publish === 'function') {
             // convert this from a URI back to a path if necessary
-            env.opts.template = uriToPath(env.opts.template);
+            env.opts.template = path._uriToPath(env.opts.template);
             template.publish(
                 taffy(docs),
                 env.opts,
@@ -301,7 +247,7 @@ function main() {
                     'deprecated and may not be supported in future versions. ' +
                     'Please update the template to use "exports.publish" instead.' );
                 // convert this from a URI back to a path if necessary
-                env.opts.template = uriToPath(env.opts.template);
+                env.opts.template = path._uriToPath(env.opts.template);
                 publish(
                     taffy(docs),
                     env.opts,
@@ -309,7 +255,7 @@ function main() {
                 );
             }
             else {
-                throw new Error( env.opts.template + " does not export a 'publish' function." );
+                throw new Error( env.opts.template + ' does not export a "publish" function.' );
             }
         }
     }
