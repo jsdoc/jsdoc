@@ -106,6 +106,8 @@ The event object will contain the following properties:
 - comment: the comment associated with the symbol, if any
 - id: the unique id of the symbol
 - lineno: the line number the symbols was found on
+- range: an array containing the first and last characters of the code
+  associated with the symbol
 - astnode: the node of the parse tree
 - code: information about the code.  This usually contains "name", "type", and 
   "node" properties and might also have "value", "paramnames", or "funcscope"
