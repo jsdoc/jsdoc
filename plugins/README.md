@@ -1,13 +1,17 @@
-Adding a Plugin
+Creating and Enabling a Plugin
 ----
 
-There are two steps required to install a new plugin:
+There are two steps required to create and enable a new JSDoc plugin:
 
 1. Create a JavaScript module to contain your plugin code.
-2. Include the name of that module in the "plugins" array of `conf.json`.
+2. Include that module in the "plugins" array of `conf.json`. You can specify
+an absolute or relative path. If you use a relative path, JSDoc searches for
+the plugin in the current working directory and the JSDoc directory, in that
+order.
 
-For example, if your plugin source code was saved in the  "plugins/shout.js"
-file, you would include it by adding a reference to it in conf.json like so:
+For example, if your plugin source code was saved in the "plugins/shout.js"
+file in the current working directory, you would include it by adding a
+reference to it in conf.json like so:
     
     ...
     "plugins": [
@@ -350,19 +354,21 @@ the `jsdoc/util/error` module:
 
     require('jsdoc/util/error').handle( new Error('I do not like green eggs and ham!') );
 
-By default this will throw the error, halting the execution of `jsdoc`. However,
-if the user used the `--lenient` switch when they ran `jsdoc` it will simply log
-the error to the console and continue.
+By default, this will throw the error, halting the execution of JSDoc. However,
+if the user enabled JSDoc's `--lenient` switch, JSDoc will simply log the error
+to the console and continue.
 
 Packaging JSDoc 3 Plugins
 ----
 
-The JSDoc 3 Jakefile has an ```install``` task that can be used to install a plugin
-into the jsdoc 3 installation.  So running the following will install the plugin:
+The JSDoc 3 Jakefile has an ```install``` task that can be used to install a
+plugin into the JSDoc directory. So running the following will install the
+plugin:
 
     $>jake install[path/to/YourPluginFolder]
 
-_note: on some systems (like MacOS X), you may need to quote the target name and parameters_:
+**Note**: On some operating systems, including OS X, you may need to quote the
+target name and parameters:
 
     $>jake 'install[path/to/YourPluginFolder]'
 
@@ -379,6 +385,3 @@ The task is passed a directory that should look something like the following:
      \- templates
          \- YourTemplate
              \- publish.js
-
-Basically everything is copied over into the jsdoc installation directory, the
-directory should contain anything you want to put there.

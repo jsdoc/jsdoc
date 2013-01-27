@@ -1,29 +1,40 @@
 /*global app: true, describe: true, expect: true, it: true, jasmine: true */
 
 describe("plugins", function() {
+    var myGlobal = require('jsdoc/util/global');
+    myGlobal.jsdocPluginsTest = myGlobal.jsdocPluginsTest || {};
+
     require('jsdoc/plugins').installPlugins(['test/fixtures/testPlugin1',
         'test/fixtures/testPlugin2'], app.jsdoc.parser);
 
-    var plugin1 = require('test/fixtures/testPlugin1'),
-        plugin2 = require('test/fixtures/testPlugin2'),
-        docSet;
-
-    docSet = jasmine.getDocSetFromFile("test/fixtures/plugins.js", app.jsdoc.parser);
+    var docSet = jasmine.getDocSetFromFile("test/fixtures/plugins.js", app.jsdoc.parser);
 
     it("should fire the plugin's event handlers", function() {
-        expect(plugin1.handlers.fileBegin).toHaveBeenCalled();
-        expect(plugin1.handlers.beforeParse).toHaveBeenCalled();
-        expect(plugin1.handlers.jsdocCommentFound).toHaveBeenCalled();
-        expect(plugin1.handlers.symbolFound).toHaveBeenCalled();
-        expect(plugin1.handlers.newDoclet).toHaveBeenCalled();
-        expect(plugin1.handlers.fileComplete).toHaveBeenCalled();
+        expect(myGlobal.jsdocPluginsTest.plugin1.fileBegin).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin1.fileBegin).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin1.beforeParse).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin1.beforeParse).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin1.jsdocCommentFound).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin1.jsdocCommentFound).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin1.symbolFound).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin1.symbolFound).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin1.newDoclet).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin1.newDoclet).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin1.fileComplete).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin1.fileComplete).toEqual(true);
 
-        expect(plugin2.handlers.fileBegin).toHaveBeenCalled();
-        expect(plugin2.handlers.beforeParse).toHaveBeenCalled();
-        expect(plugin2.handlers.jsdocCommentFound).toHaveBeenCalled();
-        expect(plugin2.handlers.symbolFound).toHaveBeenCalled();
-        expect(plugin2.handlers.newDoclet).toHaveBeenCalled();
-        expect(plugin2.handlers.fileComplete).toHaveBeenCalled();
+        expect(myGlobal.jsdocPluginsTest.plugin2.fileBegin).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin2.fileBegin).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin2.beforeParse).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin2.beforeParse).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin2.jsdocCommentFound).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin2.jsdocCommentFound).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin2.symbolFound).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin2.symbolFound).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin2.newDoclet).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin2.newDoclet).toEqual(true);
+        expect(myGlobal.jsdocPluginsTest.plugin2.fileComplete).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin2.fileComplete).toEqual(true);
     });
 
     it("should add the plugin's tag definitions to the dictionary", function() {
@@ -34,10 +45,11 @@ describe("plugins", function() {
     });
 
     it("should call the plugin's visitNode function", function() {
-        expect(plugin1.nodeVisitor.visitNode).toHaveBeenCalled();
+        expect(myGlobal.jsdocPluginsTest.plugin1.visitNode).toBeDefined();
+        expect(myGlobal.jsdocPluginsTest.plugin1.visitNode).toEqual(true);
     });
 
     it("should not call a second plugin's visitNode function if the first stopped propagation", function() {
-        expect(plugin2.nodeVisitor.visitNode).not.toHaveBeenCalled();
+        expect(myGlobal.jsdocPluginsTest.plugin2.visitNode).not.toBeDefined();
     });
 });
