@@ -42,7 +42,7 @@ var self = this;
     <dt class="tag-author">Author:</dt>
     <dd class="tag-author">
         <ul><?js author.forEach(function(a) { ?>
-            <li><?js= a ?></li>
+            <li><?js= self.resolveAuthorLinks(a) ?></li>
         <?js }); ?></ul>
     </dd>
     <?js } ?>

@@ -7,6 +7,7 @@ var template = require('jsdoc/template'),
     helper = require('jsdoc/util/templateHelper'),
     htmlsafe = helper.htmlsafe,
     linkto = helper.linkto,
+    resolveAuthorLinks = helper.resolveAuthorLinks,
     scopeToPunc = helper.scopeToPunc,
     hasOwnProp = Object.prototype.hasOwnProperty,
     data,
@@ -415,6 +416,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     // add template helpers
     view.find = find;
     view.linkto = linkto;
+    view.resolveAuthorLinks = resolveAuthorLinks;
     view.tutoriallink = tutoriallink;
     view.htmlsafe = htmlsafe;
 
