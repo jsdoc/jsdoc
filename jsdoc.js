@@ -44,7 +44,13 @@ env = {
         @type Object
         @example if (env.opts.help) { console.log('Helpful message.'); }
     */
-    opts: {}
+    opts: {},
+
+    /**
+        The jsdoc version number and revision date.
+        @type Object
+    */
+    version: {}
 };
 
 // initialize the environment for the current JavaScript VM
@@ -126,6 +132,13 @@ function main() {
         encoding: 'utf8'
     };
 
+    // get JSDoc version number
+    info = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+    env.version = {
+        number: info.version,
+        revision: new Date(parseInt(info.revision, 10)).toUTCString()
+    };
+
     env.opts = args.parse(env.args);
 
     try {
@@ -159,9 +172,7 @@ function main() {
         include('test/runner.js');
         process.exit(0);
     } else if (env.opts.version) {
-        info = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
-        info.revision = new Date(parseInt(info.revision, 10)).toUTCString();
-        console.log('JSDoc ' + info.version + ' (' + info.revision + ')');
+        console.log('JSDoc ' + env.version.number + ' (' + env.version.revision + ')');
         process.exit(0);
     }
 
