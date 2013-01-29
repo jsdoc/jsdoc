@@ -281,6 +281,7 @@ catch(e) {
     env.run.finish = new Date();
     if (e.rhinoException != null) {
         e.rhinoException.printStackTrace();
+        process.exit(1);
     } else {
         throw e;
     }
