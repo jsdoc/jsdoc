@@ -93,6 +93,7 @@ MyClass.prototype.sendRequest = function(cb) {
 + The navigation bar now includes an "Events" section if any events are documented. (#280)
 + Pages no longer include a "Classes" header when no classes are documented. (eb0186b9)
 + Member details now include "Inherited From" section when a member is inherited from another member. (#154)
++ If an `@author` tag contains text in the format "Jane Doe <jdoe@example.com>", the value is now converted to an HTML `mailto:` link. (#326)
 + Headings for functions now include the function's signature. (#253)
 + Type information is now displayed for events. (#192)
 + Functions now link to their return type when appropriate. (#192)
