@@ -361,7 +361,9 @@ exports.publish = function(taffyData, opts, tutorials) {
         fs.copyFileSync(fileName, toDir);
     });
     
-    sourceFiles = shortenPaths( sourceFiles, path.commonPrefix(sourceFilePaths) );
+    if (sourceFilePaths.length) {
+        sourceFiles = shortenPaths( sourceFiles, path.commonPrefix(sourceFilePaths) );
+    }
     data().each(function(doclet) {
         var url = helper.createLink(doclet);
         helper.registerLink(doclet.longname, url);
