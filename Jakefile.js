@@ -15,7 +15,7 @@ task('default', [], function(params) {
 
     var metadata = {
         appname : 'jsdoc',
-        appversion : '3.1.0',
+        appversion : '3.1.1-dev',
         timestamp : '' + new Date().getTime()
     };
 
