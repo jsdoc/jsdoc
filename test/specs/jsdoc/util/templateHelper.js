@@ -172,8 +172,45 @@ describe("jsdoc/util/templateHelper", function() {
         // TODO
     });
 
-    xdescribe("linkto", function() {
-        // TODO
+    describe("linkto", function() {
+        beforeEach(function() {
+            helper.longnameToUrl.linktoTest = 'test.html';
+        });
+
+        afterEach(function() {
+            delete helper.longnameToUrl.linktoTest;
+        });
+
+        it('returns the longname if only the longname is specified and has no URL', function() {
+            var link = helper.linkto('example');
+            expect(link).toEqual('example');
+        });
+
+        it('returns the link text if only the link text is specified', function() {
+            var link = helper.linkto(null, 'link text');
+            expect(link).toEqual('link text');
+        });
+
+        it('returns the link text if the longname does not have a URL, and both the longname and ' +
+            'link text are specified', function() {
+            var link = helper.linkto('example', 'link text');
+            expect(link).toEqual('link text');
+        });
+
+        it('uses the longname as the link text if no link text is provided', function() {
+            var link = helper.linkto('linktoTest');
+            expect(link).toEqual('<a href="test.html">linktoTest</a>');
+        });
+
+        it('uses the link text if it is specified', function() {
+            var link = helper.linkto('linktoTest', 'link text');
+            expect(link).toEqual('<a href="test.html">link text</a>');
+        });
+        
+        it('includes a "class" attribute in the link if a class is specified', function() {
+            var link = helper.linkto('linktoTest', 'link text', 'myclass');
+            expect(link).toEqual('<a href="test.html" class="myclass">link text</a>');
+        });
     });
 
     xdescribe("htmlsafe", function() {
