@@ -110,11 +110,19 @@ describe("jsdoc/tutorial", function() {
                 expect(par2.children.indexOf(tute)).not.toEqual(-1);
                 expect(par.children.indexOf(tute)).toEqual(-1);
             });
+
+            it("calling setParent with a null parent unsets the child's parent and removes the child from its previous parent", function() {
+                expect(par2.children.indexOf(tute)).not.toEqual(-1);
+                tute.setParent(null);
+
+                expect(tute.parent).toEqual(null);
+                expect(par2.children.indexOf(tute)).toEqual(-1);
+            });
         });
 
         describe("addChild", function() {
-            // currently tute is unparented.
             it("adding a child tutorial adds the child to the parent's 'children' property", function() {
+                tute.setParent(null);
                 var n = par.children.length;
 
                 par.addChild(tute);
@@ -122,13 +130,27 @@ describe("jsdoc/tutorial", function() {
                 expect(par.children.length).toEqual(n + 1);
                 expect(par.children.indexOf(tute)).not.toEqual(-1);
             });
+
+            it("adding a child tutorial sets the child's parent to to the parent tutorial", function() {
+                expect(tute.parent).toEqual(par);
+            });
+
+            it("adding a child tutorial removes the child from its old parent", function() {
+                // tue is currently owned by par; we reparent it to par2
+                expect(tute.parent).toEqual(par);
+                par2.addChild(tute);
+
+                expect(tute.parent).toEqual(par2);
+                expect(par.children.indexOf(tute)).toEqual(-1);
+                expect(par2.children.indexOf(tute)).not.toEqual(-1);
+            });
         });
 
         describe("removeChild", function() {
-            // currently tute is unparented.
             function removeChild() {
                 par2.removeChild(par);
             }
+
             it("removing a tutorial that is not a child silently passes", function() {
                 var n = par2.children.length;
                 expect(removeChild).not.toThrow();
@@ -136,9 +158,46 @@ describe("jsdoc/tutorial", function() {
             });
 
             it("removing a child removes the child from the parent's 'children' property", function() {
+                tute.setParent(par2);
                 expect(par2.children.length).toEqual(1);
+
                 par2.removeChild(tute);
+
                 expect(par2.children.indexOf(tute)).toEqual(-1);
+                expect(par2.children.length).toEqual(0);
+            });
+
+            it("removing a child unsets the child's 'parent' property", function() {
+                expect(tute.parent).toEqual(null);
+            });
+        });
+
+        describe("various inheritance tests with addChild, setParent and removeChild", function() {
+            it("parenting and unparenting via addChild, setParent and removeChild makes sure inheritance is set accordingly", function() {
+                // unparent everything.
+                tute.setParent(null);
+                par.setParent(null);
+                par2.setParent(null);
+
+                // let tute belong to par
+                tute.setParent(par);
+                expect(tute.parent).toEqual(par);
+                expect(par2.children.length).toEqual(0);
+                expect(par.children.length).toEqual(1);
+                expect(par.children[0]).toEqual(tute);
+
+                // addChild tute to par2. its parent should now be par2, and
+                // it can't be the child of two parents
+                par2.addChild(tute);
+                expect(tute.parent).toEqual(par2);
+                expect(par.children.length).toEqual(0); 
+                expect(par2.children.length).toEqual(1);
+                expect(par2.children[0]).toEqual(tute);
+
+                // removeChild tute from par2. tute should now be unparented.
+                par2.removeChild(tute);
+                expect(tute.parent).toEqual(null);
+                expect(par.children.length).toEqual(0);
                 expect(par2.children.length).toEqual(0);
             });
         });
