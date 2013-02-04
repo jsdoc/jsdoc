@@ -13,7 +13,7 @@
 	"repositories": [
 		{
 			"type": "git",
-			"url":  "https://github.com/jsdoc3/jsdoc"
+			"url":  "https://github.com/AndreySushkovich/jsdoc/tarball/patch-1"
 		}
 	],
 	"dependencies": {
