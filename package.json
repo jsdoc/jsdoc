@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
-	"version": "3.2.0-dev-as",
-	"revision": "1359085455395",
+	"version": "3.2.0-dev",
+	"revision": "1359085455394",
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -13,7 +13,7 @@
 	"repositories": [
 		{
 			"type": "git",
-			"url":  "https://github.com/AndreySushkovich/jsdoc/tarball/patch-1"
+			"url":  "https://github.com/jsdoc3/jsdoc"
 		}
 	],
 	"dependencies": {
