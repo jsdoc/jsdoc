@@ -19,12 +19,11 @@ describe("jsdoc/tag", function() {
     describe('Tag', function() {
         var meta = {lineno: 1, filename: 'asdf.js'},
             desc = 'lalblakd lkjasdlib\n  lija',
-            text = '{!number} [foo=] - ' + desc,
+            text = '{!number} [foo=1] - ' + desc,
             textEg = '<caption>Asdf</caption>\n' +
                      ' * myFunction(1, 2); // returns 3\n' +
                      ' * myFunction(3, 4); // returns 7\n';
-        // note arg is a synonym of param.
-        var tagArg = new jsdoc.tag.Tag('arg  ', text, meta), // <-- a symonym, space in the title.
+        var tagArg = new jsdoc.tag.Tag('arg  ', text, meta), // <-- a symonym of param, space in the title.
             tagEg  = new jsdoc.tag.Tag('example', textEg, meta), // <-- for keepsWhitespace
             tagType = new jsdoc.tag.Tag('type', 'MyType ', meta); // <-- for onTagText
 
@@ -78,9 +77,6 @@ describe("jsdoc/tag", function() {
             });
         });
 
-        // BUG: when Tag() looks up a tag definition it should used the trimmed tag title.
-        // otherwise, tag properties are not looked up.
-        // This makes all of tagArg.value wrong (because of the spaces in the name).
         describe("'value' property", function() {
             it("'value' property should equal tag text if tagDef.canHaveType and canHaveName are both false", function() {
                 // @example can't have type or name
@@ -90,7 +86,7 @@ describe("jsdoc/tag", function() {
 
             it("'value' property should be an object if tagDef can have type or name", function () {
                 expect(typeof tagType.value).toEqual('object');
-                // expect(typeof tagArg.value).toEqual('object');
+                expect(typeof tagArg.value).toEqual('object');
             });
 
             function verifyTagType(tag) {
@@ -113,19 +109,19 @@ describe("jsdoc/tag", function() {
             it("if the tag has a type, tag.value should contain the type information", function() {
                 // we assume jsdoc/tag/type.parse works (it has its own tests to verify this);
                 verifyTagType(tagType);
-                // verifyTagType(tagArg);
+                verifyTagType(tagArg);
             });
 
             it("if the tag has a description beyond the name/type, this should be in tag.value.description", function() {
                 expect(tagType.value.description).not.toBeDefined();
 
-                // expect(tagArg.value.description).toBeDefined();
-                // expect(tagArg.value.description).toEqual(desc);
+                expect(tagArg.value.description).toBeDefined();
+                expect(tagArg.value.description).toEqual(desc);
             });
 
             it("if the tag can have a name, it should be stored in tag.value.name", function() {
-                //expect(tagArg.value.name).toBeDefined();
-                //expect(tagArg.value.name).toEqual('foo');
+                expect(tagArg.value.name).toBeDefined();
+                expect(tagArg.value.name).toEqual('foo');
 
                 expect(tagType.value.name).not.toBeDefined();
             });
