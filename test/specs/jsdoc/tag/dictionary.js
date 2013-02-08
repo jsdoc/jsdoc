@@ -71,12 +71,11 @@ describe('jsdoc/tag/dictionary', function() {
     });
 
     describe("isNamespace", function() {
-        // TODO: BUG: isNamespace should use a normalised title.
-        xit("returns whether a tag is a namespace when using its canonical name", function() {
+        it("returns whether a tag is a namespace when using its canonical name", function() {
             expect(dictionary.isNamespace(tagTitle)).toEqual(true);
         });
 
-        xit("returns whether a tag is a namespace when using its synonym", function() {
+        it("returns whether a tag is a namespace when using its synonym", function() {
             expect(dictionary.isNamespace(tagSynonym)).toEqual(true);
         });
 
