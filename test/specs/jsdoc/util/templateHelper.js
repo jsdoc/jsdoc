@@ -2,7 +2,8 @@
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", function() {
-    var helper = require('jsdoc/util/templateHelper');
+    var helper = require('jsdoc/util/templateHelper'),
+        doclet = require('jsdoc/doclet');
     helper.registerLink('test', 'path/to/test.html');
     helper.registerLink('test."long blah"/blah', 'path/to/test_long_blah_blah.html');
 
@@ -133,8 +134,10 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe("scopeToPunc", function() {
-        // TODO
+    describe("scopeToPunc", function() {
+        it("should map 'static' to '.', 'inner', to '~', 'instance' to '#'", function() {
+            expect(helper.scopeToPunc).toEqual({static: '.', inner: '~', instance: '#'});
+        });
     });
 
     // disabled because Jasmine appears to execute this code twice, which causes getUniqueFilename
@@ -213,8 +216,13 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe("htmlsafe", function() {
-        // TODO
+    describe("htmlsafe", function() {
+        // turns < into &lt; (doesn't do > or &amp etc...)
+        it('should convert all occurences of < to &lt;', function() {
+            var inp = '<h1>Potentially dangerous.</h1>',
+                out = helper.htmlsafe(inp);
+            expect(out).toEqual('&lt;h1>Potentially dangerous.&lt;/h1>');
+        });
     });
 
     describe("find", function() {
@@ -346,8 +354,114 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe("getAttribs", function() {
-        // TODO
+    describe("getAttribs", function() {
+        var doc, attribs;
+
+        it('should return an array of strings', function() {
+            doc = new doclet.Doclet('/** ljklajsdf */', {});
+            attribs = helper.getAttribs(doc);
+            expect(attribs instanceof Array).toBe(true);
+        });
+
+        // tests is an object of test[doclet src] = <result expected in attribs|false>
+        // if false, we expect attribs to either not contain anything in whatNotToContain,
+        // or be empty (if whatNotToContain was not provided).
+        function doTests(tests, whatNotToContain) {
+            for (var src in tests) {
+                if (tests.hasOwnProperty(src)) {
+                    doc = new doclet.Doclet('/** ' + src + ' */', {});
+                    attribs = helper.getAttribs(doc);
+                    if (tests[src]) {
+                        expect(attribs).toContain(tests[src]);
+                    } else {
+                        if (whatNotToContain !== undefined) {
+                            if (whatNotToContain instanceof Array) {
+                                for (var i = 0; i < whatNotToContain.length; ++i) {
+                                    expect(attribs).not.toContain(whatNotToContain[i]);
+                                }
+                            }
+                        } else {
+                            expect(attribs.length).toEqual(0);
+                        }
+                    }
+                }
+            }
+        }
+
+        it('should detect if a doclet is virtual', function() {
+            var tests = {
+                'My constant. \n @virtual': 'virtual',
+                'asdf': false
+            };
+            doTests(tests);
+        });
+
+        it("should detect if a doclet's access is not public", function() {
+            var tests = {'@private': 'private',
+                 '@access private': 'private',
+                 '@protected': 'protected',
+                 '@access protected': 'protected',
+                 '@public': false,
+                 '@access public': false,
+                 'asdf': false
+            };
+            doTests(tests);
+        });
+
+        it("should detect if a doclet's scope is inner or static AND it is a function or member or constant", function() {
+            var tests = {
+                // by default these are members
+                '@inner': 'inner',
+                '@instance': false,
+                '@global': false,
+                '@static': 'static',
+                '@name Asdf.fdsa': 'static',
+                '@name Outer~inner': 'inner',
+                '@name Fdsa#asdf': false,
+                '@name <global>.log': false,
+                // some tests with functions and constants
+                '@const Asdf#FOO': false,
+                '@const Asdf\n@inner': 'inner',
+                '@function Asdf#myFunction': false,
+                '@function Fdsa.MyFunction': 'static',
+                '@function Fdsa': false,
+                // these are not functions or members or constants, they should not have their scope recorded.
+                '@namespace Fdsa\n@inner': false,
+                '@class asdf': false
+            };
+            doTests(tests, ['inner', 'static', 'global', 'instance']);
+        });
+
+        it("should detect if a doclet is readonly (and its kind is 'member')", function() {
+            var tests = {
+                'asdf\n @readonly': 'readonly',
+                'asdf': false,
+                '@name Fdsa#foo\n@readonly': 'readonly',
+                // kind is not 'member'.
+                '@const asdf\n@readonly': false,
+                '@function asdf\n@readonly': false,
+                '@function Asdf#bar\n@readonly': false
+            };
+            doTests(tests, 'readonly');
+        });
+
+        it("should detect if the doclet is a for constant", function() {
+            var tests = {
+                'Enum. @enum\n@constant': 'constant',
+                '@function Foo#BAR\n@const': 'constant',
+                '@const Asdf': 'constant'
+            };
+            doTests(tests, 'constant');
+        });
+
+        it("should detect multiple attributes", function() {
+            var doc = new doclet.Doclet('/** @const module:fdsa~FOO\n@readonly\n@private */', {});
+            attribs = helper.getAttribs(doc);
+            expect(attribs).toContain('private');
+            //expect(attribs).toContain('readonly'); // kind is 'constant' not 'member'.
+            expect(attribs).toContain('constant');
+            expect(attribs).toContain('inner');
+        });
     });
 
     xdescribe("getSignatureTypes", function() {
