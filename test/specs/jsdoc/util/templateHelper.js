@@ -112,6 +112,11 @@ describe("jsdoc/util/templateHelper", function() {
         expect(typeof helper.resolveLinks).toEqual("function");
     });
 
+    it("should export a 'resolveAuthorLinks' function", function() {
+        expect(helper.resolveAuthorLinks).toBeDefined();
+        expect(typeof helper.resolveAuthorLinks).toEqual("function");
+    });
+
     it("should export a 'createLink' function", function() {
         expect(helper.createLink).toBeDefined();
         expect(typeof helper.createLink).toEqual("function");
@@ -573,7 +578,7 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("getSignatureReturns", function() {
-        // TODO: more tests
+        // retrieves links to types that the member can return.
         
         it("returns a value with correctly escaped HTML", function() {
             var mockDoclet = {
@@ -592,10 +597,115 @@ describe("jsdoc/util/templateHelper", function() {
             expect( html.indexOf('Array.<string>') ).toEqual(-1);
             expect( html.indexOf('Array.&lt;string>') ).toBeGreaterThan(-1);
         });
+
+        it("returns an empty array if the doclet has no returns", function() {
+            var doc = new doclet.Doclet('/** @function myFunction */', {}),
+                returns = helper.getSignatureReturns(doc);
+
+            expect(returns instanceof Array).toBe(true);
+            expect(returns.length).toBe(0);
+        });
+
+        it("returns an empty array if the doclet has @returns but with no type", function() {
+            var doc = new doclet.Doclet('/** @function myFunction\n@returns an interesting result.*/', {}),
+                returns = helper.getSignatureReturns(doc);
+
+            expect(returns instanceof Array).toBe(true);
+            expect(returns.length).toBe(0);
+        });
+
+        it("creates links for return types if relevant", function() {
+            // make some links.
+            helper.longnameToUrl.MyClass = 'MyClass.html';
+
+            var doc = new doclet.Doclet('/** @function myFunction\n@returns {number|MyClass} an interesting result.*/', {}),
+                returns = helper.getSignatureReturns(doc);
+
+            expect(returns.length).toBe(2);
+            expect(returns).toContain('<a href="MyClass.html">MyClass</a>');
+            expect(returns).toContain('number');
+
+            delete helper.longnameToUrl.MyClass;
+        });
+
+        it("uses the cssClass parameter for links if it is provided", function() {
+            // make some links.
+            helper.longnameToUrl.MyClass = 'MyClass.html';
+
+            var doc = new doclet.Doclet('/** @function myFunction\n@returns {number|MyClass} an interesting result.*/', {}),
+                returns = helper.getSignatureReturns(doc, 'myCssClass');
+
+            expect(returns.length).toBe(2);
+            expect(returns).toContain('<a href="MyClass.html" class="myCssClass">MyClass</a>');
+            expect(returns).toContain('number');
+
+            delete helper.longnameToUrl.MyClass;
+        });
     });
 
-    xdescribe("getAncestorLinks", function() {
-        // TODO
+    describe("getAncestorLinks", function() {
+        // make a hierarchy.
+        var lackeys = new doclet.Doclet('/** @member lackeys\n@memberof module:mafia/gangs.Sharks~Henchman\n@instance*/', {}),
+            henchman = new doclet.Doclet('/** @class Henchman\n@memberof module:mafia/gangs.Sharks\n@inner */', {}),
+            gang = new doclet.Doclet('/** @namespace module:mafia/gangs.Sharks */', {}),
+            mafia = new doclet.Doclet('/** @module mafia/gangs */', {}),
+            data = require('taffydb').taffy([lackeys, henchman, gang, mafia]);
+
+        // register some links
+        it("returns an empty array if there are no ancestors", function() {
+            var links = helper.getAncestorLinks(data, mafia);
+            expect(links instanceof Array).toBe(true);
+            expect(links.length).toBe(0);
+        });
+
+        it("returns an array of ancestor names (with preceding punctuation) if there are ancestors, the direct ancestor with following punctuation too", function() {
+            var links = helper.getAncestorLinks(data, lackeys);
+            expect(links.length).toBe(3);
+            expect(links).toContain('~Henchman#');
+            expect(links).toContain('.Sharks');
+            expect(links).toContain('mafia/gangs');
+
+            links = helper.getAncestorLinks(data, henchman);
+            expect(links.length).toBe(2);
+            expect(links).toContain('.Sharks~');
+            expect(links).toContain('mafia/gangs');
+
+            links = helper.getAncestorLinks(data, gang);
+            expect(links.length).toBe(1);
+            expect(links).toContain('mafia/gangs.');
+        });
+
+        it("adds links if they exist", function() {
+            // register some links
+            helper.longnameToUrl['module:mafia/gangs'] = 'mafia_gangs.html';
+            helper.longnameToUrl['module:mafia/gangs.Sharks~Henchman'] = 'henchman.html';
+
+            var links = helper.getAncestorLinks(data, lackeys);
+            expect(links.length).toBe(3);
+            // BUG: the link text is ~Henchman and there is a '#' on the end.
+            // should probably have link text ~Henchman#.
+            //expect(links).toContain('<a href="henchman.html">~Henchman#</a>');
+            expect(links).toContain('.Sharks');
+            expect(links).toContain('<a href="mafia_gangs.html">mafia/gangs</a>');
+
+            delete helper.longnameToUrl['module:mafia/gangs'];
+            delete helper.longnameToUrl['module:mafia/gangs.Sharks~Henchman'];
+        });
+
+        it("adds cssClass to any link", function() {
+            // register some links
+            helper.longnameToUrl['module:mafia/gangs'] = 'mafia_gangs.html';
+            helper.longnameToUrl['module:mafia/gangs.Sharks~Henchman'] = 'henchman.html';
+
+            var links = helper.getAncestorLinks(data, lackeys, 'myClass');
+            expect(links.length).toBe(3);
+            //expect(links).toContain('<a href="henchman.html" class="myClass">~Henchman#</a>');
+            expect(links).toContain('.Sharks');
+            expect(links).toContain('<a href="mafia_gangs.html" class="myClass">mafia/gangs</a>');
+
+            delete helper.longnameToUrl['module:mafia/gangs'];
+            delete helper.longnameToUrl['module:mafia/gangs.Sharks~Henchman'];
+        });
     });
 
     describe("prune", function() {
@@ -649,7 +759,22 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     xdescribe("registerLink", function() {
-        // TODO
+        it("adds an entry to exports.longnameToUrl", function() {
+            helper.longnameToUrl.MySymbol = 'asdf.html';
+
+            expect(helper.longnameToUrl.MySymbol).toBeDefined();
+            expect(helper.longnameToUrl.MySymbol).toBe('asdf.html');
+
+            delete helper.longnameToUrl.MySymbol;
+        });
+
+        it("allows linkto to work", function() {
+            helper.registerLink('MySymbol', 'asdf.html');
+
+            expect(helper.linkto('MySymbol')).toBe('<a href="asdf.html">MySymbol</a>');
+
+            delete helper.longnameToUrl.MySymbol;
+        });
     });
 
     describe("tutorialToUrl", function() {
@@ -967,6 +1092,27 @@ describe("jsdoc/util/templateHelper", function() {
                 url = helper.createLink(mockDoclet);
 
             expect(url).toEqual('be9d9563a3.html#"*foo"');
+        });
+    });
+
+    describe("resolveAuthorLinks", function() {
+        // convert Jane Doe <jdoe@example.org> to a mailto link.
+        it('should convert email addresses in angle brackets *after* a name to mailto links', function() {
+            var str = ' John Doe  <asdf.fdsa-2@gmail.com> ',
+                out = helper.resolveAuthorLinks(str);
+            expect(out).toBe('<a href="mailto:asdf.fdsa-2@gmail.com">John Doe</a>');
+        });
+
+        it('should HTML-safe author names', function() {
+            var str = ' John<Doe  <asdf.fdsa-2@gmail.com> ',
+                out = helper.resolveAuthorLinks(str);
+            expect(out).toBe('<a href="mailto:asdf.fdsa-2@gmail.com">' + helper.htmlsafe('John<Doe') + '</a>');
+        });
+
+        it('should simply return the input string, HTML-safe, if no email is detected', function() {
+            var str = 'John Doe <dummy>',
+                out = helper.resolveAuthorLinks(str);
+            expect(out).toBe(helper.htmlsafe(str));
         });
     });
 });
