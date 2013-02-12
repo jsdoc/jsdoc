@@ -24,6 +24,7 @@ describe("jsdoc/tag", function() {
                      ' * myFunction(1, 2); // returns 3\n' +
                      ' * myFunction(3, 4); // returns 7\n';
         var tagArg = new jsdoc.tag.Tag('arg  ', text, meta), // <-- a symonym of param, space in the title.
+            tagParam = new jsdoc.tag.Tag('param', '[foo=1]', meta), // no type, but has optional and defaultvalue.
             tagEg  = new jsdoc.tag.Tag('example', textEg, meta), // <-- for keepsWhitespace
             tagType = new jsdoc.tag.Tag('type', 'MyType ', meta); // <-- for onTagText
 
@@ -101,15 +102,18 @@ describe("jsdoc/tag", function() {
                         expect(tag.value[prop]).toEqual(info[prop]);
                     }
                 }
-                expect(tag.value.type).toBeDefined();
-                expect(typeof tag.value.type).toEqual('object');
-                expect(tag.value.type.names).toBeDefined();
-                expect(tag.value.type.names).toEqual(info.type);
+                if (info.type && info.type.length) {
+                    expect(tag.value.type).toBeDefined();
+                    expect(typeof tag.value.type).toEqual('object');
+                    expect(tag.value.type.names).toBeDefined();
+                    expect(tag.value.type.names).toEqual(info.type);
+                }
             }
             it("if the tag has a type, tag.value should contain the type information", function() {
                 // we assume jsdoc/tag/type.parse works (it has its own tests to verify this);
                 verifyTagType(tagType);
                 verifyTagType(tagArg);
+                verifyTagType(tagParam);
             });
 
             it("if the tag has a description beyond the name/type, this should be in tag.value.description", function() {

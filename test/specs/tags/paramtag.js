@@ -6,7 +6,8 @@ describe("@param tag", function() {
         getElement = docSet.getByLongname('getElement')[0],
         combine = docSet.getByLongname('combine')[0],
         split = docSet.getByLongname('split')[0],
-        commit = docSet.getByLongname('commit')[0];
+        commit = docSet.getByLongname('commit')[0],
+        request = docSet.getByLongname('request')[0];
 
     it('When a symbol has an @param tag with a type before the name, the doclet has a params property that includes that param.', function() {
         expect(typeof find.params).toEqual('object');
@@ -62,7 +63,18 @@ describe("@param tag", function() {
         expect(commit.params[0].description).toEqual('If true make the commit atomic.');
     });
 
+    it('When a symbol has a @param tag with no type but a name that indicates a default value or optional type, this infor is copied over to the params property.', function() {
+        expect(typeof request.params).toEqual('object');
+        expect(request.params.length).toEqual(1);
+        expect(request.params[0].type).toBeUndefined();
+        expect(request.params[0].name).toBe('async');
+        expect(request.params[0].defaultvalue).toBe('true');
+        expect(request.params[0].optional).toBe(true);
+        expect(request.params[0].description).toEqual('whether to be asynchronous');
+    });
+
     it('When a symbol has an @param tag with no name and a name is given in the code, the doclet has a params property that includes that param with the name from the code.', function() {
         expect(commit.params[0].name).toEqual('atomic');
     });
+
 });
