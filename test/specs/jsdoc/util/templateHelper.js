@@ -171,8 +171,24 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe("longnameToUrl", function() {
-        // TODO
+    describe("longnameToUrl", function() {
+        it("is an object", function() {
+            expect(typeof helper.longnameToUrl).toBe('object');
+        });
+
+        it("has an entry added into it by calling registerLink", function() {
+            helper.registerLink('MySymbol', 'asdf.html');
+            expect(helper.longnameToUrl.MySymbol).toBeDefined();
+            expect(helper.longnameToUrl.MySymbol).toBe('asdf.html');
+
+            delete helper.longnameToUrl.MySymbol;
+        });
+
+        it("adding an entry to it allows me to link with linkto", function() {
+            helper.longnameToUrl.foo2 = 'bar.html';
+            expect(helper.linkto('foo2')).toBe('<a href="bar.html">foo2</a>');
+            delete helper.longnameToUrl.foo2;
+        });
     });
 
     describe("linkto", function() {
@@ -464,12 +480,96 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe("getSignatureTypes", function() {
-        // TODO
+    describe("getSignatureTypes", function() {
+        // returns links to allowed types for a doclet.
+        it("returns an empty array if the doclet has no specified type", function() {
+            var doc = new doclet.Doclet('/** @const ASDF */', {}),
+                types = helper.getSignatureTypes(doc);
+
+            expect(types instanceof Array).toBe(true);
+            expect(types.length).toBe(0);
+        });
+
+        it("returns a string array of the doclet's types", function() {
+            var doc = new doclet.Doclet('/** @const {number|Array.<boolean>} ASDF */', {}),
+                types = helper.getSignatureTypes(doc);
+
+            expect(types.length).toBe(2);
+            expect(types).toContain('number');
+            expect(types).toContain(helper.htmlsafe('Array.<boolean>')); // should be HTML safe
+        });
+
+        it("creates links for types if relevant", function() {
+            // make some links.
+            helper.longnameToUrl.MyClass = 'MyClass.html';
+
+            var doc = new doclet.Doclet('/** @const {MyClass} ASDF */', {}),
+                types = helper.getSignatureTypes(doc);
+            expect(types.length).toBe(1);
+            expect(types).toContain('<a href="MyClass.html">MyClass</a>');
+
+            delete helper.longnameToUrl.MyClass;
+        });
+
+        it("uses the cssClass parameter for links if it is provided", function() {
+            // make some links.
+            helper.longnameToUrl.MyClass = 'MyClass.html';
+
+            var doc = new doclet.Doclet('/** @const {MyClass} ASDF */', {}),
+                types = helper.getSignatureTypes(doc, 'myCSSClass');
+            expect(types.length).toBe(1);
+            expect(types).toContain('<a href="MyClass.html" class="myCSSClass">MyClass</a>');
+
+            delete helper.longnameToUrl.MyClass;
+        });
     });
 
-    xdescribe("getSignatureParams", function() {
-        // TODO
+    describe("getSignatureParams", function() {
+        // retrieves parameter names.
+        // if css class is provided, optional parameters are wrapped in a <span> with that class.
+        it("returns an empty array if the doclet has no specified type", function() {
+            var doc = new doclet.Doclet('/** @function myFunction */', {}),
+                params = helper.getSignatureParams(doc);
+            expect(params instanceof Array).toBe(true);
+            expect(params.length).toBe(0);
+        });
+
+        it("returns a string array of the doclet's parameter names", function() {
+            var doc = new doclet.Doclet('/** @function myFunction\n @param {string} foo - asdf. */', {}),
+                params = helper.getSignatureParams(doc);
+            expect(params.length).toBe(1);
+            expect(params).toContain('foo');
+        });
+
+        it("wraps optional parameters in <span class=..> if optClass is provided", function() {
+            var doc = new doclet.Doclet(
+                '/** @function myFunction\n' +
+                ' * @param {boolean} foo - explanation.\n' +
+                ' * @param {number} [bar=1] - another explanation.\n' +
+                ' * @param {string} [baz] - another explanation.\n' +
+                ' */', {}),
+                params = helper.getSignatureParams(doc, 'cssClass');
+
+            expect(params.length).toBe(3);
+            expect(params).toContain('foo');
+            expect(params).toContain('<span class="cssClass">bar</span>');
+            expect(params).toContain('<span class="cssClass">baz</span>');
+        });
+
+        it("doesn't wrap optional parameters in <span class=..> if optClass is not provided", function() {
+            var doc = new doclet.Doclet(
+                '/** @function myFunction\n' +
+                ' * @param {boolean} foo - explanation.\n' +
+                ' * @param {number} [bar=1] - another explanation.\n' +
+                ' * @param {string} [baz] - another explanation.\n' +
+                ' */', {}),
+                params = helper.getSignatureParams(doc);
+
+            expect(params.length).toBe(3);
+            expect(params).toContain('foo');
+            expect(params).toContain('bar');
+            expect(params).toContain('baz');
+        });
     });
 
     describe("getSignatureReturns", function() {
