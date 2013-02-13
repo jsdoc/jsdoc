@@ -3,7 +3,7 @@ describe("jsdoc/tutorial/resolver", function() {
     var resolver = require('jsdoc/tutorial/resolver'),
         tutorial = require('jsdoc/tutorial'),
         lenient = !!env.opts.lenient,
-        log = eval(console.iog);
+        log = eval(console.log);
 
     /*jshint evil: true */
     it("should exist", function() {
