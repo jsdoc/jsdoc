@@ -60,7 +60,8 @@ JSDoc.
 
 In rare cases, users may have their Java CLASSPATH configured to override the
 included Rhino and point to an older version of Rhino instead. If this is the
-case, simply correct the CLASSPATH to remove the older Rhino.
+case, simply correct the CLASSPATH to remove the older Rhino. (On OS X, you may
+need to remove the file `~/Library/Java/Extensions/js.jar`.)
 
 The version of Rhino distributed with JSDoc 3 can be found here:
 https://github.com/hegemonic/rhino
