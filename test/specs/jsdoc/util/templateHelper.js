@@ -783,10 +783,9 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("tutorialToUrl", function() {
+        var resolver = require('jsdoc/tutorial/resolver');
         /*jshint evil: true */
         
-        // TODO: more tests
-
         var lenient = !!env.opts.lenient,
             log = eval(console.log);
 
@@ -795,7 +794,7 @@ describe("jsdoc/util/templateHelper", function() {
         }
 
         beforeEach(function() {
-            var root = require('jsdoc/tutorial/resolver').root;
+            var root = resolver.root;
             helper.setTutorials(root);
         });
 
@@ -815,6 +814,38 @@ describe("jsdoc/util/templateHelper", function() {
             env.opts.lenient = true;
 
             expect(missingTutorial).not.toThrow();
+        });
+
+        it("does not return a tutorial if its name is a reserved JS keyword and it doesn't exist", function() {
+            console.log = function () {};
+            env.opts.lenient = false;
+            expect(function () { helper.tutorialToUrl('prototype') }).toThrow();
+        });
+
+        it("creates links to tutorials if they exist", function() {
+            // NOTE: we have to set lenient = true here because otherwise JSDoc will
+            // cry when trying to resolve the same set of tutorials twice (once
+            // for the tutorials tests, and once here).
+            env.opts.lenient = true;
+            console.log = function() {};
+
+            // load the tutorials we already have for the tutorials tests
+            resolver.load(__dirname + "/test/tutorials/tutorials");
+            resolver.resolve();
+
+            var url = helper.tutorialToUrl('test');
+            expect(typeof url).toBe('string');
+            expect(url).toBe('tutorial-test.html');
+        });
+
+        it("creates links for tutorials where the name is a reserved JS keyword", function() {
+            var url = helper.tutorialToUrl('constructor');
+            expect(typeof url).toBe('string');
+            expect(url).toBe('tutorial-constructor.html');
+        });
+
+        it("returns the same link if called multiple times on the same tutorial", function() {
+            expect(helper.tutorialToUrl('test2')).toBe(helper.tutorialToUrl('test2'));
         });
     });
 
