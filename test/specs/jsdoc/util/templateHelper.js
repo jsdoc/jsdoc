@@ -235,6 +235,13 @@ describe("jsdoc/util/templateHelper", function() {
             var link = helper.linkto('linktoTest', 'link text', 'myclass');
             expect(link).toEqual('<a href="test.html" class="myclass">link text</a>');
         });
+
+        it("is careful with longnames that are reserved words in JS", function() {
+            // we don't have a registered link for 'constructor' so it should return the text 'link text'.
+            var link = helper.linkto('constructor', 'link text');
+            expect(typeof link).toBe('string');
+            expect(link).toBe('link text');
+        });
     });
 
     describe("htmlsafe", function() {
@@ -950,6 +957,12 @@ describe("jsdoc/util/templateHelper", function() {
             var input = 'Link to {@linkplain test}',
                 output = helper.resolveLinks(input);
             expect(output).toEqual('Link to <a href="path/to/test.html">test</a>');
+        });
+
+        it('should be careful with linking to links whose names are reserved JS keywords', function() {
+            var input = 'Link to {@link constructor}',
+                output = helper.resolveLinks(input);
+            expect(output).toBe('Link to constructor');
         });
 
         // conf.monospaceLinks. check that
