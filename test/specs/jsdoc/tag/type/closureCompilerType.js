@@ -4,51 +4,51 @@ describe('jsdoc/tag/type/closureCompilerType', function() {
 
     it('should exist', function() {
         expect(type).toBeDefined();
-        expect(typeof type).toEqual('object');
+        expect(typeof type).toBe('object');
     });
     
     it('should export a parse function', function() {
         expect(type.parse).toBeDefined();
-        expect(typeof type.parse).toEqual('function');
+        expect(typeof type.parse).toBe('function');
     });
     
     describe('parse', function() {
         it('should parse optional types', function() {
             var info = type.parse({type: 'Asdf.Foobar='});
-            expect(info.type).toEqual('Asdf.Foobar');
-            expect(info.optional).toEqual(true);
+            expect(info.type).toBe('Asdf.Foobar');
+            expect(info.optional).toBe(true);
         });
 
         it('should parse nullable types', function() {
             var info = type.parse({type: '?Asdf.Foobar'});
-            expect(info.type).toEqual('Asdf.Foobar');
-            expect(info.nullable).toEqual(true);
+            expect(info.type).toBe('Asdf.Foobar');
+            expect(info.nullable).toBe(true);
         });
 
         it('should parse non-nullable types', function() {
             var info = type.parse({type: '!Asdf.Foobar'});
-            expect(info.type).toEqual('Asdf.Foobar');
-            expect(info.nullable).toEqual(false);
+            expect(info.type).toBe('Asdf.Foobar');
+            expect(info.nullable).toBe(false);
         });
 
         it('should parse variable types', function() {
             var info = type.parse({type: '...Fdsa.Baz'});
-            expect(info.type).toEqual('Fdsa.Baz');
-            expect(info.variable).toEqual(true);
+            expect(info.type).toBe('Fdsa.Baz');
+            expect(info.variable).toBe(true);
         });
 
         it('should correctly parse types that are both optional and nullable', function() {
             var info = type.parse( {type: '?string='} );
-            expect(info.type).toEqual('string');
-            expect(info.optional).toEqual(true);
-            expect(info.nullable).toEqual(true);
+            expect(info.type).toBe('string');
+            expect(info.optional).toBe(true);
+            expect(info.nullable).toBe(true);
         });
 
         it('should correctly parse types that are both optional and variable', function() {
             var info = type.parse( {type: '...string='} );
-            expect(info.type).toEqual('string');
-            expect(info.optional).toEqual(true);
-            expect(info.variable).toEqual(true);
+            expect(info.type).toBe('string');
+            expect(info.optional).toBe(true);
+            expect(info.variable).toBe(true);
         });
 
         it("should only change the `type`, `optional`, `nullable` and `variable` properties", function() {
@@ -70,7 +70,7 @@ describe('jsdoc/tag/type/closureCompilerType', function() {
                         expect( info[key] ).not.toEqual( obj[key] );
                     }
                     else {
-                        expect( info[key] ).toEqual( obj[key] );
+                        expect( info[key] ).toBe( obj[key] );
                     }
                 }
             }

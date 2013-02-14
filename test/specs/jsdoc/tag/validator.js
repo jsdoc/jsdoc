@@ -4,12 +4,12 @@ describe('jsdoc/tag/validator', function() {
 
     it('should exist', function() {
         expect(validator).toBeDefined();
-        expect(typeof validator).toEqual('object');
+        expect(typeof validator).toBe('object');
     });
 
     it('should export a validate function', function() {
         expect(validator.validate).toBeDefined();
-        expect(typeof validator.validate).toEqual('function');
+        expect(typeof validator.validate).toBe('function');
     });
 
     // Note: various Error classes are private so we just test whether *any*

@@ -8,12 +8,12 @@ describe("jsdoc/tag", function() {
 
     it('should exist', function() {
         expect(jsdoc.tag).toBeDefined();
-        expect(typeof jsdoc.tag).toEqual('object');
+        expect(typeof jsdoc.tag).toBe('object');
     });
 
     it('should export a Tag function', function() {
         expect(jsdoc.tag.Tag).toBeDefined();
-        expect(typeof jsdoc.tag.Tag).toEqual('function');
+        expect(typeof jsdoc.tag.Tag).toBe('function');
     });
 
     describe('Tag', function() {
@@ -30,27 +30,27 @@ describe("jsdoc/tag", function() {
 
         it("should have a 'originalTitle' property, a string", function() {
             expect(tagArg.originalTitle).toBeDefined();
-            expect(typeof tagArg.originalTitle).toEqual('string');
+            expect(typeof tagArg.originalTitle).toBe('string');
         });
 
         it("'originalTitle' property should be the initial tag title, trimmed of whitespace", function() {
-            expect(tagArg.originalTitle).toEqual('arg');
-            expect(tagEg.originalTitle).toEqual('example');
+            expect(tagArg.originalTitle).toBe('arg');
+            expect(tagEg.originalTitle).toBe('example');
         });
 
         it("should have a 'title' property, a string", function() {
             expect(tagArg.title).toBeDefined();
-            expect(typeof tagArg.title).toEqual('string');
+            expect(typeof tagArg.title).toBe('string');
         });
 
         it("'title' property should be the normalised tag title", function() {
-            expect(tagArg.title).toEqual(jsdoc.dictionary.normalise(tagArg.originalTitle));
-            expect(tagEg.title).toEqual(jsdoc.dictionary.normalise(tagEg.originalTitle));
+            expect(tagArg.title).toBe(jsdoc.dictionary.normalise(tagArg.originalTitle));
+            expect(tagEg.title).toBe(jsdoc.dictionary.normalise(tagEg.originalTitle));
         });
 
         it("should have a 'text' property. a string", function () {
             expect(tagArg.text).toBeDefined();
-            expect(typeof tagArg.text).toEqual('string');
+            expect(typeof tagArg.text).toBe('string');
         });
 
         it("should have a 'value' property", function () {
@@ -63,48 +63,48 @@ describe("jsdoc/tag", function() {
             it("'text' property should be the trimmed tag text, with all leading and trailing space removed unless tagDef.keepsWhitespace", function() {
                 // @example has keepsWhitespace, @param doesn't.
                 // should realy use module:jsdoc/tag~trim here but it's private.
-                expect(tagArg.text).toEqual(text.replace(/^\s+|\s+$/g, ''));
-                expect(tagEg.text).toEqual(textEg.replace(/^[\n\r\f]+|[\n\r\f]+$/g, ''));
+                expect(tagArg.text).toBe(text.replace(/^\s+|\s+$/g, ''));
+                expect(tagEg.text).toBe(textEg.replace(/^[\n\r\f]+|[\n\r\f]+$/g, ''));
             });
 
             it("'text' property should have onTagText run on it if it has it.", function() {
                 var def = jsdoc.dictionary.lookUp('type');
                 expect(def.onTagText).toBeDefined();
-                expect(typeof def.onTagText).toEqual('function');
+                expect(typeof def.onTagText).toBe('function');
 
                 // @type adds {} around the type if necessary.
                 expect(tagType.text).toBeDefined();
-                expect(tagType.text).toEqual(def.onTagText('MyType'));
+                expect(tagType.text).toBe(def.onTagText('MyType'));
             });
         });
 
         describe("'value' property", function() {
             it("'value' property should equal tag text if tagDef.canHaveType and canHaveName are both false", function() {
                 // @example can't have type or name
-                expect(typeof tagEg.value).toEqual('string');
-                expect(tagEg.value).toEqual(tagEg.text);
+                expect(typeof tagEg.value).toBe('string');
+                expect(tagEg.value).toBe(tagEg.text);
             });
 
             it("'value' property should be an object if tagDef can have type or name", function () {
-                expect(typeof tagType.value).toEqual('object');
-                expect(typeof tagArg.value).toEqual('object');
+                expect(typeof tagType.value).toBe('object');
+                expect(typeof tagArg.value).toBe('object');
             });
 
             function verifyTagType(tag) {
                 var def = jsdoc.dictionary.lookUp(tag.title);
-                expect(def).not.toEqual(false);
+                expect(def).not.toBe(false);
                 var info = jsdoc.type.parse(tag.text, def.canHaveName, def.canHaveType);
 
                 var props_that_should_be_copied = ['optional', 'nullable', 'variable', 'defaultvalue'];
                 for (var i = 0; i < props_that_should_be_copied.length; ++i) {
                     var prop = props_that_should_be_copied[i];
                     if (info.hasOwnProperty(prop)) {
-                        expect(tag.value[prop]).toEqual(info[prop]);
+                        expect(tag.value[prop]).toBe(info[prop]);
                     }
                 }
                 if (info.type && info.type.length) {
                     expect(tag.value.type).toBeDefined();
-                    expect(typeof tag.value.type).toEqual('object');
+                    expect(typeof tag.value.type).toBe('object');
                     expect(tag.value.type.names).toBeDefined();
                     expect(tag.value.type.names).toEqual(info.type);
                 }
@@ -120,12 +120,12 @@ describe("jsdoc/tag", function() {
                 expect(tagType.value.description).not.toBeDefined();
 
                 expect(tagArg.value.description).toBeDefined();
-                expect(tagArg.value.description).toEqual(desc);
+                expect(tagArg.value.description).toBe(desc);
             });
 
             it("if the tag can have a name, it should be stored in tag.value.name", function() {
                 expect(tagArg.value.name).toBeDefined();
-                expect(tagArg.value.name).toEqual('foo');
+                expect(tagArg.value.name).toBe('foo');
 
                 expect(tagType.value.name).not.toBeDefined();
             });
