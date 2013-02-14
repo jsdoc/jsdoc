@@ -3,9 +3,9 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper'),
-        doclet = require('jsdoc/doclet');
+        doclet = require('jsdoc/doclet'),
+        resolver = require('jsdoc/tutorial/resolver');
     helper.registerLink('test', 'path/to/test.html');
-    helper.registerLink('test."long blah"/blah', 'path/to/test_long_blah_blah.html');
 
     it("should exist", function() {
         expect(helper).toBeDefined();
@@ -123,8 +123,32 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
 
-    xdescribe("setTutorials", function() {
-        // TODO
+    describe("setTutorials", function() {
+        // all it does is set var tutorials = root, how to test that?!
+        // used in tutorialToUrl, toTutorial.
+        it("setting tutorials to null causes all tutorial lookups to fail", function() {
+            // bit of a dodgy test but the best I can manage. setTutorials doesn't do much.
+            helper.setTutorials(null);
+            // should throw error: no 'getByName' in tutorials.
+            expect(function () { return helper.tutorialToUrl('asdf') }).toThrow('Cannot call method "getByName" of null');
+        });
+
+        it("setting tutorials to the root tutorial object lets lookups work", function() {
+            var lenient = !!env.opts.lenient,
+                log = eval(console.log);
+
+            // tutorial doesn't exist, we want to muffle that error
+            env.opts.lenient = true;
+            console.log = function () {};
+
+            helper.setTutorials(resolver.root);
+            spyOn(resolver.root, 'getByName');
+            helper.tutorialToUrl('asdf');
+            expect(resolver.root.getByName).toHaveBeenCalled();
+
+            env.opts.lenient = lenient;
+            console.log = log;
+        });
     });
 
     describe("globalName", function() {
@@ -763,7 +787,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe("registerLink", function() {
+    describe("registerLink", function() {
         it("adds an entry to exports.longnameToUrl", function() {
             helper.longnameToUrl.MySymbol = 'asdf.html';
 
@@ -783,7 +807,6 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("tutorialToUrl", function() {
-        var resolver = require('jsdoc/tutorial/resolver');
         /*jshint evil: true */
         
         var lenient = !!env.opts.lenient,
@@ -794,8 +817,7 @@ describe("jsdoc/util/templateHelper", function() {
         }
 
         beforeEach(function() {
-            var root = resolver.root;
-            helper.setTutorials(root);
+            helper.setTutorials(resolver.root);
         });
 
         afterEach(function() {
@@ -852,8 +874,6 @@ describe("jsdoc/util/templateHelper", function() {
     describe("toTutorial", function() {
         /*jshint evil: true */
         
-        // TODO: more tests
-
         var lenient = !!env.opts.lenient,
             log = eval(console.log);
 
@@ -864,6 +884,11 @@ describe("jsdoc/util/templateHelper", function() {
         afterEach(function() {
             env.opts.lenient = lenient;
             console.log = log;
+            helper.setTutorials(null);
+        });
+
+        beforeEach(function () {
+            helper.setTutorials(resolver.root);
         });
 
         it('throws an exception if the first param is missing and the lenient option is not enabled', function() {
@@ -877,6 +902,64 @@ describe("jsdoc/util/templateHelper", function() {
             env.opts.lenient = true;
 
             expect(missingParam).not.toThrow();
+        });
+
+        // missing tutorials
+        it("returns the tutorial name if it's missing and no missingOpts is provided", function() {
+            helper.setTutorials(resolver.root);
+            var link = helper.toTutorial('asdf');
+            expect(link).toBe('asdf');
+        });
+
+        it("returns the tutorial name wrapped in missingOpts.tag if provided and the tutorial is missing", function() {
+            var link = helper.toTutorial('asdf', 'lkjklasdf', {tag: 'span'});
+            expect(link).toBe('<span>asdf</span>');
+        });
+
+        it("returns the tutorial name wrapped in missingOpts.tag with class missingOpts.classname if provided and the tutorial is missing", function() {
+            var link = helper.toTutorial('asdf', 'lkjklasdf', {classname: 'missing'});
+            expect(link).toBe('asdf');
+
+            link = helper.toTutorial('asdf', 'lkjklasdf', {tag: 'span', classname: 'missing'});
+            expect(link).toBe('<span class="missing">asdf</span>');
+        });
+
+        it("prefixes the tutorial name with missingOpts.prefix if provided and the tutorial is missing", function() {
+            var link = helper.toTutorial('asdf', 'lkjklasdf', {tag: 'span', classname: 'missing', prefix: 'TODO-'});
+            expect(link).toBe('<span class="missing">TODO-asdf</span>');
+
+            link = helper.toTutorial('asdf', 'lkjklasdf', {prefix: 'TODO-'});
+            expect(link).toBe('TODO-asdf');
+
+            link = helper.toTutorial('asdf', 'lkjklasdf', {prefix: 'TODO-', classname: 'missing'});
+            expect(link).toBe('TODO-asdf');
+        });
+
+        // now we do non-missing tutorials.
+        it("returns a link to the tutorial if not missing", function() {
+            // NOTE: we have to set lenient = true here because otherwise JSDoc will
+            // cry when trying to resolve the same set of tutorials twice (once
+            // for the tutorials tests, and once here).
+            env.opts.lenient = true;
+            console.log = function() {};
+
+            // load the tutorials we already have for the tutorials tests
+            resolver.load(__dirname + "/test/tutorials/tutorials");
+            resolver.resolve();
+
+
+            var link = helper.toTutorial('constructor', 'The Constructor tutorial');
+            expect(link).toBe('<a href="' + helper.tutorialToUrl('constructor') + '">The Constructor tutorial</a>');
+        });
+
+        it("uses the tutorial's title for the link text if no content parameter is provided", function() {
+            var link = helper.toTutorial('test');
+            expect(link).toBe('<a href="' + helper.tutorialToUrl('test') + '">Test tutorial</a>');
+        });
+
+        it("does not apply any of missingOpts if the tutorial was found", function() {
+            var link = helper.toTutorial('test', '', {tag: 'span', classname: 'missing', prefix: 'TODO-'});
+            expect(link).toBe('<a href="' + helper.tutorialToUrl('test') + '">Test tutorial</a>');
         });
     });
 
