@@ -9,117 +9,117 @@ describe("jsdoc/util/templateHelper", function() {
 
     it("should exist", function() {
         expect(helper).toBeDefined();
-        expect(typeof helper).toEqual('object');
+        expect(typeof helper).toBe('object');
     });
 
     it("should export a 'setTutorials' function", function() {
         expect(helper.setTutorials).toBeDefined();
-        expect(typeof helper.setTutorials).toEqual("function");
+        expect(typeof helper.setTutorials).toBe("function");
     });
 
     it("should export a 'globalName' property", function() {
         expect(helper.globalName).toBeDefined();
-        expect(typeof helper.globalName).toEqual("string");
+        expect(typeof helper.globalName).toBe("string");
     });
 
     it("should export a 'fileExtension' property", function() {
         expect(helper.fileExtension).toBeDefined();
-        expect(typeof helper.fileExtension).toEqual("string");
+        expect(typeof helper.fileExtension).toBe("string");
     });
 
     it("should export a 'scopeToPunc' property", function() {
         expect(helper.scopeToPunc).toBeDefined();
-        expect(typeof helper.scopeToPunc).toEqual("object");
+        expect(typeof helper.scopeToPunc).toBe("object");
     });
 
     it("should export a 'getUniqueFilename' function", function() {
         expect(helper.getUniqueFilename).toBeDefined();
-        expect(typeof helper.getUniqueFilename).toEqual("function");
+        expect(typeof helper.getUniqueFilename).toBe("function");
     });
 
     it("should export a 'longnameToUrl' property", function() {
         expect(helper.longnameToUrl).toBeDefined();
-        expect(typeof helper.longnameToUrl).toEqual("object");
+        expect(typeof helper.longnameToUrl).toBe("object");
     });
 
     it("should export a 'linkto' function", function() {
         expect(helper.linkto).toBeDefined();
-        expect(typeof helper.linkto).toEqual("function");
+        expect(typeof helper.linkto).toBe("function");
     });
 
     it("should export an 'htmlsafe' function", function() {
         expect(helper.htmlsafe).toBeDefined();
-        expect(typeof helper.htmlsafe).toEqual("function");
+        expect(typeof helper.htmlsafe).toBe("function");
     });
 
     it("should export a 'find' function", function() {
         expect(helper.find).toBeDefined();
-        expect(typeof helper.find).toEqual("function");
+        expect(typeof helper.find).toBe("function");
     });
 
     it("should export a 'getMembers' function", function() {
         expect(helper.getMembers).toBeDefined();
-        expect(typeof helper.getMembers).toEqual("function");
+        expect(typeof helper.getMembers).toBe("function");
     });
 
     it("should export a 'getAttribs' function", function() {
         expect(helper.getAttribs).toBeDefined();
-        expect(typeof helper.getAttribs).toEqual("function");
+        expect(typeof helper.getAttribs).toBe("function");
     });
 
     it("should export a 'getSignatureTypes' function", function() {
         expect(helper.getSignatureTypes).toBeDefined();
-        expect(typeof helper.getSignatureTypes).toEqual("function");
+        expect(typeof helper.getSignatureTypes).toBe("function");
     });
 
     it("should export a 'getSignatureParams' function", function() {
         expect(helper.getSignatureParams).toBeDefined();
-        expect(typeof helper.getSignatureParams).toEqual("function");
+        expect(typeof helper.getSignatureParams).toBe("function");
     });
 
     it("should export a 'getSignatureReturns' function", function() {
         expect(helper.getSignatureReturns).toBeDefined();
-        expect(typeof helper.getSignatureReturns).toEqual("function");
+        expect(typeof helper.getSignatureReturns).toBe("function");
     });
 
     it("should export a 'getAncestorLinks' function", function() {
         expect(helper.getAncestorLinks).toBeDefined();
-        expect(typeof helper.getAncestorLinks).toEqual("function");
+        expect(typeof helper.getAncestorLinks).toBe("function");
     });
 
     it("should export a 'prune' function", function() {
         expect(helper.prune).toBeDefined();
-        expect(typeof helper.prune).toEqual("function");
+        expect(typeof helper.prune).toBe("function");
     });
 
     it("should export a 'registerLink' function", function() {
         expect(helper.registerLink).toBeDefined();
-        expect(typeof helper.registerLink).toEqual("function");
+        expect(typeof helper.registerLink).toBe("function");
     });
 
     it("should export a 'tutorialToUrl' function", function() {
         expect(helper.tutorialToUrl).toBeDefined();
-        expect(typeof helper.tutorialToUrl).toEqual("function");
+        expect(typeof helper.tutorialToUrl).toBe("function");
     });
 
     it("should export a 'toTutorial' function", function() {
         expect(helper.toTutorial).toBeDefined();
-        expect(typeof helper.toTutorial).toEqual("function");
+        expect(typeof helper.toTutorial).toBe("function");
     });
 
     it("should export a 'resolveLinks' function", function() {
         expect(helper.resolveLinks).toBeDefined();
-        expect(typeof helper.resolveLinks).toEqual("function");
+        expect(typeof helper.resolveLinks).toBe("function");
     });
 
     it("should export a 'resolveAuthorLinks' function", function() {
         expect(helper.resolveAuthorLinks).toBeDefined();
-        expect(typeof helper.resolveAuthorLinks).toEqual("function");
+        expect(typeof helper.resolveAuthorLinks).toBe("function");
     });
 
     it("should export a 'createLink' function", function() {
         expect(helper.createLink).toBeDefined();
-        expect(typeof helper.createLink).toEqual("function");
+        expect(typeof helper.createLink).toBe("function");
     });
 
 
@@ -129,13 +129,13 @@ describe("jsdoc/util/templateHelper", function() {
 
     describe("globalName", function() {
         it("should equal 'global'", function() {
-            expect(helper.globalName).toEqual('global');
+            expect(helper.globalName).toBe('global');
         });
     });
 
     describe("fileExtension", function() {
         it("should equal '.html'", function() {
-            expect(helper.fileExtension).toEqual('.html');
+            expect(helper.fileExtension).toBe('.html');
         });
     });
 
@@ -150,7 +150,7 @@ describe("jsdoc/util/templateHelper", function() {
     xdescribe("getUniqueFilename", function() {
         it('should convert a simple string into the string plus the default extension', function() {
             var filename = helper.getUniqueFilename('BackusNaur');
-            expect(filename).toEqual('BackusNaur.html');
+            expect(filename).toBe('BackusNaur.html');
         });
 
         it('should convert a string with slashes into an alphanumeric hash plus the default extension', function() {
@@ -163,7 +163,7 @@ describe("jsdoc/util/templateHelper", function() {
             var filename1 = helper.getUniqueFilename(name);
             var filename2 = helper.getUniqueFilename(name);
 
-            expect(filename1).not.toEqual(filename2);
+            expect(filename1).not.toBe(filename2);
         });
 
         it('should not consider the same name with different letter case to be unique', function() {
@@ -172,7 +172,7 @@ describe("jsdoc/util/templateHelper", function() {
             var filename1 = helper.getUniqueFilename(camel);
             var filename2 = helper.getUniqueFilename(pascal);
 
-            expect( filename1.toLowerCase() ).not.toEqual( filename2.toLowerCase() );
+            expect( filename1.toLowerCase() ).not.toBe( filename2.toLowerCase() );
         });
     });
 
@@ -207,33 +207,33 @@ describe("jsdoc/util/templateHelper", function() {
 
         it('returns the longname if only the longname is specified and has no URL', function() {
             var link = helper.linkto('example');
-            expect(link).toEqual('example');
+            expect(link).toBe('example');
         });
 
         it('returns the link text if only the link text is specified', function() {
             var link = helper.linkto(null, 'link text');
-            expect(link).toEqual('link text');
+            expect(link).toBe('link text');
         });
 
         it('returns the link text if the longname does not have a URL, and both the longname and ' +
             'link text are specified', function() {
             var link = helper.linkto('example', 'link text');
-            expect(link).toEqual('link text');
+            expect(link).toBe('link text');
         });
 
         it('uses the longname as the link text if no link text is provided', function() {
             var link = helper.linkto('linktoTest');
-            expect(link).toEqual('<a href="test.html">linktoTest</a>');
+            expect(link).toBe('<a href="test.html">linktoTest</a>');
         });
 
         it('uses the link text if it is specified', function() {
             var link = helper.linkto('linktoTest', 'link text');
-            expect(link).toEqual('<a href="test.html">link text</a>');
+            expect(link).toBe('<a href="test.html">link text</a>');
         });
         
         it('includes a "class" attribute in the link if a class is specified', function() {
             var link = helper.linkto('linktoTest', 'link text', 'myclass');
-            expect(link).toEqual('<a href="test.html" class="myclass">link text</a>');
+            expect(link).toBe('<a href="test.html" class="myclass">link text</a>');
         });
 
         it("is careful with longnames that are reserved words in JS", function() {
@@ -249,7 +249,7 @@ describe("jsdoc/util/templateHelper", function() {
         it('should convert all occurences of < to &lt;', function() {
             var inp = '<h1>Potentially dangerous.</h1>',
                 out = helper.htmlsafe(inp);
-            expect(out).toEqual('&lt;h1>Potentially dangerous.&lt;/h1>');
+            expect(out).toBe('&lt;h1>Potentially dangerous.&lt;/h1>');
         });
     });
 
@@ -388,7 +388,7 @@ describe("jsdoc/util/templateHelper", function() {
         it('should return an array of strings', function() {
             doc = new doclet.Doclet('/** ljklajsdf */', {});
             attribs = helper.getAttribs(doc);
-            expect(attribs instanceof Array).toBe(true);
+            expect(Array.isArray(attribs)).toBe(true);
         });
 
         // tests is an object of test[doclet src] = <result expected in attribs|false>
@@ -403,13 +403,13 @@ describe("jsdoc/util/templateHelper", function() {
                         expect(attribs).toContain(tests[src]);
                     } else {
                         if (whatNotToContain !== undefined) {
-                            if (whatNotToContain instanceof Array) {
+                            if (Array.isArray(whatNotToContain)) {
                                 for (var i = 0; i < whatNotToContain.length; ++i) {
                                     expect(attribs).not.toContain(whatNotToContain[i]);
                                 }
                             }
                         } else {
-                            expect(attribs.length).toEqual(0);
+                            expect(attribs.length).toBe(0);
                         }
                     }
                 }
@@ -498,7 +498,7 @@ describe("jsdoc/util/templateHelper", function() {
             var doc = new doclet.Doclet('/** @const ASDF */', {}),
                 types = helper.getSignatureTypes(doc);
 
-            expect(types instanceof Array).toBe(true);
+            expect(Array.isArray(types)).toBe(true);
             expect(types.length).toBe(0);
         });
 
@@ -542,7 +542,7 @@ describe("jsdoc/util/templateHelper", function() {
         it("returns an empty array if the doclet has no specified type", function() {
             var doc = new doclet.Doclet('/** @function myFunction */', {}),
                 params = helper.getSignatureParams(doc);
-            expect(params instanceof Array).toBe(true);
+            expect(Array.isArray(params)).toBe(true);
             expect(params.length).toBe(0);
         });
 
@@ -601,15 +601,15 @@ describe("jsdoc/util/templateHelper", function() {
             };
 
             var html = helper.getSignatureReturns(mockDoclet);
-            expect( html.indexOf('Array.<string>') ).toEqual(-1);
-            expect( html.indexOf('Array.&lt;string>') ).toBeGreaterThan(-1);
+            expect(html).not.toContain('Array.<string>');
+            expect(html).toContain('Array.&lt;string>');
         });
 
         it("returns an empty array if the doclet has no returns", function() {
             var doc = new doclet.Doclet('/** @function myFunction */', {}),
                 returns = helper.getSignatureReturns(doc);
 
-            expect(returns instanceof Array).toBe(true);
+            expect(Array.isArray(returns)).toBe(true);
             expect(returns.length).toBe(0);
         });
 
@@ -617,7 +617,7 @@ describe("jsdoc/util/templateHelper", function() {
             var doc = new doclet.Doclet('/** @function myFunction\n@returns an interesting result.*/', {}),
                 returns = helper.getSignatureReturns(doc);
 
-            expect(returns instanceof Array).toBe(true);
+            expect(Array.isArray(returns)).toBe(true);
             expect(returns.length).toBe(0);
         });
 
@@ -661,7 +661,7 @@ describe("jsdoc/util/templateHelper", function() {
         // register some links
         it("returns an empty array if there are no ancestors", function() {
             var links = helper.getAncestorLinks(data, mafia);
-            expect(links instanceof Array).toBe(true);
+            expect(Array.isArray(links)).toBe(true);
             expect(links.length).toBe(0);
         });
 
@@ -874,89 +874,89 @@ describe("jsdoc/util/templateHelper", function() {
             var input = 'This is a {@link test}.',
                 output = helper.resolveLinks(input);
 
-            expect(output).toEqual('This is a <a href="path/to/test.html">test</a>.');
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
         it('should translate {@link unknown} into a simple text.', function() {
             var input = 'This is a {@link unknown}.',
                 output = helper.resolveLinks(input);
 
-            expect(output).toEqual('This is a unknown.');
+            expect(output).toBe('This is a unknown.');
         });
 
         it('should translate {@link test} into a HTML links multiple times.', function() {
             var input = 'This is a {@link test} and {@link test}.',
                 output = helper.resolveLinks(input);
 
-            expect(output).toEqual('This is a <a href="path/to/test.html">test</a> and <a href="path/to/test.html">test</a>.');
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a> and <a href="path/to/test.html">test</a>.');
         });
 
         it('should translate [hello there]{@link test} into a HTML link with the custom content.', function() {
             var input = 'This is a [hello there]{@link test}.',
                 output = helper.resolveLinks(input);
 
-            expect(output).toEqual('This is a <a href="path/to/test.html">hello there</a>.');
+            expect(output).toBe('This is a <a href="path/to/test.html">hello there</a>.');
         });
 
         it('should ignore [hello there].', function() {
             var input = 'This is a [hello there].',
                 output = helper.resolveLinks(input);
 
-            expect(output).toEqual(input);
+            expect(output).toBe(input);
         });
 
         it('should translate http links in the tag', function() {
             var input = 'Link to {@link http://github.com}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="http://github.com">http://github.com</a>');
+            expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
         });
 
         it('should translate ftp links in the tag', function() {
             var input = 'Link to {@link ftp://foo.bar}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="ftp://foo.bar">ftp://foo.bar</a>');
+            expect(output).toBe('Link to <a href="ftp://foo.bar">ftp://foo.bar</a>');
         });
 
         it('should allow pipe to be used as delimiter between href and text (external link)', function() {
             var input = 'Link to {@link http://github.com|Github}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="http://github.com">Github</a>');
+            expect(output).toBe('Link to <a href="http://github.com">Github</a>');
         });
 
         it('should allow pipe to be used as delimiter between href and text (symbol link)', function() {
             var input = 'Link to {@link test|Test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html">Test</a>');
+            expect(output).toBe('Link to <a href="path/to/test.html">Test</a>');
         });
 
         it('should allow first space to be used as delimiter between href and text (external link)', function() {
             var input = 'Link to {@link http://github.com Github}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="http://github.com">Github</a>');
+            expect(output).toBe('Link to <a href="http://github.com">Github</a>');
         });
 
         it('should allow first space to be used as delimiter between href and text (symbol link)', function() {
             var input = 'Link to {@link test My Caption}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html">My Caption</a>');
+            expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
         });
 
         it('if pipe and space are present in link tag, use pipe as the delimiter', function() {
             var input = 'Link to {@link test|My Caption}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html">My Caption</a>');
+            expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
         });
 
         it('Test of {@linkcode } which should be in monospace', function() {
             var input = 'Link to {@linkcode test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
         });
 
         it('Test of {@linkplain } which should be in normal font', function() {
             var input = 'Link to {@linkplain test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html">test</a>');
+            expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
         });
 
         it('should be careful with linking to links whose names are reserved JS keywords', function() {
@@ -971,7 +971,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({monospaceLinks: true});
             var input = 'Link to {@link test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
             restoreConfTemplates(storage);
         });
 
@@ -980,7 +980,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({monospaceLinks: true});
             var input = 'Link to {@linkcode test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
             restoreConfTemplates(storage);
         });
 
@@ -988,7 +988,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({monospaceLinks: true});
             var input = 'Link to {@linkplain test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html">test</a>');
+            expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
             restoreConfTemplates(storage);
         });
 
@@ -998,7 +998,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@link test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
             restoreConfTemplates(storage);
         });
 
@@ -1006,7 +1006,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@link http://github.com}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="http://github.com">http://github.com</a>');
+            expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
             restoreConfTemplates(storage);
         });
 
@@ -1015,7 +1015,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@linkcode test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a>');
+            expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
             restoreConfTemplates(storage);
         });
 
@@ -1023,7 +1023,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@linkplain test}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html">test</a>');
+            expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
             restoreConfTemplates(storage);
         });
 
@@ -1033,7 +1033,7 @@ describe("jsdoc/util/templateHelper", function() {
             var storage = setConfTemplatesVariables({cleverLinks: true, monospaceLinks: true});
             var input = 'Link to {@link test} and {@link http://github.com}',
                 output = helper.resolveLinks(input);
-            expect(output).toEqual('Link to <a href="path/to/test.html"><code>test</code></a> and <a href="http://github.com">http://github.com</a>');
+            expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a> and <a href="http://github.com">http://github.com</a>');
             restoreConfTemplates(storage);
         });
 
@@ -1048,7 +1048,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('global.html#foo');
+            expect(url).toBe('global.html#foo');
         });
 
         it('should create a url for a namespace.', function() {
@@ -1059,7 +1059,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('foo.html');
+            expect(url).toBe('foo.html');
         });
 
         it('should create a url for a member of a namespace.', function() {
@@ -1071,7 +1071,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('ns.html#foo');
+            expect(url).toBe('ns.html#foo');
         });
 
         var nestedNamespaceDoclet = {
@@ -1085,12 +1085,12 @@ describe("jsdoc/util/templateHelper", function() {
         it('should create a url for a member of a nested namespace.', function() {
             nestedNamespaceUrl = helper.createLink(nestedNamespaceDoclet);
 
-            expect(nestedNamespaceUrl).toEqual('ns1.ns2.html#foo');
+            expect(nestedNamespaceUrl).toBe('ns1.ns2.html#foo');
         });
 
         it('should return the same value when called twice with the same doclet.', function() {
             var newUrl = helper.createLink(nestedNamespaceDoclet);
-            expect(newUrl).toEqual(nestedNamespaceUrl);
+            expect(newUrl).toBe(nestedNamespaceUrl);
         });
 
         it('should create a url for a name with invalid characters using a digest.', function() {
@@ -1102,7 +1102,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('be9d9563a3.html#"*foo"');
+            expect(url).toBe('be9d9563a3.html#"*foo"');
         });
     });
 
