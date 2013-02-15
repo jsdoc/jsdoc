@@ -3,6 +3,6 @@ describe("@version tag", function() {
         foo = docSet.getByLongname('foo')[0];
 
     it('When a symbol has an @version tag, the doclet has a version property set to that value.', function() {
-        expect(foo.version).toEqual('1.2.3');
+        expect(foo.version).toBe('1.2.3');
     });
 });

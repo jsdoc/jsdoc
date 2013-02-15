@@ -8,24 +8,24 @@ describe("@exports tag", function() {
             size = docSet.getByLongname('module:my/shirt.Turtleneck#size')[0];
 
         it('When an objlit symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
-            expect(typeof shirt).toEqual('object');
-            expect(shirt.alias).toEqual('my/shirt');
+            expect(typeof shirt).toBe('object');
+            expect(shirt.alias).toBe('my/shirt');
         });
 
         it('When an objlit symbol has an @exports tag, the doclet\'s longname includes the "module:" namespace.', function() {
-            expect(shirt.longname).toEqual('module:my/shirt');
+            expect(shirt.longname).toBe('module:my/shirt');
         });
 
         it('When an objlit symbol has an @exports tag, the doclet kind is set to module.', function() {
-            expect(shirt.kind).toEqual('module');
+            expect(shirt.kind).toBe('module');
         });
 
         it('When an objlit symbol has an @exports tag, the objlit members are documented as members of the module.', function() {
-            expect(typeof color).toEqual('object');
-            expect(color.memberof).toEqual('module:my/shirt');
+            expect(typeof color).toBe('object');
+            expect(color.memberof).toBe('module:my/shirt');
 
-            expect(typeof tneck).toEqual('object');
-            expect(typeof size).toEqual('object');
+            expect(typeof tneck).toBe('object');
+            expect(typeof size).toBe('object');
         });
     });
 
@@ -35,21 +35,21 @@ describe("@exports tag", function() {
             wool = docSet.getByLongname('module:my/coat#wool')[0];
 
         it('When a function symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
-            expect(typeof coat).toEqual('object');
-            expect(coat.alias).toEqual('my/coat');
+            expect(typeof coat).toBe('object');
+            expect(coat.alias).toBe('my/coat');
         });
 
         it('When a function symbol has an @exports tag, the doclet\'s longname includes the "module:" namespace.', function() {
-            expect(coat.longname).toEqual('module:my/coat');
+            expect(coat.longname).toBe('module:my/coat');
         });
 
         it('When a function symbol has an @exports tag, the doclet kind is set to module.', function() {
-            expect(coat.kind).toEqual('module');
+            expect(coat.kind).toBe('module');
         });
 
         it('When a function symbol has an @exports tag, the this members are documented as instance members of the module.', function() {
-            expect(typeof wool).toEqual('object');
-            expect(wool.memberof).toEqual('module:my/coat');
+            expect(typeof wool).toBe('object');
+            expect(wool.memberof).toBe('module:my/coat');
         });
     });
 
@@ -60,13 +60,13 @@ describe("@exports tag", function() {
             inhead = docSet.getByLongname('module:html/utils.isInHead')[0];
 
         it('When a function symbol has an @exports tag and there is an objlit named "exports" the members are documented as members of the module.', function() {
-            expect(typeof getstyle).toEqual('object');
-            expect(getstyle.memberof).toEqual('module:html/utils');
+            expect(typeof getstyle).toBe('object');
+            expect(getstyle.memberof).toBe('module:html/utils');
         });
 
         it('When a function symbol has an @exports tag and there are members assinged to an "exports" name, the members are documented as members of the module.', function() {
-            expect(typeof inhead).toEqual('object');
-            expect(inhead.memberof).toEqual('module:html/utils');
+            expect(typeof inhead).toBe('object');
+            expect(inhead.memberof).toBe('module:html/utils');
         });
     });
 
@@ -77,12 +77,12 @@ describe("@exports tag", function() {
             method = docSet.getByLongname('module:some/module~myClass#myMethod')[0];
 
         it('An inner class declared as a function in a module should be documented.', function() {
-            expect(typeof innerClass).toEqual('object');
+            expect(typeof innerClass).toBe('object');
             //expect(getstyle.memberof, 'module:html/utils');
         });
 
         it('A method of an inner class declared as a function in a module should be documented.', function() {
-            expect(typeof method).toEqual('object');
+            expect(typeof method).toBe('object');
             //expect(inhead.memberof, 'module:html/utils');
         });
     });

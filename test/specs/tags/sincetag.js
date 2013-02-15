@@ -3,6 +3,6 @@ describe("@since tag", function() {
         foo = docSet.getByLongname('foo')[0];
 
     it('When a symbol has an @since tag, the doclet has a since property set to true.', function() {
-        expect(foo.since).toEqual('1.2.3');
+        expect(foo.since).toBe('1.2.3');
     });
 });

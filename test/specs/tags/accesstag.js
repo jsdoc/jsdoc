@@ -8,13 +8,13 @@ describe("@access tag", function() {
         pez2 = docSet.getByLongname('OtherThingy#pez')[0];
 
     it("should set the doclet's 'access' property to 'private' when there is an @access private tag", function() {
-        expect(foo.access).toEqual('private');
-        expect(foo2.access).toEqual('private');
+        expect(foo.access).toBe('private');
+        expect(foo2.access).toBe('private');
     });
 
     it("should set the doclet's 'access' property to 'protected' when there is an @access protected tag", function() {
-        expect(_bar.access).toEqual('protected');
-        expect(_bar2.access).toEqual('protected');
+        expect(_bar.access).toBe('protected');
+        expect(_bar2.access).toBe('protected');
     });
 
     it("should set no 'access' property on the doclet when there is an @access public tag", function() {

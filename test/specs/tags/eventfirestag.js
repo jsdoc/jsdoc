@@ -5,19 +5,19 @@ describe("@event and @fires tags", function() {
 
     // @event tag
     it('When a symbol has an @event tag, the doclet is of kind "event".', function() {
-        expect(snowballEvent.kind).toEqual('event');
+        expect(snowballEvent.kind).toBe('event');
     });
 
     // @fires tag
     it('When a symbol has a @fires tag, the doclet has an array named "fires".', function() {
-        expect(typeof snowballMethod.fires).toEqual('object');
+        expect(typeof snowballMethod.fires).toBe('object');
     });
 
     it('When a symbol has a fires array, the members have the event namespace.', function() {
-        expect(snowballMethod.fires[0]).toEqual('Hurl#event:snowball');
+        expect(snowballMethod.fires[0]).toBe('Hurl#event:snowball');
     });
 
     it('When a symbol has a fires array with a name that already has an event: namespace, it doesn\'t have a secong namespace applied.', function() {
-        expect(snowballMethod.fires[1]).toEqual('Hurl#event:brick');
+        expect(snowballMethod.fires[1]).toBe('Hurl#event:brick');
     });
 });
