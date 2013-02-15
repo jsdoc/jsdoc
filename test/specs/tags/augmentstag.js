@@ -24,7 +24,13 @@
         bazMethod3 = docSet.getByLongname('Baz#method3')[0],
 
         docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js'),
-        qux = docSet2.getByLongname('Qux')[0];
+        qux = docSet2.getByLongname('Qux')[0],
+
+        docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js'),
+        FooMethod1 = docSet3.getByLongname('Foo#method1')[0],
+        BarMethod2 = docSet3.getByLongname('Bar#method2')[0],
+        FooBarMethod1 = docSet3.getByLongname('FooBar#method1')[0],
+        FooBarMethod2 = docSet3.getByLongname('FooBar#method2')[0];
 
     it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
         expect(typeof bar.augments).toBe('object');
@@ -81,5 +87,13 @@
     it('When a symbol has an @augments tag, and the parent is not documented, the doclet still has an augments property', function() {
         expect(typeof qux.augments).toBe('object');
         expect(qux.augments[0]).toBe('UndocumentedThing');
+    });
+
+
+    it('When a symbol @augments multiple parents, it inherits methods from all parents', function() {
+        expect(FooBarMethod1).toBeDefined();
+        expect(FooBarMethod2).toBeDefined();
+        expect(FooBarMethod1.description).toBe(FooMethod1.description);
+        expect(FooBarMethod2.description).toBe(BarMethod2.description);
     });
 });
