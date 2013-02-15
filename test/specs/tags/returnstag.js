@@ -10,7 +10,7 @@ describe("@returns tag", function() {
         expect(find.returns[0].description).toEqual('The names of the found item(s).');
     });
 
-    it('When a symbol has an @param tag with only a type and name, the doclet has a returns array property that includes that param.', function() {
+    it('When a symbol has an @returns tag with only a description, the doclet has a returns array property that includes that return.', function() {
         expect(typeof bind.returns).toEqual('object');
         expect(bind.returns.length).toEqual(1);
         expect(bind.returns[0].description).toEqual('The binding id.');
