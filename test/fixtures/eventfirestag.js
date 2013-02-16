@@ -16,3 +16,15 @@ Hurl.prototype.snowball = function () {
      */
     this.emit('snowball', {});
 };
+
+/**
+ * Throw a football match.
+ *
+ * @emits Hurl#footballMatch
+ */
+Hurl.prototype.footballMatch = function () {
+    /**
+     * @event Hurl#footballMatch
+     */
+    this.emit('footballMatch', {});
+};
