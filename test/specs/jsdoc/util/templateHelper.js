@@ -140,14 +140,16 @@ describe("jsdoc/util/templateHelper", function() {
     // disabled because Jasmine appears to execute this code twice, which causes getUniqueFilename
     // to return an unexpected variation on the name the second time
     xdescribe("getUniqueFilename", function() {
+        // TODO: needs more tests for unusual values and things that get special treatment (such as
+        // inner members)
         it('should convert a simple string into the string plus the default extension', function() {
             var filename = helper.getUniqueFilename('BackusNaur');
             expect(filename).toEqual('BackusNaur.html');
         });
 
-        it('should convert a string with slashes into an alphanumeric hash plus the default extension', function() {
+        it('should convert a string with slashes into the text following the last slash plus the default extension', function() {
             var filename = helper.getUniqueFilename('tick/tock');
-            expect(filename).toMatch(/^[A-Za-z0-9]+\.html$/);
+            expect(filename).toMatch(/^tock\.html$/);
         });
 
         it('should not return the same filename twice', function() {
@@ -743,7 +745,7 @@ describe("jsdoc/util/templateHelper", function() {
             expect(newUrl).toEqual(nestedNamespaceUrl);
         });
 
-        it('should create a url for a name with invalid characters using a digest.', function() {
+        it('should create a url for a name with invalid characters.', function() {
             var mockDoclet = {
                     kind: 'function',
                     longname: 'ns1."!"."*foo"',
@@ -752,7 +754,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('be9d9563a3.html#"*foo"');
+            expect(url).toEqual('_.html#"*foo"');
         });
     });
 });

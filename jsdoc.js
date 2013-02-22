@@ -179,6 +179,10 @@ function main() {
     if (env.conf.plugins) {
         plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
     }
+    
+    if (env.conf.source && env.conf.source.include) {
+        env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
+    }
 
     // any source file named package.json or README.md is treated special
     for (i = 0, l = env.opts._.length; i < l; i++ ) {
@@ -191,10 +195,6 @@ function main() {
             env.opts.readme = new Readme(env.opts._[i]).html;
             env.opts._.splice(i--, 1);
         }
-    }
-    
-    if (env.conf.source && env.conf.source.include) {
-        env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
     }
     
     if (env.conf.source && env.opts._.length > 0) { // are there any files to scan and parse?
