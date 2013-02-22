@@ -15,8 +15,7 @@ describe("jsdoc/util/error", function() {
 
 	describe("handle", function() {
 		/*jshint evil: true */
-		var lenient = !!env.opts.lenient,
-			log = eval(console.log);
+		var lenient = !!env.opts.lenient;
 
 		function handleError() {
 			handle( new Error("foo") );
@@ -28,7 +27,6 @@ describe("jsdoc/util/error", function() {
 
 		afterEach(function() {
 			env.opts.lenient = lenient;
-			console.log = log;
 		});
 
 		it("should re-throw errors by default", function() {
@@ -43,7 +41,7 @@ describe("jsdoc/util/error", function() {
 
 		it("should not re-throw errors if lenient mode is enabled", function() {
 			env.opts.lenient = true;
-			console.log = function() {};
+            spyOn(console, 'log');
 
 			expect(handleError).not.toThrow();
 		});

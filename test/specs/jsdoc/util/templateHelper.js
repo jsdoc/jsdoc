@@ -124,7 +124,6 @@ describe("jsdoc/util/templateHelper", function() {
 
 
     describe("setTutorials", function() {
-        // all it does is set var tutorials = root, how to test that?!
         // used in tutorialToUrl, toTutorial.
         it("setting tutorials to null causes all tutorial lookups to fail", function() {
             // bit of a dodgy test but the best I can manage. setTutorials doesn't do much.
@@ -134,12 +133,11 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it("setting tutorials to the root tutorial object lets lookups work", function() {
-            var lenient = !!env.opts.lenient,
-                log = eval(console.log);
+            var lenient = !!env.opts.lenient;
+            spyOn(console, 'log');
 
             // tutorial doesn't exist, we want to muffle that error
             env.opts.lenient = true;
-            console.log = function () {};
 
             helper.setTutorials(resolver.root);
             spyOn(resolver.root, 'getByName');
@@ -147,7 +145,6 @@ describe("jsdoc/util/templateHelper", function() {
             expect(resolver.root.getByName).toHaveBeenCalled();
 
             env.opts.lenient = lenient;
-            console.log = log;
         });
     });
 
@@ -811,21 +808,20 @@ describe("jsdoc/util/templateHelper", function() {
     describe("tutorialToUrl", function() {
         /*jshint evil: true */
         
-        var lenient = !!env.opts.lenient,
-            log = eval(console.log);
+        var lenient = !!env.opts.lenient;
 
         function missingTutorial() {
             var url = helper.tutorialToUrl("be-a-perfect-person-in-just-three-days");
         }
 
         beforeEach(function() {
+            spyOn(console, 'log');
             helper.setTutorials(resolver.root);
         });
 
         afterEach(function() {
             helper.setTutorials(null);
             env.opts.lenient = lenient;
-            console.log = log;
         });
 
         it('throws an exception if the tutorial is missing and the lenient option is not enabled', function() {
@@ -834,14 +830,12 @@ describe("jsdoc/util/templateHelper", function() {
         });
         
         it('does not throw an exception if the tutorial is missing and the lenient option is enabled', function() {
-            console.log = function() {};
             env.opts.lenient = true;
 
             expect(missingTutorial).not.toThrow();
         });
 
         it("does not return a tutorial if its name is a reserved JS keyword and it doesn't exist", function() {
-            console.log = function () {};
             env.opts.lenient = false;
             expect(function () { helper.tutorialToUrl('prototype') }).toThrow();
         });
@@ -851,7 +845,6 @@ describe("jsdoc/util/templateHelper", function() {
             // cry when trying to resolve the same set of tutorials twice (once
             // for the tutorials tests, and once here).
             env.opts.lenient = true;
-            console.log = function() {};
 
             // load the tutorials we already have for the tutorials tests
             resolver.load(__dirname + "/test/tutorials/tutorials");
@@ -876,8 +869,7 @@ describe("jsdoc/util/templateHelper", function() {
     describe("toTutorial", function() {
         /*jshint evil: true */
         
-        var lenient = !!env.opts.lenient,
-            log = eval(console.log);
+        var lenient = !!env.opts.lenient;
 
         function missingParam() {
             helper.toTutorial();
@@ -885,7 +877,6 @@ describe("jsdoc/util/templateHelper", function() {
 
         afterEach(function() {
             env.opts.lenient = lenient;
-            console.log = log;
             helper.setTutorials(null);
         });
 
@@ -900,7 +891,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
         
         it('does not throw an exception if the first param is missing and the lenient option is enabled', function() {
-            console.log = function() {};
+            spyOn(console, 'log');
             env.opts.lenient = true;
 
             expect(missingParam).not.toThrow();
@@ -943,7 +934,7 @@ describe("jsdoc/util/templateHelper", function() {
             // cry when trying to resolve the same set of tutorials twice (once
             // for the tutorials tests, and once here).
             env.opts.lenient = true;
-            console.log = function() {};
+            spyOn(console, 'log');
 
             // load the tutorials we already have for the tutorials tests
             resolver.load(__dirname + "/test/tutorials/tutorials");
