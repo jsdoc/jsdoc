@@ -4,24 +4,24 @@ describe("@constructs tag", function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/constructstag.js'),
         textblock = docSet.getByLongname('TextBlock')[0];
 
-        expect(textblock.kind).toEqual('class');
-        expect(textblock.longname).toEqual('TextBlock');
+        expect(textblock.kind).toBe('class');
+        expect(textblock.longname).toBe('TextBlock');
     });
 
     it('When a symbol has an @constructs tag, it is documented as a class.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/constructstag2.js'),
         menu = docSet.getByLongname('Menu')[0];
 
-        expect(menu.name).toEqual('Menu');
-        expect(menu.kind).toEqual('class');
+        expect(menu.name).toBe('Menu');
+        expect(menu.kind).toBe('class');
     });
 
     it('When a function symbol has an @constructs tag, any this-variables are ducumented as instance members of the class.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/constructstag3.js'),
         personName = docSet.getByLongname('Person#name')[0];
 
-        expect(personName.memberof).toEqual('Person');
-        expect(personName.scope).toEqual('instance');
+        expect(personName.memberof).toBe('Person');
+        expect(personName.scope).toBe('instance');
     });
 
     it('When a function symbol has an @constructs tag with no value, in a @lends block with a "Name#" value, the function is documented as a constructor of "Name".', function() {
@@ -30,15 +30,15 @@ describe("@constructs tag", function() {
             return ! $.undocumented;
         })[0];
 
-        expect(person.kind).toEqual('class');
+        expect(person.kind).toBe('class');
     });
 
     it('When a function symbol has an @constructs tag with no value, any this-variables are documented as instance members of the class.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/constructstag4.js'),
         personName = docSet.getByLongname('Person#name')[0];
 
-        expect(personName.memberof).toEqual('Person');
-        expect(personName.scope).toEqual('instance');
+        expect(personName.memberof).toBe('Person');
+        expect(personName.scope).toBe('instance');
     });
 
     it('When a object literal property has an @constructs tag with no value, and the object has a @lends, the property is documented as the lent class.', function() {
@@ -47,8 +47,8 @@ describe("@constructs tag", function() {
             return ! $.undocumented;
         })[0];
 
-        expect(duck.longname).toEqual('Duck');
-        expect(duck.kind).toEqual('class');
-        expect(duck.description).toEqual('Constructs a duck.');
+        expect(duck.longname).toBe('Duck');
+        expect(duck.kind).toBe('class');
+        expect(duck.description).toBe('Constructs a duck.');
     });
 });

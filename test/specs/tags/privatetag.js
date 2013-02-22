@@ -4,6 +4,6 @@ describe("@private tag", function() {
         bar = docSet.getByLongname('Foo#bar')[0];
 
     it('When a symbol has an @private tag, the doclet has an access property that is "private".', function() {
-        expect(foo.access).toEqual('private');
+        expect(foo.access).toBe('private');
     });
 });

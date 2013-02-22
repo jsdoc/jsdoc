@@ -4,9 +4,9 @@ describe("@borrows tag", function() {
             util = docSet.getByLongname('util').filter(function($) {
                 return ! $.undocumented;
             })[0];
-        expect(util.borrowed.length).toEqual(1);
-        expect(util.borrowed[0].from).toEqual('trstr');
-        expect(util.borrowed[0].as).toEqual('trim');
+        expect(util.borrowed.length).toBe(1);
+        expect(util.borrowed[0].from).toBe('trstr');
+        expect(util.borrowed[0].as).toBe('trim');
     });
 
     it('When a symbol has a @borrows tag, the borrowed symbol is added to the symbol.', function() {
@@ -19,6 +19,6 @@ describe("@borrows tag", function() {
             return ! $.undocumented;
         })[0];
 
-        expect(typeof str_rtrim).toEqual('object');
+        expect(typeof str_rtrim).toBe('object');
     });
 });

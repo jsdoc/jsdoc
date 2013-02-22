@@ -13,6 +13,6 @@ describe("@overview tag", function() {
     });
 
     it("The name and longname should be equal", function() {
-        expect(doclets[0].name).toEqual(doclets[0].longname);
+        expect(doclets[0].name).toBe(doclets[0].longname);
     });
 });
