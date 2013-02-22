@@ -712,9 +712,7 @@ describe("jsdoc/util/templateHelper", function() {
 
             var links = helper.getAncestorLinks(data, lackeys);
             expect(links.length).toBe(3);
-            // BUG: the link text is ~Henchman and there is a '#' on the end.
-            // should probably have link text ~Henchman#.
-            //expect(links).toContain('<a href="henchman.html">~Henchman#</a>');
+            expect(links).toContain('<a href="henchman.html">~Henchman</a>#');
             expect(links).toContain('.Sharks');
             expect(links).toContain('<a href="mafia_gangs.html">mafia/gangs</a>');
 
@@ -729,7 +727,7 @@ describe("jsdoc/util/templateHelper", function() {
 
             var links = helper.getAncestorLinks(data, lackeys, 'myClass');
             expect(links.length).toBe(3);
-            //expect(links).toContain('<a href="henchman.html" class="myClass">~Henchman#</a>');
+            expect(links).toContain('<a href="henchman.html" class="myClass">~Henchman</a>#');
             expect(links).toContain('.Sharks');
             expect(links).toContain('<a href="mafia_gangs.html" class="myClass">mafia/gangs</a>');
 
