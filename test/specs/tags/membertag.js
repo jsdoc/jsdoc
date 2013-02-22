@@ -1,0 +1,25 @@
+describe("@member tag", function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/membertag.js'),
+        doc = docSet.getByLongname('x')[0],
+        doc2 = docSet.getByLongname('foobar')[0],
+        doc3 = docSet.getByLongname('baz')[0];
+
+    it("sets the doclet's 'kind' property to 'member'", function() {
+        expect(doc.kind).toBe('member');
+        expect(doc2.kind).toBe('member');
+        expect(doc3.kind).toBe('member');
+    });
+
+    it("If specified with a name, sets the doclet's name property", function() {
+        expect(doc.name).toBe('x');
+        expect(doc2.name).toBe('foobar');
+        expect(doc3.name).toBe('baz');
+    });
+
+    it("If specified with a type and name, sets the doclet's type appropriately", function() {
+        expect(doc3.type).toBeDefined();
+        expect(Array.isArray(doc3.type.names)).toBeTruthy();
+        expect(doc3.type.names.length).toBe(1);
+        expect(doc3.type.names[0]).toBe('string');
+    });
+});
