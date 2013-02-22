@@ -1,6 +1,6 @@
 describe("@todo tag", function() {
-    var doclet = require('jsdoc/doclet'),
-        doc = new doclet.Doclet('/** @todo something\n@todo something else */', {});
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/todotag.js'),
+        doc = docSet.getByLongname('x')[0];
 
     it("adds the entries into a 'todo' array on the doclet", function() {
         expect(doc.todo).toBeDefined();

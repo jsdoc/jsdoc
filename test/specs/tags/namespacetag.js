@@ -1,8 +1,8 @@
 describe("@namespace tag", function() {
-    var doclet = require('jsdoc/doclet'),
-        doc = new doclet.Doclet('/** @namespace */', {}),
-        doc2 = new doclet.Doclet('/** @namespace Foo */', {}),
-        doc3 = new doclet.Doclet('/** @namespace {function} Bar */', {});
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/namespacetag.js'),
+        doc = docSet.getByLongname('x')[0],
+        doc2 = docSet.getByLongname('Foo')[0],
+        doc3 = docSet.getByLongname('Bar')[0];
 
     it("sets the doclet's kind to 'namespace'", function () {
         expect(doc.kind).toBe('namespace');
@@ -11,7 +11,7 @@ describe("@namespace tag", function() {
     });
 
     it("sets the doclet's name to the tag value (if provided)", function() {
-        expect(doc.name).toBeFalsy();
+        expect(doc.name).toBe('x');
         expect(doc2.name).toBe('Foo');
         expect(doc3.name).toBe('Bar');
     });

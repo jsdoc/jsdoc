@@ -1,7 +1,7 @@
 describe("@function tag", function() {
-    var doclet = require('jsdoc/doclet'),
-        doc = new doclet.Doclet('/** @func Foo */', {}),
-        doc2 = new doclet.Doclet('/** @method */', {});
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/functiontag.js'),
+        doc = docSet.getByLongname('Foo')[0],
+        doc2 = docSet.getByLongname('Bar')[0];
 
     it("sets the doclet's kind to 'function'", function() {
         expect(doc.kind).toBe('function');
@@ -10,7 +10,7 @@ describe("@function tag", function() {
 
     it("sets the doclet's name to the tag value, if provided", function() {
         expect(doc.name).toBe('Foo');
-        expect(doc2.name).toBeFalsy();
+        expect(doc2.name).toBe('Bar');
     });
 
     // parameter etc tests take place elsewhere: on its own, all @func does is

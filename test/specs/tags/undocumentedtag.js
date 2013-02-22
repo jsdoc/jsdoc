@@ -1,6 +1,6 @@
 describe("@undocumented tag", function() {
-    var doclet = require('jsdoc/doclet'),
-        doc = new doclet.Doclet('/** Foo bar\n@undocumented */', {});
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/undocumentedtag.js'),
+        doc = docSet.getByLongname('x')[0];
 
     it("sets the doclet's 'undocumented' property to true", function () {
         expect(doc.undocumented).toBeTruthy();

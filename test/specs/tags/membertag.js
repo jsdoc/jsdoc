@@ -1,8 +1,8 @@
 describe("@member tag", function() {
-    var doclet = require('jsdoc/doclet'),
-        doc = new doclet.Doclet('/** @member */', {}),
-        doc2 = new doclet.Doclet('/** @var foobar */', {}),
-        doc3 = new doclet.Doclet('/** @var {string} baz */', {});
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/membertag.js'),
+        doc = docSet.getByLongname('x')[0],
+        doc2 = docSet.getByLongname('foobar')[0],
+        doc3 = docSet.getByLongname('baz')[0];
 
     it("sets the doclet's 'kind' property to 'member'", function() {
         expect(doc.kind).toBe('member');
@@ -11,7 +11,7 @@ describe("@member tag", function() {
     });
 
     it("If specified with a name, sets the doclet's name property", function() {
-        expect(doc.name).toBeFalsy();
+        expect(doc.name).toBe('x');
         expect(doc2.name).toBe('foobar');
         expect(doc3.name).toBe('baz');
     });

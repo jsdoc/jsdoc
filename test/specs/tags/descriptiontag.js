@@ -1,7 +1,7 @@
 describe("@description tag", function() {
-    var doclet = require('jsdoc/doclet'),
-        doc = new doclet.Doclet('/** Blah Blah Blah\n @desc halb halb halb */', {}),
-        doc2 = new doclet.Doclet('/** @description lkjasdf */', {});
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/descriptiontag.js'),
+        doc = docSet.getByLongname('x')[0],
+        doc2 = docSet.getByLongname('y')[0];
 
     it("sets the doclet's 'description' property to the description", function() {
         expect(doc2.description).toBeDefined();

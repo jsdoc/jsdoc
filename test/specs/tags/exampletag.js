@@ -1,9 +1,9 @@
 describe("@example tag", function() {
-    var doclet = require('jsdoc/doclet'),
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/exampletag.js'),
+        doc = docSet.getByLongname('x')[0],
+        doc2 = docSet.getByLongname('y')[0],
         txt = 'console.log("foo");\nconsole.log("bar");',
-        txt2 = '1 + 2;',
-        doc = new doclet.Doclet('/** @example\n' + txt + '*/', {}),
-        doc2 = new doclet.Doclet('/** @example\n' + txt + '\n@example\n' + txt2 + '*/', {});
+        txt2 = '<caption>Example 2</caption>\n1 + 2;';
 
     it("creates an 'examples' property on the doclet with the example", function() {
         expect(doc.examples).toBeDefined();
