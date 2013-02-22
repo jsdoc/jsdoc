@@ -8,32 +8,32 @@ describe("jsdoc/tutorial/resolver", function() {
     /*jshint evil: true */
     it("should exist", function() {
         expect(resolver).toBeDefined();
-        expect(typeof resolver).toEqual('object');
+        expect(typeof resolver).toBe('object');
     });
 
     it("should export a 'addTutorial' function", function() {
         expect(resolver.addTutorial).toBeDefined();
-        expect(typeof resolver.addTutorial).toEqual("function");
+        expect(typeof resolver.addTutorial).toBe("function");
     });
 
     it("should export a 'load' function", function() {
         expect(resolver.load).toBeDefined();
-        expect(typeof resolver.load).toEqual("function");
+        expect(typeof resolver.load).toBe("function");
     });
 
     it("should export a 'resolve' function", function() {
         expect(resolver.resolve).toBeDefined();
-        expect(typeof resolver.resolve).toEqual("function");
+        expect(typeof resolver.resolve).toBe("function");
     });
 
     it("should export a 'root' tutorial", function() {
         expect(resolver.root).toBeDefined();
-        expect(resolver.root instanceof tutorial.Tutorial).toEqual(true);
+        expect(resolver.root instanceof tutorial.Tutorial).toBe(true);
     });
 
     it("exported 'root' tutorial should export a 'getByName' function", function() {
         expect(resolver.root.getByName).toBeDefined();
-        expect(typeof resolver.root.getByName).toEqual("function");
+        expect(typeof resolver.root.getByName).toBe("function");
     });
 
     // note: every time we addTutorial or run the resolver, we are *adding*
@@ -45,18 +45,26 @@ describe("jsdoc/tutorial/resolver", function() {
     describe("addTutorial", function() {
 
         it("should add a default parent of the root tutorial", function() {
-            expect(tute.parent).toEqual(resolver.root);
+            expect(tute.parent).toBe(resolver.root);
         });
 
         it("should be added to the root tutorial as a child", function() {
-            expect(resolver.root.children[0]).toEqual(tute);
+            expect(resolver.root.children).toContain(tute);
         });
     });
 
     // root.getByName
     describe("root.getByName", function() {
         it("can retrieve tutorials by name", function() {
-            expect(resolver.root.getByName('myTutorial')).toEqual(tute);
+            expect(resolver.root.getByName('myTutorial')).toBe(tute);
+        });
+
+        it("returns nothing for non-existent tutorials", function() {
+            expect(resolver.root.getByName('asdf')).toBeFalsy();
+        });
+
+        it("is careful with tutorials whose names are reserved keywords in JS", function() {
+            expect(resolver.root.getByName('prototype')).toBeFalsy();
         });
     });
 
@@ -66,8 +74,9 @@ describe("jsdoc/tutorial/resolver", function() {
         test = resolver.root.getByName('test'),
         test2 = resolver.root.getByName('test2'),
         test3 = resolver.root.getByName('test3'),
-        test4 = resolver.root.getByName('test4');
-        test6 = resolver.root.getByName('test6');
+        test4 = resolver.root.getByName('test4'),
+        test6 = resolver.root.getByName('test6'),
+        constr = resolver.root.getByName('constructor');
 
     describe("load", function() {
 
@@ -78,33 +87,39 @@ describe("jsdoc/tutorial/resolver", function() {
             expect(test3).toBeDefined();
             expect(test4).toBeDefined();
             expect(test6).toBeDefined();
+            expect(constr).toBeDefined();
             // check they are top-level in resolver.root
-            expect(childNames.indexOf('test')).not.toEqual(-1);
-            expect(childNames.indexOf('test2')).not.toEqual(-1);
-            expect(childNames.indexOf('test3')).not.toEqual(-1);
-            expect(childNames.indexOf('test4')).not.toEqual(-1);
-            expect(childNames.indexOf('test6')).not.toEqual(-1);
+            expect(childNames).toContain('test');
+            expect(childNames).toContain('test2');
+            expect(childNames).toContain('test3');
+            expect(childNames).toContain('test4');
+            expect(childNames).toContain('test6');
+        });
+
+        it("tutorials with names equal to reserved keywords in JS still function as expected", function() {
+            expect(constr instanceof tutorial.Tutorial).toBe(true);
         });
 
         it("non-tutorials are skipped", function() {
-            expect(resolver.root.getByName('multple')).toBeUndefined();
-            expect(resolver.root.getByName('test5')).toBeUndefined();
+            expect(resolver.root.getByName('multiple')).toBeFalsy();
+            expect(resolver.root.getByName('test5')).toBeFalsy();
         }); 
-
 
         it("tutorial types are determined correctly", function() {
             // test.html, test2.markdown, test3.html, test4.md, test6.xml
-            expect(test.type).toEqual(tutorial.TYPES.HTML);
-            expect(test2.type).toEqual(tutorial.TYPES.MARKDOWN);
-            expect(test3.type).toEqual(tutorial.TYPES.HTML);
-            expect(test4.type).toEqual(tutorial.TYPES.MARKDOWN);
-            expect(test6.type).toEqual(tutorial.TYPES.HTML);
+            expect(test.type).toBe(tutorial.TYPES.HTML);
+            expect(test2.type).toBe(tutorial.TYPES.MARKDOWN);
+            expect(test3.type).toBe(tutorial.TYPES.HTML);
+            expect(test4.type).toBe(tutorial.TYPES.MARKDOWN);
+            expect(test6.type).toBe(tutorial.TYPES.HTML);
+            expect(constr.type).toBe(tutorial.TYPES.MARKDOWN);
         });
 
     });
 
     // resolve
     // myTutorial
+    // constructor
     // test
     // |- test2
     //    |- test6
@@ -114,42 +129,44 @@ describe("jsdoc/tutorial/resolver", function() {
         resolver.resolve();
         it("hierarchy is resolved properly no matter how the children property is defined", function() {
             // root has child 'test'
-            expect(resolver.root.children.length).toEqual(2);
-            expect(resolver.root.children.indexOf(test)).not.toEqual(-1);
-            expect(test.parent).toEqual(resolver.root);
+            expect(resolver.root.children.length).toBe(3);
+            expect(resolver.root.children).toContain(test);
+            expect(resolver.root.children).toContain(constr);
+            expect(test.parent).toBe(resolver.root);
+            expect(constr.parent).toBe(resolver.root);
 
             // test has child 'test2'
-            expect(test.children.length).toEqual(1);
-            expect(test.children[0]).toEqual(test2);
-            expect(test2.parent).toEqual(test);
+            expect(test.children.length).toBe(1);
+            expect(test.children).toContain(test2);
+            expect(test2.parent).toBe(test);
 
             // test2 has children test3, test6
-            expect(test2.children.length).toEqual(2);
-            expect(test2.children.indexOf(test3)).not.toEqual(-1);
-            expect(test2.children.indexOf(test6)).not.toEqual(-1);
-            expect(test3.parent).toEqual(test2);
-            expect(test6.parent).toEqual(test2);
+            expect(test2.children.length).toBe(2);
+            expect(test2.children).toContain(test3);
+            expect(test2.children).toContain(test6);
+            expect(test3.parent).toBe(test2);
+            expect(test6.parent).toBe(test2);
 
             // test3 has child test4
-            expect(test3.children.length).toEqual(1);
-            expect(test3.children[0]).toEqual(test4);
-            expect(test4.parent).toEqual(test3);
+            expect(test3.children.length).toBe(1);
+            expect(test3.children).toContain(test4);
+            expect(test4.parent).toBe(test3);
         });
 
         it("tutorials without configuration files have titles matching filenames", function() {
             // test6.xml didn't have a metadata
-            expect(test6.title).toEqual('test6');
+            expect(test6.title).toBe('test6');
         });
 
-        it("tutorials with configuration files have titles matching filenames", function() {
+        it("tutorials with configuration files have titles as specified in configuration", function() {
             // test.json had info for just test.json
-            expect(test.title).toEqual("Test tutorial");
+            expect(test.title).toBe("Test tutorial");
         });
 
         it("multiple tutorials can appear in a configuration file", function() {
-            expect(test2.title).toEqual("Test 2");
-            expect(test3.title).toEqual("Test 3");
-            expect(test4.title).toEqual("Test 4");
+            expect(test2.title).toBe("Test 2");
+            expect(test3.title).toBe("Test 3");
+            expect(test4.title).toBe("Test 4");
         });
     });
 
