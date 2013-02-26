@@ -134,8 +134,7 @@ describe("jsdoc/tag", function() {
         // further tests for this sort of thing are in jsdoc/tag/validator.js tests.
         describe("tag validating", function() {
             /*jshint evil: true */
-            var lenient = !!env.opts.lenient,
-                log = eval(console.log);
+            var lenient = !!env.opts.lenient;
             
             function badTag() {
                 var tag = new jsdoc.tag.Tag("name");
@@ -144,7 +143,6 @@ describe("jsdoc/tag", function() {
 
             afterEach(function() {
                 env.opts.lenient = lenient;
-                console.log = log;
             });
 
             it("throws an exception for bad tags if the lenient option is not enabled", function() {
@@ -154,7 +152,7 @@ describe("jsdoc/tag", function() {
             });
             
             it("doesn't throw an exception for bad tags if the lenient option is enabled", function() {
-                console.log = function() {};
+                spyOn(console, 'log');
                 env.opts.lenient = true;
 
                 expect(badTag).not.toThrow();

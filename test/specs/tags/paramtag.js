@@ -63,7 +63,7 @@ describe("@param tag", function() {
         expect(commit.params[0].description).toBe('If true make the commit atomic.');
     });
 
-    it('When a symbol has a @param tag with no type but a name that indicates a default value or optional type, this infor is copied over to the params property.', function() {
+    it('When a symbol has a @param tag with no type but a name that indicates a default value or optional type, this is copied over to the params property.', function() {
         expect(typeof request.params).toBe('object');
         expect(request.params.length).toBe(1);
         expect(request.params[0].type).toBeUndefined();

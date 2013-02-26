@@ -17,7 +17,6 @@ describe('jsdoc/tag/validator', function() {
     describe('validate', function() {
         var lenient = !!env.opts.lenient,
             allowUnknown = !!env.conf.tags.allowUnknownTags,
-            log = eval(console.log),
             badTag = {title: 'lkjasdlkjfb'},
             meta = {filename: 'asdf.js', lineno: 1},
             goodTag = new tag.Tag('name', 'MyDocletName', meta), // mustHaveValue
@@ -28,13 +27,12 @@ describe('jsdoc/tag/validator', function() {
         } 
 
         beforeEach(function() {
-            console.log = function() {};
+            spyOn(console, 'log');
         });
 
         afterEach(function() {
             env.opts.lenient = lenient;
             env.conf.tags.allowUnknownTags = allowUnknown;
-            console.log = log;
         });
 
         it("throws an error if the tag is not in the dictionary, conf.tags.allowUnknownTags is false and lenient is false", function() {
