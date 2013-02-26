@@ -24,11 +24,17 @@
         bazMethod3 = docSet.getByLongname('Baz#method3')[0],
 
         docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js'),
-        qux = docSet2.getByLongname('Qux')[0];
+        qux = docSet2.getByLongname('Qux')[0],
+
+        docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js'),
+        FooMethod1 = docSet3.getByLongname('Foo#method1')[0],
+        BarMethod2 = docSet3.getByLongname('Bar#method2')[0],
+        FooBarMethod1 = docSet3.getByLongname('FooBar#method1')[0],
+        FooBarMethod2 = docSet3.getByLongname('FooBar#method2')[0];
 
     it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
-        expect(typeof bar.augments).toEqual('object');
-        expect(bar.augments[0]).toEqual('Foo');
+        expect(typeof bar.augments).toBe('object');
+        expect(bar.augments[0]).toBe('Foo');
     });
 
     it('When an object is extended, the original is not modified', function() {
@@ -36,50 +42,58 @@
     });
 
     it('When an object is extended, it inherits properties set in parent constructor', function() {
-        expect(fooProp1.memberof).toEqual("Foo");
-        expect(barProp1.memberof).toEqual("Bar");
-        expect(barProp1.description).toEqual(fooProp1.description);
+        expect(fooProp1.memberof).toBe("Foo");
+        expect(barProp1.memberof).toBe("Bar");
+        expect(barProp1.description).toBe(fooProp1.description);
     });
 
     it('When an object is extended, it inherits properties set on parent prototype', function() {
-        expect(fooProp2.memberof).toEqual("Foo");
-        expect(barProp2.memberof).toEqual("Bar");
-        expect(barProp2.description).toEqual(fooProp2.description);
+        expect(fooProp2.memberof).toBe("Foo");
+        expect(barProp2.memberof).toBe("Bar");
+        expect(barProp2.description).toBe(fooProp2.description);
     });
 
     it('When an object is extended, it inherits methods set on parent prototype', function() {
-        expect(fooMethod1.memberof).toEqual("Foo");
-        expect(barMethod1.memberof).toEqual("Bar");
-        expect(barMethod1.description).toEqual(fooMethod1.description);
+        expect(fooMethod1.memberof).toBe("Foo");
+        expect(barMethod1.memberof).toBe("Bar");
+        expect(barMethod1.description).toBe(fooMethod1.description);
     });
 
     it('When an object is extended, it may override methods set on parent prototype', function() {
-        expect(fooMethod2.memberof).toEqual("Foo");
-        expect(fooMethod2.description).toEqual("Second parent method.");
-        expect(barMethod2.memberof).toEqual("Bar");
-        expect(barMethod2.description).toEqual("Second child method.");
+        expect(fooMethod2.memberof).toBe("Foo");
+        expect(fooMethod2.description).toBe("Second parent method.");
+        expect(barMethod2.memberof).toBe("Bar");
+        expect(barMethod2.description).toBe("Second child method.");
     });
 
     it('When an object is extended, and it overrides an ancestor method, the child does not include docs for the ancestor method.', function() {
-        expect(barMethod2All.length).toEqual(1);
+        expect(barMethod2All.length).toBe(1);
     });
 
     it('When an object is extended, it inherits properties set on grandparent prototype', function() {
-        expect(fooProp1.memberof).toEqual("Foo");
-        expect(barProp1.memberof).toEqual("Bar");
-        expect(bazProp1.memberof).toEqual("Baz");
-        expect(bazProp1.description).toEqual("Override prop1");
-        expect(bazMethod1.memberof).toEqual("Baz");
-        expect(bazMethod2.memberof).toEqual("Baz");
-        expect(bazMethod3.memberof).toEqual("Baz");
+        expect(fooProp1.memberof).toBe("Foo");
+        expect(barProp1.memberof).toBe("Bar");
+        expect(bazProp1.memberof).toBe("Baz");
+        expect(bazProp1.description).toBe("Override prop1");
+        expect(bazMethod1.memberof).toBe("Baz");
+        expect(bazMethod2.memberof).toBe("Baz");
+        expect(bazMethod3.memberof).toBe("Baz");
     });
 
     it('When an object is extended, and it overrides an ancestor property, the child does not include docs for the ancestor property.', function() {
-        expect(bazProp1All.length).toEqual(1);
+        expect(bazProp1All.length).toBe(1);
     });
 
     it('When a symbol has an @augments tag, and the parent is not documented, the doclet still has an augments property', function() {
-        expect(typeof qux.augments).toEqual('object');
-        expect(qux.augments[0]).toEqual('UndocumentedThing');
+        expect(typeof qux.augments).toBe('object');
+        expect(qux.augments[0]).toBe('UndocumentedThing');
+    });
+
+
+    it('When a symbol @augments multiple parents, it inherits methods from all parents', function() {
+        expect(FooBarMethod1).toBeDefined();
+        expect(FooBarMethod2).toBeDefined();
+        expect(FooBarMethod1.description).toBe(FooMethod1.description);
+        expect(FooBarMethod2.description).toBe(BarMethod2.description);
     });
 });

@@ -6,11 +6,11 @@ describe("@memberof tag", function() {
             Data = docSet.getByLongname('mathlib.Data')[0],
             point = docSet.getByLongname('mathlib.Data#point')[0];
 
-        expect(typeof Data).toEqual('object');
-        expect(typeof point).toEqual('object');
+        expect(typeof Data).toBe('object');
+        expect(typeof point).toBe('object');
 
-        expect(Data.memberof).toEqual('mathlib');
-        expect(Data.name).toEqual('Data');
+        expect(Data.memberof).toBe('mathlib');
+        expect(Data.name).toBe('Data');
     });
 
     it('A symbol within a namespace for which no scope is specified.', function() {
@@ -18,7 +18,7 @@ describe("@memberof tag", function() {
             doOtherStuff = docSet.getByLongname('doStuff.doOtherStuff')[0];
         
         expect(doOtherStuff).toBeDefined();
-        expect(doOtherStuff.scope).toEqual('static');
+        expect(doOtherStuff.scope).toBe('static');
     });
 
     it('A symbol in which name === memberof.', function() {
@@ -26,7 +26,7 @@ describe("@memberof tag", function() {
             doStuff = docSet.getByLongname('doStuff.doStuff')[0];
         
         expect(doStuff).toBeDefined();
-        expect(doStuff.scope).toEqual('static');
+        expect(doStuff.scope).toBe('static');
     });
 
     describe ("static", function() {
@@ -36,20 +36,20 @@ describe("@memberof tag", function() {
 
         it('A symbol is documented as a static @memberof a class.', function() {
             //it should appear as a static member of that class
-            expect(typeof cache).toEqual('object');
-            expect(cache.memberof).toEqual('Observable');
-            expect(cache.scope).toEqual('static');
-            expect(cache.name).toEqual('cache');
-            expect(cache.longname).toEqual('Observable.cache');
+            expect(typeof cache).toBe('object');
+            expect(cache.memberof).toBe('Observable');
+            expect(cache.scope).toBe('static');
+            expect(cache.name).toBe('cache');
+            expect(cache.longname).toBe('Observable.cache');
         });
 
         it('A symbol is documented as a static @memberof a class prototype.', function() {
             //it should appear as an instance member of that class
-            expect(typeof publish).toEqual('object');
-            expect(publish.memberof).toEqual('Observable');
-            expect(publish.scope).toEqual('instance');
-            expect(publish.name).toEqual('publish');
-            expect(publish.longname).toEqual('Observable#publish');
+            expect(typeof publish).toBe('object');
+            expect(publish.memberof).toBe('Observable');
+            expect(publish.scope).toBe('instance');
+            expect(publish.name).toBe('publish');
+            expect(publish.longname).toBe('Observable#publish');
         });
     });
 

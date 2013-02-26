@@ -9,23 +9,23 @@ describe("@default tag", function() {
 		header = (docSet.getByLongname('header') || [])[0];
 
     it('When symbol set to null has a @default tag with no text, the doclet\'s defaultValue property should be: null', function() {
-        expect(request.defaultvalue).toEqual('null');
+        expect(request.defaultvalue).toBe('null');
     });
 
     it('When symbol set to a string has a @default tag with no text, the doclet\'s defaultValue property should be that quoted string', function() {
-        expect(response.defaultvalue).toEqual('"ok"');
+        expect(response.defaultvalue).toBe('"ok"');
     });
 
     it('When symbol set to a number has a @default tag with no text, the doclet\'s defaultValue property should be that number.', function() {
-        expect(rcode.defaultvalue).toEqual('200');
+        expect(rcode.defaultvalue).toBe('200');
     });
 
 	it('When symbol has a @default tag with text, the doclet\'s defaultValue property should be that text.', function() {
-        expect(win.defaultvalue).toEqual('the parent window');
+        expect(win.defaultvalue).toBe('the parent window');
     });
 
     it('When symbol has a @default tag with true.', function() {
-        expect(rvalid.defaultvalue).toEqual('true');
+        expect(rvalid.defaultvalue).toBe('true');
     });
 
     it('When symbol has a @default tag with false.', function() {

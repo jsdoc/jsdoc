@@ -9,60 +9,60 @@ describe("@param tag", function() {
         commit = docSet.getByLongname('commit')[0];
 
     it('When a symbol has an @param tag with a type before the name, the doclet has a params property that includes that param.', function() {
-        expect(typeof find.params).toEqual('object');
-        expect(find.params.length).toEqual(1);
-        expect(find.params[0].type.names.join(', ')).toEqual('String, Array<String>');
-        expect(find.params[0].name).toEqual('targetName');
-        expect(find.params[0].description).toEqual('The name (or names) of what to find.');
+        expect(typeof find.params).toBe('object');
+        expect(find.params.length).toBe(1);
+        expect(find.params[0].type.names.join(', ')).toBe('String, Array<String>');
+        expect(find.params[0].name).toBe('targetName');
+        expect(find.params[0].description).toBe('The name (or names) of what to find.');
     });
 
     it('When a symbol has an @param tag with only a type and name, the doclet has a params property that includes that param.', function() {
-        expect(typeof bind.params).toEqual('object');
-        expect(bind.params.length).toEqual(1);
-        expect(bind.params[0].type.names.join(', ')).toEqual('function');
-        expect(bind.params[0].name).toEqual('callback');
+        expect(typeof bind.params).toBe('object');
+        expect(bind.params.length).toBe(1);
+        expect(bind.params[0].type.names.join(', ')).toBe('function');
+        expect(bind.params[0].name).toBe('callback');
         expect(bind.params[0].description).toBeUndefined();
     });
 
     it('When a symbol has an @param tag with only a type, the doclet has a params property that includes that param.', function() {
-        expect(typeof unbind.params).toEqual('object');
-        expect(unbind.params.length).toEqual(1);
-        expect(unbind.params[0].type.names.join(', ')).toEqual('function');
+        expect(typeof unbind.params).toBe('object');
+        expect(unbind.params.length).toBe(1);
+        expect(unbind.params[0].type.names.join(', ')).toBe('function');
         expect(unbind.params[0].description).toBeUndefined();
     });
 
     it('When a symbol has an @param tag with no type, the doclet has a params property that includes that param.', function() {
-        expect(typeof getElement.params).toEqual('object');
-        expect(getElement.params.length).toEqual(1);
+        expect(typeof getElement.params).toBe('object');
+        expect(getElement.params.length).toBe(1);
         expect(getElement.params[0].type).toBeUndefined();
-        expect(getElement.params[0].name).toEqual('id');
-        expect(getElement.params[0].description).toEqual('The id of the element.');
+        expect(getElement.params[0].name).toBe('id');
+        expect(getElement.params[0].description).toBe('The id of the element.');
     });
 
     it('When a symbol has an @param tag with a non-alpha name like "...", the doclet has a params property that includes that param.', function() {
-        expect(typeof combine.params).toEqual('object');
-        expect(combine.params.length).toEqual(1);
+        expect(typeof combine.params).toBe('object');
+        expect(combine.params.length).toBe(1);
         expect(combine.params[0].type).toBeUndefined();
-        expect(combine.params[0].name).toEqual('...');
-        expect(combine.params[0].description).toEqual('Two or more elements.');
+        expect(combine.params[0].name).toBe('...');
+        expect(combine.params[0].description).toBe('Two or more elements.');
     });
 
     it('When a symbol has an @param tag with name followed by a dash, the doclet has a params property that includes that param.', function() {
-        expect(typeof split.params).toEqual('object');
-        expect(split.params.length).toEqual(1);
+        expect(typeof split.params).toBe('object');
+        expect(split.params.length).toBe(1);
         expect(split.params[0].type).toBeUndefined();
-        expect(split.params[0].name).toEqual('delimiter');
-        expect(split.params[0].description).toEqual('What to split on.');
+        expect(split.params[0].name).toBe('delimiter');
+        expect(split.params[0].description).toBe('What to split on.');
     });
 
     it('When a symbol has an @param tag with no name or type, the doclet has a params property that includes that param.', function() {
-        expect(typeof commit.params).toEqual('object');
-        expect(commit.params.length).toEqual(1);
+        expect(typeof commit.params).toBe('object');
+        expect(commit.params.length).toBe(1);
         expect(commit.params[0].type).toBeUndefined();
-        expect(commit.params[0].description).toEqual('If true make the commit atomic.');
+        expect(commit.params[0].description).toBe('If true make the commit atomic.');
     });
 
     it('When a symbol has an @param tag with no name and a name is given in the code, the doclet has a params property that includes that param with the name from the code.', function() {
-        expect(commit.params[0].name).toEqual('atomic');
+        expect(commit.params[0].name).toBe('atomic');
     });
 });
