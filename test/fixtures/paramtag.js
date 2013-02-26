@@ -39,3 +39,9 @@ function split(delimiter) {
 */
 function commit(atomic) {
 }
+
+/**
+ * @param [async=true] - whether to be asynchronous
+ */
+function request(async) {
+}
