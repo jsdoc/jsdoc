@@ -3,7 +3,7 @@ describe("@ignore tag", function() {
         foo = docSet.getByLongname('foo')[0];
 
     it('When a symbol has an @ignore tag, the doclet has a ignore property set to true.', function() {
-        expect(foo.ignore).toEqual(true);
+        expect(foo.ignore).toBe(true);
     });
 
     it('When a symbol has an @ignore tag with a value an error is thrown', function() {
@@ -11,7 +11,7 @@ describe("@ignore tag", function() {
             docSet = jasmine.getDocSetFromFile('test/fixtures/ignoretag2.js');
             foo = docSet.getByLongname('foo')[0];
         } catch (e) {
-            expect(e.name).toEqual('TagValueNotPermittedError');
+            expect(e.name).toBe('TagValueNotPermittedError');
         };
     });
 });

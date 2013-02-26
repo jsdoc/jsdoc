@@ -8,13 +8,13 @@ describe("@abstract tag", function() {
     });
 
     it("should set the doclet's 'virtual' property to true when ' @abstract tag is present", function() {
-        expect(pez.virtual).toEqual(true);
+        expect(pez.virtual).toBe(true);
     });
 
     // same as...
 
     it("should set the doclet's 'virtual' property to true when ' @abstract tag is present", function() {
         pez = docSet.getByLongname('OtherThingy#pez')[0];
-        expect(pez.virtual).toEqual(true);
+        expect(pez.virtual).toBe(true);
     });
 });

@@ -5,13 +5,13 @@ describe("@module tag", function() {
             title = docSet.getByLongname('module:bookshelf.Book#title')[0];
 
         it('When a global symbol starts with "this" and is in a file with a @module tag, the symbol is documented as a member of that module.', function() {
-            expect(typeof book).toEqual('object');
-            expect(book.memberof).toEqual('module:bookshelf');
+            expect(typeof book).toBe('object');
+            expect(book.memberof).toBe('module:bookshelf');
         });
 
         it('When an inner symbol starts with "this" and is in a file with a @module tag, the symbol is documented as a member of its enclosing constructor.', function() {
-            expect(typeof title).toEqual('object');
-            expect(title.memberof).toEqual('module:bookshelf.Book');
+            expect(typeof title).toBe('object');
+            expect(title.memberof).toBe('module:bookshelf.Book');
         });
     });
 
@@ -24,18 +24,18 @@ describe("@module tag", function() {
             darken = docSet.getByLongname('module:color/mixer.darken')[0];
 
         it('When a @module tag defines a module module, a symbol of kind "module" is documented', function() {
-            expect(typeof mixer).toEqual('object');
-            expect(mixer.kind).toEqual('module');
+            expect(typeof mixer).toBe('object');
+            expect(mixer.kind).toBe('module');
         });
 
         it('When an object literal is lent to a module with a @lends tag, A member of that object literal is documented as a member of the module', function() {
-            expect(typeof blend).toEqual('object');
-            expect(blend.kind).toEqual('function');
+            expect(typeof blend).toBe('object');
+            expect(blend.kind).toBe('function');
         });
 
         it('When a documented symbol is a member of a namespace "exports", it is documented as a member of the module', function() {
-            expect(typeof darken).toEqual('object');
-            expect(darken.kind).toEqual('function');
+            expect(typeof darken).toBe('object');
+            expect(darken.kind).toBe('function');
         });
     });
 });
