@@ -164,7 +164,9 @@ function generateSourceFiles(sourceFiles) {
  */
 function buildNav(members) {
     var nav = '<h2><a href="index.html">Index</a></h2>',
-        seen = {};
+        seen = {},
+        hasClassList = false,
+        classNav = '';
 
     if (members.modules.length) {
         nav += '<h3>Modules</h3><ul>';
@@ -191,25 +193,26 @@ function buildNav(members) {
     }
 
     if (members.classes.length) {
-        var moduleClasses = 0;
+
         members.classes.forEach(function(c) {
             var moduleSameName = find({kind: 'module', longname: c.longname});
             if (moduleSameName.length) {
                 c.name = c.name.replace('module:', 'require("')+'")';
-                moduleClasses++;
                 moduleSameName[0].module = c;
             }
-            if (moduleClasses !== -1 && moduleClasses < members.classes.length) {
-                nav += '<h3>Classes</h3><ul>';
-                moduleClasses = -1;
-            }
+
             if ( !hasOwnProp.call(seen, c.longname) ) {
-                nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                hasClassList = true;
+                classNav += '<li>'+linkto(c.longname, c.name)+'</li>';
             }
             seen[c.longname] = true;
         });
         
-        nav += '</ul>';
+        if (hasClassList) {
+            nav += '<h3>Classes</h3><ul>';
+            nav += classNav;
+            nav += '</ul>';
+        }
     }
 
     if (members.events.length) {
