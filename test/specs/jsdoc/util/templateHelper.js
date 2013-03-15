@@ -1,4 +1,5 @@
-/*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true, xdescribe: true */
+/*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true,
+spyOn: true, xdescribe: true */
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", function() {
@@ -129,7 +130,7 @@ describe("jsdoc/util/templateHelper", function() {
             // bit of a dodgy test but the best I can manage. setTutorials doesn't do much.
             helper.setTutorials(null);
             // should throw error: no 'getByName' in tutorials.
-            expect(function () { return helper.tutorialToUrl('asdf') }).toThrow('Cannot call method "getByName" of null');
+            expect(function () { return helper.tutorialToUrl('asdf'); }).toThrow('Cannot call method "getByName" of null');
         });
 
         it("setting tutorials to the root tutorial object lets lookups work", function() {
@@ -766,23 +767,23 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it('should prune private members if env.opts.private is falsy', function() {
-            var priv = !!env.opts['private'];
+            var priv = !!env.opts.private;
 
-            env.opts['private'] = false;
+            env.opts.private = false;
             var pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays([], pruned);
 
-            env.opts['private'] = !!priv;
+            env.opts.private = !!priv;
         });
 
         it('should not prune private members if env.opts.private is truthy', function() {
-            var priv = !!env.opts['private'];
+            var priv = !!env.opts.private;
 
-            env.opts['private'] = true;
+            env.opts.private = true;
             var pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays(arrayPrivate, pruned);
 
-            env.opts['private'] = !!priv;
+            env.opts.private = !!priv;
         });
     });
 
@@ -837,7 +838,7 @@ describe("jsdoc/util/templateHelper", function() {
 
         it("does not return a tutorial if its name is a reserved JS keyword and it doesn't exist", function() {
             env.opts.lenient = false;
-            expect(function () { helper.tutorialToUrl('prototype') }).toThrow();
+            expect(function () { helper.tutorialToUrl('prototype'); }).toThrow();
         });
 
         it("creates links to tutorials if they exist", function() {
@@ -867,8 +868,6 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("toTutorial", function() {
-        /*jshint evil: true */
-        
         var lenient = !!env.opts.lenient;
 
         function missingParam() {
