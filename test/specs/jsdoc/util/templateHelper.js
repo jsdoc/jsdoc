@@ -807,8 +807,6 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("tutorialToUrl", function() {
-        /*jshint evil: true */
-        
         var lenient = !!env.opts.lenient;
 
         function missingTutorial() {
@@ -867,7 +865,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("toTutorial", function() {
+    xdescribe("toTutorial", function() {
         var lenient = !!env.opts.lenient;
 
         function missingParam() {
