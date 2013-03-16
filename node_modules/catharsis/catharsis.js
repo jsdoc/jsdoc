@@ -11,17 +11,46 @@
 var parse = require('./lib/parser').parse;
 var stringify = require('./lib/stringify');
 
-var typeExpressionCache = {};
-var lenientTypeExpressionCache = {};
+var typeExpressionCache = {
+	normal: {},
+	lenient: {}
+};
 
-var parsedTypeCache = {};
-var lenientParsedTypeCache = {};
+var parsedTypeCache = {
+	normal: {},
+	htmlSafe: {}
+};
+
+function getTypeExpressionCache(options) {
+	if (options.useCache === false) {
+		return null;
+	} else if (options.lenient === true) {
+		return typeExpressionCache.lenient;
+	} else {
+		return typeExpressionCache.normal;
+	}
+}
+
+function getParsedTypeCache(options) {
+	if (options.useCache === false) {
+		return null;
+	} else if (options.htmlSafe === true) {
+		return parsedTypeCache.htmlSafe;
+	} else {
+		return parsedTypeCache.normal;
+	}
+}
+
+function canReturnOriginalExpression(parsedType, options) {
+	return options.restringify !== true && options.htmlSafe !== true &&
+		Object.prototype.hasOwnProperty.call(parsedType, 'typeExpression');
+}
 
 function cachedParse(expr, options) {
-	var cache = options.lenient ? lenientTypeExpressionCache : typeExpressionCache;
+	var cache = getTypeExpressionCache(options);
 	var parsedType;
 
-	if (options.useCache !== false && cache[expr]) {
+	if (cache && cache[expr]) {
 		return cache[expr];
 	} else {
 		parsedType = parse(expr, options);
@@ -36,7 +65,7 @@ function cachedParse(expr, options) {
 		});
 		parsedType = Object.freeze(parsedType);
 
-		if (options.useCache !== false) {
+		if (cache) {
 			cache[expr] = parsedType;
 		}
 
@@ -45,14 +74,12 @@ function cachedParse(expr, options) {
 }
 
 function cachedStringify(parsedType, options) {
-	var cache = options.lenient ? lenientParsedTypeCache : parsedTypeCache;
+	var cache = getParsedTypeCache(options);
 	var json;
 
-	if (options.useCache !== false && Object.prototype.hasOwnProperty.call(parsedType,
-		'typeExpression')) {
-		// return the original type expression
+	if (canReturnOriginalExpression(parsedType, options)) {
 		return parsedType.typeExpression;
-	} else if (options.useCache !== false) {
+	} else if (cache) {
 		json = JSON.stringify(parsedType);
 		cache[json] = cache[json] || stringify(parsedType, options);
 		return cache[json];
