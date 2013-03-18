@@ -118,6 +118,33 @@ describe('jsdoc/tag/type', function() {
             expect(info.type).toEqual( ['string', 'number', 'boolean', 'function'] );
         });
 
+        it('should override the type expression if an inline @type tag is specified', function() {
+            var desc = '{Object} cookie {@type Monster}';
+            var info = jsdoc.tag.type.parse(desc, true, true);
+            expect(info.type).toEqual( ['Monster'] );
+            expect(info.text).toBe('');
+
+            desc = '{Object} cookie - {@type Monster}';
+            info = jsdoc.tag.type.parse(desc, true, true);
+            expect(info.type).toEqual( ['Monster'] );
+            expect(info.text).toBe('');
+
+            desc = '{Object} cookie - The cookie parameter. {@type Monster}';
+            info = jsdoc.tag.type.parse(desc, true, true);
+            expect(info.type).toEqual( ['Monster'] );
+            expect(info.text).toBe('The cookie parameter.');
+
+            desc = '{Object} cookie - The cookie parameter. {@type (Monster|Jar)}';
+            info = jsdoc.tag.type.parse(desc, true, true);
+            expect(info.type).toEqual( ['Monster', 'Jar'] );
+            expect(info.text).toBe('The cookie parameter.');
+
+            desc = '{Object} cookie - The cookie parameter. {@type (Monster|Jar)} Mmm, cookie.';
+            info = jsdoc.tag.type.parse(desc, true, true);
+            expect(info.type).toEqual( ['Monster', 'Jar'] );
+            expect(info.text).toBe('The cookie parameter.  Mmm, cookie.');
+        });
+
         describe('JSDoc-style type info', function() {
             it('should parse JSDoc-style optional parameters', function() {
                 var name = '[qux]';

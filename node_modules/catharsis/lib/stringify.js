@@ -2,12 +2,14 @@
 
 var Types = require('./types');
 
-function Stringifier() {
+function Stringifier(options) {
+	this._options = options || {};
+
 	// in a list of function signature params, repeatable params are stringified differently
 	this._inFunctionSignatureParams = false;
 }
 
-Stringifier.prototype.applications = function(applications, options) {
+Stringifier.prototype.applications = function(applications) {
 	if (!applications) {
 		return '';
 	}
@@ -19,7 +21,7 @@ Stringifier.prototype.applications = function(applications, options) {
 		parsedApplications.push(this.type(applications[i]));
 	}
 
-	if (options.htmlSafe) {
+	if (this._options.htmlSafe) {
 		result = '.&lt;';
 	} else {
 		result = '.<';
@@ -109,11 +111,10 @@ Stringifier.prototype['this'] = function(funcThis) {
 	return funcThis ? 'this:' + this.type(funcThis) : '';
 };
 
-Stringifier.prototype.type = function(type, options) {
+Stringifier.prototype.type = function(type) {
 	if (!type) {
 		return '';
 	}
-	options = options || {};
 
 	// nullable comes first
 	var result = this.nullable(type.nullable);
@@ -134,7 +135,7 @@ Stringifier.prototype.type = function(type, options) {
 			break;
 		case Types.TypeApplication:
 			result += this.type(type.expression);
-			result += this.applications(type.applications, options);
+			result += this.applications(type.applications);
 			break;
 		case Types.UndefinedLiteral:
 			result += this._formatNameAndType(type, 'undefined');
@@ -202,6 +203,17 @@ Stringifier.prototype._formatRepeatable = function(nameString, typeString) {
 Stringifier.prototype._formatNameAndType = function(type, literal) {
 	var nameString = type.name || literal || '';
 	var typeString = type.type ? this.type(type.type) : '';
+	var cssClass;
+	var openTag;
+
+	// replace the type with an HTML link if necessary
+	if (this._options.links && Object.prototype.hasOwnProperty.call(this._options.links,
+		nameString)) {
+		cssClass = this._options.cssClass ? ' class="' + this._options.cssClass + '"' : '';
+
+		openTag = '<a href="' + this._options.links[nameString] + '"' + cssClass + '>';
+		nameString = openTag + nameString + '</a>';
+	}
 
 	if (type.repeatable === true) {
 		return this._formatRepeatable(nameString, typeString);
@@ -241,5 +253,5 @@ Stringifier.prototype._signature = function(type) {
 
 
 module.exports = function(type, options) {
-	return new Stringifier().stringify(type, options);
+	return new Stringifier(options).stringify(type);
 };

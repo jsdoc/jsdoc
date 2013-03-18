@@ -13,7 +13,7 @@ var stringify = require('./lib/stringify');
 
 var typeExpressionCache = {
 	normal: {},
-	lenient: {}
+	jsdoc: {}
 };
 
 var parsedTypeCache = {
@@ -24,15 +24,15 @@ var parsedTypeCache = {
 function getTypeExpressionCache(options) {
 	if (options.useCache === false) {
 		return null;
-	} else if (options.lenient === true) {
-		return typeExpressionCache.lenient;
+	} else if (options.jsdoc === true) {
+		return typeExpressionCache.jsdoc;
 	} else {
 		return typeExpressionCache.normal;
 	}
 }
 
 function getParsedTypeCache(options) {
-	if (options.useCache === false) {
+	if (options.useCache === false || options.links !== null || options.links !== undefined) {
 		return null;
 	} else if (options.htmlSafe === true) {
 		return parsedTypeCache.htmlSafe;
@@ -41,8 +41,14 @@ function getParsedTypeCache(options) {
 	}
 }
 
+// can't return the original if any of the following are true:
+// 1. restringification was requested
+// 2. htmlSafe option was requested
+// 3. links option was provided
+// 4. typeExpression property is missing
 function canReturnOriginalExpression(parsedType, options) {
 	return options.restringify !== true && options.htmlSafe !== true &&
+		(options.links === null || options.links === undefined) &&
 		Object.prototype.hasOwnProperty.call(parsedType, 'typeExpression');
 }
 
@@ -59,8 +65,8 @@ function cachedParse(expr, options) {
 			typeExpression: {
 				value: expr
 			},
-			lenient: {
-				value: options.lenient === true ? true : false
+			jsdoc: {
+				value: options.jsdoc === true ? true : false
 			}
 		});
 		parsedType = Object.freeze(parsedType);
