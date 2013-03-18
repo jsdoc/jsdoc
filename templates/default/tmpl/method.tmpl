@@ -48,7 +48,14 @@ var self = this;
     <?js if (data.listens && listens.length) { ?>
     <h5>Listens to events:</h5>
     <ul><?js listens.forEach(function(f) { ?>
-        <?js= self.partial('fires.tmpl', self.linkto(f) ) ?>
+        <?js= self.partial('simplelinklist.tmpl', self.linkto(f) ) ?>
+    <?js }); ?></ul>
+    <?js } ?>
+
+    <?js if (data.listeners && listeners.length) { ?>
+    <h5>Listeners of this event:</h5>
+    <ul><?js listeners.forEach(function(f) { ?>
+        <?js= self.partial('simplelinklist.tmpl', self.linkto(f) ) ?>
     <?js }); ?></ul>
     <?js } ?>
     
