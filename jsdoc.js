@@ -9,47 +9,64 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-/** Data representing the environment in which this app is running.
-    @namespace
-*/
-env = {
-    /** Running start and finish times. */
+/**
+ * Data representing the environment in which this app is running.
+ *
+ * @namespace
+ * @name env
+ */
+require('lib/jsdoc/util/global').env = {
+    /**
+     * Running start and finish times.
+     * 
+     * @memberof env
+     */
     run: {
         start: new Date(),
         finish: null
     },
 
     /**
-        The command line arguments passed into jsdoc.
-        @type Array
-    */
+     * The command-line arguments passed into JSDoc.
+     *
+     * @type Array
+     * @memberof env
+     */
     args: [],
 
     /**
-        The parsed JSON data from the configuration file.
-        @type Object
-    */
+     * The parsed JSON data from the configuration file.
+     * 
+     * @type Object
+     * @memberof env
+     */
     conf: {},
 
     /**
-        The absolute path to the base directory of the jsdoc application.
-        @private
-        @deprecated Use `__dirname` instead.
-        @type string
-    */
+     * The absolute path to the base directory of the JSDoc application.
+     * 
+     * @private
+     * @deprecated Use `__dirname` instead.
+     * @type string
+     * @memberof env
+     */
     dirname: '.',
 
     /**
-        The command line arguments, parsed into a key/value hash.
-        @type Object
-        @example if (env.opts.help) { console.log('Helpful message.'); }
+     * The command-line arguments, parsed into a key/value hash.
+     * 
+     * @type Object
+     * @memberof env
+     * @example if (env.opts.help) { console.log('Helpful message.'); }
     */
     opts: {},
 
     /**
-        The jsdoc version number and revision date.
-        @type Object
-    */
+     * The JSDoc version number and revision date.
+     * 
+     * @type Object
+     * @memberof env
+     */
     version: {}
 };
 
@@ -65,8 +82,9 @@ env = {
 /**
  * Data that must be shared across the entire application.
  * @namespace
+ * @name app
  */
-app = {
+require('lib/jsdoc/util/global').app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
         parser: new (require('jsdoc/src/parser').Parser)(),
