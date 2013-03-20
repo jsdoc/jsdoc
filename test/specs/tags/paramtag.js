@@ -11,7 +11,7 @@ describe("@param tag", function() {
     it('When a symbol has an @param tag with a type before the name, the doclet has a params property that includes that param.', function() {
         expect(typeof find.params).toBe('object');
         expect(find.params.length).toBe(1);
-        expect(find.params[0].type.names.join(', ')).toBe('String, Array<String>');
+        expect(find.params[0].type.names.join(', ')).toBe('String, Array.<String>');
         expect(find.params[0].name).toBe('targetName');
         expect(find.params[0].description).toBe('The name (or names) of what to find.');
     });
