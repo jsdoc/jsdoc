@@ -167,9 +167,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    // disabled because Jasmine appears to execute this code twice, which causes getUniqueFilename
-    // to return an unexpected variation on the name the second time
-    xdescribe("getUniqueFilename", function() {
+    describe("getUniqueFilename", function() {
         // TODO: needs more tests for unusual values and things that get special treatment (such as
         // inner members)
         it('should convert a simple string into the string plus the default extension', function() {

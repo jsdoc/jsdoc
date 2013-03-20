@@ -32,7 +32,6 @@ if (match instanceof Array) {
 }
 opts.matcher = new RegExp("(" + match + ")\\.(" + extensions + ")$", 'i');
 
-var helperCollection = require('test/spec-collection');
 var specFolders = ['test/specs', 'plugins/test/specs'];
 
 var failedCount = 0;
@@ -42,9 +41,6 @@ var onComplete;
 
 function runNextFolder() {
     if (index < specFolders.length) {
-        jasmine.loadHelpersInFolder(specFolders[index],
-            new RegExp("helpers?\\.(" + extensions + ")$", 'i'));
-
         jasmine.executeSpecsInFolder(specFolders[index], onComplete, opts);
     }
 }
