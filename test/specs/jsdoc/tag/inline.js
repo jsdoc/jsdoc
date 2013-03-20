@@ -150,6 +150,22 @@ describe('jsdoc/tag/inline', function() {
             expect(result.newString).toBe('REPLACED!');
         });
 
+        it('should work when there are nested braces', function() {
+            function replacer(string, completeTag, tagText) {
+                expect(string).toBe('some {{double}} braces');
+                expect(completeTag).toBe('{{double}}');
+                expect(tagText).toBe('{double}');
+
+                return string;
+            }
+
+            var result = jsdoc.tag.inline.replaceInlineTag('some {{double}} braces', null,
+                replacer);
+            expect(result.tag).toBe(null);
+            expect(result.text).toBe('{double}');
+            expect(result.newString).toBe('some {{double}} braces');
+        });
+
         it('should work when a tag is specified', function() {
             function replacer(string, completeTag, tagText) {
                 expect(string).toBe('a {@foo tag} test');
