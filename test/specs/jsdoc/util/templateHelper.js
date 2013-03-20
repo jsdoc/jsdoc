@@ -223,10 +223,12 @@ describe("jsdoc/util/templateHelper", function() {
     describe("linkto", function() {
         beforeEach(function() {
             helper.longnameToUrl.linktoTest = 'test.html';
+            helper.longnameToUrl.LinktoFakeClass = 'fakeclass.html';
         });
 
         afterEach(function() {
             delete helper.longnameToUrl.linktoTest;
+            delete helper.longnameToUrl.LinktoFakeClass;
         });
 
         it('returns the longname if only the longname is specified and has no URL', function() {
@@ -260,11 +262,33 @@ describe("jsdoc/util/templateHelper", function() {
             expect(link).toBe('<a href="test.html" class="myclass">link text</a>');
         });
 
-        it("is careful with longnames that are reserved words in JS", function() {
+        it('is careful with longnames that are reserved words in JS', function() {
             // we don't have a registered link for 'constructor' so it should return the text 'link text'.
             var link = helper.linkto('constructor', 'link text');
             expect(typeof link).toBe('string');
             expect(link).toBe('link text');
+        });
+
+        it('works correctly with type applications if only the longname is specified', function() {
+            var link = helper.linkto('Array.<LinktoFakeClass>');
+            expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
+        });
+
+        it('works correctly with type applications if a class is not specified', function() {
+            var link = helper.linkto('Array.<LinktoFakeClass>', 'link text');
+            expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
+        });
+
+        it('works correctly with type applications if a class is specified', function() {
+            var link = helper.linkto('Array.<LinktoFakeClass>', 'link text', 'myclass');
+            expect(link).toBe('Array.&lt;<a href="fakeclass.html" class="myclass">LinktoFakeClass' +
+                '</a>>');
+        });
+
+        it('works correctly with type applications that include a type union', function() {
+            var link = helper.linkto('Array.<(linktoTest|LinktoFakeClass)>', 'link text');
+            expect(link).toBe('Array.&lt;(<a href="test.html">linktoTest</a>|' +
+                '<a href="fakeclass.html">LinktoFakeClass</a>)>');
         });
     });
 
