@@ -1,5 +1,5 @@
 /**
- * catharsis 0.4.2
+ * Catharsis
  * A parser for Google Closure Compiler type expressions, powered by PEG.js.
  *
  * @author Jeff Williams <jeffrey.l.williams@gmail.com>
@@ -100,6 +100,10 @@ function Catharsis() {
 
 Catharsis.prototype.parse = function(typeExpr, options) {
 	options = options || {};
+
+	typeExpr = typeExpr.replace(/[\r\n]/g, '')
+		.replace(/\s+/g, ' ')
+		.trim();
 
 	return cachedParse(typeExpr, options);
 };
