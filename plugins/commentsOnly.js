@@ -10,6 +10,8 @@ exports.handlers = {
     beforeParse: function(e) {
         // a JSDoc comment looks like: /**[one or more chars]*/
         var comments = e.source.match(/\/\*\*[\s\S]+?\*\//g);
-        e.source = comments.join('\n\n');
+        if (comments) {
+            e.source = comments.join('\n\n');
+        }
     }
 };
