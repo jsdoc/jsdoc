@@ -1,4 +1,4 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+/*global beforeEach: true, describe: true, expect: true, it: true, jasmine: true, xdescribe: true */
 describe("jsdoc/src/parser", function() {
     var jsdoc = {src: { parser: require('jsdoc/src/parser')}};
 
@@ -13,6 +13,12 @@ describe("jsdoc/src/parser", function() {
     });
 
     describe("Parser", function() {
+        var parser;
+
+        function newParser() {
+            parser = new jsdoc.src.parser.Parser();
+        }
+
         it("should have a 'parse' function", function() {
             expect(jsdoc.src.parser.Parser.prototype.parse).toBeDefined();
             expect(typeof jsdoc.src.parser.Parser.prototype.parse).toEqual("function");
@@ -24,7 +30,7 @@ describe("jsdoc/src/parser", function() {
         });
 
         describe("parse", function() {
-            var parser = new jsdoc.src.parser.Parser();
+            beforeEach(newParser);
 
             it("should fire 'jsdocCommentFound' events when parsing source containing jsdoc comments", function() {
                 var spy = jasmine.createSpy(),
@@ -51,6 +57,28 @@ describe("jsdoc/src/parser", function() {
                     };
                 
                 expect(parse).not.toThrow();
+            });
+        });
+
+        describe("results", function() {
+            beforeEach(newParser);
+
+            // TODO: more tests?
+
+            it("should reflect comment changes made by 'jsdocCommentFound' handlers", function() {
+                var source = "javascript:/**\n * replaceme\n * @module foo\n */\n\n" +
+                    "/**\n * replaceme\n */\nvar bar;";
+
+                parser.on('jsdocCommentFound', function(e) {
+                    e.comment = e.comment.replace('replaceme', 'REPLACED!');
+                });
+                require("jsdoc/src/handlers").attachTo(parser);
+
+                parser.parse(source);
+                parser.results().forEach(function(doclet) {
+                    expect(doclet.comment).not.toMatch('replaceme');
+                    expect(doclet.comment).toMatch('REPLACED!');
+                });
             });
         });
     });
