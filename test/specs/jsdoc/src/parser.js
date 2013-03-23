@@ -66,7 +66,8 @@ describe("jsdoc/src/parser", function() {
             // TODO: more tests?
 
             it("should reflect comment changes made by 'jsdocCommentFound' handlers", function() {
-                var source = "javascript:/**\n * replaceme\n * @module foo\n */\n\n" +
+                // we test both POSIX and Windows line endings
+                var source = "javascript:/**\n * replaceme\r\n * @module foo\n */\n\n" +
                     "/**\n * replaceme\n */\nvar bar;";
 
                 parser.on('jsdocCommentFound', function(e) {
