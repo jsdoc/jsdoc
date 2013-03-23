@@ -288,6 +288,16 @@ describe("jsdoc/util/templateHelper", function() {
             expect(link).toBe('Array.&lt;(<a href="test.html">linktoTest</a>|' +
                 '<a href="fakeclass.html">LinktoFakeClass</a>)>');
         });
+
+        it('returns the URL when a URL is specified', function() {
+            var link = helper.linkto('http://example.com');
+            expect(link).toBe('http://example.com');
+        });
+
+        it('returns the URL if a URL wrapped in angle brackets is specified', function() {
+            var link = helper.linkto('<http://example.com>');
+            expect(link).toBe('http://example.com');
+        });
     });
 
     describe("htmlsafe", function() {
