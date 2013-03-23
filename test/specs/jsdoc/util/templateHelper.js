@@ -289,14 +289,19 @@ describe("jsdoc/util/templateHelper", function() {
                 '<a href="fakeclass.html">LinktoFakeClass</a>)>');
         });
 
-        it('returns the URL when a URL is specified', function() {
+        it('returns a link when a URL is specified', function() {
             var link = helper.linkto('http://example.com');
-            expect(link).toBe('http://example.com');
+            expect(link).toBe('<a href="http://example.com">http://example.com</a>');
         });
 
-        it('returns the URL if a URL wrapped in angle brackets is specified', function() {
+        it('returns a link if a URL wrapped in angle brackets is specified', function() {
             var link = helper.linkto('<http://example.com>');
-            expect(link).toBe('http://example.com');
+            expect(link).toBe('<a href="http://example.com">http://example.com</a>');
+        });
+
+        it('returns a link with link text if a URL and link text are specified', function() {
+            var link = helper.linkto('http://example.com', 'text');
+            expect(link).toBe('<a href="http://example.com">text</a>');
         });
     });
 
