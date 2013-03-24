@@ -92,6 +92,10 @@ describe('jsdoc/tag/type', function() {
             desc = '{string=} [foo]';
             info = jsdoc.tag.type.parse(desc, true, true);
             expect(info.optional).toBe(true);
+
+            desc = '[foo]';
+            info = jsdoc.tag.type.parse(desc, true, true);
+            expect(info.optional).toBe(true);
         });
         
         it('should return the types as an array', function() {
