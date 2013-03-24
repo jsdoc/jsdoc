@@ -1106,6 +1106,20 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('Link to constructor');
         });
 
+        it('should allow linebreaks between link tag and content', function() {
+            var input = 'This is a {@link\ntest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
+        });
+
+        it('should allow tabs between link tag and content', function() {
+            var input = 'This is a {@link\ttest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
+        });
+
         // conf.monospaceLinks. check that
         // a) it works
         it('if conf.monospaceLinks is true, all {@link} should be monospace', function () {
