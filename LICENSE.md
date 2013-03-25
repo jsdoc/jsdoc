@@ -66,6 +66,16 @@ The source code for Async.js is available at:
 https://github.com/caolan/async
 
 
+## Catharsis ##
+
+Catharsis is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2012-2013 Jeff Williams.
+
+The source code for Catharsis is available at:
+https://github.com/hegemonic/catharsis
+
+
 ## crypto-browserify ##
 
 License information for crypto-browserify is not available. It is assumed that

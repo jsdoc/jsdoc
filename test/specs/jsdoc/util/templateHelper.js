@@ -173,9 +173,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    // disabled because Jasmine appears to execute this code twice, which causes getUniqueFilename
-    // to return an unexpected variation on the name the second time
-    xdescribe("getUniqueFilename", function() {
+    describe("getUniqueFilename", function() {
         // TODO: needs more tests for unusual values and things that get special treatment (such as
         // inner members)
         it('should convert a simple string into the string plus the default extension', function() {
@@ -229,10 +227,12 @@ describe("jsdoc/util/templateHelper", function() {
     describe("linkto", function() {
         beforeEach(function() {
             helper.longnameToUrl.linktoTest = 'test.html';
+            helper.longnameToUrl.LinktoFakeClass = 'fakeclass.html';
         });
 
         afterEach(function() {
             delete helper.longnameToUrl.linktoTest;
+            delete helper.longnameToUrl.LinktoFakeClass;
         });
 
         it('returns the longname if only the longname is specified and has no URL', function() {
@@ -266,11 +266,48 @@ describe("jsdoc/util/templateHelper", function() {
             expect(link).toBe('<a href="test.html" class="myclass">link text</a>');
         });
 
-        it("is careful with longnames that are reserved words in JS", function() {
+        it('is careful with longnames that are reserved words in JS', function() {
             // we don't have a registered link for 'constructor' so it should return the text 'link text'.
             var link = helper.linkto('constructor', 'link text');
             expect(typeof link).toBe('string');
             expect(link).toBe('link text');
+        });
+
+        it('works correctly with type applications if only the longname is specified', function() {
+            var link = helper.linkto('Array.<LinktoFakeClass>');
+            expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
+        });
+
+        it('works correctly with type applications if a class is not specified', function() {
+            var link = helper.linkto('Array.<LinktoFakeClass>', 'link text');
+            expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
+        });
+
+        it('works correctly with type applications if a class is specified', function() {
+            var link = helper.linkto('Array.<LinktoFakeClass>', 'link text', 'myclass');
+            expect(link).toBe('Array.&lt;<a href="fakeclass.html" class="myclass">LinktoFakeClass' +
+                '</a>>');
+        });
+
+        it('works correctly with type applications that include a type union', function() {
+            var link = helper.linkto('Array.<(linktoTest|LinktoFakeClass)>', 'link text');
+            expect(link).toBe('Array.&lt;(<a href="test.html">linktoTest</a>|' +
+                '<a href="fakeclass.html">LinktoFakeClass</a>)>');
+        });
+
+        it('returns a link when a URL is specified', function() {
+            var link = helper.linkto('http://example.com');
+            expect(link).toBe('<a href="http://example.com">http://example.com</a>');
+        });
+
+        it('returns a link if a URL wrapped in angle brackets is specified', function() {
+            var link = helper.linkto('<http://example.com>');
+            expect(link).toBe('<a href="http://example.com">http://example.com</a>');
+        });
+
+        it('returns a link with link text if a URL and link text are specified', function() {
+            var link = helper.linkto('http://example.com', 'text');
+            expect(link).toBe('<a href="http://example.com">text</a>');
         });
     });
 
@@ -1099,6 +1136,20 @@ describe("jsdoc/util/templateHelper", function() {
             var input = 'Link to {@link constructor}',
                 output = helper.resolveLinks(input);
             expect(output).toBe('Link to constructor');
+        });
+
+        it('should allow linebreaks between link tag and content', function() {
+            var input = 'This is a {@link\ntest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
+        });
+
+        it('should allow tabs between link tag and content', function() {
+            var input = 'This is a {@link\ttest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
         // conf.monospaceLinks. check that

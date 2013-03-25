@@ -12,12 +12,14 @@ var conf = env.conf.eventDumper || {};
 
 // Dump the included parser events (defaults to all events)
 var events = conf.include || [
+    'parseBegin',
     'fileBegin',
     'beforeParse',
     'jsdocCommentFound',
     'symbolFound',
     'newDoclet',
-    'fileComplete'
+    'fileComplete',
+    'parseComplete'
 ];
 // Don't dump the excluded parser events
 if (conf.exclude) {

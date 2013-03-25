@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("@ignore tag", function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/ignoretag.js'),
         foo = docSet.getByLongname('foo')[0];
@@ -11,7 +12,7 @@ describe("@ignore tag", function() {
             docSet = jasmine.getDocSetFromFile('test/fixtures/ignoretag2.js');
             foo = docSet.getByLongname('foo')[0];
         } catch (e) {
-            expect(e.name).toBe('TagValueNotPermittedError');
-        };
+            expect(e instanceof Error).toBe(true);
+        }
     });
 });

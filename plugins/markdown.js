@@ -9,7 +9,8 @@
 var conf = env.conf.markdown;
 var defaultTags = [ "classdesc", "description", "params", "properties", "returns" ];
 var parse = require('jsdoc/util/markdown').getParser();
-var tags;
+var tags = [];
+var excludeTags = [];
 
 /**
  * Process the markdown source in a doclet. The properties that should be
@@ -36,15 +37,16 @@ function process(doclet) {
 // set up the list of "tags" (properties) to process
 if (conf && conf.tags) {
     tags = conf.tags.slice();
-
-    defaultTags.forEach(function(tag) {
-        if (tags.indexOf(tag) === -1) {
-            tags.push(tag);
-        }
-    });
-} else {
-    tags = defaultTags;
 }
+// set up the list of default tags to exclude from processing
+if (conf && conf.excludeTags) {
+    excludeTags = conf.excludeTags.slice();
+}
+defaultTags.forEach(function(tag) {
+    if (excludeTags.indexOf(tag) === -1 && tags.indexOf(tag) === -1) {
+        tags.push(tag);
+    }
+});
 
 exports.handlers = {
     /**
