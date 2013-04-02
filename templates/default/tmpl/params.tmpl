@@ -24,7 +24,7 @@
     params.forEach(function(param) {
         if (!param) { return; }
         
-        if (param.optional || param.nullable) {
+        if (param.optional || param.nullable || param.variable) {
             params.hasAttributes = true;
         }
         
@@ -85,6 +85,10 @@
                     
                 <?js if (param.nullable) { ?>
                     &lt;nullable><br>
+                <?js } ?>
+                    
+                <?js if (param.variable) { ?>
+                    &lt;repeatable><br>
                 <?js } ?>
                 </td>
             <?js } ?>
