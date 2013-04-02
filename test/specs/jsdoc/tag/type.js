@@ -179,5 +179,15 @@ describe('jsdoc/tag/type', function() {
                 expect(info.defaultvalue).toBe('hooray');
             });
         });
+
+        // TODO: add more tests related to how JSDoc mangles the Catharsis parse results
+        describe('Closure Compiler-style type info', function() {
+            it('should recognize variable (repeatable) parameters', function() {
+                var desc = '{...string} foo - Foo.';
+                var info = jsdoc.tag.type.parse(desc, true, true);
+                expect(info.type).toEqual( ['string'] );
+                expect(info.variable).toBe(true);
+            });
+        });
     });
 });
