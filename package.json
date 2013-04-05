@@ -23,7 +23,8 @@
 		"github-flavored-markdown": "git+https://github.com/hegemonic/github-flavored-markdown.git",
 		"js2xmlparser": "0.1.0",
 		"jshint": "0.9.1",
-		"markdown": "git+https://github.com/jsdoc3/markdown-js.git",
+        "markdown": "git+https://github.com/jsdoc3/markdown-js.git",
+        "marked": "git+https://github.com/chjj/marked.git",
 		"taffydb":  "git+https://github.com/hegemonic/taffydb.git",
 		"underscore": "1.4.2",
 		"wrench":   "1.3.9"
