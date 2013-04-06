@@ -379,6 +379,7 @@ describe("jsdoc/util/templateHelper", function() {
             {kind: 'constant'}, // global
             {kind: 'typedef'}, // global
             {kind: 'constant', memberof: 'module:one/two'}, // not global
+            {kind: 'function', name: 'module:foo', longname: 'module:foo'} // not global
         ];
         var array = classes.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc))))));
         var data = require('taffydb').taffy(array);
@@ -439,7 +440,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it("globals are detected", function() {
-            compareObjectArrays(misc.slice(0, -1), members.globals);
+            compareObjectArrays(misc.slice(0, -2), members.globals);
         });
     });
 
@@ -1258,6 +1259,18 @@ describe("jsdoc/util/templateHelper", function() {
                 url = helper.createLink(mockDoclet);
 
             expect(url).toEqual('_.html#"*foo"');
+        });
+
+        it('should create a url for a function that is the only symbol exported by a module.',
+            function() {
+            var mockDoclet = {
+                kind: 'function',
+                longname: 'module:bar',
+                name: 'module:bar'
+            };
+            var url = helper.createLink(mockDoclet);
+
+            expect(url).toEqual('module-bar.html');
         });
     });
 
