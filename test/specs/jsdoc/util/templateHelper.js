@@ -5,7 +5,8 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper'),
         doclet = require('jsdoc/doclet'),
-        resolver = require('jsdoc/tutorial/resolver');
+        resolver = require('jsdoc/tutorial/resolver'),
+        taffy = require('taffydb').taffy;
     helper.registerLink('test', 'path/to/test.html');
 
     it("should exist", function() {
@@ -86,6 +87,11 @@ describe("jsdoc/util/templateHelper", function() {
     it("should export a 'getAncestorLinks' function", function() {
         expect(helper.getAncestorLinks).toBeDefined();
         expect(typeof helper.getAncestorLinks).toBe("function");
+    });
+
+    it("should export a 'addEventListeners' function", function() {
+        expect(helper.addEventListeners).toBeDefined();
+        expect(typeof helper.addEventListeners).toBe("function");
     });
 
     it("should export a 'prune' function", function() {
@@ -328,11 +334,10 @@ describe("jsdoc/util/templateHelper", function() {
             { A: true }
         ];
         var matches = array.slice(0, 3);
-        var taffy = require('taffydb').taffy(array);
         var spec = { number: [1, 2, 3], A: [true, 'maybe'] };
 
         it('should find the requested items', function() {
-            expect( helper.find(taffy, spec) ).toEqual(matches);
+            expect( helper.find(taffy(array), spec) ).toEqual(matches);
         });
     });
 
@@ -382,7 +387,7 @@ describe("jsdoc/util/templateHelper", function() {
             {kind: 'function', name: 'module:foo', longname: 'module:foo'} // not global
         ];
         var array = classes.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc))))));
-        var data = require('taffydb').taffy(array);
+        var data = taffy(array);
         var members = helper.getMembers(data);
 
         // check the output object has properties as expected.
@@ -718,7 +723,7 @@ describe("jsdoc/util/templateHelper", function() {
             henchman = new doclet.Doclet('/** @class Henchman\n@memberof module:mafia/gangs.Sharks\n@inner */', {}),
             gang = new doclet.Doclet('/** @namespace module:mafia/gangs.Sharks */', {}),
             mafia = new doclet.Doclet('/** @module mafia/gangs */', {}),
-            data = require('taffydb').taffy([lackeys, henchman, gang, mafia]);
+            data = taffy([lackeys, henchman, gang, mafia]);
 
         // register some links
         it("returns an empty array if there are no ancestors", function() {
@@ -775,9 +780,36 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("prune", function() {
+    describe("addEventListeners", function() {
+        var doclets = taffy(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets),
+            ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0],
+            ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0],
+            ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];
+       
+        helper.addEventListeners(doclets);
+        
+        it("adds a 'listeners' array to events with the longnames of the listeners", function() {
+            expect(Array.isArray(ev.listeners)).toBe(true);
+            expect(Array.isArray(ev2.listeners)).toBe(true);
 
-        var taffy = require('taffydb').taffy;
+            expect(ev.listeners.length).toBe(2);
+            expect(ev.listeners).toContain('module:myModule~MyHandler');
+            expect(ev.listeners).toContain('module:myModule~AnotherHandler');
+
+            expect(ev2.listeners.length).toBe(1);
+            expect(ev2.listeners).toContain('module:myModule~MyHandler');
+        });
+
+        it("does not add listeners for events with no listeners", function() {
+            expect(ev3.listeners).not.toBeDefined();
+        });
+
+        it("does not make spurious doclets if something @listens to a non-existent symbol", function() {
+            expect(helper.find(doclets, {longname: 'event:fakeEvent'}).length).toBe(0);
+        });
+    });
+
+    describe("prune", function() {
 
         var array = [
             // keep
