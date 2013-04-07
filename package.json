@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.2.0-dev",
-	"revision": "1363957651014",
+	"revision": "1365355724912",
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -24,6 +24,7 @@
 		"js2xmlparser": "0.1.0",
 		"jshint": "0.9.1",
 		"markdown": "git+https://github.com/jsdoc3/markdown-js.git",
+		"marked": "0.2.8",
 		"taffydb":  "git+https://github.com/hegemonic/taffydb.git",
 		"underscore": "1.4.2",
 		"wrench":   "1.3.9"
