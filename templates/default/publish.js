@@ -325,6 +325,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     data = helper.prune(data);
     data.sort('longname, version, since');
+    helper.addEventListeners(data);
 
     var sourceFiles = {};
     var sourceFilePaths = [];

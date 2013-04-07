@@ -41,7 +41,21 @@ var self = this;
     <?js if (data.fires && fires.length) { ?>
     <h5>Fires:</h5>
     <ul><?js fires.forEach(function(f) { ?>
-        <?js= self.partial('fires.tmpl', self.linkto(f) ) ?>
+        <li><?js= self.linkto(f) ?></li>
+    <?js }); ?></ul>
+    <?js } ?>
+
+    <?js if (data.listens && listens.length) { ?>
+    <h5>Listens to Events:</h5>
+    <ul><?js listens.forEach(function(f) { ?>
+        <li><?js= self.linkto(f) ?></li>
+    <?js }); ?></ul>
+    <?js } ?>
+
+    <?js if (data.listeners && listeners.length) { ?>
+    <h5>Listeners of This Event:</h5>
+    <ul><?js listeners.forEach(function(f) { ?>
+        <li><?js= self.linkto(f) ?></li>
     <?js }); ?></ul>
     <?js } ?>
     
