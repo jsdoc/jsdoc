@@ -18,15 +18,12 @@ URLPATH="file://$UBASEPATH"
 URLPATH=`echo "$URLPATH" | sed -e 's/ /%20/g'`
 ENCODEDBASEPATH=`echo "$BASEPATH" | sed -e 's/ /%20/g'`
 
-ARGS="$@"
-
 if test "$1" = "--debug"
 then
     echo "Running Debug"
     CMD="org.mozilla.javascript.tools.debugger.Main -debug"
     # strip --debug argument
-    length=$(($#-1))
-    ARGS=${@:2:$length}
+    shift
 else
     CMD="org.mozilla.javascript.tools.shell.Main"
 fi
@@ -36,9 +33,9 @@ if test "$1" = "-T"
 then
     echo "Running Tests"
     cd -P "$(dirname "$SOURCE")"
-    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}/lib" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" $ARGS --dirname="${BASEPATH}/" 
+    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}/lib" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" "$@" --dirname="${BASEPATH}/" 
 
 else
     # normal mode should be quiet
-    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}/lib" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" $ARGS --dirname="${BASEPATH}/" 
+    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}/lib" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" "$@" --dirname="${BASEPATH}/" 
 fi
