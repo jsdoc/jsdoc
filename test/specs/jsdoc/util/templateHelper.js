@@ -1,5 +1,5 @@
 /*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true,
-spyOn: true, xdescribe: true */
+jasmine: true, spyOn: true, xdescribe: true */
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", function() {
@@ -201,6 +201,11 @@ describe("jsdoc/util/templateHelper", function() {
             var filename2 = helper.getUniqueFilename(pascal);
 
             expect( filename1.toLowerCase() ).not.toBe( filename2.toLowerCase() );
+        });
+
+        it('should remove variations from the longname before generating the filename', function() {
+            var filename = helper.getUniqueFilename('MyClass(foo, bar)');
+            expect(filename).toBe('MyClass.html');
         });
     });
 
