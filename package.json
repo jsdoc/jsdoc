@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.2.0-dev",
-	"revision": "1365776112567",
+	"revision": "1366126973987",
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -28,6 +28,7 @@
 		"underscore": "1.4.2",
 		"wrench":   "1.3.9"
 	},
+	"bin": "./nodejs/bin/jsdoc",
 	"bugs": "https://github.com/jsdoc3/jsdoc/issues",
 	"author": {
 		"name":  "Michael Mathews",

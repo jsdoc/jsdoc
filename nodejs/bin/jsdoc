@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+// This wrapper script allows JSDoc to be installed with 'npm install -g'.
+// Note that JSDoc will still run on Mozilla Rhino, NOT Node.js.
+
+
+var fs = require('fs');
+var os = require('os');
+var path = require('path');
+var spawnProc = require('child_process').spawn;
+
+var args = process.argv.slice(2);
+var script = path.normalize( path.join( path.dirname(fs.realpathSync(process.argv[1])), '..', '..',
+    'jsdoc' ) );
+var jsdoc;
+
+if (process.platform === 'win32') {
+    jsdoc = spawnProc(script + '.cmd', args, {stdio: 'inherit'});
+}
+else {
+    jsdoc = spawnProc(script, args, {stdio: 'inherit'});
+}
+
+jsdoc.on('close', function(code) {
+    process.exit(code);
+});
