@@ -25,9 +25,12 @@ Node.js project, then run the following command:
 
     npm install git://github.com/jsdoc3/jsdoc.git
 
+Or to install JSDoc globally:
+
+    npm install -g git://github.com/jsdoc3/jsdoc.git
+
 **Note**: Although you can install JSDoc with npm, JSDoc does not currently run
-on Node.js. In addition, installing JSDoc globally with `npm install -g` is not
-currently supported.
+on Node.js.
 
 
 Usage
