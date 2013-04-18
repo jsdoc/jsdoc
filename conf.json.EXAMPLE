@@ -13,6 +13,5 @@
         "default": {
             "outputSourceFiles": true
         }
-    },
-    "jsVersion": 180
+    }
 }

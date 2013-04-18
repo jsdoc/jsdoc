@@ -34,7 +34,6 @@ describe("jsdoc/config", function() {
             var config = new jsdoc.config('{"plugins":[42]}').get();
 
             expect(config.plugins).toEqual([42]);
-            expect(config.jsVersion).toEqual(180);
         });
     });
     

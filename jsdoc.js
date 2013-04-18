@@ -178,11 +178,6 @@ function main() {
     // look for options on the command line, in the config file, and in the defaults, in that order
     env.opts = _.defaults(env.opts, env.conf.opts, defaultOpts);
 
-    // which version of javascript will be supported? (rhino only)
-    if (typeof version === 'function') {
-        version(env.conf.jsVersion || 180);
-    }
-
     if (env.opts.help) {
         console.log( args.help() );
         process.exit(0);
