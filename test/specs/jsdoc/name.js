@@ -1,3 +1,5 @@
+/*global describe: true, expect: true, it: true */
+
 describe("jsdoc/name", function() {
     var jsdoc = {name: require('jsdoc/name'), doclet: require('jsdoc/doclet') };
 
@@ -91,6 +93,15 @@ describe("jsdoc/name", function() {
             expect(parts.scope).toEqual('.');
         });
 
+        it('should work on bracketed stringy names with single quotes', function() {
+            var startName = "channels['#ops']",
+                parts = jsdoc.name.shorten(startName);
+
+            expect(parts.name).toBe("'#ops'");
+            expect(parts.memberof).toBe('channels');
+            expect(parts.scope).toBe('.');
+        });
+
         it('should work on fully stringy names, like "foo.bar"', function() {
             var startName = '"foo.bar"',
                 parts = jsdoc.name.shorten(startName);
@@ -103,6 +114,16 @@ describe("jsdoc/name", function() {
             expect(parts.memberof).toEqual('');
             //'The scope should be as global.'
             expect(parts.scope).toEqual('');
+        });
+
+        it('should work on fully stringy names in single quotes, like \'foo.bar\'', function() {
+            var startName = "'foo.bar'",
+                parts = jsdoc.name.shorten(startName);
+
+            expect(parts.name).toBe("'foo.bar'");
+            expect(parts.longname).toBe("'foo.bar'");
+            expect(parts.memberof).toBe('');
+            expect(parts.scope).toBe('');
         });
 
         it('should find the variation', function() {
