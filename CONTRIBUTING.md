@@ -45,6 +45,9 @@ ones.
    Create a separate branch for each unrelated changeset.  For instance, if you're
    fixing a bug in the parser and adding some new UI to the default template, those
    should be separate branches and merge requests.
+
+   Also, if you want to change `package.json`, note that you must make your changes
+   in `Jake/templates/package.json.tmpl`, then run `jake`.
    
 5. **Add tests**
    Add tests for your change.  If you are submitting a bugfix, include a test that
