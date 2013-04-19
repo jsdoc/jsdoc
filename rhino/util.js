@@ -136,7 +136,7 @@ exports.format = function(f) {
     switch (x) {
       case '%s': return String(args[i++]);
       case '%d': return Number(args[i++]);
-      case '%j': return JSON.stringify(args[i++]);
+      case '%j': return require('jsdoc/util/dumper').dump(args[i++]);
       default:
         return x;
     }
