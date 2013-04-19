@@ -1,11 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.2.0-dev",
-<<<<<<< HEAD
 	"revision": "1366126973987",
-=======
-	"revision": "1365355724912",
->>>>>>> 74b0f20... Add support for marked markdown parser
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
