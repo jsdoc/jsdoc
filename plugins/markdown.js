@@ -5,9 +5,8 @@
  * @author Michael Mathews <micmath@gmail.com>
  * @author Ben Blank <ben.blank@gmail.com>
  */
-
 var conf = env.conf.markdown;
-var defaultTags = [ "classdesc", "description", "params", "properties", "returns" ];
+var defaultTags = [ "classdesc", "description", "params", "properties", "returns", "see"];
 var parse = require('jsdoc/util/markdown').getParser();
 var tags = [];
 var excludeTags = [];
@@ -24,10 +23,18 @@ function process(doclet) {
             return;
         }
 
-        if (typeof doclet[tag] === "string") {
+        if (typeof doclet[tag] === "string" &&
+              (tag != 'see' ||
+                  // treat '@see' specially, since we only want to process @see text that contains links
+                  (tag == 'see' && doclet[tag].indexOf('[') != -1))) {
             doclet[tag] = parse(doclet[tag]);
         } else if (doclet[tag] instanceof Array) {
-            doclet[tag].forEach(process);
+            doclet[tag].forEach(function(value, index, original){
+                var inner = {};
+                inner[tag] = value;
+                process(inner);
+                original[index] = inner[tag];
+            });
         } else if (doclet[tag]) {
             process(doclet[tag]);
         }
