@@ -193,7 +193,8 @@ function buildNav(members) {
     var nav = '<h2><a href="index.html">Index</a></h2>',
         seen = {},
         hasClassList = false,
-        classNav = '';
+        classNav = '',
+        globalNav = '';
 
     if (members.modules.length) {
         nav += '<h3>Modules</h3><ul>';
@@ -280,15 +281,20 @@ function buildNav(members) {
     }
     
     if (members.globals.length) {
-        nav += '<h3>Global</h3><ul>';
         members.globals.forEach(function(g) {
             if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
-                nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                globalNav += '<li>' + linkto(g.longname, g.name) + '</li>';
             }
             seen[g.longname] = true;
         });
         
-        nav += '</ul>';
+        if (!globalNav) {
+            // turn the heading into a link so you can actually get to the global page
+            nav += '<h3>' + linkto('global', 'Global') + '</h3>';
+        }
+        else {
+            nav += '<h3>Global</h3><ul>' + globalNav + '</ul>';
+        }
     }
 
     return nav;
