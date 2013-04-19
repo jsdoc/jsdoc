@@ -55,30 +55,31 @@ clearInterval = null;
  * Emulate Node.js console functions.
  * @see http://nodejs.org/api/stdio.html
  */
-console = {
-    debug: function() {
-        // TODO
-    },
-    error: function() {
-        // TODO
-    },
-    log: function(/*...*/) {
-        // TODO: make this consistent with Node.js
-        var args = Array.prototype.slice.call(arguments, 0),
-            dumper = dumper || require('jsdoc/util/dumper');
-
-        for (var i = 0, len = args.length; i < len; i++) {
-            if (typeof args[i] !== 'string') {
-                args[i] = dumper.dump(args[i]);
-            }
-        }
-
-        java.lang.System.out.println( args.join(' ') );
-    },
-    trace: function() {
-        // TODO
+console = (function() {
+    function println(stream, args) {
+        java.lang.System[stream].println( require('util').format.apply(this, args) );
     }
-};
+
+    return {
+        error: function() {
+            println('err', arguments);
+        },
+        info: function() {
+            println('out', arguments);
+        },
+        log: function() {
+            println('out', arguments);
+        },
+        trace: function(label) {
+            // this puts some extra junk at the top of the stack trace, but it's close enough
+            var e = new java.lang.Exception(label || 'Trace');
+            e.printStackTrace();
+        },
+        warn: function() {
+            println('err', arguments);
+        }
+    };
+})();
 
 /**
  * Emulate Node.js process functions.

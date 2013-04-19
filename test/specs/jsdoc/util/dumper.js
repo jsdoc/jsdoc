@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true */
 describe("common/dumper", function() {
     var common = {dumper: require('jsdoc/util/dumper')};
 
@@ -38,20 +39,21 @@ describe("common/dumper", function() {
     });
 
     it("can dump undefined values", function() {
-        expect(common.dumper.dump(undefined)).toEqual('undefined');
+        expect(common.dumper.dump(undefined)).toEqual('"undefined"');
     });
 
     it("can dump regex values", function() {
-        expect(common.dumper.dump(/^[Ff]oo$/gi)).toEqual('<RegExp /^[Ff]oo$/gi>');
+        expect(common.dumper.dump(/^[Ff]oo$/gi)).toEqual('"<RegExp /^[Ff]oo$/gi>"');
     });
 
     it("can dump date values", function() {
-        expect(common.dumper.dump(new Date('January 1, 1901 GMT'))).toEqual('<Date Tue, 01 Jan 1901 00:00:00 GMT>');
+        expect(common.dumper.dump(new Date('January 1, 1901 GMT')))
+            .toEqual('"<Date Tue, 01 Jan 1901 00:00:00 GMT>"');
     });
 
     it("can dump function values", function() {
-        expect(common.dumper.dump(function myFunc(){})).toEqual('<Function myFunc>');
-        expect(common.dumper.dump(function(){})).toEqual('<Function>');
+        expect(common.dumper.dump(function myFunc(){})).toEqual('"<Function myFunc>"');
+        expect(common.dumper.dump(function(){})).toEqual('"<Function>"');
     });
 
     it("can dump array values", function() {
@@ -84,7 +86,7 @@ describe("common/dumper", function() {
         var actual = common.dumper.dump(
             [undefined, null, new Foo(), 1, true, 'hello\n"world', new Error('oops'), /foo/gi, new Date('December 26, 2010 GMT'), {f: function myFunc(){}, o: {a:1}}]
         ),
-        expected = '[\n    undefined,\n    null,\n    {\n    },\n    1,\n    true,\n    "hello\\n\\"world",\n    {\n        "message": "oops"\n    },\n    <RegExp /foo/gi>,\n    <Date Sun, 26 Dec 2010 00:00:00 GMT>,\n    {\n        "f": <Function myFunc>,\n        "o": {\n            "a": 1\n        }\n    }\n]';
+        expected = '[\n    "undefined",\n    null,\n    {},\n    1,\n    true,\n    "hello\\n\\"world",\n    {\n        "message": "oops"\n    },\n    "<RegExp /foo/gi>",\n    "<Date Sun, 26 Dec 2010 00:00:00 GMT>",\n    {\n        "f": "<Function myFunc>",\n        "o": {\n            "a": 1\n        }\n    }\n]';
 
         expect(actual).toEqual(expected);
     });
@@ -94,7 +96,7 @@ describe("common/dumper", function() {
         a.b = a;
 
         var actual = common.dumper.dump(a),
-        expected = '{\n    "b": <CircularRef>\n}';
+        expected = '{\n    "b": "<CircularRef>"\n}';
 
         expect(actual).toEqual(expected);
     });

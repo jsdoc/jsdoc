@@ -231,7 +231,7 @@ function main() {
         borrow.resolveBorrows(docs);
 
         if (env.opts.explain) {
-            console.log(docs);
+            dump(docs);
             process.exit(0);
         }
 

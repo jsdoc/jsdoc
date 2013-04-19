@@ -210,7 +210,7 @@ exports.publish = function(data, opts) {
             console.log( xml('jsdoc', root) );
         }
         else {
-            console.log(root);
+            dump(root);
         }
     }
     else {
