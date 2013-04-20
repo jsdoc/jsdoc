@@ -314,6 +314,11 @@ describe("jsdoc/util/templateHelper", function() {
             var link = helper.linkto('http://example.com', 'text');
             expect(link).toBe('<a href="http://example.com">text</a>');
         });
+
+        it('returns a link with a fragment ID if a URL and fragment ID are specified', function() {
+            var link = helper.linkto('LinktoFakeClass', null, null, 'fragment');
+            expect(link).toBe('<a href="fakeclass.html#fragment">LinktoFakeClass</a>');
+        });
     });
 
     describe("htmlsafe", function() {
