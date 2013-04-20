@@ -212,7 +212,7 @@ describe("jsdoc/tutorial", function() {
                 env.conf.markdown = {parser: 'evilstreak'};
                 expect(par.parse()).toBe("<h1>This is the parent tutorial&#39;s <em>content & stuff</em> A<em>B X</em>Y</h1>");
 
-                env.conf.markdown = {parser: 'gfm'};
+                env.conf.markdown = {parser: 'marked'};
                 expect(par.parse()).toBe("<h1>This is the parent tutorial's <em>content & stuff</em> A_B X_Y</h1>");
 
                 env.conf.markdown = old;
