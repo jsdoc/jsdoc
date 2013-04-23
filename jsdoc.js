@@ -182,7 +182,7 @@ function main() {
             .get();
     }
     catch (e) {
-        throw new Error('Configuration file cannot be evaluated: ' + e);
+        throw new Error('Cannot parse the config file ' + confPath + ': ' + e);
     }
 
     // look for options on the command line, in the config file, and in the defaults, in that order
