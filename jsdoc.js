@@ -116,25 +116,35 @@ function dump() {
  */
 function main() {
     var _ = require('underscore');
-    var args = require('jsdoc/opts/args');
-    var augment = require('jsdoc/augment');
-    var borrow = require('jsdoc/borrow');
-    var Config = require('jsdoc/config');
-    var Filter = require('jsdoc/src/filter').Filter;
     var fs = require('jsdoc/fs');
-    var handlers = require('jsdoc/src/handlers');
-    var include = require('jsdoc/util/include');
-    var Package = require('jsdoc/package').Package;
     var path = require('jsdoc/path');
-    var plugins = require('jsdoc/plugins');
-    var Readme = require('jsdoc/readme');
-    var resolver = require('jsdoc/tutorial/resolver');
     var taffy = require('taffydb').taffy;
-    var vm = require('jsdoc/util/vm');
 
+    var jsdoc = {
+        augment: require('jsdoc/augment'),
+        borrow: require('jsdoc/borrow'),
+        Config: require('jsdoc/config'),
+        opts: {
+            args: require('jsdoc/opts/args')
+        },
+        'package': require('jsdoc/package'),
+        plugins: require('jsdoc/plugins'),
+        Readme: require('jsdoc/readme'),
+        src: {
+            filter: require('jsdoc/src/filter'),
+            handlers: require('jsdoc/src/handlers')
+        },
+        tutorial: {
+            resolver: require('jsdoc/tutorial/resolver')
+        },
+        util: {
+            include: require('jsdoc/util/include')
+        }
+    };
+
+    var confPath;
     var defaultOpts;
     var docs;
-    var exampleConf;
     var filter;
     var i;
     var info;
@@ -157,32 +167,32 @@ function main() {
         revision: new Date(parseInt(info.revision, 10)).toUTCString()
     };
 
-    env.opts = args.parse(env.args);
+    env.opts = jsdoc.opts.args.parse(env.args);
 
+    confPath = env.opts.configure || path.join(__dirname, 'conf.json');
     try {
-        env.conf = new Config(
-            fs.readFileSync( env.opts.configure || path.join(__dirname, 'conf.json'), 'utf8' )
-        ).get();
+        fs.statSync(confPath);
     }
     catch (e) {
-        try {
-            // Use the example file if possible
-            exampleConf = fs.readFileSync(path.join(__dirname, 'conf.json.EXAMPLE'), 'utf8');
-            env.conf = JSON.parse(exampleConf);
-        }
-        catch(e) {
-            throw('Configuration file cannot be evaluated. ' + e);
-        }
+        confPath = path.join(__dirname, 'conf.json.EXAMPLE');
+    }
+
+    try {
+        env.conf = new jsdoc.Config( fs.readFileSync(confPath, 'utf8') )
+            .get();
+    }
+    catch (e) {
+        throw new Error('Configuration file cannot be evaluated: ' + e);
     }
 
     // look for options on the command line, in the config file, and in the defaults, in that order
     env.opts = _.defaults(env.opts, env.conf.opts, defaultOpts);
 
     if (env.opts.help) {
-        console.log( args.help() );
+        console.log( jsdoc.opts.args.help() );
         process.exit(0);
     } else if (env.opts.test) {
-        include('test/runner.js');
+        jsdoc.util.include('test/runner.js');
         process.exit(0);
     } else if (env.opts.version) {
         console.log('JSDoc ' + env.version.number + ' (' + env.version.revision + ')');
@@ -190,7 +200,7 @@ function main() {
     }
 
     if (env.conf.plugins) {
-        plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
+        jsdoc.plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
     }
     
     if (env.conf.source && env.conf.source.include) {
@@ -205,30 +215,30 @@ function main() {
         }
         
         if (/(\bREADME|\.md)$/i.test(env.opts._[i])) {
-            env.opts.readme = new Readme(env.opts._[i]).html;
+            env.opts.readme = new jsdoc.Readme(env.opts._[i]).html;
             env.opts._.splice(i--, 1);
         }
     }
     
     if (env.conf.source && env.opts._.length > 0) { // are there any files to scan and parse?
-        filter = new Filter(env.conf.source);
+        filter = new jsdoc.src.filter.Filter(env.conf.source);
 
         sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), filter);
 
-        handlers.attachTo(app.jsdoc.parser);
+        jsdoc.src.handlers.attachTo(app.jsdoc.parser);
 
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
 
         //The files are ALWAYS useful for the templates to have
         //If there is no package.json, just create an empty package
-        packageDocs = new Package(packageJson);
+        packageDocs = new jsdoc.package.Package(packageJson);
         packageDocs.files = sourceFiles || [];
         docs.push(packageDocs);
 
-        borrow.indexAll(docs);
+        jsdoc.borrow.indexAll(docs);
 
-        augment.addInherited(docs);
-        borrow.resolveBorrows(docs);
+        jsdoc.augment.addInherited(docs);
+        jsdoc.borrow.resolveBorrows(docs);
 
         if (env.opts.explain) {
             dump(docs);
@@ -236,8 +246,8 @@ function main() {
         }
 
         if (env.opts.tutorials) {
-            resolver.load(env.opts.tutorials);
-            resolver.resolve();
+            jsdoc.tutorial.resolver.load(env.opts.tutorials);
+            jsdoc.tutorial.resolver.resolve();
         }
 
         env.opts.template = (function() {
@@ -260,12 +270,12 @@ function main() {
             template.publish(
                 taffy(docs),
                 env.opts,
-                resolver.root
+                jsdoc.tutorial.resolver.root
             );
         }
         else {
             // old templates define a global "publish" function, which is deprecated
-            include(env.opts.template + '/publish.js');
+            jsdoc.util.include(env.opts.template + '/publish.js');
             if (publish && typeof publish === 'function') {
                 console.log( env.opts.template + ' uses a global "publish" function, which is ' +
                     'deprecated and may not be supported in future versions. ' +
@@ -275,7 +285,7 @@ function main() {
                 publish(
                     taffy(docs),
                     env.opts,
-                    resolver.root
+                    jsdoc.tutorial.resolver.root
                 );
             }
             else {
