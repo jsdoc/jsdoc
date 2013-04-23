@@ -1,3 +1,4 @@
+/*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true, spyOn: true */
 describe('jsdoc/tag/validator', function() {
     var validator = require('jsdoc/tag/validator'),
         tag = require('jsdoc/tag');
@@ -15,7 +16,8 @@ describe('jsdoc/tag/validator', function() {
     // Note: various Error classes are private so we just test whether *any*
     // error was thrown, not against particular types (e.g. UnknownTagError).
     describe('validate', function() {
-        var lenient = !!env.opts.lenient,
+        var dictionary = require('jsdoc/tag/dictionary'),
+            lenient = !!env.opts.lenient,
             allowUnknown = !!env.conf.tags.allowUnknownTags,
             badTag = {title: 'lkjasdlkjfb'},
             meta = {filename: 'asdf.js', lineno: 1},
@@ -23,7 +25,7 @@ describe('jsdoc/tag/validator', function() {
             goodTag2 = new tag.Tag('ignore', '', meta); // mustNotHaveValue
        
         function validateTag(tag) {
-           return function() { validator.validate(tag, meta); };
+           return function() { validator.validate(tag, dictionary.lookUp(tag.title), meta); };
         } 
 
         beforeEach(function() {
