@@ -319,6 +319,20 @@ describe("jsdoc/util/templateHelper", function() {
             var link = helper.linkto('LinktoFakeClass', null, null, 'fragment');
             expect(link).toBe('<a href="fakeclass.html#fragment">LinktoFakeClass</a>');
         });
+
+        it('returns the original text if an inline {@link} tag is specified', function() {
+            var link;
+            var text = '{@link Foo}';
+
+            function getLink() {
+                link = helper.linkto(text);
+            }
+            
+            // make sure we're not trying to parse the inline link as a type expression
+            expect(getLink).not.toThrow();
+            // linkto doesn't process {@link} tags
+            expect(link).toBe(text);
+        });
     });
 
     describe("htmlsafe", function() {
