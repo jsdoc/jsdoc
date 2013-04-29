@@ -122,6 +122,60 @@ describe('jsdoc/tag/type', function() {
             expect(info.type).toEqual( ['string', 'number', 'boolean', 'function'] );
         });
 
+        it('should not find any type if there is no text in braces', function() {
+            var desc = 'braceless text';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            expect(info.type).toEqual([]);
+        });
+
+        it('should cope with bad escapement at the end of the string', function() {
+            var desc = 'bad {escapement \\';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            expect(info.type).toEqual([]);
+            expect(info.text).toBe(desc);
+        });
+
+        it('should handle escaped braces correctly', function() {
+            var desc = '{weirdObject."with\\}AnnoyingProperty"}';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            expect(info.type[0]).toBe('weirdObject."with}AnnoyingProperty"');
+        });
+
+        it('should work if the type expression is the entire string', function() {
+            var desc = '{textInBraces}';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            expect(info.type[0]).toBe('textInBraces');
+        });
+
+        it('should work if the type expression is at the beginning of the string', function() {
+            var desc = '{testString} ahoy';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            expect(info.type[0]).toBe('testString');
+            expect(info.text).toBe('ahoy');
+        });
+
+        it('should work if the type expression is in the middle of the string', function() {
+            var desc = 'a {testString} yay';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            expect(info.type[0]).toBe('testString');
+            expect(info.text).toBe('a  yay');
+        });
+
+        it('should work if the tag is at the end of the string', function() {
+            var desc = 'a {testString}';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            expect(info.type[0]).toBe('testString');
+            expect(info.text).toBe('a');
+        });
+
+        it('should work when there are nested braces', function() {
+            var desc = 'some {{double}} braces';
+            var info = jsdoc.tag.type.parse(desc, false, true);
+            // we currently stringify all record types as 'Object'
+            expect(info.type[0]).toBe('Object');
+            expect(info.text).toBe('some  braces');
+        });
+
         it('should override the type expression if an inline @type tag is specified', function() {
             var desc = '{Object} cookie {@type Monster}';
             var info = jsdoc.tag.type.parse(desc, true, true);
