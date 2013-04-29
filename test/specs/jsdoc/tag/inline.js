@@ -73,7 +73,7 @@ describe('jsdoc/tag/inline', function() {
                 expect(tagInfo.completeTag).toBe('{@foo test string}');
                 expect(tagInfo.text).toBe('test string');
 
-                return tagInfo.completeTag;
+                return string;
             }
 
             var result = jsdoc.tag.inline.replaceInlineTag('{@foo test string} ahoy', 'foo',
@@ -91,7 +91,7 @@ describe('jsdoc/tag/inline', function() {
                 expect(tagInfo.completeTag).toBe('{@foo test string}');
                 expect(tagInfo.text).toBe('test string');
 
-                return tagInfo.completeTag;
+                return string;
             }
 
             var result = jsdoc.tag.inline.replaceInlineTag('a {@foo test string} yay', 'foo',
@@ -109,7 +109,7 @@ describe('jsdoc/tag/inline', function() {
                 expect(tagInfo.completeTag).toBe('{@foo test string}');
                 expect(tagInfo.text).toBe('test string');
 
-                return tagInfo.completeTag;
+                return string;
             }
 
             var result = jsdoc.tag.inline.replaceInlineTag('a {@foo test string}', 'foo', replacer);
@@ -126,12 +126,12 @@ describe('jsdoc/tag/inline', function() {
             }
 
             var result = jsdoc.tag.inline.replaceInlineTag('a {@foo test string}', 'foo', replacer);
-            expect(result.newString).toBe('a REPLACED!');
+            expect(result.newString).toBe('REPLACED!');
         });
 
         it('should process all occurrences of a tag', function() {
-            function replacer() {
-                return 'stuff';
+            function replacer(string, tagInfo) {
+                return string.replace(tagInfo.completeTag, 'stuff');
             }
 
             var result = jsdoc.tag.inline.replaceInlineTag('some {@foo text} with multiple ' +
@@ -163,17 +163,17 @@ describe('jsdoc/tag/inline', function() {
         });
 
         it('should work with an object with one replacer', function() {
-            var text = 'some {@foo text} with multiple tags';
+            var text = 'some {@foo text} with {@bar multiple} tags';
             var replacers = {
                 foo: function(string, tagInfo) {
                     expect(tagInfo.completeTag).toBe('{@foo text}');
                     expect(tagInfo.text).toBe('text');
-                    return 'stuff';
+                    return string.replace(tagInfo.completeTag, 'stuff');
                 }
             };
 
             var result = jsdoc.tag.inline.replaceInlineTags(text, replacers);
-            expect(result.newString).toBe('some stuff with multiple tags');
+            expect(result.newString).toBe('some stuff with {@bar multiple} tags');
 
         });
 
@@ -183,12 +183,12 @@ describe('jsdoc/tag/inline', function() {
                 foo: function(string, tagInfo) {
                     expect(tagInfo.completeTag).toBe('{@foo text}');
                     expect(tagInfo.text).toBe('text');
-                    return 'stuff';
+                    return string.replace(tagInfo.completeTag, 'stuff');
                 },
                 bar: function(string, tagInfo) {
                     expect(tagInfo.completeTag).toBe('{@bar multiple}');
                     expect(tagInfo.text).toBe('multiple');
-                    return 'awesome';
+                    return string.replace(tagInfo.completeTag, 'awesome');
                 }
             };
 
