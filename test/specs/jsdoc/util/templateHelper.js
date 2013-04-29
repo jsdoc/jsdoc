@@ -990,7 +990,6 @@ describe("jsdoc/util/templateHelper", function() {
 
         // missing tutorials
         it("returns the tutorial name if it's missing and no missingOpts is provided", function() {
-            console.log("returns the tutorial name if it's missing and no missingOpts is provided");
             helper.setTutorials(resolver.root);
             var link = helper.toTutorial('qwerty');
             expect(link).toBe('qwerty');
