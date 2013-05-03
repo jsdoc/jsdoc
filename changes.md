@@ -21,14 +21,14 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
     Foo.Bar;
 ```
 
-    (#391)
+(#391)
 + You can now use an inline `{@type}` tag in a parameter's description. If this tag is present, JSDoc will assume that the parameter uses the type specified in the inline `{@type}` tag. For example, the following `@param` tag would cause `myParam`'s type to be documented as `Foo`:
 
-```javascript
+```
 @param {(boolean|string)} myParam - My special parameter. {@type Foo}
 ```
 
-    (#152)
+(#152)
 + The `console.log` function now behaves the same way as on Node.js. In addition, the functions `console.info`, `console.error`, `console.warn`, and `console.trace` have been implemented. (#298)
 + You can now use npm to install JSDoc globally by running `npm install -g`. **Note**: JSDoc will still run under Mozilla Rhino, not Node.js. (#374)
 + The `jsVersion` configuration property has been removed. (#390)
