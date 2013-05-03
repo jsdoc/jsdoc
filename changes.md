@@ -16,19 +16,19 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + You can now use the [marked](https://github.com/chjj/marked) Markdown parser by setting the configuration property `markdown.parser` to `marked`. In addition, if `markdown.parser` is set to `gfm`, JSDoc will now use the "marked" parser instead. (#385)
 + The `@typedef` tag no longer requires a name when used with a Closure Compiler-style type definition. For example, the following type definition will automatically get the name `Foo.Bar`:
 
-```javascript
-    /** @typedef {string} */
-    Foo.Bar;
-```
+    ```javascript
+        /** @typedef {string} */
+        Foo.Bar;
+    ```
 
-(#391)
+    (#391)
 + You can now use an inline `{@type}` tag in a parameter's description. If this tag is present, JSDoc will assume that the parameter uses the type specified in the inline `{@type}` tag. For example, the following `@param` tag would cause `myParam`'s type to be documented as `Foo`:
 
-```
-@param {(boolean|string)} myParam - My special parameter. {@type Foo}
-```
+    ```
+    @param {(boolean|string)} myParam - My special parameter. {@type Foo}
+    ```
 
-(#152)
+    (#152)
 + The `console.log` function now behaves the same way as on Node.js. In addition, the functions `console.info`, `console.error`, `console.warn`, and `console.trace` have been implemented. (#298)
 + You can now use npm to install JSDoc globally by running `npm install -g`. **Note**: JSDoc will still run under Mozilla Rhino, not Node.js. (#374)
 + The `jsVersion` configuration property has been removed. (#390)
@@ -82,29 +82,29 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 ### Major changes
 + You can now use the new `@callback` tag to provide information about a callback function's signature. To document a callback function, create a standalone JSDoc comment, as shown in the following example:
 
-```javascript
-/**
- * @class
- */
-function MyClass() {}
+    ```javascript
+    /**
+     * @class
+     */
+    function MyClass() {}
 
-/**
- * Send a request.
- *
- * @param {MyClass~responseCb} cb - Called after a response is received.
- */
-MyClass.prototype.sendRequest = function(cb) {
-    // code
-};
+    /**
+     * Send a request.
+     *
+     * @param {MyClass~responseCb} cb - Called after a response is received.
+     */
+    MyClass.prototype.sendRequest = function(cb) {
+        // code
+    };
 
-/**
- * Callback for sending a request.
- *
- * @callback MyClass~responseCb
- * @param {?string} error - Information about the error.
- * @param {?string} response - Body of the response.
- */
-```
+    /**
+     * Callback for sending a request.
+     *
+     * @callback MyClass~responseCb
+     * @param {?string} error - Information about the error.
+     * @param {?string} response - Body of the response.
+     */
+    ```
 + The inline link tag, `{@link}`, has been improved:
     + You can now use a space as the delimiter between the link target and link text.
     + In your `conf.json` file, you can now enable the option `templates.cleverLinks` to display code links in a monospace font and URL links in plain text. You can also enable the option `templates.monospaceLinks` to display all links in a monospace font. **Note**: JSDoc templates must be updated to respect these options.
