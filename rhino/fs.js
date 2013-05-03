@@ -7,6 +7,8 @@
 
 var path = require('path');
 
+var asyncify = path._asyncify;
+
 function checkEncoding(enc, name) {
     // we require the `encoding` parameter for Node.js compatibility; on Node.js, if you omit the
     // encoding, you get a stream instead of a string
@@ -23,27 +25,15 @@ function checkEncoding(enc, name) {
 }
 
 exports.readFileSync = function(filename, encoding) {
-    encoding = checkEncoding(encoding, 'fs.readFileSync');
+    encoding = checkEncoding(encoding, 'fs.readFile[Sync]');
 
     return readFile(filename, encoding);
 };
-
-exports.readFile = function(filename, encoding, callback) {
-    try {
-        var data = exports.readFileSync(filename, encoding);
-        process.nextTick(function() {
-            callback(null, data);
-        });
-    }
-    catch(e) {
-        process.nextTick(function() {
-            callback(e);
-        });
-    }
-};
+exports.readFile = asyncify(exports.readFileSync);
 
 // in node 0.8, path.exists() and path.existsSync() moved to the "fs" module
 exports.existsSync = path.existsSync;
+exports.exists = path.exists;
 
 var statSync = exports.statSync = function(_path) {
     var f = new java.io.File(_path);
@@ -56,6 +46,7 @@ var statSync = exports.statSync = function(_path) {
         }
     };
 };
+exports.stat = asyncify(statSync);
 
 var readdirSync = exports.readdirSync = function(_path) {
     var dir;
@@ -75,6 +66,7 @@ var readdirSync = exports.readdirSync = function(_path) {
 
     return files;
 };
+exports.readdir = asyncify(readdirSync);
 
 // JSDoc extension to `fs` module
 var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
@@ -134,6 +126,7 @@ var mkdirSync = exports.mkdirSync = function(_path) {
     var dir_path = toDir(_path);
     (new java.io.File(dir_path)).mkdir();
 };
+exports.mkdir = asyncify(mkdirSync);
 
 // JSDoc extension to `fs` module
 exports.mkPath = function(/**Array*/ _path) {
@@ -160,9 +153,10 @@ exports.copyFileSync = function(inFile, outDir, fileName) {
     bos.close();
     bis.close();
 };
+exports.copyFile = asyncify(exports.copyFileSync);
 
 exports.writeFileSync = function(filename, data, encoding) {
-    encoding = checkEncoding(encoding, 'fs.writeFileSync');
+    encoding = checkEncoding(encoding, 'fs.writeFile[Sync]');
 
     var out = new Packages.java.io.PrintWriter(
         new Packages.java.io.OutputStreamWriter(
@@ -179,3 +173,4 @@ exports.writeFileSync = function(filename, data, encoding) {
         out.close();
     }
 };
+exports.writeFile = asyncify(exports.writeFileSync);
