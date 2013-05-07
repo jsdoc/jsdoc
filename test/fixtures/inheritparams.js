@@ -23,3 +23,17 @@ function Circle(config)
 {
 
 }
+
+/**
+ * This shape takes a background image URL instead of a color identifier
+ *
+ * @param {object} config Configuration object
+ * @param {string} config.fill Background image URL
+ * @inheritparams config.
+ * @augments Shape
+ * @constructor
+ */
+function BackgroundShape(config)
+{
+
+}
