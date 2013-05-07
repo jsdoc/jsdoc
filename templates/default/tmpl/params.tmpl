@@ -24,7 +24,7 @@
     params.forEach(function(param) {
         if (!param) { return; }
         
-        if (param.optional || param.nullable || param.variable) {
+        if (param.optional || param.nullable || param.variable || param.inherited) {
             params.hasAttributes = true;
         }
         
