@@ -37,3 +37,32 @@ function BackgroundShape(config)
 {
 
 }
+
+/**
+ * @augments Shape
+ * @inheritparams config
+ * @constructor
+ */
+function PlaceholderShape(config)
+{
+
+}
+
+/**
+ * @constructor
+ */
+function NoParams()
+{
+
+}
+
+/**
+ * @augments NoParams
+ * @inheritparams config.
+ * @param config
+ * @constructor
+ */
+function InheritsNoParams(config)
+{
+
+}
