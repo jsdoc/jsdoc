@@ -24,7 +24,7 @@
     params.forEach(function(param) {
         if (!param) { return; }
         
-        if (param.optional || param.nullable || param.variable) {
+        if (param.optional || param.nullable || param.variable || param.inherited) {
             params.hasAttributes = true;
         }
         
@@ -87,6 +87,10 @@
                     &lt;nullable><br>
                 <?js } ?>
                     
+                <?js if (param.inherited) { ?>
+                    &lt;inherited><br>
+                <?js } ?>
+
                 <?js if (param.variable) { ?>
                     &lt;repeatable><br>
                 <?js } ?>
