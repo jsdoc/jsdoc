@@ -80,6 +80,15 @@
         expect(bazMethod3.memberof).toBe("Baz");
     });
 
+     it('(Grand)children correctly identify the original source of inherited members', function(){
+         expect(fooProp1.inherits).not.toBeDefined();
+         expect(barProp3.inherits).not.toBeDefined();
+         expect(barProp1.inherits).toBe("Foo#prop1");
+         expect(bazProp2.inherits).toBe("Foo#prop2");
+         expect(bazProp3.inherits).toBe("Bar#prop3");
+         expect(bazMethod1.inherits).toBe("Foo#method1");
+     });
+
     it('When an object is extended, and it overrides an ancestor property, the child does not include docs for the ancestor property.', function() {
         expect(bazProp1All.length).toBe(1);
     });
