@@ -92,5 +92,34 @@ describe('jsdoc/util/markdown', function() {
                 '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>');
             restoreMarkdownConf(storage);
         });
+
+        it('should use the specified highlighter when the marked parser is enabled', function() {
+            var storage = setMarkdownConf({parser: 'marked'});
+            var temp = env.conf.highlighter;
+            env.opts.highlighter = function () { };
+            var return_val = 'highlighted_code';
+            spyOn(env.opts, 'highlighter').andReturn(return_val);
+            var source = '```javascript\ncode();\n```';
+
+            var parser = markdown.getParser();
+            expect(parser(source)).toEqual('<pre><code class="lang-javascript">' + return_val + '</code></pre>');
+            expect(env.opts.highlighter).toHaveBeenCalledWith('code();','javascript');
+
+            restoreMarkdownConf(storage);
+            env.opts.highlighter = temp;
+        });
+
+        it('should function without a specified highlighter when the marked parser is enabled', function() {
+            var storage = setMarkdownConf({parser: 'marked'});
+            var temp = env.conf.highlighter;
+            delete env.conf.highlighter;
+            var source = '```javascript\ncode();\n```';
+
+            var parser = markdown.getParser();
+            expect(parser(source)).toEqual('<pre><code class="lang-javascript">code();</code></pre>');
+
+            restoreMarkdownConf(storage);
+            env.opts.highlighter = temp;
+        });
     });
 });

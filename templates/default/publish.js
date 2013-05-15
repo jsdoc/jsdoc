@@ -557,3 +557,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     }
     saveChildren(tutorials);
 };
+
+exports.highlight = function(code, lang) {
+    return '<pre class="prettyprint lang-' + lang + '"><code>' + code + '</code></pre>';
+};
