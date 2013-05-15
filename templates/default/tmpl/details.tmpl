@@ -1,12 +1,12 @@
 <?js
 var data = obj;
 var self = this;
-var default_object_css = '';
+var defaultObjectClass = '';
 
 // Check if the default value is an object, if so, apply code highlighting
-if (data.defaultvalue && data.defaultobject){
+if (data.defaultvalue && data.defaultvaluetype === 'object') {
     data.defaultvalue = "<pre class=\"prettyprint\"><code>" + data.defaultvalue + "</code></pre>";
-    default_object_css = ' style="padding-top: 0;" ';
+    defaultObjectClass = ' class="object-value"';
 }
 ?>
 <dl class="details">
@@ -67,7 +67,7 @@ if (data.defaultvalue && data.defaultobject){
     <?js if (data.defaultvalue) {?>
     <dt class="tag-default">Default Value:</dt>
     <dd class="tag-default"><ul class="dummy">
-            <li<?js= default_object_css ?>><?js= data.defaultvalue ?></li>
+            <li<?js= defaultObjectClass ?>><?js= data.defaultvalue ?></li>
         </ul></dd>
     <?js } ?>
     

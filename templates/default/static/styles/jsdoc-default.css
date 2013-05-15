@@ -202,6 +202,7 @@ h6
 .details ul { list-style-type: none; }
 .details li { margin-left: 30px; padding-top: 6px; }
 .details pre.prettyprint { margin: 0 }
+.details .object-value { padding-top: 0; }
 
 .description {
 	margin-bottom: 1em;
