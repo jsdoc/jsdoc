@@ -237,7 +237,7 @@ function main() {
         jsdoc.augment.addInherited(docs);
         jsdoc.borrow.resolveBorrows(docs);
 
-        app.jsdoc.parser.fireProcessingComplete({doclets: docs});
+        app.jsdoc.parser.fireProcessingComplete(docs);
 
         if (env.opts.explain) {
             dump(docs);
