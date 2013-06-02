@@ -19,7 +19,8 @@ var events = conf.include || [
     'symbolFound',
     'newDoclet',
     'fileComplete',
-    'parseComplete'
+    'parseComplete',
+    'processingComplete'
 ];
 // Don't dump the excluded parser events
 if (conf.exclude) {
