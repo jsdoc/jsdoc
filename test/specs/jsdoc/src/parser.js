@@ -77,6 +77,14 @@ describe("jsdoc/src/parser", function() {
                 expect(spy).toHaveBeenCalled();
                 expect(spy.mostRecentCall.args[0].sourcefiles).toEqual(["[[string0]]"]);
             });
+
+            it("should fire processingComplete when fireProcessingComplete is called", function() {
+                var spy = jasmine.createSpy(),
+                    doclets = {doclets: ['a','b']};
+                parser.on('processingComplete', spy).fireProcessingComplete(doclets);
+                expect(spy).toHaveBeenCalled();
+                expect(spy.mostRecentCall.args[0]).toEqual(doclets);
+            });
             
             it("should be able to parse its own source file", function() {
                 var fs = require('jsdoc/fs'),
