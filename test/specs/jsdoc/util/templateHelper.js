@@ -1170,6 +1170,22 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
+        it('should allow linebreaks to separate url from link text', function() {
+            var input = 'This is a {@link\ntest\ntest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
+        });
+
+
+        it('should normalize additional newlines to spaces', function() {
+            var input = 'This is a {@link\ntest\ntest\n\ntest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test test</a>.');
+        });
+
+
         it('should allow tabs between link tag and content', function() {
             var input = 'This is a {@link\ttest}.',
                 output = helper.resolveLinks(input);
