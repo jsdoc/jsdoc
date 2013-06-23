@@ -170,7 +170,7 @@ function main() {
     env.opts = jsdoc.opts.args.parse(env.args);
 
     confPath = env.opts.configure || path.join(__dirname, 'conf.json');
-    if ( !fs.statSync(confPath).isFile() ) {
+    if ( !fs.statSync(confPath).isFile() && !env.opts.configure ) {
         confPath = path.join(__dirname, 'conf.json.EXAMPLE');
     }
 
