@@ -1,7 +1,7 @@
 describe("jsdoc/src/filter", function() {
     var filter = new (require('jsdoc/src/filter').Filter)({
             includePattern: new RegExp(".+\\.js(doc)?$"),
-            excludePattern: new RegExp("(^|\\/)_"),
+            excludePattern: new RegExp("(^|\\/|\\\\)_"),
             exclude: ['.ignore', 'scratch/conf.js']
         });
 
