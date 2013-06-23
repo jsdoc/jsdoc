@@ -1,7 +1,8 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("When a getter or setter is the child of an object literal", function () {
-    var docSet = jasmine.getDocSetFromFile("test/fixtures/getset.js"),
-        foundName = docSet.getByLongname("Person#name"),
-        foundAge = docSet.getByLongname("Person#age");
+    var docSet = jasmine.getDocSetFromFile("test/fixtures/getset.js");
+    var foundName = docSet.getByLongname("Person#name");
+    var foundAge = docSet.getByLongname("Person#age");
 
     it("should have a doclet with the correct longname", function () {
         expect(foundName.length).toEqual(2);

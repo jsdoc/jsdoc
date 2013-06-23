@@ -493,11 +493,9 @@ describe("jsdoc/util/templateHelper", function() {
                     if (tests[src]) {
                         expect(attribs).toContain(tests[src]);
                     } else {
-                        if (whatNotToContain !== undefined) {
-                            if (Array.isArray(whatNotToContain)) {
-                                for (var i = 0; i < whatNotToContain.length; ++i) {
-                                    expect(attribs).not.toContain(whatNotToContain[i]);
-                                }
+                        if (Array.isArray(whatNotToContain)) {
+                            for (var i = 0; i < whatNotToContain.length; ++i) {
+                                expect(attribs).not.toContain(whatNotToContain[i]);
                             }
                         } else {
                             expect(attribs.length).toBe(0);
@@ -557,7 +555,7 @@ describe("jsdoc/util/templateHelper", function() {
                 'asdf': false,
                 '@name Fdsa#foo\n@readonly': 'readonly',
                 // kind is not 'member'.
-                '@const asdf\n@readonly': false,
+                '@const asdf\n@readonly': 'constant',
                 '@function asdf\n@readonly': false,
                 '@function Asdf#bar\n@readonly': false
             };

@@ -56,6 +56,20 @@ license, which is reproduced below:
 > SOFTWARE.
 
 
+## Acorn ##
+
+Portions of the Acorn source code are incorporated into the following files:
+
+- `lib/jsdoc/src/walker.js`
+
+Acorn is distributed under the MIT license, which is reproduced above.
+
+Copyright (C) 2012 Marijn Haverbeke <marijnh@gmail.com>.
+
+The source code for Acorn is available at:
+https://github.com/marijnh/acorn
+
+
 ## Async.js ##
 
 Async.js is distributed under the MIT license, which is reproduced above.

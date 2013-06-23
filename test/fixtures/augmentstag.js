@@ -28,7 +28,7 @@ Foo.prototype.method2 = function() {};
  * @extends Foo
  */
 function Bar() {
-    /** Thrid prop **/
+    /** Third prop **/
     this.prop3 = true;
 }
 
@@ -50,4 +50,3 @@ function Baz() {
  * Third grandchild method.
  */
 Baz.prototype.method3 = function() {};
-

@@ -1,36 +1,36 @@
 /*global describe: true, expect: true, it: true, jasmine: true */
  describe("@augments tag", function() {
     /*jshint unused: false */
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentstag.js'),
-        foo = docSet.getByLongname('Foo')[0],
-        fooProp1 = docSet.getByLongname('Foo#prop1')[0],
-        fooProp2 = docSet.getByLongname('Foo#prop2')[0],
-        fooProp3 = docSet.getByLongname('Foo#prop3')[0],
-        fooMethod1 = docSet.getByLongname('Foo#method1')[0],
-        fooMethod2 = docSet.getByLongname('Foo#method2')[0],
-        bar = docSet.getByLongname('Bar')[0],
-        barProp1 = docSet.getByLongname('Bar#prop1')[0],
-        barProp2 = docSet.getByLongname('Bar#prop2')[0],
-        barProp3 = docSet.getByLongname('Bar#prop3')[0],
-        barMethod1 = docSet.getByLongname('Bar#method1')[0],
-        barMethod2 = docSet.getByLongname('Bar#method2')[0],
-        barMethod2All = docSet.getByLongname('Bar#method2'),
-        bazProp1 = docSet.getByLongname('Baz#prop1')[0],
-        bazProp1All = docSet.getByLongname('Baz#prop1'),
-        bazProp2 = docSet.getByLongname('Baz#prop2')[0],
-        bazProp3 = docSet.getByLongname('Baz#prop3')[0],
-        bazMethod1 = docSet.getByLongname('Baz#method1')[0],
-        bazMethod2 = docSet.getByLongname('Baz#method2')[0],
-        bazMethod3 = docSet.getByLongname('Baz#method3')[0],
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentstag.js');
+    var foo = docSet.getByLongname('Foo')[0];
+    var fooProp1 = docSet.getByLongname('Foo#prop1')[0];
+    var fooProp2 = docSet.getByLongname('Foo#prop2')[0];
+    var fooProp3 = docSet.getByLongname('Foo#prop3')[0];
+    var fooMethod1 = docSet.getByLongname('Foo#method1')[0];
+    var fooMethod2 = docSet.getByLongname('Foo#method2')[0];
+    var bar = docSet.getByLongname('Bar')[0];
+    var barProp1 = docSet.getByLongname('Bar#prop1')[0];
+    var barProp2 = docSet.getByLongname('Bar#prop2')[0];
+    var barProp3 = docSet.getByLongname('Bar#prop3')[0];
+    var barMethod1 = docSet.getByLongname('Bar#method1')[0];
+    var barMethod2 = docSet.getByLongname('Bar#method2')[0];
+    var barMethod2All = docSet.getByLongname('Bar#method2');
+    var bazProp1 = docSet.getByLongname('Baz#prop1')[0];
+    var bazProp1All = docSet.getByLongname('Baz#prop1');
+    var bazProp2 = docSet.getByLongname('Baz#prop2')[0];
+    var bazProp3 = docSet.getByLongname('Baz#prop3')[0];
+    var bazMethod1 = docSet.getByLongname('Baz#method1')[0];
+    var bazMethod2 = docSet.getByLongname('Baz#method2')[0];
+    var bazMethod3 = docSet.getByLongname('Baz#method3')[0];
 
-        docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js'),
-        qux = docSet2.getByLongname('Qux')[0],
+    var docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js');
+    var qux = docSet2.getByLongname('Qux')[0];
 
-        docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js'),
-        FooMethod1 = docSet3.getByLongname('Foo#method1')[0],
-        BarMethod2 = docSet3.getByLongname('Bar#method2')[0],
-        FooBarMethod1 = docSet3.getByLongname('FooBar#method1')[0],
-        FooBarMethod2 = docSet3.getByLongname('FooBar#method2')[0];
+    var docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js');
+    var FooMethod1 = docSet3.getByLongname('Foo#method1')[0];
+    var BarMethod2 = docSet3.getByLongname('Bar#method2')[0];
+    var FooBarMethod1 = docSet3.getByLongname('FooBar#method1')[0];
+    var FooBarMethod2 = docSet3.getByLongname('FooBar#method2')[0];
 
     it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
         expect(typeof bar.augments).toBe('object');

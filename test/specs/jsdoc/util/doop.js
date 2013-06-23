@@ -1,13 +1,13 @@
-/*global describe: true, it: true */
+/*global describe: true, expect: true, it: true */
 describe('jsdoc/util/doop', function() {
     var doop = require('jsdoc/util/doop');
 
     it('should exist', function() {
         expect(doop).toBeDefined();
-        expect(typeof doop).toBe('object');
+        expect(typeof doop).toBe('function');
     });
 
-    it('should export a doop function', function() {
+    it('should export a doop function for backwards compatibility', function() {
         expect(doop.doop).toBeDefined();
         expect(typeof doop.doop).toBe('function');
     });
@@ -38,7 +38,7 @@ describe('jsdoc/util/doop', function() {
 
         it("should return a clone of an object", function() {
             var inp = {a:1, b:2, 'asdf-fdsa': 3};
-                out = doop.doop(inp);
+            var out = doop.doop(inp);
             // toEqual is a comparison on properties; toBe is === comparison.
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
@@ -62,7 +62,7 @@ describe('jsdoc/util/doop', function() {
 
         it("should clone recursively", function() {
             var inp = {a:1, b:2, 'asdf-fdsa': {a: 'fdsa', b: [1,2,3]}};
-                out = doop.doop(inp);
+            var out = doop.doop(inp);
             // toEqual is a comparison on properties; toBe is === comparison.
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);

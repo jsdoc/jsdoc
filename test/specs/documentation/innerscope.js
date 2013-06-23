@@ -1,9 +1,10 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("inner scope", function() {
     describe("Outer~inner.member cases", function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/innerscope.js'),
-            to = docSet.getByLongname('Message~headers.to'),
-            from = docSet.getByLongname('Message~headers.from'),
-            response = docSet.getByLongname('Message~response.code');
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/innerscope.js');
+        var to = docSet.getByLongname('Message~headers.to');
+        var from = docSet.getByLongname('Message~headers.from');
+        var response = docSet.getByLongname('Message~response.code');
 
         it('should occur when a member of a var member is documented.', function() {
             expect(to.length).toEqual(1);
@@ -19,10 +20,10 @@ describe("inner scope", function() {
     });
 
     describe("other cases", function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/innerscope2.js'),
-            to = docSet.getByLongname('Message~headers.to'),
-            from = docSet.getByLongname('<anonymous>~headers.from'),
-            cache = docSet.getByLongname('<anonymous>~headers.cache');
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/innerscope2.js');
+        var to = docSet.getByLongname('Message~headers.to');
+        var from = docSet.getByLongname('<anonymous>~headers.from');
+        var cache = docSet.getByLongname('<anonymous>~headers.cache');
 
         it('When a var is declared in a function, It is like Inner~member', function() {
             expect(cache.length).toEqual(1);

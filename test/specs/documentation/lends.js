@@ -1,5 +1,6 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("lends", function() {
-    describe("when a documented member is inside an object literal associate with a @lends tag", function() {
+    describe("when a documented member is inside an object literal associated with a @lends tag", function() {
         describe("standard case", function() {
             var docSet = jasmine.getDocSetFromFile('test/fixtures/lends.js'),
                 init = docSet.getByLongname('Person#initialize'),
@@ -14,7 +15,7 @@ describe("lends", function() {
             });
         });
 
-        describe("case containg constructor", function() {
+        describe("case containing constructor", function() {
             var docSet = jasmine.getDocSetFromFile('test/fixtures/lends2.js'),
                 person = docSet.getByLongname('Person').filter(function($) {
                     return ! $.undocumented;
