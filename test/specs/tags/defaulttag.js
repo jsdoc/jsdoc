@@ -8,6 +8,8 @@ describe("@default tag", function() {
     var rerrored = (docSet.getByLongname('rerrored') || [])[0];
     var win = (docSet.getByLongname('win') || [])[0];
     var header = (docSet.getByLongname('header') || [])[0];
+    var obj = docSet.getByLongname('obj')[0];
+    var multilineObject = docSet.getByLongname('multilineObject')[0];
 
     it('When symbol set to null has a @default tag with no text, the doclet\'s defaultValue property should be: null', function() {
         expect(request.defaultvalue).toBe('null');
@@ -35,6 +37,16 @@ describe("@default tag", function() {
 
     it('When symbol has a @default tag with a function call.', function() {
         expect(header.defaultvalue).toBeUndefined();
+    });
+
+    it('When symbol has a @default tag with an object, the doclet\'s defaultValue property should contain the stringified object', function() {
+        var expected_value = "{value_a: 'a', value_b: 'b'}";
+        expect(obj.defaultvalue).toEqual(expected_value);
+    });
+
+    it('When symbol has a @default tag with a multiline object, the doclet\'s defaultValue property should contain the properly stringified object', function() {
+        var expected_value = "{value_a: 'a', value_b: 'b'}";
+        expect(obj.defaultvalue).toEqual(expected_value);
     });
 
 });

@@ -11,7 +11,7 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 
 ### Enhancements
 + The parser now fires a `parseBegin` event before it starts parsing files, as well as a `parseComplete` event after all files have been parsed. Plugins can define event handlers for these events, and `parseBegin` handlers can modify the list of files to parse. (#299)
-+ Event handlers for `jsdocCommentFount` events can now modify the JSDoc comment. (#228)
++ Event handlers for `jsdocCommentFound` events can now modify the JSDoc comment. (#228)
 + You can now exclude tags from Markdown processing using the new option `markdown.excludeTags` in the configuration file. (#337)
 + You can now use the [marked](https://github.com/chjj/marked) Markdown parser by setting the configuration property `markdown.parser` to `marked`. In addition, if `markdown.parser` is set to `gfm`, JSDoc will now use the "marked" parser instead. (#385)
 + The `@typedef` tag no longer requires a name when used with a Closure Compiler-style type definition. For example, the following type definition will automatically get the name `Foo.Bar`:
