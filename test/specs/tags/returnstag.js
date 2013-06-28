@@ -17,7 +17,7 @@ describe("@returns tag", function() {
         expect(bind.returns[0].description).toBe('The binding id.');
     });
 
-    it('When a symbol has an @returns tag wihtout a type but with an inline tag, the doclet does not confuse the inline tag for a type.', function() {
+    it('When a symbol has an @returns tag without a type but with an inline tag, the doclet does not confuse the inline tag for a type.', function() {
         expect(typeof convert.returns).toBe('object');
         expect(convert.returns.length).toBe(1);
         expect(convert.returns[0].description).toBe('An object to be passed to {@link find}.');
