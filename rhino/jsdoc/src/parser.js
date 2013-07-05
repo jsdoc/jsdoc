@@ -1,0 +1,34 @@
+// TODO: module docs
+
+// TODO: docs
+var Parser = exports.Parser = function() {
+	var astBuilder;
+	var visitor;
+
+	var runtime = require('jsdoc/util/runtime');
+    if ( !runtime.isRhino() ) {
+        throw new Error('You must run JSDoc on Mozilla Rhino to use the Rhino parser.');
+    }
+
+    astBuilder = new ( require(runtime.getModulePath('jsdoc/src/astbuilder')) )();
+    visitor = new ( require(runtime.getModulePath('jsdoc/src/visitor')) ).Visitor(this);
+
+    Parser.super_.call(this, astBuilder, visitor);
+};
+require('util').inherits(Parser, require('jsdoc/src/parser').Parser);
+
+// TODO: update docs
+/**
+ * Adds a node visitor to use in parsing
+ */
+Parser.prototype.addNodeVisitor = function(visitor) {
+    this._visitor.addRhinoNodeVisitor(visitor);
+};
+
+// TODO: docs
+/**
+ * Get the node visitors used in parsing
+ */
+Parser.prototype.getNodeVisitors = function() {
+    return this._visitor.getRhinoNodeVisitors();
+};

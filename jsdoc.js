@@ -72,9 +72,9 @@ require('lib/jsdoc/util/global').env = {
 
 // initialize the environment for the current JavaScript VM
 (function(args) {
-    var vm = require('jsdoc/util/vm').vm;
+    var runtime = require('jsdoc/util/runtime').getRuntime();
     // TODO: may need to move this file to support Node.js
-    require('initialize')[vm](args);
+    require('initialize')[runtime](args);
 })( Array.prototype.slice.call(arguments, 0) );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
@@ -87,7 +87,11 @@ require('lib/jsdoc/util/global').env = {
 require('lib/jsdoc/util/global').app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
-        parser: new (require('jsdoc/src/parser').Parser)(),
+        // TODO: allow the config file to specify the parser module
+        parser: (function() {
+            var modulePath = require('jsdoc/util/runtime').getModulePath('jsdoc/src/parser');
+            return new ( require(modulePath) ).Parser();
+        })(),
         name: require('jsdoc/name')
     }
 };

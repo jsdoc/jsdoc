@@ -1,15 +1,16 @@
-/*global beforeEach: true, describe: true, expect: true, it: true, jasmine: true, xdescribe: true, xit: true */
+/*global beforeEach: true, describe: true, expect: true, it: true, jasmine: true, spyOn: true,
+xit: true */
 describe("jsdoc/src/parser", function() {
-    var jsdoc = {src: { parser: require('jsdoc/src/parser')}};
+    var jsdoc = { src: { parser: require('jsdoc/src/parser') } };
 
     it("should exist", function() {
         expect(jsdoc.src.parser).toBeDefined();
-        expect(typeof jsdoc.src.parser).toEqual("object");
+        expect(typeof jsdoc.src.parser).toBe('object');
     });
 
     it("should export a 'Parser' constructor", function() {
         expect(jsdoc.src.parser.Parser).toBeDefined();
-        expect(typeof jsdoc.src.parser.Parser).toEqual("function");
+        expect(typeof jsdoc.src.parser.Parser).toBe('function');
     });
 
     describe("Parser", function() {
@@ -19,14 +20,69 @@ describe("jsdoc/src/parser", function() {
             parser = new jsdoc.src.parser.Parser();
         }
 
-        it("should have a 'parse' function", function() {
-            expect(jsdoc.src.parser.Parser.prototype.parse).toBeDefined();
-            expect(typeof jsdoc.src.parser.Parser.prototype.parse).toEqual("function");
+        newParser();
+
+        it('should have an "astBuilder" property', function() {
+            expect(parser.astBuilder).toBeDefined();
         });
 
-        it("should have a 'results' function", function() {
-            expect(jsdoc.src.parser.Parser.prototype.results).toBeDefined();
-            expect(typeof jsdoc.src.parser.Parser.prototype.results).toEqual("function");
+        it('should have a "visitor" property', function() {
+            expect(parser.visitor).toBeDefined();
+        });
+
+        it('should have a "walker" property', function() {
+            expect(parser.walker).toBeDefined();
+        });
+
+        it('should accept an astBuilder, visitor, and walker as arguments', function() {
+            var astBuilder = {};
+            var visitor = {};
+            var walker = {};
+
+            var myParser = new jsdoc.src.parser.Parser(astBuilder, visitor, walker);
+
+            expect(myParser.astBuilder).toBe(astBuilder);
+            expect(myParser.visitor).toBe(visitor);
+            expect(myParser.walker).toBe(walker);
+        });
+
+        it('should have a "parse" method', function() {
+            expect(parser.parse).toBeDefined();
+            expect(typeof parser.parse).toBe('function');
+        });
+
+        it('should have a "results" method', function() {
+            expect(parser.results).toBeDefined();
+            expect(typeof parser.results).toBe('function');
+        });
+
+        it('should have an "addAstNodeVisitor" method', function() {
+            expect(parser.addAstNodeVisitor).toBeDefined();
+            expect(typeof parser.addAstNodeVisitor).toBe('function');
+        });
+
+        it('should have a "getAstNodeVisitors" method', function() {
+            expect(parser.getAstNodeVisitors).toBeDefined();
+            expect(typeof parser.getAstNodeVisitors).toBe('function');
+        });
+
+        describe('astBuilder', function() {
+            // TODO: enable
+            xit('should contain an appropriate astBuilder by default', function() {
+                expect( parser.astBuilder instanceof (require('jsdoc/src/astbuilder')) ).toBe(true);
+            });
+        });
+
+        describe('visitor', function() {
+            it('should contain an appropriate visitor by default', function() {
+                expect( parser.visitor instanceof (require('jsdoc/src/visitor')).Visitor ).toBe(true);
+            });
+        });
+
+        describe('walker', function() {
+            it('should contain an appropriate walker by default', function() {
+                expect( parser.walker instanceof (require('jsdoc/src/walker')).Walker ).toBe(true);
+            });
         });
 
         describe("parse", function() {
@@ -70,6 +126,70 @@ describe("jsdoc/src/parser", function() {
                 expect(spy).toHaveBeenCalled();
             });
 
+            it('should call AST node visitors', function() {
+                var Syntax = require('jsdoc/src/syntax').Syntax;
+
+                var args;
+
+                var sourceCode = ['javascript:/** foo */var foo;'];
+                var visitor = {
+                    visitNode: function(node, e, parser, sourceName) {
+                        if (e && e.code && !args) {
+                            args = Array.prototype.slice.call(arguments);
+                        }
+                    }
+                };
+
+                require('jsdoc/src/handlers').attachTo(parser);
+                parser.addAstNodeVisitor(visitor);
+                parser.parse(sourceCode);
+
+                expect(args).toBeDefined();
+                expect( Array.isArray(args) ).toBe(true);
+                expect(args.length).toBe(4);
+
+                // args[0]: AST node
+                expect(args[0].type).toBeDefined();
+                expect(args[0].type).toBe(Syntax.VariableDeclarator);
+
+                // args[1]: JSDoc event
+                expect(typeof args[1]).toBe('object');
+                expect(args[1].code).toBeDefined();
+                expect(args[1].code.name).toBeDefined();
+                expect(args[1].code.name).toBe('foo');
+
+                // args[2]: parser
+                expect(typeof args[2]).toBe('object');
+                expect(args[2] instanceof jsdoc.src.parser.Parser).toBe(true);
+
+                // args[3]: current source name
+                expect( String(args[3]) ).toBe('[[string0]]');
+            });
+
+            it('should reflect changes made by AST node visitors', function() {
+                var doclet;
+
+                var sourceCode = ['javascript:/** foo */var foo;'];
+                var visitor = {
+                    visitNode: function(node, e, parser, sourceName) {
+                        if (e && e.code && e.code.name === 'foo') {
+                            e.code.name = 'bar';
+                        }
+                    }
+                };
+
+                require('jsdoc/src/handlers').attachTo(parser);
+                parser.addAstNodeVisitor(visitor);
+                parser.parse(sourceCode);
+
+                doclet = parser.results()[0];
+
+                expect(doclet).toBeDefined();
+                expect(typeof doclet).toBe('object');
+                expect(doclet.name).toBeDefined();
+                expect(doclet.name).toBe('bar');
+            });
+
             it("should fire 'parseComplete' events after it finishes parsing files", function() {
                 var spy = jasmine.createSpy(),
                     sourceCode = ['javascript:var bar = false;'];
@@ -101,15 +221,31 @@ describe("jsdoc/src/parser", function() {
             });
         });
 
-        describe("results", function() {
+        describe('results', function() {
             beforeEach(newParser);
 
-            xit("contains an empty array before files are parsed", function() {
-                // TODO
+            it('returns an empty array before files are parsed', function() {
+                var results = parser.results();
+
+                expect(results).toBeDefined();
+                expect( Array.isArray(results) ).toBe(true);
+                expect(results.length).toBe(0);
             });
 
-            xit("contains an array of doclets after files are parsed", function() {
+            it('returns an array of doclets after files are parsed', function() {
+                var source = 'javascript:var foo;';
+                var results;
 
+                require('jsdoc/src/handlers').attachTo(parser);
+
+                parser.parse(source);
+                results = parser.results();
+
+                expect(results).toBeDefined();
+                expect(results[0]).toBeDefined();
+                expect(typeof results[0]).toBe('object');
+                expect(results[0].name).toBeDefined();
+                expect(results[0].name).toBe('foo');
             });
 
             it("should reflect comment changes made by 'jsdocCommentFound' handlers", function() {
@@ -128,6 +264,48 @@ describe("jsdoc/src/parser", function() {
                     expect(doclet.comment).toMatch('REPLACED!');
                 });
             });
+        });
+
+        describe('addAstNodeVisitor', function() {
+            function visitorA() {}
+            function visitorB() {}
+
+            var visitors;
+
+            beforeEach(newParser);
+
+            it('should work with a single node visitor', function() {
+                parser.addAstNodeVisitor(visitorA);
+
+                visitors = parser.getAstNodeVisitors();
+
+                expect(visitors.length).toBe(1);
+                expect(visitors[0]).toBe(visitorA);
+            });
+
+            it('should work with multiple node visitors', function() {
+                parser.addAstNodeVisitor(visitorA);
+                parser.addAstNodeVisitor(visitorB);
+
+                visitors = parser.getAstNodeVisitors();
+
+                expect(visitors.length).toBe(2);
+                expect(visitors[0]).toBe(visitorA);
+                expect(visitors[1]).toBe(visitorB);
+            });
+        });
+
+        describe('getAstNodeVisitors', function() {
+            beforeEach(newParser);
+            
+            it('should return an empty array by default', function() {
+                var visitors = parser.getAstNodeVisitors();
+
+                expect( Array.isArray(visitors) ).toBe(true);
+                expect(visitors.length).toBe(0);
+            });
+
+            // other functionality is covered by the addNodeVisitors tests
         });
     });
 });

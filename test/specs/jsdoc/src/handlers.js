@@ -1,8 +1,9 @@
 /*global describe: true, expect: true, it: true */
 describe("jsdoc/src/handlers", function() {
-    var jsdoc = {src: { parser: require('jsdoc/src/parser')}},
-        testParser = new jsdoc.src.parser.Parser(),
-        handlers = require('jsdoc/src/handlers');
+    var runtime = require('jsdoc/util/runtime');
+    var parser = require( runtime.getModulePath('jsdoc/src/parser') );
+    var testParser = new parser.Parser();
+    var handlers = require('jsdoc/src/handlers');
 
     handlers.attachTo(testParser);
 

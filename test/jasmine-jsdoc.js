@@ -110,10 +110,12 @@ jasmine.asyncSpecDone = function() {
 };
 
 jasmine.getDocSetFromFile = function(filename, parser) {
-    var sourceCode = fs.readFileSync(__dirname + '/' + filename, 'utf8'),
-        testParser = parser || new (require('jsdoc/src/parser')).Parser(),
-        indexAll = require('jsdoc/borrow').indexAll,
-        doclets;
+    var sourceCode = fs.readFileSync(__dirname + '/' + filename, 'utf8');
+    var runtime = require('jsdoc/util/runtime');
+    var testParser = parser ||
+        new ( require(runtime.getModulePath('jsdoc/src/parser')) ).Parser();
+    var indexAll = require('jsdoc/borrow').indexAll;
+    var doclets;
 
     require('jsdoc/src/handlers').attachTo(testParser);
 

@@ -1,9 +1,10 @@
 /*global describe: true, env: true, expect: true, it: true */
 
 describe("@overview tag", function() {
-    var parser = require('jsdoc/src/parser'),
-        srcParser = new parser.Parser(),
-        doclets;
+    var runtime = require('jsdoc/util/runtime');
+    var parser = require( runtime.getModulePath('jsdoc/src/parser') );
+    var srcParser = new parser.Parser();
+    var doclets;
 
     require('jsdoc/src/handlers').attachTo(srcParser);
     doclets = srcParser.parse(__dirname + '/test/fixtures/file.js');

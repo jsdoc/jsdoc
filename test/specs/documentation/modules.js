@@ -1,7 +1,9 @@
 /*global beforeEach: true, describe: true, env: true, expect: true, it: true */
 describe("module names", function() {
-    var parser = require('jsdoc/src/parser'),
-        srcParser = null, doclets;
+    var runtime = require('jsdoc/util/runtime');
+    var parser = require( runtime.getModulePath('jsdoc/src/parser') );
+    var srcParser = null;
+    var doclets;
 
     beforeEach(function() {
         env.opts._ = [__dirname + '/test/fixtures/modules/'];

@@ -1,7 +1,7 @@
 /*global Packages: true */
 /**
  * Creates an Esprima-compatible AST using Rhino's JavaScript parser.
- * @module jsdoc/src/rhino/astbuilder
+ * @module rhino/jsdoc/src/astbuilder
  */
 
 var AstBuilder = module.exports = function() {
@@ -10,4 +10,8 @@ var AstBuilder = module.exports = function() {
 
 AstBuilder.prototype.build = function(sourceCode, sourceName) {
     return this._builder.build(sourceCode, sourceName);
+};
+
+AstBuilder.prototype.getRhinoNodes = function() {
+    return this._builder.getRhinoNodes();
 };
