@@ -13,7 +13,7 @@ Installation
 
 Use git to clone the [official JSDoc repository](https://github.com/jsdoc3/jsdoc):
 
-    git clone git@github.com:jsdoc3/jsdoc.git
+    git clone https://github.com/jsdoc3/jsdoc.git
 
 Alternatively, you can download a .zip file for the
 [latest development version](https://github.com/jsdoc3/jsdoc/archive/master.zip)
