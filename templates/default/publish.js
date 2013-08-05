@@ -66,7 +66,10 @@ function addSignatureParams(f) {
 function addSignatureReturns(f) {
     var returnTypes = helper.getSignatureReturns(f);
     
-    f.signature = '<span class="signature">'+(f.signature || '') + '</span>' + '<span class="type-signature">'+(returnTypes.length? ' &rarr; {'+returnTypes.join('|')+'}' : '')+'</span>';
+    f.signature = '<span class="signature">' + (f.signature || '') + '</span>' +
+        '<span class="type-signature">' +
+        (returnTypes && returnTypes.length ? ' &rarr; {' + returnTypes.join('|') + '}' : '') +
+        '</span>';
 }
 
 function addSignatureTypes(f) {

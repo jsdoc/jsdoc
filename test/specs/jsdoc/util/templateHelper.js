@@ -739,6 +739,23 @@ describe("jsdoc/util/templateHelper", function() {
 
             delete helper.longnameToUrl.MyClass;
         });
+
+        it("doesn't throw an error in lenient mode if a 'returns' item has no value", function() {
+            function getReturns() {
+                return helper.getSignatureReturns(doc);
+            }
+
+            var doc;
+            var lenient = !!env.opts.lenient;
+
+            env.opts.lenient = true;
+            spyOn(console, 'log');
+            doc = new doclet.Doclet('/** @function myFunction\n@returns */', {});
+
+            expect(getReturns).not.toThrow();
+
+            env.opts.lenient = lenient;
+        });
     });
 
     describe("getAncestorLinks", function() {
