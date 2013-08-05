@@ -483,9 +483,9 @@ exports.publish = function(taffyData, opts, tutorials) {
     attachModuleSymbols( find({ kind: ['class', 'function'], longname: {left: 'module:'} }),
         members.modules );
 
-    // only output pretty-printed source files if requested; do this before generating any other
-    // pages, so the other pages can link to the source files
-    if (conf['default'].outputSourceFiles) {
+    // output pretty-printed source files by default; do this before generating any other pages, so
+    // that the other pages can link to the source files
+    if (!conf['default'] || conf['default'].outputSourceFiles !== false) {
         generateSourceFiles(sourceFiles);
     }
 
