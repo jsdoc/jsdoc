@@ -1113,6 +1113,20 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('This is a <a href="path/to/test.html">hello there</a>.');
         });
 
+        it('should translate [dummy text] and [hello there]{@link test} into an HTML link with the custom content.', function() {
+            var input = 'This is [dummy text] and [hello there]{@link test}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is [dummy text] and <a href="path/to/test.html">hello there</a>.');
+        });
+
+        it('should translate [dummy text] and [more] and [hello there]{@link test} into an HTML link with the custom content.', function() {
+            var input = 'This is [dummy text] and [more] and [hello there]{@link test}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is [dummy text] and [more] and <a href="path/to/test.html">hello there</a>.');
+        });
+
         it('should ignore [hello there].', function() {
             var input = 'This is a [hello there].',
                 output = helper.resolveLinks(input);
