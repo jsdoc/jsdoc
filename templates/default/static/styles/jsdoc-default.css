@@ -242,7 +242,7 @@ h6
 	border-left: 3px #ddd solid;
 }
 
-.prettyprint code span
+.prettyprint code span.line
 {
   display: inline-block;
 }
