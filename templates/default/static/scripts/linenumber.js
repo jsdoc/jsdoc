@@ -9,7 +9,7 @@
         numbered = source.innerHTML.split('\n');
         numbered = numbered.map(function(item) {
             counter++;
-            return '<span id="line' + counter + '"></span>' + item;
+            return '<span id="line' + counter + '" class="line"></span>' + item;
         });
 
         source.innerHTML = numbered.join('\n');
