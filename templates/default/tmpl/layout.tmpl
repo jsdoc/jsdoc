@@ -11,6 +11,11 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <?js if (env.conf.css) { ?>
+        <?js for (var i in env.conf.css) { ?>
+    <link type="text/css" rel="stylesheet" href="<?js= env.conf.css[i] ?>">
+        <?js } ?>
+    <?js } ?>
 </head>
 
 <body>

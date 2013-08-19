@@ -329,7 +329,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     helper.registerLink('global', globalUrl);
 
     // set up templating
-    view.layout = 'layout.tmpl';
+    view.layout = env.conf.layout || 'layout.tmpl'; 
 
     // set up tutorials for helper
     helper.setTutorials(tutorials);
