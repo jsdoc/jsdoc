@@ -244,11 +244,6 @@ function main() {
             process.exit(0);
         }
 
-        if (env.opts.tutorials) {
-            jsdoc.tutorial.resolver.load(env.opts.tutorials);
-            jsdoc.tutorial.resolver.resolve();
-        }
-
         env.opts.template = (function() {
             var publish = env.opts.template || 'templates/default';
             // if we don't find it, keep the user-specified value so the error message is useful
@@ -260,6 +255,16 @@ function main() {
         }
         catch(e) {
             throw new Error('Unable to load template: ' + e.message || e);
+        }
+
+        if (env.opts.tutorials) {
+            // Set up code highlighter for markdown plugins
+            if (template.highlight && typeof template.highlight === 'function') {
+                env.opts.highlighter = template.highlight;
+            }
+
+            jsdoc.tutorial.resolver.load(env.opts.tutorials);
+            jsdoc.tutorial.resolver.resolve();
         }
 
         // templates should include a publish.js file that exports a "publish" function
