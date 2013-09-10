@@ -12,6 +12,11 @@ describe('jsdoc/tag/inline', function() {
         expect(typeof jsdoc.tag.inline).toBe('object');
     });
 
+    it('should export an isInlineTag function', function() {
+        expect(jsdoc.tag.inline.isInlineTag).toBeDefined();
+        expect(typeof jsdoc.tag.inline.isInlineTag).toBe('function');
+    });
+
     it('should export a replaceInlineTag function', function() {
         expect(jsdoc.tag.inline.replaceInlineTag).toBeDefined();
         expect(typeof jsdoc.tag.inline.replaceInlineTag).toBe('function');
@@ -20,6 +25,43 @@ describe('jsdoc/tag/inline', function() {
     it('should export an extractInlineTag function', function() {
         expect(jsdoc.tag.inline.extractInlineTag).toBeDefined();
         expect(typeof jsdoc.tag.inline.replaceInlineTag).toBe('function');
+    });
+
+    describe('isInlineTag', function() {
+        var isInlineTag = jsdoc.tag.inline.isInlineTag;
+
+        it('should correctly identify an inline tag', function() {
+            expect( isInlineTag('{@mytag hooray}', 'mytag') ).toBe(true);
+        });
+
+        it('should correctly identify a non-inline tag', function() {
+            expect( isInlineTag('mytag hooray', 'mytag') ).toBe(false);
+        });
+
+        it('should report that a string containing an inline tag is not an inline tag', function() {
+            expect( isInlineTag('this is {@mytag hooray}', 'mytag') ).toBe(false);
+        });
+
+        it('should default to allowing any inline tag', function() {
+            expect( isInlineTag('{@anyoldtag will do}') ).toBe(true);
+        });
+
+        it('should still identify non-inline tags when a tag name is not provided', function() {
+            expect( isInlineTag('mytag hooray') ).toBe(false);
+        });
+
+        it('should allow regexp characters in the tag name', function() {
+            expect( isInlineTag('{@mytags hooray}', 'mytag\\S') ).toBe(true);
+        });
+
+        it('should return false (rather than throwing) with invalid input', function() {
+            function badInput() {
+                return isInlineTag({});
+            }
+
+            expect(badInput).not.toThrow();
+            expect( badInput() ).toBe(false);
+        });
     });
 
     describe('replaceInlineTag', function() {
