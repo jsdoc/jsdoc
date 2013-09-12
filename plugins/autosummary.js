@@ -2,12 +2,12 @@
     @overview This plugin creates a summary tag, if missing, from the first sentence in the description tag.
     @module plugins/autosummary
     @author Mads Bondo Dydensborg <mbd@dbc.dk>
- */
+*/
 
 exports.handlers = {
     /**
         Auto generate summaries, if missing, from description, if present.
-     */
+    */
     newDoclet: function(e) {
         // If the summary is missing, grab the first sentence from the description
         // and use that.
@@ -20,17 +20,15 @@ exports.handlers = {
                 // This is an excerpt of something that is possibly HTML. 
                 // Balance it using a stack. Assume it was initially balanced.
                 var tags = e.doclet.summary.match(/<[^>]+>/g);
-                var stack = new Array();
-                for (tag in tags) {
+                var stack = [];
+                for (var tag in tags) {
                     if (tags[tag].search("/") <= 0) {
                         // start tag -- push onto the stack
                         stack.push(tags[tag]);
-                    } else if (tags[tag].search("/") == 1) {
+                    } else if (tags[tag].search("/") === 1) {
                         // end tag -- pop off of the stack
                         stack.pop();
-                    } else {
-                        // self-closing tag -- do nothing
-                    }
+                    } // else { // self-closing tag -- do nothing }
                 }
                 // stack should now contain only the start tags of the broken elements,
                 // the most deeply-nested start tag at the top
