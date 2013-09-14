@@ -71,11 +71,25 @@ describe("jsdoc/src/parser", function() {
             });
 
             it("should fire 'parseComplete' events after it finishes parsing files", function() {
+                var eventObject;
+
                 var spy = jasmine.createSpy(),
-                    sourceCode = ['javascript:var bar = false;'];
+                    sourceCode = ['javascript:/** @class */function Foo() {}'];
+
+                require('jsdoc/src/handlers').attachTo(parser);
                 parser.on('parseComplete', spy).parse(sourceCode);
+
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mostRecentCall.args[0].sourcefiles).toEqual(["[[string0]]"]);
+
+                eventObject = spy.mostRecentCall.args[0];
+                expect(eventObject).toBeDefined();
+                expect( Array.isArray(eventObject.sourcefiles) ).toBe(true);
+                expect(eventObject.sourcefiles.length).toBe(1);
+                expect(eventObject.sourcefiles[0]).toBe('[[string0]]');
+                expect( Array.isArray(eventObject.doclets) ).toBe(true);
+                expect(eventObject.doclets.length).toBe(1);
+                expect(eventObject.doclets[0].kind).toBe('class');
+                expect(eventObject.doclets[0].longname).toBe('Foo');
             });
 
             it("should fire processingComplete when fireProcessingComplete is called", function() {
