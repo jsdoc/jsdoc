@@ -4,7 +4,8 @@
 SOURCE="$0"
 while [ -h "$SOURCE" ] ; do
   NEXTSOURCE="$(readlink "$SOURCE")"
-  if [[ "$NEXTSOURCE" = /* ]]; then
+  echo $NEXTSOURCE | grep -q -e "^/"
+  if [ $? = 0 ]; then
     SOURCE="$NEXTSOURCE"
   else
     SOURCE="$(dirname $SOURCE)/$NEXTSOURCE"
