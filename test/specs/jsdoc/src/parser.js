@@ -113,6 +113,16 @@ describe("jsdoc/src/parser", function() {
                 
                 expect(parse).not.toThrow();
             });
+
+            it("should comment out a POSIX hashbang at the start of the file", function() {
+                function parse() {
+                    parser.parse(parserSrc);
+                }
+
+                var parserSrc = 'javascript:#!/usr/bin/env node\n/** class */function Foo() {}';
+
+                expect(parse).not.toThrow();
+            });
         });
 
         describe("results", function() {
