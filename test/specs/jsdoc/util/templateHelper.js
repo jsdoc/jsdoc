@@ -1375,6 +1375,25 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(url).toEqual('module-bar.html');
         });
+
+        it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', function() {
+            var moduleDoclet = {
+                kind: 'module',
+                longname: 'module:bar',
+                name: 'module:bar'
+            };
+            var badDoclet = {
+                kind: 'member',
+                longname: 'module:bar',
+                name: 'module:bar'
+            };
+
+            var moduleDocletUrl = helper.createLink(moduleDoclet);
+            var badDocletUrl = helper.createLink(badDoclet);
+
+            expect(moduleDocletUrl).toBe('module-bar.html');
+            expect(badDocletUrl).toBe('module-bar.html#module:bar');
+        });
     });
 
     describe("resolveAuthorLinks", function() {
