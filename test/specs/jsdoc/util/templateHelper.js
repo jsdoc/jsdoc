@@ -1379,20 +1379,53 @@ describe("jsdoc/util/templateHelper", function() {
         it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', function() {
             var moduleDoclet = {
                 kind: 'module',
-                longname: 'module:bar',
-                name: 'module:bar'
+                longname: 'module:baz',
+                name: 'module:baz'
             };
             var badDoclet = {
                 kind: 'member',
-                longname: 'module:bar',
-                name: 'module:bar'
+                longname: 'module:baz',
+                name: 'module:baz'
             };
 
             var moduleDocletUrl = helper.createLink(moduleDoclet);
             var badDocletUrl = helper.createLink(badDoclet);
 
-            expect(moduleDocletUrl).toBe('module-bar.html');
-            expect(badDocletUrl).toBe('module-bar.html#module:bar');
+            expect(moduleDocletUrl).toBe('module-baz.html');
+            expect(badDocletUrl).toBe('module-baz.html');
+        });
+
+        it('should create a url for a function that is a member of a doclet with the wrong kind', function() {
+            var badModuleDoclet = {
+                kind: 'member',
+                longname: 'module:qux',
+                name: 'module:qux'
+            };
+            var memberDoclet = {
+                kind: 'function',
+                name: 'frozzle',
+                memberof: 'module:qux',
+                scope: 'instance',
+                longname: 'module:qux#frozzle'
+            };
+
+            var badModuleDocletUrl = helper.createLink(badModuleDoclet);
+            var memberDocletUrl = helper.createLink(memberDoclet);
+
+            expect(badModuleDocletUrl).toBe('module-qux.html');
+            expect(memberDocletUrl).toBe('module-qux.html#frozzle');
+        });
+
+        it('should create a url for an empty package definition', function() {
+            var packageDoclet = {
+                kind: 'package',
+                name: undefined,
+                longname: 'package:undefined'
+            };
+
+            var packageDocletUrl = helper.createLink(packageDoclet);
+
+            expect(packageDocletUrl).toBe('global.html');
         });
     });
 
