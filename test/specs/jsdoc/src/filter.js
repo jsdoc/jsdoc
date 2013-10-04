@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true */
 describe("jsdoc/src/filter", function() {
     var filter = new (require('jsdoc/src/filter').Filter)({
             includePattern: new RegExp(".+\\.js(doc)?$"),
@@ -5,7 +6,7 @@ describe("jsdoc/src/filter", function() {
             exclude: ['.ignore', 'scratch/conf.js']
         });
 
-    var files = ['yes.js', '/yes.jsdoc', '/_nope.js', '.ignore'];
+    var files = ['yes.js', '/yes.jsdoc', '/_nope.js', '.ignore', process.cwd() + '/scratch/conf.js'];
     
     files = files.filter(function($) {
         return filter.isIncluded($);

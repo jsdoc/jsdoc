@@ -195,12 +195,14 @@ h6
 	font-family: Consolas, "Lucida Console", Monaco, monospace;
 }
 
-.details { margin-top: 14px; }
-.details dt { width:100px; float:left; border-left: 2px solid #DDD; padding-left: 10px;  padding-top: 6px; }
+.details { margin-top: 14px; border-left: 2px solid #DDD; }
+.details dt { width:100px; float:left; padding-left: 10px;  padding-top: 6px; }
 .details dd { margin-left: 50px; }
 .details ul { margin: 0; }
 .details ul { list-style-type: none; }
 .details li { margin-left: 30px; padding-top: 6px; }
+.details pre.prettyprint { margin: 0 }
+.details .object-value { padding-top: 0; }
 
 .description {
 	margin-bottom: 1em;
@@ -238,6 +240,11 @@ h6
 	background-color: #fff;
 	color: #000;
 	border-left: 3px #ddd solid;
+}
+
+.prettyprint code span.line
+{
+  display: inline-block;
 }
 
 .params, .props

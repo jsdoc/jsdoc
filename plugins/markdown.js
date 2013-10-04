@@ -7,6 +7,7 @@
  */
 var conf = env.conf.markdown;
 var defaultTags = [ "classdesc", "description", "params", "properties", "returns", "see"];
+var hasOwnProp = Object.prototype.hasOwnProperty;
 var parse = require('jsdoc/util/markdown').getParser();
 var tags = [];
 var excludeTags = [];
@@ -19,7 +20,7 @@ var excludeTags = [];
  */
 function process(doclet) {
     tags.forEach(function(tag) {
-        if (!doclet.hasOwnProperty(tag)) {
+        if ( !hasOwnProp.call(doclet, tag) ) {
             return;
         }
 

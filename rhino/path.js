@@ -1,6 +1,31 @@
 var isWindows = java.lang.System.getProperty("os.name").toLowerCase().contains("windows");
 var fileSeparator = exports.sep = String( java.lang.System.getProperty("file.separator") );
 
+function noOp() {}
+
+// exported for the benefit of our `fs` shim
+var asyncify = exports._asyncify = function(func) {
+    return function() {
+        var args = Array.prototype.slice.call(arguments);
+        var callback = args.pop();
+        var data;
+
+        callback = typeof callback === 'function' ? callback : noOp;
+
+        try {
+            data = func.apply(this, args);
+            process.nextTick(function() {
+                callback(null, data);
+            });
+        }
+        catch (e) {
+            process.nextTick(function() {
+                callback(e);
+            });
+        }
+    };
+};
+
 /**
  * Returns everything on a path except for the last item
  * e.g. if the path was 'path/to/something', the return value would be 'path/to'
@@ -40,6 +65,8 @@ exports.existsSync = function(_path) {
     }
     return true;
 };
+
+exports.exists = asyncify(exports.existsSync);
 
 //Code below taken from node
 

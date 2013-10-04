@@ -85,7 +85,7 @@ describe("jsdoc/name", function() {
             expect(parts.memberof).toEqual('channels."#ops"');
             expect(parts.scope).toEqual('#');
 
-            startName = 'channels["#bots"]["log.max"]',
+            startName = 'channels["#bots"]["log.max"]';
             parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('"log.max"');
@@ -173,6 +173,22 @@ describe("jsdoc/name", function() {
 
             expect(parts.name, 'ns.Page#"last \\"sentence\\"".words~sort(2)');
             expect(parts.description, 'This is a description.');
+        });
+
+        it('should strip the separator when the separator starts on the same line as the name', function() {
+            var startName = 'socket - The networking kind, not the wrench.';
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts.name).toBe('socket');
+            expect(parts.description).toBe('The networking kind, not the wrench.');
+        });
+
+        it('should not strip a separator that is preceded by a line break', function() {
+            var startName = 'socket\n - The networking kind, not the wrench.';
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts.name).toBe('socket');
+            expect(parts.description).toBe('- The networking kind, not the wrench.');
         });
     });
 

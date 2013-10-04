@@ -739,6 +739,23 @@ describe("jsdoc/util/templateHelper", function() {
 
             delete helper.longnameToUrl.MyClass;
         });
+
+        it("doesn't throw an error in lenient mode if a 'returns' item has no value", function() {
+            function getReturns() {
+                return helper.getSignatureReturns(doc);
+            }
+
+            var doc;
+            var lenient = !!env.opts.lenient;
+
+            env.opts.lenient = true;
+            spyOn(console, 'log');
+            doc = new doclet.Doclet('/** @function myFunction\n@returns */', {});
+
+            expect(getReturns).not.toThrow();
+
+            env.opts.lenient = lenient;
+        });
     });
 
     describe("getAncestorLinks", function() {
@@ -1096,6 +1113,20 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('This is a <a href="path/to/test.html">hello there</a>.');
         });
 
+        it('should translate [dummy text] and [hello there]{@link test} into an HTML link with the custom content.', function() {
+            var input = 'This is [dummy text] and [hello there]{@link test}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is [dummy text] and <a href="path/to/test.html">hello there</a>.');
+        });
+
+        it('should translate [dummy text] and [more] and [hello there]{@link test} into an HTML link with the custom content.', function() {
+            var input = 'This is [dummy text] and [more] and [hello there]{@link test}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is [dummy text] and [more] and <a href="path/to/test.html">hello there</a>.');
+        });
+
         it('should ignore [hello there].', function() {
             var input = 'This is a [hello there].',
                 output = helper.resolveLinks(input);
@@ -1169,6 +1200,22 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
+
+        it('should allow linebreaks to separate url from link text', function() {
+            var input = 'This is a {@link\ntest\ntest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
+        });
+
+
+        it('should normalize additional newlines to spaces', function() {
+            var input = 'This is a {@link\ntest\ntest\n\ntest}.',
+                output = helper.resolveLinks(input);
+
+            expect(output).toBe('This is a <a href="path/to/test.html">test test</a>.');
+        });
+
 
         it('should allow tabs between link tag and content', function() {
             var input = 'This is a {@link\ttest}.',
@@ -1327,6 +1374,58 @@ describe("jsdoc/util/templateHelper", function() {
             var url = helper.createLink(mockDoclet);
 
             expect(url).toEqual('module-bar.html');
+        });
+
+        it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', function() {
+            var moduleDoclet = {
+                kind: 'module',
+                longname: 'module:baz',
+                name: 'module:baz'
+            };
+            var badDoclet = {
+                kind: 'member',
+                longname: 'module:baz',
+                name: 'module:baz'
+            };
+
+            var moduleDocletUrl = helper.createLink(moduleDoclet);
+            var badDocletUrl = helper.createLink(badDoclet);
+
+            expect(moduleDocletUrl).toBe('module-baz.html');
+            expect(badDocletUrl).toBe('module-baz.html');
+        });
+
+        it('should create a url for a function that is a member of a doclet with the wrong kind', function() {
+            var badModuleDoclet = {
+                kind: 'member',
+                longname: 'module:qux',
+                name: 'module:qux'
+            };
+            var memberDoclet = {
+                kind: 'function',
+                name: 'frozzle',
+                memberof: 'module:qux',
+                scope: 'instance',
+                longname: 'module:qux#frozzle'
+            };
+
+            var badModuleDocletUrl = helper.createLink(badModuleDoclet);
+            var memberDocletUrl = helper.createLink(memberDoclet);
+
+            expect(badModuleDocletUrl).toBe('module-qux.html');
+            expect(memberDocletUrl).toBe('module-qux.html#frozzle');
+        });
+
+        it('should create a url for an empty package definition', function() {
+            var packageDoclet = {
+                kind: 'package',
+                name: undefined,
+                longname: 'package:undefined'
+            };
+
+            var packageDocletUrl = helper.createLink(packageDoclet);
+
+            expect(packageDocletUrl).toBe('global.html');
         });
     });
 

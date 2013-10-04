@@ -62,6 +62,13 @@ require('lib/jsdoc/util/global').env = {
     opts: {},
 
     /**
+     * The source files that JSDoc will parse.
+     * @type Array
+     * @memberof env
+     */
+    sourceFiles: [],
+    
+    /**
      * The JSDoc version number and revision date.
      * 
      * @type Object
@@ -220,7 +227,8 @@ function main() {
     if (env.conf.source && env.opts._.length > 0) { // are there any files to scan and parse?
         filter = new jsdoc.src.filter.Filter(env.conf.source);
 
-        sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined), filter);
+        env.sourceFiles = sourceFiles = app.jsdoc.scanner.scan(env.opts._,
+            (env.opts.recurse? 10 : undefined), filter);
 
         jsdoc.src.handlers.attachTo(app.jsdoc.parser);
 
@@ -236,6 +244,8 @@ function main() {
 
         jsdoc.augment.addInherited(docs);
         jsdoc.borrow.resolveBorrows(docs);
+
+        app.jsdoc.parser.fireProcessingComplete(docs);
 
         if (env.opts.explain) {
             dump(docs);

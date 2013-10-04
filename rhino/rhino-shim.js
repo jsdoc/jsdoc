@@ -4,6 +4,9 @@
  * to get JSDoc to run.
  */
 
+// Set the JS version that the Rhino interpreter will use.
+version(180);
+
 /**
  * Emulate DOM timeout/interval functions.
  * @see https://developer.mozilla.org/en-US/docs/DOM/window#Methods

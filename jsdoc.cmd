@@ -20,7 +20,7 @@ IF NOT "%_URLPATH%"=="%_URLPATH: =%" GOTO ESCAPE_SPACE
 
 IF [%1]==[--debug] (
     ECHO Running Debug
-    SET CMD=org.mozilla.javascript.tools.debugger.Main -debug
+    SET CMD=org.mozilla.javascript.tools.debugger.Main -debug -opt -1
 
     REM `SHIFT` doesn't affect %*
     :COLLECT_ARGS

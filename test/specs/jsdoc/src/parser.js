@@ -71,11 +71,35 @@ describe("jsdoc/src/parser", function() {
             });
 
             it("should fire 'parseComplete' events after it finishes parsing files", function() {
+                var eventObject;
+
                 var spy = jasmine.createSpy(),
-                    sourceCode = ['javascript:var bar = false;'];
+                    sourceCode = ['javascript:/** @class */function Foo() {}'];
+
+                require('jsdoc/src/handlers').attachTo(parser);
                 parser.on('parseComplete', spy).parse(sourceCode);
+
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mostRecentCall.args[0].sourcefiles).toEqual(["[[string0]]"]);
+
+                eventObject = spy.mostRecentCall.args[0];
+                expect(eventObject).toBeDefined();
+                expect( Array.isArray(eventObject.sourcefiles) ).toBe(true);
+                expect(eventObject.sourcefiles.length).toBe(1);
+                expect(eventObject.sourcefiles[0]).toBe('[[string0]]');
+                expect( Array.isArray(eventObject.doclets) ).toBe(true);
+                expect(eventObject.doclets.length).toBe(1);
+                expect(eventObject.doclets[0].kind).toBe('class');
+                expect(eventObject.doclets[0].longname).toBe('Foo');
+            });
+
+            it("should fire processingComplete when fireProcessingComplete is called", function() {
+                var spy = jasmine.createSpy(),
+                    doclets = ['a','b'];
+                parser.on('processingComplete', spy).fireProcessingComplete(doclets);
+                expect(spy).toHaveBeenCalled();
+                expect(typeof spy.mostRecentCall.args[0]).toBe('object');
+                expect(spy.mostRecentCall.args[0].doclets).toBeDefined();
+                expect(spy.mostRecentCall.args[0].doclets).toBe(doclets);
             });
             
             it("should be able to parse its own source file", function() {
@@ -87,6 +111,16 @@ describe("jsdoc/src/parser", function() {
                         parser.parse(parserSrc);
                     };
                 
+                expect(parse).not.toThrow();
+            });
+
+            it("should comment out a POSIX hashbang at the start of the file", function() {
+                function parse() {
+                    parser.parse(parserSrc);
+                }
+
+                var parserSrc = 'javascript:#!/usr/bin/env node\n/** class */function Foo() {}';
+
                 expect(parse).not.toThrow();
             });
         });
