@@ -1,7 +1,12 @@
 {
 	"name": "jsdoc",
+<<<<<<< HEAD
 	"version": "3.3.0-dev",
 	"revision": "1379480242214",
+=======
+	"version": "3.2.1",
+	"revision": "1380988759465",
+>>>>>>> e8753db... 3.2.1 changelog; bump revision
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
