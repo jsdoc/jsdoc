@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.3.0-dev",
-	"revision": "1380989053246",
+	"revision": "1381768141793",
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -16,7 +16,7 @@
 	},
 	"dependencies": {
 		"async": "0.1.22",
-		"catharsis": "0.6.0",
+		"catharsis": "0.7.0",
 		"crypto-browserify": "git+https://github.com/dominictarr/crypto-browserify.git#95c5d505",
 		"js2xmlparser": "0.1.0",
 		"jshint": "0.9.1",

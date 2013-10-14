@@ -56,7 +56,7 @@ function cachedParse(expr, options) {
 	var cache = getTypeExpressionCache(options);
 	var parsedType;
 
-	if (cache && cache[expr]) {
+	if (cache && Object.prototype.hasOwnProperty.call(cache, expr)) {
 		return cache[expr];
 	} else {
 		parsedType = parse(expr, options);
