@@ -66,7 +66,6 @@ Stringifier.prototype.nullable = function(nullable) {
 };
 
 Stringifier.prototype.optional = function(optional) {
-	/*jshint boss: true */	// TODO: remove after JSHint releases the fix for jshint/jshint#878
 	if (optional === true) {
 		return '=';
 	} else {
@@ -111,43 +110,46 @@ Stringifier.prototype['this'] = function(funcThis) {
 	return funcThis ? 'this:' + this.type(funcThis) : '';
 };
 
+// TODO: refactor for clarity
 Stringifier.prototype.type = function(type) {
+	var result = '';
+
 	if (!type) {
-		return '';
+		return result;
 	}
 
-	// nullable comes first
-	var result = this.nullable(type.nullable);
-
-	// next portion varies by type
 	switch(type.type) {
 		case Types.AllLiteral:
-			result += this._formatNameAndType(type, '*');
+			result += this._formatRepeatableAndNullable(type, '',
+				this._formatNameAndType(type, '*'));
 			break;
 		case Types.FunctionType:
 			result += this._signature(type);
 			break;
 		case Types.NullLiteral:
-			result += this._formatNameAndType(type, 'null');
+			result += this._formatRepeatableAndNullable(type, '',
+				this._formatNameAndType(type, 'null'));
 			break;
 		case Types.RecordType:
-			result += this._record(type);
+			result += this._formatRepeatableAndNullable(type, '', this._record(type));
 			break;
 		case Types.TypeApplication:
-			result += this.type(type.expression);
+			result += this._formatRepeatableAndNullable(type, '', this.type(type.expression));
 			result += this.applications(type.applications);
 			break;
 		case Types.UndefinedLiteral:
-			result += this._formatNameAndType(type, 'undefined');
+			result += this._formatRepeatableAndNullable(type, '',
+				this._formatNameAndType(type, 'undefined'));
 			break;
 		case Types.TypeUnion:
-			result += this.elements(type.elements);
+			result += this._formatRepeatableAndNullable(type, '', this.elements(type.elements));
 			break;
 		case Types.UnknownLiteral:
-			result += this._formatNameAndType(type, '?');
+			result += this._formatRepeatableAndNullable(type, '',
+				this._formatNameAndType(type, '?'));
 			break;
 		default:
-			result += this._formatNameAndType(type);
+			result += this._formatRepeatableAndNullable(type, '', this._formatNameAndType(type));
 	}
 
 	// finally, optionality
@@ -190,14 +192,23 @@ Stringifier.prototype._recordFields = function(fields) {
 
 function combineNameAndType(nameString, typeString) {
 	var separator = (nameString && typeString) ? ':' : '';
+
 	return nameString + separator + typeString;
 }
 
-Stringifier.prototype._formatRepeatable = function(nameString, typeString) {
-	var open = this._inFunctionSignatureParams ? '...[' : '...';
-	var close = this._inFunctionSignatureParams ? ']' : '';
+Stringifier.prototype._formatRepeatableAndNullable = function(type, nameString, typeString) {
+	var open = '';
+	var close = '';
+	var combined;
 
-	return open + combineNameAndType(nameString, typeString) + close;
+	if (type.repeatable) {
+		open = this._inFunctionSignatureParams ? '...[' : '...';
+		close = this._inFunctionSignatureParams ? ']' : '';
+	}
+
+	combined = this.nullable(type.nullable) + combineNameAndType(nameString, typeString);
+
+	return open + combined + close;
 };
 
 Stringifier.prototype._formatNameAndType = function(type, literal) {
@@ -215,17 +226,14 @@ Stringifier.prototype._formatNameAndType = function(type, literal) {
 		nameString = openTag + nameString + '</a>';
 	}
 
-	if (type.repeatable === true) {
-		return this._formatRepeatable(nameString, typeString);
-	} else {
-		return combineNameAndType(nameString, typeString);
-	}
+	return combineNameAndType(nameString, typeString);
 };
 
 Stringifier.prototype._signature = function(type) {
 	var params = [];
 	var param;
 	var result;
+	var signatureBase;
 
 	// these go within the signature's parens, in this order
 	var props = [
@@ -245,7 +253,8 @@ Stringifier.prototype._signature = function(type) {
 	}
 	this._inFunctionSignatureParams = false;
 
-	result = 'function(' + params.join(', ') + ')';
+	signatureBase = 'function(' + params.join(', ') + ')';
+	result = this._formatRepeatableAndNullable(type, '', signatureBase);
 	result += this.result(type.result);
 
 	return result;
