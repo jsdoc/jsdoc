@@ -195,14 +195,15 @@ describe("jsdoc/name", function() {
     describe("resolve", function() {
         // TODO: further tests (namespaces, modules, ...)
     
-        // @event testing.
-        var event = '@event';
-        var memberOf = '@memberof MyClass';
-        var name = '@name A';
         function makeDoclet(bits) {
             var comment = '/**\n' + bits.join('\n') + '\n*/';
             return new jsdoc.doclet.Doclet(comment, {});
         }
+
+        // @event testing.
+        var event = '@event';
+        var memberOf = '@memberof MyClass';
+        var name = '@name A';
 
         // Test the basic @event that is not nested.
         it('unnested @event gets resolved correctly', function() {
@@ -290,12 +291,23 @@ describe("jsdoc/name", function() {
         });
 
         // a double-nested one just in case
-        it('@event @name MyClass.EventName @memberof somethingelse workse', function() {
+        it('@event @name MyClass.EventName @memberof somethingelse works', function() {
             var doclet = makeDoclet([event, '@name MyClass.A', '@memberof MyNamespace']),
                 out = jsdoc.name.resolve(doclet);
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyNamespace.MyClass');
             expect(doclet.longname).toEqual('MyNamespace.MyClass.event:A');
+        });
+
+        // other cases
+        it('correctly handles a function parameter named "prototype"', function() {
+            var doclet = makeDoclet(['@name Bar.prototype.baz', '@function', '@memberof module:foo',
+                '@param {string} qux']);
+            var out = jsdoc.name.resolve(doclet);
+
+            expect(doclet.name).toBe('baz');
+            expect(doclet.memberof).toBe('module:foo.Bar');
+            expect(doclet.longname).toBe('module:foo.Bar#baz');
         });
     });
 });
