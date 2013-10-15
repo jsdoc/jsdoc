@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("aliases", function() {
     describe("standard", function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/alias.js'),
@@ -26,7 +27,7 @@ describe("aliases", function() {
         expect(foundMember[0].scope).toEqual('instance');
     });
 
-    it('When a symbol is a member of an aliased class, a this-variables is documented as if it were a member that class.', function() {
+    it('When a symbol is a member of an aliased class, a this-variable is documented as if it were a member that class.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/alias3.js'),
             tcm = docSet.getByLongname('trackr.CookieManager')[0],
             tcmValue = docSet.getByLongname('trackr.CookieManager#value')[0];
@@ -34,14 +35,14 @@ describe("aliases", function() {
         expect(tcmValue.memberof).toEqual('trackr.CookieManager');
     });
 
-    it('When a symbol is documented as a static member of <global> it\'s scope is "global" and not "static".', function() {
+    it('When a symbol is documented as a static member of <global>, its scope is "global" and not "static".', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal.js'),
             log = docSet.getByLongname('log')[0];
 
         expect(log.scope).toEqual('global');
     });
     
-    it('When a symbol is documented as an instance member of <global> class it\'s scope is "instance" and not "static".', function() {
+    it('When a symbol is documented as an instance member of <global>, its scope is "instance" and not "static".', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal2.js'),
             run = docSet.getByLongname('Test#run')[0];
 
