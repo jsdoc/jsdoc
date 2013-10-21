@@ -1,14 +1,21 @@
-/*global beforeEach: true, describe: true, env: true, expect: true, it: true */
+/*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true */
 describe("module names", function() {
     var runtime = require('jsdoc/util/runtime');
-    var parser = require( runtime.getModulePath('jsdoc/src/parser') );
-    var srcParser = null;
+
     var doclets;
 
+    var parser = require( runtime.getModulePath('jsdoc/src/parser') );
+    var srcParser = null;
+    var sourcePaths = env.opts._.slice(0);
+
     beforeEach(function() {
-        env.opts._ = [__dirname + '/test/fixtures/modules/'];
+        env.opts._ = [__dirname + '/test/fixtures/modules/data/'];
         srcParser = new parser.Parser();
         require('jsdoc/src/handlers').attachTo(srcParser);
+    });
+
+    afterEach(function() {
+        env.opts._ = sourcePaths;
     });
 
     it("should create a name from the file path when no documented module name exists", function() {

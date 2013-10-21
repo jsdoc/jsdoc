@@ -85,7 +85,7 @@ describe("jsdoc/name", function() {
             expect(parts.memberof).toEqual('channels."#ops"');
             expect(parts.scope).toEqual('#');
 
-            startName = 'channels["#bots"]["log.max"]',
+            startName = 'channels["#bots"]["log.max"]';
             parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('"log.max"');
@@ -174,19 +174,36 @@ describe("jsdoc/name", function() {
             expect(parts.name, 'ns.Page#"last \\"sentence\\"".words~sort(2)');
             expect(parts.description, 'This is a description.');
         });
+
+        it('should strip the separator when the separator starts on the same line as the name', function() {
+            var startName = 'socket - The networking kind, not the wrench.';
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts.name).toBe('socket');
+            expect(parts.description).toBe('The networking kind, not the wrench.');
+        });
+
+        it('should not strip a separator that is preceded by a line break', function() {
+            var startName = 'socket\n - The networking kind, not the wrench.';
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts.name).toBe('socket');
+            expect(parts.description).toBe('- The networking kind, not the wrench.');
+        });
     });
 
     describe("resolve", function() {
         // TODO: further tests (namespaces, modules, ...)
     
-        // @event testing.
-        var event = '@event';
-        var memberOf = '@memberof MyClass';
-        var name = '@name A';
         function makeDoclet(bits) {
             var comment = '/**\n' + bits.join('\n') + '\n*/';
             return new jsdoc.doclet.Doclet(comment, {});
         }
+
+        // @event testing.
+        var event = '@event';
+        var memberOf = '@memberof MyClass';
+        var name = '@name A';
 
         // Test the basic @event that is not nested.
         it('unnested @event gets resolved correctly', function() {
@@ -274,12 +291,23 @@ describe("jsdoc/name", function() {
         });
 
         // a double-nested one just in case
-        it('@event @name MyClass.EventName @memberof somethingelse workse', function() {
+        it('@event @name MyClass.EventName @memberof somethingelse works', function() {
             var doclet = makeDoclet([event, '@name MyClass.A', '@memberof MyNamespace']),
                 out = jsdoc.name.resolve(doclet);
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyNamespace.MyClass');
             expect(doclet.longname).toEqual('MyNamespace.MyClass.event:A');
+        });
+
+        // other cases
+        it('correctly handles a function parameter named "prototype"', function() {
+            var doclet = makeDoclet(['@name Bar.prototype.baz', '@function', '@memberof module:foo',
+                '@param {string} qux']);
+            var out = jsdoc.name.resolve(doclet);
+
+            expect(doclet.name).toBe('baz');
+            expect(doclet.memberof).toBe('module:foo.Bar');
+            expect(doclet.longname).toBe('module:foo.Bar#baz');
         });
     });
 });

@@ -66,7 +66,10 @@ function addSignatureParams(f) {
 function addSignatureReturns(f) {
     var returnTypes = helper.getSignatureReturns(f);
     
-    f.signature = '<span class="signature">'+(f.signature || '') + '</span>' + '<span class="type-signature">'+(returnTypes.length? ' &rarr; {'+returnTypes.join('|')+'}' : '')+'</span>';
+    f.signature = '<span class="signature">' + (f.signature || '') + '</span>' +
+        '<span class="type-signature">' +
+        (returnTypes && returnTypes.length ? ' &rarr; {' + returnTypes.join('|') + '}' : '') +
+        '</span>';
 }
 
 function addSignatureTypes(f) {
@@ -78,7 +81,9 @@ function addSignatureTypes(f) {
 function addAttribs(f) {
     var attribs = helper.getAttribs(f);
     
-    f.attribs = '<span class="type-signature">'+htmlsafe(attribs.length? '<'+attribs.join(', ')+'> ' : '')+'</span>';
+    f.attribs = '<span class="type-signature">' + htmlsafe(attribs.length ?
+        // we want the template output to say 'abstract', not 'virtual'
+        '<' + attribs.join(', ').replace('virtual', 'abstract') + '> ' : '') + '</span>';
 }
 
 function shortenPaths(files, commonPrefix) {
@@ -127,7 +132,8 @@ function generate(title, docs, filename, resolveLinks) {
     fs.writeFileSync(outpath, html, 'utf8');
 }
 
-function generateSourceFiles(sourceFiles) {
+function generateSourceFiles(sourceFiles, encoding) {
+    encoding = encoding || 'utf8';
     Object.keys(sourceFiles).forEach(function(file) {
         var source;
         // links are keyed to the shortened path in each doclet's `meta.filename` property
@@ -137,7 +143,7 @@ function generateSourceFiles(sourceFiles) {
         try {
             source = {
                 kind: 'source',
-                code: helper.htmlsafe( fs.readFileSync(sourceFiles[file].resolved, 'utf8') )
+                code: helper.htmlsafe( fs.readFileSync(sourceFiles[file].resolved, encoding) )
             };
         }
         catch(e) {
@@ -478,10 +484,10 @@ exports.publish = function(taffyData, opts, tutorials) {
     attachModuleSymbols( find({ kind: ['class', 'function'], longname: {left: 'module:'} }),
         members.modules );
 
-    // only output pretty-printed source files if requested; do this before generating any other
-    // pages, so the other pages can link to the source files
-    if (conf['default'].outputSourceFiles) {
-        generateSourceFiles(sourceFiles);
+    // output pretty-printed source files by default; do this before generating any other pages, so
+    // that the other pages can link to the source files
+    if (!conf['default'] || conf['default'].outputSourceFiles !== false) {
+        generateSourceFiles(sourceFiles, opts.encoding);
     }
 
     if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl); }

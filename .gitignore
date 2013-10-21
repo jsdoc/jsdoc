@@ -3,3 +3,4 @@ jsdoc.jar
 test/tutorials/out
 conf.json
 out/
+.tern-port

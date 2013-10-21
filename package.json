@@ -1,7 +1,12 @@
 {
 	"name": "jsdoc",
+<<<<<<< HEAD
 	"version": "3.2.0-dev",
 	"revision": "1382363021327",
+=======
+	"version": "3.3.0-dev",
+	"revision": "1381768141793",
+>>>>>>> master
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -10,15 +15,13 @@
 			"url":  "http://www.apache.org/licenses/LICENSE-2.0"
 		}
 	],
-	"repositories": [
-		{
-			"type": "git",
-			"url":  "https://github.com/jsdoc3/jsdoc"
-		}
-	],
+	"repository": {
+		"type": "git",
+		"url":  "https://github.com/jsdoc3/jsdoc"
+	},
 	"dependencies": {
 		"async": "0.1.22",
-		"catharsis": "0.5.6",
+		"catharsis": "0.7.0",
 		"crypto-browserify": "git+https://github.com/dominictarr/crypto-browserify.git#95c5d505",
 		"esprima": "1.0.4",
 		"js2xmlparser": "0.1.0",
