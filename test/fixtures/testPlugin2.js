@@ -21,9 +21,3 @@ exports.handlers = {
         myGlobal.jsdocPluginsTest.plugin2.fileComplete = true;
     }
 };
-
-exports.nodeVisitor = {
-    visitNode: function() {
-        myGlobal.jsdocPluginsTest.plugin2.visitNode = true;
-    }
-};

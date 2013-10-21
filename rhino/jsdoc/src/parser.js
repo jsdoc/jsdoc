@@ -10,7 +10,7 @@ var Parser = exports.Parser = function() {
         throw new Error('You must run JSDoc on Mozilla Rhino to use the Rhino parser.');
     }
 
-    astBuilder = new ( require(runtime.getModulePath('jsdoc/src/astbuilder')) )();
+    astBuilder = new ( require(runtime.getModulePath('jsdoc/src/astbuilder')) ).AstBuilder();
     visitor = new ( require(runtime.getModulePath('jsdoc/src/visitor')) ).Visitor(this);
 
     Parser.super_.call(this, astBuilder, visitor);

@@ -4,7 +4,7 @@
  * @module rhino/jsdoc/src/astbuilder
  */
 
-var AstBuilder = module.exports = function() {
+var AstBuilder = exports.AstBuilder = function() {
     this._builder = new Packages.org.jsdoc.AstBuilder();
 };
 

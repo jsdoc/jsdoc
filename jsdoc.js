@@ -88,10 +88,8 @@ require('lib/jsdoc/util/global').app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
         // TODO: allow the config file to specify the parser module
-        parser: (function() {
-            var modulePath = require('jsdoc/util/runtime').getModulePath('jsdoc/src/parser');
-            return new ( require(modulePath) ).Parser();
-        })(),
+        //parser: require('jsdoc/src/parser').createParser('esprima'),
+        parser: require('jsdoc/src/parser').createParser('rhino'),
         name: require('jsdoc/name')
     }
 };

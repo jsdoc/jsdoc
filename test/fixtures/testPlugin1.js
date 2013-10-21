@@ -30,10 +30,3 @@ exports.defineTags = function(dictionary) {
         }
     });
 };
-
-exports.nodeVisitor = {
-    visitNode: function(node, e, parser, currentSourceName) {
-        myGlobal.jsdocPluginsTest.plugin1.visitNode = true;
-        e.stopPropagation = true;
-    }
-};

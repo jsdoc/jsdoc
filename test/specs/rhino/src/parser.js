@@ -149,6 +149,31 @@ describe('rhino/jsdoc/src/parser', function() {
                 expect(doclet.name).toBeDefined();
                 expect(doclet.name).toBe('bar');
             });
+
+            it('should not call a second Rhino node visitor if the first visitor stopped ' +
+                'propagation', function() {
+                var doclet;
+                
+                var visitor1 = {
+                    visitNode: function(rhinoNode, e, parser, sourceName) {
+                        e.stopPropagation = true;
+                    }
+                };
+                var visitor2 = {
+                    visitNode: function(rhinoNode, e, parser, sourceName) {
+                        e.propertyThatWillNeverBeSet = ':(';
+                    }
+                };
+
+                require('jsdoc/src/handlers').attachTo(parser);
+                parser.addNodeVisitor(visitor1);
+                parser.addNodeVisitor(visitor2);
+                parser.parse(sourceCode);
+
+                doclet = parser.results()[0];
+
+                expect(doclet.propertyThatWillNeverBeSet).not.toBeDefined();
+            });
         });
     });
 });

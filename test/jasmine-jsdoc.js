@@ -112,8 +112,9 @@ jasmine.asyncSpecDone = function() {
 jasmine.getDocSetFromFile = function(filename, parser) {
     var sourceCode = fs.readFileSync(__dirname + '/' + filename, 'utf8');
     var runtime = require('jsdoc/util/runtime');
-    var testParser = parser ||
-        new ( require(runtime.getModulePath('jsdoc/src/parser')) ).Parser();
+    // TODO: change to runtime-appropriate parser (and/or get a config setting?)
+    //var testParser = parser || require('jsdoc/src/parser').createParser('esprima');
+    var testParser = parser || require('jsdoc/src/parser').createParser('rhino');
     var indexAll = require('jsdoc/borrow').indexAll;
     var doclets;
 

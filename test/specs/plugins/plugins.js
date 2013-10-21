@@ -1,5 +1,5 @@
 /*global app: true, describe: true, expect: true, it: true, jasmine: true */
-
+// TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe("plugins", function() {
     var myGlobal = require('jsdoc/util/global');
     myGlobal.jsdocPluginsTest = myGlobal.jsdocPluginsTest || {};
@@ -42,14 +42,5 @@ describe("plugins", function() {
 
         expect(test[0].longname).toEqual("test");
         expect(test[0].foo).toEqual(true);
-    });
-
-    it("should call the plugin's visitNode function", function() {
-        expect(myGlobal.jsdocPluginsTest.plugin1.visitNode).toBeDefined();
-        expect(myGlobal.jsdocPluginsTest.plugin1.visitNode).toEqual(true);
-    });
-
-    it("should not call a second plugin's visitNode function if the first stopped propagation", function() {
-        expect(myGlobal.jsdocPluginsTest.plugin2.visitNode).not.toBeDefined();
     });
 });
