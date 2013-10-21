@@ -4,6 +4,10 @@ describe("plugins", function() {
     var myGlobal = require('jsdoc/util/global');
     myGlobal.jsdocPluginsTest = myGlobal.jsdocPluginsTest || {};
 
+    if (!app.jsdoc.parser) {
+        app.jsdoc.parser = new ( require('jsdoc/src/parser') ).Parser();
+    }
+
     require('jsdoc/plugins').installPlugins(['test/fixtures/testPlugin1',
         'test/fixtures/testPlugin2'], app.jsdoc.parser);
 

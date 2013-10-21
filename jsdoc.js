@@ -204,10 +204,6 @@ function main() {
         process.exit(0);
     }
 
-    if (env.conf.plugins) {
-        jsdoc.plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
-    }
-    
     if (env.conf.source && env.conf.source.include) {
         env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
     }
@@ -232,6 +228,9 @@ function main() {
             (env.opts.recurse? 10 : undefined), filter);
 
         app.jsdoc.parser = jsdoc.src.parser.createParser(env.conf.parser);
+        if (env.conf.plugins) {
+            jsdoc.plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
+        }    
         jsdoc.src.handlers.attachTo(app.jsdoc.parser);
 
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
