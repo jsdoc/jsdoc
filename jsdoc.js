@@ -94,9 +94,7 @@ require('lib/jsdoc/util/global').env = {
 require('lib/jsdoc/util/global').app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
-        // TODO: allow the config file to specify the parser module
-        //parser: require('jsdoc/src/parser').createParser('esprima'),
-        parser: require('jsdoc/src/parser').createParser('rhino'),
+        parser: null,
         name: require('jsdoc/name')
     }
 };
@@ -141,7 +139,8 @@ function main() {
         Readme: require('jsdoc/readme'),
         src: {
             filter: require('jsdoc/src/filter'),
-            handlers: require('jsdoc/src/handlers')
+            handlers: require('jsdoc/src/handlers'),
+            parser: require('jsdoc/src/parser')
         },
         tutorial: {
             resolver: require('jsdoc/tutorial/resolver')
@@ -232,6 +231,7 @@ function main() {
         env.sourceFiles = sourceFiles = app.jsdoc.scanner.scan(env.opts._,
             (env.opts.recurse? 10 : undefined), filter);
 
+        app.jsdoc.parser = jsdoc.src.parser.createParser(env.conf.parser);
         jsdoc.src.handlers.attachTo(app.jsdoc.parser);
 
         docs = app.jsdoc.parser.parse(sourceFiles, env.opts.encoding);
