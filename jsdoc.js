@@ -156,6 +156,7 @@ function main() {
     var filter;
     var i;
     var info;
+    var isFile;
     var l;
     var packageDocs;
     var packageJson;
@@ -178,7 +179,14 @@ function main() {
     env.opts = jsdoc.opts.args.parse(env.args);
 
     confPath = env.opts.configure || path.join(__dirname, 'conf.json');
-    if ( !fs.statSync(confPath).isFile() && !env.opts.configure ) {
+    try {
+        isFile = fs.statSync(confPath).isFile();
+    }
+    catch(e) {
+        isFile = false;
+    }
+
+    if ( !isFile && !env.opts.configure ) {
         confPath = path.join(__dirname, 'conf.json.EXAMPLE');
     }
 

@@ -6,6 +6,7 @@
  */
 
 var path = require('path');
+var util = require('util');
 
 var asyncify = path._asyncify;
 
@@ -24,6 +25,11 @@ function checkEncoding(enc, name) {
     return enc;
 }
 
+// provide an error that's consistent with Node.js
+function errorFactory(filepath) {
+    return new Error( util.format("ENOENT, no such file or directory '%s'", filepath) );
+}
+
 exports.readFileSync = function(filename, encoding) {
     encoding = checkEncoding(encoding, 'fs.readFile[Sync]');
 
@@ -37,6 +43,10 @@ exports.exists = path.exists;
 
 var statSync = exports.statSync = function(_path) {
     var f = new java.io.File(_path);
+    if (!f) {
+        throw errorFactory(_path);
+    }
+
     return {
         isFile: function() {
             return f.isFile();
@@ -54,7 +64,7 @@ var readdirSync = exports.readdirSync = function(_path) {
 
     dir = new java.io.File(_path);
     if (!dir.directory) {
-        throw new Error("ENOENT, no such file or directory '" + _path + "'");
+        throw errorFactory(_path);
     }
 
     files = dir.list();
@@ -67,49 +77,6 @@ var readdirSync = exports.readdirSync = function(_path) {
     return files;
 };
 exports.readdir = asyncify(readdirSync);
-
-// JSDoc extension to `fs` module
-var ls = exports.ls = function(dir, recurse, _allFiles, _path) {
-    var files,
-        file;
-
-    if (typeof _path === 'undefined') { // initially
-        _allFiles = [];
-        _path = [dir];
-    }
-
-    if (_path.length === 0) { return _allFiles; }
-    if (typeof recurse === 'undefined') { recurse = 1; }
-
-    if ( statSync(dir).isFile(dir) ) {
-        files = [dir];
-    }
-    else {
-        files = readdirSync(dir);
-    }
-
-    for (var f = 0, lenf = files.length; f < lenf; f++) {
-        file = String(files[f]);
-
-        if (file.match(/^\.[^\.\/\\]/)) { continue; } // skip dot files
-
-        if ((new java.io.File(_path.join('/') + '/' + file)).list()) { // it's a directory
-            _path.push(file);
-
-            if (_path.length - 1 < recurse) {
-                ls(_path.join('/'), recurse, _allFiles, _path);
-            }
-            _path.pop();
-        }
-        else { // it's a file
-            _allFiles.push(
-                path.normalize(_path.join('/') + '/' + file)
-            );
-        }
-    }
-
-    return _allFiles;
-};
 
 // JSDoc extension to `fs` module
 var toDir = exports.toDir = function(_path) {
