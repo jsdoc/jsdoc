@@ -92,12 +92,43 @@ https://github.com/hegemonic/catharsis
 
 ## crypto-browserify ##
 
-License information for crypto-browserify is not available. It is assumed that
-the package is distributed under the MIT license or a similar open source
-license.
+crypto-browserify is distributed under the MIT license, which is reproduced
+above.
+
+Copyright (c) 2013 Dominic Tarr.
 
 The source code for crypto-browserify is available at:
 https://github.com/dominictarr/crypto-browserify
+
+
+## Esprima ##
+
+Esprima is distributed under the BSD 2-clause license:
+
+> Redistribution and use in source and binary forms, with or without
+> modification, are permitted provided that the following conditions are met:
+>
+> - Redistributions of source code must retain the above copyright notice,
+>   this list of conditions and the following disclaimer.
+> - Redistributions in binary form must reproduce the above copyright notice,
+>   this list of conditions and the following disclaimer in the documentation
+>   and/or other materials provided with the distribution.
+>
+> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+> AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+> IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+> ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+> DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+> (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+> LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+> ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+> (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+> THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Copyright (c) 2011-2013 Ariya Hidayat and other Esprima contributors.
+
+The source code for Esprima is available at:
+https://github.com/ariya/esprima
 
 
 ## github-flavored-markdown ##
