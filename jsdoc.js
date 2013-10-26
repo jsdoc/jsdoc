@@ -15,7 +15,7 @@
  * @namespace
  * @name env
  */
-require('lib/jsdoc/util/global').env = {
+require('jsdoc/util/global').env = {
     /**
      * Running start and finish times.
      * 
@@ -46,14 +46,13 @@ require('lib/jsdoc/util/global').env = {
      * The absolute path to the base directory of the JSDoc application.
      * 
      * @private
-     * @deprecated Use `__dirname` instead.
      * @type string
      * @memberof env
      */
     dirname: '.',
 
     /**
-     * The command-line arguments, parsed into a key/value hash.
+     * The command-line options, parsed into a key/value hash.
      * 
      * @type Object
      * @memberof env
@@ -78,12 +77,7 @@ require('lib/jsdoc/util/global').env = {
 };
 
 // initialize the environment for the current JavaScript VM
-(function(args) {
-    var runtime = require('jsdoc/util/runtime').getRuntime();
-    // TODO: may need to move this file to support Node.js
-    require('initialize')[runtime](args);
-})( Array.prototype.slice.call(arguments, 0) );
-
+require('jsdoc/util/runtime').initialize( Array.prototype.slice.call(arguments, 0) );
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 /**
@@ -91,7 +85,7 @@ require('lib/jsdoc/util/global').env = {
  * @namespace
  * @name app
  */
-require('lib/jsdoc/util/global').app = {
+require('jsdoc/util/global').app = {
     jsdoc: {
         scanner: new (require('jsdoc/src/scanner').Scanner)(),
         parser: null,
@@ -144,9 +138,6 @@ function main() {
         },
         tutorial: {
             resolver: require('jsdoc/tutorial/resolver')
-        },
-        util: {
-            include: require('jsdoc/util/include')
         }
     };
 
@@ -157,9 +148,11 @@ function main() {
     var i;
     var info;
     var isFile;
+    var failCount;
     var l;
     var packageDocs;
     var packageJson;
+    var runner;
     var sourceFiles;
     var template;
 
@@ -170,7 +163,7 @@ function main() {
     };
 
     // get JSDoc version number
-    info = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+    info = JSON.parse(fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8'));
     env.version = {
         number: info.version,
         revision: new Date(parseInt(info.revision, 10)).toUTCString()
@@ -178,7 +171,7 @@ function main() {
 
     env.opts = jsdoc.opts.args.parse(env.args);
 
-    confPath = env.opts.configure || path.join(__dirname, 'conf.json');
+    confPath = env.opts.configure || path.join(env.dirname, 'conf.json');
     try {
         isFile = fs.statSync(confPath).isFile();
     }
@@ -187,7 +180,7 @@ function main() {
     }
 
     if ( !isFile && !env.opts.configure ) {
-        confPath = path.join(__dirname, 'conf.json.EXAMPLE');
+        confPath = path.join(env.dirname, 'conf.json.EXAMPLE');
     }
 
     try {
@@ -205,8 +198,10 @@ function main() {
         console.log( jsdoc.opts.args.help() );
         process.exit(0);
     } else if (env.opts.test) {
-        jsdoc.util.include('test/runner.js');
-        process.exit(0);
+        runner = require( path.join(env.dirname, 'test/runner') );
+        runner(function(failCount) {
+            process.exit(failCount);
+        });
     } else if (env.opts.version) {
         console.log('JSDoc ' + env.version.number + ' (' + env.version.revision + ')');
         process.exit(0);
@@ -229,7 +224,7 @@ function main() {
         }
     }
     
-    if (env.conf.source && env.opts._.length > 0) { // are there any files to scan and parse?
+    if (env.conf.source && env.opts._.length) { // are there any files to scan and parse?
         filter = new jsdoc.src.filter.Filter(env.conf.source);
 
         env.sourceFiles = sourceFiles = app.jsdoc.scanner.scan(env.opts._,
@@ -290,31 +285,17 @@ function main() {
             );
         }
         else {
-            // old templates define a global "publish" function, which is deprecated
-            jsdoc.util.include(env.opts.template + '/publish.js');
-            if (publish && typeof publish === 'function') {
-                console.log( env.opts.template + ' uses a global "publish" function, which is ' +
-                    'deprecated and may not be supported in future versions. ' +
-                    'Please update the template to use "exports.publish" instead.' );
-                // convert this from a URI back to a path if necessary
-                env.opts.template = path._uriToPath(env.opts.template);
-                publish(
-                    taffy(docs),
-                    env.opts,
-                    jsdoc.tutorial.resolver.root
-                );
-            }
-            else {
-                throw new Error( env.opts.template + ' does not export a "publish" function.' );
-            }
+            throw new Error(env.opts.template + ' does not export a "publish" function. Global ' +
+                '"publish" functions are no longer supported.');
         }
+
+        process.exit(0);
     }
 }
 
 try {
     main();
     env.run.finish = new Date();
-    process.exit(0);
 }
 catch(e) {
     env.run.finish = new Date();

@@ -1,26 +1,16 @@
 /*global env: true, expect: true, runs: true, waits: true */
-/*jshint evil: true */
 var fs = require('jsdoc/fs');
-var path = require('path');
+var path = require('jsdoc/path');
 var util = require('util');
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var myGlobal = require('jsdoc/util/global');
 
-var jasmineAll = myGlobal.jasmineAll = require('test/lib/jasmine');
-var jasmine = myGlobal.jasmine = jasmineAll.jasmine;
+var jasmineAll = require('./lib/jasmine');
+var jasmine = jasmineAll.jasmine;
 
-// due to scoping issues, requiring this file doesn't work
-eval( fs.readFileSync(__dirname + '/test/async-callback.js', 'utf8') );
-
-var jasmineNode = require('test/reporter').jasmineNode;
-
-// set up jasmine's global functions
-['spyOn', 'it', 'xit', 'expect', 'runs', 'waitsFor', 'beforeEach', 'afterEach', 'describe',
-    'xdescribe'].forEach(function(item) {
-    myGlobal[item] = jasmineAll[item];
-});
+var jasmineNode = ( require('./reporter') )(jasmine);
 
 var reporter = null;
 jasmine.initialize = function(done, verbose) {
@@ -75,8 +65,8 @@ jasmine.executeSpecsInFolder = function(folder, done, opts) {
     for (var i = 0, len = specsList.length; i < len; ++i) {
         filename = specsList[i];
         require(filename.path().replace(/\\/g, '/').
-            replace(new RegExp('^' + __dirname + '/'), "").
-            replace(/\.\w+$/, ""));
+            replace(new RegExp('^' + env.dirname + '/test'), './').
+            replace(/\.\w+$/, ''));
     }
 
     // Run Jasmine
@@ -110,11 +100,11 @@ jasmine.asyncSpecDone = function() {
 };
 
 jasmine.getDocSetFromFile = function(filename, parser) {
-    var sourceCode = fs.readFileSync(__dirname + '/' + filename, 'utf8');
+    var sourceCode = fs.readFileSync( path.join(env.dirname, filename), 'utf8' );
     var runtime = require('jsdoc/util/runtime');
     // TODO: change to runtime-appropriate parser (and/or get a config setting?)
-    //var testParser = parser || require('jsdoc/src/parser').createParser('esprima');
-    var testParser = parser || require('jsdoc/src/parser').createParser('rhino');
+    var testParser = parser || require('jsdoc/src/parser').createParser('esprima');
+    //var testParser = parser || require('jsdoc/src/parser').createParser('rhino');
     var indexAll = require('jsdoc/borrow').indexAll;
     var doclets;
 
@@ -138,8 +128,13 @@ jasmine.getDocSetFromFile = function(filename, parser) {
     };
 };
 
-for (var key in jasmine) {
-    if ( hasOwnProp.call(jasmine, key) ) {
-        exports[key] = jasmine[key];
-    }
-}
+// set up jasmine's global functions
+Object.keys(jasmine).forEach(function(key) {
+    exports[key] = myGlobal[key] = jasmine[key];
+});
+myGlobal.jasmine = jasmine;
+require('./async-callback');
+['spyOn', 'it', 'xit', 'expect', 'runs', 'waitsFor', 'beforeEach', 'afterEach', 'describe',
+    'xdescribe'].forEach(function(item) {
+    myGlobal[item] = jasmineAll[item];
+});

@@ -1,10 +1,15 @@
-/*global describe: true, expect: true, it: true, jasmine: true, xit: true */
+/*global describe: true, env: true, expect: true, it: true, jasmine: true, xit: true */
 describe('plugins/overloadHelper', function() {
     var parser = new (require('jsdoc/src/parser')).Parser();
-    var plugin = require('plugins/overloadHelper');
+    var path = require('jsdoc/path');
+
     var docSet;
 
-    require('jsdoc/plugins').installPlugins(['plugins/overloadHelper'], parser);
+    var pluginPath = 'plugins/overloadHelper';
+    var pluginPathResolved = path.resolve(env.dirname, pluginPath);
+    var plugin = require(pluginPathResolved);
+
+    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
     docSet = jasmine.getDocSetFromFile('plugins/test/fixtures/overloadHelper.js', parser);
 
     it('should exist', function() {

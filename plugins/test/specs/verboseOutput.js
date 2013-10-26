@@ -1,15 +1,20 @@
-/*global describe: true, expect: true, it: true, jasmine: true, xit: true */
+/*global describe: true, env: true, expect: true, it: true, jasmine: true, xit: true */
 /**
  * @author Rob Taylor [manix84@gmail.com]
  */
 
+var path = require('jsdoc/path');
+
 describe("verbose output plugin", function () {
-    var parser = new (require("jsdoc/src/parser")).Parser(),
-        plugin = require('plugins/verboseOutput'),
-        docSet;
+    var parser = new (require('jsdoc/src/parser')).Parser();
+    var path = require('jsdoc/path');
+
+    var docSet;
+    var pluginPath = 'plugins/verboseOutput';
+    var plugin = require( path.resolve(env.dirname, pluginPath) );
 
     //require('jsdoc/plugins').installPlugins(['plugins/verboseOutput'], parser);
-    docSet = jasmine.getDocSetFromFile("plugins/verboseOutput.js", parser);
+    docSet = jasmine.getDocSetFromFile(pluginPath + '.js', parser);
 
     xit("should log file names to console", function() {
         // TODO: this doesn't actually test the plugin...

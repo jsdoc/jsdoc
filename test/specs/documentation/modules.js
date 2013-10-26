@@ -4,12 +4,12 @@ describe("module names", function() {
 
     var doclets;
 
-    var parser = require( runtime.getModulePath('jsdoc/src/parser') );
+    var parser = require('jsdoc/src/parser');
     var srcParser = null;
     var sourcePaths = env.opts._.slice(0);
 
     beforeEach(function() {
-        env.opts._ = [__dirname + '/test/fixtures/modules/data/'];
+        env.opts._ = [env.dirname + '/test/fixtures/modules/data/'];
         srcParser = new parser.Parser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
@@ -19,13 +19,13 @@ describe("module names", function() {
     });
 
     it("should create a name from the file path when no documented module name exists", function() {
-        doclets = srcParser.parse(__dirname + '/test/fixtures/modules/data/mod-1.js');
+        doclets = srcParser.parse(env.dirname + '/test/fixtures/modules/data/mod-1.js');
         expect(doclets.length).toBeGreaterThan(1);
         expect(doclets[0].longname).toEqual('module:data/mod-1');
     });
 
     it("should use the documented module name if available", function() {
-        doclets = srcParser.parse(__dirname + '/test/fixtures/modules/data/mod-2.js');
+        doclets = srcParser.parse(env.dirname + '/test/fixtures/modules/data/mod-2.js');
         expect(doclets.length).toBeGreaterThan(1);
         expect(doclets[0].longname).toEqual('module:my/module/name');
     });

@@ -1,11 +1,10 @@
-/*global afterEach: true, describe: true, env: true, expect: true, it: true */
+/*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true,
+spyOn: true */
 describe("jsdoc/tutorial/resolver", function() {
-    var resolver = require('jsdoc/tutorial/resolver'),
-        tutorial = require('jsdoc/tutorial'),
-        lenient = !!env.opts.lenient,
-        log = eval(console.log);
+    var resolver = require('jsdoc/tutorial/resolver');
+    var tutorial = require('jsdoc/tutorial');
+    var lenient = !!env.opts.lenient;
 
-    /*jshint evil: true */
     it("should exist", function() {
         expect(resolver).toBeDefined();
         expect(typeof resolver).toBe('object');
@@ -69,7 +68,7 @@ describe("jsdoc/tutorial/resolver", function() {
     });
 
     // load
-    resolver.load(__dirname + "/test/tutorials/tutorials");
+    resolver.load(env.dirname + "/test/tutorials/tutorials");
     var childNames = resolver.root.children.map(function (t) { return t.name; }),
         test = resolver.root.getByName('test'),
         test2 = resolver.root.getByName('test2'),
@@ -174,7 +173,7 @@ describe("jsdoc/tutorial/resolver", function() {
     describe("Error reporting", function() {
         // Tests for error reporting.
         function missingTutorial() {
-            resolver.load(__dirname + "/test/tutorials/incomplete");
+            resolver.load(env.dirname + "/test/tutorials/incomplete");
             resolver.resolve();
         }
         function duplicateNamedTutorials() {
@@ -183,13 +182,16 @@ describe("jsdoc/tutorial/resolver", function() {
         }
         function duplicateDefinedTutorials() {
             // can't have a tutorial's metadata defined twice in .json files
-            resolver.load(__dirname + "/test/tutorials/duplicateDefined");
+            resolver.load(env.dirname + "/test/tutorials/duplicateDefined");
             resolver.resolve();
         }
 
+        beforeEach(function() {
+            spyOn(console, 'log');
+        });
+
         afterEach(function() {
             env.opts.lenient = lenient;
-            console.log = log;
         });
 
         it("throws an exception for missing tutorials if the lenient option is not enabled", function() {
@@ -199,7 +201,6 @@ describe("jsdoc/tutorial/resolver", function() {
         });
 
         it("doesn't throw an exception for missing tutorials if the lenient option is enabled", function() {
-            console.log = function() {};
             env.opts.lenient = true;
 
             expect(missingTutorial).not.toThrow();
@@ -211,7 +212,6 @@ describe("jsdoc/tutorial/resolver", function() {
         });
 
         it("doesn't throw an exception for duplicate-named tutorials (e.g. test.md, test.html) if the lenient option is not enabled", function() {
-            console.log = function() {};
             env.opts.lenient = true;
             expect(duplicateNamedTutorials).not.toThrow();
         });
@@ -222,7 +222,6 @@ describe("jsdoc/tutorial/resolver", function() {
         });
 
         it("doesn't throw an exception for tutorials defined twice in .jsons if the lenient option is not enabled", function() {
-            console.log = function() {};
             env.opts.lenient = true;
             expect(duplicateDefinedTutorials).not.toThrow();
         });

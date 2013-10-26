@@ -4,6 +4,8 @@
  * to get JSDoc to run.
  */
 
+var myGlobal = require('jsdoc/util/global');
+
 // Set the JS version that the Rhino interpreter will use.
 version(180);
 
@@ -12,10 +14,10 @@ version(180);
  * @see https://developer.mozilla.org/en-US/docs/DOM/window#Methods
  */
 
-setTimeout = null,
-clearTimeout = null,
-setInterval = null,
-clearInterval = null;
+myGlobal.setTimeout = null;
+myGlobal.clearTimeout = null;
+myGlobal.setInterval = null;
+myGlobal.clearInterval = null;
 
 (function() {
     // TODO: tune number of threads if necessary
@@ -30,35 +32,35 @@ clearInterval = null;
         });
     }
 
-    setTimeout = function(fn, delay) {
+    myGlobal.setTimeout = function(fn, delay) {
         var timerId = timerCount++;
         var callback = getCallback(fn);
         timers[timerId] = timerPool.schedule(callback, delay, timerUnits);
         return timerId;
     };
 
-    clearTimeout = function(timerId) {
+    myGlobal.clearTimeout = function(timerId) {
         if (timers[timerId]) {
             timerPool.remove(timers[timerId]);
             delete timers[timerId];
         }
     };
 
-    setInterval = function(fn, delay) {
+    myGlobal.setInterval = function(fn, delay) {
         var timerId = timerCount++;
         var callback = getCallback(fn);
         timers[timerId] = timerPool.scheduleAtFixedRate(callback, delay, delay, timerUnits);
         return timerId;
     };
 
-    clearInterval = clearTimeout;
+    myGlobal.clearInterval = clearTimeout;
 })();
 
 /**
  * Emulate Node.js console functions.
  * @see http://nodejs.org/api/stdio.html
  */
-console = (function() {
+myGlobal.console = (function() {
     function println(stream, args) {
         java.lang.System[stream].println( require('util').format.apply(this, args) );
     }
@@ -88,10 +90,14 @@ console = (function() {
  * Emulate Node.js process functions.
  * @see http://nodejs.org/api/process.html
  */
-process = {
-    argv: [__dirname + '/jsdoc.js'].concat(Array.prototype.slice.call(arguments, 0)),
+myGlobal.process = {
+    // not quite right, but close enough
+    argv: ['java', env.dirname + '/jsdoc.js']
+        .concat( Array.prototype.slice.call(arguments, 0) ),
+    // this depends on a hack in our version of Rhino
     cwd: function() {
-        return new Packages.java.io.File('.').getCanonicalPath() + '';
+        var f = new java.io.File( java.lang.System.getProperty('user.dir') );
+        return String( f.getAbsolutePath() );
     },
     env: (function() {
         var result = {};
@@ -124,3 +130,16 @@ process = {
         }
     }
 };
+
+/**
+ * Emulate other Node.js globals.
+ * @see http://nodejs.org/docs/latest/api/globals.html
+ */
+Object.defineProperties(myGlobal, {
+    '__dirname': {
+        get: function() {
+            return process.cwd();
+        },
+        enumerable: true
+    }
+});

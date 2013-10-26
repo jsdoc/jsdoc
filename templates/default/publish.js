@@ -99,7 +99,7 @@ function shortenPaths(files, commonPrefix) {
 }
 
 function resolveSourcePath(filepath) {
-    return path.resolve(process.cwd(), filepath);
+    return path.resolve(env.dirname, filepath);
 }
 
 function getPathFromDoclet(doclet) {

@@ -1,5 +1,5 @@
 /*global describe: true, expect: true, it: true */
-describe("common/dumper", function() {
+describe("jsdoc/util/dumper", function() {
     var common = {dumper: require('jsdoc/util/dumper')};
 
     it("should exist", function() {

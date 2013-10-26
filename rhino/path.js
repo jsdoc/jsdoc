@@ -26,6 +26,16 @@ var asyncify = exports._asyncify = function(func) {
     };
 };
 
+// JSDoc extension to `path` module
+exports.pathToUri = function(_path) {
+  return String( new java.io.File(_path).toURI() );
+};
+
+// JSDoc extension to `path` module
+exports.uriToPath = function(uri) {
+  return String( new java.io.File(new java.net.URI(uri)) );
+};
+
 /**
  * Returns everything on a path except for the last item
  * e.g. if the path was 'path/to/something', the return value would be 'path/to'

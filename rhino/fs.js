@@ -96,8 +96,10 @@ var mkdirSync = exports.mkdirSync = function(_path) {
 exports.mkdir = asyncify(mkdirSync);
 
 // JSDoc extension to `fs` module
-exports.mkPath = function(/**Array*/ _path) {
-    if (_path.constructor == Array) { _path = _path.join(''); }
+exports.mkPath = function(_path) {
+    if ( Array.isArray(_path) ) {
+        _path = _path.join('');
+    }
 
     (new java.io.File(_path)).mkdirs();
 };

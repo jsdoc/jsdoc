@@ -1,11 +1,16 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+/*global describe: true, env: true, expect: true, it: true, jasmine: true */
 describe("sourcetag plugin", function() {
-    var parser = new (require("jsdoc/src/parser")).Parser(),
-        plugin = require('plugins/sourcetag'),
-        docSet;
+    var parser = new (require('jsdoc/src/parser')).Parser();
+    var path = require('jsdoc/path');
 
-    require('jsdoc/plugins').installPlugins(['plugins/sourcetag'], parser);
-    docSet = jasmine.getDocSetFromFile("plugins/sourcetag.js", parser);
+    var docSet;
+
+    var pluginPath = 'plugins/sourcetag';
+    var pluginPathResolved = path.join(env.dirname, pluginPath);
+    var plugin = require(pluginPathResolved);
+
+    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
+    docSet = jasmine.getDocSetFromFile(pluginPath + '.js', parser);
 
     it("should set the lineno and filename of the doclet's meta property", function() {
         var doclet = docSet.getByLongname("module:plugins/sourcetag.handlers.newDoclet");

@@ -1,7 +1,7 @@
 /*global describe: true, expect: true, it: true */
 describe("jsdoc/src/handlers", function() {
     var runtime = require('jsdoc/util/runtime');
-    var parser = require( runtime.getModulePath('jsdoc/src/parser') );
+    var parser = require('jsdoc/src/parser');
     var testParser = new parser.Parser();
     var handlers = require('jsdoc/src/handlers');
 

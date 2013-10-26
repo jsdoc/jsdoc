@@ -1,11 +1,16 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+/*global describe: true, env: true, expect: true, it: true, jasmine: true */
 describe("shout plugin", function() {
-    var parser = new (require("jsdoc/src/parser")).Parser(),
-        plugin = require('plugins/shout'),
-        docSet;
+    var parser = new (require('jsdoc/src/parser')).Parser();
+    var path = require('jsdoc/path');
 
-    require('jsdoc/plugins').installPlugins(['plugins/shout'], parser);
-    docSet = jasmine.getDocSetFromFile("plugins/shout.js", parser);
+    var docSet;
+
+    var pluginPath = 'plugins/shout';
+    var pluginPathResolved = path.join(env.dirname, pluginPath);
+    var plugin = require(pluginPathResolved);
+
+    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
+    docSet = jasmine.getDocSetFromFile(pluginPath + '.js', parser);
 
     it("should make the description uppercase", function() {
         var doclet = docSet.getByLongname("module:plugins/shout.handlers.newDoclet");

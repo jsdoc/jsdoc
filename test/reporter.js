@@ -1,11 +1,5 @@
-(function() {
-    //
-    // Imports
-    //
-
-    if (!jasmineNode) {
-        var jasmineNode = {};
-    }
+module.exports = function(jasmine) {
+    var jasmineNode = {};
 
     //
     // Helpers
@@ -106,9 +100,9 @@
             var specs = runner.specs();
             var specCount = specs.length;
 
-            var message = "\n\nFinished in "
-                    + ((new Date().getTime() - this.startedAt.getTime()) / 1000)
-                    + " seconds";
+            var message = "\n\nFinished in " +
+                ((new Date().getTime() - this.startedAt.getTime()) / 1000) +
+                " seconds";
             this.printLine_(message);
 
             // This is what jasmine-html.js has
@@ -127,7 +121,7 @@
                 return;
             }
 
-            var indent = '  ', failure;
+            var indent = '  ', failure, failures;
             this.printLine_('\n');
 
             this.print_('Failures:');
@@ -292,8 +286,5 @@
     // Inherit from TerminalReporter
     jasmineNode.TerminalVerboseReporter.prototype.__proto__ = jasmineNode.TerminalReporter.prototype;
 
-    //
-    // Exports
-    //
-    exports.jasmineNode = jasmineNode;
-})();
+    return jasmineNode;
+};

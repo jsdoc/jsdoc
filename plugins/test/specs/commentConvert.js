@@ -1,11 +1,16 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+/*global describe: true, env: true, expect: true, it: true, jasmine: true */
 describe("commentConvert plugin", function() {
-    var parser = new (require("jsdoc/src/parser")).Parser(),
-        plugin = require('plugins/commentConvert'),
-        docSet;
+    var parser = new (require("jsdoc/src/parser")).Parser();
+    var path = require('jsdoc/path');
 
-    require('jsdoc/plugins').installPlugins(['plugins/commentConvert'], parser);
-    docSet = jasmine.getDocSetFromFile("plugins/commentConvert.js", parser);
+    var docSet;
+
+    var pluginPath = 'plugins/commentConvert';
+    var pluginPathResolved = path.join(env.dirname, pluginPath);
+    var plugin = require(pluginPathResolved);
+
+    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
+    docSet = jasmine.getDocSetFromFile(pluginPath + '.js', parser);
 
     it("should convert '///-style comments into jsdoc comments", function() {
         var doclet = docSet.getByLongname("module:plugins/commentConvert.handlers.beforeParse");

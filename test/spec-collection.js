@@ -1,7 +1,9 @@
 /*global env: true */
-var wrench = require('wrench');
-var path = require('path');
 var fs = require('jsdoc/fs');
+var path = require('jsdoc/path');
+var runtime = require('jsdoc/util/runtime');
+var wrench = require('wrench');
+
 var specs = [];
 
 var createSpecObj = function(_path, root) {
@@ -30,6 +32,17 @@ var clearSpecs = exports.clearSpecs = function() {
     specs.splice(0, specs.length);
 };
 
+function shouldLoad(file, matcher) {
+    var skipPath = runtime.isRhino() ? runtime.NODE : runtime.RHINO;
+    try {
+        return fs.statSync(file).isFile() && matcher.test( path.basename(file) ) &&
+            file.indexOf(skipPath) === -1;
+    }
+    catch(e) {
+        return false;
+    }
+}
+
 exports.load = function(loadpath, matcher, clear) {
     if (clear === true) {
         clearSpecs();
@@ -37,15 +50,9 @@ exports.load = function(loadpath, matcher, clear) {
 
     var wannaBeSpecs = wrench.readdirSyncRecursive(loadpath);
     for (var i = 0; i < wannaBeSpecs.length; i++) {
-        var file = path.join(__dirname, loadpath, wannaBeSpecs[i]);
-        try {
-            if (fs.statSync(file).isFile()) {
-                if (matcher.test(path.basename(file))) {
-                    specs.push(createSpecObj(file));
-                }
-            }
-        } catch(e) {
-            // nothing to do here
+        var file = path.join(loadpath, wannaBeSpecs[i]);
+        if ( shouldLoad(file, matcher) ) {
+            specs.push( createSpecObj(file) );
         }
     }
 };

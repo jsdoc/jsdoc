@@ -136,7 +136,7 @@ describe("jsdoc/util/templateHelper", function() {
             // bit of a dodgy test but the best I can manage. setTutorials doesn't do much.
             helper.setTutorials(null);
             // should throw error: no 'getByName' in tutorials.
-            expect(function () { return helper.tutorialToUrl('asdf'); }).toThrow('Cannot call method "getByName" of null');
+            expect(function () { return helper.tutorialToUrl('asdf'); }).toThrow();
         });
 
         it("setting tutorials to the root tutorial object lets lookups work", function() {
@@ -955,7 +955,7 @@ describe("jsdoc/util/templateHelper", function() {
             env.opts.lenient = true;
 
             // load the tutorials we already have for the tutorials tests
-            resolver.load(__dirname + "/test/tutorials/tutorials");
+            resolver.load(env.dirname + "/test/tutorials/tutorials");
             resolver.resolve();
 
             var url = helper.tutorialToUrl('test');
@@ -1043,7 +1043,7 @@ describe("jsdoc/util/templateHelper", function() {
             spyOn(console, 'log');
 
             // load the tutorials we already have for the tutorials tests
-            resolver.load(__dirname + "/test/tutorials/tutorials");
+            resolver.load(env.dirname + "/test/tutorials/tutorials");
             resolver.resolve();
 
 

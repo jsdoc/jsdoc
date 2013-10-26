@@ -1,5 +1,5 @@
-/*global beforeEach: true, describe: true, expect: true, it: true, jasmine: true, spyOn: true,
-xit: true */
+/*global beforeEach: true, describe: true, env: true, expect: true, it: true, jasmine: true,
+spyOn: true, xit: true */
 describe("jsdoc/src/parser", function() {
     var jsdoc = { src: { parser: require('jsdoc/src/parser') } };
 
@@ -225,8 +225,8 @@ describe("jsdoc/src/parser", function() {
             it("should be able to parse its own source file", function() {
                 var fs = require('jsdoc/fs'),
                     path = require('path'),
-                    parserSrc = 'javascript:' + fs.readFileSync( path.join(__dirname,
-                        'lib', 'jsdoc', 'src', 'parser.js'), 'utf8' ),
+                    parserSrc = 'javascript:' + fs.readFileSync( path.join(env.dirname,
+                        'lib/jsdoc/src/parser.js'), 'utf8' ),
                     parse = function() {
                         parser.parse(parserSrc);
                     };
