@@ -67,7 +67,7 @@ case, simply correct the CLASSPATH to remove the older Rhino. (On OS X, you may
 need to remove the file `~/Library/Java/Extensions/js.jar`.)
 
 The version of Rhino distributed with JSDoc 3 can be found here:
-https://github.com/hegemonic/rhino
+https://github.com/jsdoc3/rhino
 
 
 Debugging

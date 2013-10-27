@@ -39,7 +39,6 @@ fi
 #Conditionally execute different command lines depending on whether we're running tests or not
 if test "$1" = "-T"
 then
-    echo "Running Tests"
     cd -P "$(dirname "$SOURCE")"
     java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}/lib" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" "$@" --dirname="${BASEPATH}/" 
 

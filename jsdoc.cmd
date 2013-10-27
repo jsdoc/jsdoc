@@ -35,7 +35,6 @@ IF [%1]==[--debug] (
 :LAST_ARG
 
 IF [%1]==[-T] (
-    ECHO Running Tests
     java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -opt -1 -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/rhino" -modules "%_URLPATH%/lib" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor --dirname="%_BASEPATH%/
 ) ELSE (
     REM normal mode should be quiet

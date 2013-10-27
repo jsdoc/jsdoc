@@ -5,8 +5,6 @@ var util = require('util');
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
-var myGlobal = require('jsdoc/util/global');
-
 var jasmineAll = require('./lib/jasmine');
 var jasmine = jasmineAll.jasmine;
 
@@ -130,11 +128,11 @@ jasmine.getDocSetFromFile = function(filename, parser) {
 
 // set up jasmine's global functions
 Object.keys(jasmine).forEach(function(key) {
-    exports[key] = myGlobal[key] = jasmine[key];
+    exports[key] = global[key] = jasmine[key];
 });
-myGlobal.jasmine = jasmine;
+global.jasmine = jasmine;
 require('./async-callback');
 ['spyOn', 'it', 'xit', 'expect', 'runs', 'waitsFor', 'beforeEach', 'afterEach', 'describe',
     'xdescribe'].forEach(function(item) {
-    myGlobal[item] = jasmineAll[item];
+    global[item] = jasmineAll[item];
 });

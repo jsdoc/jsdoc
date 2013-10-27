@@ -7,7 +7,6 @@
  * 4. Run Jasmine on each directory
  */
 var fs = require('jsdoc/fs');
-var myGlobal = require('jsdoc/util/global');
 var path = require('path');
 
 fs.existsSync = fs.existsSync || path.existsSync;
