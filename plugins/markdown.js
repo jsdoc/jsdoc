@@ -29,14 +29,16 @@ function process(doclet) {
                   // treat '@see' specially, since we only want to process @see text that contains links
                   (tag == 'see' && doclet[tag].indexOf('[') != -1))) {
             doclet[tag] = parse(doclet[tag]);
-        } else if (doclet[tag] instanceof Array) {
-            doclet[tag].forEach(function(value, index, original){
+        }
+        else if (doclet[tag] instanceof Array) {
+            doclet[tag].forEach(function(value, index, original) {
                 var inner = {};
                 inner[tag] = value;
                 process(inner);
                 original[index] = inner[tag];
             });
-        } else if (doclet[tag]) {
+        }
+        else if (doclet[tag]) {
             process(doclet[tag]);
         }
     });
