@@ -40,7 +40,7 @@ describe('jsdoc/util/markdown', function() {
         }
 
 		it('should retrieve a function when called with default settings', function() {
-            var storage = setMarkdownConf({parser: 'evilstreak'});
+            var storage = setMarkdownConf({});
 
             var parser = markdown.getParser();
             expect(typeof parser).toEqual('function');
@@ -52,10 +52,10 @@ describe('jsdoc/util/markdown', function() {
             restoreMarkdownConf(storage);
 		});
 
-		it('should use the evilstreak parser when requested', function() {
+		it('should use the marked parser when evilstreak is requested', function() {
             var storage = setMarkdownConf({parser: 'evilstreak'});
             var parser = markdown.getParser();
-            expect(parser._parser).toEqual('markdown');
+            expect(parser._parser).toEqual('marked');
             restoreMarkdownConf(storage);
 		});
 
@@ -70,16 +70,6 @@ describe('jsdoc/util/markdown', function() {
             var storage = setMarkdownConf({parser: 'gfm'});
             var parser = markdown.getParser();
             expect(parser._parser).toEqual('marked');
-            restoreMarkdownConf(storage);
-        });
-
-        it('should not apply formatting to inline tags when the evilstreak parser is enabled', function() {
-            var storage = setMarkdownConf({parser: 'evilstreak'});
-            var parser = markdown.getParser();
-            
-            // get the evilstreak parser and do the test
-            expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toEqual(
-                '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>');
             restoreMarkdownConf(storage);
         });
 

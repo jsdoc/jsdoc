@@ -1,4 +1,4 @@
-/*global describe: true, env: true, it: true */
+/*global describe: true, env: true, expect: true, it: true */
 describe("jsdoc/tutorial", function() {
     var tutorial = require('jsdoc/tutorial'),
         name = "tuteID",
@@ -209,8 +209,6 @@ describe("jsdoc/tutorial", function() {
 
             it("Tutorials with MARKDOWN type go through the markdown parser, respecting configuration options", function() {
                 var old = env.conf.markdown;
-                env.conf.markdown = {parser: 'evilstreak'};
-                expect(par.parse()).toBe("<h1>This is the parent tutorial&#39;s <em>content & stuff</em> A<em>B X</em>Y</h1>");
 
                 env.conf.markdown = {parser: 'marked'};
                 expect(par.parse()).toBe("<h1>This is the parent tutorial's <em>content & stuff</em> A_B X_Y</h1>");
