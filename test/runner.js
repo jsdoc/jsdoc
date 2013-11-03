@@ -11,6 +11,8 @@ var path = require('path');
 
 fs.existsSync = fs.existsSync || path.existsSync;
 
+require( path.join(env.dirname, 'test/jasmine-jsdoc') );
+
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var opts = {
@@ -37,7 +39,6 @@ var testsCompleteCallback;
 var onComplete;
 
 var runNextFolder = module.exports = function(callback) {
-    require( path.join(env.dirname, 'test/jasmine-jsdoc') );
     testsCompleteCallback = testsCompleteCallback || callback;
 
     if (index < specFolders.length) {
