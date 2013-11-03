@@ -136,7 +136,7 @@ global.process = {
 Object.defineProperties(global, {
     '__dirname': {
         get: function() {
-            return process.cwd();
+            return global.process.cwd();
         },
         enumerable: true
     }

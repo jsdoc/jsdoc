@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -72,7 +73,14 @@ global.env = {
 };
 
 // initialize the environment for the current JavaScript VM
-require('jsdoc/util/runtime').initialize( Array.prototype.slice.call(arguments, 0) );
+(function(args) {
+    if (args[0] && typeof args[0] === 'object') {
+        // we should be on Node.js
+        args = [__dirname];
+    }
+
+    require('jsdoc/util/runtime').initialize(args);
+})( Array.prototype.slice.call(arguments, 0) );
 
 /**
  * Data that must be shared across the entire application.

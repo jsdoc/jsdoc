@@ -1,9 +1,13 @@
 /**
  * Helper methods for running JSDoc on the command line.
  *
- * (This module should really export an instance of `JSDoc`, and `props` should be properties of a
+ * A few critical notes for anyone who works on this module:
+ * 
+ * + The module should really export an instance of `JSDoc`, and `props` should be properties of a
  * `JSDoc` instance. However, Rhino interpreted `this` as a reference to `global` within the
- * prototype's methods, so we couldn't do that. Oh well.)
+ * prototype's methods, so we couldn't do that.
+ * + Use the `fs` and `path` modules rather than `jsdoc/fs` and `jsdoc/path`, which are not
+ * initialized correctly when they're loaded this early.
  * 
  * @private
  */
@@ -14,16 +18,19 @@ var props = {
     packageJson: null
 };
 
+var app = global.app;
+var env = global.env;
+
 var JSDoc = {};
 
 // TODO: docs
 JSDoc.setVersionInfo = function() {
-    var fs = require('jsdoc/fs');
-    var path = require('jsdoc/path');
+    var fs = require('fs');
+    var path = require('path');
 
-    var info = JSON.parse( fs.readFileSync(path.join(global.env.dirname, 'package.json'), 'utf8') );
+    var info = JSON.parse( fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8') );
 
-    global.env.version = {
+    env.version = {
         number: info.version,
         revision: new Date( parseInt(info.revision, 10) ).toUTCString()
     };
@@ -47,9 +54,9 @@ JSDoc.loadConfig = function() {
         encoding: 'utf8'
     };
 
-    global.env.opts = args.parse(global.env.args);
+    env.opts = args.parse(env.args);
 
-    confPath = global.env.opts.configure || path.join(global.env.dirname, 'conf.json');
+    confPath = env.opts.configure || path.join(env.dirname, 'conf.json');
     try {
         isFile = fs.statSync(confPath).isFile();
     }
@@ -57,12 +64,12 @@ JSDoc.loadConfig = function() {
         isFile = false;
     }
 
-    if ( !isFile && !global.env.opts.configure ) {
-        confPath = path.join(global.env.dirname, 'conf.json.EXAMPLE');
+    if ( !isFile && !env.opts.configure ) {
+        confPath = path.join(env.dirname, 'conf.json.EXAMPLE');
     }
 
     try {
-        global.env.conf = new Config( fs.readFileSync(confPath, 'utf8') )
+        env.conf = new Config( fs.readFileSync(confPath, 'utf8') )
             .get();
     }
     catch (e) {
@@ -70,7 +77,7 @@ JSDoc.loadConfig = function() {
     }
 
     // look for options on the command line, in the config file, and in the defaults, in that order
-    global.env.opts = _.defaults(global.env.opts, global.env.conf.opts, defaultOpts);
+    env.opts = _.defaults(env.opts, env.conf.opts, defaultOpts);
 
     return JSDoc;
 };
@@ -79,7 +86,7 @@ JSDoc.loadConfig = function() {
 JSDoc.runCommand = function(cb) {
     var cmd;
 
-    var opts = global.env.opts;
+    var opts = env.opts;
 
     if (opts.help) {
         cmd = JSDoc.printHelp;
@@ -107,7 +114,7 @@ JSDoc.printHelp = function(cb) {
 JSDoc.runTests = function(cb) {
     var path = require('jsdoc/path');
 
-    var runner = require( path.join(global.env.dirname, 'test/runner') );
+    var runner = require( path.join(env.dirname, 'test/runner') );
 
     console.log('Running tests...');
     runner(function(failCount) {
@@ -117,7 +124,7 @@ JSDoc.runTests = function(cb) {
 
 // TODO: docs
 JSDoc.printVersion = function(cb) {
-    console.log('JSDoc %s (%s)', global.env.version.number, global.env.version.revision);
+    console.log('JSDoc %s (%s)', env.version.number, env.version.revision);
     cb(0);
 };
 
@@ -125,13 +132,13 @@ JSDoc.printVersion = function(cb) {
 JSDoc.main = function(cb) {
     JSDoc.scanFiles();
 
-    if (global.env.sourceFiles.length) {
+    if (env.sourceFiles.length) {
         JSDoc.createParser()
             .parseFiles()
             .processParseResults();
     }
 
-    global.env.run.finish = new Date();
+    env.run.finish = new Date();
     cb(0);
 };
 
@@ -143,30 +150,30 @@ JSDoc.scanFiles = function() {
     var filter;
     var opt;
 
-    if (global.env.conf.source && global.env.conf.source.include) {
-        global.env.opts._ = (global.env.opts._ || []).concat(global.env.conf.source.include);
+    if (env.conf.source && env.conf.source.include) {
+        env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
     }
 
     // source files named `package.json` or `README.md` get special treatment
-    for (var i = 0, l = global.env.opts._.length; i < l; i++) {
-        opt = global.env.opts._[i];
+    for (var i = 0, l = env.opts._.length; i < l; i++) {
+        opt = env.opts._[i];
 
         if ( /\bpackage\.json$/i.test(opt) ) {
             props.packageJson = fs.readFileSync(opt, 'utf8');
-            global.env.opts._.splice(i--, 1);
+            env.opts._.splice(i--, 1);
         }
         
         if ( /(\bREADME|\.md)$/i.test(opt) ) {
-            global.env.opts.readme = new Readme(opt).html;
-            global.env.opts._.splice(i--, 1);
+            env.opts.readme = new Readme(opt).html;
+            env.opts._.splice(i--, 1);
         }
     }
 
     // are there any files to scan and parse?
-    if (global.env.conf.source && global.env.opts._.length) {
-        filter = new Filter(global.env.conf.source);
+    if (env.conf.source && env.opts._.length) {
+        filter = new Filter(env.conf.source);
 
-        global.env.sourceFiles = global.app.jsdoc.scanner.scan(global.env.opts._, (global.env.opts.recurse? 10 : undefined),
+        env.sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined),
             filter);
     }
 
@@ -178,13 +185,13 @@ JSDoc.createParser = function() {
     var parser = require('jsdoc/src/parser');
     var plugins = require('jsdoc/plugins');
 
-    global.app.jsdoc.parser = parser.createParser(global.env.conf.parser);
+    app.jsdoc.parser = parser.createParser(env.conf.parser);
 
-    if (global.env.conf.plugins) {
-        plugins.installPlugins(global.env.conf.plugins, global.app.jsdoc.parser);
+    if (env.conf.plugins) {
+        plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
     }
 
-    handlers.attachTo(global.app.jsdoc.parser);
+    handlers.attachTo(app.jsdoc.parser);
 
     return JSDoc;
 };
@@ -197,12 +204,12 @@ JSDoc.parseFiles = function() {
     var docs;
     var packageDocs;
 
-    props.docs = docs = global.app.jsdoc.parser.parse(global.env.sourceFiles,
-        global.env.opts.encoding);
+    props.docs = docs = app.jsdoc.parser.parse(env.sourceFiles,
+        env.opts.encoding);
 
     // If there is no package.json, just create an empty package
     packageDocs = new Package(props.packageJson);
-    packageDocs.files = global.env.sourceFiles || [];
+    packageDocs.files = env.sourceFiles || [];
     docs.push(packageDocs);
 
     borrow.indexAll(docs);
@@ -210,13 +217,13 @@ JSDoc.parseFiles = function() {
     augment.addInherited(docs);
     borrow.resolveBorrows(docs);
 
-    global.app.jsdoc.parser.fireProcessingComplete(docs);
+    app.jsdoc.parser.fireProcessingComplete(docs);
 
     return JSDoc;
 };
 
 JSDoc.processParseResults = function() {
-    if (global.env.opts.explain) {
+    if (env.opts.explain) {
         JSDoc.dumpParseResults();
     }
     else {
@@ -232,8 +239,8 @@ JSDoc.dumpParseResults = function() {
 JSDoc.resolveTutorials = function() {
     var resolver = require('jsdoc/tutorial/resolver');
 
-    if (global.env.opts.tutorials) {
-        resolver.load(global.env.opts.tutorials);
+    if (env.opts.tutorials) {
+        resolver.load(env.opts.tutorials);
         resolver.resolve();
     }
 };
@@ -245,14 +252,14 @@ JSDoc.generateDocs = function() {
 
     var template;
 
-    global.env.opts.template = (function() {
-        var publish = global.env.opts.template || 'templates/default';
+    env.opts.template = (function() {
+        var publish = env.opts.template || 'templates/default';
         // if we don't find it, keep the user-specified value so the error message is useful
-        return path.getResourcePath(publish) || global.env.opts.template;
+        return path.getResourcePath(publish) || env.opts.template;
     })();
 
     try {
-        template = require(global.env.opts.template + '/publish');
+        template = require(env.opts.template + '/publish');
     }
     catch(e) {
         throw new Error('Unable to load template: ' + e.message || e);
@@ -261,15 +268,15 @@ JSDoc.generateDocs = function() {
     // templates should include a publish.js file that exports a "publish" function
     if (template.publish && typeof template.publish === 'function') {
         // convert this from a URI back to a path if necessary
-        global.env.opts.template = path._uriToPath(global.env.opts.template);
+        env.opts.template = path._uriToPath(env.opts.template);
         template.publish(
             taffy(props.docs),
-            global.env.opts,
+            env.opts,
             resolver.root
         );
     }
     else {
-        throw new Error(global.env.opts.template + ' does not export a "publish" function. Global ' +
+        throw new Error(env.opts.template + ' does not export a "publish" function. Global ' +
             '"publish" functions are no longer supported.');
     }
 
