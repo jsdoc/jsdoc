@@ -3,6 +3,17 @@
 This file describes notable changes in each version of JSDoc 3. To download a specific version of JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
 
+## 3.2.2 (November 2013)
+
+### Bug fixes
++ Addressed a regression in JSDoc 3.2.1 that could prevent a function declaration from shadowing a declaration with the same name in an outer scope. (#513)
++ If a child class overrides a method in a parent class without documenting the overridden method, the method's documentation is now copied from the parent class. (#503)
++ You can now use inline HTML tags in Markdown-formatted text. In addition, JSDoc now uses only the [marked Markdown parser](https://github.com/chjj/marked); the markdown-js parser has been removed. (#510)
++ Type expressions can now include a much broader range of repeatable types. In addition, you can now use Closure Compiler's nullable and non-nullable modifiers with repeatable types. For example, the type expression `...!string` (a repeatable, non-nullable string) is now parsed correctly. (#502)
++ If a function accepts a parameter named `prototype`, the parameter is no longer renamed during parsing. (#505)
++ If the list of input files includes relative paths, the paths are now resolved relative to the user's working directory. (a3d33842)
+
+
 ## 3.2.1 (October 2013)
 
 ### Enhancements
