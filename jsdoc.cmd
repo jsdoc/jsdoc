@@ -10,6 +10,9 @@ SET _BASEPATH=%_BASEPATH:~0,-1%
 REM for whatever reason, Rhino requires module paths to be valid URIs
 SET _URLPATH=file:/%_BASEPATH%
 
+REM we need the ability to resolve paths relative to the user's pwd
+SET PWD=%cd%
+
 IF "%_URLPATH%"=="%_URLPATH: =%" GOTO NO_SPACES
 :ESCAPE_SPACE
 SET _TRAILING=%_URLPATH:* =%
