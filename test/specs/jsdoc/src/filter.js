@@ -6,7 +6,7 @@ describe("jsdoc/src/filter", function() {
             exclude: ['.ignore', 'scratch/conf.js']
         });
 
-    var files = ['yes.js', '/yes.jsdoc', '/_nope.js', '.ignore', process.cwd() + '/scratch/conf.js'];
+    var files = ['yes.js', '/yes.jsdoc', '/_nope.js', '.ignore', process.env.PWD + '/scratch/conf.js'];
     
     files = files.filter(function($) {
         return filter.isIncluded($);
