@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("@exports tag", function() {
 
     describe("object literals", function() {
@@ -84,6 +85,15 @@ describe("@exports tag", function() {
         it('A method of an inner class declared as a function in a module should be documented.', function() {
             expect(typeof method).toEqual('object');
             //expect(inhead.memberof, 'module:html/utils');
+        });
+    });
+
+    describe('variable shadowing', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag5.js');
+        var method = docSet.getByLongname('module:Foo#bar')[0];
+
+        it('A variable defined in an inner scope should correctly shadow a variable in an outer scope.', function() {
+            expect(method.description).toBe('This should be in the Foo module doc.');
         });
     });
 });
