@@ -85,4 +85,13 @@ describe("@exports tag", function() {
             expect(typeof method).toEqual('object');
         });
     });
+
+    describe('variable shadowing', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag5.js');
+        var method = docSet.getByLongname('module:Foo#bar')[0];
+
+        it('A variable defined in an inner scope should correctly shadow a variable in an outer scope.', function() {
+            expect(method.description).toBe('This should be in the Foo module doc.');
+        });
+    });
 });

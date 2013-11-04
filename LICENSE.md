@@ -244,18 +244,6 @@ The source code for JSHint is available at:
 https://github.com/jshint/jshint
 
 
-## markdown-js ##
-
-markdown-js is distributed under the MIT license, which is reproduced above.
-
-Copyright (c) 2009-2010 Dominic Baggott. Copyright (c) 2009-2010 Ash Berlin.
-Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com>
-(http://www.christophdorn.com).
-
-The source code for markdown-js is available at:
-https://github.com/evilstreak/markdown-js
-
-
 ## Node.js ##
 
 Portions of the Node.js source code are incorporated into the following files:
