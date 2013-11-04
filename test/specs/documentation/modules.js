@@ -1,16 +1,16 @@
-/*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true */
+/*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true,
+jasmine: true */
 describe("module names", function() {
     var runtime = require('jsdoc/util/runtime');
 
     var doclets;
 
-    var parser = require('jsdoc/src/parser');
     var srcParser = null;
     var sourcePaths = env.opts._.slice(0);
 
     beforeEach(function() {
         env.opts._ = [env.dirname + '/test/fixtures/modules/data/'];
-        srcParser = new parser.Parser();
+        srcParser = jasmine.createParser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 

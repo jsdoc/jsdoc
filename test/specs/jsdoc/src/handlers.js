@@ -1,10 +1,9 @@
-/*global describe: true, expect: true, it: true */
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("jsdoc/src/handlers", function() {
-    var runtime = require('jsdoc/util/runtime');
-    var parser = require('jsdoc/src/parser');
-    var testParser = new parser.Parser();
     var handlers = require('jsdoc/src/handlers');
+    var runtime = require('jsdoc/util/runtime');
 
+    var testParser = jasmine.createParser();
     handlers.attachTo(testParser);
 
     it("should exist", function() {

@@ -7,10 +7,29 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var jasmineAll = require('./lib/jasmine');
 var jasmine = jasmineAll.jasmine;
-
 var jasmineNode = ( require('./reporter') )(jasmine);
 
 var reporter = null;
+
+jasmine.jsParsers = (function() {
+    var PARSERS = require('jsdoc/src/parser').PARSERS;
+
+    var jsParsers = [];
+
+    // on Rhino, we should test all available parsers; on Node.js, we should test all parsers except
+    // Rhino
+    // TODO: support testing more than one parser per runtime
+    if ( require('jsdoc/util/runtime').isRhino() ) {
+        jsParsers.push('rhino');
+    }
+    jsParsers.push('esprima');
+
+    return jsParsers;
+})();
+
+// TODO: support testing more than one parser per runtime
+jasmine.currentParser = jasmine.jsParsers[0];
+
 jasmine.initialize = function(done, verbose) {
     var jasmineEnv = jasmine.getEnv();
 
@@ -38,10 +57,19 @@ jasmine.initialize = function(done, verbose) {
     return jasmineEnv;
 };
 
+jasmine.createParser = function(type) {
+    return require('jsdoc/src/parser').createParser(type || jasmine.currentParser);
+};
+
+function capitalize(str) {
+    return str[0].toUpperCase() + str.slice(1);
+}
+
+// TODO: Jasmine only lets us run the specs once, which means we're only testing one parser per
+// runtime. Need to find a good way around this.
 /**
- * Execute the specs in the specified folder. Helpers in each folder will be
- * added to the environment.  Helpers in parent directories will be available to child
- * directories.
+ * Execute the specs in the specified folder.
+ *
  * @param {string} folder The folder in which the specs are to be found.
  * @param {function?} done Callback function to execute when finished.
  * @param {object} opts Options for executing the specs.
@@ -100,9 +128,7 @@ jasmine.asyncSpecDone = function() {
 jasmine.getDocSetFromFile = function(filename, parser) {
     var sourceCode = fs.readFileSync( path.join(env.dirname, filename), 'utf8' );
     var runtime = require('jsdoc/util/runtime');
-    // TODO: change to runtime-appropriate parser (and/or get a config setting?)
-    var testParser = parser || require('jsdoc/src/parser').createParser('esprima');
-    //var testParser = parser || require('jsdoc/src/parser').createParser('rhino');
+    var testParser = parser || jasmine.createParser();
     var indexAll = require('jsdoc/borrow').indexAll;
     var doclets;
 

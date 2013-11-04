@@ -38,11 +38,22 @@ var index = 0;
 var testsCompleteCallback;
 var onComplete;
 
+function testedAllParsers() {
+    // TODO: We currently support testing one parser per runtime; see jasmine-jsdoc.js
+    //return jasmine.jsParsers.indexOf(jasmine.currentParser) === jasmine.jsParsers.length - 1;
+    return true;
+}
+
 var runNextFolder = module.exports = function(callback) {
     testsCompleteCallback = testsCompleteCallback || callback;
 
     if (index < specFolders.length) {
-        jasmine.executeSpecsInFolder(specFolders[index], onComplete, opts);
+        // we need to run the test specs once for each parser
+        // TODO: We currently support testing one parser per runtime
+        //jasmine.jsParsers.forEach(function(jsParser) {
+        //    jasmine.currentParser = jsParser;
+            jasmine.executeSpecsInFolder(specFolders[index], onComplete, opts);
+        //});
     }
     else {
         process.nextTick(function() {
@@ -55,6 +66,9 @@ onComplete = function(runner, log) {
     if (runner.results().failedCount !== 0) {
         failedCount += runner.results().failedCount;
     }
-    index++;
-    runNextFolder();
+
+    if ( testedAllParsers() ) {
+        index++;
+        runNextFolder();        
+    }
 };

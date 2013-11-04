@@ -9,6 +9,11 @@ describe('rhino/jsdoc/src/parser', function() {
         }
     };
 
+    // don't run this spec if we're currently testing another parser
+    if (jasmine.currentParser !== 'rhino') {
+        return;
+    }
+
     it('should exist', function() {
         expect(jsdoc.src.parser).toBeDefined();
         expect(typeof jsdoc.src.parser).toBe('object');
@@ -23,7 +28,7 @@ describe('rhino/jsdoc/src/parser', function() {
         var parser;
 
         function newParser() {
-            parser = new jsdoc.src.parser.Parser();
+            parser = jsdoc.src.parser.createParser('rhino');
         }
 
         newParser();
@@ -121,7 +126,6 @@ describe('rhino/jsdoc/src/parser', function() {
 
                 // args[2]: parser
                 expect(typeof args[2]).toBe('object');
-                expect(args[2] instanceof jsdoc.src.parser.Parser).toBe(true);
 
                 // args[3]: current source name
                 expect( String(args[3]) ).toBe('[[string0]]');

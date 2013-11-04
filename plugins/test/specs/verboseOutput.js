@@ -6,7 +6,7 @@
 var path = require('jsdoc/path');
 
 describe("verbose output plugin", function () {
-    var parser = new (require('jsdoc/src/parser')).Parser();
+    var parser = jasmine.createParser();
     var path = require('jsdoc/path');
 
     var docSet;

@@ -1,7 +1,7 @@
-/*global beforeEach: true, afterEach: true, describe: true, env: true, expect: true, it: true */
+/*global beforeEach: true, afterEach: true, describe: true, env: true, expect: true, it: true,
+jasmine: true */
 
 describe("@overview tag", function() {
-    var parser = require('jsdoc/src/parser');
     var runtime = require('jsdoc/util/runtime');
 
     var doclets;
@@ -11,7 +11,7 @@ describe("@overview tag", function() {
 
     beforeEach(function() {
         env.opts._ = [env.dirname + '/test/fixtures/'];
-        srcParser = new parser.Parser();
+        srcParser = jasmine.createParser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 

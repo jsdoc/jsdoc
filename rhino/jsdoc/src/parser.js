@@ -1,6 +1,9 @@
 // TODO: module docs
 
 // TODO: docs
+exports.createParser = require('jsdoc/src/parser').createParser;
+
+// TODO: docs
 var Parser = exports.Parser = function() {
 	var astBuilder;
 	var visitor;

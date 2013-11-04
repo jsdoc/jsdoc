@@ -1,6 +1,6 @@
 /*global describe: true, env: true, expect: true, it: true, jasmine: true */
 describe("shout plugin", function() {
-    var parser = new (require('jsdoc/src/parser')).Parser();
+    var parser = jasmine.createParser();
     var path = require('jsdoc/path');
 
     var docSet;

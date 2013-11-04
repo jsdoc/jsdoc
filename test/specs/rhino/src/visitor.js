@@ -22,7 +22,7 @@ describe('rhino/jsdoc/src/visitor', function() {
         var visitor;
 
         function newVisitor() {
-            parser = new ( require(runtime.getModulePath('jsdoc/src/parser')) ).Parser();
+            parser = require('jsdoc/src/parser').createParser('rhino');
             visitor = new jsdoc.src.visitor.Visitor(parser);
         }
 
