@@ -23,7 +23,7 @@ install it globally.
 
 To install the latest alpha version:
 
-    npm install jsdoc@<=3.3.0
+    npm install jsdoc@"<=3.3.0"
 
 To install the latest development version:
 
