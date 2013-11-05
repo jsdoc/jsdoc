@@ -2,105 +2,92 @@ JSDoc 3
 =======
 [![Build Status](https://secure.travis-ci.org/jsdoc3/jsdoc.png?branch=master)](http://travis-ci.org/jsdoc3/jsdoc)
 
-An inline API documentation processor for JavaScript. JSDoc 3 is intended to be
-an upgrade to JsDoc Toolkit (JSDoc 2).
+An API documentation generator for JavaScript.
 
 Want to contribute to JSDoc? Please read `CONTRIBUTING.md`.
 
 
-Installation
-------------
+Installation and Usage
+----------------------
 
-Use git to clone the [official JSDoc repository](https://github.com/jsdoc3/jsdoc):
+You can run JSDoc on either Node.js or Mozilla Rhino.
 
-    git clone https://github.com/jsdoc3/jsdoc.git
+### Node.js
 
-Alternatively, you can download a .zip file for the
+Native support for Node.js is available in JSDoc 3.3.0 and later.
+
+#### Installing JSDoc for Node.js
+
+You can install JSDoc in your project's `node_modules` folder, or you can
+install it globally.
+
+To install the latest alpha version:
+
+    npm install jsdoc@<=3.3.0
+
+To install the latest development version:
+
+    npm install git+https://github.com/jsdoc3/jsdoc.git
+
+#### Running JSDoc with Node.js
+
+If you installed JSDoc locally, the JSDoc command-line tool is available in
+`./node_modules/.bin`. To generate documentation for the file
+`yourJavaScriptFile.js`:
+
+    ./node_modules/bin/jsdoc yourJavaScriptFile.js
+
+Or if you installed JSDoc globally:
+
+    jsdoc yourJavaScriptFile.js
+
+By default, the generated documentation is saved in a directory named `out`. You
+can use the `--destination` (`-d`) option to specify another directory.
+
+Run `jsdoc --help` for a complete list of command-line options.
+
+### Mozilla Rhino
+
+All versions of JSDoc 3 run on a customized version of Mozilla Rhino, which
+requires Java. You can run JSDoc 3 on Java 1.6 and later.
+
+#### Installing JSDoc for Mozilla Rhino
+
+To install JSDoc, download a .zip file for the
 [latest development version](https://github.com/jsdoc3/jsdoc/archive/master.zip)
 or a [previous release](https://github.com/jsdoc3/jsdoc/tags).
 
-You can also install JSDoc within a Node.js project's `node_modules` directory
-using npm. To install the latest development version, change directories to your
-Node.js project, then run the following command:
+You can also use git to clone the
+[JSDoc repository](https://github.com/jsdoc3/jsdoc):
 
-    npm install git://github.com/jsdoc3/jsdoc.git
+    git clone git+https://github.com/jsdoc3/jsdoc.git
 
-Or to install JSDoc globally:
+The JSDoc repository includes a
+[customized version of Mozilla Rhino](https://github.com/jsdoc3/rhino). Make
+sure your Java classpath does not include any other versions of Rhino. (On OS X,
+you may need to remove the file `~/Library/Java/Extensions/js.jar`.)
 
-    npm install -g git://github.com/jsdoc3/jsdoc.git
+#### Running JSDoc with Mozilla Rhino
 
-**Note**: Although you can install JSDoc with npm, JSDoc does not currently run
-on Node.js.
+On OS X, Linux, and other POSIX systems, to generate documentation for the file
+`yourJavaScriptFile.js`:
 
+    ./jsdoc yourJavaScriptFile.js
 
-Usage
------
+Or on Windows:
 
-This example assumes that your working directory is the JSDoc application base
-directory:
+    jsdoc yourJavaScriptFile.js
 
-    ./jsdoc yourSourceCodeFile.js
+By default, the generated documentation is saved in a directory named `out`. You
+can use the `--destination` (`-d`) option to specify another directory.
 
-For information about the supported command-line options, use the `--help`
-option.
-
-    ./jsdoc --help
-
-Generated documentation will appear in the folder specified by the
-`--destination` option, or in a folder named "out" by default.
+Run `jsdoc --help` for a complete list of command-line options.
 
 
-Dependencies
-------------
+For More Information
+--------------------
 
-JSDoc 3 uses the Mozilla Rhino engine, which requires Java. JSDoc 3 is known to
-work with version 1.6.0_24 of Java.
-
-JSDoc 3 uses advanced features in Mozilla Rhino that are only available in or
-after version 1.7R3. In addition, JSDoc 3 requires several customizations to the
-standard Rhino distribution. The customized version of Rhino is included with
-JSDoc.
-
-In rare cases, users may have their Java CLASSPATH configured to override the
-included Rhino and point to an older version of Rhino instead. If this is the
-case, simply correct the CLASSPATH to remove the older Rhino. (On OS X, you may
-need to remove the file `~/Library/Java/Extensions/js.jar`.)
-
-The version of Rhino distributed with JSDoc 3 can be found here:
-https://github.com/jsdoc3/rhino
-
-
-Debugging
----------
-
-Rhino is not always very friendly when it comes to reporting errors in
-JavaScript. Luckily, it comes with a full-on debugger included that can be much
-more useful than a simple stack trace. To invoke JSDoc with the debugger, run
-the following command on Windows:
-
-    jsdoc --debug
-
-Or on OS X, Linux, and other POSIX-compliant systems:
-
-    ./jsdoc --debug
-
-If you can't get the short-form commands to work, try invoking Java directly:
-
-    java -cp lib/js.jar org.mozilla.javascript.tools.debugger.Main \
-    -debug -modules node_modules -modules rhino -modules lib -modules . \
-    jsdoc.js your/script.js
-
-Note: `--debug` must be the first argument to the short-form command.
-
-This will open a debugging window. Click Debug > Break on Exceptions, then click
-Run. If there is an error, you should see exactly where it is in the source
-code.
-
-
-See Also
---------
-
-Project Documentation: <http://usejsdoc.org/> (under development)  
+Project Documentation: <http://usejsdoc.org/>
 Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
@@ -110,7 +97,8 @@ Project Announcements: <http://twitter.com/jsdoc3>
 License
 -------
 
-JSDoc 3 is copyright (c) 2011-2012 Michael Mathews <micmath@gmail.com>.
+JSDoc 3 is copyright (c) 2011-2013 Michael Mathews <micmath@gmail.com> and the
+[contributors to JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).
 
 JSDoc 3 is free software, licensed under the Apache License, Version 2.0. See
 the file `LICENSE.md` in this distribution for more details.
