@@ -82,5 +82,14 @@ describe('jsdoc/util/markdown', function() {
                 '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>');
             restoreMarkdownConf(storage);
         });
+
+        it('should not automatically convert HTTP/HTTPS URLs to links', function() {
+            var parser = markdown.getParser();
+
+            expect(parser('Visit {@link http://usejsdoc.com}.'))
+                .toBe('<p>Visit {@link http://usejsdoc.com}.</p>');
+            expect(parser('Visit {@link https://google.com}.'))
+                .toBe('<p>Visit {@link https://google.com}.</p>');
+        });
     });
 });
