@@ -10,7 +10,8 @@ SET _BASEPATH=%_BASEPATH:~0,-1%
 REM for whatever reason, Rhino requires module paths to be valid URIs
 SET _URLPATH=file:/%_BASEPATH%
 
-REM we need the ability to resolve paths relative to the user's pwd
+REM we need the ability to resolve paths relative to the user's working
+REM directory prior to launching JSDoc
 SET PWD=%cd%
 
 IF "%_URLPATH%"=="%_URLPATH: =%" GOTO NO_SPACES
@@ -38,10 +39,10 @@ IF [%1]==[--debug] (
 :LAST_ARG
 
 IF [%1]==[-T] (
-    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -opt -1 -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/rhino" -modules "%_URLPATH%/lib" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor --dirname="%_BASEPATH%/
+    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -opt -1 -modules "%_URLPATH%/lib" -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/rhino" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor --dirname="%_BASEPATH%/
 ) ELSE (
     REM normal mode should be quiet
-    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/rhino" -modules "%_URLPATH%/lib" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --dirname="%_BASEPATH%/
+    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -modules "%_URLPATH%/lib" -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/rhino" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --dirname="%_BASEPATH%/
 )
 
 ENDLOCAL

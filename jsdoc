@@ -40,9 +40,9 @@ fi
 if test "$1" = "-T"
 then
     cd -P "$(dirname "$SOURCE")"
-    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}/lib" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" "$@" --dirname="${BASEPATH}/" 
+    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -opt -1 -modules "${URLPATH}/lib" -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" "$@" --dirname="${BASEPATH}/" 
 
 else
     # normal mode should be quiet
-    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}/lib" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" "$@" --dirname="${BASEPATH}/" 
+    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -modules "${URLPATH}/lib" -modules "${URLPATH}/node_modules" -modules "${URLPATH}/rhino" -modules "${URLPATH}" "${BASEPATH}/jsdoc.js" "$@" --dirname="${BASEPATH}/" 
 fi
