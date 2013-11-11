@@ -48,6 +48,15 @@ global.env = {
     dirname: '.',
 
     /**
+     * The user's working directory at the time that JSDoc was started.
+     *
+     * @private
+     * @type string
+     * @memberof env
+     */
+    pwd: null,
+
+    /**
      * The command-line options, parsed into a key/value hash.
      * 
      * @type Object
@@ -76,7 +85,7 @@ global.env = {
 (function(args) {
     if (args[0] && typeof args[0] === 'object') {
         // we should be on Node.js
-        args = [__dirname];
+        args = [__dirname, process.cwd()];
     }
 
     require('jsdoc/util/runtime').initialize(args);
@@ -133,7 +142,7 @@ global.dump = function() {
             cli.runCommand(cb);
         }
         catch(e) {
-            if (e.rhinoException !== null || e.rhinoException !== undefined) {
+            if (e.rhinoException) {
                 e.rhinoException.printStackTrace();
                 process.exit(1);
             } else {

@@ -1,12 +1,20 @@
 /*global describe: true, expect: true, it: true */
 describe("jsdoc/src/filter", function() {
+    var path = require('jsdoc/path');
+    
     var filter = new (require('jsdoc/src/filter').Filter)({
         includePattern: new RegExp(".+\\.js(doc)?$"),
         excludePattern: new RegExp("(^|\\/|\\\\)_"),
         exclude: ['.ignore', 'scratch/conf.js']
     });
 
-    var files = ['yes.js', '/yes.jsdoc', '/_nope.js', '.ignore', process.env.PWD + '/scratch/conf.js'];
+    var files = [
+        'yes.js',
+        '/yes.jsdoc',
+        '/_nope.js',
+        '.ignore',
+        path.normalize(env.pwd + '/scratch/conf.js')
+    ];
     
     files = files.filter(function($) {
         return filter.isIncluded($);
