@@ -1,3 +1,5 @@
+'use strict';
+
 exports.pathToUri = function(_path) {
     return _path;
 };

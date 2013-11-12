@@ -1,4 +1,5 @@
 // TODO: module docs
+'use strict';
 
 // TODO: docs
 var Visitor = exports.Visitor = function(parser) {

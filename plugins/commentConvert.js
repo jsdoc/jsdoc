@@ -3,7 +3,7 @@
     @module plugins/commentConvert
     @author Michael Mathews <micmath@gmail.com>
  */
-
+'use strict';
 
 exports.handlers = {
     ///

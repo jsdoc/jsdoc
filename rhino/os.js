@@ -4,6 +4,7 @@
  * @author Jeff Williams <jeffrey.l.williams@gmail.com>
  * @see http://nodejs.org/api/os.html
  */
+'use strict';
 
 exports.EOL = String( java.lang.System.getProperty('line.separator') );
 

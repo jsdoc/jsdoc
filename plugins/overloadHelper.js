@@ -36,6 +36,7 @@
  * @author Jeff Williams <jeffrey.l.williams@gmail.com>
  * @license Apache License 2.0
  */
+'use strict';
 
 // lookup table of function doclets by longname
 var functionDoclets;

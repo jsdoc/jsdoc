@@ -5,6 +5,8 @@
  * @see https://github.com/joyent/node/blob/f105f2f2/lib/querystring.js
  * @license MIT
  */
+'use strict';
+
 var QueryString = exports;
 
 // If obj.hasOwnProperty has been overridden, then calling

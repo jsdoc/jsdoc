@@ -1,3 +1,5 @@
+'use strict';
+
 var isWindows = java.lang.System.getProperty("os.name").toLowerCase().contains("windows");
 var fileSeparator = exports.sep = String( java.lang.System.getProperty("file.separator") );
 

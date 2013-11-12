@@ -336,11 +336,20 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("htmlsafe", function() {
-        // turns < into &lt; (doesn't do > or &amp etc...)
         it('should convert all occurences of < to &lt;', function() {
             var inp = '<h1>Potentially dangerous.</h1>',
                 out = helper.htmlsafe(inp);
             expect(out).toBe('&lt;h1>Potentially dangerous.&lt;/h1>');
+        });
+
+        it('should convert all occurrences of & to &amp;', function() {
+            var input = 'foo && bar & baz;';
+            expect( helper.htmlsafe(input) ).toBe('foo &amp;&amp; bar &amp; baz;');
+        });
+
+        it ('should not double-convert ampersands', function() {
+            var input = '<h1>Foo & Friends</h1>';
+            expect( helper.htmlsafe(input) ).toBe('&lt;h1>Foo &amp; Friends&lt;/h1>');
         });
     });
 

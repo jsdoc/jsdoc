@@ -2,6 +2,7 @@
     @module plugins/sourcetag
     @author Michael Mathews <micmath@gmail.com>
  */
+'use strict';
 
 exports.handlers = {
     /**

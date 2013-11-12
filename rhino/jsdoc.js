@@ -1,4 +1,5 @@
 // Platform-specific functions to support jsdoc.js
+'use strict';
 
 exports.pathToUri = function(_path) {
 	return String( new java.io.File(_path).toURI() );
