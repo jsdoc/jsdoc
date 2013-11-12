@@ -4,6 +4,7 @@
  * Partial Rhino shim for Node.js' `fs` module.
  * @see http://nodejs.org/api/fs.html
  */
+'use strict';
 
 var path = require('path');
 var util = require('util');

@@ -1,4 +1,5 @@
 // TODO: module docs
+'use strict';
 
 // TODO: docs
 exports.createParser = require('jsdoc/src/parser').createParser;

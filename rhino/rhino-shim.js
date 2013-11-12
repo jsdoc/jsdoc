@@ -18,6 +18,8 @@ global.setInterval = null;
 global.clearInterval = null;
 
 (function() {
+    'use strict';
+
     // TODO: tune number of threads if necessary
     var timerPool = new java.util.concurrent.ScheduledThreadPoolExecutor(10);
     var timers = {};

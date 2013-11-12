@@ -1,4 +1,6 @@
 /*global env: true */
+'use strict';
+
 var template = require('jsdoc/template'),
     fs = require('jsdoc/fs'),
     path = require('jsdoc/path'),

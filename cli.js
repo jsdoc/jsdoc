@@ -12,6 +12,7 @@
  * @private
  */
 module.exports = (function() {
+'use strict';
 
 var props = {
     docs: [],

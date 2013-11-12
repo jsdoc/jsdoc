@@ -3,7 +3,7 @@
     @module plugins/railsTemplate
     @author Jannon Frank <jannon@jannon.net>
  */
-
+'use strict';
 
 exports.handlers = {
     /**

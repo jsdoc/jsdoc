@@ -4,6 +4,7 @@
  * @author Rob Taylor <manix84@gmail.com> - The basic idea
  * @author Michael Mathews <micmath@gmail.com> - Wrote the first itteration with me :)
  */
+'use strict';
 
 exports.handlers = {
     /**

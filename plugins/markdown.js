@@ -5,6 +5,8 @@
  * @author Michael Mathews <micmath@gmail.com>
  * @author Ben Blank <ben.blank@gmail.com>
  */
+'use strict';
+
 var conf = env.conf.markdown;
 var defaultTags = [ "classdesc", "description", "params", "properties", "returns", "see"];
 var hasOwnProp = Object.prototype.hasOwnProperty;

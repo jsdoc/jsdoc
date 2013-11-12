@@ -124,6 +124,8 @@ global.dump = function() {
 };
 
 (function() {
+    'use strict';
+    
     function cb(errorCode) {
         process.exit(errorCode || 0);
     }

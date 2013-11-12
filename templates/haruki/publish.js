@@ -4,6 +4,7 @@
     @example
         ./jsdoc scratch/jsdoc_test.js -t templates/haruki -d console -q format=xml
  */
+'use strict';
 
 function graft(parentNode, childNodes, parentLongname, parentName) {
     childNodes
@@ -210,7 +211,7 @@ exports.publish = function(data, opts) {
             console.log( xml('jsdoc', root) );
         }
         else {
-            dump(root);
+            global.dump(root);
         }
     }
     else {
