@@ -251,6 +251,11 @@ h6
   border-left: 3px #ddd solid;
 }
 
+.prettyprint .linenums li.selected code
+{
+  background-color: lightyellow;
+}
+
 .params, .props
 {
 	border-spacing: 0;
