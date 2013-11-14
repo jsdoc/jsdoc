@@ -239,12 +239,16 @@ h6
 	margin: 0;
 	background-color: #fff;
 	color: #000;
-	border-left: 3px #ddd solid;
 }
 
 .prettyprint code span.line
 {
   display: inline-block;
+}
+
+.prettyprint .linenums li
+{
+  border-left: 3px #ddd solid;
 }
 
 .params, .props
