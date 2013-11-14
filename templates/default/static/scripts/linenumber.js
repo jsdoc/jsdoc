@@ -1,6 +1,11 @@
 (function() {
     var source = document.getElementsByClassName('prettyprint source linenums');
-    var i = 0, lineNumber = 0, lineId, lines, totalLines, anchorHash;
+    var i = 0;
+    var lineNumber = 0;
+    var lineId;
+    var lines;
+    var totalLines;
+    var anchorHash;
 
     if (source && source[0]) {
         anchorHash = document.location.hash.substring(1);
@@ -11,7 +16,7 @@
             lineNumber++;
             lineId = 'line' + lineNumber;
             lines[i].id = lineId;
-            if (lineId == anchorHash) {
+            if (lineId === anchorHash) {
                 lines[i].className += ' selected';
             }
         }
