@@ -256,6 +256,11 @@ h6
   background-color: lightyellow;
 }
 
+.prettyprint ol.linenums
+{
+  padding-left: 70px;
+}
+
 .params, .props
 {
 	border-spacing: 0;
