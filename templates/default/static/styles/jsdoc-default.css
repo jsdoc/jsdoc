@@ -246,19 +246,37 @@ h6
   display: inline-block;
 }
 
-.prettyprint .linenums li
+.prettyprint.linenums
+{
+  padding-left: 70px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.prettyprint.linenums ol
+{
+  padding-left: 0;
+}
+
+.prettyprint.linenums li
 {
   border-left: 3px #ddd solid;
 }
 
-.prettyprint .linenums li.selected code
+.prettyprint.linenums li.selected,
+.prettyprint.linenums li.selected *
 {
   background-color: lightyellow;
 }
 
-.prettyprint ol.linenums
+.prettyprint.linenums li *
 {
-  padding-left: 70px;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 .params, .props
