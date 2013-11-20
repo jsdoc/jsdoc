@@ -49,10 +49,11 @@ describe('jsdoc/util/doop', function() {
         function compareForEquality(a, b) {
             if (a instanceof Object && a.constructor != Function) {
                 // if it's an object and not a function, it should clone.
-                var keys = Object.keys(a);
-                expect(Object.keys(a)).toEqual(Object.keys(b));
-                for (var i = 0; i < keys.length; ++i) {
-                    compareForEquality(a[keys[i]], b[keys[i]]);
+                var keysA = Object.keys(a).sort();
+                var keysB = Object.keys(b).sort();
+                expect(keysA).toEqual(keysB);
+                for (var i = 0; i < keysA.length; ++i) {
+                    compareForEquality(a[keysA[i]], b[keysB[i]]);
                 }
             } else {
                 // otherwise, it should be exactly equal.
