@@ -44,6 +44,14 @@ describe('jsdoc/util/doop', function() {
             expect(inp).not.toBe(out);
         });
 
+        it("should return an object with the same prototype as the original object", function() {
+            function Foo() {}
+
+            var foo = new Foo();
+            var bar = doop(foo);
+            expect( Object.getPrototypeOf(foo) ).toBe( Object.getPrototypeOf(bar) );
+        });
+
         // checks that a === b if it's not an object or array (or it's af function);
         // otherwise recurses down into keys and compares them.
         function compareForEquality(a, b) {
