@@ -2,12 +2,15 @@ describe("@constant tag", function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/constanttag.js'),
         FOO = docSet.getByLongname('FOO')[0],
         BAR = docSet.getByLongname('BAR')[0],
-        BAZ = docSet.getByLongname('BAZ')[0];
+        BAZ = docSet.getByLongname('BAZ')[0],
+        FOOS = docSet.getByLongname('FOOS')[0];
+
 
     it("sets the doclet's 'kind' property to 'constant'", function() {
         expect(FOO.kind).toBe('constant');
         expect(BAR.kind).toBe('constant');
         expect(BAZ.kind).toBe('constant');
+        expect(FOOS.kind).toBe('constant');
     });
 
     it("If used as a standalone, takes the name from the code", function() {
@@ -24,5 +27,13 @@ describe("@constant tag", function() {
         expect(BAZ.type.names).toBeDefined();
         expect(BAZ.type.names.length).toBe(1);
         expect(BAZ.type.names[0]).toBe('string');
+    });
+
+    it("If used with only a type, takes the name from the code", function() {
+        expect(FOOS.name).toBe('FOOS');
+        expect(FOOS.type).toBeDefined();
+        expect(Array.isArray(FOOS.type.names)).toBeTruthy();
+        expect(FOOS.type.names.length).toBe(1);
+        expect(FOOS.type.names[0]).toBe('number');
     });
 });
