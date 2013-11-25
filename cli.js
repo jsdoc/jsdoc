@@ -107,8 +107,11 @@ JSDoc.runCommand = function(cb) {
 
 // TODO: docs
 JSDoc.printHelp = function(cb) {
-    console.log( require('jsdoc/opts/args').help() );
-    cb(0);
+    JSDoc.printVersion(function() {
+        console.log( '\n' + require('jsdoc/opts/args').help() );
+        console.log('\n' + 'Visit http://usejsdoc.org for more information.');
+        cb(0);
+    });
 };
 
 // TODO: docs

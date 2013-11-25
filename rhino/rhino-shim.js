@@ -120,11 +120,17 @@ global.process = {
         setTimeout(callback, 0);
     },
     stderr: {
+        // Java can't reliably find the terminal width across platforms, so we hard-code a
+        // reasonable value
+        columns: 80,
         write: function(str) {
             java.lang.System.err.print(str);
         }
     },
     stdout: {
+        // Java can't reliably find the terminal width across platforms, so we hard-code a
+        // reasonable value
+        columns: 80,
         write: function(str) {
             java.lang.System.out.print(str);
         }
