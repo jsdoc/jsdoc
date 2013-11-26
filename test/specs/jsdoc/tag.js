@@ -25,7 +25,7 @@ describe("jsdoc/tag", function() {
                      ' * myFunction(3, 4); // returns 7\n';
         var tagArg = new jsdoc.tag.Tag('arg  ', text, meta), // <-- a symonym of param, space in the title.
             tagParam = new jsdoc.tag.Tag('param', '[foo=1]', meta), // no type, but has optional and defaultvalue.
-            tagEg  = new jsdoc.tag.Tag('example', textEg, meta), // <-- for keepsWhitespace
+            tagEg  = new jsdoc.tag.Tag('example', textEg, meta), // <-- for keepsWhitespace and removesIndent
             tagType = new jsdoc.tag.Tag('type', 'MyType ', meta); // <-- for onTagText
 
         it("should have a 'originalTitle' property, a string", function() {
@@ -60,11 +60,31 @@ describe("jsdoc/tag", function() {
         });
 
         describe("'text' property", function() {
+
+            function trim(text, newlines, outdent) {
+                if (!text) { return ''; }
+
+                if (newlines) {
+                    text = text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
+                    if (outdent) {
+                        var match = text.match(/^([ \t]+)/);
+                        if (match && match[1]) {
+                            var outdenter = new RegExp('^' + match[1], 'gm');
+                            text = text.replace(outdenter, '');
+                        }
+                    }
+                    return text;
+                }
+                else {
+                    return text.replace(/^\s+|\s+$/g, '');
+                }
+            }
+
             it("'text' property should be the trimmed tag text, with all leading and trailing space removed unless tagDef.keepsWhitespace", function() {
-                // @example has keepsWhitespace, @param doesn't.
-                // should realy use module:jsdoc/tag~trim here but it's private.
-                expect(tagArg.text).toBe(text.replace(/^\s+|\s+$/g, ''));
-                expect(tagEg.text).toBe(textEg.replace(/^[\n\r\f]+|[\n\r\f]+$/g, ''));
+                // @example has keepsWhitespace and removesIndent, @param doesn't.
+                // should realy use module:jsdoc/tag~trim here but it's private, so the function is copied locally.
+                expect(tagArg.text).toBe(trim(text));
+                expect(tagEg.text).toBe(trim(textEg, true, true));
             });
 
             it("'text' property should have onTagText run on it if it has it.", function() {
