@@ -432,14 +432,6 @@ describe('jsdoc/src/astnode', function() {
             expect(noNode).toThrow();
         });
 
-        it('should return a name of null for unrecognized node types', function() {
-            var info = astnode.getInfo({type: 'foo'});
-
-            expect(info).toBeDefined();
-
-            expect(info.name).toBe(null);
-        });
-
         it('should return the correct info for an AssignmentExpression', function() {
             var info = astnode.getInfo(assignmentExpression);
 
@@ -463,8 +455,8 @@ describe('jsdoc/src/astnode', function() {
             expect(info.node.type).toBe(Syntax.FunctionDeclaration);
 
             expect(info.name).toBe('foo');
-            expect(info.type).toBe('function');
-            expect(info.value).toBe('function');
+            expect(info.type).toBe(Syntax.FunctionDeclaration);
+            expect(info.value).not.toBeDefined();
             expect( Array.isArray(info.paramnames) ).toBe(true);
             expect(info.paramnames.length).toBe(1);
             expect(info.paramnames[0]).toBe('bar');
@@ -479,8 +471,8 @@ describe('jsdoc/src/astnode', function() {
             expect(info.node.type).toBe(Syntax.FunctionExpression);
 
             expect(info.name).toBe('');
-            expect(info.type).toBe('function');
-            expect(info.value).toBe('function');
+            expect(info.type).toBe(Syntax.FunctionExpression);
+            expect(info.value).not.toBeDefined();
             expect( Array.isArray(info.paramnames) ).toBe(true);
             expect(info.paramnames.length).toBe(1);
             expect(info.paramnames[0]).toBe('bar');
@@ -560,8 +552,8 @@ describe('jsdoc/src/astnode', function() {
             expect(info.node.type).toBe(Syntax.Identifier);
 
             expect(info.name).toBe('foo');
-            expect(info.type).toBe(Syntax.Identifier);
-            expect(info.value).toBe('foo');
+            expect(info.type).not.toBeDefined();
+            expect(info.value).not.toBeDefined();
         });
 
         it('should return the correct info for other node types', function() {
@@ -569,7 +561,8 @@ describe('jsdoc/src/astnode', function() {
 
             expect(info).toBeDefined();
 
-            expect(info.name).toBe(Syntax.BinaryExpression);
+            expect(info.node).toBe(binaryExpression);
+            expect(info.type).toBe(Syntax.BinaryExpression);
         });
     });
 
@@ -765,8 +758,8 @@ describe('jsdoc/src/astnode', function() {
             expect ( astnode.nodeToString(variableDeclarator1) ).toBe('foo');
         });
 
-        it('should return the node type for all other nodes', function() {
-            expect( astnode.nodeToString(binaryExpression) ).toBe(Syntax.BinaryExpression);
+        it('should return an empty string for all other nodes', function() {
+            expect( astnode.nodeToString(binaryExpression) ).toBe('');
         });
     });
 });
