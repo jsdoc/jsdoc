@@ -1,4 +1,5 @@
-/*global beforeEach: true, describe: true, expect: true, it: true, spyOn: true, xdescribe: true */
+/*global afterEach: true, beforeEach: true, describe: true, expect: true, it: true, spyOn: true,
+xdescribe: true */
 
 describe('jsdoc/path', function() {
     var os = require('os');
@@ -30,14 +31,20 @@ describe('jsdoc/path', function() {
     });
 
     describe('commonPrefix', function() {
+        var oldPwd;
+        var cwd;
+
         beforeEach(function() {
-            spyOn(process, 'cwd').andCallFake(function() {
-                return os.platform().match(/^win/) ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
-            });
+            oldPwd = global.env.pwd;
+            global.env.pwd = os.platform().match(/^win/) ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
+            cwd = global.env.pwd.split(path.sep);
+        });
+
+        afterEach(function() {
+            global.env.pwd = oldPwd;
         });
 
         it('finds the correct prefix for a group of relative paths', function() {
-            var cwd = process.cwd().split(path.sep);
             var paths = [
                 path.join('foo', 'bar', 'baz', 'qux.js'),
                 path.join('foo', 'bar', 'baz', 'quux.js'),
@@ -50,7 +57,6 @@ describe('jsdoc/path', function() {
         });
 
         it('finds the correct prefix for a group of absolute paths', function() {
-            var cwd = process.cwd().split(path.sep);
             var paths = [
                 cwd.concat('foo', 'bar', 'baz', 'qux.js').join(path.sep),
                 cwd.concat('foo', 'bar', 'baz', 'quux.js').join(path.sep),
@@ -64,7 +70,6 @@ describe('jsdoc/path', function() {
 
         it('finds the correct prefix for a group of absolute paths and dotted relative paths',
             function() {
-            var cwd = process.cwd().split(path.sep);
             var paths = [
                 path.join('..', 'jsdoc', 'foo', 'bar', 'baz', 'qux', 'quux', 'test.js'),
                 cwd.concat('foo', 'bar', 'bazzy.js').join(path.sep),
