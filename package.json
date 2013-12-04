@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.3.0-dev",
-	"revision": "1385358101568",
+	"revision": "1386117632175",
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
@@ -25,7 +25,8 @@
 		"wrench":   "1.3.9"
 	},
 	"devDependencies": {
-		"jshint": "2.3.0"
+		"jshint": "2.3.0",
+		"tv4": "git+https://github.com/hegemonic/tv4.git#own-properties"
 	},
 	"engines": {
 		"node": ">=0.10"

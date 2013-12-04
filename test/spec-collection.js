@@ -5,6 +5,7 @@ var runtime = require('jsdoc/util/runtime');
 var wrench = require('wrench');
 
 var specs = [];
+var finalSpecs = [];
 
 var createSpecObj = function(_path, root) {
     function relativePath() {
@@ -32,15 +33,45 @@ var clearSpecs = exports.clearSpecs = function() {
     specs.splice(0, specs.length);
 };
 
-function shouldLoad(file, matcher) {
+function addSpec(file, target) {
+    target = target || specs;
+
+    target.push( createSpecObj(file) );
+}
+
+function isValidSpec(file, matcher) {
+    var result;
+
     var skipPath = runtime.isRhino() ? runtime.NODE : runtime.RHINO;
+
+    // valid specs must...
     try {
-        return fs.statSync(file).isFile() && matcher.test( path.basename(file) ) &&
+        // ...be a file
+        result = fs.statSync(file).isFile() &&
+            // ...match the matcher
+            matcher.test( path.basename(file) ) &&
+            // ...be relevant to the current runtime
             file.indexOf(skipPath) === -1;
     }
     catch(e) {
-        return false;
+        result = false;
     }
+
+    return result;
+}
+
+function shouldLoad(file, matcher) {
+    var result = false;
+
+    // should this spec run at the end?
+    if ( /schema\.js$/.test(file) && isValidSpec(file, matcher) ) {
+        addSpec(file, finalSpecs);
+    }
+    else {
+        result = isValidSpec(file, matcher);
+    }
+
+    return result;
 }
 
 exports.load = function(loadpath, matcher, clear) {
@@ -52,11 +83,11 @@ exports.load = function(loadpath, matcher, clear) {
     for (var i = 0; i < wannaBeSpecs.length; i++) {
         var file = path.join(loadpath, wannaBeSpecs[i]);
         if ( shouldLoad(file, matcher) ) {
-            specs.push( createSpecObj(file) );
+            addSpec(file);
         }
     }
 };
 
 exports.getSpecs = function() {
-    return specs;
+    return specs.concat(finalSpecs);
 };

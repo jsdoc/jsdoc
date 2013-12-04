@@ -5,6 +5,7 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper'),
         doclet = require('jsdoc/doclet'),
+        doop = require('jsdoc/util/doop'),
         resolver = require('jsdoc/tutorial/resolver'),
         taffy = require('taffydb').taffy;
     helper.registerLink('test', 'path/to/test.html');
@@ -829,7 +830,7 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("addEventListeners", function() {
-        var doclets = taffy(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets),
+        var doclets = ( taffy(doop(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets)) ),
             ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0],
             ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0],
             ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];

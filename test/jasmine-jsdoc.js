@@ -3,6 +3,19 @@ var fs = require('jsdoc/fs');
 var path = require('jsdoc/path');
 var util = require('util');
 
+var jsdoc = {
+    augment: require('jsdoc/augment'),
+    borrow: require('jsdoc/borrow'),
+    schema: require('jsdoc/schema'),
+    src: {
+        handlers: require('jsdoc/src/handlers'),
+        parser: require('jsdoc/src/parser')
+    },
+    util: {
+        runtime: require('jsdoc/util/runtime')
+    }
+};
+
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var jasmineAll = require('./lib/jasmine');
@@ -11,15 +24,17 @@ var jasmineNode = ( require('./reporter') )(jasmine);
 
 var reporter = null;
 
+jasmine.parseResults = [];
+
 jasmine.jsParsers = (function() {
-    var PARSERS = require('jsdoc/src/parser').PARSERS;
+    var PARSERS = jsdoc.src.parser.PARSERS;
 
     var jsParsers = [];
 
     // on Rhino, we should test all available parsers; on Node.js, we should test all parsers except
     // Rhino
     // TODO: support testing more than one parser per runtime
-    if ( require('jsdoc/util/runtime').isRhino() ) {
+    if ( jsdoc.util.runtime.isRhino() ) {
         jsParsers.push('rhino');
     }
     jsParsers.push('esprima');
@@ -58,7 +73,7 @@ jasmine.initialize = function(done, verbose) {
 };
 
 jasmine.createParser = function(type) {
-    return require('jsdoc/src/parser').createParser(type || jasmine.currentParser);
+    return jsdoc.src.parser.createParser(type || jasmine.currentParser);
 };
 
 function capitalize(str) {
@@ -125,22 +140,30 @@ jasmine.asyncSpecDone = function() {
     jasmine.asyncSpecWait.done = true;
 };
 
-jasmine.getDocSetFromFile = function(filename, parser) {
-    var sourceCode = fs.readFileSync( path.join(env.dirname, filename), 'utf8' );
-    var runtime = require('jsdoc/util/runtime');
-    var testParser = parser || jasmine.createParser();
-    var indexAll = require('jsdoc/borrow').indexAll;
+jasmine.getDocSetFromFile = function(filename, parser, validate) {
     var doclets;
+    var validationResult;
 
-    require('jsdoc/src/handlers').attachTo(testParser);
+    var sourceCode = fs.readFileSync( path.join(env.dirname, filename), 'utf8' );
+    var testParser = parser || jasmine.createParser();
+
+    jsdoc.src.handlers.attachTo(testParser);
 
     doclets = testParser.parse('javascript:' + sourceCode);
-    indexAll(doclets);
+    jsdoc.borrow.indexAll(doclets);
 
-    require('jsdoc/augment').addInherited(doclets);
+    jsdoc.augment.addInherited(doclets);
 
     // test assume borrows have not yet been resolved
     // require('jsdoc/borrow').resolveBorrows(doclets);
+
+    // store the parse results for later validation
+    if (validate !== false) {
+        jasmine.parseResults.push({
+            filename: filename,
+            doclets: doclets
+        });
+    }
 
     return {
         doclets: doclets,

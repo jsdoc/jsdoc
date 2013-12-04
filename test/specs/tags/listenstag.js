@@ -1,3 +1,4 @@
+/*global describe: true, expect: true, it: true, jasmine: true */
 describe("@listens tag", function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/listenstag.js'),
         doc = docSet.getByLongname('module:myModule~MyHandler')[0];

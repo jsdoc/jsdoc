@@ -1,5 +1,5 @@
-/*global afterEach: true, app: true, beforeEach: true, describe: true, expect: true, it: true,
-jasmine: true */
+/*global afterEach: true, app: true, beforeEach: true, describe: true, env: true, expect: true,
+it: true, jasmine: true */
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe("plugins", function() {
     var path = require('jsdoc/path');
@@ -18,7 +18,7 @@ describe("plugins", function() {
 
     require('jsdoc/plugins').installPlugins(pluginPaths, app.jsdoc.parser);
 
-    docSet = jasmine.getDocSetFromFile('test/fixtures/plugins.js', app.jsdoc.parser);
+    docSet = jasmine.getDocSetFromFile('test/fixtures/plugins.js', app.jsdoc.parser, false);
 
     it("should fire the plugin's event handlers", function() {
         expect(global.jsdocPluginsTest.plugin1.fileBegin).toBeDefined();
