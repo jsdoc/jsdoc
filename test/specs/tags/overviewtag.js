@@ -22,7 +22,7 @@ describe("@overview tag", function() {
 
     it('When a file overview tag appears in a doclet, the name of the doclet should contain the path to the file.', function() {
         doclets = srcParser.parse( path.normalize(env.dirname + '/test/fixtures/file.js') );
-        expect(doclets[0].name).toMatch(/^(fixtures[\/\\]file\.js)$/);
+        expect(doclets[0].name).toMatch(/^file\.js$/);
     });
 
     it("The name and longname should be equal", function() {

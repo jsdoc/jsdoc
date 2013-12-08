@@ -89,12 +89,10 @@ function addAttribs(f) {
 }
 
 function shortenPaths(files, commonPrefix) {
-    // always use forward slashes
-    var regexp = new RegExp('\\\\', 'g');
-
     Object.keys(files).forEach(function(file) {
         files[file].shortened = files[file].resolved.replace(commonPrefix, '')
-            .replace(regexp, '/');
+            // always use forward slashes
+            .replace(/\\/g, '/');
     });
 
     return files;
@@ -106,7 +104,7 @@ function getPathFromDoclet(doclet) {
     }
 
     return doclet.meta.path && doclet.meta.path !== 'null' ?
-        doclet.meta.path + '/' + doclet.meta.filename :
+        path.join(doclet.meta.path, doclet.meta.filename) :
         doclet.meta.filename;
 }
     
@@ -372,7 +370,9 @@ exports.publish = function(taffyData, opts, tutorials) {
                 resolved: sourcePath,
                 shortened: null
             };
-            sourceFilePaths.push(sourcePath);
+            if (sourceFilePaths.indexOf(sourcePath) === -1) {
+                sourceFilePaths.push(sourcePath);
+            }
         }
     });
     

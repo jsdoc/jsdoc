@@ -92,6 +92,16 @@ describe('jsdoc/path', function() {
                 expect( path.commonPrefix(paths) ).toEqual('');
             }
         });
+
+        it('works with Windows paths that contain spaces', function() {
+            var prefix = 'C:\\Users\\Jane Smith\\myproject\\';
+            var paths = [
+                prefix + 'index.js',
+                prefix + 'lib\\mymodule.js'
+            ];
+
+            expect( path.commonPrefix(paths) ).toBe(prefix);
+        });
     });
 
     xdescribe('getResourcePath', function() {

@@ -24,7 +24,30 @@ describe("module names", function() {
             path.normalize(env.dirname + '/test/fixtures/modules/data/mod-1.js')
         );
         expect(doclets.length).toBeGreaterThan(1);
-        expect(doclets[0].longname).toEqual('module:data/mod-1');
+        expect(doclets[0].longname).toEqual('module:mod-1');
+    });
+
+    it("should always use forward slashes when creating a name from the file path", function() {
+        var Doclet = require('jsdoc/doclet').Doclet;
+        var doclet;
+
+        // setup
+        var sourceFiles = env.sourceFiles.slice(0);
+        env.sourceFiles = [
+            'C:\\Users\\Jane Smith\\myproject\\index.js',
+            'C:\\Users\\Jane Smith\\myproject\\lib\\mymodule.js'
+        ];
+        env.opts._ = [];
+
+        doclet = new Doclet('/** @module */', {
+            lineno: 1,
+            filename: 'C:\\Users\\Jane Smith\\myproject\\lib\\mymodule.js'
+        });
+
+        expect(doclet.name).toBe('lib/mymodule');
+
+        // teardown
+        env.sourceFiles = sourceFiles;
     });
 
     it("should use the documented module name if available", function() {
