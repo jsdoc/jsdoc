@@ -6,6 +6,8 @@ describe('jsdoc/path', function() {
     var path = require('jsdoc/path');
     var standardPath = require('path');
 
+    var isWindows = /^win/.test( os.platform() );
+
     it('should exist', function() {
         expect(path).toBeDefined();
         expect(typeof path).toEqual('object');
@@ -36,7 +38,7 @@ describe('jsdoc/path', function() {
 
         beforeEach(function() {
             oldPwd = global.env.pwd;
-            global.env.pwd = os.platform().match(/^win/) ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
+            global.env.pwd = isWindows ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
             cwd = global.env.pwd.split(path.sep);
         });
 
@@ -81,27 +83,30 @@ describe('jsdoc/path', function() {
             expect( path.commonPrefix(paths) ).toEqual(expected);
         });
 
-        it('returns an empty string when there is no common prefix', function() {
-            // skip on Windows, since the paths share a drive letter at the start
-            if ( !os.platform().match(/^win/) ) {
+        // skip on Windows, since the paths share a drive letter at the start
+        if (!isWindows) {
+            it('returns an empty string when there is no common prefix', function() {
                 var paths = [
                     path.join('foo', 'bar', 'baz', 'qux.js'),
                     path.join('..', '..', 'Library', 'foo', 'bar', 'baz.js')
                 ];
 
                 expect( path.commonPrefix(paths) ).toEqual('');
-            }
-        });
+            });
+        }
 
-        it('works with Windows paths that contain spaces', function() {
-            var prefix = 'C:\\Users\\Jane Smith\\myproject\\';
-            var paths = [
-                prefix + 'index.js',
-                prefix + 'lib\\mymodule.js'
-            ];
+        // only test Windows paths on Windows
+        if (isWindows) {
+            it('works with Windows paths that contain spaces', function() {
+                var prefix = 'C:\\Users\\Jane Smith\\myproject\\';
+                var paths = [
+                    prefix + 'index.js',
+                    prefix + 'lib\\mymodule.js'
+                ];
 
-            expect( path.commonPrefix(paths) ).toBe(prefix);
-        });
+                expect( path.commonPrefix(paths) ).toBe(prefix);
+            });
+        }
     });
 
     xdescribe('getResourcePath', function() {
