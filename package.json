@@ -34,6 +34,7 @@
 	"scripts": {
 		"postinstall": "node ./node/postinstall.js"
 	},
+	"main": "cli.js",
 	"bin": {
 		"jsdoc": "./jsdoc.js"
 	},
