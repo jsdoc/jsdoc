@@ -3,32 +3,39 @@
  *
  * A few critical notes for anyone who works on this module:
  * 
- * + The module should really export an instance of `JSDoc`, and `props` should be properties of a
- * `JSDoc` instance. However, Rhino interpreted `this` as a reference to `global` within the
+ * + The module should really export an instance of `cli`, and `props` should be properties of a
+ * `cli` instance. However, Rhino interpreted `this` as a reference to `global` within the
  * prototype's methods, so we couldn't do that.
- * + Use the `fs` and `path` modules rather than `jsdoc/fs` and `jsdoc/path`, which are not
- * initialized correctly when they're loaded this early.
+ * + On Rhino, for unknown reasons, the `jsdoc/fs` and `jsdoc/path` modules can fail in some cases
+ * when they are required by this module. You may need to use `fs` and `path` instead.
  * 
  * @private
  */
 module.exports = (function() {
 'use strict';
 
+var logger = require('jsdoc/util/logger');
+
 var props = {
     docs: [],
+    shouldExitWithError: false,
     packageJson: null
 };
 
 var app = global.app;
 var env = global.env;
 
-var JSDoc = {};
+var fatalErrorMessage = 'Exiting JSDoc because an error occurred. See the previous log ' +
+    'messages for details.';
+
+var cli = {};
 
 // TODO: docs
-JSDoc.setVersionInfo = function() {
+cli.setVersionInfo = function() {
     var fs = require('fs');
     var path = require('path');
 
+    // allow this to throw--something is really wrong if we can't read our own package file
     var info = JSON.parse( fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8') );
 
     env.version = {
@@ -36,11 +43,11 @@ JSDoc.setVersionInfo = function() {
         revision: new Date( parseInt(info.revision, 10) ).toUTCString()
     };
 
-    return JSDoc;
+    return cli;
 };
 
 // TODO: docs
-JSDoc.loadConfig = function() {
+cli.loadConfig = function() {
     var _ = require('underscore');
     var args = require('jsdoc/opts/args');
     var Config = require('jsdoc/config');
@@ -55,7 +62,12 @@ JSDoc.loadConfig = function() {
         encoding: 'utf8'
     };
 
-    env.opts = args.parse(env.args);
+    try {
+        env.opts = args.parse(env.args);
+    }
+    catch (e) {
+        cli.exit(1, e.message + '\n' + fatalErrorMessage);
+    }
 
     confPath = env.opts.configure || path.join(env.dirname, 'conf.json');
     try {
@@ -74,48 +86,109 @@ JSDoc.loadConfig = function() {
             .get();
     }
     catch (e) {
-        throw new Error('Cannot parse the config file ' + confPath + ': ' + e);
+        cli.exit(1, 'Cannot parse the config file ' + confPath + ': ' + e + '\n' +
+            fatalErrorMessage);
     }
 
     // look for options on the command line, in the config file, and in the defaults, in that order
     env.opts = _.defaults(env.opts, env.conf.opts, defaultOpts);
 
-    return JSDoc;
+    return cli;
 };
 
 // TODO: docs
-JSDoc.runCommand = function(cb) {
+cli.configureLogger = function() {
+    function recoverableError() {
+        props.shouldExitWithError = true;
+    }
+
+    function fatalError() {
+        cli.exit(1, fatalErrorMessage);
+    }
+
+    if (env.opts.debug) {
+        logger.setLevel(logger.LEVELS.DEBUG);
+    }
+    else if (env.opts.verbose) {
+        logger.setLevel(logger.LEVELS.INFO);
+    }
+
+    if (env.opts.pedantic) {
+        logger.once('logger:warn', recoverableError);
+        logger.once('logger:error', fatalError);
+    }
+    else {
+        logger.once('logger:error', recoverableError);
+    }
+
+    logger.once('logger:fatal', fatalError);
+
+    return cli;
+};
+
+// TODO: docs
+cli.logStart = function() {
+    var loggerFunc = env.opts.help ? console.log : logger.info;
+    cli.printVersion(loggerFunc);
+
+    logger.debug('Environment info: {"env":{"conf":%j,"opts":%j}}', env.conf, env.opts);
+};
+
+// TODO: docs
+cli.logFinish = function() {
+    var delta;
+    var deltaSeconds;
+
+    if (env.run.finish && env.run.start) {
+        delta = env.run.finish.getTime() - env.run.start.getTime();
+    }
+
+    if (delta !== undefined) {
+        deltaSeconds = (delta / 1000).toFixed(2);
+        logger.info('Finished running in %s seconds.', deltaSeconds);
+    }
+};
+
+// TODO: docs
+cli.runCommand = function(cb) {
     var cmd;
 
     var opts = env.opts;
 
+    function done(errorCode) {
+        if (!errorCode && props.shouldExitWithError) {
+            cb(1);
+        }
+        else {
+            cb(errorCode);
+        }
+    }
+
     if (opts.help) {
-        cmd = JSDoc.printHelp;
+        cmd = cli.printHelp;
     }
     else if (opts.test) {
-        cmd = JSDoc.runTests;
+        cmd = cli.runTests;
     }
     else if (opts.version) {
-        cmd = JSDoc.printVersion;
+        cmd = function(callback) { callback(); };
     }
     else {
-        cmd = JSDoc.main;
+        cmd = cli.main;
     }
 
-    cmd(cb);
+    cmd(done);
 };
 
 // TODO: docs
-JSDoc.printHelp = function(cb) {
-    JSDoc.printVersion(function() {
-        console.log( '\n' + require('jsdoc/opts/args').help() );
-        console.log('\n' + 'Visit http://usejsdoc.org for more information.');
-        cb(0);
-    });
+cli.printHelp = function(cb) {
+    console.log( '\n' + require('jsdoc/opts/args').help() + '\n' );
+    console.log('Visit http://usejsdoc.org for more information.');
+    cb(0);
 };
 
 // TODO: docs
-JSDoc.runTests = function(cb) {
+cli.runTests = function(cb) {
     var path = require('jsdoc/path');
 
     var runner = require( path.join(env.dirname, 'test/runner') );
@@ -127,17 +200,26 @@ JSDoc.runTests = function(cb) {
 };
 
 // TODO: docs
-JSDoc.printVersion = function(cb) {
-    console.log('JSDoc %s (%s)', env.version.number, env.version.revision);
-    cb(0);
+cli.getVersion = function() {
+    return 'JSDoc ' + env.version.number + ' (' + env.version.revision + ')';
 };
 
 // TODO: docs
-JSDoc.main = function(cb) {
-    JSDoc.scanFiles();
+cli.printVersion = function(loggerFunc, cb) {
+    loggerFunc = loggerFunc || logger.info;
+
+    loggerFunc.call( null, cli.getVersion() );
+    if (cb) {
+        cb(0);
+    }
+};
+
+// TODO: docs
+cli.main = function(cb) {
+    cli.scanFiles();
 
     if (env.sourceFiles.length) {
-        JSDoc.createParser()
+        cli.createParser()
             .parseFiles()
             .processParseResults();
     }
@@ -146,7 +228,8 @@ JSDoc.main = function(cb) {
     cb(0);
 };
 
-JSDoc.scanFiles = function() {
+// TODO: docs
+cli.scanFiles = function() {
     var Filter = require('jsdoc/src/filter').Filter;
     var fs = require('jsdoc/fs');
     var Readme = require('jsdoc/readme');
@@ -181,10 +264,10 @@ JSDoc.scanFiles = function() {
             filter);
     }
 
-    return JSDoc;
+    return cli;
 };
 
-JSDoc.createParser = function() {
+cli.createParser = function() {
     var handlers = require('jsdoc/src/handlers');
     var parser = require('jsdoc/src/parser');
     var plugins = require('jsdoc/plugins');
@@ -197,10 +280,10 @@ JSDoc.createParser = function() {
 
     handlers.attachTo(app.jsdoc.parser);
 
-    return JSDoc;
+    return cli;
 };
 
-JSDoc.parseFiles = function() {
+cli.parseFiles = function() {
     var augment = require('jsdoc/augment');
     var borrow = require('jsdoc/borrow');
     var Package = require('jsdoc/package').Package;
@@ -216,40 +299,46 @@ JSDoc.parseFiles = function() {
     packageDocs.files = env.sourceFiles || [];
     docs.push(packageDocs);
 
+    logger.debug('Adding inherited symbols...');
     borrow.indexAll(docs);
-
     augment.addInherited(docs);
     borrow.resolveBorrows(docs);
 
     app.jsdoc.parser.fireProcessingComplete(docs);
 
-    return JSDoc;
+    return cli;
 };
 
-JSDoc.processParseResults = function() {
+cli.processParseResults = function() {
     if (env.opts.explain) {
-        JSDoc.dumpParseResults();
+        cli.dumpParseResults();
     }
     else {
-        JSDoc.resolveTutorials();
-        JSDoc.generateDocs();
+        cli.resolveTutorials();
+        cli.generateDocs();
     }
+
+    return cli;
 };
 
-JSDoc.dumpParseResults = function() {
+cli.dumpParseResults = function() {
     global.dump(props.docs);
+
+    return cli;
 };
 
-JSDoc.resolveTutorials = function() {
+cli.resolveTutorials = function() {
     var resolver = require('jsdoc/tutorial/resolver');
 
     if (env.opts.tutorials) {
         resolver.load(env.opts.tutorials);
         resolver.resolve();
     }
+
+    return cli;
 };
 
-JSDoc.generateDocs = function() {
+cli.generateDocs = function() {
     var path = require('jsdoc/path');
     var resolver = require('jsdoc/tutorial/resolver');
     var taffy = require('taffydb').taffy;
@@ -266,26 +355,38 @@ JSDoc.generateDocs = function() {
         template = require(env.opts.template + '/publish');
     }
     catch(e) {
-        throw new Error('Unable to load template: ' + e.message || e);
+        logger.fatal('Unable to load template: ' + e.message || e);
     }
 
     // templates should include a publish.js file that exports a "publish" function
     if (template.publish && typeof template.publish === 'function') {
         // convert this from a URI back to a path if necessary
         env.opts.template = path._uriToPath(env.opts.template);
+        logger.printInfo('Generating output files...');
         template.publish(
             taffy(props.docs),
             env.opts,
             resolver.root
         );
+        logger.info('complete.');
     }
     else {
-        throw new Error(env.opts.template + ' does not export a "publish" function. Global ' +
+        logger.fatal(env.opts.template + ' does not export a "publish" function. Global ' +
             '"publish" functions are no longer supported.');
     }
 
+    return cli;
 };
 
-return JSDoc;
+// TODO: docs
+cli.exit = function(exitCode, errorMessage) {
+    if (errorMessage) {
+        logger.fatal(errorMessage);
+    }
+
+    process.exit(exitCode || 0);
+};
+
+return cli;
 
 })();

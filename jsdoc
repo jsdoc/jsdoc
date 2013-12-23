@@ -28,10 +28,7 @@ ENCODEDBASEPATH=`echo "$BASEPATH" | sed -e 's/ /%20/g'`
 
 if test "$1" = "--debug"
 then
-    echo "Running Debug"
     CMD="org.mozilla.javascript.tools.debugger.Main -debug -opt -1"
-    # strip --debug argument
-    shift
 else
     CMD="org.mozilla.javascript.tools.shell.Main"
 fi

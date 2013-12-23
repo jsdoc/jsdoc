@@ -1,6 +1,8 @@
-/*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true, spyOn: true */
+/*global afterEach, beforeEach, describe, env, expect, it, spyOn */
 describe('jsdoc/tag/validator', function() {
     var validator = require('jsdoc/tag/validator'),
+        doop = require('jsdoc/util/doop'),
+        logger = require('jsdoc/util/logger'),
         tag = require('jsdoc/tag');
 
     it('should exist', function() {
@@ -13,11 +15,8 @@ describe('jsdoc/tag/validator', function() {
         expect(typeof validator.validate).toBe('function');
     });
 
-    // Note: various Error classes are private so we just test whether *any*
-    // error was thrown, not against particular types (e.g. UnknownTagError).
     describe('validate', function() {
         var dictionary = require('jsdoc/tag/dictionary'),
-            lenient = !!env.opts.lenient,
             allowUnknown = !!env.conf.tags.allowUnknownTags,
             badTag = {title: 'lkjasdlkjfb'},
             meta = {filename: 'asdf.js', lineno: 1},
@@ -25,72 +24,53 @@ describe('jsdoc/tag/validator', function() {
             goodTag2 = new tag.Tag('ignore', '', meta); // mustNotHaveValue
        
         function validateTag(tag) {
-           return function() { validator.validate(tag, dictionary.lookUp(tag.title), meta); };
-        } 
+            validator.validate(tag, dictionary.lookUp(tag.title), meta);
+        }
 
         beforeEach(function() {
-            spyOn(console, 'log');
+            spyOn(logger, 'error');
         });
 
         afterEach(function() {
-            env.opts.lenient = lenient;
             env.conf.tags.allowUnknownTags = allowUnknown;
         });
 
-        it("throws an error if the tag is not in the dictionary, conf.tags.allowUnknownTags is false and lenient is false", function() {
-            env.opts.lenient = false;
+        it("logs an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is false", function() {
             env.conf.tags.allowUnknownTags = false;
-            expect(validateTag(badTag)).toThrow();
+            validateTag(badTag);
+
+            expect(logger.error).toHaveBeenCalled();
         });
 
-        it("throws NO error if the tag is not in the dictionary, conf.tags.allowUnknownTags is false and lenient is true", function() {
-            env.opts.lenient = true;
-            env.conf.tags.allowUnknownTags = false;
-            expect(validateTag(badTag)).not.toThrow();
-        });
-
-        it("doesn't throw an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is true, regardless of lenience", function() {
-            // if it doesn't throw an error with lenient false, then it won't throw it with lenient true (we have
-            // tested lenient already in util/error.js)
-            env.opts.lenient = false;
+        it("doesn't log an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is true", function() {
             env.conf.tags.allowUnknownTags = true;
-            expect(validateTag(badTag)).not.toThrow();
+            validateTag(badTag);
+
+            expect(logger.error).not.toHaveBeenCalled();
         });
 
-        it("throws no error for valid tags", function() {
-            env.opts.lenient = false;
-            expect(validateTag(goodTag)).not.toThrow();
-            expect(validateTag(goodTag2)).not.toThrow();
+        it("logs no error for valid tags", function() {
+            validateTag(goodTag);
+            validateTag(goodTag2);
+
+            expect(logger.error).not.toHaveBeenCalled();
         });
 
-        it("throws an error if the tag has no text but .mustHaveValue is true and lenient is false, or none if it's true", function() {
-            // the name tag has .mustHaveValue.
-            var oldText = goodTag.text;
-            delete goodTag.text;
+        it("logs an error if the tag has no text but .mustHaveValue is true", function() {
+            var missingName = doop(goodTag);
+            missingName.text = null;
+            validateTag(missingName);
 
-            env.opts.lenient = false;
-            expect(validateTag(goodTag)).toThrow();
-
-            env.opts.lenient = true;
-            expect(validateTag(goodTag)).not.toThrow();
-
-            goodTag.text = oldText;
+            expect(logger.error).toHaveBeenCalled();
         });
 
-        it("throws an error if the tag has text but .mustNotHaveValue is true and lenient is false, or none if it's true", function() {
-            var oldVal = goodTag2.mustNotHaveValue,
-                text = goodTag2.text;
-            goodTag2.mustNotHaveValue = true;
-            goodTag2.text = goodTag2.text || 'asdf';
+        it("logs an error if the tag has text but .mustNotHaveValue is true", function() {
+            var missingText = doop(goodTag2);
+            missingText.mustNotHaveValue = true;
+            missingText.text = missingText.text || 'asdf';
+            validateTag(missingText);
 
-            env.opts.lenient = false;
-            expect(validateTag(goodTag2)).toThrow();
-
-            env.opts.lenient = true;
-            expect(validateTag(goodTag2)).not.toThrow();
-
-            goodTag2.mustNotHaveValue = oldVal;
-            goodTag2.text = oldVal;
+            expect(logger.error).toHaveBeenCalled();
         });
     });
 });

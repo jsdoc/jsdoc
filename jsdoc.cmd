@@ -25,18 +25,10 @@ IF NOT "%_URLPATH%"=="%_URLPATH: =%" GOTO ESCAPE_SPACE
 IF [%1]==[--debug] (
     ECHO Running Debug
     SET CMD=org.mozilla.javascript.tools.debugger.Main -debug -opt -1
-
-    REM `SHIFT` doesn't affect %*
-    :COLLECT_ARGS
-    IF [%2]==[] GOTO LAST_ARG
-    SET ARGS=%ARGS% %2
-    SHIFT
-    GOTO COLLECT_ARGS
 ) ELSE (
     SET CMD=org.mozilla.javascript.tools.shell.Main
-    SET ARGS=%*
 )
-:LAST_ARG
+SET ARGS=%*
 
 IF [%1]==[-T] (
     java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -opt -1 -modules "%_URLPATH%/lib" -modules "%_URLPATH%/node_modules" -modules "%_URLPATH%/rhino" -modules "%_URLPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor --dirname="%_BASEPATH%/

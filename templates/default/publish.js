@@ -5,7 +5,7 @@ var template = require('jsdoc/template'),
     fs = require('jsdoc/fs'),
     path = require('jsdoc/path'),
     taffy = require('taffydb').taffy,
-    handle = require('jsdoc/util/error').handle,
+    logger = require('jsdoc/util/logger'),
     helper = require('jsdoc/util/templateHelper'),
     htmlsafe = helper.htmlsafe,
     linkto = helper.linkto,
@@ -141,7 +141,7 @@ function generateSourceFiles(sourceFiles, encoding) {
             };
         }
         catch(e) {
-            handle(e);
+            logger.error('Error while generating source file %s: %s', file, e.message);
         }
 
         generate('Source: ' + sourceFiles[file].shortened, [source], sourceOutfile,

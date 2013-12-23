@@ -261,6 +261,21 @@ The source code for Node.js is available at:
 https://github.com/joyent/node
 
 
+## node-browser-builtins ##
+
+Portions of the node-browser-builtins source code are incorporated into the
+following files:
+
+- `rhino/assert.js`
+- `rhino/rhino-shim.js`
+
+node-browser-builtins is distributed under the MIT license, which is reproduced
+above.
+
+The source code for node-browser-builtins is available at:
+https://github.com/alexgorbatchev/node-browser-builtins
+
+
 ## node-browserify ##
 
 Portions of the node-browserify source code are incorporated into the following

@@ -1,10 +1,11 @@
-/*global afterEach: true, describe: true, env: true, expect: true, it: true, spyOn: true */
+/*global afterEach, beforeEach, describe, env, expect, it, spyOn */
 describe("jsdoc/tag", function() {
     var jsdoc = {
         tag: require('jsdoc/tag'),
         dictionary: require('jsdoc/tag/dictionary'),
         type: require('jsdoc/tag/type')
     };
+    var logger = require('jsdoc/util/logger');
 
     it('should exist', function() {
         expect(jsdoc.tag).toBeDefined();
@@ -151,28 +152,12 @@ describe("jsdoc/tag", function() {
 
         // further tests for this sort of thing are in jsdoc/tag/validator.js tests.
         describe("tag validating", function() {
-            var lenient = !!env.opts.lenient;
-            
-            function badTag() {
-                var tag = new jsdoc.tag.Tag("name");
-                return tag;
-            }
+            it("logs an error for bad tags", function() {
+                spyOn(logger, 'error');
 
-            afterEach(function() {
-                env.opts.lenient = lenient;
-            });
+                var tag = new jsdoc.tag.Tag('param', '{!*!*!*!} foo');
 
-            it("throws an exception for bad tags if the lenient option is not enabled", function() {
-                env.opts.lenient = false;
-
-                expect(badTag).toThrow();
-            });
-            
-            it("doesn't throw an exception for bad tags if the lenient option is enabled", function() {
-                spyOn(console, 'log');
-                env.opts.lenient = true;
-
-                expect(badTag).not.toThrow();
+                expect(logger.error).toHaveBeenCalled();
             });
         });
     });

@@ -78,14 +78,9 @@ describe("@param tag", function() {
         expect(commit.params[0].name).toBe('atomic');
     });
 
-    it('When a symbol has a @param tag with an invalid type expression, the doclet is generated in lenient mode, and the JSDoc comment is ignored.', function() {
+    it('When a symbol has a @param tag with an invalid type expression, the JSDoc comment is ignored.', function() {
         var badDocSet;
         var test;
-        var lenient = !!env.opts.lenient;
-
-        env.opts.lenient = true;
-        spyOn(console, 'log');
-
         badDocSet = jasmine.getDocSetFromFile('test/fixtures/paramtaginvalidtype.js');
         test = badDocSet.getByLongname('Test#test')[0];
 
@@ -99,7 +94,5 @@ describe("@param tag", function() {
         expect(test.meta.filename).toBe('[[string0]]');
 
         expect(test.description).not.toBeDefined();
-
-        env.opts.lenient = lenient;
     });
 });

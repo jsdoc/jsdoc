@@ -16,15 +16,18 @@ global.setTimeout = null;
 global.clearTimeout = null;
 global.setInterval = null;
 global.clearInterval = null;
+global.setImmediate = null;
+global.clearImmediate = null;
 
 (function() {
     'use strict';
 
-    // TODO: tune number of threads if necessary
-    var timerPool = new java.util.concurrent.ScheduledThreadPoolExecutor(10);
+    var timerPool = new java.util.concurrent.ScheduledThreadPoolExecutor(1);
     var timers = {};
     var timerCount = 1;
     var timerUnits = java.util.concurrent.TimeUnit.MILLISECONDS;
+    var queue = {};
+    var queueActive = false;
 
     function getCallback(fn) {
         return new java.lang.Runnable({
@@ -54,6 +57,41 @@ global.clearInterval = null;
     };
 
     global.clearInterval = global.clearTimeout;
+
+    // adapted from https://github.com/alexgorbatchev/node-browser-builtins
+    // MIT license
+    global.setImmediate = (function() {
+        function drain() {
+            var key;
+
+            var keys = Object.keys(queue);
+
+            queueActive = false;
+
+            for (var i = 0, l = keys.length; i < l; i++) {
+                key = keys[i];
+                var fn = queue[key];
+                delete queue[key];
+                fn();
+            }
+        }
+
+        return function(fn) {
+            var timerId = timerCount++;
+            queue[timerId] = fn;
+
+            if (!queueActive) {
+                queueActive = true;
+                global.setTimeout(drain, 0);
+            }
+
+            return timerId;
+        };
+    })();
+
+    global.clearImmediate = function(id) {
+        delete queue[id];
+    };
 })();
 
 /**
