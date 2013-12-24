@@ -47,15 +47,23 @@ var statSync = exports.statSync = function statSync(_path) {
     }
 
     return {
-        isFile: function() {
+        isFile: function isFile() {
             return f.isFile();
         },
-        isDirectory: function() {
+        isDirectory: function isDirectory() {
             return f.isDirectory();
+        },
+        isSymlink: function isSymlink() {
+            // java.io.File resolves symlinks
+            return false;
         }
     };
 };
 exports.stat = asyncify(statSync);
+
+// java.io.File resolves symlinks, so we can alias `lstat` to `stat`
+var lstatSync = exports.lstatSync = statSync;
+exports.lstat = asyncify(lstatSync);
 
 var readdirSync = exports.readdirSync = function readdirSync(_path) {
     var dir;
@@ -66,12 +74,10 @@ var readdirSync = exports.readdirSync = function readdirSync(_path) {
         throw errorFactory(_path);
     }
 
-    files = dir.list();
-
-    // Convert files to Javascript strings so they play nice with node modules
-    files = files.map(function(fileName) {
-        return String(fileName);
-    });
+    files = dir.list()
+        .map(function(fileName) {
+            return String(fileName);
+        });
 
     return files;
 };
@@ -146,3 +152,13 @@ exports.writeFileSync = function writeFileSync(filename, data, encoding) {
     }
 };
 exports.writeFile = asyncify(exports.writeFileSync);
+
+exports.rmdirSync = function rmdirSync(_path) {
+    throw new Error('not implemented');
+};
+exports.rmdir = asyncify(exports.rmdirSync);
+
+exports.unlinkSync = function unlinkSync(_path) {
+    throw new Error('not implemented');
+};
+exports.unlink = asyncify(exports.unlinkSync);
