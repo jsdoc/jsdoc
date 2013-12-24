@@ -1,5 +1,3 @@
-/*global env: true, Packages: true */
-
 /**
  * Partial Rhino shim for Node.js' `fs` module.
  * @see http://nodejs.org/api/fs.html
@@ -31,7 +29,7 @@ function errorFactory(filepath) {
     return new Error( util.format("ENOENT, no such file or directory '%s'", filepath) );
 }
 
-exports.readFileSync = function(filename, encoding) {
+exports.readFileSync = function readFileSync(filename, encoding) {
     encoding = checkEncoding(encoding, 'fs.readFile[Sync]');
 
     return readFile(filename, encoding);
@@ -42,7 +40,7 @@ exports.readFile = asyncify(exports.readFileSync);
 exports.existsSync = path.existsSync;
 exports.exists = path.exists;
 
-var statSync = exports.statSync = function(_path) {
+var statSync = exports.statSync = function statSync(_path) {
     var f = new java.io.File(_path);
     if (!f) {
         throw errorFactory(_path);
@@ -59,7 +57,7 @@ var statSync = exports.statSync = function(_path) {
 };
 exports.stat = asyncify(statSync);
 
-var readdirSync = exports.readdirSync = function(_path) {
+var readdirSync = exports.readdirSync = function readdirSync(_path) {
     var dir;
     var files;
 
@@ -80,57 +78,61 @@ var readdirSync = exports.readdirSync = function(_path) {
 exports.readdir = asyncify(readdirSync);
 
 // JSDoc extension to `fs` module
-var toDir = exports.toDir = function(_path) {
-    var f = new java.io.File( path.resolve(env.pwd, _path) );
+var toDir = exports.toDir = function toDir(_path) {
+    var f = new java.io.File( path.resolve(global.env.pwd, _path) );
 
-    if (f.isDirectory()){
+    if ( f.isDirectory() ){
        return _path;
     } else {
         return path.dirname(_path);
     }
 };
 
-var mkdirSync = exports.mkdirSync = function(_path) {
+var mkdirSync = exports.mkdirSync = function mkdirSync(_path) {
     var dir_path = toDir(_path);
-    (new java.io.File(dir_path)).mkdir();
+    ( new java.io.File(dir_path) ).mkdir();
 };
 exports.mkdir = asyncify(mkdirSync);
 
 // JSDoc extension to `fs` module
-exports.mkPath = function(_path) {
+exports.mkPath = function mkPath(_path) {
     if ( Array.isArray(_path) ) {
         _path = _path.join('');
     }
 
-    ( new java.io.File(path.resolve(env.pwd, _path)) ).mkdirs();
+    ( new java.io.File(path.resolve(global.env.pwd, _path)) ).mkdirs();
 };
 
 // JSDoc extension to `fs` module
-exports.copyFileSync = function(inFile, outDir, fileName) {
-    if (fileName == null){fileName = path.basename(inFile);}
+exports.copyFileSync = function copyFileSync(inFile, outDir, fileName) {
+    if (fileName === undefined || fileName === null) {
+        fileName = path.basename(inFile);
+    }
 
     outDir = toDir(outDir);
 
     inFile = new java.io.File(inFile);
-    var outFile = new java.io.File(outDir+'/'+fileName);
+    var outFile = new java.io.File(outDir + '/' + fileName);
 
-    var bis = new Packages.java.io.BufferedInputStream(new Packages.java.io.FileInputStream(inFile), 4096);
-    var bos = new Packages.java.io.BufferedOutputStream(new Packages.java.io.FileOutputStream(outFile), 4096);
-    var theChar;
-    while ((theChar = bis.read()) != -1) {
+    var bis = new java.io.BufferedInputStream(new java.io.FileInputStream(inFile), 4096);
+    var bos = new java.io.BufferedOutputStream(new java.io.FileOutputStream(outFile), 4096);
+    var theChar = bis.read();
+    while (theChar !== -1) {
         bos.write(theChar);
+        theChar = bis.read();
     }
+
     bos.close();
     bis.close();
 };
 exports.copyFile = asyncify(exports.copyFileSync);
 
-exports.writeFileSync = function(filename, data, encoding) {
+exports.writeFileSync = function writeFileSync(filename, data, encoding) {
     encoding = checkEncoding(encoding, 'fs.writeFile[Sync]');
 
-    var out = new Packages.java.io.PrintWriter(
-        new Packages.java.io.OutputStreamWriter(
-            new Packages.java.io.FileOutputStream(filename),
+    var out = new java.io.PrintWriter(
+        new java.io.OutputStreamWriter(
+            new java.io.FileOutputStream(filename),
             encoding
         )
     );
