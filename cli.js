@@ -16,18 +16,20 @@ module.exports = (function() {
 
 var logger = require('jsdoc/util/logger');
 
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
 var props = {
     docs: [],
+    packageJson: null,
     shouldExitWithError: false,
-    packageJson: null
+    tmpdir: null
 };
 
 var app = global.app;
 var env = global.env;
 
-var fatalErrorMessage = 'Exiting JSDoc because an error occurred. See the previous log ' +
+var FATAL_ERROR_MESSAGE = 'Exiting JSDoc because an error occurred. See the previous log ' +
     'messages for details.';
-
 var cli = {};
 
 // TODO: docs
@@ -66,7 +68,7 @@ cli.loadConfig = function() {
         env.opts = args.parse(env.args);
     }
     catch (e) {
-        cli.exit(1, e.message + '\n' + fatalErrorMessage);
+        cli.exit(1, e.message + '\n' + FATAL_ERROR_MESSAGE);
     }
 
     confPath = env.opts.configure || path.join(env.dirname, 'conf.json');
@@ -87,7 +89,7 @@ cli.loadConfig = function() {
     }
     catch (e) {
         cli.exit(1, 'Cannot parse the config file ' + confPath + ': ' + e + '\n' +
-            fatalErrorMessage);
+            FATAL_ERROR_MESSAGE);
     }
 
     // look for options on the command line, in the config file, and in the defaults, in that order
@@ -131,7 +133,12 @@ cli.logStart = function() {
     var loggerFunc = env.opts.help ? console.log : logger.info;
     cli.printVersion(loggerFunc);
 
-    logger.debug('Environment info: {"env":{"conf":%j,"opts":%j}}', env.conf, env.opts);
+    logger.debug('Environment info: %j', {
+        env: {
+            conf: env.conf,
+            opts: env.opts
+        }
+    });
 };
 
 // TODO: docs
@@ -228,6 +235,85 @@ cli.main = function(cb) {
     cb(0);
 };
 
+function getRandomId() {
+    var MIN = 100000;
+    var MAX = 999999;
+
+    return Math.floor(Math.random() * (MAX - MIN + 1) + MIN);
+}
+
+// TODO: docs
+function createTempDir() {
+    var fs = require('jsdoc/fs');
+    var path = require('jsdoc/path');
+    var wrench = require('wrench');
+
+    var isRhino;
+    var tempDirname;
+    var tempPath;
+
+    // We only need one temp directory
+    if (props.tmpdir) {
+        return props.tmpdir;
+    }
+
+    isRhino = require('jsdoc/util/runtime').isRhino();
+    tempDirname = 'tmp-' + Date.now() + '-' + getRandomId();
+    tempPath = path.join(env.dirname, tempDirname);
+
+    try {
+        fs.mkdirSync(tempPath);
+        props.tmpdir = path;
+    }
+    catch (e) {
+        logger.fatal('Unable to create the temp directory %s: %s', tempPath, e.message);
+        return null;
+    }
+
+    try {
+        // Delete the temp directory on exit
+        if (isRhino) {
+            ( new java.io.File(tempPath) ).deleteOnExit();
+        }
+        else {
+            process.on('exit', function() {
+                wrench.rmdirSyncRecursive(tempPath);
+            });
+        }
+
+        return tempPath;
+    }
+    catch (e) {
+        logger.error('Cannot automatically delete the temp directory %s on exit: %s', tempPath,
+            e.message);
+        return null;
+    }
+}
+
+// TODO: docs
+function copyResourceDir(filepath) {
+    var fs = require('jsdoc/fs');
+    var path = require('jsdoc/path');
+    var wrench = require('wrench');
+
+    var resourceDir;
+    var tmpDir;
+
+    try {
+        tmpDir = createTempDir();
+        resourceDir = path.join( tmpDir, path.basename(filepath) + '-' + getRandomId() );
+        fs.mkdirSync(resourceDir);
+
+        wrench.copyDirSyncRecursive(filepath, resourceDir);
+        return resourceDir;
+    }
+    catch (e) {
+        logger.fatal('Unable to copy %s to the temp directory %s: %s', filepath, resourceDir,
+            e.message);
+        return null;
+    }
+}
+
 // TODO: docs
 cli.scanFiles = function() {
     var Filter = require('jsdoc/src/filter').Filter;
@@ -267,14 +353,42 @@ cli.scanFiles = function() {
     return cli;
 };
 
+function resolvePluginPaths(paths) {
+    var path = require('jsdoc/path');
+
+    var isNode = require('jsdoc/util/runtime').isNode();
+    var pluginPaths = [];
+
+    paths.forEach(function(plugin) {
+        var basename = path.basename(plugin);
+        var dirname = path.dirname(plugin);
+        var pluginPath = path.getResourcePath(dirname);
+
+        if (!pluginPath) {
+            logger.error('Unable to find the plugin "%s"', plugin);
+            return;
+        }
+        // On Node.js, the plugin needs to be inside the JSDoc directory
+        else if ( isNode && (pluginPath.indexOf(global.env.dirname) !== 0) ) {
+            pluginPath = copyResourceDir(pluginPath);
+        }
+
+        pluginPaths.push( path.join(pluginPath, basename) );
+    });
+
+    return pluginPaths;
+}
+
 cli.createParser = function() {
     var handlers = require('jsdoc/src/handlers');
     var parser = require('jsdoc/src/parser');
+    var path = require('jsdoc/path');
     var plugins = require('jsdoc/plugins');
 
     app.jsdoc.parser = parser.createParser(env.conf.parser);
 
     if (env.conf.plugins) {
+        env.conf.plugins = resolvePluginPaths(env.conf.plugins);
         plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
     }
 
@@ -291,8 +405,7 @@ cli.parseFiles = function() {
     var docs;
     var packageDocs;
 
-    props.docs = docs = app.jsdoc.parser.parse(env.sourceFiles,
-        env.opts.encoding);
+    props.docs = docs = app.jsdoc.parser.parse(env.sourceFiles, env.opts.encoding);
 
     // If there is no package.json, just create an empty package
     packageDocs = new Package(props.packageJson);
@@ -346,9 +459,20 @@ cli.generateDocs = function() {
     var template;
 
     env.opts.template = (function() {
+        var isNode = require('jsdoc/util/runtime').isNode();
         var publish = env.opts.template || 'templates/default';
-        // if we don't find it, keep the user-specified value so the error message is useful
-        return path.getResourcePath(publish) || env.opts.template;
+        var templatePath = path.getResourcePath(publish);
+
+        if (templatePath && isNode) {
+            // On Node.js, the template needs to be inside the JSDoc folder
+            if (templatePath.indexOf(env.dirname) !== 0) {
+                templatePath = copyResourceDir(templatePath);
+            }
+        }
+
+        // if we didn't find the template, keep the user-specified value so the error message is
+        // useful
+        return templatePath || env.opts.template;
     })();
 
     try {
