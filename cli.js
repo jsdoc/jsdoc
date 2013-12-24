@@ -103,7 +103,7 @@ cli.configureLogger = function() {
     }
 
     function fatalError() {
-        cli.exit(1, fatalErrorMessage);
+        cli.exit(1);
     }
 
     if (env.opts.debug) {
@@ -379,11 +379,7 @@ cli.generateDocs = function() {
 };
 
 // TODO: docs
-cli.exit = function(exitCode, errorMessage) {
-    if (errorMessage) {
-        logger.fatal(errorMessage);
-    }
-
+cli.exit = function(exitCode) {
     process.exit(exitCode || 0);
 };
 
