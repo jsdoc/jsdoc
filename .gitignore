@@ -1,6 +1,8 @@
-# Development-related files
+# Development-related files and dependencies
 .tern-port
 node_modules/grunt*
+node_modules/jshint
+node_modules/tv4
 
 # User-specific files
 conf.json
