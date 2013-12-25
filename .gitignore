@@ -1,5 +1,6 @@
 # Development-related files and dependencies
 .tern-port
+node_modules/.bin
 node_modules/grunt*
 node_modules/jshint
 node_modules/tv4
