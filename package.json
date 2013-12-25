@@ -1,7 +1,7 @@
 {
 	"name": "jsdoc",
 	"version": "3.3.0-dev",
-	"revision": "1387841089759",
+	"revision": "1387936297601",
 	"description": "An API documentation generator for JavaScript.",
 	"keywords": [ "documentation", "javascript" ],
 	"licenses": [
