@@ -1,15 +1,17 @@
 /*global describe: true, env: true, expect: true, it: true */
 describe("jsdoc/src/scanner", function() {
-    var scanner = new (require('jsdoc/src/scanner').Scanner)(),
-        filter = new (require('jsdoc/src/filter').Filter)({
-            includePattern: new RegExp(".+\\.js(doc)?$"),
-            excludePattern: new RegExp("(^|\\/|\\\\)_")
-        }),
-        path = require('path'),
-        sourceFiles = scanner.scan([path.join(process.env.PWD, 'test', 'fixtures', 'src')], 3, filter);
+    var path = require('path');
+
+    var filter = new (require('jsdoc/src/filter').Filter)({
+        includePattern: new RegExp(".+\\.js(doc)?$"),
+        excludePattern: new RegExp("(^|\\/|\\\\)_")
+    });
+    var scanner = new (require('jsdoc/src/scanner').Scanner)();
+    var sourcePath = path.normalize(env.pwd + '/test/fixtures/src');
+    var sourceFiles = scanner.scan([sourcePath], 3, filter);
 
     sourceFiles = sourceFiles.map(function($) {
-        return path.relative(process.env.PWD, $);
+        return path.relative(env.pwd, $);
     });
 
     it("should return the correct source files", function() {

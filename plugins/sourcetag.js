@@ -2,6 +2,9 @@
     @module plugins/sourcetag
     @author Michael Mathews <micmath@gmail.com>
  */
+'use strict';
+
+var logger = require('jsdoc/util/logger');
 
 exports.handlers = {
     /**
@@ -31,7 +34,8 @@ exports.handlers = {
                     value = JSON.parse(tag.value);
                 }
                 catch(e) {
-                    throw new Error('@source tag expects a valid JSON value, like { "filename": "myfile.js", "lineno": 123 }.');
+                    logger.error('@source tag expects a valid JSON value, like { "filename": "myfile.js", "lineno": 123 }.');
+                    return;
                 }
 
                 e.doclet.meta = e.doclet.meta || {};

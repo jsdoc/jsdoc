@@ -5,25 +5,33 @@ var path = require('jsdoc/path');
 
 var config = JSON.parse( fs.readFileSync( path.join(env.dirname, '.jshintrc'), 'utf8' ) );
 
-function jsHintCheck(filename, callback) {
-    var JSHINT = require('jshint').JSHINT;
-    var jsHintErrors;
-
-    fs.readFile(filename, 'utf8', function(err, data) {
-        if (err) {
-            callback(err);
-        } else {
-            JSHINT(data, config);
-            if (JSHINT.errors.length) {
-                jsHintErrors = filename + ' is not JSHint clean: ' + JSON.stringify(JSHINT.errors);
-            }
-
-            callback(null, jsHintErrors);
-        }
-    });
-}
+var jsHintCheck;
 
 describe('jshint-clean', function() {
+    // Only run JSHint on Node.js, because a) we only need to lint everything once and b) the
+    // current version of JSHint is really slow on Rhino
+    if ( !require('jsdoc/util/runtime').isNode() ) {
+        return;
+    }
+
+    jsHintCheck = function(filename, callback) {
+        var JSHINT = require('jshint').JSHINT;
+        var jsHintErrors;
+
+        fs.readFile(filename, 'utf8', function(err, data) {
+            if (err) {
+                callback(err);
+            } else {
+                JSHINT(data, config);
+                if (JSHINT.errors.length) {
+                    jsHintErrors = filename + ' is not JSHint clean: ' + JSON.stringify(JSHINT.errors);
+                }
+
+                callback(null, jsHintErrors);
+            }
+        });
+    };
+
     it('should generate JSHint errors for bad code', function(done) {
         var file = path.join(env.dirname, 'test', 'fixtures', 'jshint', 'badfile.js');
 

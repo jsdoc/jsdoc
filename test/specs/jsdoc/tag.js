@@ -1,10 +1,11 @@
-/*global describe: true, env: true, it: true */
+/*global afterEach, beforeEach, describe, env, expect, it, spyOn */
 describe("jsdoc/tag", function() {
     var jsdoc = {
         tag: require('jsdoc/tag'),
         dictionary: require('jsdoc/tag/dictionary'),
         type: require('jsdoc/tag/type')
     };
+    var logger = require('jsdoc/util/logger');
 
     it('should exist', function() {
         expect(jsdoc.tag).toBeDefined();
@@ -17,16 +18,33 @@ describe("jsdoc/tag", function() {
     });
 
     describe('Tag', function() {
-        var meta = {lineno: 1, filename: 'asdf.js'},
-            desc = 'lalblakd lkjasdlib\n  lija',
-            text = '{!number} [foo=1] - ' + desc,
-            textEg = '<caption>Asdf</caption>\n' +
-                     ' * myFunction(1, 2); // returns 3\n' +
-                     ' * myFunction(3, 4); // returns 7\n';
-        var tagArg = new jsdoc.tag.Tag('arg  ', text, meta), // <-- a symonym of param, space in the title.
-            tagParam = new jsdoc.tag.Tag('param', '[foo=1]', meta), // no type, but has optional and defaultvalue.
-            tagEg  = new jsdoc.tag.Tag('example', textEg, meta), // <-- for keepsWhitespace
-            tagType = new jsdoc.tag.Tag('type', 'MyType ', meta); // <-- for onTagText
+        var meta = {lineno: 1, filename: 'asdf.js'};
+        var desc = 'lalblakd lkjasdlib\n  lija';
+        var text = '{!number} [foo=1] - ' + desc;
+        var exampleRaw = [
+            '<caption>Asdf</caption>\n',
+            ' myFunction(1, 2); // returns 3\n',
+            ' myFunction(3, 4); // returns 7\n'
+        ];
+        var textExample = exampleRaw.join('');
+        var exampleIndentedRaw = [
+            '     var firstLine;\n',
+            '     function secondLine() {\n',
+            '         // comment\n',
+            '     }\n'
+        ];
+        var textExampleIndented = exampleIndentedRaw.join('');
+
+        // synonym for @param; space in the title
+        var tagArg = new jsdoc.tag.Tag('arg  ', text, meta);
+        // @param with no type, but with optional and defaultvalue
+        var tagParam = new jsdoc.tag.Tag('param', '[foo=1]', meta);
+        // @example that does not need indentation to be removed
+        var tagExample  = new jsdoc.tag.Tag('example', textExample, meta);
+        // @example that needs indentation to be removed
+        var tagExampleIndented = new jsdoc.tag.Tag('example', textExampleIndented, meta);
+        // for testing that onTagText is run when necessary
+        var tagType = new jsdoc.tag.Tag('type', 'MyType ', meta);
 
         it("should have a 'originalTitle' property, a string", function() {
             expect(tagArg.originalTitle).toBeDefined();
@@ -35,7 +53,7 @@ describe("jsdoc/tag", function() {
 
         it("'originalTitle' property should be the initial tag title, trimmed of whitespace", function() {
             expect(tagArg.originalTitle).toBe('arg');
-            expect(tagEg.originalTitle).toBe('example');
+            expect(tagExample.originalTitle).toBe('example');
         });
 
         it("should have a 'title' property, a string", function() {
@@ -45,7 +63,7 @@ describe("jsdoc/tag", function() {
 
         it("'title' property should be the normalised tag title", function() {
             expect(tagArg.title).toBe(jsdoc.dictionary.normalise(tagArg.originalTitle));
-            expect(tagEg.title).toBe(jsdoc.dictionary.normalise(tagEg.originalTitle));
+            expect(tagExample.title).toBe(jsdoc.dictionary.normalise(tagExample.originalTitle));
         });
 
         it("should have a 'text' property. a string", function () {
@@ -55,16 +73,17 @@ describe("jsdoc/tag", function() {
 
         it("should have a 'value' property", function () {
             expect(tagArg.value).toBeDefined();
-            expect(tagEg.value).toBeDefined();
+            expect(tagExample.value).toBeDefined();
             expect(tagType.value).toBeDefined();
         });
 
         describe("'text' property", function() {
             it("'text' property should be the trimmed tag text, with all leading and trailing space removed unless tagDef.keepsWhitespace", function() {
-                // @example has keepsWhitespace, @param doesn't.
-                // should realy use module:jsdoc/tag~trim here but it's private.
-                expect(tagArg.text).toBe(text.replace(/^\s+|\s+$/g, ''));
-                expect(tagEg.text).toBe(textEg.replace(/^[\n\r\f]+|[\n\r\f]+$/g, ''));
+                // @example has keepsWhitespace and removesIndent, @param doesn't
+                expect(tagArg.text).toBe( text.replace(/^\s+|\n$/g, '') );
+                expect(tagExample.text).toBe( textExample.replace(/\n$/, '') );
+                expect(tagExampleIndented.text).toBe( textExampleIndented.replace(/^ {5}/gm, '')
+                    .replace(/\n$/, '') );
             });
 
             it("'text' property should have onTagText run on it if it has it.", function() {
@@ -81,8 +100,8 @@ describe("jsdoc/tag", function() {
         describe("'value' property", function() {
             it("'value' property should equal tag text if tagDef.canHaveType and canHaveName are both false", function() {
                 // @example can't have type or name
-                expect(typeof tagEg.value).toBe('string');
-                expect(tagEg.value).toBe(tagEg.text);
+                expect(typeof tagExample.value).toBe('string');
+                expect(tagExample.value).toBe(tagExample.text);
             });
 
             it("'value' property should be an object if tagDef can have type or name", function () {
@@ -133,29 +152,12 @@ describe("jsdoc/tag", function() {
 
         // further tests for this sort of thing are in jsdoc/tag/validator.js tests.
         describe("tag validating", function() {
-            /*jshint evil: true */
-            var lenient = !!env.opts.lenient;
-            
-            function badTag() {
-                var tag = new jsdoc.tag.Tag("name");
-                return tag;
-            }
+            it("logs an error for bad tags", function() {
+                spyOn(logger, 'error');
 
-            afterEach(function() {
-                env.opts.lenient = lenient;
-            });
+                var tag = new jsdoc.tag.Tag('param', '{!*!*!*!} foo');
 
-            it("throws an exception for bad tags if the lenient option is not enabled", function() {
-                env.opts.lenient = false;
-
-                expect(badTag).toThrow();
-            });
-            
-            it("doesn't throw an exception for bad tags if the lenient option is enabled", function() {
-                spyOn(console, 'log');
-                env.opts.lenient = true;
-
-                expect(badTag).not.toThrow();
+                expect(logger.error).toHaveBeenCalled();
             });
         });
     });

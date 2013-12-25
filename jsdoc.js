@@ -48,6 +48,15 @@ global.env = {
     dirname: '.',
 
     /**
+     * The user's working directory at the time that JSDoc was started.
+     *
+     * @private
+     * @type string
+     * @memberof env
+     */
+    pwd: null,
+
+    /**
      * The command-line options, parsed into a key/value hash.
      * 
      * @type Object
@@ -76,7 +85,7 @@ global.env = {
 (function(args) {
     if (args[0] && typeof args[0] === 'object') {
         // we should be on Node.js
-        args = [__dirname];
+        args = [__dirname, process.cwd()];
     }
 
     require('jsdoc/util/runtime').initialize(args);
@@ -115,10 +124,9 @@ global.dump = function() {
 };
 
 (function() {
-    function cb(errorCode) {
-        process.exit(errorCode || 0);
-    }
-
+    'use strict';
+    
+    var logger = require('jsdoc/util/logger');
     var path = require('jsdoc/path');
     var runtime = require('jsdoc/util/runtime');
 
@@ -127,18 +135,28 @@ global.dump = function() {
     cli.setVersionInfo()
         .loadConfig();
 
+    if (!global.env.opts.test) {
+        cli.configureLogger();
+    }
+
+    cli.logStart();
+
+    function cb(errorCode) {
+        cli.logFinish();
+        cli.exit(errorCode || 0);
+    }
+
     // On Rhino, we use a try/catch block so we can log the Java exception (if available)
     if ( runtime.isRhino() ) {
         try {
             cli.runCommand(cb);
         }
         catch(e) {
-            if (e.rhinoException !== null || e.rhinoException !== undefined) {
-                e.rhinoException.printStackTrace();
-                process.exit(1);
+            if (e.rhinoException) {
+                logger.fatal( e.rhinoException.printStackTrace() );
             } else {
                 console.trace(e);
-                process.exit(1);
+                cli.exit(1);
             }
         }
     }

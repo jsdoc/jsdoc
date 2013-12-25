@@ -44,15 +44,24 @@ describe('jsdoc/util/doop', function() {
             expect(inp).not.toBe(out);
         });
 
+        it("should return an object with the same prototype as the original object", function() {
+            function Foo() {}
+
+            var foo = new Foo();
+            var bar = doop(foo);
+            expect( Object.getPrototypeOf(foo) ).toBe( Object.getPrototypeOf(bar) );
+        });
+
         // checks that a === b if it's not an object or array (or it's af function);
         // otherwise recurses down into keys and compares them.
         function compareForEquality(a, b) {
             if (a instanceof Object && a.constructor != Function) {
                 // if it's an object and not a function, it should clone.
-                var keys = Object.keys(a);
-                expect(Object.keys(a)).toEqual(Object.keys(b));
-                for (var i = 0; i < keys.length; ++i) {
-                    compareForEquality(a[keys[i]], b[keys[i]]);
+                var keysA = Object.keys(a).sort();
+                var keysB = Object.keys(b).sort();
+                expect(keysA).toEqual(keysB);
+                for (var i = 0; i < keysA.length; ++i) {
+                    compareForEquality(a[keysA[i]], b[keysB[i]]);
                 }
             } else {
                 // otherwise, it should be exactly equal.

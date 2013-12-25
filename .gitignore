@@ -1,6 +1,12 @@
-build-files/java/build
-jsdoc.jar
-test/tutorials/out
-conf.json
-out/
+# Development-related files
 .tern-port
+node_modules/.bin
+node_modules/grunt*
+node_modules/jshint
+
+# User-specific files
+conf.json
+
+# Generated files
+test/tutorials/out
+out/

@@ -5,6 +5,7 @@
  * @module plugins/commentsOnly
  * @author Jeff Williams <jeffrey.l.williams@gmail.com>
  */
+'use strict';
 
 exports.handlers = {
     beforeParse: function(e) {

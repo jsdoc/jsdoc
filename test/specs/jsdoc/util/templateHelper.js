@@ -1,10 +1,11 @@
-/*global afterEach: true, beforeEach: true, describe: true, expect: true, env: true, it: true,
-jasmine: true, spyOn: true, xdescribe: true */
+/*global afterEach, beforeEach, describe, expect, env, it, jasmine, spyOn */
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", function() {
     var helper = require('jsdoc/util/templateHelper'),
         doclet = require('jsdoc/doclet'),
+        doop = require('jsdoc/util/doop'),
+        logger = require('jsdoc/util/logger'),
         resolver = require('jsdoc/tutorial/resolver'),
         taffy = require('taffydb').taffy;
     helper.registerLink('test', 'path/to/test.html');
@@ -140,18 +141,11 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it("setting tutorials to the root tutorial object lets lookups work", function() {
-            var lenient = !!env.opts.lenient;
-            spyOn(console, 'log');
-
-            // tutorial doesn't exist, we want to muffle that error
-            env.opts.lenient = true;
-
             helper.setTutorials(resolver.root);
             spyOn(resolver.root, 'getByName');
             helper.tutorialToUrl('asdf');
-            expect(resolver.root.getByName).toHaveBeenCalled();
 
-            env.opts.lenient = lenient;
+            expect(resolver.root.getByName).toHaveBeenCalled();
         });
     });
 
@@ -336,11 +330,20 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("htmlsafe", function() {
-        // turns < into &lt; (doesn't do > or &amp etc...)
         it('should convert all occurences of < to &lt;', function() {
             var inp = '<h1>Potentially dangerous.</h1>',
                 out = helper.htmlsafe(inp);
             expect(out).toBe('&lt;h1>Potentially dangerous.&lt;/h1>');
+        });
+
+        it('should convert all occurrences of & to &amp;', function() {
+            var input = 'foo && bar & baz;';
+            expect( helper.htmlsafe(input) ).toBe('foo &amp;&amp; bar &amp; baz;');
+        });
+
+        it ('should not double-convert ampersands', function() {
+            var input = '<h1>Foo & Friends</h1>';
+            expect( helper.htmlsafe(input) ).toBe('&lt;h1>Foo &amp; Friends&lt;/h1>');
         });
     });
 
@@ -737,23 +740,6 @@ describe("jsdoc/util/templateHelper", function() {
 
             delete helper.longnameToUrl.MyClass;
         });
-
-        it("doesn't throw an error in lenient mode if a 'returns' item has no value", function() {
-            function getReturns() {
-                return helper.getSignatureReturns(doc);
-            }
-
-            var doc;
-            var lenient = !!env.opts.lenient;
-
-            env.opts.lenient = true;
-            spyOn(console, 'log');
-            doc = new doclet.Doclet('/** @function myFunction\n@returns */', {});
-
-            expect(getReturns).not.toThrow();
-
-            env.opts.lenient = lenient;
-        });
     });
 
     describe("getAncestorLinks", function() {
@@ -820,7 +806,7 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("addEventListeners", function() {
-        var doclets = taffy(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets),
+        var doclets = ( taffy(doop(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets)) ),
             ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0],
             ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0],
             ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];
@@ -916,44 +902,32 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("tutorialToUrl", function() {
-        var lenient = !!env.opts.lenient;
-
         function missingTutorial() {
             var url = helper.tutorialToUrl("be-a-perfect-person-in-just-three-days");
         }
 
         beforeEach(function() {
-            spyOn(console, 'log');
+            spyOn(logger, 'error');
             helper.setTutorials(resolver.root);
         });
 
         afterEach(function() {
             helper.setTutorials(null);
-            env.opts.lenient = lenient;
         });
 
-        it('throws an exception if the tutorial is missing and the lenient option is not enabled', function() {
-            env.opts.lenient = false;
-            expect(missingTutorial).toThrow();
+        it('logs an error if the tutorial is missing', function() {
+            helper.tutorialToUrl('be-a-perfect-person-in-just-three-days');
+
+            expect(logger.error).toHaveBeenCalled();
         });
         
-        it('does not throw an exception if the tutorial is missing and the lenient option is enabled', function() {
-            env.opts.lenient = true;
+        it("logs an error if the tutorial's name is a reserved JS keyword and it doesn't exist", function() {
+            helper.tutorialToUrl('prototype');
 
-            expect(missingTutorial).not.toThrow();
-        });
-
-        it("does not return a tutorial if its name is a reserved JS keyword and it doesn't exist", function() {
-            env.opts.lenient = false;
-            expect(function () { helper.tutorialToUrl('prototype'); }).toThrow();
+            expect(logger.error).toHaveBeenCalled();
         });
 
         it("creates links to tutorials if they exist", function() {
-            // NOTE: we have to set lenient = true here because otherwise JSDoc will
-            // cry when trying to resolve the same set of tutorials twice (once
-            // for the tutorials tests, and once here).
-            env.opts.lenient = true;
-
             // load the tutorials we already have for the tutorials tests
             resolver.load(env.dirname + "/test/tutorials/tutorials");
             resolver.resolve();
@@ -975,34 +949,21 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("toTutorial", function() {
-        var lenient = !!env.opts.lenient;
-
-        function missingParam() {
-            helper.toTutorial();
-        }
-
-        afterEach(function() {
-            env.opts.lenient = lenient;
-            helper.setTutorials(null);
-        });
-
         beforeEach(function () {
+            spyOn(logger, 'error');
             helper.setTutorials(resolver.root);
         });
 
-        it('throws an exception if the first param is missing and the lenient option is not enabled', function() {
-            env.opts.lenient = false;
+        afterEach(function() {
+            helper.setTutorials(null);
+        });
 
-            expect(missingParam).toThrow();
+        it('logs an error if the first param is missing', function() {
+            helper.toTutorial();
+
+            expect(logger.error).toHaveBeenCalled();
         });
         
-        it('does not throw an exception if the first param is missing and the lenient option is enabled', function() {
-            spyOn(console, 'log');
-            env.opts.lenient = true;
-
-            expect(missingParam).not.toThrow();
-        });
-
         // missing tutorials
         it("returns the tutorial name if it's missing and no missingOpts is provided", function() {
             helper.setTutorials(resolver.root);
@@ -1036,12 +997,6 @@ describe("jsdoc/util/templateHelper", function() {
 
         // now we do non-missing tutorials.
         it("returns a link to the tutorial if not missing", function() {
-            // NOTE: we have to set lenient = true here because otherwise JSDoc will
-            // cry when trying to resolve the same set of tutorials twice (once
-            // for the tutorials tests, and once here).
-            env.opts.lenient = true;
-            spyOn(console, 'log');
-
             // load the tutorials we already have for the tutorials tests
             resolver.load(env.dirname + "/test/tutorials/tutorials");
             resolver.resolve();

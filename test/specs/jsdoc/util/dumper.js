@@ -39,7 +39,7 @@ describe("jsdoc/util/dumper", function() {
     });
 
     it("can dump undefined values", function() {
-        expect(common.dumper.dump(undefined)).toEqual('"undefined"');
+        expect(common.dumper.dump(undefined)).toEqual('null');
     });
 
     it("can dump regex values", function() {
@@ -86,7 +86,7 @@ describe("jsdoc/util/dumper", function() {
         var actual = common.dumper.dump(
             [undefined, null, new Foo(), 1, true, 'hello\n"world', new Error('oops'), /foo/gi, new Date('December 26, 2010 GMT'), {f: function myFunc(){}, o: {a:1}}]
         ),
-        expected = '[\n    "undefined",\n    null,\n    {},\n    1,\n    true,\n    "hello\\n\\"world",\n    {\n        "message": "oops"\n    },\n    "<RegExp /foo/gi>",\n    "<Date Sun, 26 Dec 2010 00:00:00 GMT>",\n    {\n        "f": "<Function myFunc>",\n        "o": {\n            "a": 1\n        }\n    }\n]';
+        expected = '[\n    null,\n    null,\n    {},\n    1,\n    true,\n    "hello\\n\\"world",\n    {\n        "message": "oops"\n    },\n    "<RegExp /foo/gi>",\n    "<Date Sun, 26 Dec 2010 00:00:00 GMT>",\n    {\n        "f": "<Function myFunc>",\n        "o": {\n            "a": 1\n        }\n    }\n]';
 
         expect(actual).toEqual(expected);
     });

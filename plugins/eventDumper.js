@@ -4,6 +4,7 @@
  * @module plugins/eventDumper
  * @author Jeff Williams <jeffrey.l.williams@gmail.com>
  */
+'use strict';
 
 var _ = require('underscore');
 var util = require('util');

@@ -1,3 +1,5 @@
+'use strict';
+
 var isWindows = java.lang.System.getProperty("os.name").toLowerCase().contains("windows");
 var fileSeparator = exports.sep = String( java.lang.System.getProperty("file.separator") );
 
@@ -24,16 +26,6 @@ var asyncify = exports._asyncify = function(func) {
             });
         }
     };
-};
-
-// JSDoc extension to `path` module
-exports.pathToUri = function(_path) {
-  return String( new java.io.File(_path).toURI() );
-};
-
-// JSDoc extension to `path` module
-exports.uriToPath = function(uri) {
-  return String( new java.io.File(new java.net.URI(uri)) );
 };
 
 /**

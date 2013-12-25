@@ -7,6 +7,7 @@
  * 4. Run Jasmine on each directory
  */
 var fs = require('jsdoc/fs');
+var logger = require('jsdoc/util/logger');
 var path = require('path');
 
 fs.existsSync = fs.existsSync || path.existsSync;
@@ -46,6 +47,9 @@ function testedAllParsers() {
 
 var runNextFolder = module.exports = function(callback) {
     testsCompleteCallback = testsCompleteCallback || callback;
+
+    // silence the logger while we run the tests
+    logger.setLevel(logger.LEVELS.SILENT);
 
     if (index < specFolders.length) {
         // we need to run the test specs once for each parser

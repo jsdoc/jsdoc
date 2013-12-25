@@ -4,6 +4,7 @@
     @module plugins/partial
     @author Ludo Antonov <ludo@hulu.com>
  */
+'use strict';
 
 var fs = require('jsdoc/fs');
 var path = require('path');

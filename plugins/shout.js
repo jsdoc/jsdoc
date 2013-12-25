@@ -3,6 +3,7 @@
     @module plugins/shout
     @author Michael Mathews <micmath@gmail.com>
  */
+'use strict';
 
 exports.handlers = {
     /**

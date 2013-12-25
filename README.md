@@ -35,9 +35,9 @@ If you installed JSDoc locally, the JSDoc command-line tool is available in
 `./node_modules/.bin`. To generate documentation for the file
 `yourJavaScriptFile.js`:
 
-    ./node_modules/bin/jsdoc yourJavaScriptFile.js
+    ./node_modules/.bin/jsdoc yourJavaScriptFile.js
 
-Or if you installed JSDoc globally:
+Or if you installed JSDoc globally, simply run the `jsdoc` command:
 
     jsdoc yourJavaScriptFile.js
 
