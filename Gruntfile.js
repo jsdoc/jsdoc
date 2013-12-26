@@ -7,6 +7,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         nodeBin: path.resolve(__dirname, './jsdoc.js'),
+        nodePath: process.execPath,
         rhinoBin: (function() {
             var filepath = path.resolve(__dirname, './jsdoc');
 
@@ -37,6 +38,13 @@ module.exports = function(grunt) {
             files: ['package.json']
         },
         shell: {
+            'coverage': {
+                command: './node_modules/.bin/istanbul cover <%= nodeBin %> -- -T',
+                options: {
+                    stdout: true,
+                    stderr: true
+                }
+            },
             'test-rhino': {
                 command: '<%= rhinoBin %> -T -q "parser=rhino"',
                 options: {
@@ -52,7 +60,7 @@ module.exports = function(grunt) {
                 }
             },
             'test-node': {
-                command: process.execPath + ' <%= nodeBin %> -T',
+                command: '<%= nodePath %> <%= nodeBin %> -T',
                 options: {
                     stdout: true,
                     stderr: true
@@ -64,6 +72,8 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.renameTask('bumpup', 'bump');
+
+    grunt.registerTask('coverage', ['shell:coverage']);
 
     grunt.registerTask('test-rhino', ['shell:test-rhino']);
     grunt.registerTask('test-rhino-esprima', ['shell:test-rhino-esprima']);

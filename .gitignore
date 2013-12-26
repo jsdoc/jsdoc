@@ -1,7 +1,9 @@
 # Development-related files
 .tern-port
+coverage/
 node_modules/.bin
 node_modules/grunt*
+node_modules/istanbul
 node_modules/jshint
 node_modules/load-grunt-tasks
 
