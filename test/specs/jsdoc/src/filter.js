@@ -1,10 +1,10 @@
-/*global describe: true, expect: true, it: true */
-describe("jsdoc/src/filter", function() {
+/*global describe, expect, it */
+describe('jsdoc/src/filter', function() {
     var path = require('jsdoc/path');
     
     var filter = new (require('jsdoc/src/filter').Filter)({
-        includePattern: new RegExp(".+\\.js(doc)?$"),
-        excludePattern: new RegExp("(^|\\/|\\\\)_"),
+        includePattern: new RegExp('.+\\.js(doc)?$'),
+        excludePattern: new RegExp('(^|\\/|\\\\)_'),
         exclude: ['.ignore', 'scratch/conf.js']
     });
 
@@ -20,9 +20,9 @@ describe("jsdoc/src/filter", function() {
         return filter.isIncluded($);
     });
 
-    it("should return the correct source files", function() {
+    it('should return the correct source files', function() {
         expect(files.length).toEqual(2);
-        expect(files.indexOf("yes.js")).toBeGreaterThan(-1);
-        expect(files.indexOf("/yes.jsdoc")).toBeGreaterThan(-1);
+        expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
+        expect( files.indexOf('/yes.jsdoc') ).toBeGreaterThan(-1);
     });
 });

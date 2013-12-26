@@ -1,10 +1,10 @@
-/*global describe: true, env: true, expect: true, it: true */
-describe("jsdoc/src/scanner", function() {
-    var path = require('path');
+/*global describe, env, expect, it */
+describe('jsdoc/src/scanner', function() {
+    var path = require('jsdoc/path');
 
     var filter = new (require('jsdoc/src/filter').Filter)({
-        includePattern: new RegExp(".+\\.js(doc)?$"),
-        excludePattern: new RegExp("(^|\\/|\\\\)_")
+        includePattern: new RegExp('.+\\.js(doc)?$'),
+        excludePattern: new RegExp('(^|\\/|\\\\)_')
     });
     var scanner = new (require('jsdoc/src/scanner').Scanner)();
     var sourcePath = path.normalize(env.pwd + '/test/fixtures/src');
@@ -14,10 +14,13 @@ describe("jsdoc/src/scanner", function() {
         return path.relative(env.pwd, $);
     });
 
-    it("should return the correct source files", function() {
+    it('should return the correct source files', function() {
         expect(sourceFiles.length).toEqual(3);
-        expect(sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'one.js'))).toBeGreaterThan(-1);
-        expect(sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'two.js'))).toBeGreaterThan(-1);
-        expect(sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'dir1', 'three.js'))).toBeGreaterThan(-1);
+        expect( sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'one.js')) )
+            .toBeGreaterThan(-1);
+        expect( sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'two.js')) )
+            .toBeGreaterThan(-1);
+        expect( sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'dir1', 'three.js')) )
+            .toBeGreaterThan(-1);
     });
 });
