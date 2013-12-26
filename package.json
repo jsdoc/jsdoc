@@ -39,7 +39,8 @@
 		"node": ">=0.10"
 	},
 	"scripts": {
-		"postinstall": "node ./node/postinstall.js"
+		"postinstall": "node ./node/postinstall.js",
+		"test": "grunt test"
 	},
 	"bin": {
 		"jsdoc": "./jsdoc.js"
