@@ -50,7 +50,6 @@ jasmine.initialize = function(done, verbose) {
     }
 
     var reporterOpts = {
-        print: util.print,
         color: env.opts.nocolor === true ? false : true,
         onComplete: done
     };
