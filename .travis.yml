@@ -1,4 +1,6 @@
-language: java
+language: node_js
 
-script:
-  - "./jsdoc -T"
+node_js:
+  - "0.10"
+
+install: npm install -g grunt-cli; npm install
