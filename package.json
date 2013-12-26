@@ -30,9 +30,9 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-bumpup": "~0.4.2",
+    "grunt-contrib-jshint": "~0.8.0",
     "grunt-shell": "~0.6.1",
     "istanbul": "~0.2.1",
-    "jshint": "~2.3.0",
     "load-grunt-tasks": "~0.2.1",
     "tv4": "git+https://github.com/hegemonic/tv4.git#own-properties"
   },
