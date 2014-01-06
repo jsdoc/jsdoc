@@ -92,6 +92,7 @@ Project Documentation: <http://usejsdoc.org/>
 Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
+JSDoc Grunt Plugin <https://github.com/krampstudio/grunt-jsdoc>  
 Project Announcements: <http://twitter.com/jsdoc3>
 
 
