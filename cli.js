@@ -263,7 +263,7 @@ function createTempDir() {
 
     try {
         fs.mkdirSync(tempPath);
-        props.tmpdir = path;
+        props.tmpdir = tempPath;
     }
     catch (e) {
         logger.fatal('Unable to create the temp directory %s: %s', tempPath, e.message);
