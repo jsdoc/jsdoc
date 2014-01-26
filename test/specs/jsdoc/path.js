@@ -46,6 +46,14 @@ describe('jsdoc/path', function() {
             global.env.pwd = oldPwd;
         });
 
+        it('finds the correct prefix for a single relative path', function() {
+            var paths = [path.join('foo', 'bar', 'baz', 'qux.js')];
+            // we expect a trailing slash
+            var expected = cwd.concat('foo', 'bar', 'baz', '').join(path.sep);
+
+            expect( path.commonPrefix(paths) ).toBe(expected);
+        });
+
         it('finds the correct prefix for a group of relative paths', function() {
             var paths = [
                 path.join('foo', 'bar', 'baz', 'qux.js'),
@@ -56,6 +64,14 @@ describe('jsdoc/path', function() {
             var expected = cwd.concat('foo', 'bar', '').join(path.sep);
 
             expect( path.commonPrefix(paths) ).toEqual(expected);
+        });
+
+        it('finds the correct prefix for a single absolute path', function() {
+            var paths = [cwd.concat('foo', 'bar', 'baz', 'qux.js').join(path.sep)];
+            // we expect a trailing slash
+            var expected = cwd.concat('foo', 'bar', 'baz', '').join(path.sep);
+
+            expect( path.commonPrefix(paths) ).toBe(expected);
         });
 
         it('finds the correct prefix for a group of absolute paths', function() {
@@ -81,6 +97,12 @@ describe('jsdoc/path', function() {
             var expected = cwd.concat('foo', 'bar', '').join(path.sep);
 
             expect( path.commonPrefix(paths) ).toEqual(expected);
+        });
+
+        it('returns an empty string when the paths array is empty', function() {
+            var paths = [];
+
+            expect( path.commonPrefix(paths) ).toBe('');
         });
 
         // skip on Windows, since the paths share a drive letter at the start

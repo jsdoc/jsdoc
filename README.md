@@ -14,7 +14,8 @@ You can run JSDoc on either Node.js or Mozilla Rhino.
 
 ### Node.js
 
-Native support for Node.js is available in JSDoc 3.3.0 and later.
+Native support for Node.js is available in JSDoc 3.3.0 and later. JSDoc
+supports Node.js 0.10 and later.
 
 #### Installing JSDoc for Node.js
 

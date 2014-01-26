@@ -26,24 +26,18 @@ var reporter = null;
 
 jasmine.parseResults = [];
 
-jasmine.jsParsers = (function() {
-    var PARSERS = jsdoc.src.parser.PARSERS;
+// use the requested parser, or default to Esprima (on Node.js) or Rhino (on Rhino)
+jasmine.jsParser = (function() {
+    var parser = jsdoc.util.runtime.isRhino() ? 'rhino' : 'esprima';
 
-    var jsParsers = [];
-
-    // on Rhino, we should test all available parsers; on Node.js, we should test all parsers except
-    // Rhino
-    // TODO: support testing more than one parser per runtime
-    if ( jsdoc.util.runtime.isRhino() ) {
-        jsParsers.push('rhino');
+    if (env.opts.query && env.opts.query.parser) {
+        parser = env.opts.query.parser;
+        // remove this so the config tests don't complain
+        delete env.opts.query;
     }
-    jsParsers.push('esprima');
 
-    return jsParsers;
+    return parser;
 })();
-
-// TODO: support testing more than one parser per runtime
-jasmine.currentParser = jasmine.jsParsers[0];
 
 jasmine.initialize = function(done, verbose) {
     var jasmineEnv = jasmine.getEnv();
@@ -56,7 +50,6 @@ jasmine.initialize = function(done, verbose) {
     }
 
     var reporterOpts = {
-        print: util.print,
         color: env.opts.nocolor === true ? false : true,
         onComplete: done
     };
@@ -73,15 +66,13 @@ jasmine.initialize = function(done, verbose) {
 };
 
 jasmine.createParser = function(type) {
-    return jsdoc.src.parser.createParser(type || jasmine.currentParser);
+    return jsdoc.src.parser.createParser(type || jasmine.jsParser);
 };
 
 function capitalize(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
 
-// TODO: Jasmine only lets us run the specs once, which means we're only testing one parser per
-// runtime. Need to find a good way around this.
 /**
  * Execute the specs in the specified folder.
  *

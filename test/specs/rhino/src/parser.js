@@ -10,7 +10,7 @@ describe('rhino/jsdoc/src/parser', function() {
     };
 
     // don't run this spec if we're currently testing another parser
-    if (jasmine.currentParser !== 'rhino') {
+    if (jasmine.jsParser !== 'rhino') {
         return;
     }
 
