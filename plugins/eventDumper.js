@@ -44,7 +44,38 @@ function isJavaNativeObject(o) {
 }
 
 /**
- * Get rid of native Java crud in an event object so that JSON.stringify() works.
+ * Replace AST node objects in events with a placeholder.
+ *
+ * @param {Object} o - An object whose properties may contain AST node objects.
+ * @return {Object} The modified object.
+ */
+function replaceNodeObjects(o) {
+    var doop = require('jsdoc/util/doop');
+
+    var OBJECT_PLACEHOLDER = '<Object>';
+
+    if (o.code && o.code.node) {
+        // don't break the original object!
+        o.code = doop(o.code);
+        o.code.node = OBJECT_PLACEHOLDER;
+    }
+
+    if (o.doclet && o.doclet.meta && o.doclet.meta.code && o.doclet.meta.code.node) {
+        // don't break the original object!
+        o.doclet.meta.code = doop(o.doclet.meta.code);
+        o.doclet.meta.code.node = OBJECT_PLACEHOLDER;
+    }
+
+    if (o.astnode) {
+        o.astnode = OBJECT_PLACEHOLDER;
+    }
+
+    return o;
+}
+
+/**
+ * Get rid of unwanted crud in an event object.
+ *
  * @param {object} e The event object.
  * @return {object} The fixed-up object.
  */
@@ -61,10 +92,16 @@ function cleanse(e) {
         else if (typeof e[prop] === 'function') {
             // do nothing
         }
+        // don't call JSON.stringify() on Java native objects--Rhino will throw an exception
         else {
             result[prop] = isJavaNativeObject(e[prop]) ? String(e[prop]) : e[prop];
         }
     });
+
+    // allow users to omit node objects, which can be enormous
+    if (conf.omitNodes) {
+        result = replaceNodeObjects(result);
+    }
 
     return result;
 }
