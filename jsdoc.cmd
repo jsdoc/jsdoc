@@ -19,9 +19,9 @@ IF [%1]==[--debug] (
 SET ARGS=%*
 
 IF [%1]==[-T] (
-    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -opt -1 -modules "%_BASEPATH%/lib" -modules "%_BASEPATH%/node_modules" -modules "%_BASEPATH%/rhino" -modules "%_BASEPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor --dirname="%_BASEPATH%/
+    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -opt -1 -modules "%_BASEPATH%/lib" -modules "%_BASEPATH%/node_modules" -modules "%_BASEPATH%/rhino" -modules "%_BASEPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --nocolor
 ) ELSE (
-    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -modules "%_BASEPATH%/lib" -modules "%_BASEPATH%/node_modules" -modules "%_BASEPATH%/rhino" -modules "%_BASEPATH%" "%_BASEPATH%/jsdoc.js" %ARGS% --dirname="%_BASEPATH%/
+    java -classpath "%_BASEPATH%/rhino/js.jar" %CMD% -modules "%_BASEPATH%/lib" -modules "%_BASEPATH%/node_modules" -modules "%_BASEPATH%/rhino" -modules "%_BASEPATH%" "%_BASEPATH%/jsdoc.js" %ARGS%
 )
 
 ENDLOCAL
