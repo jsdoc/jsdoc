@@ -130,8 +130,7 @@ cli.configureLogger = function() {
 
 // TODO: docs
 cli.logStart = function() {
-    var loggerFunc = env.opts.help ? console.log : logger.info;
-    cli.printVersion(loggerFunc);
+    logger.debug( cli.getVersion() );
 
     logger.debug('Environment info: %j', {
         env: {
@@ -178,7 +177,7 @@ cli.runCommand = function(cb) {
         cmd = cli.runTests;
     }
     else if (opts.version) {
-        cmd = function(callback) { callback(); };
+        cmd = cli.printVersion;
     }
     else {
         cmd = cli.main;
@@ -189,6 +188,7 @@ cli.runCommand = function(cb) {
 
 // TODO: docs
 cli.printHelp = function(cb) {
+    cli.printVersion();
     console.log( '\n' + require('jsdoc/opts/args').help() + '\n' );
     console.log('Visit http://usejsdoc.org for more information.');
     cb(0);
@@ -212,10 +212,9 @@ cli.getVersion = function() {
 };
 
 // TODO: docs
-cli.printVersion = function(loggerFunc, cb) {
-    loggerFunc = loggerFunc || logger.info;
+cli.printVersion = function(cb) {
+    console.log( cli.getVersion() );
 
-    loggerFunc.call( null, cli.getVersion() );
     if (cb) {
         cb(0);
     }
@@ -501,7 +500,11 @@ cli.generateDocs = function() {
 };
 
 // TODO: docs
-cli.exit = function(exitCode) {
+cli.exit = function(exitCode, message) {
+    if (message && exitCode > 0) {
+        console.error(message);
+    }
+    
     process.exit(exitCode || 0);
 };
 
