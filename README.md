@@ -30,6 +30,11 @@ To install the latest development version:
 
     npm install git+https://github.com/jsdoc3/jsdoc.git
 
+**Note**: If you install JSDoc globally, do not use `sudo npm install`. This may
+prevent you from running JSDoc as a normal user. If you cannot install global
+packages without `sudo`, please
+[fix your npm directory permissions](http://howtonode.org/introduction-to-npm).)
+
 #### Running JSDoc with Node.js
 
 If you installed JSDoc locally, the JSDoc command-line tool is available in
