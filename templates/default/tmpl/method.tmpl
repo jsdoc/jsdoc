@@ -38,6 +38,13 @@ var self = this;
     
     <?js= this.partial('details.tmpl', data) ?>
     
+    <?js if (data.requires && data.requires.length) { ?>
+    <h5>Requires:</h5>
+    <ul><?js data.requires.forEach(function(r) { ?>
+        <li><?js= self.linkto(r) ?></li>
+    <?js }); ?></ul>
+    <?js } ?>
+
     <?js if (data.fires && fires.length) { ?>
     <h5>Fires:</h5>
     <ul><?js fires.forEach(function(f) { ?>
