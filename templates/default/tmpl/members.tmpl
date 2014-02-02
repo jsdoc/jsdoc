@@ -27,6 +27,13 @@ var self = this;
 
     <?js= this.partial('details.tmpl', data) ?>
     
+    <?js if (data.fires && fires.length) { ?>
+        <h5>Fires:</h5>
+        <ul><?js fires.forEach(function(f) { ?>
+            <li><?js= self.linkto(f) ?></li>
+        <?js }); ?></ul>
+    <?js } ?>
+
     <?js if (data.examples && examples.length) { ?>
         <h5>Example<?js= examples.length > 1? 's':'' ?></h5>
         <?js= this.partial('examples.tmpl', examples) ?>
