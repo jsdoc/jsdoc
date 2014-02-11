@@ -73,6 +73,9 @@ The JSDoc repository includes a
 sure your Java classpath does not include any other versions of Rhino. (On OS X,
 you may need to remove the file `~/Library/Java/Extensions/js.jar`.)
 
+**Note**: In JSDoc 3.3.0 and later, if you need to run JSDoc on Mozilla Rhino,
+do not install JSDoc with npm. Use one of the methods described above.
+
 #### Running JSDoc with Mozilla Rhino
 
 On OS X, Linux, and other POSIX systems, to generate documentation for the file
