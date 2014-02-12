@@ -96,7 +96,7 @@ Run `jsdoc --help` for a complete list of command-line options.
 For More Information
 --------------------
 
-Project Documentation: <http://usejsdoc.org/>
+Project Documentation: <http://usejsdoc.org/>  
 Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
