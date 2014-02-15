@@ -17,11 +17,11 @@
 	"dependencies": {
 		"async": "0.1.22",
 		"catharsis": "0.7.0",
-		"crypto-browserify": "git+https://github.com/dominictarr/crypto-browserify.git#95c5d505",
+		"crypto-browserify": "https://github.com/dominictarr/crypto-browserify/tarball/master#95c5d505",
 		"js2xmlparser": "0.1.0",
 		"jshint": "0.9.1",
 		"marked": "0.2.8",
-		"taffydb":  "git+https://github.com/hegemonic/taffydb.git",
+		"taffydb":  "https://github.com/hegemonic/taffydb/tarball/master",
 		"underscore": "1.4.2",
 		"wrench":   "1.3.9"
 	},
