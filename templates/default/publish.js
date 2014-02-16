@@ -108,13 +108,15 @@ function getPathFromDoclet(doclet) {
         doclet.meta.filename;
 }
     
-function generate(title, docs, filename, resolveLinks) {
-    resolveLinks = resolveLinks === false ? false : true;
+function generate(title, docs, filename, opts) {
+    opts = opts || {};
 
     var docData = {
         title: title,
-        docs: docs
+        docs: docs,
+        opts: opts
     };
+    var resolveLinks = (opts.resolveLinks === false) ? false : true;
     
     var outpath = path.join(outdir, filename),
         html = view.render('container.tmpl', docData);
@@ -145,7 +147,7 @@ function generateSourceFiles(sourceFiles, encoding) {
         }
 
         generate('Source: ' + sourceFiles[file].shortened, [source], sourceOutfile,
-            false);
+            { resolveLinks: false });
     });
 }
 
@@ -480,13 +482,25 @@ exports.publish = function(taffyData, opts, tutorials) {
     attachModuleSymbols( find({ kind: ['class', 'function'], longname: {left: 'module:'} }),
         members.modules );
 
-    // output pretty-printed source files by default; do this before generating any other pages, so
-    // that the other pages can link to the source files
-    if (!conf['default'] || conf['default'].outputSourceFiles !== false) {
+    var generateOpts = {
+        // output pretty-printed source files by default
+        outputSourceFiles: (function(c) {
+            if (!c || c.outputSourceFiles !== false) {
+                return true;
+            }
+
+            return false;
+        })(conf['default'])
+    };
+
+    // generate pretty-printed source files first so other pages can link to them
+    if (generateOpts.outputSourceFiles) {
         generateSourceFiles(sourceFiles, opts.encoding);
     }
 
-    if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl); }
+    if (members.globals.length) {
+        generate('Global', [{kind: 'globalobj'}], globalUrl, generateOpts);
+    }
     
     // index page displays information from package.json and lists files
     var files = find({kind: 'file'}),
@@ -496,7 +510,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
         ).concat(files),
-    indexUrl);
+    indexUrl, generateOpts);
 
     // set up the lists that we'll use to generate pages
     var classes = taffy(members.classes);
@@ -508,27 +522,32 @@ exports.publish = function(taffyData, opts, tutorials) {
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
         var myClasses = helper.find(classes, {longname: longname});
         if (myClasses.length) {
-            generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
+            generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname],
+                generateOpts);
         }
         
         var myModules = helper.find(modules, {longname: longname});
         if (myModules.length) {
-            generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
+            generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname],
+                generateOpts);
         }
 
         var myNamespaces = helper.find(namespaces, {longname: longname});
         if (myNamespaces.length) {
-            generate('Namespace: ' + myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
+            generate('Namespace: ' + myNamespaces[0].name, myNamespaces,
+                helper.longnameToUrl[longname], generateOpts);
         }
         
         var myMixins = helper.find(mixins, {longname: longname});
         if (myMixins.length) {
-            generate('Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
+            generate('Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname],
+                generateOpts);
         }
 
         var myExternals = helper.find(externals, {longname: longname});
         if (myExternals.length) {
-            generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
+            generate('External: ' + myExternals[0].name, myExternals,
+                helper.longnameToUrl[longname], generateOpts);
         }
     });
 
