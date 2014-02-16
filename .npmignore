@@ -1,8 +1,12 @@
+# development-related files
 .jshintrc
 .travis.yml
-Jake/
-Jakefile.js
-jsdoc$
-jsdoc.cmd
+Gruntfile.js
+
+# scripts for launching JSDoc with Mozilla Rhino
+/jsdoc*
+!/jsdoc.js
+
+# Rhino and test directories
 rhino/
 test/
