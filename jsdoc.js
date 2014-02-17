@@ -126,10 +126,7 @@ global.dump = function() {
 (function() {
     'use strict';
     
-    function cb(errorCode) {
-        process.exit(errorCode || 0);
-    }
-
+    var logger = require('jsdoc/util/logger');
     var path = require('jsdoc/path');
     var runtime = require('jsdoc/util/runtime');
 
@@ -138,6 +135,17 @@ global.dump = function() {
     cli.setVersionInfo()
         .loadConfig();
 
+    if (!global.env.opts.test) {
+        cli.configureLogger();
+    }
+
+    cli.logStart();
+
+    function cb(errorCode) {
+        cli.logFinish();
+        cli.exit(errorCode || 0);
+    }
+
     // On Rhino, we use a try/catch block so we can log the Java exception (if available)
     if ( runtime.isRhino() ) {
         try {
@@ -145,11 +153,10 @@ global.dump = function() {
         }
         catch(e) {
             if (e.rhinoException) {
-                e.rhinoException.printStackTrace();
-                process.exit(1);
+                logger.fatal( e.rhinoException.printStackTrace() );
             } else {
                 console.trace(e);
-                process.exit(1);
+                cli.exit(1);
             }
         }
     }

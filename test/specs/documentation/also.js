@@ -1,4 +1,4 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+/*global describe, expect, it, jasmine, spyOn */
 describe("multiple doclets per symbol", function() {
     function undocumented($) {
         return ! $.undocumented;
@@ -43,5 +43,27 @@ describe("multiple doclets per symbol", function() {
         '@returns tags, the doclets have different lists of return values.', function() {
         checkInequality(name, 'returns.length');
         checkInequality(shape, 'returns.length');
+    });
+
+    it('When a file contains a JSDoc comment with an @also tag, and the "tags.allowUnknownTags" ' +
+        'option is set to false, the file can be parsed without errors.', function() {
+        var logger = require('jsdoc/util/logger');
+
+        var allowUnknownTags = !!global.env.conf.tags.allowUnknownTags;
+        var docs;
+        var errors = [];
+
+        function errorListener(err) {
+            errors.push(err);
+        }
+
+        logger.addListener('logger:error', errorListener);
+        global.env.conf.tags.allowUnknownTags = false;
+
+        docs = jasmine.getDocSetFromFile('test/fixtures/also2.js');
+        expect(errors[0]).not.toBeDefined();
+
+        logger.removeListener('logger:error', errorListener);
+        global.env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 });

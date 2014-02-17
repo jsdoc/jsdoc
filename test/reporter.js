@@ -1,4 +1,6 @@
 module.exports = function(jasmine) {
+    var util = require('util');
+
     var jasmineNode = {};
 
     //
@@ -32,7 +34,7 @@ module.exports = function(jasmine) {
     };
 
     jasmineNode.TerminalReporter = function(config) {
-        this.print_ = config.print || print;
+        this.print_ = config.print || function (str) { process.stdout.write(util.format(str)); };
         this.color_ = config.color ? jasmineNode.ANSIColors : jasmineNode.NoColors;
 
         this.started_ = false;
@@ -152,10 +154,10 @@ module.exports = function(jasmine) {
         reportSpecResults : function(spec) {
             var result = spec.results();
             var msg = '';
-            if (result.passed()) {
+            if (result.skipped) {
+                msg = this.stringWithColor_('-', this.color_.ignore());
+            } else if (result.passed()) {
                 msg = this.stringWithColor_('.', this.color_.pass());
-                // } else if (result.skipped) { TODO: Research why "result.skipped" returns false when "xit" is called on a spec?
-                // msg = (colors) ? (ansi.yellow + '*' + ansi.none) : '*';
             } else {
                 msg = this.stringWithColor_('F', this.color_.fail());
                 this.addFailureToFailures_(spec);

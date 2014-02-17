@@ -28,16 +28,6 @@ var asyncify = exports._asyncify = function(func) {
     };
 };
 
-// JSDoc extension to `path` module
-exports.pathToUri = function(_path) {
-  return String( new java.io.File(_path).toURI() );
-};
-
-// JSDoc extension to `path` module
-exports.uriToPath = function(uri) {
-  return String( new java.io.File(new java.net.URI(uri)) );
-};
-
 /**
  * Returns everything on a path except for the last item
  * e.g. if the path was 'path/to/something', the return value would be 'path/to'
@@ -112,11 +102,34 @@ function normalizeArray(parts, allowAboveRoot) {
     return parts;
 }
 
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
 if (isWindows) {
     // Regex to split a windows path into three parts: [*, device, slash,
     // tail] windows-only
     var splitDeviceRe =
         /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/][^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+
+    // Regex to split the tail part of the above into [*, dir, basename, ext]
+    var splitTailRe =
+        /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+
+    // Function to split a filename into [root, dir, basename, ext]
+    // windows version
+    var splitPath = function(filename) {
+      // Separate device+slash from tail
+      var result = splitDeviceRe.exec(filename),
+          device = (result[1] || '') + (result[2] || ''),
+          tail = result[3] || '';
+      // Split the tail into dir, basename and extension
+      var result2 = splitTailRe.exec(tail),
+          dir = result2[1],
+          basename = result2[2],
+          ext = result2[3];
+      return [device, dir, basename, ext];
+    };
 
     // path.resolve([from ...], to)
     // windows version
@@ -302,6 +315,14 @@ if (isWindows) {
       return outputParts.join('\\');
     };
 } else {
+    // Split a filename into [root, dir, basename, ext], unix version
+    // 'root' is just a slash, or nothing.
+    var splitPathRe =
+        /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+    var splitPath = function(filename) {
+      return splitPathRe.exec(filename).slice(1);
+    };
+
     // path.resolve([from ...], to)
     // posix version
     exports.resolve = function() {

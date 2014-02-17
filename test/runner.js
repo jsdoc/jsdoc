@@ -7,6 +7,7 @@
  * 4. Run Jasmine on each directory
  */
 var fs = require('jsdoc/fs');
+var logger = require('jsdoc/util/logger');
 var path = require('path');
 
 fs.existsSync = fs.existsSync || path.existsSync;
@@ -38,22 +39,14 @@ var index = 0;
 var testsCompleteCallback;
 var onComplete;
 
-function testedAllParsers() {
-    // TODO: We currently support testing one parser per runtime; see jasmine-jsdoc.js
-    //return jasmine.jsParsers.indexOf(jasmine.currentParser) === jasmine.jsParsers.length - 1;
-    return true;
-}
-
 var runNextFolder = module.exports = function(callback) {
     testsCompleteCallback = testsCompleteCallback || callback;
 
+    // silence the logger while we run the tests
+    logger.setLevel(logger.LEVELS.SILENT);
+
     if (index < specFolders.length) {
-        // we need to run the test specs once for each parser
-        // TODO: We currently support testing one parser per runtime
-        //jasmine.jsParsers.forEach(function(jsParser) {
-        //    jasmine.currentParser = jsParser;
-            jasmine.executeSpecsInFolder(specFolders[index], onComplete, opts);
-        //});
+        jasmine.executeSpecsInFolder(specFolders[index], onComplete, opts);
     }
     else {
         process.nextTick(function() {
@@ -67,8 +60,6 @@ onComplete = function(runner, log) {
         failedCount += runner.results().failedCount;
     }
 
-    if ( testedAllParsers() ) {
-        index++;
-        runNextFolder();        
-    }
+    index++;
+    runNextFolder();
 };

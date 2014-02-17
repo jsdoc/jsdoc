@@ -14,7 +14,8 @@ You can run JSDoc on either Node.js or Mozilla Rhino.
 
 ### Node.js
 
-Native support for Node.js is available in JSDoc 3.3.0 and later.
+Native support for Node.js is available in JSDoc 3.3.0 and later. JSDoc
+supports Node.js 0.10 and later.
 
 #### Installing JSDoc for Node.js
 
@@ -28,6 +29,11 @@ To install the latest alpha version:
 To install the latest development version:
 
     npm install git+https://github.com/jsdoc3/jsdoc.git
+
+**Note**: If you install JSDoc globally, do not use `sudo npm install`. This may
+prevent you from running JSDoc as a normal user. If you cannot install global
+packages without `sudo`, please
+[fix your npm directory permissions](http://howtonode.org/introduction-to-npm).
 
 #### Running JSDoc with Node.js
 
@@ -67,6 +73,9 @@ The JSDoc repository includes a
 sure your Java classpath does not include any other versions of Rhino. (On OS X,
 you may need to remove the file `~/Library/Java/Extensions/js.jar`.)
 
+**Note**: In JSDoc 3.3.0 and later, if you need to run JSDoc on Mozilla Rhino,
+do not install JSDoc with npm. Use one of the methods described above.
+
 #### Running JSDoc with Mozilla Rhino
 
 On OS X, Linux, and other POSIX systems, to generate documentation for the file
@@ -87,10 +96,11 @@ Run `jsdoc --help` for a complete list of command-line options.
 For More Information
 --------------------
 
-Project Documentation: <http://usejsdoc.org/>
+Project Documentation: <http://usejsdoc.org/>  
 Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
+JSDoc Grunt Plugin: <https://github.com/krampstudio/grunt-jsdoc>  
 Project Announcements: <http://twitter.com/jsdoc3>
 
 

@@ -11,20 +11,15 @@ version(180);
  * Emulate DOM timeout/interval functions.
  * @see https://developer.mozilla.org/en-US/docs/DOM/window#Methods
  */
-
-global.setTimeout = null;
-global.clearTimeout = null;
-global.setInterval = null;
-global.clearInterval = null;
-
 (function() {
     'use strict';
 
-    // TODO: tune number of threads if necessary
-    var timerPool = new java.util.concurrent.ScheduledThreadPoolExecutor(10);
+    var timerPool = new java.util.concurrent.ScheduledThreadPoolExecutor(1);
     var timers = {};
     var timerCount = 1;
     var timerUnits = java.util.concurrent.TimeUnit.MILLISECONDS;
+    var queue = {};
+    var queueActive = false;
 
     function getCallback(fn) {
         return new java.lang.Runnable({
@@ -32,21 +27,21 @@ global.clearInterval = null;
         });
     }
 
-    global.setTimeout = function(fn, delay) {
+    global.setTimeout = function setTimeout(fn, delay) {
         var timerId = timerCount++;
         var callback = getCallback(fn);
         timers[timerId] = timerPool.schedule(callback, delay, timerUnits);
         return timerId;
     };
 
-    global.clearTimeout = function(timerId) {
+    global.clearTimeout = function clearTimeout(timerId) {
         if (timers[timerId]) {
             timerPool.remove(timers[timerId]);
             delete timers[timerId];
         }
     };
 
-    global.setInterval = function(fn, delay) {
+    global.setInterval = function setInterval(fn, delay) {
         var timerId = timerCount++;
         var callback = getCallback(fn);
         timers[timerId] = timerPool.scheduleAtFixedRate(callback, delay, delay, timerUnits);
@@ -54,6 +49,41 @@ global.clearInterval = null;
     };
 
     global.clearInterval = global.clearTimeout;
+
+    // adapted from https://github.com/alexgorbatchev/node-browser-builtins
+    // MIT license
+    global.setImmediate = (function() {
+        function drain() {
+            var key;
+
+            var keys = Object.keys(queue);
+
+            queueActive = false;
+
+            for (var i = 0, l = keys.length; i < l; i++) {
+                key = keys[i];
+                var fn = queue[key];
+                delete queue[key];
+                fn();
+            }
+        }
+
+        return function setImmediate(fn) {
+            var timerId = timerCount++;
+            queue[timerId] = fn;
+
+            if (!queueActive) {
+                queueActive = true;
+                global.setTimeout(drain, 0);
+            }
+
+            return timerId;
+        };
+    })();
+
+    global.clearImmediate = function clearImmediate(id) {
+        delete queue[id];
+    };
 })();
 
 /**
@@ -66,21 +96,21 @@ global.console = (function() {
     }
 
     return {
-        error: function() {
+        error: function error() {
             println('err', arguments);
         },
-        info: function() {
+        info: function info() {
             println('out', arguments);
         },
-        log: function() {
+        log: function log() {
             println('out', arguments);
         },
-        trace: function(label) {
+        trace: function trace(label) {
             // this puts some extra junk at the top of the stack trace, but it's close enough
             var e = new java.lang.Exception(label || 'Trace');
             e.printStackTrace();
         },
-        warn: function() {
+        warn: function warn() {
             println('err', arguments);
         }
     };
@@ -95,7 +125,7 @@ global.process = {
     argv: ['java', env.dirname + '/jsdoc.js']
         .concat( Array.prototype.slice.call(arguments, 0) ),
     // this depends on a hack in our version of Rhino
-    cwd: function() {
+    cwd: function cwd() {
         var f = new java.io.File( java.lang.System.getProperty('user.dir') );
         return String( f.getAbsolutePath() );
     },
@@ -112,18 +142,18 @@ global.process = {
 
         return result;
     })(),
-    exit: function(n) {
+    exit: function exit(n) {
         n = n || 0;
         java.lang.System.exit(n);
     },
-    nextTick: function(callback) {
+    nextTick: function nextTick(callback) {
         setTimeout(callback, 0);
     },
     stderr: {
         // Java can't reliably find the terminal width across platforms, so we hard-code a
         // reasonable value
         columns: 80,
-        write: function(str) {
+        write: function write(str) {
             java.lang.System.err.print(str);
         }
     },
@@ -131,7 +161,7 @@ global.process = {
         // Java can't reliably find the terminal width across platforms, so we hard-code a
         // reasonable value
         columns: 80,
-        write: function(str) {
+        write: function write(str) {
             java.lang.System.out.print(str);
         }
     }

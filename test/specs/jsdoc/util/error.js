@@ -1,53 +1,29 @@
-/*global describe: true, env: true, it: true */
+/*global beforeEach, describe, expect, it, spyOn */
 describe("jsdoc/util/error", function() {
-	var error = require('jsdoc/util/error'),
-		handle = error.handle;
+    var error = require('jsdoc/util/error');
+    var handle = error.handle;
+    var logger = require('jsdoc/util/logger');
 
-	it("should exist", function() {
-		expect(error).toBeDefined();
-		expect(typeof error).toEqual("object");
-	});
+    it("should exist", function() {
+        expect(error).toBeDefined();
+        expect(typeof error).toEqual("object");
+    });
 
-	it("should export a 'handle' function", function() {
-		expect(handle).toBeDefined();
-		expect(typeof handle).toEqual("function");
-	});
+    it("should export a 'handle' function", function() {
+        expect(handle).toBeDefined();
+        expect(typeof handle).toEqual("function");
+    });
 
-	describe("handle", function() {
-		/*jshint evil: true */
-		var lenient = !!env.opts.lenient;
+    describe("handle", function() {
+        it('should not throw', function() {
+            expect(handle).not.toThrow();
+        });
 
-		function handleError() {
-			handle( new Error("foo") );
-		}
+        it('should log messages with logger.error()', function() {
+            spyOn(logger, 'error');
+            handle('test');
 
-		function handleObject() {
-			handle( { foo: "bar", baz: "qux"} );
-		}
-
-		afterEach(function() {
-			env.opts.lenient = lenient;
-		});
-
-		it("should re-throw errors by default", function() {
-			expect(handleError).toThrow();
-		});
-
-		it("should re-throw errors if lenient mode is not enabled", function() {
-			env.opts.lenient = false;
-
-			expect(handleError).toThrow();
-		});
-
-		it("should not re-throw errors if lenient mode is enabled", function() {
-			env.opts.lenient = true;
-            spyOn(console, 'log');
-
-			expect(handleError).not.toThrow();
-		});
-
-		it("should still work if the 'e' param is not an instanceof Error", function() {
-			expect(handleObject).toThrow();
-		});
-	});
+            expect(logger.error).toHaveBeenCalled();
+        });
+    });
 });
