@@ -1,4 +1,4 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+/*global describe, expect, it, jasmine */
 describe("lends", function() {
     describe("when a documented member is inside an object literal associated with a @lends tag", function() {
         describe("standard case", function() {
@@ -49,6 +49,22 @@ describe("lends", function() {
             });
         });
 
+        describe("case that uses @lends within a closure", function() {
+            var docSet = jasmine.getDocSetFromFile('test/fixtures/lends4.js');
+            var klass = docSet.getByLongname('Person');
+            var name = docSet.getByLongname('Person#name');
+
+            it("The class constructor should be documented with the name of the lendee", function() {
+                expect(klass.length).toBe(1);
+                expect(klass[0].name).toBe('Person');
+                expect(klass[0].kind).toBe('class');
+                expect(klass[0].scope).toBe('global');
+            });
+
+            it("A class member should be documented as a member of the lendee", function() {
+                expect(name.length).toBe(1);
+            });
+        });
     });
 
     describe("when a documented member is inside an objlit associated with a @lends tag that has no value.", function() {
