@@ -126,6 +126,31 @@ describe("jsdoc/src/parser", function() {
                 expect(spy).toHaveBeenCalled();
             });
 
+            it('should fire "newDoclet" events after creating a new doclet', function() {
+                var spy = jasmine.createSpy();
+                var sourceCode = 'javascript:var foo = 1';
+                parser.on('symbolFound', spy).parse(sourceCode);
+                expect(spy).toHaveBeenCalled();
+            });
+
+            it('should allow "newDoclet" handlers to modify doclets', function() {
+                var results;
+
+                var sourceCode = 'javascript:/** @class */function Foo() {}';
+
+                function handler(e) {
+                    var doop = require('jsdoc/util/doop');
+                    e.doclet = doop(e.doclet);
+                    e.doclet.foo = 'bar';
+                }
+
+                require('jsdoc/src/handlers').attachTo(parser);
+                parser.on('newDoclet', handler).parse(sourceCode);
+                results = parser.results();
+
+                expect(results[0].foo).toBe('bar');
+            });
+
             it('should call AST node visitors', function() {
                 var Syntax = require('jsdoc/src/syntax').Syntax;
 
