@@ -51,18 +51,37 @@ describe("lends", function() {
 
         describe("case that uses @lends within a closure", function() {
             var docSet = jasmine.getDocSetFromFile('test/fixtures/lends4.js');
-            var klass = docSet.getByLongname('Person');
-            var name = docSet.getByLongname('Person#name');
+            var person = docSet.getByLongname('Person');
+            var say = docSet.getByLongname('Person#say');
 
             it("The class constructor should be documented with the name of the lendee", function() {
-                expect(klass.length).toBe(1);
-                expect(klass[0].name).toBe('Person');
-                expect(klass[0].kind).toBe('class');
-                expect(klass[0].scope).toBe('global');
+                expect(person.length).toBe(1);
+                expect(person[0].name).toBe('Person');
+                expect(person[0].kind).toBe('class');
             });
 
-            it("A class member should be documented as a member of the lendee", function() {
-                expect(name.length).toBe(1);
+            it("A class' instance method should be documented as a member of the lendee", function() {
+                expect(say.length).toBe(1);
+            });
+        });
+
+        describe("case that uses @lends within nested function calls", function() {
+            var docSet = jasmine.getDocSetFromFile('test/fixtures/lends5.js');
+            var person = docSet.getByLongname('Person').filter(function(d) {
+                return !d.undocumented;
+            })[0];
+            var say = docSet.getByLongname('Person#say').filter(function(d) {
+                return !d.undocumented;
+            })[0];
+
+            it("The class constructor should be documented with the name of the lendee", function() {
+                expect(person).toBeDefined();
+                expect(person.name).toBe('Person');
+                expect(person.kind).toBe('class');
+            });
+
+            it("A class' instance method should be documented as a member of the lendee", function() {
+                expect(say).toBeDefined();
             });
         });
     });
