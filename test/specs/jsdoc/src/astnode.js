@@ -1,4 +1,4 @@
-/*global describe: true, env: true, expect: true, it: true */
+/*global afterEach, beforeEach, describe, env, expect, it */
 'use strict';
 
 describe('jsdoc/src/astnode', function() {
@@ -247,6 +247,16 @@ describe('jsdoc/src/astnode', function() {
     });
 
     describe('addNodeProperties', function() {
+        var debugEnabled;
+
+        beforeEach(function() {
+            debugEnabled = !!global.env.opts.debug;
+        });
+
+        afterEach(function() {
+            global.env.opts.debug = debugEnabled;
+        });
+
         it('should return null for undefined input', function() {
             expect( astnode.addNodeProperties() ).toBe(null);
         });
@@ -278,6 +288,17 @@ describe('jsdoc/src/astnode', function() {
             expect(node.nodeId).toBe(nodeId);
         });
 
+        it('should add an enumerable nodeId in debug mode', function() {
+            var descriptor;
+            var node;
+
+            global.env.opts.debug = true;
+            node = astnode.addNodeProperties({});
+            descriptor = Object.getOwnPropertyDescriptor(node, 'nodeId');
+
+            expect(descriptor.enumerable).toBe(true);
+        });
+
         it('should add a non-enumerable, writable parent if necessary', function() {
             var node = astnode.addNodeProperties({});
             var descriptor = Object.getOwnPropertyDescriptor(node, 'parent');
@@ -301,6 +322,41 @@ describe('jsdoc/src/astnode', function() {
             expect(node.parent).toBe(null);
         });
 
+        it('should add an enumerable parentId in debug mode', function() {
+            var descriptor;
+            var node;
+
+            global.env.opts.debug = true;
+            node = astnode.addNodeProperties({});
+            descriptor = Object.getOwnPropertyDescriptor(node, 'parentId');
+
+            expect(descriptor).toBeDefined();
+            expect(descriptor.enumerable).toBe(true);
+        });
+
+        it('should provide a null parentId in debug mode for nodes with no parent', function() {
+            var descriptor;
+            var node;
+
+            global.env.opts.debug = true;
+            node = astnode.addNodeProperties({});
+
+            expect(node.parentId).toBe(null);
+        });
+
+        it('should provide a non-null parentId in debug mode for nodes with a parent', function() {
+            var descriptor;
+            var node;
+            var parent;
+
+            global.env.opts.debug = true;
+            node = astnode.addNodeProperties({});
+            parent = astnode.addNodeProperties({});
+            node.parent = parent;
+
+            expect(node.parentId).toBe(parent.nodeId);
+        });
+
         it('should add a non-enumerable, writable enclosingScope if necessary', function() {
             var node = astnode.addNodeProperties({});
             var descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScope');
@@ -322,6 +378,43 @@ describe('jsdoc/src/astnode', function() {
             var node = astnode.addNodeProperties({enclosingScope: null});
 
             expect(node.enclosingScope).toBe(null);
+        });
+
+        it('should add an enumerable enclosingScopeId in debug mode', function() {
+            var descriptor;
+            var node;
+
+            global.env.opts.debug = true;
+            node = astnode.addNodeProperties({});
+            descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScopeId');
+
+            expect(descriptor).toBeDefined();
+            expect(descriptor.enumerable).toBe(true);
+        });
+
+        it('should provide a null enclosingScopeId in debug mode for nodes with no enclosing scope',
+            function() {
+            var descriptor;
+            var node;
+
+            global.env.opts.debug = true;
+            node = astnode.addNodeProperties({});
+
+            expect(node.enclosingScopeId).toBe(null);
+        });
+
+        it('should provide a non-null enclosingScopeId in debug mode for nodes with an enclosing ' +
+            'scope', function() {
+            var descriptor;
+            var enclosingScope;
+            var node;
+
+            global.env.opts.debug = true;
+            node = astnode.addNodeProperties({});
+            enclosingScope = astnode.addNodeProperties({});
+            node.enclosingScope = enclosingScope;
+
+            expect(node.enclosingScopeId).toBe(enclosingScope.nodeId);
         });
 
         it('should add a non-enumerable knownVariables property', function() {
