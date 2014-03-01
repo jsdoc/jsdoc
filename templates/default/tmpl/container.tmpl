@@ -1,5 +1,4 @@
 <?js
-    var data = obj;
     var self = this;
     docs.forEach(function(doc, i) {
 ?>
@@ -38,7 +37,7 @@
             <div class="description"><?js= doc.description ?></div>
         <?js } ?>
         
-        <?js= self.partial('details.tmpl', { doc: doc, opts: data.opts }) ?>
+        <?js= self.partial('details.tmpl', doc) ?>
         
         <?js if (doc.examples && doc.examples.length) { ?>
             <h3>Example<?js= doc.examples.length > 1? 's':'' ?></h3>
