@@ -468,21 +468,25 @@ exports.publish = function(taffyData, opts, tutorials) {
     var members = helper.getMembers(data);
     members.tutorials = tutorials.children;
 
+    // output pretty-printed source files by default
+    var outputSourceFiles = conf['default'] && conf['default'].outputSourceFiles !== false ? true :
+        false;
+
     // add template helpers
     view.find = find;
     view.linkto = linkto;
     view.resolveAuthorLinks = resolveAuthorLinks;
     view.tutoriallink = tutoriallink;
     view.htmlsafe = htmlsafe;
+    view.outputSourceFiles = outputSourceFiles;
 
     // once for all
     view.nav = buildNav(members);
     attachModuleSymbols( find({ kind: ['class', 'function'], longname: {left: 'module:'} }),
         members.modules );
 
-    // output pretty-printed source files by default; do this before generating any other pages, so
-    // that the other pages can link to the source files
-    if (!conf['default'] || conf['default'].outputSourceFiles !== false) {
+    // generate the pretty-printed source files first so other pages can link to them
+    if (outputSourceFiles) {
         generateSourceFiles(sourceFiles, opts.encoding);
     }
 

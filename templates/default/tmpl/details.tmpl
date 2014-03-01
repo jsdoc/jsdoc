@@ -71,7 +71,7 @@ if (data.defaultvalue && data.defaultvaluetype === 'object') {
         </ul></dd>
     <?js } ?>
     
-    <?js if (data.meta) {?>
+    <?js if (data.meta && self.outputSourceFiles) {?>
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <?js= self.linkto(meta.shortpath) ?>, <?js= self.linkto(meta.shortpath, 'line ' + meta.lineno, null, 'line' + meta.lineno) ?>
