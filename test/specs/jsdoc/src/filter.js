@@ -16,6 +16,9 @@ describe('jsdoc/src/filter', function() {
     describe('Filter', function() {
         var myFilter;
 
+        var defaultIncludePattern = new RegExp('.+\\.js(doc)?$');
+        var defaultExcludePattern = new RegExp('(^|\\/|\\\\)_');
+
         beforeEach(function() {
             myFilter = new filter.Filter({});
         });
@@ -90,27 +93,49 @@ describe('jsdoc/src/filter', function() {
         describe( 'includePattern', testRegExpProperty.bind(jasmine, 'includePattern') );
 
         describe('isIncluded', function() {
-            var files = [
-                'yes.js',
-                '/yes.jsdoc',
-                '/_nope.js',
-                '.ignore',
-                path.normalize(global.env.pwd + '/scratch/conf.js')
-            ];
-            myFilter = new filter.Filter({
-                includePattern: new RegExp('.+\\.js(doc)?$'),
-                excludePattern: new RegExp('(^|\\/|\\\\)_'),
-                exclude: ['.ignore', 'scratch/conf.js']
-            });
-
-            files = files.filter(function($) {
-                return myFilter.isIncluded($);
-            });
-
             it('should return the correct source files', function() {
+                var files = [
+                    'yes.js',
+                    '/yes.jsdoc',
+                    '/_nope.js',
+                    '.ignore',
+                    path.normalize(global.env.pwd + '/scratch/conf.js')
+                ];
+                myFilter = new filter.Filter({
+                    includePattern: defaultIncludePattern,
+                    excludePattern: defaultExcludePattern,
+                    exclude: ['.ignore', 'scratch/conf.js']
+                });
+
+                files = files.filter(function($) {
+                    return myFilter.isIncluded($);
+                });
+
                 expect(files.length).toEqual(2);
                 expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
                 expect( files.indexOf('/yes.jsdoc') ).toBeGreaterThan(-1);
+            });
+
+            it('should be able to exclude specific subdirectories', function() {
+                var files = [
+                    'yes.js',
+                    'topsecret/nope.js',
+                    'module/yes.js',
+                    'module/topsecret/nope.js'
+                ];
+                myFilter = new filter.Filter({
+                    includePattern: defaultIncludePattern,
+                    excludePattern: defaultExcludePattern,
+                    exclude: ['topsecret', 'module/topsecret']
+                });
+
+                files = files.filter(function($) {
+                    return myFilter.isIncluded($);
+                });
+
+                expect(files.length).toBe(2);
+                expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
+                expect( files.indexOf('module/yes.js') ).toBeGreaterThan(-1);
             });
         });
     });
