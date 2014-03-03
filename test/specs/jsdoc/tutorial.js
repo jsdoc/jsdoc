@@ -9,7 +9,6 @@ describe("jsdoc/tutorial", function() {
         par2 = new tutorial.Tutorial('parent2', "<h2>This is the second parent tutorial</h2>",
                                     tutorial.TYPES.HTML);
 
-
     it("module should exist", function() {
         expect(tutorial).toBeDefined();
         expect(typeof tutorial).toBe("object");

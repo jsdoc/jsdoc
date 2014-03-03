@@ -334,7 +334,7 @@ cli.scanFiles = function() {
             props.packageJson = fs.readFileSync(opt, 'utf8');
             env.opts._.splice(i--, 1);
         }
-        
+
         if ( /(\bREADME|\.md)$/i.test(opt) ) {
             env.opts.readme = new Readme(opt).html;
             env.opts._.splice(i--, 1);
@@ -504,7 +504,7 @@ cli.exit = function(exitCode, message) {
     if (message && exitCode > 0) {
         console.error(message);
     }
-    
+
     process.exit(exitCode || 0);
 };
 

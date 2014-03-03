@@ -74,7 +74,7 @@ describe('rhino/jsdoc/src/visitor', function() {
 
         describe('getRhinoNodeVisitors', function() {
             beforeEach(newVisitor);
-            
+
             it('should return an empty array by default', function() {
                 var visitors = visitor.getRhinoNodeVisitors();
 

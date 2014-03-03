@@ -79,7 +79,7 @@ describe('rhino/jsdoc/src/parser', function() {
 
         describe('getNodeVisitors', function() {
             beforeEach(newParser);
-            
+
             it('should return an empty array by default', function() {
                 var visitors = parser.getNodeVisitors();
 
@@ -157,7 +157,7 @@ describe('rhino/jsdoc/src/parser', function() {
             it('should not call a second Rhino node visitor if the first visitor stopped ' +
                 'propagation', function() {
                 var doclet;
-                
+
                 var visitor1 = {
                     visitNode: function(rhinoNode, e, parser, sourceName) {
                         e.stopPropagation = true;

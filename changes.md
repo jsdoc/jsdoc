@@ -2,7 +2,6 @@
 
 This file describes notable changes in each version of JSDoc 3. To download a specific version of JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
-
 ## 3.2.2 (November 2013)
 
 ### Bug fixes
@@ -12,7 +11,6 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + Type expressions can now include a much broader range of repeatable types. In addition, you can now use Closure Compiler's nullable and non-nullable modifiers with repeatable types. For example, the type expression `...!string` (a repeatable, non-nullable string) is now parsed correctly. (#502)
 + If a function accepts a parameter named `prototype`, the parameter is no longer renamed during parsing. (#505)
 + If the list of input files includes relative paths, the paths are now resolved relative to the user's working directory. (a3d33842)
-
 
 ## 3.2.1 (October 2013)
 
@@ -45,7 +43,6 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + If a `@default` tag is added to a symbol whose default value is an object, the value is now displayed in the output file. (#419)
 + Output files now identify symbols as "abstract" rather than "virtual." (#432)
 
-
 ## 3.2.0 (May 2013)
 
 ### Major changes
@@ -76,7 +73,6 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + You can now use npm to install JSDoc globally by running `npm install -g`. **Note**: JSDoc will still run under Mozilla Rhino, not Node.js. (#374)
 + The `jsVersion` configuration property has been removed. (#390)
 
-
 ### Bug fixes
 + JSDoc now quits if the configuration file cannot be loaded. (#407)
 + JSDoc's `--explain` (`-X`) option now runs much more quickly, and it outputs valid JSON to the console. (#298)
@@ -105,7 +101,6 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + The "Classes" header is no longer repeated in the navigation bar. (#361)
 + When the only documented symbols in global scope are type definitions, you can now click the "Global" header to view their documentation. (#261)
 
-
 ## 3.1.1 (February 2013)
 
 + Resolved a crash when no input files contain JSDoc comments. (#329)
@@ -118,7 +113,6 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
     + `getSignatureReturns`
     + `getSignatureTypes`
     + `linkto`
-
 
 ## 3.1.0 (January 2013)
 
@@ -224,7 +218,6 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + Members are now contained in arrays rather than objects, allowing overloaded members to be documented. (#153)
 + A clearer error message is now provided when the output destination is not specified correctly. (#174)
 
-
 ## 3.0.1 (June 2012)
 
 ### Enhancements
@@ -241,7 +234,6 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 ### Template improvements
 + The default template now sorts classes by name correctly when the classes come from several modules. (4ce17195)
 + The Haruki template now correctly supports `@example`, `@members`, and `@returns` tags. (6580e176, 59655252, 31c8554d)
-
 
 ## 3.0.0 (May 2012)
 

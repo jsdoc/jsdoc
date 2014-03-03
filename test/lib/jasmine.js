@@ -602,7 +602,6 @@ var xdescribe = function(description, specDefinitions) {
 };
 if (isCommonJS){exports.xdescribe = xdescribe;}
 
-
 // Provide the XMLHttpRequest class for IE 5.x-6.x:
 jasmine.XmlHttpRequest = (typeof XMLHttpRequest == "undefined") ? function() {
   function tryIt(f) {
@@ -732,7 +731,6 @@ jasmine.Env = function() {
 
   jasmine.Matchers.wrapInto_(jasmine.Matchers.prototype, this.matchersClass);
 };
-
 
 jasmine.Env.prototype.setTimeout = jasmine.setTimeout;
 jasmine.Env.prototype.clearTimeout = jasmine.clearTimeout;
@@ -1219,9 +1217,6 @@ jasmine.Matchers.matcherFn_ = function(matcherName, matcherFunction) {
   };
 };
 
-
-
-
 /**
  * toBe: compares the actual to the expected using ===
  * @param expected
@@ -1304,14 +1299,12 @@ jasmine.Matchers.prototype.toBeTruthy = function() {
   return !!this.actual;
 };
 
-
 /**
  * Matcher that boolean nots the actual.
  */
 jasmine.Matchers.prototype.toBeFalsy = function() {
   return !this.actual;
 };
-
 
 /**
  * Matcher that checks to see if the actual, a Jasmine spy, was called.
@@ -2065,7 +2058,6 @@ jasmine.Queue.prototype.results = function() {
   return results;
 };
 
-
 /**
  * Runner
  *
@@ -2100,7 +2092,6 @@ jasmine.Runner.prototype.afterEach = function(afterEachFunction) {
   afterEachFunction.typeName = 'afterEach';
   this.after_.splice(0,0,afterEachFunction);
 };
-
 
 jasmine.Runner.prototype.finishCallback = function() {
   this.env.reporter.reportRunnerResults(this);
@@ -2176,7 +2167,6 @@ jasmine.Spec = function(env, suite, description) {
 jasmine.Spec.prototype.getFullName = function() {
   return this.suite.getFullName() + ' ' + this.description + '.';
 };
-
 
 jasmine.Spec.prototype.results = function() {
   return this.results_;

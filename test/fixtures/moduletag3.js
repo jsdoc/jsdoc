@@ -17,4 +17,3 @@ module.exports = function(collectionId) {
     this.getPhoto = function() {}
 
 }
-

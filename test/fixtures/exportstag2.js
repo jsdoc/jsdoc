@@ -11,8 +11,8 @@ define(
             /** document me */
             this.wool = wool;
         }
-    
+
         return myModule;
-        
+
     }
 );

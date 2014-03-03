@@ -24,4 +24,3 @@ var FormButton = function() {
  * @constructor MyClass
  * @mixes Eventful
  * @mixes AnotherMixin */
-

@@ -10,4 +10,3 @@ describe("@undocumented tag", function() {
         expect(doc.comment).toBe('');
     });
 });
-

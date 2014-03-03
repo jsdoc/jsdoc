@@ -246,7 +246,7 @@ describe("jsdoc/src/parser", function() {
                 expect(spy.mostRecentCall.args[0].doclets).toBeDefined();
                 expect(spy.mostRecentCall.args[0].doclets).toBe(doclets);
             });
-            
+
             it("should be able to parse its own source file", function() {
                 var fs = require('jsdoc/fs'),
                     path = require('path'),
@@ -255,7 +255,7 @@ describe("jsdoc/src/parser", function() {
                     parse = function() {
                         parser.parse(parserSrc);
                     };
-                
+
                 expect(parse).not.toThrow();
             });
 
@@ -346,7 +346,7 @@ describe("jsdoc/src/parser", function() {
 
         describe('getAstNodeVisitors', function() {
             beforeEach(newParser);
-            
+
             it('should return an empty array by default', function() {
                 var visitors = parser.getAstNodeVisitors();
 

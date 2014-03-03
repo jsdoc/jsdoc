@@ -106,7 +106,6 @@ function cleanse(e) {
     return result;
 }
 
-
 exports.handlers = {};
 
 events.forEach(function(eventType) {

@@ -3,7 +3,6 @@
 */
 var foo;
 
-
 /**
     @type integer
 */

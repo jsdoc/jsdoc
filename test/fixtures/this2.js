@@ -2,7 +2,7 @@
 function TemplateBuilder(templateType) {
     //** document me */
     //this.templateType = templateType;
-    
+
     /** @constructor */
     this.Template = function() { // nested constructor of constructor TemplateFactory
         /** document me */
@@ -11,5 +11,5 @@ function TemplateBuilder(templateType) {
             this.rendered = true;
         }
     };
-    
+
 }

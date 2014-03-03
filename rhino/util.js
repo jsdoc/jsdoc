@@ -10,7 +10,6 @@ function hasOwnProp(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-
 // placate JSHint
 var stylizeNoColor, stylizeWithColor, formatValue, formatPrimitive;
 
@@ -62,7 +61,6 @@ function inspect(obj, opts) {
 }
 exports.inspect = inspect;
 
-
 // http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
 inspect.colors = {
   'bold' : [1, 22],
@@ -93,7 +91,6 @@ inspect.styles = {
   'regexp': 'red'
 };
 
-
 stylizeWithColor = function(str, styleType) {
   var style = inspect.styles[styleType];
 
@@ -105,11 +102,9 @@ stylizeWithColor = function(str, styleType) {
   }
 };
 
-
 stylizeNoColor = function(str, styleType) {
   return str;
 };
-
 
 var formatRegExp = /%[sdj%]/g;
 exports.format = function(f) {
@@ -151,7 +146,6 @@ exports.format = function(f) {
   return str;
 };
 
-
 // Mark that a method should not be used.
 // Returns a modified function which warns once by default.
 // If --no-deprecation is set, then it is a no-op.
@@ -176,14 +170,12 @@ exports.deprecate = function(fn, msg) {
   return deprecated;
 };
 
-
 exports.print = function() {
   var args = Array.prototype.slice.call(arguments, 0);
   for (var i = 0, len = args.length; i < len; ++i) {
     process.stdout.write(String(args[i]));
   }
 };
-
 
 exports.puts = function() {
   var args = Array.prototype.slice.call(arguments, 0);
@@ -192,11 +184,9 @@ exports.puts = function() {
   }
 };
 
-
 exports.debug = function(x) {
   process.stderr.write('DEBUG: ' + x + '\n');
 };
-
 
 var error = exports.error = function(x) {
   var args = Array.prototype.slice.call(arguments, 0);
@@ -204,7 +194,6 @@ var error = exports.error = function(x) {
     process.stderr.write(args[i] + '\n');
   }
 };
-
 
 function arrayToHash(array) {
   var hash = {};
@@ -216,11 +205,9 @@ function arrayToHash(array) {
   return hash;
 }
 
-
 function formatError(value) {
   return '[' + Error.prototype.toString.call(value) + ']';
 }
-
 
 function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
   var name, str, desc;
@@ -280,7 +267,6 @@ function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
   return name + ': ' + str;
 }
 
-
 function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
   var output = [];
   for (var i = 0, l = value.length; i < l; ++i) {
@@ -299,7 +285,6 @@ function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
   });
   return output;
 }
-
 
 function reduceToSingleString(output, base, braces) {
   var numLinesEst = 0;
@@ -323,11 +308,9 @@ function reduceToSingleString(output, base, braces) {
   return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
 }
 
-
 function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
-
 
 // NOTE: These type checking functions intentionally don't use `instanceof`
 // because it is fragile and can be easily faked with `Object.create()`.
@@ -337,24 +320,20 @@ function isArray(ar) {
 }
 exports.isArray = isArray;
 
-
 function isRegExp(re) {
   return typeof re === 'object' && objectToString(re) === '[object RegExp]';
 }
 exports.isRegExp = isRegExp;
-
 
 function isDate(d) {
   return typeof d === 'object' && objectToString(d) === '[object Date]';
 }
 exports.isDate = isDate;
 
-
 function isError(e) {
   return typeof e === 'object' && objectToString(e) === '[object Error]';
 }
 exports.isError = isError;
-
 
 formatValue = function(ctx, value, recurseTimes) {
   // Provide a hook for user-specified inspect functions.
@@ -455,7 +434,6 @@ formatValue = function(ctx, value, recurseTimes) {
   return reduceToSingleString(output, base, braces);
 };
 
-
 formatPrimitive = function(ctx, value) {
   switch (typeof value) {
     case 'undefined':
@@ -479,7 +457,6 @@ formatPrimitive = function(ctx, value) {
   }
 };
 
-
 exports.p = exports.deprecate(function() {
   var args = Array.prototype.slice.call(arguments, 0);
   for (var i = 0, len = args.length; i < len; ++i) {
@@ -487,11 +464,9 @@ exports.p = exports.deprecate(function() {
   }
 }, 'util.p: Use console.error() instead.');
 
-
 function pad(n) {
   return n < 10 ? '0' + n.toString(10) : n.toString(10);
 }
-
 
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
               'Oct', 'Nov', 'Dec'];
@@ -505,21 +480,17 @@ function timestamp() {
   return [d.getDate(), months[d.getMonth()], time].join(' ');
 }
 
-
 exports.log = function(msg) {
   exports.puts(timestamp() + ' - ' + msg.toString());
 };
-
 
 exports.exec = function() {
   throw new Error('util.exec() is not implemented on Rhino (and was deprecated in Node.js 0.2)');
 };
 
-
 exports.pump = function() {
   throw new Error('util.pump() is not implemented on Rhino (and was deprecated in Node.js 0.8');
 };
-
 
 /**
  * Inherit the prototype methods from one constructor into another.

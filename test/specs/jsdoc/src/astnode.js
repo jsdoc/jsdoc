@@ -796,7 +796,7 @@ describe('jsdoc/src/astnode', function() {
         it('should return the variable name for assignment expressions', function() {
             expect( astnode.nodeToString(assignmentExpression) ).toBe('foo');
         });
-        
+
         it('should return "function" for function declarations', function() {
             expect( astnode.nodeToString(functionDeclaration1) ).toBe('function');
         });
@@ -804,7 +804,7 @@ describe('jsdoc/src/astnode', function() {
         it('should return "function" for function expressions', function() {
             expect( astnode.nodeToString(functionExpression1) ).toBe('function');
         });
-        
+
         it('should return the identifier name for identifiers', function() {
             expect( astnode.nodeToString(identifier) ).toBe('foo');
         });
@@ -812,7 +812,7 @@ describe('jsdoc/src/astnode', function() {
         it('should return the literal value (as a string) for literals', function() {
             expect( astnode.nodeToString(literal) ).toBe('1');
         });
-        
+
         it('should return the object and property for noncomputed member expressions', function() {
             expect( astnode.nodeToString(memberExpression) ).toBe('foo.bar');
         });
@@ -826,13 +826,13 @@ describe('jsdoc/src/astnode', function() {
         it('should return "this" for this expressions', function() {
             expect( astnode.nodeToString(thisExpression) ).toBe('this');
         });
-        
+
         it('should return the operator and nodeToString value for prefix unary expressions',
             function() {
             expect( astnode.nodeToString(unaryExpression1) ).toBe('+1');
             expect( astnode.nodeToString(unaryExpression2) ).toBe('+foo');
         });
-        
+
         it('should throw an error for postfix unary expressions', function() {
             function postfixNodeToString() {
                 // there's no valid source representation for this one, so we fake it
@@ -846,7 +846,7 @@ describe('jsdoc/src/astnode', function() {
 
             expect(postfixNodeToString).toThrow();
         });
-        
+
         it('should return the variable name for variable declarators', function() {
             expect ( astnode.nodeToString(variableDeclarator1) ).toBe('foo');
         });

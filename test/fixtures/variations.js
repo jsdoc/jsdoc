@@ -1,7 +1,7 @@
 /**
  * @namespace anim
  */
-    
+
 /**
  * @method anim.fadein(1)
  * @desc Show the nodelist elements by fading them to opaque.

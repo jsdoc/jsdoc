@@ -5,10 +5,10 @@ define(function () {
         @version 1.0
      */
     var shirt = {
-    
+
         /** A property of the module. */
         color: "black",
-        
+
         /** @constructor */
         Turtleneck: function(size) {
             /** A property of the class. */

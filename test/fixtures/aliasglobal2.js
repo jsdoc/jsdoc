@@ -12,7 +12,7 @@
     /** Document me. */
     Test.prototype.run = function(message) {
     };
-    
+
     /** Document me. */
     Test.counter = 1;
 })();

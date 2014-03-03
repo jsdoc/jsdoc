@@ -107,7 +107,6 @@
         expect(qux.augments[0]).toBe('UndocumentedThing');
     });
 
-
     it('When a symbol @augments multiple parents, it inherits methods from all parents', function() {
         var fooMethod1 = docSet3.getByLongname('Foo#method1')[0];
         var barMethod2 = docSet3.getByLongname('Bar#method2')[0];

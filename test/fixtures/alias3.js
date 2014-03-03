@@ -8,5 +8,5 @@ Klass('trackr.CookieManager',
         /** document me */
         this.value = kv;
     }
-    
+
 );

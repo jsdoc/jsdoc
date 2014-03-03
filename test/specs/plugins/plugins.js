@@ -3,7 +3,7 @@ it: true, jasmine: true */
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe("plugins", function() {
     var path = require('jsdoc/path');
-    
+
     var docSet;
 
     var pluginPaths = [

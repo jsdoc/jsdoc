@@ -4,7 +4,7 @@ Classify('Menu',
         @param items
      */
     function (items) {
-        
+
     },
     {
         /**

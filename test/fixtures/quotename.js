@@ -2,18 +2,17 @@
 var chat = {};
 
 /**
-	@namespace
+    @namespace
  */
 chat["#channel"] = {};
 
-
 /**
-	@member
-	@type {boolean}
-	@defaultvalue
+    @member
+    @type {boolean}
+    @defaultvalue
  */
 chat["#channel"].open = true;
 
 /**
-	@event chat."#channel"."op:announce-motd"
+    @event chat."#channel"."op:announce-motd"
  */

@@ -6,7 +6,6 @@ An API documentation generator for JavaScript.
 
 Want to contribute to JSDoc? Please read `CONTRIBUTING.md`.
 
-
 Installation and Usage
 ----------------------
 
@@ -92,7 +91,6 @@ can use the `--destination` (`-d`) option to specify another directory.
 
 Run `jsdoc --help` for a complete list of command-line options.
 
-
 For More Information
 --------------------
 
@@ -102,7 +100,6 @@ JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>
 JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
 JSDoc Grunt Plugin: <https://github.com/krampstudio/grunt-jsdoc>  
 Project Announcements: <http://twitter.com/jsdoc3>
-
 
 License
 -------

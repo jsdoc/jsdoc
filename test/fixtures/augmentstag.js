@@ -22,7 +22,6 @@ Foo.prototype.method1 = function() {};
  */
 Foo.prototype.method2 = function() {};
 
-
 /**
  * @constructor
  * @extends Foo

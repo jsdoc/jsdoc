@@ -10,4 +10,3 @@ describe("@tutorial tag", function() {
         expect(doc.tutorials).toContain('tute2');
     });
 });
-

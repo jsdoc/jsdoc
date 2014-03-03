@@ -224,7 +224,7 @@ describe("jsdoc/name", function() {
 
     describe("resolve", function() {
         // TODO: further tests (namespaces, modules, ...)
-    
+
         function makeDoclet(bits) {
             var comment = '/**\n' + bits.join('\n') + '\n*/';
             return new jsdoc.doclet.Doclet(comment, {});

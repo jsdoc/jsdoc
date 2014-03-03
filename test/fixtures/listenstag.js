@@ -31,4 +31,3 @@ var Events = {
 
 /** An event with no listeners.
  * @event module:myModule#Event3 */
-

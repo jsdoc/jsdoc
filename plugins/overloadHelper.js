@@ -104,7 +104,7 @@ function getUniqueVariations(doclets) {
         docletKeys.forEach(function(doclet) {
             variations[doclet] = doclets[doclet].variation || getParamVariation(doclets[doclet]);
         });
-        
+
         // if they're identical, try again, without preserving existing variations
         if ( !hasUniqueValues(variations) ) {
             docletKeys.forEach(function(doclet) {

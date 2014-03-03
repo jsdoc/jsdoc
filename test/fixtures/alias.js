@@ -1,5 +1,5 @@
 var myObject = (function() {
-    
+
     /** Give x another name.
         @alias myObject
         @namespace 
@@ -8,6 +8,6 @@ var myObject = (function() {
         /** document me */
         myProperty: 'foo'
     }
-    
+
     return x;
 })();

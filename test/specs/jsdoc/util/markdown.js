@@ -76,7 +76,7 @@ describe('jsdoc/util/markdown', function() {
         it('should not apply formatting to inline tags when the marked parser is enabled', function() {
             var storage = setMarkdownConf({parser: 'marked'});
             var parser = markdown.getParser();
-            
+
             // get the marked parser and do the test
             expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toEqual(
                 '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>');

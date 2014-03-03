@@ -1,6 +1,6 @@
 /** @class */
 function BowlingAlley() {
-	this._lanes = 0;
+    this._lanes = 0;
 }
 
 /**
@@ -10,5 +10,5 @@ function BowlingAlley() {
  * @param {number} [lanes=1] - The number of lanes to add.
  */
 BowlingAlley.prototype.addLanes = function addLanes(lanes) {
-	this._lanes += (typeof lanes === undefined) ? 1 : lanes;
+    this._lanes += (typeof lanes === undefined) ? 1 : lanes;
 };

@@ -1,8 +1,8 @@
- 
+
  /** @constructor 
   */
  function Data() {
- 
+
      /**
          The current position.
          @type {object}
@@ -16,7 +16,7 @@
              @memberof! Data#
          */
          x: 0,
-         
+
          /**
              The y coordinate of the point.
              @type {number}
@@ -25,7 +25,7 @@
              @see {@link Data#point.x}
          */
          y: 0,
-         
+
          needsRevalidate: false
      };
  }

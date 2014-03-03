@@ -71,7 +71,7 @@ global.env = {
      * @memberof env
      */
     sourceFiles: [],
-    
+
     /**
      * The JSDoc version number and revision date.
      * 
@@ -125,7 +125,7 @@ global.dump = function() {
 
 (function() {
     'use strict';
-    
+
     var logger = require('jsdoc/util/logger');
     var path = require('jsdoc/path');
     var runtime = require('jsdoc/util/runtime');

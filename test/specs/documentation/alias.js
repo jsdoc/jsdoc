@@ -41,7 +41,7 @@ describe("aliases", function() {
 
         expect(log.scope).toEqual('global');
     });
-    
+
     it('When a symbol is documented as an instance member of <global>, its scope is "instance" and not "static".', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal2.js');
         var run = docSet.getByLongname('Test#run')[0];

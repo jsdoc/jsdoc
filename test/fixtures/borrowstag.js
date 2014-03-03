@@ -11,4 +11,3 @@ var util = {
  */
 function trstr(str) {
 }
-

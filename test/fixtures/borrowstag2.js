@@ -18,4 +18,3 @@ var util = {
  */
 function rtrim(str) {
 }
-
