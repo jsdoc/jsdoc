@@ -1,8 +1,8 @@
-/*global beforeEach, describe, expect, it */
+/*global beforeEach, describe, expect, it, jasmine */
 describe('jsdoc/src/filter', function() {
     var filter = require('jsdoc/src/filter');
     var path = require('jsdoc/path');
-    
+
     it('should exist', function() {
         expect(filter).toBeDefined();
         expect(typeof filter).toBe('object');
@@ -95,7 +95,7 @@ describe('jsdoc/src/filter', function() {
                 '/yes.jsdoc',
                 '/_nope.js',
                 '.ignore',
-                path.normalize(env.pwd + '/scratch/conf.js')
+                path.normalize(global.env.pwd + '/scratch/conf.js')
             ];
             myFilter = new filter.Filter({
                 includePattern: new RegExp('.+\\.js(doc)?$'),
