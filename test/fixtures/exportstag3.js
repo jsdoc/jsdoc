@@ -1,5 +1,5 @@
 define(
-    /** 
+    /**
         Utility functions to ease working with DOM elements.
         @exports html/utils
      */

@@ -22,7 +22,7 @@ exports.Frotz = function() {
 
 }) ();
 
-/** document fooOut 
+/** document fooOut
 */
 fooOut = function() {
 };

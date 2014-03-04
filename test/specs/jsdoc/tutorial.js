@@ -189,7 +189,7 @@ describe("jsdoc/tutorial", function() {
                 // it can't be the child of two parents
                 par2.addChild(tute);
                 expect(tute.parent).toBe(par2);
-                expect(par.children.length).toBe(0); 
+                expect(par.children.length).toBe(0);
                 expect(par2.children.length).toBe(1);
                 expect(par2.children[0]).toBe(tute);
 

@@ -153,7 +153,7 @@ function generateSourceFiles(sourceFiles, encoding) {
  * exports only that class or function), then attach the classes or functions to the `module`
  * property of the appropriate module doclets. The name of each class or function is also updated
  * for display purposes. This function mutates the original arrays.
- * 
+ *
  * @private
  * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - The array of classes and functions to
  * check.

@@ -101,7 +101,7 @@ describe("jsdoc/tutorial/resolver", function() {
         it("non-tutorials are skipped", function() {
             expect(resolver.root.getByName('multiple')).toBeFalsy();
             expect(resolver.root.getByName('test5')).toBeFalsy();
-        }); 
+        });
 
         it("tutorial types are determined correctly", function() {
             // test.html, test2.markdown, test3.html, test4.md, test6.xml

@@ -14,7 +14,7 @@
 global.env = {
     /**
      * Running start and finish times.
-     * 
+     *
      * @memberof env
      */
     run: {
@@ -32,7 +32,7 @@ global.env = {
 
     /**
      * The parsed JSON data from the configuration file.
-     * 
+     *
      * @type Object
      * @memberof env
      */
@@ -40,7 +40,7 @@ global.env = {
 
     /**
      * The absolute path to the base directory of the JSDoc application.
-     * 
+     *
      * @private
      * @type string
      * @memberof env
@@ -58,7 +58,7 @@ global.env = {
 
     /**
      * The command-line options, parsed into a key/value hash.
-     * 
+     *
      * @type Object
      * @memberof env
      * @example if (global.env.opts.help) { console.log('Helpful message.'); }
@@ -74,7 +74,7 @@ global.env = {
 
     /**
      * The JSDoc version number and revision date.
-     * 
+     *
      * @type Object
      * @memberof env
      */
@@ -93,7 +93,7 @@ global.env = {
 
 /**
  * Data that must be shared across the entire application.
- * 
+ *
  * @namespace
  * @name app
  */
@@ -109,7 +109,7 @@ global.app = {
  * Recursively print an object's properties to stdout. This method is safe to use with objects that
  * contain circular references. In addition, on Mozilla Rhino, this method is safe to use with
  * native Java objects.
- * 
+ *
  * @global
  * @name dump
  * @private

@@ -1,4 +1,4 @@
-Classify('Menu', 
+Classify('Menu',
     /**
         @constructs Menu
         @param items

@@ -21,4 +21,4 @@
 /**
  * A jQuery plugin to make stars fly around your home page.
  * @function external:"jQuery.fn".starfairy
- */ 
+ */

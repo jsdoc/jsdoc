@@ -1,7 +1,7 @@
 Duck = (function() {
         return /** @lends Duck# */ {
             /**
-               Constructs a duck. 
+               Constructs a duck.
                @constructs
                @param tog
             */

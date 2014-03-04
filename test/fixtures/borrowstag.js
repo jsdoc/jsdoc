@@ -5,7 +5,7 @@ var util = {
     "trim": trstr
 };
 
-/** 
+/**
     Remove whitespace from around a string.
     @param {string} str
  */

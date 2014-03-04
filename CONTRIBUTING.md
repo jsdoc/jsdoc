@@ -1,9 +1,9 @@
 Pull Requests
 -------------
 
-If you're thinking about making some changes, maybe fixing a bug, or adding a 
-snazzy new feature, first, thank you.  Contributions are very welcome.  Things 
-need to be manageable for the maintainers, however. So below you'll find  **The 
+If you're thinking about making some changes, maybe fixing a bug, or adding a
+snazzy new feature, first, thank you.  Contributions are very welcome.  Things
+need to be manageable for the maintainers, however. So below you'll find  **The
 fastest way to get your pull request merged in.**  Some things, particularly how
 you set up your branches and work with git, are just suggestions, but pretty good
 ones.
@@ -14,7 +14,7 @@ ones.
 
         git remote add base git://github.com/jsdoc3/jsdoc.git
 
-   Here 'base' is the name of the remote.  Feel free to use whatever you want. 
+   Here 'base' is the name of the remote.  Feel free to use whatever you want.
 
 2. **Set up a tracking branch for the base repository**
    We're gonna call this your ```<tracking branch>```.  You will only ever update
@@ -64,6 +64,6 @@ ones.
    links it.
 
    If it's a feature, provide some context about the motivations behind the feature,
-   why it's important/useful/cool/necessary and what it does/how it works.  Don't 
+   why it's important/useful/cool/necessary and what it does/how it works.  Don't
    worry about being too verbose. Folks will be much more amenable to reading through
    your code if they know what its supposed to be about.

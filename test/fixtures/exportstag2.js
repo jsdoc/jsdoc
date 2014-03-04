@@ -1,7 +1,7 @@
 define(
     ["my/buttons"],
     function () {
-       /** 
+       /**
             A module representing a coat.
             @exports my/coat
             @requires my/buttons

@@ -1,4 +1,3 @@
-
 /** @namespace */
 var constructor = {
     /** document me */
@@ -11,7 +10,7 @@ var prototye = {
     valueOf: function(){}
 }
 
-/** 
+/**
     This is Object
     @namespace Object
 */
