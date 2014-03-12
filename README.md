@@ -91,20 +91,39 @@ can use the `--destination` (`-d`) option to specify another directory.
 
 Run `jsdoc --help` for a complete list of command-line options.
 
+
+Templates and Build Tools
+-------------------------
+
+The JSDoc community has created numerous templates and other tools to help you
+generate and customize your documentation. Here are just a few:
+
+### Templates
+
++ [jaguarjs-jsdoc](https://github.com/davidshimjs/jaguarjs-jsdoc)
+  ([example](http://davidshimjs.github.io/jaguarjs/doc))
++ [DocStrap](https://github.com/terryweiss/docstrap)
++ [jsdoc3Template](https://github.com/DBCDK/jsdoc3Template)
+  ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))
+
+### Build Tools
+
++ [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
++ [JSDoc ant task](https://github.com/jannon/jsdoc3-ant-task)
+
+
 For More Information
 --------------------
 
 Project Documentation: <http://usejsdoc.org/>  
 Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
 JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
-JSDoc 3 Ant Task: <https://github.com/jannon/jsdoc3-ant-task>  
-JSDoc Grunt Plugin: <https://github.com/krampstudio/grunt-jsdoc>  
 Project Announcements: <http://twitter.com/jsdoc3>
 
 License
 -------
 
-JSDoc 3 is copyright (c) 2011-2013 Michael Mathews <micmath@gmail.com> and the
+JSDoc 3 is copyright (c) 2011-2014 Michael Mathews <micmath@gmail.com> and the
 [contributors to JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).
 
 JSDoc 3 is free software, licensed under the Apache License, Version 2.0. See
