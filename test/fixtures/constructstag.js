@@ -1,5 +1,5 @@
 Classify('TextBlock', {
-    
+
     /**
         Document your constructor function here.
         @constructs TextBlock
@@ -9,7 +9,7 @@ Classify('TextBlock', {
      */
     construct: function(node, opts) {
     },
-    
+
     /**
         Document your method here.
         @memberof TextBlock#

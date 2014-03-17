@@ -7,9 +7,18 @@
 
 /**
  * Generate a greeting.
- * @param {string} [subject="world"] To whom we greet.
+ * @param {string} [subject="world"] To whom we say hello.
  * @returns {string}
  */
 exports.sayHello = function(subject) {
     return 'Hello ' + (subject || 'World');
+};
+
+/**
+ * Generate a morose farewell.
+ * @param {string} [subject="world"] To whom we say goodbye.
+ * @returns {string}
+ */
+module.exports.sayGoodbye = function(subject) {
+    return 'Goodbye Cruel ' + (subject || 'World');
 };

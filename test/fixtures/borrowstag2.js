@@ -12,10 +12,9 @@ var util = {
     rtrim: rtrim
 };
 
-/** 
+/**
     Remove whitespace from the right side of a string.
     @param {string} str
  */
 function rtrim(str) {
 }
-

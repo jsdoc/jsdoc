@@ -3,10 +3,10 @@
  * overloaded functions and methods. In JSDoc, this string is known as a _variation_. (The longnames
  * of overloaded constructor functions are _not_ updated, so that JSDoc can identify the class'
  * members correctly.)
- * 
+ *
  * Using this plugin allows you to link to overloaded functions without manually adding `@variation`
  * tags to your documentation.
- * 
+ *
  * For example, suppose your code includes a function named `foo` that you can call in the
  * following ways:
  *
@@ -104,7 +104,7 @@ function getUniqueVariations(doclets) {
         docletKeys.forEach(function(doclet) {
             variations[doclet] = doclets[doclet].variation || getParamVariation(doclets[doclet]);
         });
-        
+
         // if they're identical, try again, without preserving existing variations
         if ( !hasUniqueValues(variations) ) {
             docletKeys.forEach(function(doclet) {

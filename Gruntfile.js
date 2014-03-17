@@ -60,6 +60,7 @@ module.exports = function(grunt) {
             'test-rhino': {
                 command: '<%= rhinoBin %> -T -q "parser=rhino"',
                 options: {
+                    failOnError: true,
                     stdout: true,
                     stderr: true
                 }
@@ -67,6 +68,7 @@ module.exports = function(grunt) {
             'test-rhino-esprima': {
                 command: '<%= rhinoBin %> -T -q "parser=esprima"',
                 options: {
+                    failOnError: true,
                     stdout: true,
                     stderr: true
                 }
@@ -74,6 +76,7 @@ module.exports = function(grunt) {
             'test-node': {
                 command: '<%= nodePath %> <%= nodeBin %> -T',
                 options: {
+                    failOnError: true,
                     stdout: true,
                     stderr: true
                 }

@@ -5,4 +5,3 @@ describe("@summary tag", function() {
         expect(doc.summary).toBe('I do not like green eggs and ham!');
     });
 });
-

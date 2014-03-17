@@ -2,9 +2,8 @@
 
 SETLOCAL
 
-REM jsdoc.js expects Unix-style paths without a trailing slash
+REM jsdoc.js expects paths without a trailing slash
 SET _BASEPATH=%~dp0
-SET _BASEPATH=%_BASEPATH:\=/%
 SET _BASEPATH=%_BASEPATH:~0,-1%
 
 REM we need the ability to resolve paths relative to the user's working

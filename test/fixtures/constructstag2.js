@@ -1,10 +1,10 @@
-Classify('Menu', 
+Classify('Menu',
     /**
         @constructs Menu
         @param items
      */
     function (items) {
-        
+
     },
     {
         /**

@@ -1,9 +1,9 @@
-/**                                                                             
- * This provides methods used for event handling. It's not meant to             
- * be used directly, except as a provider of related methods.                   
- *                                                                              
- * @mixin                                                                       
- */                                                                             
+/**
+ * This provides methods used for event handling. It's not meant to
+ * be used directly, except as a provider of related methods.
+ *
+ * @mixin
+ */
 var Eventful = {
     /** fires something. */
     fires: function () {},
@@ -11,11 +11,11 @@ var Eventful = {
     on: function () {}
 };
 
-/**                                                                             
+/**
  * @constructor
- * @mixes Eventful                                                              
- */                                                                             
-var FormButton = function() {                                                   
+ * @mixes Eventful
+ */
+var FormButton = function() {
 };
 
 /** @mixin AnotherMixin*/
@@ -24,4 +24,3 @@ var FormButton = function() {
  * @constructor MyClass
  * @mixes Eventful
  * @mixes AnotherMixin */
-

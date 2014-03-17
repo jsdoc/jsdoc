@@ -18,6 +18,12 @@ describe("jsdoc/name", function() {
         expect(typeof jsdoc.name.applyNamespace).toEqual("function");
     });
 
+    // TODO: add tests for other exported constants
+    it('should export a SCOPE_NAMES enum', function() {
+        expect(jsdoc.name.SCOPE_NAMES).toBeDefined();
+        expect(typeof jsdoc.name.SCOPE_NAMES).toBe('object');
+    });
+
     it("should export an 'shorten' function", function() {
         expect(jsdoc.name.shorten).toBeDefined();
         expect(typeof jsdoc.name.shorten).toEqual("function");
@@ -26,6 +32,30 @@ describe("jsdoc/name", function() {
     it("should export an 'splitName' function", function() {
         expect(jsdoc.name.splitName).toBeDefined();
         expect(typeof jsdoc.name.splitName).toEqual("function");
+    });
+
+    describe('SCOPE_NAMES', function() {
+        var SCOPE_NAMES = jsdoc.name.SCOPE_NAMES;
+
+        it('should have a "global" property', function() {
+            expect(SCOPE_NAMES.global).toBeDefined();
+            expect(typeof SCOPE_NAMES.global).toBe('string');
+        });
+
+        it('should have an "inner" property', function() {
+            expect(SCOPE_NAMES.inner).toBeDefined();
+            expect(typeof SCOPE_NAMES.inner).toBe('string');
+        });
+
+        it('should have an "instance" property', function() {
+            expect(SCOPE_NAMES.instance).toBeDefined();
+            expect(typeof SCOPE_NAMES.instance).toBe('string');
+        });
+
+        it('should have a "static" property', function() {
+            expect(SCOPE_NAMES.static).toBeDefined();
+            expect(typeof SCOPE_NAMES.static).toBe('string');
+        });
     });
 
     describe ("shorten", function() {
@@ -194,7 +224,7 @@ describe("jsdoc/name", function() {
 
     describe("resolve", function() {
         // TODO: further tests (namespaces, modules, ...)
-    
+
         function makeDoclet(bits) {
             var comment = '/**\n' + bits.join('\n') + '\n*/';
             return new jsdoc.doclet.Doclet(comment, {});

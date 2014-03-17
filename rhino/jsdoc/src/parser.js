@@ -6,10 +6,10 @@ exports.createParser = require('jsdoc/src/parser').createParser;
 
 // TODO: docs
 var Parser = exports.Parser = function() {
-	var astBuilder;
-	var visitor;
+    var astBuilder;
+    var visitor;
 
-	var runtime = require('jsdoc/util/runtime');
+    var runtime = require('jsdoc/util/runtime');
     if ( !runtime.isRhino() ) {
         throw new Error('You must run JSDoc on Mozilla Rhino to use the Rhino parser.');
     }

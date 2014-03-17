@@ -22,7 +22,7 @@ If you can't get the short-form commands to work, try invoking Java directly:
 Writing Tests
 -------------
 
-Adding tests is pretty easy, too.  You can write tests for JSDoc itself (to 
+Adding tests is pretty easy, too.  You can write tests for JSDoc itself (to
 make sure tags and the parser, etc. are working properly), tests for plugins, and/or
 tests for templates.
 

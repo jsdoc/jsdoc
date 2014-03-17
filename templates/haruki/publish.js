@@ -19,7 +19,7 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             if (! parentNode.namespaces) {
                 parentNode.namespaces = [];
             }
-            
+
             var thisNamespace = {
                 'name': element.name,
                 'description': element.description || '',
@@ -28,14 +28,14 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             };
 
             parentNode.namespaces.push(thisNamespace);
-            
+
             graft(thisNamespace, childNodes, element.longname, element.name);
         }
         else if (element.kind === 'mixin') {
             if (! parentNode.mixins) {
                 parentNode.mixins = [];
             }
-            
+
             var thisMixin = {
                 'name': element.name,
                 'description': element.description || '',
@@ -44,14 +44,14 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             };
 
             parentNode.mixins.push(thisMixin);
-            
+
             graft(thisMixin, childNodes, element.longname, element.name);
         }
         else if (element.kind === 'function') {
             if (! parentNode.functions) {
                 parentNode.functions = [];
             }
-            
+
             var thisFunction = {
                 'name': element.name,
                 'access': element.access || '',
@@ -69,13 +69,13 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                     'description': element.returns[0].description || ''
                 };
             }
-            
+
             if (element.examples) {
                 for (i = 0, len = element.examples.length; i < len; i++) {
                     thisFunction.examples.push(element.examples[i]);
                 }
             }
-            
+
             if (element.params) {
                 for (i = 0, len = element.params.length; i < len; i++) {
                     thisFunction.parameters.push({
@@ -101,12 +101,12 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                 'type': element.type? (element.type.length === 1? element.type[0] : element.type) : ''
             });
         }
-        
+
         else if (element.kind === 'event') {
             if (! parentNode.events) {
                 parentNode.events = [];
             }
-            
+
             var thisEvent = {
                 'name': element.name,
                 'access': element.access || '',
@@ -117,20 +117,20 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             };
 
             parentNode.events.push(thisEvent);
-            
+
             if (element.returns) {
                 thisEvent.returns = {
                     'type': element.returns.type? (element.returns.type.names.length === 1? element.returns.type.names[0] : element.returns.type.names) : '',
                     'description': element.returns.description || ''
                 };
             }
-            
+
             if (element.examples) {
                 for (i = 0, len = element.examples.length; i < len; i++) {
                     thisEvent.examples.push(element.examples[i]);
                 }
             }
-            
+
             if (element.params) {
                 for (i = 0, len = element.params.length; i < len; i++) {
                     thisEvent.parameters.push({
@@ -148,7 +148,7 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             if (! parentNode.classes) {
                 parentNode.classes = [];
             }
-            
+
             var thisClass = {
                 'name': element.name,
                 'description': element.classdesc || '',
@@ -166,13 +166,13 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             };
 
             parentNode.classes.push(thisClass);
-            
+
             if (element.examples) {
                 for (i = 0, len = element.examples.length; i < len; i++) {
                     thisClass.constructor.examples.push(element.examples[i]);
                 }
             }
-            
+
             if (element.params) {
                 for (i = 0, len = element.params.length; i < len; i++) {
                     thisClass.constructor.parameters.push({
@@ -185,7 +185,7 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                     });
                 }
             }
-            
+
             graft(thisClass, childNodes, element.longname, element.name);
        }
     });
@@ -199,12 +199,12 @@ exports.publish = function(data, opts) {
 
     var root = {},
         docs;
-    
+
     data({undocumented: true}).remove();
     docs = data().get(); // <-- an array of Doclet objects
 
     graft(root, docs);
-    
+
     if (opts.destination === 'console') {
         if (opts.query && opts.query.format === 'xml') {
             var xml = require('js2xmlparser');
@@ -217,5 +217,5 @@ exports.publish = function(data, opts) {
     else {
         console.log('This template only supports output to the console. Use the option "-d console" when you run JSDoc.');
     }
-        
+
 };

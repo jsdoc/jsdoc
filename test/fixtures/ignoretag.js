@@ -2,5 +2,5 @@
     @ignore
 */
 function foo(x) {
-    
+
 }

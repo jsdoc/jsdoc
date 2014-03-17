@@ -5,7 +5,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
         expect(type).toBeDefined();
         expect(typeof type).toBe('object');
     });
-    
+
     it('should export a defineTags function', function() {
         expect(type.defineTags).toBeDefined();
         expect(typeof type.defineTags).toBe('function');

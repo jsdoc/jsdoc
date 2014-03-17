@@ -25,7 +25,6 @@ As stated in Section 7, "Disclaimer of Warranty," of the License:
 The source code for JSDoc 3 is available at:
 https://github.com/jsdoc3/jsdoc
 
-
 # Third-Party Software #
 
 JSDoc 3 includes or depends upon the following third-party software, either in
@@ -55,7 +54,6 @@ license, which is reproduced below:
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
 
-
 ## Acorn ##
 
 Portions of the Acorn source code are incorporated into the following files:
@@ -69,7 +67,6 @@ Copyright (C) 2012 Marijn Haverbeke <marijnh@gmail.com>.
 The source code for Acorn is available at:
 https://github.com/marijnh/acorn
 
-
 ## Async.js ##
 
 Async.js is distributed under the MIT license, which is reproduced above.
@@ -78,7 +75,6 @@ Copyright (c) 2010 Caolan McMahon.
 
 The source code for Async.js is available at:
 https://github.com/caolan/async
-
 
 ## Catharsis ##
 
@@ -89,7 +85,6 @@ Copyright (c) 2012-2013 Jeff Williams.
 The source code for Catharsis is available at:
 https://github.com/hegemonic/catharsis
 
-
 ## crypto-browserify ##
 
 crypto-browserify is distributed under the MIT license, which is reproduced
@@ -99,7 +94,6 @@ Copyright (c) 2013 Dominic Tarr.
 
 The source code for crypto-browserify is available at:
 https://github.com/dominictarr/crypto-browserify
-
 
 ## Esprima ##
 
@@ -129,7 +123,6 @@ Copyright (c) 2011-2013 Ariya Hidayat and other Esprima contributors.
 
 The source code for Esprima is available at:
 https://github.com/ariya/esprima
-
 
 ## github-flavored-markdown ##
 
@@ -169,7 +162,6 @@ github-flavored-markdown is distributed under the BSD 3-clause license:
 The source code for github-flavored-markdown is available at:
 https://github.com/hegemonic/github-flavored-markdown
 
-
 ## Google Code Prettify ##
 
 Google Code Prettify is distributed under the Apache License 2.0, which is
@@ -180,7 +172,6 @@ Copyright (c) 2006 Google Inc.
 The source code for Google Code Prettify is available at:
 https://code.google.com/p/google-code-prettify/
 
-
 ## Jasmine ##
 
 Jasmine is distributed under the MIT license, which is reproduced above.
@@ -189,7 +180,6 @@ Copyright (c) 2008-2011 Pivotal Labs.
 
 The source code for Jasmine is available at:
 https://github.com/pivotal/jasmine
-
 
 ## jasmine-node ##
 
@@ -200,7 +190,6 @@ Copyright (c) 2010 Adam Abrons and Misko Hevery (http://getangular.com).
 The source code for jasmine-node is available at:
 https://github.com/mhevery/jasmine-node
 
-
 ## js2xmlparser ##
 
 js2xmlparser is distributed under the MIT license, which is reproduced above.
@@ -209,7 +198,6 @@ Copyright (c) 2012 Michael Kourlas.
 
 The source code for js2xmlparser is available at:
 https://github.com/michaelkourlas/node-js2xmlparser
-
 
 ## JSHint ##
 
@@ -243,7 +231,6 @@ modified MIT license:
 The source code for JSHint is available at:
 https://github.com/jshint/jshint
 
-
 ## Node.js ##
 
 Portions of the Node.js source code are incorporated into the following files:
@@ -260,7 +247,6 @@ Copyright Joyent, Inc. and other Node contributors. All rights reserved.
 The source code for Node.js is available at:
 https://github.com/joyent/node
 
-
 ## node-browser-builtins ##
 
 Portions of the node-browser-builtins source code are incorporated into the
@@ -275,7 +261,6 @@ above.
 The source code for node-browser-builtins is available at:
 https://github.com/alexgorbatchev/node-browser-builtins
 
-
 ## node-browserify ##
 
 Portions of the node-browserify source code are incorporated into the following
@@ -287,7 +272,6 @@ node-browserify is distributed under the MIT license, which is reproduced above.
 
 The source code for node-browserify is available at:
 https://github.com/substack/node-browserify
-
 
 ## Rhino ##
 
@@ -329,7 +313,6 @@ Additionally, some files are available under the BSD 3-clause license:
 The source code for Rhino is available at:
 https://github.com/jsdoc3/rhino
 
-
 ## TaffyDB ##
 
 TaffyDB is distributed under a modified BSD license:
@@ -358,7 +341,6 @@ TaffyDB is distributed under a modified BSD license:
 The source code for TaffyDB is available at:
 https://github.com/hegemonic/taffydb
 
-
 ## Tomorrow Theme for Google Code Prettify ##
 
 License information for the Tomorrow Theme for Google Code Prettify is not
@@ -370,7 +352,6 @@ Copyright (c) Yoshihide Jimbo.
 The source code for the Tomorrow Theme is available at:
 https://github.com/jmblog/color-themes-for-google-code-prettify
 
-
 ## tv4 ##
 
 tv4 is in the public domain. It is also distributed under the MIT license, which
@@ -378,7 +359,6 @@ is reproduced above.
 
 The source code for tv4 is available at:
 https://github.com/geraintluff/tv4
-
 
 ## Underscore.js ##
 
@@ -388,7 +368,6 @@ Copyright (c) 2009-2012 Jeremy Ashkenas, DocumentCloud.
 
 The source code for Underscore.js is available at:
 https://github.com/documentcloud/underscore
-
 
 ## wrench-js ##
 

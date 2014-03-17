@@ -16,7 +16,7 @@ describe("@memberof tag", function() {
     it('A symbol within a namespace for which no scope is specified.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag4.js'),
             doOtherStuff = docSet.getByLongname('doStuff.doOtherStuff')[0];
-        
+
         expect(doOtherStuff).toBeDefined();
         expect(doOtherStuff.scope).toBe('static');
     });
@@ -24,7 +24,7 @@ describe("@memberof tag", function() {
     it('A symbol in which name === memberof.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag4.js'),
             doStuff = docSet.getByLongname('doStuff.doStuff')[0];
-        
+
         expect(doStuff).toBeDefined();
         expect(doStuff.scope).toBe('static');
     });

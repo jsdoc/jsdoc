@@ -74,7 +74,7 @@ describe('jsdoc/util/logger', function() {
 
     function eventGetsArguments(name) {
         var args;
-            
+
         logger.once('logger:' + name, function() {
             args = Array.prototype.slice.call(arguments, 0);
         });

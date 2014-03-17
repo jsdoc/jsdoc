@@ -22,7 +22,7 @@ describe('jsdoc/tag/validator', function() {
             meta = {filename: 'asdf.js', lineno: 1},
             goodTag = new tag.Tag('name', 'MyDocletName', meta), // mustHaveValue
             goodTag2 = new tag.Tag('ignore', '', meta); // mustNotHaveValue
-       
+
         function validateTag(tag) {
             validator.validate(tag, dictionary.lookUp(tag.title), meta);
         }

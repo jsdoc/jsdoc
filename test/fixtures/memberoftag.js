@@ -1,4 +1,4 @@
-/** @constructor 
+/** @constructor
     @memberof mathlib
  */
 function Data() {

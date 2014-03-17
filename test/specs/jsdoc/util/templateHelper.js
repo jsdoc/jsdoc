@@ -130,7 +130,6 @@ describe("jsdoc/util/templateHelper", function() {
         expect(typeof helper.createLink).toBe("function");
     });
 
-
     describe("setTutorials", function() {
         // used in tutorialToUrl, toTutorial.
         it("setting tutorials to null causes all tutorial lookups to fail", function() {
@@ -259,7 +258,7 @@ describe("jsdoc/util/templateHelper", function() {
             var link = helper.linkto('linktoTest', 'link text');
             expect(link).toBe('<a href="test.html">link text</a>');
         });
-        
+
         it('includes a "class" attribute in the link if a class is specified', function() {
             var link = helper.linkto('linktoTest', 'link text', 'myclass');
             expect(link).toBe('<a href="test.html" class="myclass">link text</a>');
@@ -321,7 +320,7 @@ describe("jsdoc/util/templateHelper", function() {
             function getLink() {
                 link = helper.linkto(text);
             }
-            
+
             // make sure we're not trying to parse the inline link as a type expression
             expect(getLink).not.toThrow();
             // linkto doesn't process {@link} tags
@@ -678,7 +677,7 @@ describe("jsdoc/util/templateHelper", function() {
 
     describe("getSignatureReturns", function() {
         // retrieves links to types that the member can return.
-        
+
         it("returns a value with correctly escaped HTML", function() {
             var mockDoclet = {
                 returns: [
@@ -810,9 +809,9 @@ describe("jsdoc/util/templateHelper", function() {
             ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0],
             ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0],
             ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];
-       
+
         helper.addEventListeners(doclets);
-        
+
         it("adds a 'listeners' array to events with the longnames of the listeners", function() {
             expect(Array.isArray(ev.listeners)).toBe(true);
             expect(Array.isArray(ev2.listeners)).toBe(true);
@@ -920,7 +919,7 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(logger.error).toHaveBeenCalled();
         });
-        
+
         it("logs an error if the tutorial's name is a reserved JS keyword and it doesn't exist", function() {
             helper.tutorialToUrl('prototype');
 
@@ -963,7 +962,7 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(logger.error).toHaveBeenCalled();
         });
-        
+
         // missing tutorials
         it("returns the tutorial name if it's missing and no missingOpts is provided", function() {
             helper.setTutorials(resolver.root);
@@ -1000,7 +999,6 @@ describe("jsdoc/util/templateHelper", function() {
             // load the tutorials we already have for the tutorials tests
             resolver.load(env.dirname + "/test/tutorials/tutorials");
             resolver.resolve();
-
 
             var link = helper.toTutorial('constructor', 'The Constructor tutorial');
             expect(link).toBe('<a href="' + helper.tutorialToUrl('constructor') + '">The Constructor tutorial</a>');
@@ -1161,14 +1159,12 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
-
         it('should normalize additional newlines to spaces', function() {
             var input = 'This is a {@link\ntest\ntest\n\ntest}.',
                 output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">test test</a>.');
         });
-
 
         it('should allow tabs between link tag and content', function() {
             var input = 'This is a {@link\ttest}.',

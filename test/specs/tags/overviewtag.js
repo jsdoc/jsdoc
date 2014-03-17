@@ -1,5 +1,4 @@
-/*global beforeEach: true, afterEach: true, describe: true, env: true, expect: true, it: true,
-jasmine: true */
+/*global beforeEach, afterEach, describe, env, expect, it, jasmine */
 
 describe("@overview tag", function() {
     var path = require('jsdoc/path');
@@ -44,5 +43,32 @@ describe("@overview tag", function() {
             path.normalize( path.join(env.pwd, filename) )
         );
         expect(doclets[0].name).toBe(doclets[0].longname);
+    });
+
+    it('The name should not include the entire filepath when the source file is outside the ' +
+        'JSDoc directory', function() {
+        var Doclet = require('jsdoc/doclet').Doclet;
+
+        var doclet;
+        var docletMeta;
+        var docletSrc;
+
+        var fakePath = '/Users/jdoe/foo/bar/someproject/junk/okayfile.js';
+
+        // set up the environment to reflect the fake filepath
+        env.pwd = '/Users/jdoe/someproject';
+        env.sourceFiles = [];
+        env.opts._ = [fakePath];
+
+        // create a doclet with a fake filepath, then add a `@file` tag
+        docletSrc = '/** @class */';
+        docletMeta = {
+            lineno: 1,
+            filename: fakePath
+        };
+        doclet = new Doclet(docletSrc, docletMeta);
+        doclet.addTag('file', 'This file is pretty okay.');
+
+        expect(doclet.name).toBe('okayfile.js');
     });
 });

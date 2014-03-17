@@ -9,17 +9,17 @@ var Person = Class.create({
         @param {string} name
      */
     initialize: function(name) {
-    
+
         /** The name of the person. */
         this.name = name;
     },
-    
+
     /**
         @memberof Person#
         @param {string} message
      */
     say: function(message) {
-    
+
         /** The person's message. */
         this.message = message;
     }

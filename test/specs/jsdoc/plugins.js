@@ -13,7 +13,6 @@ describe("jsdoc/plugins", function() {
         expect(typeof plugins.installPlugins).toEqual('function');
     });
 
-
     xdescribe("installPlugins", function() {
         // TODO
     });

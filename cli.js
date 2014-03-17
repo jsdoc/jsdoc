@@ -2,13 +2,13 @@
  * Helper methods for running JSDoc on the command line.
  *
  * A few critical notes for anyone who works on this module:
- * 
+ *
  * + The module should really export an instance of `cli`, and `props` should be properties of a
  * `cli` instance. However, Rhino interpreted `this` as a reference to `global` within the
  * prototype's methods, so we couldn't do that.
  * + On Rhino, for unknown reasons, the `jsdoc/fs` and `jsdoc/path` modules can fail in some cases
  * when they are required by this module. You may need to use `fs` and `path` instead.
- * 
+ *
  * @private
  */
 module.exports = (function() {
@@ -334,7 +334,7 @@ cli.scanFiles = function() {
             props.packageJson = fs.readFileSync(opt, 'utf8');
             env.opts._.splice(i--, 1);
         }
-        
+
         if ( /(\bREADME|\.md)$/i.test(opt) ) {
             env.opts.readme = new Readme(opt).html;
             env.opts._.splice(i--, 1);
@@ -504,7 +504,7 @@ cli.exit = function(exitCode, message) {
     if (message && exitCode > 0) {
         console.error(message);
     }
-    
+
     process.exit(exitCode || 0);
 };
 

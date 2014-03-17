@@ -9,7 +9,6 @@ describe("jsdoc/tutorial", function() {
         par2 = new tutorial.Tutorial('parent2', "<h2>This is the second parent tutorial</h2>",
                                     tutorial.TYPES.HTML);
 
-
     it("module should exist", function() {
         expect(tutorial).toBeDefined();
         expect(typeof tutorial).toBe("object");
@@ -190,7 +189,7 @@ describe("jsdoc/tutorial", function() {
                 // it can't be the child of two parents
                 par2.addChild(tute);
                 expect(tute.parent).toBe(par2);
-                expect(par.children.length).toBe(0); 
+                expect(par.children.length).toBe(0);
                 expect(par2.children.length).toBe(1);
                 expect(par2.children[0]).toBe(tute);
 

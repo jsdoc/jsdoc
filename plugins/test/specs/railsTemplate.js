@@ -6,7 +6,6 @@ describe("railsTemplate plugin", function() {
     var pluginPath = path.join(env.dirname, 'plugins/railsTemplate');
     var plugin = require(pluginPath);
 
-
     require('jsdoc/plugins').installPlugins([pluginPath], parser);
     require('jsdoc/src/handlers').attachTo(parser);
 

@@ -15,7 +15,7 @@
   "undef":        true,
   "unused":       false,
   "strict":       false,
-  "trailing":     false,
+  "trailing":     true,
 
   "asi":          false,
   "boss":         false,

@@ -12,8 +12,8 @@
  * console.log( greeting.rot13() ); // uryyb jbeyq
  */
 
-/** 
- * @external {foo.bar.baz} 
+/**
+ * @external {foo.bar.baz}
  */
 
  /**
