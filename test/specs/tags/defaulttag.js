@@ -39,14 +39,13 @@ describe("@default tag", function() {
         expect(header.defaultvalue).toBeUndefined();
     });
 
-    // TODO: reenable the changes for https://github.com/jsdoc3/jsdoc/pull/419
-    xit('When symbol has a @default tag with an object, the doclet\'s defaultValue property should contain the stringified object', function() {
-        var expected_value = "{value_a: 'a', value_b: 'b'}";
+    it('When symbol has a @default tag with an object, the doclet\'s defaultValue property should contain the stringified object', function() {
+        var expected_value = '{"valueA":"a","valueB":false,"valueC":7}';
         expect(obj.defaultvalue).toEqual(expected_value);
     });
 
-    xit('When symbol has a @default tag with a multiline object, the doclet\'s defaultValue property should contain the properly stringified object', function() {
-        var expected_value = "{value_a: 'a', value_b: 'b'}";
+    it('When symbol has a @default tag with a multiline object, the doclet\'s defaultValue property should contain the properly stringified object', function() {
+        var expected_value = '{"valueA":"a","valueB":false,"valueC":7}';
         expect(obj.defaultvalue).toEqual(expected_value);
     });
 

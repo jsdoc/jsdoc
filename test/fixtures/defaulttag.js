@@ -36,12 +36,13 @@ var header = getHeaders(request);
 /**
     @default
  */
-var obj = { value_a : 'a', value_b : 'b' };
+var obj = {valueA: 'a', valueB: false, valueC: 7};
 
 /**
  * @default
  */
 var multilineObject = {
-    value_a : 'a',
-    value_b : 'b'
+    valueA : 'a',
+    valueB : false,
+    valueC : 7
 };
