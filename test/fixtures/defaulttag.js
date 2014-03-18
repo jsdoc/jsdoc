@@ -46,3 +46,6 @@ var multilineObject = {
     valueB : false,
     valueC : 7
 };
+
+/** @default */
+var arr = ['foo', true, 19];

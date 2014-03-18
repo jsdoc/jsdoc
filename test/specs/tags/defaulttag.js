@@ -10,6 +10,7 @@ describe("@default tag", function() {
     var header = (docSet.getByLongname('header') || [])[0];
     var obj = docSet.getByLongname('obj')[0];
     var multilineObject = docSet.getByLongname('multilineObject')[0];
+    var arr = docSet.getByLongname('arr')[0];
 
     it('When symbol set to null has a @default tag with no text, the doclet\'s defaultValue property should be: null', function() {
         expect(request.defaultvalue).toBe('null');
@@ -39,14 +40,25 @@ describe("@default tag", function() {
         expect(header.defaultvalue).toBeUndefined();
     });
 
-    it('When symbol has a @default tag with an object, the doclet\'s defaultValue property should contain the stringified object', function() {
-        var expected_value = '{"valueA":"a","valueB":false,"valueC":7}';
-        expect(obj.defaultvalue).toEqual(expected_value);
+    it('When symbol has a @default tag with an object, the doclet should contain the stringified object', function() {
+        var testObj = { valueA: 'a', valueB: false, valueC: 7};
+        expect(obj.defaultvalue).toBe( JSON.stringify(testObj) );
+        expect(obj.defaultvaluetype).toBe('object');
     });
 
-    it('When symbol has a @default tag with a multiline object, the doclet\'s defaultValue property should contain the properly stringified object', function() {
-        var expected_value = '{"valueA":"a","valueB":false,"valueC":7}';
-        expect(obj.defaultvalue).toEqual(expected_value);
+    it('When symbol has a @default tag with a multiline object, the doclet should contain the stringified object', function() {
+        var testObj = {
+            valueA: 'a',
+            valueB: false,
+            valueC: 7
+        };
+        expect(obj.defaultvalue).toBe( JSON.stringify(testObj) );
+        expect(obj.defaultvaluetype).toBe('object');
     });
 
+    it('When symbol has a @default tag with an array, the doclet should contain the stringified array', function() {
+        var testArray = ['foo', true, 19];
+        expect(arr.defaultvalue).toBe( JSON.stringify(testArray) );
+        expect(arr.defaultvaluetype).toBe('array');
+    });
 });
