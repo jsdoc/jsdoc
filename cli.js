@@ -246,6 +246,7 @@ function createTempDir() {
     var fs = require('jsdoc/fs');
     var path = require('jsdoc/path');
     var wrench = require('wrench');
+    var os = require('os');
 
     var isRhino;
     var tempDirname;
@@ -258,7 +259,7 @@ function createTempDir() {
 
     isRhino = require('jsdoc/util/runtime').isRhino();
     tempDirname = 'tmp-' + Date.now() + '-' + getRandomId();
-    tempPath = path.join(env.dirname, tempDirname);
+    tempPath = path.join(os.tempdir(), tempDirname);
 
     try {
         fs.mkdirSync(tempPath);
