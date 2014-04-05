@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "async": "~0.1.22",
-    "catharsis": "~0.7.0",
+    "catharsis": "~0.7.1",
     "esprima": "~1.0.4",
     "js2xmlparser": "~0.1.0",
     "marked": "~0.3.1",
