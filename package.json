@@ -20,7 +20,7 @@
   "dependencies": {
     "async": "~0.1.22",
     "catharsis": "~0.7.1",
-    "esprima": "https://github.com/ariya/esprima/tarball/261b80e97c11cbc1097f425d1ea75e5a2e143491",
+    "esprima": "https://github.com/ariya/esprima/tarball/49a2eccb243f29bd653b11e9419241a9d726af7c",
     "js2xmlparser": "~0.1.0",
     "marked": "~0.3.1",
     "taffydb": "https://github.com/hegemonic/taffydb/tarball/master",
