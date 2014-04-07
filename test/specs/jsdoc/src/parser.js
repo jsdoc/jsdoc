@@ -1,5 +1,4 @@
-/*global beforeEach: true, describe: true, env: true, expect: true, it: true, jasmine: true,
-spyOn: true, xit: true */
+/*global beforeEach, describe, expect, it, jasmine, spyOn, xit */
 describe("jsdoc/src/parser", function() {
     var jsdoc = { src: { parser: require('jsdoc/src/parser') } };
 
@@ -247,10 +246,26 @@ describe("jsdoc/src/parser", function() {
                 expect(spy.mostRecentCall.args[0].doclets).toBe(doclets);
             });
 
+            // Rhino can't parse ES6
+            if (jasmine.jsParser !== 'rhino') {
+                it("should not throw errors when parsing files with ES6 syntax", function() {
+                    function parse() {
+                        var fs = require('jsdoc/fs');
+                        var path = require('jsdoc/path');
+
+                        var parserSrc = 'javascript:' + fs.readFileSync(
+                            path.join(global.env.dirname, 'test/fixtures/es6.js'), 'utf8' );
+                        parser.parse(parserSrc);
+                    }
+
+                    expect(parse).not.toThrow();
+                });
+            }
+
             it("should be able to parse its own source file", function() {
                 var fs = require('jsdoc/fs'),
                     path = require('path'),
-                    parserSrc = 'javascript:' + fs.readFileSync( path.join(env.dirname,
+                    parserSrc = 'javascript:' + fs.readFileSync( path.join(global.env.dirname,
                         'lib/jsdoc/src/parser.js'), 'utf8' ),
                     parse = function() {
                         parser.parse(parserSrc);
