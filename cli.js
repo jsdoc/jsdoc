@@ -229,6 +229,10 @@ cli.main = function(cb) {
             .parseFiles()
             .processParseResults();
     }
+    else {
+        console.log('There are no input files to process.\n');
+        cli.printHelp(cb);
+    }
 
     env.run.finish = new Date();
     cb(0);
