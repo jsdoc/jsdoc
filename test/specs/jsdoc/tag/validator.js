@@ -29,6 +29,7 @@ describe('jsdoc/tag/validator', function() {
 
         beforeEach(function() {
             spyOn(logger, 'error');
+            spyOn(logger, 'warn');
         });
 
         afterEach(function() {
@@ -64,13 +65,13 @@ describe('jsdoc/tag/validator', function() {
             expect(logger.error).toHaveBeenCalled();
         });
 
-        it("logs an error if the tag has text but .mustNotHaveValue is true", function() {
+        it("logs a warning if the tag has text but .mustNotHaveValue is true", function() {
             var missingText = doop(goodTag2);
             missingText.mustNotHaveValue = true;
             missingText.text = missingText.text || 'asdf';
             validateTag(missingText);
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(logger.warn).toHaveBeenCalled();
         });
     });
 });
