@@ -38,4 +38,36 @@ describe("@module tag", function() {
             expect(darken.kind).toBe('function');
         });
     });
+
+    describe("virtual comments", function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag4.js'),
+            m1 = docSet.getByLongname('module:M1').filter(function($) {
+                return ! $.undocumented;
+            })[0],
+            clickProperties = docSet.getByLongname('module:M1~ClickProperties')[0],
+            virtFunc = docSet.getByLongname('module:M1.VirtualComment')[0],
+            virtFunc2 = docSet.getByLongname('module:M1#VirtualComment2')[0];
+
+        it('When a virtual comment typedef is inside a module, the typedef is a memberof the module', function () {
+            expect(clickProperties.memberof).toBe('module:M1');
+        });
+
+        it('When a virtual comment typedef is inside a module, the typedef longname contains the module name', function() {
+            expect(clickProperties.longname).toBe('module:M1~ClickProperties');
+        });
+
+        it('When a virtual comment typedef is inside a module, the typedef scope is "inner"', function() {
+            expect(clickProperties.scope).toBe('inner');
+        });
+
+        it('When a virtual comment function is inside a module with a static scope, the function has the correct memberof and longname', function () {
+            expect(virtFunc.longname).toBe('module:M1.VirtualComment');
+            expect(virtFunc.memberof).toBe('module:M1');
+        });
+
+        it('When a virtual comment function is inside a module with an instance scope, the function has the correct memberof and longname', function() {
+            expect(virtFunc2.longname).toBe('module:M1#VirtualComment2');
+            expect(virtFunc2.memberof).toBe('module:M1');
+        });
+    });
 });
