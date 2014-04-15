@@ -5,6 +5,12 @@ function find(targetName) {
 }
 
 /**
+ * @returns {!string} The name, if defined.
+ */
+function getName() {
+}
+
+/**
  * @return The binding id.
  */
 function bind(callback) {
