@@ -1,9 +1,9 @@
 /**
-    @type {string|Array<string>}
-*/
+ * @type {string|Array<string>}
+ */
 var foo;
 
 /**
-    @type integer
-*/
+ * @type integer
+ */
 var bar = +(new Date()).getTime();
