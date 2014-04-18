@@ -58,8 +58,7 @@ section
     display: none;
 }
 
-.optional:after {
-    content: "opt";
+.signature-attributes {
     font-size: 60%;
     color: #aaa;
     font-style: italic;

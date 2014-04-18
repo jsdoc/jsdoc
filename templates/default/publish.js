@@ -7,6 +7,7 @@ var template = require('jsdoc/template'),
     taffy = require('taffydb').taffy,
     logger = require('jsdoc/util/logger'),
     helper = require('jsdoc/util/templateHelper'),
+    util = require('util'),
     htmlsafe = helper.htmlsafe,
     linkto = helper.linkto,
     resolveAuthorLinks = helper.resolveAuthorLinks,
@@ -58,33 +59,125 @@ function needsSignature(doclet) {
     return needsSig;
 }
 
-function addSignatureParams(f) {
-    var params = helper.getSignatureParams(f, 'optional');
+function getSignatureAttributes(item) {
+    var attributes = [];
 
-    f.signature = (f.signature || '') + '('+params.join(', ')+')';
+    if (item.optional) {
+        attributes.push('opt');
+    }
+
+    if (item.nullable === true) {
+        attributes.push('nullable');
+    }
+    else if (item.nullable === false) {
+        attributes.push('non-null');
+    }
+
+    return attributes;
+}
+
+function updateItemName(item) {
+    var attributes = getSignatureAttributes(item);
+    var itemName = item.name || '';
+
+    if (item.variable) {
+        itemName = '&hellip;' + itemName;
+    }
+
+    if (attributes && attributes.length) {
+        itemName = util.format( '%s<span class="signature-attributes">%s</span>', itemName,
+            attributes.join(', ') );
+    }
+
+    return itemName;
+}
+
+function addParamAttributes(params) {
+    return params.map(updateItemName);
+}
+
+function buildItemTypeStrings(item) {
+    var types = [];
+
+    if (item.type && item.type.names) {
+        item.type.names.forEach(function(name) {
+            types.push( linkto(name, htmlsafe(name)) );
+        });
+    }
+
+    return types;
+}
+
+function buildAttribsString(attribs) {
+    var attribsString = '';
+
+    if (attribs && attribs.length) {
+        attribsString = htmlsafe( util.format('(%s) ', attribs.join(', ')) );
+    }
+
+    return attribsString;
+}
+
+function addNonParamAttributes(items) {
+    var types = [];
+
+    items.forEach(function(item) {
+        types = types.concat( buildItemTypeStrings(item) );
+    });
+
+    return types;
+}
+
+function addSignatureParams(f) {
+    var params = f.params ? addParamAttributes(f.params) : [];
+
+    f.signature = util.format( '%s(%s)', (f.signature || ''), params.join(', ') );
 }
 
 function addSignatureReturns(f) {
-    var returnTypes = helper.getSignatureReturns(f);
+    var attribs = [];
+    var attribsString = '';
+    var returnTypes = [];
+    var returnTypesString = '';
+
+    // jam all the return-type attributes into an array. this could create odd results (for example,
+    // if there are both nullable and non-nullable return types), but let's assume that most people
+    // who use multiple @return tags aren't using Closure Compiler type annotations, and vice-versa.
+    if (f.returns) {
+        f.returns.forEach(function(item) {
+            helper.getAttribs(item).forEach(function(attrib) {
+                if (attribs.indexOf(attrib) === -1) {
+                    attribs.push(attrib);
+                }
+            });
+        });
+
+        attribsString = buildAttribsString(attribs);
+    }
+
+    if (f.returns) {
+        returnTypes = addNonParamAttributes(f.returns);
+    }
+    if (returnTypes.length) {
+        returnTypesString = util.format( ' &rarr; %s{%s}', attribsString, returnTypes.join('|') );
+    }
 
     f.signature = '<span class="signature">' + (f.signature || '') + '</span>' +
-        '<span class="type-signature">' +
-        (returnTypes && returnTypes.length ? ' &rarr; {' + returnTypes.join('|') + '}' : '') +
-        '</span>';
+        '<span class="type-signature">' + returnTypesString + '</span>';
 }
 
 function addSignatureTypes(f) {
-    var types = helper.getSignatureTypes(f);
+    var types = f.type ? buildItemTypeStrings(f) : [];
 
-    f.signature = (f.signature || '') + '<span class="type-signature">'+(types.length? ' :'+types.join('|') : '')+'</span>';
+    f.signature = (f.signature || '') + '<span class="type-signature">' +
+        (types.length ? ' :' + types.join('|') : '') + '</span>';
 }
 
 function addAttribs(f) {
     var attribs = helper.getAttribs(f);
+    var attribsString = buildAttribsString(attribs);
 
-    f.attribs = '<span class="type-signature">' + htmlsafe(attribs.length ?
-        // we want the template output to say 'abstract', not 'virtual'
-        '<' + attribs.join(', ').replace('virtual', 'abstract') + '> ' : '') + '</span>';
+    f.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
 }
 
 function shortenPaths(files, commonPrefix) {
