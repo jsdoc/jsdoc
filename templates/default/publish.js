@@ -1,21 +1,24 @@
 /*global env: true */
 'use strict';
 
-var template = require('jsdoc/template'),
-    fs = require('jsdoc/fs'),
-    path = require('jsdoc/path'),
-    taffy = require('taffydb').taffy,
-    logger = require('jsdoc/util/logger'),
-    helper = require('jsdoc/util/templateHelper'),
-    util = require('util'),
-    htmlsafe = helper.htmlsafe,
-    linkto = helper.linkto,
-    resolveAuthorLinks = helper.resolveAuthorLinks,
-    scopeToPunc = helper.scopeToPunc,
-    hasOwnProp = Object.prototype.hasOwnProperty,
-    data,
-    view,
-    outdir = env.opts.destination;
+var fs = require('jsdoc/fs');
+var helper = require('jsdoc/util/templateHelper');
+var logger = require('jsdoc/util/logger');
+var path = require('jsdoc/path');
+var taffy = require('taffydb').taffy;
+var template = require('jsdoc/template');
+var util = require('util');
+
+var htmlsafe = helper.htmlsafe;
+var linkto = helper.linkto;
+var resolveAuthorLinks = helper.resolveAuthorLinks;
+var scopeToPunc = helper.scopeToPunc;
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
+var data;
+var view;
+
+var outdir = env.opts.destination;
 
 function find(spec) {
     return helper.find(data, spec);
@@ -192,7 +195,7 @@ function shortenPaths(files, commonPrefix) {
 
 function getPathFromDoclet(doclet) {
     if (!doclet.meta) {
-        return;
+        return null;
     }
 
     return doclet.meta.path && doclet.meta.path !== 'null' ?

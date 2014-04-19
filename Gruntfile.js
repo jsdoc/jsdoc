@@ -37,17 +37,14 @@ module.exports = function(grunt) {
             },
             files: ['package.json']
         },
-        jshint: {
-            all: [
+        eslint: {
+            target: [
                 '*.js',
                 'lib/**/*.js',
-                'plugins/**/*.js',
-                'templates/**/*.js'
-            ],
-            options: {
-                ignores: ['templates/default/static/scripts/prettify/*'],
-                jshintrc: '.jshintrc'
-            }
+                'plugins/*.js',
+                'templates/default/*.js',
+                'templates/haruki/*.js'
+            ]
         },
         shell: {
             'coverage': {
@@ -93,7 +90,7 @@ module.exports = function(grunt) {
     grunt.registerTask('test-rhino', ['shell:test-rhino']);
     grunt.registerTask('test-rhino-esprima', ['shell:test-rhino-esprima']);
     grunt.registerTask('test-node', ['shell:test-node']);
-    grunt.registerTask('test', ['test-rhino', 'test-rhino-esprima', 'test-node', 'jshint']);
+    grunt.registerTask('test', ['test-rhino', 'test-rhino-esprima', 'test-node', 'eslint']);
 
     grunt.registerTask('default', ['test']);
 };

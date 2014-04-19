@@ -1,3 +1,5 @@
+/*global java */
+/*eslint no-process-exit:0 */
 /**
  * Helper methods for running JSDoc on the command line.
  *

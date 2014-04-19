@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/*global arguments */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -83,6 +84,8 @@ global.env = {
 
 // initialize the environment for the current JavaScript VM
 (function(args) {
+    'use strict';
+
     if (args[0] && typeof args[0] === 'object') {
         // we should be on Node.js
         args = [__dirname, process.cwd()];
@@ -116,6 +119,8 @@ global.app = {
  * @param {Object} obj - Object(s) to print to stdout.
  */
 global.dump = function() {
+    'use strict';
+
     var doop = require('jsdoc/util/doop').doop;
     var _dump = require('jsdoc/util/dumper').dump;
     for (var i = 0, l = arguments.length; i < l; i++) {
