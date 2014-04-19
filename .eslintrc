@@ -35,7 +35,7 @@
         "consistent-return": 2,
         "curly": [2, "all"],
         "dot-notation": 2,
-        "eqeqeq": 0, // TODO: enable with "smart"
+        "eqeqeq": [2, "smart"],
         "guard-for-in": 2,
         "no-alert": 2,
         "no-caller": 2,
