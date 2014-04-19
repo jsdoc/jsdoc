@@ -351,7 +351,7 @@ cli.scanFiles = function() {
     if (env.conf.source && env.opts._.length) {
         filter = new Filter(env.conf.source);
 
-        env.sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined),
+        env.sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse ? 10 : undefined),
             filter);
     }
 

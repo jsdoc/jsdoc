@@ -295,7 +295,7 @@ function buildNav(members) {
         nav += '<h3>Modules</h3><ul>';
         members.modules.forEach(function(m) {
             if ( !hasOwnProp.call(seen, m.longname) ) {
-                nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                nav += '<li>' + linkto(m.longname, m.name) + '</li>';
             }
             seen[m.longname] = true;
         });
@@ -307,7 +307,7 @@ function buildNav(members) {
         nav += '<h3>Externals</h3><ul>';
         members.externals.forEach(function(e) {
             if ( !hasOwnProp.call(seen, e.longname) ) {
-                nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
+                nav += '<li>' + linkto( e.longname, e.name.replace(/(^"|"$)/g, '') ) + '</li>';
             }
             seen[e.longname] = true;
         });
@@ -318,7 +318,7 @@ function buildNav(members) {
     if (members.classes.length) {
         members.classes.forEach(function(c) {
             if ( !hasOwnProp.call(seen, c.longname) ) {
-                classNav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                classNav += '<li>' + linkto(c.longname, c.name) + '</li>';
             }
             seen[c.longname] = true;
         });
@@ -334,7 +334,7 @@ function buildNav(members) {
         nav += '<h3>Events</h3><ul>';
         members.events.forEach(function(e) {
             if ( !hasOwnProp.call(seen, e.longname) ) {
-                nav += '<li>'+linkto(e.longname, e.name)+'</li>';
+                nav += '<li>' + linkto(e.longname, e.name) + '</li>';
             }
             seen[e.longname] = true;
         });
@@ -346,7 +346,7 @@ function buildNav(members) {
         nav += '<h3>Namespaces</h3><ul>';
         members.namespaces.forEach(function(n) {
             if ( !hasOwnProp.call(seen, n.longname) ) {
-                nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                nav += '<li>' + linkto(n.longname, n.name) + '</li>';
             }
             seen[n.longname] = true;
         });
@@ -358,7 +358,7 @@ function buildNav(members) {
         nav += '<h3>Mixins</h3><ul>';
         members.mixins.forEach(function(m) {
             if ( !hasOwnProp.call(seen, m.longname) ) {
-                nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                nav += '<li>' + linkto(m.longname, m.name) + '</li>';
             }
             seen[m.longname] = true;
         });
@@ -369,7 +369,7 @@ function buildNav(members) {
     if (members.tutorials.length) {
         nav += '<h3>Tutorials</h3><ul>';
         members.tutorials.forEach(function(t) {
-            nav += '<li>'+tutoriallink(t.name)+'</li>';
+            nav += '<li>' + tutoriallink(t.name) + '</li>';
         });
 
         nav += '</ul>';
