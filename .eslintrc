@@ -113,7 +113,7 @@
         "no-underscore-dangle": 0,
         "no-wrap-func": 2,
         "one-var": 0,
-        "quotes": 0, // TODO: enable with "single", "avoid-escape"
+        "quotes": [2, "single", "avoid-escape"],
         "quote-props": 0,
         "semi": [2, "always"],
         "sort-vars": 0, // TODO: enable

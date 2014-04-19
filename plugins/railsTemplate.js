@@ -14,7 +14,7 @@ exports.handlers = {
      */
     beforeParse: function(e) {
         if (e.filename.match(/\.erb$/)) {
-            e.source = e.source.replace(/<%.*%>/g, "");
+            e.source = e.source.replace(/<%.*%>/g, '');
         }
     }
 };
