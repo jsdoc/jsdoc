@@ -8,6 +8,7 @@ var path = require('jsdoc/path');
 var taffy = require('taffydb').taffy;
 var template = require('jsdoc/template');
 var util = require('util');
+var iconvlite = require('iconv-lite');
 
 var htmlsafe = helper.htmlsafe;
 var linkto = helper.linkto;
@@ -232,7 +233,7 @@ function generateSourceFiles(sourceFiles, encoding) {
         try {
             source = {
                 kind: 'source',
-                code: helper.htmlsafe( fs.readFileSync(sourceFiles[file].resolved, encoding) )
+                code: helper.htmlsafe( iconvlite.decode(fs.readFileSync(sourceFiles[file].resolved), encoding) )
             };
         }
         catch(e) {
