@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "version": "3.3.0-dev",
-  "revision": "1397403423002",
+  "revision": "1400737863648",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
     "documentation",
@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "gulp": "~3.6.2",
-    "gulp-bump": "~0.1.8",
     "gulp-eslint": "~0.1.6",
+    "gulp-json-editor": "~2.0.2",
     "istanbul": "~0.2.1",
     "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
   },

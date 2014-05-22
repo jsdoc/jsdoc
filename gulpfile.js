@@ -1,11 +1,11 @@
 /*eslint max-nested-callbacks: 0 */
 'use strict';
 
-var bump = require('gulp-bump');
 var eslint = require('gulp-eslint');
 var exec = require('child_process').exec;
 var gulp = require('gulp');
 var istanbul = require('istanbul');
+var jsonEditor = require('gulp-json-editor');
 var os = require('os');
 var path = require('path');
 var util = require('util');
@@ -44,9 +44,8 @@ var options = {
 
 gulp.task('bump', function() {
     gulp.src('./package.json')
-        .pipe(bump({
-            key: 'revision',
-            version: String( Date.now() )
+        .pipe(jsonEditor({
+            revision: String( Date.now() )
         }))
         .pipe(gulp.dest('./'));
 });
