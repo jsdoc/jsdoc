@@ -1,4 +1,5 @@
 /*global describe: true, expect: true, it: true, jasmine: true */
+'use strict';
 
 describe('jsdoc/tag/inline', function() {
     var jsdoc = {
@@ -56,7 +57,7 @@ describe('jsdoc/tag/inline', function() {
 
         it('should return false (rather than throwing) with invalid input', function() {
             function badInput() {
-                return isInlineTag({});
+                return isInlineTag();
             }
 
             expect(badInput).not.toThrow();
