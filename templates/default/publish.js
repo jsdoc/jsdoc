@@ -266,7 +266,7 @@ function attachModuleSymbols(doclets, modules) {
     return modules.map(function(module) {
         if (symbols[module.longname]) {
             module.module = symbols[module.longname];
-            module.module.name = module.module.name.replace('module:', 'require("') + '")';
+            module.module.name = module.module.name.replace('module:', '(require("') + '"))';
         }
     });
 }
