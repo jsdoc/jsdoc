@@ -365,10 +365,11 @@ https://github.com/geraintluff/tv4
 
 Underscore.js is distributed under the MIT license, which is reproduced above.
 
-Copyright (c) 2009-2012 Jeremy Ashkenas, DocumentCloud.
+Copyright (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative
+Reporters & Editors.
 
 The source code for Underscore.js is available at:
-https://github.com/documentcloud/underscore
+https://github.com/jashkenas/underscore
 
 ## wrench-js ##
 
