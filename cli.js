@@ -17,6 +17,7 @@ module.exports = (function() {
 'use strict';
 
 var logger = require('jsdoc/util/logger');
+var stripJsonComments = require('strip-json-comments');
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -86,7 +87,7 @@ cli.loadConfig = function() {
     }
 
     try {
-        env.conf = new Config( fs.readFileSync(confPath, 'utf8') )
+        env.conf = new Config( stripJsonComments(fs.readFileSync(confPath, 'utf8')) )
             .get();
     }
     catch (e) {
