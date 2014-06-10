@@ -330,7 +330,8 @@ cli.createParser = function() {
 cli.parseFiles = function() {
     var augment = require('jsdoc/augment');
     var borrow = require('jsdoc/borrow');
-    var Package = require('jsdoc/package').Package;
+    // Prevent Requizzle from picking up package.json. See #662.
+    var Package = require('./lib/jsdoc/package').Package;
 
     var docs;
     var packageDocs;
