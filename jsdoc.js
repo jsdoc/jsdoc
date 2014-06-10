@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/*global arguments */
+/*global arguments, require: true */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
@@ -86,12 +86,23 @@ global.env = {
 (function(args) {
     'use strict';
 
+    var path;
+
     if (args[0] && typeof args[0] === 'object') {
         // we should be on Node.js
         args = [__dirname, process.cwd()];
+        path = require('path');
+
+        // Create a custom require method that adds `lib/jsdoc` to the module lookup path.
+        // This makes it possible to `require('jsdoc/foo')` from external templates and plugins,
+        // and within JSDoc itself.
+        require = require('requizzle')({
+            requirePaths: [path.join(__dirname, 'lib')],
+            infect: true
+        });
     }
 
-    require('jsdoc/util/runtime').initialize(args);
+    require('./lib/jsdoc/util/runtime').initialize(args);
 })( Array.prototype.slice.call(arguments, 0) );
 
 /**
@@ -102,9 +113,9 @@ global.env = {
  */
 global.app = {
     jsdoc: {
-        scanner: new (require('jsdoc/src/scanner').Scanner)(),
+        name: require('./lib/jsdoc/name'),
         parser: null,
-        name: require('jsdoc/name')
+        scanner: new (require('./lib/jsdoc/src/scanner').Scanner)()
     }
 };
 
@@ -121,8 +132,8 @@ global.app = {
 global.dump = function() {
     'use strict';
 
-    var doop = require('jsdoc/util/doop').doop;
-    var _dump = require('jsdoc/util/dumper').dump;
+    var doop = require('./lib/jsdoc/util/doop').doop;
+    var _dump = require('./lib/jsdoc/util/dumper').dump;
     for (var i = 0, l = arguments.length; i < l; i++) {
         console.log( _dump(doop(arguments[i])) );
     }
@@ -131,11 +142,14 @@ global.dump = function() {
 (function() {
     'use strict';
 
-    var logger = require('jsdoc/util/logger');
-    var path = require('jsdoc/path');
-    var runtime = require('jsdoc/util/runtime');
+    var logger = require('./lib/jsdoc/util/logger');
+    var runtime = require('./lib/jsdoc/util/runtime');
+    var cli = require('./cli');
 
-    var cli = require( path.join(global.env.dirname, 'cli') );
+    function cb(errorCode) {
+        cli.logFinish();
+        cli.exit(errorCode || 0);
+    }
 
     cli.setVersionInfo()
         .loadConfig();
@@ -145,11 +159,6 @@ global.dump = function() {
     }
 
     cli.logStart();
-
-    function cb(errorCode) {
-        cli.logFinish();
-        cli.exit(errorCode || 0);
-    }
 
     // On Rhino, we use a try/catch block so we can log the Java exception (if available)
     if ( runtime.isRhino() ) {

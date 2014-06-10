@@ -274,6 +274,16 @@ node-browserify is distributed under the MIT license, which is reproduced above.
 The source code for node-browserify is available at:
 https://github.com/substack/node-browserify
 
+## Requizzle ##
+
+Requizzle is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2014 Google Inc. All rights reserved.
+Copyright (c) 2012-2013 Johannes Ewald.
+
+The source code for Requizzle is available at:
+https://github.com/hegemonic/requizzle
+
 ## Rhino ##
 
 Rhino is distributed under the following licenses:
