@@ -4,7 +4,8 @@ JSDoc 3 is free software, licensed under the Apache License, Version 2.0 (the
 "License"). Commercial and non-commercial use are permitted in compliance with
 the License.
 
-Copyright (c) 2011-2012 Michael Mathews <micmath@gmail.com>
+Copyright (c) 2011-2014 Michael Mathews <micmath@gmail.com> and the
+[contributors to JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).
 All rights reserved.
 
 You may obtain a copy of the License at:
@@ -273,6 +274,16 @@ node-browserify is distributed under the MIT license, which is reproduced above.
 The source code for node-browserify is available at:
 https://github.com/substack/node-browserify
 
+## Requizzle ##
+
+Requizzle is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2014 Google Inc. All rights reserved.
+Copyright (c) 2012-2013 Johannes Ewald.
+
+The source code for Requizzle is available at:
+https://github.com/hegemonic/requizzle
+
 ## Rhino ##
 
 Rhino is distributed under the following licenses:
@@ -364,10 +375,11 @@ https://github.com/geraintluff/tv4
 
 Underscore.js is distributed under the MIT license, which is reproduced above.
 
-Copyright (c) 2009-2012 Jeremy Ashkenas, DocumentCloud.
+Copyright (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative
+Reporters & Editors.
 
 The source code for Underscore.js is available at:
-https://github.com/documentcloud/underscore
+https://github.com/jashkenas/underscore
 
 ## wrench-js ##
 

@@ -1,7 +1,9 @@
 # development-related files
-.jshintrc
+.eslintignore
+.eslintrc
+.gitignore
 .travis.yml
-Gruntfile.js
+gulpfile.js
 
 # scripts for launching JSDoc with Mozilla Rhino
 /jsdoc*

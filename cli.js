@@ -1,3 +1,5 @@
+/*global java */
+/*eslint no-process-exit:0 */
 /**
  * Helper methods for running JSDoc on the command line.
  *
@@ -229,6 +231,10 @@ cli.main = function(cb) {
             .parseFiles()
             .processParseResults();
     }
+    else {
+        console.log('There are no input files to process.\n');
+        cli.printHelp(cb);
+    }
 
     env.run.finish = new Date();
     cb(0);
@@ -239,78 +245,6 @@ function getRandomId() {
     var MAX = 999999;
 
     return Math.floor(Math.random() * (MAX - MIN + 1) + MIN);
-}
-
-// TODO: docs
-function createTempDir() {
-    var fs = require('jsdoc/fs');
-    var path = require('jsdoc/path');
-    var wrench = require('wrench');
-
-    var isRhino;
-    var tempDirname;
-    var tempPath;
-
-    // We only need one temp directory
-    if (props.tmpdir) {
-        return props.tmpdir;
-    }
-
-    isRhino = require('jsdoc/util/runtime').isRhino();
-    tempDirname = 'tmp-' + Date.now() + '-' + getRandomId();
-    tempPath = path.join(env.dirname, tempDirname);
-
-    try {
-        fs.mkdirSync(tempPath);
-        props.tmpdir = tempPath;
-    }
-    catch (e) {
-        logger.fatal('Unable to create the temp directory %s: %s', tempPath, e.message);
-        return null;
-    }
-
-    try {
-        // Delete the temp directory on exit
-        if (isRhino) {
-            ( new java.io.File(tempPath) ).deleteOnExit();
-        }
-        else {
-            process.on('exit', function() {
-                wrench.rmdirSyncRecursive(tempPath);
-            });
-        }
-
-        return tempPath;
-    }
-    catch (e) {
-        logger.error('Cannot automatically delete the temp directory %s on exit: %s', tempPath,
-            e.message);
-        return null;
-    }
-}
-
-// TODO: docs
-function copyResourceDir(filepath) {
-    var fs = require('jsdoc/fs');
-    var path = require('jsdoc/path');
-    var wrench = require('wrench');
-
-    var resourceDir;
-    var tmpDir;
-
-    try {
-        tmpDir = createTempDir();
-        resourceDir = path.join( tmpDir, path.basename(filepath) + '-' + getRandomId() );
-        fs.mkdirSync(resourceDir);
-
-        wrench.copyDirSyncRecursive(filepath, resourceDir);
-        return resourceDir;
-    }
-    catch (e) {
-        logger.fatal('Unable to copy %s to the temp directory %s: %s', filepath, resourceDir,
-            e.message);
-        return null;
-    }
 }
 
 // TODO: docs
@@ -345,7 +279,7 @@ cli.scanFiles = function() {
     if (env.conf.source && env.opts._.length) {
         filter = new Filter(env.conf.source);
 
-        env.sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse? 10 : undefined),
+        env.sourceFiles = app.jsdoc.scanner.scan(env.opts._, (env.opts.recurse ? 10 : undefined),
             filter);
     }
 
@@ -366,10 +300,6 @@ function resolvePluginPaths(paths) {
         if (!pluginPath) {
             logger.error('Unable to find the plugin "%s"', plugin);
             return;
-        }
-        // On Node.js, the plugin needs to be inside the JSDoc directory
-        else if ( isNode && (pluginPath.indexOf(global.env.dirname) !== 0) ) {
-            pluginPath = copyResourceDir(pluginPath);
         }
 
         pluginPaths.push( path.join(pluginPath, basename) );
@@ -461,13 +391,6 @@ cli.generateDocs = function() {
         var isNode = require('jsdoc/util/runtime').isNode();
         var publish = env.opts.template || 'templates/default';
         var templatePath = path.getResourcePath(publish);
-
-        if (templatePath && isNode) {
-            // On Node.js, the template needs to be inside the JSDoc folder
-            if (templatePath.indexOf(env.dirname) !== 0) {
-                templatePath = copyResourceDir(templatePath);
-            }
-        }
 
         // if we didn't find the template, keep the user-specified value so the error message is
         // useful

@@ -13,10 +13,10 @@
  */
 
 /**
- * @external {foo.bar.baz}
+ * @external {"foo.bar.baz"}
  */
 
  /**
   * Blah blah
-  * @function external:foo.bar.baz#blah
+  * @function external:"foo.bar.baz"#blah
   */

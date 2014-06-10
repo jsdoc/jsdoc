@@ -1,4 +1,5 @@
-/*global describe: true, expect: true, it: true */
+/*global describe, expect, it */
+'use strict';
 
 function buildText(type, name, desc) {
     var text = '';

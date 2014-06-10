@@ -82,6 +82,18 @@
         <?js }); ?></dl>
     <?js } ?>
 
+     <?js
+        var mixins = self.find({kind: 'mixin', memberof: doc.longname});
+        if (doc.kind !== 'globalobj' && mixins && mixins.length) {
+    ?>
+        <h3 class="subsection-title">Mixins</h3>
+
+        <dl><?js mixins.forEach(function(m) { ?>
+            <dt><?js= self.linkto(m.longname, m.name) ?></dt>
+            <dd><?js if (m.summary) { ?><?js= m.summary ?><?js } ?></dd>
+        <?js }); ?></dl>
+    <?js } ?>
+
     <?js
         var namespaces = self.find({kind: 'namespace', memberof: doc.longname});
         if (doc.kind !== 'globalobj' && namespaces && namespaces.length) {

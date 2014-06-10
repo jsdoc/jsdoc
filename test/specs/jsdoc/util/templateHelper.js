@@ -509,7 +509,7 @@ describe("jsdoc/util/templateHelper", function() {
 
         it('should detect if a doclet is virtual', function() {
             var tests = {
-                'My constant. \n @virtual': 'virtual',
+                'My constant. \n @virtual': 'abstract',
                 'asdf': false
             };
             doTests(tests);

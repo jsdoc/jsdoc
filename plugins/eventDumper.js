@@ -89,11 +89,8 @@ function cleanse(e) {
             result[prop] = 'function[' + e[prop].length + ']';
         }
         // never include functions that belong to the object
-        else if (typeof e[prop] === 'function') {
-            // do nothing
-        }
-        // don't call JSON.stringify() on Java native objects--Rhino will throw an exception
-        else {
+        else if (typeof e[prop] !== 'function') {
+            // don't call JSON.stringify() on Java native objects--Rhino will throw an exception
             result[prop] = isJavaNativeObject(e[prop]) ? String(e[prop]) : e[prop];
         }
     });

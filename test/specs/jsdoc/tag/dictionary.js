@@ -1,5 +1,16 @@
+/*global describe, expect, it */
+'use strict';
+
 describe('jsdoc/tag/dictionary', function() {
     var dictionary = require('jsdoc/tag/dictionary');
+
+    var tagOptions = {
+        canHaveValue: true,
+        isNamespace: true
+    };
+    var tagTitle = '!!!testTag!!!';
+    var tagSynonym = '!!!testTagSynonym!!!';
+    var tagDef = dictionary.defineTag(tagTitle, tagOptions).synonym(tagSynonym);
 
     it('should exist', function() {
         expect(dictionary).toBeDefined();
@@ -26,73 +37,72 @@ describe('jsdoc/tag/dictionary', function() {
         expect(typeof dictionary.normalise).toBe('function');
     });
 
-    // TODO: should really remove this tag from the dictionary after, but how?
-    var tagOptions = {
-        canHaveValue: true,
-        isNamespace: true
-    },
-        tagTitle = 'testTag',
-        tagSynonym = 'testTag2';
-    var def = dictionary.defineTag(tagTitle, tagOptions).synonym(tagSynonym);
-    // Should really test TagDefinition but they are private.
-    // Instead, we'll just tests all the properties we expect of it.
-    describe("defineTag", function() {
-
-        // Since TagDefinition is private, I'll just test for its properties here.
-        it("returns an object with 'title' property", function() {
-            expect(typeof def).toBe('object');
-            // how to test?
-            expect(def.title).toBeDefined();
-            expect(typeof def.title).toBe('string');
-            expect(def.title).toBe(dictionary.normalise(tagTitle));
+    describe('defineTag', function() {
+        it('returns an object with the correct "title" property', function() {
+            expect(typeof tagDef).toBe('object');
+            expect(tagDef.title).toBeDefined();
+            expect(typeof tagDef.title).toBe('string');
+            expect(tagDef.title).toBe(dictionary.normalise(tagTitle));
         });
 
-        it("returned object has all the tag properties copied over", function() {
-            for (var prop in tagOptions) {
-                if (tagOptions.hasOwnProperty(prop)) {
-                    expect(def[prop]).toBe(tagOptions[prop]);
-                }
+        it('returns an object that contains all of the tag properties', function() {
+            Object.keys(tagOptions).forEach(function(opt) {
+                expect(tagDef[opt]).toBe(tagOptions[opt]);
+            });
+        });
+
+        it('works correctly without an options object', function() {
+            var title = '!!!testTagNoOptions!!!';
+
+            function makeTag() {
+                return dictionary.defineTag(title);
             }
+
+            expect(makeTag).not.toThrow();
+            expect(makeTag().title).toBe(dictionary.normalise(title));
         });
     });
 
-    describe("lookUp", function() {
-        it("retrieves definition when using the tag's canonical name", function() {
-            expect(dictionary.lookUp(tagTitle)).toBe(def);
+    describe('lookUp', function() {
+        it("retrieves the definition using the tag's canonical name", function() {
+            expect(dictionary.lookUp(tagTitle)).toBe(tagDef);
         });
 
-        it("retrieves definition when using a synonym", function() {
-            expect(dictionary.lookUp(tagSynonym)).toBe(def);
+        it('retrieves the definition using a synonym for the tag', function() {
+            expect(dictionary.lookUp(tagSynonym)).toBe(tagDef);
         });
 
-        it("returns FALSE when a tag is not found", function() {
+        it('returns `false` when a tag is not found', function() {
             expect(dictionary.lookUp('lkjas1l24jk')).toBe(false);
         });
     });
 
-    describe("isNamespace", function() {
-        it("returns whether a tag is a namespace when using its canonical name", function() {
+    describe('isNamespace', function() {
+        it("returns whether a tag is a namespace using the tag's canonical name", function() {
             expect(dictionary.isNamespace(tagTitle)).toBe(true);
         });
 
-        it("returns whether a tag is a namespace when using its synonym", function() {
+        it('returns whether a tag is a namespace when using a synonym for the tag', function() {
             expect(dictionary.isNamespace(tagSynonym)).toBe(true);
         });
 
-        it("non-existent tags or non-namespace tags should return false", function() {
-            expect(dictionary.isNamespace('see')).toBe(false);
+        it('returns `false` for nonexistent tags', function() {
             expect(dictionary.isNamespace('lkjasd90034')).toBe(false);
+        });
+
+        it('returns `false` for non-namespace tags', function() {
+            expect(dictionary.isNamespace('see')).toBe(false);
         });
     });
 
-    describe("normalise", function() {
+    describe('normalise', function() {
         it("should return the tag's title if it is not a synonym", function() {
             expect(dictionary.normalise('FooBar')).toBe('foobar');
-            expect(dictionary.normalise(tagTitle)).toBe(def.title);
+            expect(dictionary.normalise(tagTitle)).toBe(tagDef.title);
         });
 
-        it("should return the canonical name of a tag if the synonym is normalised", function() {
-            expect(dictionary.normalise(tagSynonym)).toBe(def.title);
+        it('should return the canonical name of a tag if the synonym is normalised', function() {
+            expect(dictionary.normalise(tagSynonym)).toBe(tagDef.title);
         });
     });
 });

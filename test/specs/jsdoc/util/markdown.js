@@ -1,4 +1,6 @@
-/*global describe: true, env: true, expect: true, it: true, xit: true */
+/*global describe, env, expect, it, spyOn */
+'use strict';
+
 describe('jsdoc/util/markdown', function() {
     var markdown = require('jsdoc/util/markdown');
 
@@ -90,6 +92,19 @@ describe('jsdoc/util/markdown', function() {
                 .toBe('<p>Visit {@link http://usejsdoc.com}.</p>');
             expect(parser('Visit {@link https://google.com}.'))
                 .toBe('<p>Visit {@link https://google.com}.</p>');
+        });
+
+        it('should log an error if an unrecognized Markdown parser is requested', function() {
+            var logger = require('jsdoc/util/logger');
+            var parser;
+            var storage = setMarkdownConf({parser: 'not-a-real-markdown-parser'});
+
+            spyOn(logger, 'error');
+
+            parser = markdown.getParser();
+            restoreMarkdownConf(storage);
+
+            expect(logger.error).toHaveBeenCalled();
         });
     });
 });

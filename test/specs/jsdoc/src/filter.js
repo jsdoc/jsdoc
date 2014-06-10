@@ -137,6 +137,30 @@ describe('jsdoc/src/filter', function() {
                 expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
                 expect( files.indexOf('module/yes.js') ).toBeGreaterThan(-1);
             });
+
+            it('should be able to exclude descendants of excluded subdirectories', function() {
+                var files = [
+                    'yes.js',
+                    'topsecret/nested/nope.js',
+                    'module/yes.js',
+                    'module/topsecret/nested/nope.js'
+                ];
+                myFilter = new filter.Filter({
+                    includePattern: defaultIncludePattern,
+                    excludePattern: defaultExcludePattern,
+                    exclude: ['topsecret', 'module/topsecret']
+                });
+
+                files = files.filter(function($) {
+                    return myFilter.isIncluded($);
+                });
+
+                expect(files.length).toBe(2);
+                expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
+                expect( files.indexOf('module/yes.js') ).toBeGreaterThan(-1);
+                expect( files.indexOf('topsecret/nested/nope.js') ).toBe(-1);
+                expect( files.indexOf('module/topsecret/nested/nope.js') ).toBe(-1);
+            });
         });
     });
 

@@ -1,25 +1,33 @@
+/*global describe, expect, it, jasmine */
 describe("@namespace tag", function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/namespacetag.js'),
-        doc = docSet.getByLongname('x')[0],
-        doc2 = docSet.getByLongname('Foo')[0],
-        doc3 = docSet.getByLongname('Bar')[0];
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/namespacetag.js');
+    var x = docSet.getByLongname('x')[0];
+    var Foo = docSet.getByLongname('Foo')[0];
+    var Bar = docSet.getByLongname('Bar')[0];
+    var Socket = docSet.getByLongname('S.Socket')[0];
 
     it("sets the doclet's kind to 'namespace'", function () {
-        expect(doc.kind).toBe('namespace');
-        expect(doc2.kind).toBe('namespace');
-        expect(doc3.kind).toBe('namespace');
+        expect(x.kind).toBe('namespace');
+        expect(Foo.kind).toBe('namespace');
+        expect(Bar.kind).toBe('namespace');
     });
 
     it("sets the doclet's name to the tag value (if provided)", function() {
-        expect(doc.name).toBe('x');
-        expect(doc2.name).toBe('Foo');
-        expect(doc3.name).toBe('Bar');
+        expect(x.name).toBe('x');
+        expect(Foo.name).toBe('Foo');
+        expect(Bar.name).toBe('Bar');
     });
 
     it("sets the doclet's type (if provided in @namespace)", function() {
-        expect(doc3.type).toBeDefined();
-        expect(Array.isArray(doc3.type.names)).toBeTruthy();
-        expect(doc3.type.names.length).toBe(1);
-        expect(doc3.type.names[0]).toBe('function');
+        expect(Bar.type).toBeDefined();
+        expect(Array.isArray(Bar.type.names)).toBeTruthy();
+        expect(Bar.type.names.length).toBe(1);
+        expect(Bar.type.names[0]).toBe('function');
+    });
+
+    it("sets the doclet's longname correctly when the namespace is a substring of the name",
+        function() {
+        expect(Socket).toBeDefined();
+        expect(Socket.name).toBe('Socket');
     });
 });
