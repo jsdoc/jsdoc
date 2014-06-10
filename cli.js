@@ -17,6 +17,7 @@ module.exports = (function() {
 'use strict';
 
 var logger = require('jsdoc/util/logger');
+var stripJsonComments = require('strip-json-comments');
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -86,7 +87,7 @@ cli.loadConfig = function() {
     }
 
     try {
-        env.conf = new Config( fs.readFileSync(confPath, 'utf8') )
+        env.conf = new Config( stripJsonComments(fs.readFileSync(confPath, 'utf8')) )
             .get();
     }
     catch (e) {
@@ -329,7 +330,8 @@ cli.createParser = function() {
 cli.parseFiles = function() {
     var augment = require('jsdoc/augment');
     var borrow = require('jsdoc/borrow');
-    var Package = require('jsdoc/package').Package;
+    // Prevent Requizzle from picking up package.json. See #662.
+    var Package = require('./lib/jsdoc/package').Package;
 
     var docs;
     var packageDocs;
