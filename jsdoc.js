@@ -93,11 +93,12 @@ global.env = {
         args = [__dirname, process.cwd()];
         path = require('path');
 
-        // Create a custom require method that adds `lib/jsdoc` to the module lookup path.
-        // This makes it possible to `require('jsdoc/foo')` from external templates and plugins,
-        // and within JSDoc itself.
+        // Create a custom require method that adds `lib/jsdoc` and `node_modules` to the module
+        // lookup path. This makes it possible to `require('jsdoc/foo')` from external templates and
+        // plugins, and within JSDoc itself. It also allows external templates and plugins to
+        // require JSDoc's module dependencies without installing them locally.
         require = require('requizzle')({
-            requirePaths: [path.join(__dirname, 'lib')],
+            requirePaths: [path.join(__dirname, 'lib'), path.join(__dirname, 'node_modules')],
             infect: true
         });
     }
