@@ -8,6 +8,7 @@
 
 'use strict';
 
+var describe = require('./lib/describe');
 var parse = require('./lib/parser').parse;
 var stringify = require('./lib/stringify');
 
@@ -19,6 +20,10 @@ var typeExpressionCache = {
 var parsedTypeCache = {
 	normal: {},
 	htmlSafe: {}
+};
+
+var descriptionCache = {
+	normal: {}
 };
 
 function getTypeExpressionCache(options) {
@@ -41,6 +46,14 @@ function getParsedTypeCache(options) {
 	}
 }
 
+function getDescriptionCache(options) {
+	if (options.useCache === false || options.links !== null || options.links !== undefined) {
+		return null;
+	} else {
+		return descriptionCache.normal;
+	}
+}
+
 // can't return the original if any of the following are true:
 // 1. restringification was requested
 // 2. htmlSafe option was requested
@@ -52,6 +65,21 @@ function canReturnOriginalExpression(parsedType, options) {
 		Object.prototype.hasOwnProperty.call(parsedType, 'typeExpression');
 }
 
+// Add non-enumerable properties to a result object, then freeze it.
+function prepareFrozenObject(obj, expr, options) {
+	Object.defineProperty(obj, 'jsdoc', {
+		value: options.jsdoc === true ? true : false
+	});
+
+	if (expr) {
+		Object.defineProperty(obj, 'typeExpression', {
+			value: expr
+		});
+	}
+
+	return Object.freeze(obj);
+}
+
 function cachedParse(expr, options) {
 	var cache = getTypeExpressionCache(options);
 	var parsedType;
@@ -60,16 +88,7 @@ function cachedParse(expr, options) {
 		return cache[expr];
 	} else {
 		parsedType = parse(expr, options);
-
-		Object.defineProperties(parsedType, {
-			typeExpression: {
-				value: expr
-			},
-			jsdoc: {
-				value: options.jsdoc === true ? true : false
-			}
-		});
-		parsedType = Object.freeze(parsedType);
+		parsedType = prepareFrozenObject(parsedType, expr, options);
 
 		if (cache) {
 			cache[expr] = parsedType;
@@ -94,6 +113,23 @@ function cachedStringify(parsedType, options) {
 	}
 }
 
+function cachedDescribe(parsedType, options) {
+	var cache = getDescriptionCache(options);
+	var json;
+	var result;
+
+	if (cache) {
+		json = JSON.stringify(parsedType);
+		cache[json] = cache[json] || describe(parsedType, options);
+		return cache[json];
+	} else {
+		result = describe(parsedType, options);
+		result = prepareFrozenObject(result, null, options);
+
+		return result;
+	}
+}
+
 function Catharsis() {
 	this.Types = require('./lib/types');
 }
@@ -109,8 +145,9 @@ Catharsis.prototype.parse = function(typeExpr, options) {
 };
 
 Catharsis.prototype.stringify = function(parsedType, options) {
-	options = options || {};
 	var result;
+
+	options = options || {};
 
 	result = cachedStringify(parsedType, options);
 	if (options.validate) {
@@ -118,6 +155,12 @@ Catharsis.prototype.stringify = function(parsedType, options) {
 	}
 
 	return result;
+};
+
+Catharsis.prototype.describe = function(parsedType, options) {
+	options = options || {};
+
+	return cachedDescribe(parsedType, options);
 };
 
 module.exports = new Catharsis();
