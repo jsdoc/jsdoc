@@ -11,7 +11,10 @@ allows you to change a module's source code at runtime.
 You can use Requizzle in your test cases, or in production code if you like to live dangerously.
 Requizzle has been tested with Node.js 0.10 and 0.11.
 
-Here's what Requizzle can do:
+
+## How can I change a module with Requizzle? ##
+
+There are several different ways:
 
 ### Look for modules in new places ###
 
@@ -32,14 +35,18 @@ own source code.
 When you use Requizzle to require a module, you can force each child module's `require` method to
 inherit your changes to the parent module. (By default, only the parent module is changed.)
 
-### Preserve strict-mode declarations ###
 
-If a module starts with a strict-mode declaration, Requizzle keeps it in place. Your changes will
-appear after the strict-mode declaration.
+## Will Requizzle break my dependencies? ##
 
-### Leave native modules alone ###
+Probably not. It's true that Requizzle gives you plenty of new and exciting ways to tamper with, and
+possibly break, your module dependencies. But Requizzle also tries not to break anything on its own.
+In particular:
 
-If you use one of Node.js's built-in modules, such as `fs` or `path`, Requizzle won't mess with it.
++ **Requizzle preserves strict-mode declarations**.  If a module starts with a strict-mode
+declaration, Requizzle keeps it in place. Your changes will appear after the strict-mode
+declaration.
++ **Requizzle leaves native modules alone**. If you use Requizzle to load one of Node.js's built-in
+modules, such as `fs` or `path`, Requizzle won't mess with it.
 
 
 ## Installation ##
@@ -115,29 +122,39 @@ problem. If you run into any problems that aren't addressed here, please file a 
 
 ### Requizzle slowed down my code! A lot! ###
 
-Requizzle adds minimal overhead to the module-loading process. In some cases, it may even be faster
-than Node.js's built-in `require()` function.
-
-However, your code will run _much_ slower than usual if you do both of the following:
+Requizzle adds minimal overhead to the module-loading process. However, your code will run _much_
+slower than usual if you do both of the following:
 
 + Use Requizzle's `infect` option.
 + Require modules that have a lot of `require()` calls within the scope of individual functions.
 
-To fix this issue, find the module calls that are within function scope, and move them to each
-module's top-level scope. You can find the biggest offenders by using Node.js's built-in `--prof`
-option to profile your app, then running [node-tick](https://github.com/sidorares/node-tick) to
-create a report that shows the number of ticks per function.
+If Requizzle seems to slow down your app, look for module calls that are within function scope, then
+move them to each module's top-level scope. You can find the biggest offenders by using Node.js's
+built-in `--prof` option to profile your app, then running [node-tick][] to create a report that
+shows the number of ticks per function.
+
+[node-tick]: https://github.com/sidorares/node-tick
 
 ### Requizzle made my module do something weird! ###
 
-Do you have any [circular dependencies](http://nodejs.org/api/modules.html#modules_cycles) in the
-modules that aren't working? Circular dependencies can cause unusual behavior with Requizzle, just
-as they can without Requizzle. Try breaking the circular dependency.
+Do you have any [circular dependencies][circular] in the modules that aren't working? Circular
+dependencies can cause unusual behavior with Requizzle, just as they can without Requizzle. Try
+breaking the circular dependency.
 
-### Requizzle violates the sacred Law of Demeter! It's an unnatural abomination! ###
+[circular]: http://nodejs.org/api/modules.html#modules_cycles
+
+### Requizzle violates the [Law of Demeter][demeter]! It's an unnatural abomination! ###
 
 Fair enough.
 
+[demeter]: http://en.wikipedia.org/wiki/Law_of_Demeter
+
+
+## Changelog ##
+
++ 0.1.1 (June 2014): If the `requirePaths` option is used, the module loader now searches the extra
+paths first rather than last.
++ 0.1.0 (June 2014): Initial release.
 
 ## Acknowledgements ##
 
