@@ -1,4 +1,4 @@
-/*global describe, env, expect, it, spyOn */
+/*global afterEach, describe, env, expect, it, spyOn */
 'use strict';
 
 describe('jsdoc/util/markdown', function() {
@@ -15,31 +15,15 @@ describe('jsdoc/util/markdown', function() {
     });
 
     describe('getParser', function() {
-        // couple of convenience functions letting me set conf variables and restore
-        // them back to the originals later.
+        var originalMarkdownConf = env.conf.markdown;
+
         function setMarkdownConf(hash) {
-            if (!env.conf.markdown) {
-                env.conf.markdown = {};
-            }
-            var keys = Object.keys(hash);
-            var storage = {};
-            for (var i = 0; i < keys.length; ++i) {
-                storage[keys[i]] = env.conf.markdown[keys[i]];
-                // works because hash[key] is a scalar not an array/object
-                env.conf.markdown[keys[i]] = hash[keys[i]];
-            }
-            return storage;
+            env.conf.markdown = hash;
         }
 
-        function restoreMarkdownConf(storage) {
-            var keys = Object.keys(storage);
-            for (var i = 0; i < keys.length; ++i) {
-                env.conf.markdown[keys[i]] = storage[keys[i]];
-            }
-            if (keys.length === 0) {
-                delete env.conf.markdown;
-            }
-        }
+        afterEach(function() {
+            env.conf.markdown = originalMarkdownConf;
+        });
 
         it('should retrieve a function when called with default settings', function() {
             var storage = setMarkdownConf({});
@@ -50,29 +34,24 @@ describe('jsdoc/util/markdown', function() {
             setMarkdownConf({parser: 'marked'});
             parser = markdown.getParser();
             expect(typeof parser).toEqual('function');
-
-            restoreMarkdownConf(storage);
         });
 
         it('should use the marked parser when evilstreak is requested', function() {
             var storage = setMarkdownConf({parser: 'evilstreak'});
             var parser = markdown.getParser();
             expect(parser._parser).toEqual('marked');
-            restoreMarkdownConf(storage);
         });
 
         it('should use the marked parser when requested', function() {
             var storage = setMarkdownConf({parser: 'marked'});
             var parser = markdown.getParser();
             expect(parser._parser).toEqual('marked');
-            restoreMarkdownConf(storage);
         });
 
         it('should use the marked parser when GFM is requested', function() {
             var storage = setMarkdownConf({parser: 'gfm'});
             var parser = markdown.getParser();
             expect(parser._parser).toEqual('marked');
-            restoreMarkdownConf(storage);
         });
 
         it('should not apply formatting to inline tags when the marked parser is enabled', function() {
@@ -82,7 +61,6 @@ describe('jsdoc/util/markdown', function() {
             // get the marked parser and do the test
             expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toEqual(
                 '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>');
-            restoreMarkdownConf(storage);
         });
 
         it('should not automatically convert HTTP/HTTPS URLs to links', function() {
@@ -102,7 +80,6 @@ describe('jsdoc/util/markdown', function() {
             spyOn(logger, 'error');
 
             parser = markdown.getParser();
-            restoreMarkdownConf(storage);
 
             expect(logger.error).toHaveBeenCalled();
         });
