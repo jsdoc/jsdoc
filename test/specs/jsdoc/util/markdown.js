@@ -54,6 +54,18 @@ describe('jsdoc/util/markdown', function() {
             expect(parser._parser).toEqual('marked');
         });
 
+        it('should log an error if an unrecognized Markdown parser is requested', function() {
+            var logger = require('jsdoc/util/logger');
+            var parser;
+            var storage = setMarkdownConf({parser: 'not-a-real-markdown-parser'});
+
+            spyOn(logger, 'error');
+
+            parser = markdown.getParser();
+
+            expect(logger.error).toHaveBeenCalled();
+        });
+
         it('should not apply formatting to inline tags when the marked parser is enabled', function() {
             var storage = setMarkdownConf({parser: 'marked'});
             var parser = markdown.getParser();
@@ -72,16 +84,18 @@ describe('jsdoc/util/markdown', function() {
                 .toBe('<p>Visit {@link https://google.com}.</p>');
         });
 
-        it('should log an error if an unrecognized Markdown parser is requested', function() {
-            var logger = require('jsdoc/util/logger');
-            var parser;
-            var storage = setMarkdownConf({parser: 'not-a-real-markdown-parser'});
+        it('should escape characters in code blocks as needed', function() {
+            var parser = markdown.getParser();
+            var markdownText = '' +
+                '```html\n' +
+                '<p><a href="#">Sample \'HTML.\'</a></p>\n' +
+                '```';
+            var convertedText = '' +
+                '<pre class="prettyprint source lang-html"><code>' +
+                '&lt;p>&lt;a href=&quot;#&quot;>Sample \'HTML.\'&lt;/a>&lt;/p>' +
+                '</code></pre>';
 
-            spyOn(logger, 'error');
-
-            parser = markdown.getParser();
-
-            expect(logger.error).toHaveBeenCalled();
+            expect(parser(markdownText)).toBe(convertedText);
         });
     });
 });
