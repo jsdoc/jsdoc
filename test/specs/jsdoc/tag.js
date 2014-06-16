@@ -70,12 +70,12 @@ describe('jsdoc/tag', function() {
             expect(tagExample.title).toBe(jsdoc.dictionary.normalise(tagExample.originalTitle));
         });
 
-        it("should have a 'text' property. a string", function () {
+        it("should have a 'text' property, a string", function() {
             expect(tagArg.text).toBeDefined();
             expect(typeof tagArg.text).toBe('string');
         });
 
-        it("should have a 'value' property", function () {
+        it("should have a 'value' property", function() {
             expect(tagArg.value).toBeDefined();
             expect(tagExample.value).toBeDefined();
             expect(tagType.value).toBeDefined();
@@ -155,10 +155,18 @@ describe('jsdoc/tag', function() {
 
         // further tests for this sort of thing are in jsdoc/tag/validator.js tests.
         describe('tag validating', function() {
-            it('logs an error for bad tags', function() {
+            beforeEach(function() {
                 spyOn(logger, 'error');
+            });
 
+            it('logs an error for bad tags', function() {
                 var tag = new jsdoc.tag.Tag('param', '{!*!*!*!} foo');
+
+                expect(logger.error).toHaveBeenCalled();
+            });
+
+            it('validates tags with no text', function() {
+                var tag = new jsdoc.tag.Tag('copyright');
 
                 expect(logger.error).toHaveBeenCalled();
             });
