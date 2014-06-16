@@ -1,5 +1,9 @@
 /*global afterEach, beforeEach, describe, env, expect, it, spyOn */
-describe("jsdoc/tag", function() {
+'use strict';
+
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
+describe('jsdoc/tag', function() {
     var jsdoc = {
         tag: require('jsdoc/tag'),
         dictionary: require('jsdoc/tag/dictionary'),
@@ -114,13 +118,12 @@ describe("jsdoc/tag", function() {
                 expect(def).not.toBe(false);
                 var info = jsdoc.type.parse(tag.text, def.canHaveName, def.canHaveType);
 
-                var props_that_should_be_copied = ['optional', 'nullable', 'variable', 'defaultvalue'];
-                for (var i = 0; i < props_that_should_be_copied.length; ++i) {
-                    var prop = props_that_should_be_copied[i];
-                    if (info.hasOwnProperty(prop)) {
+                ['optional', 'nullable', 'variable', 'defaultvalue'].forEach(function(prop) {
+                    if (hasOwnProp.call(info, prop)) {
                         expect(tag.value[prop]).toBe(info[prop]);
                     }
-                }
+                });
+
                 if (info.type && info.type.length) {
                     expect(tag.value.type).toBeDefined();
                     expect(typeof tag.value.type).toBe('object');
@@ -128,21 +131,21 @@ describe("jsdoc/tag", function() {
                     expect(tag.value.type.names).toEqual(info.type);
                 }
             }
-            it("if the tag has a type, tag.value should contain the type information", function() {
+            it('if the tag has a type, tag.value should contain the type information', function() {
                 // we assume jsdoc/tag/type.parse works (it has its own tests to verify this);
                 verifyTagType(tagType);
                 verifyTagType(tagArg);
                 verifyTagType(tagParam);
             });
 
-            it("if the tag has a description beyond the name/type, this should be in tag.value.description", function() {
+            it('if the tag has a description beyond the name/type, this should be in tag.value.description', function() {
                 expect(tagType.value.description).not.toBeDefined();
 
                 expect(tagArg.value.description).toBeDefined();
                 expect(tagArg.value.description).toBe(desc);
             });
 
-            it("if the tag can have a name, it should be stored in tag.value.name", function() {
+            it('if the tag can have a name, it should be stored in tag.value.name', function() {
                 expect(tagArg.value.name).toBeDefined();
                 expect(tagArg.value.name).toBe('foo');
 
@@ -151,8 +154,8 @@ describe("jsdoc/tag", function() {
         });
 
         // further tests for this sort of thing are in jsdoc/tag/validator.js tests.
-        describe("tag validating", function() {
-            it("logs an error for bad tags", function() {
+        describe('tag validating', function() {
+            it('logs an error for bad tags', function() {
                 spyOn(logger, 'error');
 
                 var tag = new jsdoc.tag.Tag('param', '{!*!*!*!} foo');
