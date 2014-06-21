@@ -1,4 +1,5 @@
 /*global afterEach, beforeEach, describe, expect, env, it, jasmine, spyOn */
+/*eslint quotes:0 */
 'use strict';
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
@@ -356,7 +357,7 @@ describe("jsdoc/util/templateHelper", function() {
             expect( helper.htmlsafe(input) ).toBe('foo &amp;&amp; bar &amp; baz;');
         });
 
-        it ('should not double-convert ampersands', function() {
+        it('should not double-convert ampersands', function() {
             var input = '<h1>Foo & Friends</h1>';
             expect( helper.htmlsafe(input) ).toBe('&lt;h1>Foo &amp; Friends&lt;/h1>');
         });
@@ -403,31 +404,35 @@ describe("jsdoc/util/templateHelper", function() {
         // instead parse a file from fixtures and verify it?
         var classes = [
             {kind: 'class'}, // global
-            {kind: 'class', memberof: 'SomeNamespace'}, // not global
+            {kind: 'class', memberof: 'SomeNamespace'} // not global
         ];
         var externals = [
-            {kind: 'external'},
+            {kind: 'external'}
         ];
         var events = [
-            {kind: 'event'},
+            {kind: 'event'}
         ];
         var mixins = [
-            {kind: 'mixin'},
+            {kind: 'mixin'}
         ];
         var modules = [
-            {kind: 'module'},
+            {kind: 'module'}
         ];
         var namespaces = [
-            {kind: 'namespace'},
+            {kind: 'namespace'}
         ];
-        var misc = [
-            {kind: 'function'}, // global
-            {kind: 'member'}, // global
-            {kind: 'constant'}, // global
-            {kind: 'typedef'}, // global
-            {kind: 'constant', memberof: 'module:one/two'}, // not global
-            {kind: 'function', name: 'module:foo', longname: 'module:foo'} // not global
+        var miscGlobal = [
+            {kind: 'function'},
+            {kind: 'member'},
+            {kind: 'constant'},
+            {kind: 'typedef'}
         ];
+        var miscNonGlobal = [
+            {kind: 'constant', memberof: 'module:one/two'},
+            {kind: 'function', name: 'module:foo', longname: 'module:foo'},
+            {kind: 'member', name: 'module:bar', longname: 'module:bar'}
+        ];
+        var misc = miscGlobal.concat(miscNonGlobal);
         var array = classes.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc))))));
         var data = taffy(array);
         var members = helper.getMembers(data);
@@ -487,7 +492,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it("globals are detected", function() {
-            compareObjectArrays(misc.slice(0, -2), members.globals);
+            compareObjectArrays(miscGlobal, members.globals);
         });
     });
 
@@ -850,6 +855,11 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("prune", function() {
+        var priv = !!env.opts.private;
+
+        afterEach(function() {
+            env.opts.private = priv;
+        });
 
         var array = [
             // keep
@@ -877,23 +887,19 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it('should prune private members if env.opts.private is falsy', function() {
-            var priv = !!env.opts.private;
+            var pruned;
 
             env.opts.private = false;
-            var pruned = helper.prune( taffy(arrayPrivate) )().get();
+            pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays([], pruned);
-
-            env.opts.private = !!priv;
         });
 
         it('should not prune private members if env.opts.private is truthy', function() {
-            var priv = !!env.opts.private;
+            var pruned;
 
             env.opts.private = true;
-            var pruned = helper.prune( taffy(arrayPrivate) )().get();
+            pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays(arrayPrivate, pruned);
-
-            env.opts.private = !!priv;
         });
     });
 
