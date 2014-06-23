@@ -96,7 +96,9 @@ function updateItemName(item) {
 }
 
 function addParamAttributes(params) {
-    return params.map(updateItemName);
+    return params.filter(function(param) {
+        return param.name && param.name.indexOf('.') === -1;
+    }).map(updateItemName);
 }
 
 function buildItemTypeStrings(item) {
