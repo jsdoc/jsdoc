@@ -177,9 +177,14 @@ describe("jsdoc/util/templateHelper", function() {
             expect(filename).toBe('BackusNaur.html');
         });
 
-        it('should convert a string with slashes into the text following the last slash plus the default extension', function() {
+        it('should replace slashes with underscores', function() {
             var filename = helper.getUniqueFilename('tick/tock');
-            expect(filename).toMatch(/^tock\.html$/);
+            expect(filename).toBe('tick_tock.html');
+        });
+
+        it('should replace other problematic characters with underscores', function() {
+            var filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename');
+            expect(filename).toBe('a very strange __________ filename.html');
         });
 
         it('should not return the same filename twice', function() {
@@ -1332,7 +1337,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('_.html#"*foo"');
+            expect(url).toEqual('ns1._!_.html#%22*foo%22');
         });
 
         it('should create a url for a function that is the only symbol exported by a module.',
