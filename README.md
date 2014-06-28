@@ -115,10 +115,12 @@ generate and customize your documentation. Here are just a few:
 For More Information
 --------------------
 
-Project Documentation: <http://usejsdoc.org/>  
-Project Documentation Source: <https://github.com/jsdoc3/jsdoc3.github.com>  
-JSDoc User's Group: <http://groups.google.com/group/jsdoc-users>  
-Project Announcements: <http://twitter.com/jsdoc3>
++ Documentation is available at [Use JSDoc](http://usejsdoc.org).
++ Contribute to the docs at [jsdoc3/jsdoc3.github.com](https://github.com/jsdoc3/jsdoc3.github.com).
++ ~~Post questions to the [JSDoc Users mailing list](http://groups.google.com/group/jsdoc-users).~~
+(temporarily unavailable)
++ Post questions tagged `jsdoc` to [Stack
+Overflow](http://stackoverflow.com/questions/tagged/jsdoc).
 
 License
 -------

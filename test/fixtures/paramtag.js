@@ -45,3 +45,11 @@ function commit(atomic) {
  */
 function request(async) {
 }
+
+/** @class */
+function MySocket() {}
+/**
+ * @param {string} - Hostname.
+ * @param {number} - Port number.
+ */
+MySocket.prototype.open = function(hostname, port) {};
