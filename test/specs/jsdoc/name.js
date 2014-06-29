@@ -1,21 +1,25 @@
-/*global describe: true, expect: true, it: true */
+/*global describe, expect, it */
+'use strict';
 
-describe("jsdoc/name", function() {
-    var jsdoc = {name: require('jsdoc/name'), doclet: require('jsdoc/doclet') };
+describe('jsdoc/name', function() {
+    var jsdoc = {
+        doclet: require('jsdoc/doclet'),
+        name: require('jsdoc/name')
+    };
 
-    it("should exist", function() {
+    it('should exist', function() {
         expect(jsdoc.name).toBeDefined();
-        expect(typeof jsdoc.name).toEqual("object");
+        expect(typeof jsdoc.name).toBe('object');
     });
 
-    it("should export an 'resolve' function", function() {
+    it("should export a 'resolve' function", function() {
         expect(jsdoc.name.resolve).toBeDefined();
-        expect(typeof jsdoc.name.resolve).toEqual("function");
+        expect(typeof jsdoc.name.resolve).toBe('function');
     });
 
     it("should export an 'applyNamespace' function", function() {
         expect(jsdoc.name.applyNamespace).toBeDefined();
-        expect(typeof jsdoc.name.applyNamespace).toEqual("function");
+        expect(typeof jsdoc.name.applyNamespace).toBe('function');
     });
 
     // TODO: add tests for other exported constants
@@ -24,14 +28,14 @@ describe("jsdoc/name", function() {
         expect(typeof jsdoc.name.SCOPE_NAMES).toBe('object');
     });
 
-    it("should export an 'shorten' function", function() {
+    it("should export a 'shorten' function", function() {
         expect(jsdoc.name.shorten).toBeDefined();
-        expect(typeof jsdoc.name.shorten).toEqual("function");
+        expect(typeof jsdoc.name.shorten).toBe('function');
     });
 
-    it("should export an 'splitName' function", function() {
+    it("should export a 'splitName' function", function() {
         expect(jsdoc.name.splitName).toBeDefined();
-        expect(typeof jsdoc.name.splitName).toEqual("function");
+        expect(typeof jsdoc.name.splitName).toBe('function');
     });
 
     describe('SCOPE_NAMES', function() {
@@ -58,10 +62,10 @@ describe("jsdoc/name", function() {
         });
     });
 
-    describe ("shorten", function() {
+    describe('shorten', function() {
         it('should break up a longname into the correct memberof, name and scope parts', function() {
-            var startName = 'lib.Panel#open',
-                parts = jsdoc.name.shorten(startName);
+            var startName = 'lib.Panel#open';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('open');
             expect(parts.memberof).toEqual('lib.Panel');
@@ -69,8 +73,8 @@ describe("jsdoc/name", function() {
         });
 
         it('should work on static names', function() {
-            var startName = 'elements.selected.getVisible',
-                parts = jsdoc.name.shorten(startName);
+            var startName = 'elements.selected.getVisible';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('getVisible');
             expect(parts.memberof).toEqual('elements.selected');
@@ -78,77 +82,72 @@ describe("jsdoc/name", function() {
         });
 
         it('should work on protoyped names', function() {
-            var startName = 'Validator.prototype.$element',
-                parts = jsdoc.name.shorten(startName);
+            var startName = 'Validator.prototype.$element';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('$element');
             expect(parts.memberof).toEqual('Validator');
             expect(parts.scope).toEqual('#');
         });
 
-        it('should work on inner names.', function() {
-            var startName = 'Button~_onclick',
-                parts = jsdoc.name.shorten(startName);
+        it('should work on inner names', function() {
+            var startName = 'Button~_onclick';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('_onclick');
             expect(parts.memberof).toEqual('Button');
             expect(parts.scope).toEqual('~');
         });
 
-        it('should work on global names.', function() {
-            var startName = 'close',
-                parts = jsdoc.name.shorten(startName);
+        it('should work on global names', function() {
+            var startName = 'close';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('close');
-            //'The memberof should be an empty string for global symbols.'
             expect(parts.memberof).toEqual('');
-            //'The scope should be an empty string for global symbols.'
             expect(parts.scope).toEqual('');
         });
 
-        it('should work on bracketed stringy names', function() {
-            var startName = 'channels["#ops"]#open',
-                parts = jsdoc.name.shorten(startName);
+        it('should work when a single property uses bracket notation', function() {
+            var startName = 'channels["#ops"]#open';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('open');
-            //'Bracketed stringy names should appear as quoted strings.'
             expect(parts.memberof).toEqual('channels."#ops"');
             expect(parts.scope).toEqual('#');
+        });
 
-            startName = 'channels["#bots"]["log.max"]';
-            parts = jsdoc.name.shorten(startName);
+        it('should work when consecutive properties use bracket notation', function() {
+            var startName = 'channels["#bots"]["log.max"]';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('"log.max"');
             expect(parts.memberof).toEqual('channels."#bots"');
             expect(parts.scope).toEqual('.');
         });
 
-        it('should work on bracketed stringy names with single quotes', function() {
-            var startName = "channels['#ops']",
-                parts = jsdoc.name.shorten(startName);
+        it('should work when a property uses single-quoted bracket notation', function() {
+            var startName = "channels['#ops']";
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toBe("'#ops'");
             expect(parts.memberof).toBe('channels');
             expect(parts.scope).toBe('.');
         });
 
-        it('should work on fully stringy names, like "foo.bar"', function() {
-            var startName = '"foo.bar"',
-                parts = jsdoc.name.shorten(startName);
+        it('should work on double-quoted strings', function() {
+            var startName = '"foo.bar"';
+            var parts = jsdoc.name.shorten(startName);
 
-            //'The name should be the full quoted string.'
             expect(parts.name).toEqual('"foo.bar"');
-            //'The longname should be the full quoted string.'
             expect(parts.longname).toEqual('"foo.bar"');
-            //'There should be no memberof, as it is global.'
             expect(parts.memberof).toEqual('');
-            //'The scope should be as global.'
             expect(parts.scope).toEqual('');
         });
 
-        it('should work on fully stringy names in single quotes, like \'foo.bar\'', function() {
-            var startName = "'foo.bar'",
-                parts = jsdoc.name.shorten(startName);
+        it('should work on single-quoted strings', function() {
+            var startName = "'foo.bar'";
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toBe("'foo.bar'");
             expect(parts.longname).toBe("'foo.bar'");
@@ -157,8 +156,8 @@ describe("jsdoc/name", function() {
         });
 
         it('should find the variation', function() {
-            var startName = 'anim.fadein(2)',
-                parts = jsdoc.name.shorten(startName);
+            var startName = 'anim.fadein(2)';
+            var parts = jsdoc.name.shorten(startName);
 
             expect(parts.variation).toEqual('2');
             expect(parts.name).toEqual('fadein');
@@ -166,40 +165,40 @@ describe("jsdoc/name", function() {
         });
     });
 
-    describe("applyNamespace", function() {
+    describe('applyNamespace', function() {
         it('should insert the namespace only before the name part of the longname', function() {
-            var startName = 'lib.Panel#open',
-                endName = jsdoc.name.applyNamespace(startName, 'event');
+            var startName = 'lib.Panel#open';
+            var endName = jsdoc.name.applyNamespace(startName, 'event');
 
             expect(endName, 'lib.Panel#event:open');
         });
 
-        it(" should insert the namespace before a global name", function() {
-            var startName = 'maths/bigint',
-            endName = jsdoc.name.applyNamespace(startName, 'module');
+        it('should insert the namespace before a global name', function() {
+            var startName = 'maths/bigint';
+            var endName = jsdoc.name.applyNamespace(startName, 'module');
 
             expect(endName, 'module:maths/bigint');
         });
 
         it('should treat quoted parts of the name as atomic and insert namespace before a quoted shortname', function() {
-            var startName = 'foo."*dont\'t.look~in#here!"',
-            endName = jsdoc.name.applyNamespace(startName, 'event');
+            var startName = 'foo."*dont\'t.look~in#here!"';
+            var endName = jsdoc.name.applyNamespace(startName, 'event');
 
             expect(endName, 'foo.event:"*dont\'t.look~in#here!"');
         });
 
         it('should not add another namespace if one already exists.', function() {
-            var startName = 'lib.Panel#event:open',
-                endName = jsdoc.name.applyNamespace(startName, 'event');
+            var startName = 'lib.Panel#event:open';
+            var endName = jsdoc.name.applyNamespace(startName, 'event');
 
             expect(endName, 'lib.Panel#event:open');
         });
     });
 
-    describe("splitName", function() {
+    describe('splitName', function() {
         it('should find the name and description.', function() {
-            var startName = 'ns.Page#"last \\"sentence\\"".words~sort(2)   - This is a description. ',
-                parts = jsdoc.name.splitName(startName);
+            var startName = 'ns.Page#"last \\"sentence\\"".words~sort(2)   - This is a description. ';
+            var parts = jsdoc.name.splitName(startName);
 
             expect(parts.name, 'ns.Page#"last \\"sentence\\"".words~sort(2)');
             expect(parts.description, 'This is a description.');
@@ -222,11 +221,11 @@ describe("jsdoc/name", function() {
         });
     });
 
-    describe("resolve", function() {
+    describe('resolve', function() {
         // TODO: further tests (namespaces, modules, ...)
 
-        function makeDoclet(bits) {
-            var comment = '/**\n' + bits.join('\n') + '\n*/';
+        function makeDoclet(tagStrings) {
+            var comment = '/**\n' + tagStrings.join('\n') + '\n*/';
             return new jsdoc.doclet.Doclet(comment, {});
         }
 
@@ -237,8 +236,9 @@ describe("jsdoc/name", function() {
 
         // Test the basic @event that is not nested.
         it('unnested @event gets resolved correctly', function() {
-            var doclet = makeDoclet([event, name]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([event, name]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toBeUndefined();
             expect(doclet.longname).toEqual('event:A');
@@ -246,43 +246,49 @@ describe("jsdoc/name", function() {
 
         // test all permutations of @event @name [name] @memberof.
         it('@event @name @memberof resolves correctly', function() {
-            var doclet = makeDoclet([event, name, memberOf]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([event, name, memberOf]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
         });
         it('@event @memberof @name resolves correctly', function() {
-            var doclet = makeDoclet([event, memberOf, name]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([event, memberOf, name]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
         });
         it('@name @event @memberof resolves correctly', function() {
-            var doclet = makeDoclet([name, event, memberOf]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([name, event, memberOf]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
         });
         it('@name @memberof @event resolves correctly', function() {
-            var doclet = makeDoclet([name, memberOf, event]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([name, memberOf, event]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
         });
         it('@memberof @event @name resolves correctly', function() {
-            var doclet = makeDoclet([memberOf, event, name]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([memberOf, event, name]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
         });
         it('@memberof @name @event resolves correctly', function() {
-            var doclet = makeDoclet([memberOf, name, event]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([memberOf, name, event]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
@@ -290,15 +296,17 @@ describe("jsdoc/name", function() {
 
         // test all permutations of @event [name]  @memberof
         it('@event [name] @memberof resolves correctly', function() {
-            var doclet = makeDoclet(['@event A', memberOf]),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet(['@event A', memberOf]);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
         });
         it('@memberof @event [name] resolves correctly', function() {
-            var doclet = makeDoclet([memberOf, '@event A']),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([memberOf, '@event A']);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
@@ -306,15 +314,17 @@ describe("jsdoc/name", function() {
 
         // test full @event A.B
         it('full @event definition works', function() {
-            var doclet = makeDoclet(['@event MyClass.A']),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet(['@event MyClass.A']);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
         });
         it('full @event definition with event: works', function() {
-            var doclet = makeDoclet(['@event MyClass.event:A']),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet(['@event MyClass.event:A']);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('event:A');
             expect(doclet.memberof).toEqual('MyClass');
             expect(doclet.longname).toEqual('MyClass.event:A');
@@ -322,8 +332,9 @@ describe("jsdoc/name", function() {
 
         // a double-nested one just in case
         it('@event @name MyClass.EventName @memberof somethingelse works', function() {
-            var doclet = makeDoclet([event, '@name MyClass.A', '@memberof MyNamespace']),
-                out = jsdoc.name.resolve(doclet);
+            var doclet = makeDoclet([event, '@name MyClass.A', '@memberof MyNamespace']);
+            var out = jsdoc.name.resolve(doclet);
+
             expect(doclet.name).toEqual('A');
             expect(doclet.memberof).toEqual('MyNamespace.MyClass');
             expect(doclet.longname).toEqual('MyNamespace.MyClass.event:A');
@@ -331,8 +342,12 @@ describe("jsdoc/name", function() {
 
         // other cases
         it('correctly handles a function parameter named "prototype"', function() {
-            var doclet = makeDoclet(['@name Bar.prototype.baz', '@function', '@memberof module:foo',
-                '@param {string} qux']);
+            var doclet = makeDoclet([
+                '@name Bar.prototype.baz',
+                '@function',
+                '@memberof module:foo',
+                '@param {string} qux'
+            ]);
             var out = jsdoc.name.resolve(doclet);
 
             expect(doclet.name).toBe('baz');
