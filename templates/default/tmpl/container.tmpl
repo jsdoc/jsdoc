@@ -12,27 +12,33 @@
 <section>
 
 <header>
-    <h2><?js if (doc.ancestors && doc.ancestors.length) { ?>
-        <span class="ancestors"><?js= doc.ancestors.join('') ?></span>
-    <?js } ?>
-    <?js= doc.name ?>
-    <?js if (doc.variation) { ?>
-        <sup class="variation"><?js= doc.variation ?></sup>
-    <?js } ?></h2>
-    <?js if (doc.classdesc) { ?>
-        <div class="class-description"><?js= doc.classdesc ?></div>
+    <?js if (!doc.longname || doc.kind !== 'module') { ?>
+        <h2><?js if (doc.ancestors && doc.ancestors.length) { ?>
+            <span class="ancestors"><?js= doc.ancestors.join('') ?></span>
+        <?js } ?>
+        <?js= doc.name ?>
+        <?js if (doc.variation) { ?>
+            <sup class="variation"><?js= doc.variation ?></sup>
+        <?js } ?></h2>
+        <?js if (doc.classdesc) { ?>
+            <div class="class-description"><?js= doc.classdesc ?></div>
+        <?js } ?>
     <?js } ?>
 </header>
 
 <article>
     <div class="container-overview">
     <?js if (doc.kind === 'module' && doc.module) { ?>
+        <?js if (doc.description) { ?>
+            <div class="description"><?js= doc.description ?></div>
+        <?js } ?>
+
         <?js= self.partial('method.tmpl', doc.module) ?>
     <?js } ?>
 
     <?js if (doc.kind === 'class') { ?>
         <?js= self.partial('method.tmpl', doc) ?>
-    <?js } else { ?>
+    <?js } else if (doc.kind !== 'module' || !doc.module) { ?>
         <?js if (doc.description) { ?>
             <div class="description"><?js= doc.description ?></div>
         <?js } ?>

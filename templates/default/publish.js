@@ -1,6 +1,7 @@
 /*global env: true */
 'use strict';
 
+var doop = require('jsdoc/util/doop');
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');
 var logger = require('jsdoc/util/logger');
@@ -267,8 +268,10 @@ function attachModuleSymbols(doclets, modules) {
 
     return modules.map(function(module) {
         if (symbols[module.longname]) {
-            module.module = symbols[module.longname];
-            module.module.name = module.module.name.replace('module:', '(require("') + '"))';
+            module.module = doop(symbols[module.longname]);
+            if (module.module.kind === 'class' || module.module.kind === 'function') {
+                module.module.name = module.module.name.replace('module:', '(require("') + '"))';
+            }
         }
     });
 }
@@ -578,8 +581,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     // once for all
     view.nav = buildNav(members);
-    attachModuleSymbols( find({ kind: ['class', 'function'], longname: {left: 'module:'} }),
-        members.modules );
+    attachModuleSymbols( find({ longname: {left: 'module:'} }), members.modules );
 
     // generate the pretty-printed source files first so other pages can link to them
     if (outputSourceFiles) {
