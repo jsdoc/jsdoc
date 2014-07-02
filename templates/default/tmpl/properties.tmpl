@@ -99,7 +99,7 @@
             <?js } ?>
 
             <td class="description last"><?js= prop.description ?><?js if (prop.subprops) { ?>
-                <h6>Properties</h6><?js= self.partial('properties.tmpl', prop.subprops) ?>
+                <h6>Properties</h6><?js= self.partial('properties.tmpl', prop) ?>
             <?js } ?></td>
         </tr>
 
