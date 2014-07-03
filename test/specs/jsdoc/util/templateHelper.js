@@ -1,4 +1,4 @@
-/*global afterEach, beforeEach, describe, expect, env, it, jasmine, spyOn */
+/*global afterEach, beforeEach, describe, expect, env, it, jasmine, spyOn, xdescribe */
 /*eslint quotes:0 */
 'use strict';
 
@@ -131,6 +131,11 @@ describe("jsdoc/util/templateHelper", function() {
     it("should export a 'createLink' function", function() {
         expect(helper.createLink).toBeDefined();
         expect(typeof helper.createLink).toBe("function");
+    });
+
+    it('should export a "longnamesToTree" function', function() {
+        expect(helper.longnamesToTree).toBeDefined();
+        expect(typeof helper.longnamesToTree).toBe('function');
     });
 
     describe("setTutorials", function() {
@@ -412,7 +417,7 @@ describe("jsdoc/util/templateHelper", function() {
             {kind: 'class', memberof: 'SomeNamespace'} // not global
         ];
         var externals = [
-            {kind: 'external'}
+            {kind: 'external', name: 'foo'}
         ];
         var events = [
             {kind: 'event'}
@@ -1424,5 +1429,9 @@ describe("jsdoc/util/templateHelper", function() {
                 out = helper.resolveAuthorLinks(str);
             expect(out).toBe(helper.htmlsafe(str));
         });
+    });
+
+    xdescribe('longnamesToTree', function() {
+        // TODO
     });
 });
