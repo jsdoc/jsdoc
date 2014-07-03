@@ -23,9 +23,9 @@ describe('jsdoc/name', function() {
     });
 
     // TODO: add tests for other exported constants
-    it('should export a SCOPE_NAMES enum', function() {
-        expect(jsdoc.name.SCOPE_NAMES).toBeDefined();
-        expect(typeof jsdoc.name.SCOPE_NAMES).toBe('object');
+    it('should export a SCOPE enum', function() {
+        expect(jsdoc.name.SCOPE).toBeDefined();
+        expect(typeof jsdoc.name.SCOPE).toBe('object');
     });
 
     it("should export a 'shorten' function", function() {
@@ -38,27 +38,56 @@ describe('jsdoc/name', function() {
         expect(typeof jsdoc.name.splitName).toBe('function');
     });
 
-    describe('SCOPE_NAMES', function() {
-        var SCOPE_NAMES = jsdoc.name.SCOPE_NAMES;
+    describe('SCOPE', function() {
+        var SCOPE = jsdoc.name.SCOPE;
 
-        it('should have a "global" property', function() {
-            expect(SCOPE_NAMES.global).toBeDefined();
-            expect(typeof SCOPE_NAMES.global).toBe('string');
+        it('should have a "NAMES" property', function() {
+            expect(SCOPE.NAMES).toBeDefined();
+            expect(typeof SCOPE.NAMES).toBe('object');
         });
 
-        it('should have an "inner" property', function() {
-            expect(SCOPE_NAMES.inner).toBeDefined();
-            expect(typeof SCOPE_NAMES.inner).toBe('string');
+        it('should have a "PUNC" property', function() {
+            expect(SCOPE.PUNC).toBeDefined();
+            expect(typeof SCOPE.PUNC).toBe('object');
         });
 
-        it('should have an "instance" property', function() {
-            expect(SCOPE_NAMES.instance).toBeDefined();
-            expect(typeof SCOPE_NAMES.instance).toBe('string');
+        describe('NAMES', function() {
+            it('should have a "GLOBAL" property', function() {
+                expect(SCOPE.NAMES.GLOBAL).toBeDefined();
+                expect(typeof SCOPE.NAMES.GLOBAL).toBe('string');
+            });
+
+            it('should have an "INNER" property', function() {
+                expect(SCOPE.NAMES.INNER).toBeDefined();
+                expect(typeof SCOPE.NAMES.INNER).toBe('string');
+            });
+
+            it('should have an "INSTANCE" property', function() {
+                expect(SCOPE.NAMES.INSTANCE).toBeDefined();
+                expect(typeof SCOPE.NAMES.INSTANCE).toBe('string');
+            });
+
+            it('should have a "STATIC" property', function() {
+                expect(SCOPE.NAMES.STATIC).toBeDefined();
+                expect(typeof SCOPE.NAMES.STATIC).toBe('string');
+            });
         });
 
-        it('should have a "static" property', function() {
-            expect(SCOPE_NAMES.static).toBeDefined();
-            expect(typeof SCOPE_NAMES.static).toBe('string');
+        describe('PUNC', function() {
+            it('should have an "INNER" property', function() {
+                expect(SCOPE.PUNC.INNER).toBeDefined();
+                expect(typeof SCOPE.PUNC.INNER).toBe('string');
+            });
+
+            it('should have an "INSTANCE" property', function() {
+                expect(SCOPE.PUNC.INSTANCE).toBeDefined();
+                expect(typeof SCOPE.PUNC.INSTANCE).toBe('string');
+            });
+
+            it('should have a "STATIC" property', function() {
+                expect(SCOPE.PUNC.STATIC).toBeDefined();
+                expect(typeof SCOPE.PUNC.STATIC).toBe('string');
+            });
         });
     });
 

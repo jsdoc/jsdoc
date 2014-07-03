@@ -3,6 +3,7 @@
 
 describe('jsdoc/doclet', function() {
     // TODO: more tests
+    var _ = require('underscore');
     var Doclet = require('jsdoc/doclet').Doclet;
 
     var debug = !!env.opts.debug;
@@ -46,7 +47,7 @@ describe('jsdoc/doclet', function() {
                 doclet.setScope(scopeName);
             }
 
-            Object.keys(require('jsdoc/name').SCOPE_NAMES).forEach(function(scopeName) {
+            _.values(require('jsdoc/name').SCOPE.NAMES).forEach(function(scopeName) {
                 expect( setScope.bind(null, scopeName) ).not.toThrow();
             });
         });
