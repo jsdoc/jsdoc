@@ -96,6 +96,16 @@ Copyright (c) 2013 Dominic Tarr.
 The source code for crypto-browserify is available at:
 https://github.com/dominictarr/crypto-browserify
 
+## escape-string-regexp ##
+
+escape-string-regexp is distributed under the MIT License, which is reproduced
+above.
+
+Copyright (c) Sindre Sorhus <sindresorhus@gmail.com>.
+
+The source code for escape-string-regexp is available at:
+https://github.com/sindresorhus/escape-string-regexp
+
 ## Esprima ##
 
 Esprima is distributed under the BSD 2-clause license:
