@@ -5,7 +5,11 @@
 @import "toc.less";
 
 
-/* Fonts */
+/* Typography */
+
+.p-margin() {
+    margin-bottom: 0;
+}
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -29,6 +33,10 @@ code, pre > code {
     font-family: 'Inconsolata', monospace;
 }
 
+dd > p {
+    .p-margin();
+}
+
 @media (min-width: @grid-float-breakpoint) {
     // Left-align the headings in horizontal <dl>s
     // TODO: maybe make this .dl-horizontal-left and expose both flavors
@@ -41,7 +49,7 @@ code, pre > code {
 
 // Use larger text in the first paragraph of the class description
 .symbol-classdesc p:first-child {
-    &:extend(.lead);
+    .lead();
 }
 
 
@@ -73,6 +81,6 @@ code, pre > code {
 /* Tables */
 
 td > p:last-child {
-    margin-bottom: 0;
+    .p-margin();
 }
 
