@@ -1,0 +1,281 @@
+/**
+ * Header ($header)
+ */
+/* TODO: convert to .less; overhaul */
+
+.page-header {
+    width: 100%;
+    background-color: #c12026;
+    -webkit-background-size: 250px;
+    -moz-background-size:    250px;
+    background-size:         250px;
+    background-repeat: repeat;
+    color: #fff;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Use a PNG fallback in case SVG is not supported */
+.no-svg .page-header {
+    background-image: url("../img/bg.png");
+}
+
+.header-container {
+    padding: 2rem 0;
+}
+
+.header-title,
+.header-tagline {
+    color: #fff;
+    line-height: 1;
+}
+
+.header-tagline {
+    margin-bottom: 1rem;
+    color: #ef9c9f;
+    font-weight: 400;
+}
+
+.header-button {
+    margin-bottom: 1rem;
+    padding: 0.475rem 0.633rem;
+    font-size: 0.875rem;
+}
+
+.header-link {
+    color: #fff;
+    font-weight: 700;
+}
+
+.page-header .divider {
+    display: inline-block;
+    padding: 0 2px;
+    color: #ef9c9f;
+    vertical-align: middle;
+    font-size: 1.777rem;
+    line-height: 1;
+}
+
+@media screen and (min-width: 480px) {
+    .header-button {
+        margin-right: 3px;
+        margin-left: 3px;
+        padding: 0.633rem 0.875rem;
+        font-size: 1rem;
+    }
+}
+
+/* Shrink header height on viewports larger than 500px */
+@media screen and (min-height: 500px) {
+    .page-header,
+    .header-container {
+        display: block;
+    }
+
+    .page-header {
+        min-height: 0;
+    }
+
+    .header-container {
+        vertical-align: inherit;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .page {
+        margin-left: 256px;
+    }
+
+    .page-header {
+        padding: 0;
+        border-bottom: 1px solid #e6dcbe;
+        background: #fffbee;
+        text-align: left;
+        -webkit-box-shadow: 0 0 3px hsla(0, 0%, 0%, 0.08);
+        -moz-box-shadow:    0 0 3px hsla(0, 0%, 0%, 0.08);
+        box-shadow:         0 0 3px hsla(0, 0%, 0%, 0.08);
+    }
+
+    .page-header .nav-jump {
+        display: none;
+    }
+
+    .header-container {
+        position: relative;
+        display: block;
+        padding: 2rem;
+        vertical-align: inherit;
+    }
+
+    .header-title            { color: #c12026; }
+    .header-actions .divider { color: #ccc;    }
+    .header-link             { color: #777;    }
+
+    .header-tagline {
+        color: #222;
+        font-size: 1.777rem;
+    }
+
+    .header-button {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media screen and (min-width: 860px) {
+    .header-actions {
+        position: absolute;
+        top: 2.369rem;
+        right: 2rem;
+        text-align: right;
+    }
+
+    .header-tagline {
+        margin-bottom: 0;
+    }
+}
+
+/**
+ * Navigation ($navigation)
+ */
+
+.nav {
+    background-color: #222;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+}
+
+.nav-heading {
+    display: none;
+}
+
+.nav-heading .logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -39px;
+    margin-left: -32px;
+    width: 64px;
+    height: 78px;
+    background-image: url("../img/logo.svg");
+}
+
+/* Back to top link */
+.nav .nav-jump {
+    border-bottom: 0;
+    background-color: #1fa3ec;
+    color: #fff;
+}
+
+.nav .nav-jump:hover {
+    background-color: #3eb0ef;
+}
+
+/**
+ * 1. REM units round weirdly and the border-bottom doesn’t show, so I
+ * use pixels instead
+ */
+
+.nav-link {
+    display: block;
+    padding: 10px 14px; /* 1 */
+    background-color: #222;
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.nav-menu .nav-link {
+    border-bottom: 1px solid #444;
+}
+
+.nav-link:hover {
+    background-color: #282828;
+    color: #fff;
+}
+
+.nav-link:active {
+    -webkit-box-shadow: inset 1px 1px 3px hsla(0, 0%, 0%, 0.35);
+    -moz-box-shadow:    inset 1px 1px 3px hsla(0, 0%, 0%, 0.35);
+    box-shadow:         inset 1px 1px 3px hsla(0, 0%, 0%, 0.35);
+}
+
+.nav-link:focus,
+.nav-heading:focus {
+    outline: 1px dotted #fff;
+    outline-offset: -2px;
+}
+
+@media screen and (min-width: 480px) {
+    .nav-menu .nav-link {
+        float: left;
+        width: 50%;
+        border-right: 1px solid #444;
+    }
+
+    .nav-menu .nav-link:nth-child(even) {
+        border-right: 0;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .nav {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 256px;
+        -webkit-transform: translateZ(0);
+        -moz-transform:    translateZ(0);
+        -ms-transform:     translateZ(0);
+        -o-transform:      translateZ(0);
+        transform:         translateZ(0);
+    }
+
+    .nav-heading {
+        position: relative;
+        display: block;
+        height: 155px;
+        border-bottom: 1px solid #de363c;
+        background-color: #c12026;
+        background-repeat: repeat;
+        text-decoration: none;
+    }
+
+    .no-svg .nav-heading {
+        background-image: url("../img/bg.png");
+    }
+
+    .nav-heading:hover {
+        background-color: #d02229;
+    }
+
+    .nav-heading:active {
+        -webkit-box-shadow: inset 2px 2px 6px hsla(0, 0%, 0%, 0.3);
+        -moz-box-shadow:    inset 2px 2px 6px hsla(0, 0%, 0%, 0.3);
+        box-shadow:         inset 2px 2px 6px hsla(0, 0%, 0%, 0.3);
+    }
+
+    .nav .nav-jump {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 2;
+    }
+
+    .nav-container {
+        position: absolute;
+        top: 155px;
+        bottom: 44px;
+        overflow-y: auto;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-menu .nav-link {
+        float: none;
+        width: auto;
+        border-right: 0;
+    }
+}

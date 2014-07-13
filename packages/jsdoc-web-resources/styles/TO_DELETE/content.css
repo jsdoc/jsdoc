@@ -1,0 +1,136 @@
+/**
+ * Content ($content)
+ */
+/* TODO: convert to .less; overhaul */
+
+.page-content {
+    padding: 0 2rem 2rem 2rem;
+    max-width: 64rem;
+}
+
+.content-block {
+    padding: 1rem;
+}
+
+/* Animations for :target headings */
+@-webkit-keyframes target {
+    0%   { background-color: transparent; }
+    10%  { background-color: #dbf2ff;     }
+    100% { background-color: transparent; }
+}
+
+@-moz-keyframes target {
+    0%   { background-color: transparent; }
+    10%  { background-color: #dbf2ff;     }
+    100% { background-color: transparent; }
+}
+
+@-ms-keyframes target {
+    0%   { background-color: transparent; }
+    10%  { background-color: #dbf2ff;     }
+    100% { background-color: transparent; }
+}
+
+@-o-keyframes target {
+    0%   { background-color: transparent; }
+    10%  { background-color: #dbf2ff;     }
+    100% { background-color: transparent; }
+}
+
+@keyframes target {
+    0%   { background-color: transparent; }
+    10%  { background-color: #dbf2ff;     }
+    100% { background-color: transparent; }
+}
+
+.content-block:target .content-heading {
+    -webkit-animation: target 2s ease;
+    -moz-animation:    target 2s ease;
+    -ms-animation:     target 2s ease;
+    -o-animation:      target 2s ease;
+    animation:         target 2s ease;
+}
+
+.content-nav {
+    float: right;
+    margin-left: 1rem;
+}
+
+#intro {
+    padding-bottom: 0;
+}
+
+.intro-heading {
+    font-weight: 300;
+    margin: 0;
+}
+
+.example-grid .island {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 0.75rem 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius:    3px;
+    border-radius:         3px;
+    background-color: #efefef;
+    text-align: center;
+}
+
+.example-grid .island:hover {
+    background-color: #dedede;
+}
+
+.example-grid .grid .island {
+    background-color: #ccc;
+}
+
+.example-grid .grid .island:hover {
+    background-color: #bbb;
+}
+
+#browser-support .island {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #e6dcbe;
+    -webkit-border-radius: 3px;
+    -moz-border-radius:    3px;
+    border-radius:         3px;
+    background: #fffbee;
+    -webkit-box-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.08);
+    -moz-box-shadow:    1px 1px 2px hsla(0, 0%, 0%, 0.08);
+    box-shadow:         1px 1px 2px hsla(0, 0%, 0%, 0.08);
+}
+
+#browser-support .island ul {
+    padding-left: 1rem;
+}
+
+@media screen and (min-width: 600px) {
+    .content-block {
+        padding: 1rem 2rem 2rem;
+    }
+
+    .content-nav .button {
+        padding: 0.356rem 0.633rem;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+
+    #intro {
+        padding-top: 2rem;
+    }
+
+    .intro-heading {
+        font-size: 1.777rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .page-content .wrapper {
+        max-width: 640px;
+    }
+
+    .content-nav {
+        display: none;
+    }
+}

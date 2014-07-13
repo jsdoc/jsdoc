@@ -1,0 +1,32 @@
+{
+  "name": "Baseline",
+  "version": "0.0.1",
+  "homepage": "https://github.com/hegemonic/baseline",
+  "authors": [
+    "Jeff Williams <jeffrey.l.williams@gmail.com>"
+  ],
+  "license": "Apache 2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dev-dependencies": {
+    "cardinal": "2.2.5"
+  },
+  "dependencies": {
+    "uikit": "~2.6.0",
+    "bootstrap": "~3.1.1",
+    "fuelux": "~2.6.1",
+    "jquery.tocify.js": "~1.9.0",
+    "jqtree": "~0.21.0",
+    "jquery.cookie": "~1.4.1",
+    "google-code-prettify": "~1.0.1",
+    "velocity": "~0.4.1"
+  },
+  "resolutions": {
+    "jquery": ">= 1.9.0"
+  }
+}

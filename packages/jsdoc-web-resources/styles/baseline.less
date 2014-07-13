@@ -1,0 +1,78 @@
+// TODO: use a LESS file to define class names, so we can use them here in place of hardcoded names
+@import "../bower_components/bootstrap/less/bootstrap.less";
+@import (inline) "prettify-tomorrow.css";
+
+@import "toc.less";
+
+
+/* Fonts */
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    //font-family: 'Asap', sans-serif;
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    font-weight: 700;
+}
+
+h2 {
+    font-weight: 600;
+}
+
+// TODO: is this the right selector?
+code, pre > code {
+    font-family: 'Inconsolata', monospace;
+}
+
+@media (min-width: @grid-float-breakpoint) {
+    // Left-align the headings in horizontal <dl>s
+    // TODO: maybe make this .dl-horizontal-left and expose both flavors
+    .dl-horizontal {
+        dt {
+            text-align: left;
+        }
+    }
+}
+
+// Use larger text in the first paragraph of the class description
+.symbol-classdesc p:first-child {
+    &:extend(.lead);
+}
+
+
+/* Grid */
+
+#jsdoc-navbar-container {
+    .container-fluid();
+}
+
+#jsdoc-body-container {
+    .container-fluid();
+}
+
+#jsdoc-content {
+    .make-row();
+}
+
+#jsdoc-content-container {
+    .make-md-column(9);
+    .make-md-column-push(3);
+}
+
+#jsdoc-toc-nav {
+    .make-md-column(3);
+    .make-md-column-pull(9);
+}
+
+
+/* Tables */
+
+td > p:last-child {
+    margin-bottom: 0;
+}
+
