@@ -17,6 +17,7 @@
 
 var _ = require('underscore-contrib');
 var beautify = require('js-beautify').html;
+var doop = require('jsdoc/util/doop');
 var Filter = require('jsdoc/src/filter').Filter;
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');
@@ -47,6 +48,23 @@ var CATEGORIES = exports.CATEGORIES = {
     TYPEDEFS: 'typedefs'
 };
 
+// Map of doclet kinds to template categories. Must also call `isModuleExports()` to determine
+// whether a doclet should be treated as a module, and `isGlobal()` to determine whether a doclet is
+// global.
+var KIND_TO_CATEGORY = exports.KIND_TO_CATEGORY = {
+    'class': CATEGORIES.CLASSES,
+    'constant': CATEGORIES.MEMBERS,
+    'event': CATEGORIES.EVENTS,
+    'external': CATEGORIES.EXTERNALS,
+    'function': CATEGORIES.FUNCTIONS,
+    'member': CATEGORIES.MEMBERS,
+    'mixin': CATEGORIES.MIXINS,
+    'module': CATEGORIES.MODULES,
+    'namespace': CATEGORIES.NAMESPACES,
+    'package': CATEGORIES.PACKAGES,
+    'typedef': CATEGORIES.TYPEDEFS
+};
+
 // Categories that require a separate output file for each longname.
 var OUTPUT_FILE_CATEGORIES = [
     CATEGORIES.CLASSES,
@@ -69,6 +87,7 @@ PAGE_TITLES[CATEGORIES.TUTORIALS] = 'Tutorial: ';
 
 
 // Tracks ALL doclets by category (similar, but not identical, to their "kind")
+// TODO: could use another flavor of this that tracks by longname but not category
 // TODO: export?
 function SymbolTracker() {
     var category;
@@ -126,8 +145,8 @@ var DocletHelper = exports.DocletHelper = function DocletHelper(taffyData) {
     this.globals = new SymbolTracker();
     // Listeners tracked by event longname
     this.listeners = {};
-    // TODO: could we track this by longname or something?
-    this.moduleExports = [];
+    // Primary symbols for modules tracked by longname
+    this.moduleExports = {};
     // Longnames of doclets that need their own output file
     this.needsFile = {};
     this.navTree = {};
@@ -137,11 +156,9 @@ var DocletHelper = exports.DocletHelper = function DocletHelper(taffyData) {
     this._sourcePaths = [];
 };
 
-function isModuleDoclet(doclet) {
-    var MODULE_PREFIX = name.MODULE_PREFIX;
-
+function isModuleExports(doclet) {
     return doclet.longname && doclet.longname === doclet.name &&
-        doclet.longname.indexOf(MODULE_PREFIX) === 0;
+        doclet.longname.indexOf(name.NAMESPACES.MODULE) === 0;
 }
 
 // TODO: it would be nice if JSDoc added scope: "global" for all of these, so the template didn't
@@ -200,61 +217,15 @@ DocletHelper.prototype._trackListeners = function _trackListeners(doclet) {
     });
 };
 
+
 function _findCategory(doclet) {
     var category;
 
-    switch (doclet.kind) {
-        case 'class':
-            if (!isModuleDoclet(doclet)) {
-                category = CATEGORIES.CLASSES;
-            }
-            break;
-
-        case 'constant':
-            category = CATEGORIES.MEMBERS;
-            break;
-
-        case 'event':
-            category = CATEGORIES.EVENTS;
-            break;
-
-        case 'external':
-            category = CATEGORIES.EXTERNALS;
-            break;
-
-        case 'function':
-            if (!isModuleDoclet(doclet)) {
-                category = CATEGORIES.FUNCTIONS;
-            }
-            break;
-
-        case 'member':
-            category = CATEGORIES.MEMBERS;
-            break;
-
-        case 'mixin':
-            category = CATEGORIES.MIXINS;
-            break;
-
-        case 'module':
-            category = CATEGORIES.MODULES;
-            break;
-
-        case 'namespace':
-            category = CATEGORIES.NAMESPACES;
-            break;
-
-        case 'package':
-            category = CATEGORIES.PACKAGES;
-            break;
-
-        case 'typedef':
-            category = CATEGORIES.TYPEDEFS;
-            break;
-
-        default:
-            // ignore
-            break;
+    if (isModuleExports(doclet)) {
+        category = CATEGORIES.MODULES;
+    }
+    else {
+        category = KIND_TO_CATEGORY[doclet.kind];
     }
 
     return category;
@@ -263,18 +234,10 @@ function _findCategory(doclet) {
 // TODO: rename
 // TODO: can we move the doclet-munging elsewhere?
 DocletHelper.prototype._categorize = function _categorize(doclet) {
-    var category = _findCategory(doclet);
-    var moduleExports = this.moduleExports;
-    var symbols = this.symbols;
+    var category;
 
     // Do some minor pre-processing
     switch (doclet.kind) {
-        case 'class':
-            if (isModuleDoclet(doclet)) {
-                moduleExports.push(doclet);
-            }
-            break;
-
         case 'constant':
             doclet.kind = 'member';
             break;
@@ -292,11 +255,20 @@ DocletHelper.prototype._categorize = function _categorize(doclet) {
             break;
     }
 
+    category = _findCategory(doclet);
+
     if (!category) {
         logger.debug('Not tracking doclet with unknown kind %s. Name: %s, longname: %s',
             doclet.kind, doclet.name, doclet.longname);
     }
-    else {
+    // TODO: find better place for this
+    else if (category === CATEGORIES.MODULES && doclet.kind !== 'module') {
+        this.moduleExports[doclet.longname] = this.moduleExports[doclet.longname] ||
+            new SymbolTracker();
+        this.moduleExports[doclet.longname].add(doclet, CATEGORIES.MODULES);
+    }
+
+    if (category) {
         this.symbols.add(doclet, category);
         this._trackByCategory(doclet, category);
     }
@@ -449,27 +421,28 @@ function lacksProperty(obj, key, targetValue) {
  * @returns {this}
  */
 DocletHelper.prototype.resolveModuleExports = function resolveModuleExports() {
-    var moduleExports = {};
+    var moduleExports = this.moduleExports;
     var modules = this.symbols.get(CATEGORIES.MODULES);
-
-    // build a lookup table
-    // TODO: should do this as we gather doclets
-    this.moduleExports.forEach(function(exported) {
-        moduleExports[exported.longname] = exported;
-    });
+    var newModules = new SymbolTracker();
 
     if (modules) {
-        modules = modules.map(function(moduleDoclet) {
-            if (hasOwnProp.call(moduleExports, module.longname)) {
-                moduleDoclet.exports = moduleExports[module.longname];
+        modules.forEach(function(moduleDoclet) {
+            var exportsDoclets;
+            if (hasOwnProp.call(moduleExports, moduleDoclet.longname)) {
+                // TODO: this is really clumsy
+                exportsDoclets = moduleExports[moduleDoclet.longname].get(CATEGORIES.MODULES);
+                moduleDoclet.exports = doop(exportsDoclets[0]);
                 // TODO: get rid of this, or make it configurable and move to template file
-                moduleDoclet.exports.name = moduleDoclet.exports.name
-                    .replace('module:', 'require("') + '")';
+                if (moduleDoclet.exports.kind === 'class' ||
+                    moduleDoclet.exports.kind === 'function') {
+                    moduleDoclet.exports.name = moduleDoclet.exports.name
+                        .replace('module:', '(require("') + '"))';
+                }
             }
         });
     }
 
-    this.moduleExports = [];
+    this.moduleExports = {};
 
     return this;
 };
