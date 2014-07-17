@@ -23,3 +23,5 @@ gulp.task('less', function() {
         .pipe(less())
         .pipe(gulp.dest('./static/css'));
 });
+
+gulp.task('default', ['less']);
