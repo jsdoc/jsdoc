@@ -811,18 +811,17 @@ PublishJob.prototype.generateTutorials = function generateTutorials(tutorials) {
 
 PublishJob.prototype.generateSourceFiles = function generateSourceFiles(pathMap) {
     var encoding = this.options.encoding;
+    var options = {
+        resolveLinks: false
+    };
     var self = this;
+    var url;
 
     if (this.templateConfig.outputSourceFiles !== false) {
         Object.keys(pathMap).forEach(function(file) {
-            var url;
-
             var data = {
                 docs: null,
                 pageTitle: PAGE_TITLES[CATEGORIES.SOURCES] + pathMap[file]
-            };
-            var options = {
-                resolveLinks: false
             };
 
             // links are keyed to the shortened path
@@ -927,8 +926,6 @@ PublishJob.prototype.generateByLongname = function generateByLongname(longname, 
  */
 exports.publish = function(data, opts, tutorials) {
     var docletHelper = new DocletHelper(data);
-    var globals = docletHelper.globals;
-    var symbols = docletHelper.symbols;
     var template = new Template(opts.template, docletHelper);
     var job = new PublishJob(template, opts);
 
@@ -947,11 +944,11 @@ exports.publish = function(data, opts, tutorials) {
         .generateSourceFiles(docletHelper.shortPaths);
 
     // generate globals page if necessary
-    job.generateGlobals(globals);
+    job.generateGlobals(docletHelper.globals);
 
     // generate index page
     // TODO: method params will need to change
-    job.generateIndex(symbols.get(CATEGORIES.PACKAGES), opts.readme);
+    job.generateIndex(docletHelper.symbols.get(CATEGORIES.PACKAGES), opts.readme);
 
     // generate the rest of the output files (excluding tutorials)
     docletHelper.getOutputLongnames().forEach(function(longname) {
