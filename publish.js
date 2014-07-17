@@ -48,9 +48,8 @@ var CATEGORIES = exports.CATEGORIES = {
     TYPEDEFS: 'typedefs'
 };
 
-// Map of doclet kinds to template categories. Must also call `isModuleExports()` to determine
-// whether a doclet should be treated as a module, and `isGlobal()` to determine whether a doclet is
-// global.
+// Map of doclet kinds to template categories. Must also call `isGlobal()` to determine whether a
+// doclet is global.
 var KIND_TO_CATEGORY = exports.KIND_TO_CATEGORY = {
     'class': CATEGORIES.CLASSES,
     'constant': CATEGORIES.MEMBERS,
@@ -106,10 +105,30 @@ SymbolTracker.prototype.add = function add(doclet, category) {
     }
 };
 
-SymbolTracker.prototype.get = function get(category) {
+SymbolTracker.prototype.remove = function remove(doclet, category) {
+    var idx;
+
     if (hasOwnProp.call(this, category)) {
-        return this[category];
+        idx = this[category].indexOf(doclet);
+        if (idx !== -1) {
+            this[category].splice(idx, 1);
+        }
     }
+}
+
+SymbolTracker.prototype.get = function get(category) {
+    var categories = category ? [category] : _.values(CATEGORIES);
+    var current;
+    var result = [];
+
+    for (var i = 0, l = categories.length; i < l; i++) {
+        current = categories[i];
+        if (hasOwnProp.call(this, current) && this[current].length) {
+            result = result.concat(this[current]);
+        }
+    }
+
+    return result;
 };
 
 SymbolTracker.prototype.hasDoclets = function hasDoclets(category) {
@@ -145,8 +164,6 @@ var DocletHelper = exports.DocletHelper = function DocletHelper(taffyData) {
     this.globals = new SymbolTracker();
     // Listeners tracked by event longname
     this.listeners = {};
-    // Primary symbols for modules tracked by longname
-    this.moduleExports = {};
     // Longnames of doclets that need their own output file
     this.needsFile = {};
     this.navTree = {};
@@ -156,11 +173,6 @@ var DocletHelper = exports.DocletHelper = function DocletHelper(taffyData) {
     this._sourcePaths = [];
 };
 
-function isModuleExports(doclet) {
-    return doclet.longname && doclet.longname === doclet.name &&
-        doclet.longname.indexOf(name.NAMESPACES.MODULE) === 0;
-}
-
 // TODO: it would be nice if JSDoc added scope: "global" for all of these, so the template didn't
 // have to infer this from the lack of a memberof...
 // TODO: think carefully about whether these are the only symbols that should appear as global. For
@@ -168,7 +180,10 @@ function isModuleExports(doclet) {
 function isGlobal(doclet) {
     var globalKinds = ['member', 'function', 'constant', 'typedef'];
 
-    if (!doclet.memberof && globalKinds.indexOf(doclet.kind) !== -1) {
+    // Doclets for `module.exports` are a little weird; they're neither global
+    // nor a memberof anything
+    if (!doclet.memberof && globalKinds.indexOf(doclet.kind) !== -1 &&
+        doclet.longname.indexOf('module:') !== 0) {
         return true;
     }
 
@@ -218,19 +233,6 @@ DocletHelper.prototype._trackListeners = function _trackListeners(doclet) {
 };
 
 
-function _findCategory(doclet) {
-    var category;
-
-    if (isModuleExports(doclet)) {
-        category = CATEGORIES.MODULES;
-    }
-    else {
-        category = KIND_TO_CATEGORY[doclet.kind];
-    }
-
-    return category;
-}
-
 // TODO: rename
 // TODO: can we move the doclet-munging elsewhere?
 DocletHelper.prototype._categorize = function _categorize(doclet) {
@@ -255,17 +257,11 @@ DocletHelper.prototype._categorize = function _categorize(doclet) {
             break;
     }
 
-    category = _findCategory(doclet);
+    category = KIND_TO_CATEGORY[doclet.kind];
 
     if (!category) {
         logger.debug('Not tracking doclet with unknown kind %s. Name: %s, longname: %s',
             doclet.kind, doclet.name, doclet.longname);
-    }
-    // TODO: find better place for this
-    else if (category === CATEGORIES.MODULES && doclet.kind !== 'module') {
-        this.moduleExports[doclet.longname] = this.moduleExports[doclet.longname] ||
-            new SymbolTracker();
-        this.moduleExports[doclet.longname].add(doclet, CATEGORIES.MODULES);
     }
 
     if (category) {
@@ -411,6 +407,36 @@ function lacksProperty(obj, key, targetValue) {
     return !hasOwnProp.call(obj, key) && targetValue !== undefined;
 }
 
+function sortModuleDoclets(moduleDoclet, exportsDoclets, docletsByLongname) {
+    var result = {
+        primary: moduleDoclet || null,
+        secondary: []
+    };
+
+    if (exportsDoclets) {
+        exportsDoclets.forEach(function(doclet) {
+            // Don't add module doclets as secondary doclets
+            if (doclet.kind === 'module') {
+                return;
+            }
+
+            // TODO: get rid of this, or make it configurable and move to template file
+            doclet = doop(doclet);
+            doclet.name = doclet.name
+                .replace('module:', 'require("') + '")';
+            if (doclet.kind === 'class' || doclet.kind === 'function') {
+                doclet.name = '(' + doclet.name + ')';
+            }
+
+            docletsByLongname[doclet.longname].remove(doclet, KIND_TO_CATEGORY[doclet.kind]);
+
+            result.secondary.push(doclet);
+        });
+    }
+
+    return result;
+}
+
 /**
  * For classes or functions with the same name as modules (which indicates that the module exports
  * only that class or function), attach the classes or functions to the `exports` property of the
@@ -421,28 +447,26 @@ function lacksProperty(obj, key, targetValue) {
  * @returns {this}
  */
 DocletHelper.prototype.resolveModuleExports = function resolveModuleExports() {
-    var moduleExports = this.moduleExports;
+    var exportsDoclets;
     var modules = this.symbols.get(CATEGORIES.MODULES);
     var newModules = new SymbolTracker();
+    var self = this;
+    var sorted;
 
-    if (modules) {
+    if (modules && modules.length) {
         modules.forEach(function(moduleDoclet) {
-            var exportsDoclets;
-            if (hasOwnProp.call(moduleExports, moduleDoclet.longname)) {
-                // TODO: this is really clumsy
-                exportsDoclets = moduleExports[moduleDoclet.longname].get(CATEGORIES.MODULES);
-                moduleDoclet.exports = doop(exportsDoclets[0]);
-                // TODO: get rid of this, or make it configurable and move to template file
-                if (moduleDoclet.exports.kind === 'class' ||
-                    moduleDoclet.exports.kind === 'function') {
-                    moduleDoclet.exports.name = moduleDoclet.exports.name
-                        .replace('module:', '(require("') + '"))';
-                }
+            exportsDoclets = self.longname[moduleDoclet.longname].get();
+            sorted = sortModuleDoclets(moduleDoclet, exportsDoclets, self.longname);
+
+            if (sorted.secondary.length) {
+                moduleDoclet.exports = sorted.secondary;
             }
+            // Add the primary module doclet to the new list of module doclets.
+            newModules.add(sorted.primary, CATEGORIES.MODULES);
         });
     }
 
-    this.moduleExports = {};
+    this.symbols[CATEGORIES.MODULES] = newModules;
 
     return this;
 };
