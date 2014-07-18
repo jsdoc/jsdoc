@@ -25,6 +25,7 @@ var logger = require('jsdoc/util/logger');
 var name = require('jsdoc/name');
 var path = require('jsdoc/path');
 var Scanner = require('jsdoc/src/scanner').Scanner;
+var stripJsonComments = require('strip-json-comments');
 var Swig = require('swig').Swig;
 var taffy = require('taffydb').taffy;
 var util = require('util');
@@ -149,13 +150,8 @@ SymbolTracker.prototype.hasDoclets = function hasDoclets(category) {
     return result;
 };
 
-// TODO: try to avoid storing taffyData in any form--doclets only!
-var DocletHelper = exports.DocletHelper = function DocletHelper(taffyData) {
-    // TODO: move to addDoclets?
-    // TODO: make these steps configurable (especially sorting!)
-    this.data = helper.prune(taffyData);
-    this.data.sort('longname, version, since');
-
+var DocletHelper = exports.DocletHelper = function DocletHelper() {
+    this.data = null;
     // Doclets tracked by longname
     this.longname = {};
     // Doclets tracked by memberof
@@ -274,12 +270,18 @@ DocletHelper.prototype._categorize = function _categorize(doclet) {
     return this;
 };
 
-DocletHelper.prototype.addDoclets = function addDoclets() {
+DocletHelper.prototype.addDoclets = function addDoclets(taffyData) {
     var doclet;
+    var doclets;
     var i;
     var l;
 
-    var doclets = this.data().get();
+    // TODO: make these steps configurable (especially sorting!)
+    // TODO: try to avoid storing the TaffyDB data
+    this.data = helper.prune(taffyData);
+    this.data.sort('longname, version, since');
+
+    doclets = this.data().get();
 
     for (i = 0, l = doclets.length; i < l; i++) {
         this.addDoclet(doclets[i]);
@@ -531,7 +533,23 @@ DocletHelper.prototype.getPackage = function getPackage() {
     return this.symbols.get(CATEGORIES.PACKAGES)[0];
 };
 
-var Template = exports.Template = function Template(templatePath) {
+function loadConfigFile(filepath) {
+    var config;
+
+    try {
+        if (filepath) {
+            config = JSON.parse(stripJsonComments(fs.readFileSync(filepath, 'utf8')));
+        }
+    }
+    catch (e) {
+        logger.fatal('Unable to load the template configuration file: %s', e);
+    }
+
+    return config || {};
+}
+
+var Template = exports.Template = function Template(templatePath, optionsFile) {
+    this.config = loadConfigFile(optionsFile);
     this.path = templatePath;
     this.swig = null;
     this.views = {};
@@ -546,10 +564,10 @@ var Template = exports.Template = function Template(templatePath) {
  */
 Template.prototype.init = function init() {
     // TODO: allow users to add helpers/filters/tags
-    var swigHelpers = require(path.join(__dirname, 'helpers'));
-    var swigFilters = require(path.join(__dirname, 'filters'));
-    var swigLoader = require(path.join(__dirname, 'loader'));
-    var swigTags = require(path.join(__dirname, 'tags'));
+    var swigHelpers = require(path.join(this.path, 'helpers'));
+    var swigFilters = require(path.join(this.path, 'filters'));
+    var swigLoader = require(path.join(this.path, 'loader'));
+    var swigTags = require(path.join(this.path, 'tags'));
 
     // define local functions that templates can use, and create a Swig instance with those locals
     var self = this;
@@ -586,7 +604,7 @@ Template.prototype.init = function init() {
     });
 
     // load the base views
-    this.addViews(fs.ls(path.join(__dirname, 'views'), 0));
+    this.addViews(fs.ls(path.join(this.path, 'views'), 0));
 
     return this;
 };
@@ -601,7 +619,7 @@ Template.prototype.addViews = function addViews(views) {
     var self = this;
 
     views.forEach(function(view) {
-        logger.debug('Loading the view %s', path.relative(__dirname, view));
+        logger.debug('Loading the view %s', path.relative(self.path, view));
         var basename = path.basename(view);
         var name = basename.replace(path.extname(basename), '');
 
@@ -674,6 +692,7 @@ PublishJob.prototype.copyStaticFiles = function copyStaticFiles() {
 
     var destination = this.destination;
     var RECURSE_DEPTH = 10;
+    var self = this;
     var staticPath = path.join(this.template.path, 'static');
 
     function copyStaticFile(filepath) {
@@ -681,7 +700,8 @@ PublishJob.prototype.copyStaticFiles = function copyStaticFiles() {
         var toDir = fs.toDir(filepath.replace(staticPath + path.sep, destination));
 
         fs.mkPath(toDir);
-        logger.debug('Copying static file %s to %s', path.relative(__dirname, filepath), toDir);
+        logger.debug('Copying static file %s to %s', path.relative(self.template.path, filepath),
+            toDir);
         fs.copyFileSync(filepath, toDir);
     }
 
@@ -719,7 +739,6 @@ PublishJob.prototype.render = function render(viewName, data, options) {
 
 // options: resolveLinks, url
 // data: whatever the template expects
-// TODO: enum for viewName?
 PublishJob.prototype.generate = function generate(viewName, data, url, options) {
     var output;
     var outputPath = path.join(this.destination, url);
@@ -925,16 +944,15 @@ PublishJob.prototype.generateByLongname = function generateByLongname(longname, 
     @param {Tutorial} tutorials
  */
 exports.publish = function(data, opts, tutorials) {
-    var docletHelper = new DocletHelper(data);
-    var template = new Template(opts.template, docletHelper);
+    var docletHelper = new DocletHelper();
+    var template = new Template(opts.template, global.env.opts.baseline);
     var job = new PublishJob(template, opts);
 
     // set up tutorials
     // TODO: why does templateHelper need to be involved?
     helper.setTutorials(tutorials);
 
-    // TODO: seems like this should be where we pass in `data`
-    docletHelper.addDoclets();
+    docletHelper.addDoclets(data);
 
     job.setPackage(docletHelper.getPackage());
 
