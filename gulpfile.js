@@ -15,13 +15,59 @@
 */
 'use strict';
 
+var csso = require('gulp-csso');
 var gulp = require('gulp');
 var less = require('gulp-less');
+var path = require('path');
+var uglify = require('gulp-uglify');
 
-gulp.task('less', function() {
-    gulp.src('./styles/baseline.less')
+var bowerPath = './bower_components';
+// TODO: make this configurable
+var source = {
+    js: {
+        copy: [
+            path.join(bowerPath, 'jquery/dist/jquery.min.js'),
+        ],
+        minify: [
+            './scripts/*.js',
+            path.join(bowerPath, 'google-code-prettify/src/prettify.js'),
+            path.join(bowerPath, 'google-code-prettify/src/lang-css.js'),
+            path.join(bowerPath, 'jquery.cookie/jquery.cookie.js'),
+            path.join(bowerPath, 'jqtree/tree.jquery.js')
+        ]
+    },
+    less: './styles/baseline.less'
+};
+
+var target = {
+    css: './static/css',
+    js: './static/scripts'
+};
+
+gulp.task('build', ['css', 'js']);
+
+gulp.task('css', function() {
+    gulp.src(source.less)
         .pipe(less())
-        .pipe(gulp.dest('./static/css'));
+        .pipe(csso())
+        .pipe(gulp.dest(target.css));
 });
 
-gulp.task('default', ['less']);
+gulp.task('js', ['js-copy', 'js-minify']);
+
+gulp.task('js-copy', function() {
+    source.js.copy.forEach(function(item) {
+        gulp.src(item)
+            .pipe(gulp.dest(target.js));
+    });
+});
+
+gulp.task('js-minify', function() {
+    source.js.minify.forEach(function(item) {
+        gulp.src(item)
+            .pipe(uglify())
+            .pipe(gulp.dest(target.js));
+    });
+});
+
+gulp.task('default', ['build']);
