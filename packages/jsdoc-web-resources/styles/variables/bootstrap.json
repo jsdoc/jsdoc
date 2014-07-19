@@ -30,6 +30,7 @@
     "source": "source",
     "symbol-ancestors": "symbol-ancestors",
     "symbol-classdesc": "symbol-classdesc",
+    "symbol-description": "symbol-description",
     "symbol-type": "symbol-type",
     "tutorials": "tutorials",
     "type-name": "type-name",

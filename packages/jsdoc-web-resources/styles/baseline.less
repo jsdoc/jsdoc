@@ -55,9 +55,11 @@ dd > p {
     }
 }
 
-// Use larger text in the first paragraph of the class description
-.symbol-classdesc p:first-child {
-    .lead();
+// Use larger text in the first paragraph of the description
+.symbol-classdesc, .symbol-description {
+    p:first-child {
+        .lead();
+    }
 }
 
 
