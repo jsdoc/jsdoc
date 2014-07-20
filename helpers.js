@@ -16,7 +16,10 @@
 'use strict';
 
 var _ = require('underscore');
+var fs = require('fs');
 var logger = require('jsdoc/util/logger');
+var path = require('path');
+var stripJsonComments = require('strip-json-comments');
 var templateHelper = require('jsdoc/util/templateHelper');
 var util = require('util');
 
@@ -55,26 +58,30 @@ exports.ancestorLinks = function ancestorLinks(doclet, cssClass) {
 
 // TODO: make this configurable
 // TODO: add a class to every single block
-var cssClasses = require('./styles/variables/bootstrap.json');
+var cssClasses = JSON.parse(stripJsonComments(fs.readFileSync(path.join(__dirname,
+    'styles/classmap.json'), 'utf8')));
 
 exports.cssclass = function cssclass(names) {
-    var classNames = [];
-    var keys = Array.isArray(names) ? names : [names];
+    var result = [];
+    var keys = _.flatten(Array.prototype.slice.call(arguments));
 
     keys.forEach(function(key) {
-        if (!hasOwnProp.call(cssClasses, key)) {
-            logger.warn('Unable to find a CSS class for the key %s', key);
-        // skip empty strings
-        } else if (cssClasses[key]) {
-            classNames.push(cssClasses[key]);
+        // if the name is prefixed by `!`, strip the prefix and unconditionally add it
+        if (key.indexOf('!') === 0) {
+            result.push(key.substr(1));
+        }
+        // otherwise, only add the name if the user asked for it
+        // (a falsy value doesn't count as "asking for it")
+        else if (hasOwnProp.call(cssClasses, key) && cssClasses[key]) {
+            result.push(key);
         }
     });
 
-    if (!classNames.length) {
+    if (!result.length) {
         return '';
     }
 
-    return util.format(' class="%s"', classNames.join(' '));
+    return util.format(' class="%s"', result.join(' '));
 };
 
 exports.link = function link(input, linkText) {

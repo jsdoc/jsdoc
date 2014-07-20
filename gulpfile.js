@@ -36,7 +36,7 @@ var source = {
             path.join(bowerPath, 'jqtree/tree.jquery.js')
         ]
     },
-    less: './styles/baseline.less'
+    less: './styles/bootstrap/baseline.less'
 };
 
 var target = {
@@ -49,7 +49,7 @@ gulp.task('build', ['css', 'js']);
 gulp.task('css', function() {
     gulp.src(source.less)
         .pipe(less())
-        .pipe(csso())
+        //.pipe(csso())
         .pipe(gulp.dest(target.css));
 });
 

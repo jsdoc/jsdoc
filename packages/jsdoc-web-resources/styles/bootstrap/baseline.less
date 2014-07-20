@@ -1,0 +1,143 @@
+@import "../../bower_components/bootstrap/less/bootstrap.less";
+@import (inline) "../prettify-tomorrow.css";
+
+@import "../toc.less";
+
+
+/* Typography */
+
+.p-margin() {
+    margin-bottom: 0;
+}
+
+.h-base() {
+    font-family: 'Lato', sans-serif;
+
+    small {
+        margin-left: @font-size-base;
+    }
+
+    small:first-child {
+        margin-left: inherit;
+    }
+}
+
+@h-margin-top-large: (@line-height-computed * 2);
+@h-margin-top-small: @line-height-computed;
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, .h1 {
+    &:extend(.h-base);
+    margin-top: @h-margin-top-large;
+    font-weight: 700;
+
+    + section h2:first-child, + section .h2:first-child {
+        margin-top: @h-margin-top-small;
+    }
+}
+
+h2, .h2 {
+    &:extend(.h-base);
+    margin-top: @h-margin-top-large;
+    font-weight: 600;
+
+    + section h3:first-child, + section .h3:first-child {
+        margin-top: @h-margin-top-small;
+    }
+}
+
+h3, .h3 {
+    &:extend(.h-base);
+    margin-top: @h-margin-top-large;
+}
+
+h4, .h4, h5, .h5, h6, .h6 {
+    &:extend(.h-base);
+    margin-top: @h-margin-top-small;
+}
+
+// TODO: is this the right selector?
+code, pre > code {
+    font-family: 'Inconsolata', monospace;
+}
+
+.dl-compact {
+    &:extend(.dl-horizontal);
+}
+
+dd > p {
+    .p-margin();
+}
+
+@media (min-width: @grid-float-breakpoint) {
+    // Left-align the headings in horizontal <dl>s
+    // TODO: maybe make this .dl-horizontal-left and expose both flavors
+    .dl-compact {
+        dt {
+            text-align: left;
+        }
+    }
+}
+
+// Use larger text in the first paragraph of the description
+.symbol-classdesc, .symbol-description {
+    p:first-child {
+        .lead();
+    }
+}
+
+
+/* Grid */
+
+#jsdoc-body-container, #jsdoc-navbar-container {
+    .container-fluid();
+}
+
+#jsdoc-content {
+    .make-row();
+}
+
+#jsdoc-content-container {
+    .make-md-column(9);
+    .make-md-column-push(3);
+}
+
+#jsdoc-toc-nav {
+    .make-md-column(3);
+    .make-md-column-pull(9);
+}
+
+
+/* Navigation */
+
+.jsdoc-navbar {
+    &:extend(.navbar, .navbar-default, .navbar-static-top);
+}
+
+.jsdoc-navbar-package-name {
+    &:extend(.navbar-brand);
+}
+
+.jsdoc-panel {
+    &:extend(.panel, .panel-default);
+}
+
+.jsdoc-panel-heading {
+    &:extend(.panel-heading);
+}
+
+
+/* Tables */
+
+.jsdoc-details-table {
+    .table();
+    .table-hover();
+}
+
+td > p:last-child {
+    .p-margin();
+}
+
