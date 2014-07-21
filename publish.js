@@ -533,6 +533,11 @@ DocletHelper.prototype.getPackage = function getPackage() {
     return this.symbols.get(CATEGORIES.PACKAGES)[0];
 };
 
+// TODO: export?
+var defaultConfig = {
+    outputSourceFiles: true
+};
+
 function loadConfigFile(filepath) {
     var config;
 
@@ -545,7 +550,7 @@ function loadConfigFile(filepath) {
         logger.fatal('Unable to load the template configuration file: %s', e);
     }
 
-    return config || {};
+    return _.defaults(config || {}, defaultConfig);
 }
 
 var Template = exports.Template = function Template(templatePath, optionsFile) {
@@ -555,6 +560,8 @@ var Template = exports.Template = function Template(templatePath, optionsFile) {
     this.views = {};
 
     this.init();
+
+    logger.debug('Initialized the template in %s with config: %j', this.path, this.config);
 };
 
 /**
@@ -580,7 +587,8 @@ Template.prototype.init = function init() {
             return Object.prototype.hasOwnProperty.apply(localSelf, args);
         },
         linkto: helper.linkto,
-        log: logger.debug
+        log: logger.debug,
+        outputSourceFiles: self.config.outputSourceFiles
     };
 
     Object.keys(swigHelpers).forEach(function(helperMethod) {
@@ -945,7 +953,7 @@ PublishJob.prototype.generateByLongname = function generateByLongname(longname, 
  */
 exports.publish = function(data, opts, tutorials) {
     var docletHelper = new DocletHelper();
-    var template = new Template(opts.template, global.env.opts.baseline);
+    var template = new Template(opts.template, global.env.conf.templates.baseline);
     var job = new PublishJob(template, opts);
 
     // set up tutorials
