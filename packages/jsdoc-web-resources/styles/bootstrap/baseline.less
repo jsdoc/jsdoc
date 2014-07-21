@@ -4,6 +4,16 @@
 @import "../toc.less";
 
 
+/* Variables */
+
+@body-font: 'Roboto';
+@code-font: 'Inconsolata';
+@code-light-gray: lighten(#8e908c, 10%);
+@h-font: 'Lato';
+@h-margin-top-large: (@line-height-computed * 2);
+@h-margin-top-small: @line-height-computed;
+
+
 /* Typography */
 
 .p-margin() {
@@ -11,7 +21,7 @@
 }
 
 .h-base() {
-    font-family: 'Lato', sans-serif;
+    font-family: @h-font, sans-serif;
 
     small {
         margin-left: @font-size-base;
@@ -22,11 +32,12 @@
     }
 }
 
-@h-margin-top-large: (@line-height-computed * 2);
-@h-margin-top-small: @line-height-computed;
+.code-base() {
+    font-family: @code-font, monospace;
+}
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: @body-font, sans-serif;
 }
 
 h1, .h1 {
@@ -59,9 +70,8 @@ h4, .h4, h5, .h5, h6, .h6 {
     margin-top: @h-margin-top-small;
 }
 
-// TODO: is this the right selector?
 code, pre > code {
-    font-family: 'Inconsolata', monospace;
+    .code-base();
 }
 
 .dl-compact {
@@ -70,6 +80,11 @@ code, pre > code {
 
 dd > p {
     .p-margin();
+}
+
+.prettyprint.linenums li {
+    .code-base();
+    color: @code-light-gray;
 }
 
 @media (min-width: @grid-float-breakpoint) {
