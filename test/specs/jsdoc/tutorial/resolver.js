@@ -127,7 +127,7 @@ describe("jsdoc/tutorial/resolver", function() {
         resolver.resolve();
         it("hierarchy is resolved properly no matter how the children property is defined", function() {
             // root has child 'test'
-            expect(resolver.root.children.length).toBe(3);
+            expect(resolver.root.children.length).toBe(4);
             expect(resolver.root.children).toContain(test);
             expect(resolver.root.children).toContain(constr);
             expect(test.parent).toBe(resolver.root);
