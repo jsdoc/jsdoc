@@ -107,8 +107,22 @@ dd > p {
 
 /* Grid */
 
-#jsdoc-body-container, #jsdoc-navbar-container {
+#jsdoc-body-container, #jsdoc-footer-container, #jsdoc-navbar-container {
     .container-fluid();
+}
+
+.jsdoc-footer {
+    width: 100%;
+    margin: auto;
+    padding: @navbar-padding-vertical @navbar-padding-horizontal;
+    min-height: @navbar-height;
+    background-color: @navbar-default-bg;
+    border: 1px solid @navbar-default-border;
+
+    p {
+        margin: 0;
+        text-align: center;
+    }
 }
 
 #jsdoc-content {
