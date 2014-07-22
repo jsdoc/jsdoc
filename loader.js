@@ -19,10 +19,12 @@ var fsLoader = require('swig/lib/loaders/filesystem');
 var path = require('path');
 var util = require('util');
 
-var REGEXP_TAG_ATTRIBUTES = '(\\s+[^>]+)?';
-var REGEXP_HEADING_OPEN = new RegExp(util.format('<h%s>', REGEXP_TAG_ATTRIBUTES), 'g');
+var REGEXP_TAG_ATTRIBUTES = '(?:\\s+[^>]+)?';
+var REGEXP_HEADING_OPEN = new RegExp(util.format('<h(%s)(\\s+%s)?>', REGEXP_TAG_ATTRIBUTES,
+    REGEXP_TAG_ATTRIBUTES), 'g');
 var REGEXP_HEADING_CLOSE = new RegExp('<\\\/h>', 'g');
-var REGEXP_SECTION_OPEN = new RegExp(util.format('<section%s>', REGEXP_TAG_ATTRIBUTES), 'g');
+var REGEXP_SECTION_OPEN = new RegExp(util.format('<section(%s)(\\s+%s)?>', REGEXP_TAG_ATTRIBUTES,
+    REGEXP_TAG_ATTRIBUTES), 'g');
 var REGEXP_SECTION_CLOSE = new RegExp('<\\\/section>', 'g');
 
 var jsdocLoader;
@@ -69,12 +71,12 @@ jsdocLoader = function jsdocLoader(basepath, encoding) {
 jsdocLoader.onload = {
     // Replace <h></h> with <{% h %}></{% endh %}> (also works if the opening tag has attributes)
     headings: function headings(data) {
-        return data.replace(REGEXP_HEADING_OPEN, '<{% h %}$1>')
+        return data.replace(REGEXP_HEADING_OPEN, '<{% h %}$1$2>')
             .replace(REGEXP_HEADING_CLOSE, '</{% endh %}>');
     },
     // Add {% section %} tags to <section> elements so we can auto-increment the heading level
     sections: function sections(data) {
-        return data.replace(REGEXP_SECTION_OPEN, '<section>{% section %}')
+        return data.replace(REGEXP_SECTION_OPEN, '<section$1$2>{% section %}')
             .replace(REGEXP_SECTION_CLOSE, '{% endsection %}</section>');
     }
 };

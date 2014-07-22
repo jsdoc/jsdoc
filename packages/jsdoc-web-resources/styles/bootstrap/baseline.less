@@ -75,7 +75,14 @@ code, pre > code {
 }
 
 .dl-compact {
-    &:extend(.dl-horizontal);
+    dt {
+        &:extend(.dl-horizontal dt);
+        text-align: left;
+    }
+
+    dd {
+        &:extend(.dl-horizontal dd);
+    }
 }
 
 dd > p {
@@ -85,16 +92,6 @@ dd > p {
 .prettyprint.linenums li {
     .code-base();
     color: @code-light-gray;
-}
-
-@media (min-width: @grid-float-breakpoint) {
-    // Left-align the headings in horizontal <dl>s
-    // TODO: maybe make this .dl-horizontal-left and expose both flavors
-    .dl-compact {
-        dt {
-            text-align: left;
-        }
-    }
 }
 
 // Use larger text in the first paragraph of the description
