@@ -314,6 +314,10 @@ DocletHelper.prototype.addDoclet = function addDoclet(doclet) {
     return this;
 };
 
+DocletHelper.prototype.hasGlobals = function hasGlobals() {
+    return this.globals.hasDoclets();
+};
+
 DocletHelper.prototype.registerLink = function registerLink(doclet) {
     var url = helper.createLink(doclet);
     helper.registerLink(doclet.longname, url);
@@ -777,19 +781,23 @@ PublishJob.prototype.generate = function generate(viewName, data, url, options) 
     return this;
 };
 
-PublishJob.prototype.generateTocData = function generateTocData(navTree) {
+PublishJob.prototype.generateTocData = function generateTocData(navTree, options) {
     var targets = [];
     var tocData = [];
+
+    options = options || {};
+
+    function TocItem(item, children) {
+        // remove leading namespaces from the label
+        this.label = helper.linkto(item.longname, item.name.replace(/^[a-zA-Z]+:/, ''));
+        this.id = item.longname;
+        this.children = children || [];
+    }
 
     function addItems(data) {
         Object.keys(data).sort().forEach(function(key) {
             var item = data[key];
-            var tocEntry = {
-                // remove leading namespaces from the label
-                label: helper.linkto(item.longname, item.name.replace(/^[a-zA-Z]+:/, '')),
-                id: item.longname,
-                children: []
-            };
+            var tocEntry = new TocItem(item);
 
             if (!targets.length) {
                 tocData.push(tocEntry);
@@ -805,6 +813,16 @@ PublishJob.prototype.generateTocData = function generateTocData(navTree) {
 
     logger.debug('Generating the JS file for the table of contents');
 
+    // If there are globals, force their TOC item to come first
+    if (options.hasGlobals) {
+        addItems({
+            'global': {
+                name: 'Globals',
+                longname: 'global',
+                children: []
+            }
+        });
+    }
     addItems(navTree);
 
     // TODO: generate() should handle this automatically
@@ -984,6 +1002,6 @@ exports.publish = function(data, opts, tutorials) {
 
     // finally, generate the TOC data and tutorials, and copy static files to the output directory
     job.generateTutorials(tutorials)
-        .generateTocData(docletHelper.navTree)
+        .generateTocData(docletHelper.navTree, { hasGlobals: docletHelper.hasGlobals() })
         .copyStaticFiles();
 };
