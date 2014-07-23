@@ -46,6 +46,7 @@ var CATEGORIES = exports.CATEGORIES = {
     MODULES: 'modules',
     NAMESPACES: 'namespaces',
     PACKAGES: 'packages',
+    SOURCES: 'sources',
     TYPEDEFS: 'typedefs'
 };
 
