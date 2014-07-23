@@ -9,6 +9,7 @@
 @body-font: 'Roboto';
 @code-font: 'Inconsolata';
 @code-light-gray: lighten(#8e908c, 10%);
+@footer-height: @navbar-height;
 @h-font: 'Lato';
 @h-margin-top-large: (@line-height-computed * 2);
 @h-margin-top-small: @line-height-computed;
@@ -36,8 +37,15 @@
     font-family: @code-font, monospace;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     font-family: @body-font, sans-serif;
+    // leave space for the footer
+    margin-bottom: @footer-height;
 }
 
 h1, .h1 {
@@ -109,10 +117,12 @@ dd > p {
 }
 
 .jsdoc-footer {
+    position: absolute;
+    bottom: 0;
     width: 100%;
+    height: @footer-height;
     margin: auto;
     padding: @navbar-padding-vertical @navbar-padding-horizontal;
-    min-height: @navbar-height;
     background-color: @navbar-default-bg;
     border: 1px solid @navbar-default-border;
 
