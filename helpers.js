@@ -84,10 +84,6 @@ exports.cssclass = function cssclass(names) {
     return util.format(' class="%s"', result.join(' '));
 };
 
-exports.date = function date() {
-    return new Date();
-};
-
 exports.jsdocVersion = function jsdocVersion() {
     return global.env.version.number;
 };

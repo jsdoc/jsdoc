@@ -22,8 +22,10 @@ var Filter = require('jsdoc/src/filter').Filter;
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');
 var logger = require('jsdoc/util/logger');
+var moment = require('moment');
 var name = require('jsdoc/name');
 var path = require('jsdoc/path');
+var Polyglot = require('node-polyglot');
 var Scanner = require('jsdoc/src/scanner').Scanner;
 var stripJsonComments = require('strip-json-comments');
 var Swig = require('swig').Swig;
@@ -47,8 +49,11 @@ var CATEGORIES = exports.CATEGORIES = {
     NAMESPACES: 'namespaces',
     PACKAGES: 'packages',
     SOURCES: 'sources',
+    TUTORIALS: 'tutorials',
     TYPEDEFS: 'typedefs'
 };
+
+var JSDOC_MISSING_TRANSLATION = exports.JSDOC_MISSING_TRANSLATION = '__JSDOC_MISSING_TRANSLATION__';
 
 // Map of doclet kinds to template categories. Must also call `isGlobal()` to determine whether a
 // doclet is global.
@@ -63,10 +68,13 @@ var KIND_TO_CATEGORY = exports.KIND_TO_CATEGORY = {
     'module': CATEGORIES.MODULES,
     'namespace': CATEGORIES.NAMESPACES,
     'package': CATEGORIES.PACKAGES,
+    // 'source' is not a doclet kind
+    // 'tutorial' is not a doclet kind
     'typedef': CATEGORIES.TYPEDEFS
 };
 
 // Categories that require a separate output file for each longname.
+// TODO: export?
 var OUTPUT_FILE_CATEGORIES = [
     CATEGORIES.CLASSES,
     CATEGORIES.EXTERNALS,
@@ -75,16 +83,20 @@ var OUTPUT_FILE_CATEGORIES = [
     CATEGORIES.NAMESPACES
 ];
 
-// TODO: belongs in a resource file (or at least in the views)
-var PAGE_TITLES = exports.PAGE_TITLES = {};
-PAGE_TITLES[CATEGORIES.CLASSES] = 'Class: ';
-PAGE_TITLES[CATEGORIES.EXTERNALS] = 'External: ';
-PAGE_TITLES[CATEGORIES.GLOBALS] = 'Globals';
-PAGE_TITLES[CATEGORIES.MIXINS] = 'Mixin: ';
-PAGE_TITLES[CATEGORIES.MODULES] = 'Module: ';
-PAGE_TITLES[CATEGORIES.NAMESPACES] = 'Namespace: ';
-PAGE_TITLES[CATEGORIES.SOURCES] = 'Source: ';
-PAGE_TITLES[CATEGORIES.TUTORIALS] = 'Tutorial: ';
+function loadJson(filepath) {
+    var result;
+
+    try {
+        if (filepath) {
+            result = JSON.parse(stripJsonComments(fs.readFileSync(filepath, 'utf8')));
+        }
+    }
+    catch (e) {
+        logger.fatal('Unable to load the file %s: %s', filepath, e);
+    }
+
+    return result;
+}
 
 
 // Tracks ALL doclets by category (similar, but not identical, to their "kind")
@@ -538,28 +550,26 @@ DocletHelper.prototype.getPackage = function getPackage() {
     return this.symbols.get(CATEGORIES.PACKAGES)[0];
 };
 
-// TODO: export?
-var defaultConfig = {
-    outputSourceFiles: true
+// TODO: move?
+var defaultConfig = exports.defaultConfig = {
+    dateFormat: 'LL',
+    locale: 'en',
+    outputSourceFiles: true,
+    resourcePath: './lang'
 };
 
-function loadConfigFile(filepath) {
-    var config;
+function loadConfig(filepath, templatePath) {
+    var config = _.defaults(loadJson(filepath) || {}, defaultConfig);
 
-    try {
-        if (filepath) {
-            config = JSON.parse(stripJsonComments(fs.readFileSync(filepath, 'utf8')));
-        }
-    }
-    catch (e) {
-        logger.fatal('Unable to load the template configuration file: %s', e);
-    }
+    config.resourceFile = config.resourceFile || path.join(templatePath, config.resourcePath,
+        config.locale + '.json');
 
-    return _.defaults(config || {}, defaultConfig);
+    return config;
 }
 
 var Template = exports.Template = function Template(templatePath, optionsFile) {
-    this.config = loadConfigFile(optionsFile);
+    this.config = loadConfig(optionsFile, templatePath);
+    this.l10n = new Polyglot({ locale: this.config.locale });
     this.path = templatePath;
     this.swig = null;
     this.views = {};
@@ -575,16 +585,32 @@ var Template = exports.Template = function Template(templatePath, optionsFile) {
  * @returns {this}
  */
 Template.prototype.init = function init() {
+    var self = this;
     // TODO: allow users to add helpers/filters/tags
     var swigHelpers = require(path.join(this.path, 'helpers'));
     var swigFilters = require(path.join(this.path, 'filters'));
     var swigLoader = require(path.join(this.path, 'loader'));
     var swigTags = require(path.join(this.path, 'tags'));
+    var locals;
+
+    // load the string resources
+    this.l10n.extend(loadJson(this.config.resourceFile));
+    // set locale for localized dates
+    moment().lang(this.config.locale);
+    // TODO: allow user-specified Moment.js config
+    moment.lang('en', {
+        longDateFormat: {
+            LL: 'MMMM D, YYYY'
+        }
+    });
 
     // define local functions that templates can use, and create a Swig instance with those locals
-    var self = this;
-    var locals = {
+    // TODO: move to helpers.js; turn helpers.js into an instantiable class that takes a Template
+    locals = {
         CATEGORIES: CATEGORIES,
+        config: function config(key) {
+            return _.getPath(self.options, key);
+        },
         hasOwnProp: function hasOwnProp() {
             var args = Array.prototype.slice.call(arguments, 0);
             var localSelf = args.shift();
@@ -592,8 +618,34 @@ Template.prototype.init = function init() {
             return Object.prototype.hasOwnProperty.apply(localSelf, args);
         },
         linkto: helper.linkto,
+        localizedDate: function localizedDate(formatString) {
+            return moment().format(formatString || self.config.dateFormat);
+        },
         log: logger.debug,
-        outputSourceFiles: self.config.outputSourceFiles
+        outputSourceFiles: this.config.outputSourceFiles,
+        translate: function(key, opts) {
+            var options;
+            var result;
+
+            if (typeof opts === 'number') {
+                options = { smart_count: opts };
+            }
+            else {
+                options = opts || {};
+            }
+
+            options = _.defaults(options, {
+                _: JSDOC_MISSING_TRANSLATION,
+                smart_count: 1
+            });
+            result = self.l10n.t(key, options);
+
+            if (result === JSDOC_MISSING_TRANSLATION) {
+                logger.warn('Unable to find a localized string for the key %s', key);
+            }
+
+            return result;
+        }
     };
 
     Object.keys(swigHelpers).forEach(function(helperMethod) {
@@ -842,7 +894,8 @@ PublishJob.prototype.generateTutorials = function generateTutorials(tutorials) {
 
     children.forEach(function(child) {
         var tutorialData = {
-            pageTitle: PAGE_TITLES[CATEGORIES.TUTORIALS] + child.title,
+            pageCategory: CATEGORIES.TUTORIALS,
+            pageTitle: child.title,
             header: child.title,
             content: child.parse(),
             children: child.children
@@ -867,7 +920,8 @@ PublishJob.prototype.generateSourceFiles = function generateSourceFiles(pathMap)
         Object.keys(pathMap).forEach(function(file) {
             var data = {
                 docs: null,
-                pageTitle: PAGE_TITLES[CATEGORIES.SOURCES] + pathMap[file]
+                pageCategory: CATEGORIES.SOURCES,
+                pageTitle: pathMap[file]
             };
 
             // links are keyed to the shortened path
@@ -899,8 +953,7 @@ PublishJob.prototype.generateGlobals = function generateGlobals(doclets) {
     if (doclets && doclets.hasDoclets()) {
         logger.debug('Generating globals page as %s', this.globalUrl);
         data = {
-            members: doclets,
-            pageTitle: PAGE_TITLES[CATEGORIES.GLOBALS]
+            members: doclets
         };
         options = {
             resolveLinks: true
@@ -955,8 +1008,8 @@ PublishJob.prototype.generateByLongname = function generateByLongname(longname, 
         data = {
             docs: doclets[category],
             members: members || {},
-            // TODO: may be able to remove here
-            pageTitle: PAGE_TITLES[category] + name.shorten(longname).name
+            pageCategory: category,
+            pageTitle: name.shorten(longname).name
         };
 
         self.generate('symbol', data, url, { resolveLinks: true });
