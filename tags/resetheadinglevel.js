@@ -15,7 +15,7 @@
 */
 'use strict';
 
-exports.compile = function compile(compiler, args, content, parents, options, blockName) {
+exports.compile = function compile() {
     return [
         '_ctx.__jsdocHeadingLevel = _ctx.__jsdocHeadingLevel || 2;\n',
         '_ctx.__jsdocHeadingLevel--;\n'

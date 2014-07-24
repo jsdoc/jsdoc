@@ -16,7 +16,6 @@
 'use strict';
 
 var templateHelper = require('jsdoc/util/templateHelper');
-var util = require('util');
 
 var markdownParser = require('jsdoc/util/markdown').getParser();
 

@@ -26,7 +26,7 @@ var bowerPath = './bower_components';
 var source = {
     js: {
         copy: [
-            path.join(bowerPath, 'jquery/dist/jquery.min.js'),
+            path.join(bowerPath, 'jquery/dist/jquery.min.js')
         ],
         minify: [
             './scripts/*.js',
@@ -44,12 +44,19 @@ var target = {
     js: './static/scripts'
 };
 
-gulp.task('build', ['css', 'js']);
+gulp.task('build', ['css-minify', 'js']);
+gulp.task('dev', ['css', 'js-copy']);
 
 gulp.task('css', function() {
     gulp.src(source.less)
         .pipe(less())
-        //.pipe(csso())
+        .pipe(gulp.dest(target.css));
+});
+
+gulp.task('css-minify', function() {
+    gulp.src(source.less)
+        .pipe(less())
+        .pipe(csso())
         .pipe(gulp.dest(target.css));
 });
 
@@ -70,4 +77,4 @@ gulp.task('js-minify', function() {
     });
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', ['dev']);

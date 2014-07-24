@@ -17,7 +17,6 @@
 
 var _ = require('underscore');
 var fs = require('fs');
-var logger = require('jsdoc/util/logger');
 var path = require('path');
 var stripJsonComments = require('strip-json-comments');
 var templateHelper = require('jsdoc/util/templateHelper');
@@ -61,7 +60,7 @@ exports.ancestorLinks = function ancestorLinks(doclet, cssClass) {
 var cssClasses = JSON.parse(stripJsonComments(fs.readFileSync(path.join(__dirname,
     'styles/classmap.json'), 'utf8')));
 
-exports.cssclass = function cssclass(names) {
+exports.cssclass = function cssclass() {
     var result = [];
     var keys = _.flatten(Array.prototype.slice.call(arguments));
 

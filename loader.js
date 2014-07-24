@@ -66,7 +66,7 @@ jsdocLoader = function jsdocLoader(basepath, encoding) {
             }
         }
     };
-}
+};
 
 jsdocLoader.onload = {
     // Replace <h></h> with <{% h %}></{% endh %}> (also works if the opening tag has attributes)
