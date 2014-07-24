@@ -30,6 +30,7 @@ var Polyglot = require('node-polyglot');
 var Scanner = require('jsdoc/src/scanner').Scanner;
 var stripJsonComments = require('strip-json-comments');
 var Swig = require('swig').Swig;
+var SymbolTracker = require('./lib/symboltracker');
 var taffy = require('taffydb').taffy;
 var util = require('util');
 
@@ -56,70 +57,6 @@ function loadJson(filepath) {
 
     return result;
 }
-
-// Tracks ALL doclets by category (similar, but not identical, to their "kind")
-// TODO: could use another flavor of this that tracks by longname but not category
-// TODO: export?
-function SymbolTracker() {
-    var category;
-
-    var categories = Object.keys(CATEGORIES);
-
-    for (var i = 0, l = categories.length; i < l; i++) {
-        category = CATEGORIES[categories[i]];
-        this[category] = [];
-    }
-}
-
-SymbolTracker.prototype.add = function add(doclet, category) {
-    if (hasOwnProp.call(this, category)) {
-        this[category].push(doclet);
-    }
-};
-
-SymbolTracker.prototype.remove = function remove(doclet, category) {
-    var idx;
-
-    if (hasOwnProp.call(this, category)) {
-        idx = this[category].indexOf(doclet);
-        if (idx !== -1) {
-            this[category].splice(idx, 1);
-        }
-    }
-};
-
-SymbolTracker.prototype.get = function get(category) {
-    var categories = category ? [category] : _.values(CATEGORIES);
-    var current;
-    var result = [];
-
-    for (var i = 0, l = categories.length; i < l; i++) {
-        current = categories[i];
-        if (hasOwnProp.call(this, current) && this[current].length) {
-            result = result.concat(this[current]);
-        }
-    }
-
-    return result;
-};
-
-SymbolTracker.prototype.hasDoclets = function hasDoclets(category) {
-    var current;
-
-    var categories = category ? [category] : Object.keys(CATEGORIES);
-    var result = false;
-
-    for (var i = 0, l = categories.length; i < l; i++) {
-        current = CATEGORIES[categories[i]];
-
-        if (current && this[current].length) {
-            result = true;
-            break;
-        }
-    }
-
-    return result;
-};
 
 var DocletHelper = exports.DocletHelper = function DocletHelper() {
     this.data = null;
