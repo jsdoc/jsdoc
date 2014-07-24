@@ -834,6 +834,10 @@ PublishJob.prototype.generate = function generate(viewName, data, url, options) 
     return this;
 };
 
+function removeLeadingNamespace(name) {
+    return name.replace(/^[a-zA-Z]+:/, '');
+}
+
 PublishJob.prototype.generateTocData = function generateTocData(navTree, options) {
     var targets = [];
     var tocData = [];
@@ -841,8 +845,7 @@ PublishJob.prototype.generateTocData = function generateTocData(navTree, options
     options = options || {};
 
     function TocItem(item, children) {
-        // remove leading namespaces from the label
-        this.label = helper.linkto(item.longname, item.name.replace(/^[a-zA-Z]+:/, ''));
+        this.label = helper.linkto(item.longname, removeLeadingNamespace(item.name));
         this.id = item.longname;
         this.children = children || [];
     }
@@ -893,10 +896,11 @@ PublishJob.prototype.generateTutorials = function generateTutorials(tutorials) {
     }
 
     children.forEach(function(child) {
+        var title = removeLeadingNamespace(child.title);
         var tutorialData = {
             pageCategory: CATEGORIES.TUTORIALS,
-            pageTitle: child.title,
-            header: child.title,
+            pageTitle: title,
+            header: title,
             content: child.parse(),
             children: child.children
         };
@@ -1009,7 +1013,7 @@ PublishJob.prototype.generateByLongname = function generateByLongname(longname, 
             docs: doclets[category],
             members: members || {},
             pageCategory: category,
-            pageTitle: name.shorten(longname).name
+            pageTitle: removeLeadingNamespace(name.shorten(longname).name)
         };
 
         self.generate('symbol', data, url, { resolveLinks: true });
