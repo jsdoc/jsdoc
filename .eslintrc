@@ -68,9 +68,9 @@
         "no-unused-expressions": 2,
         "no-warning-comments": 0,
         "no-with": 2,
-        "no-yoda": 2,
         "radix": 2,
         "wrap-iife": [2, "inside"],
+        "yoda": 2,
 
         // Strict mode
         "no-global-strict": 0,
