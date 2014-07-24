@@ -15,6 +15,7 @@
 */
 'use strict';
 
+// TODO: cull
 var _ = require('underscore-contrib');
 var beautify = require('js-beautify').html;
 var doop = require('jsdoc/util/doop');
@@ -32,56 +33,14 @@ var Swig = require('swig').Swig;
 var taffy = require('taffydb').taffy;
 var util = require('util');
 
+var ENUMS = require('./lib/enums');
+var CATEGORIES = ENUMS.CATEGORIES;
+var CONFIG_KEY = ENUMS.CONFIG_KEY;
+var JSDOC_MISSING_TRANSLATION = ENUMS.JSDOC_MISSING_TRANSLATION;
+var KIND_TO_CATEGORY = ENUMS.KIND_TO_CATEGORY;
+var OUTPUT_FILE_CATEGORIES = ENUMS.OUTPUT_FILE_CATEGORIES;
+
 var hasOwnProp = Object.prototype.hasOwnProperty;
-
-var CONFIG_KEY = exports.CONFIG_KEY = 'baseline';
-
-var CATEGORIES = exports.CATEGORIES = {
-    CLASSES: 'classes',
-    EVENTS: 'events',
-    EXTERNALS: 'externals',
-    FUNCTIONS: 'functions',
-    GLOBALS: 'globals',
-    LISTENERS: 'listeners',
-    MEMBERS: 'members',
-    MIXINS: 'mixins',
-    MODULES: 'modules',
-    NAMESPACES: 'namespaces',
-    PACKAGES: 'packages',
-    SOURCES: 'sources',
-    TUTORIALS: 'tutorials',
-    TYPEDEFS: 'typedefs'
-};
-
-var JSDOC_MISSING_TRANSLATION = exports.JSDOC_MISSING_TRANSLATION = '__JSDOC_MISSING_TRANSLATION__';
-
-// Map of doclet kinds to template categories. Must also call `isGlobal()` to determine whether a
-// doclet is global.
-var KIND_TO_CATEGORY = exports.KIND_TO_CATEGORY = {
-    'class': CATEGORIES.CLASSES,
-    'constant': CATEGORIES.MEMBERS,
-    'event': CATEGORIES.EVENTS,
-    'external': CATEGORIES.EXTERNALS,
-    'function': CATEGORIES.FUNCTIONS,
-    'member': CATEGORIES.MEMBERS,
-    'mixin': CATEGORIES.MIXINS,
-    'module': CATEGORIES.MODULES,
-    'namespace': CATEGORIES.NAMESPACES,
-    'package': CATEGORIES.PACKAGES,
-    // 'source' is not a doclet kind
-    // 'tutorial' is not a doclet kind
-    'typedef': CATEGORIES.TYPEDEFS
-};
-
-// Categories that require a separate output file for each longname.
-// TODO: export?
-var OUTPUT_FILE_CATEGORIES = [
-    CATEGORIES.CLASSES,
-    CATEGORIES.EXTERNALS,
-    CATEGORIES.MIXINS,
-    CATEGORIES.MODULES,
-    CATEGORIES.NAMESPACES
-];
 
 function loadJson(filepath) {
     var result;
@@ -97,7 +56,6 @@ function loadJson(filepath) {
 
     return result;
 }
-
 
 // Tracks ALL doclets by category (similar, but not identical, to their "kind")
 // TODO: could use another flavor of this that tracks by longname but not category
@@ -128,7 +86,7 @@ SymbolTracker.prototype.remove = function remove(doclet, category) {
             this[category].splice(idx, 1);
         }
     }
-}
+};
 
 SymbolTracker.prototype.get = function get(category) {
     var categories = category ? [category] : _.values(CATEGORIES);
