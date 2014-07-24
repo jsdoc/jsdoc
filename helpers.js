@@ -25,6 +25,10 @@ var util = require('util');
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 function addLink(item, linkText) {
+    if (linkText) {
+        linkText = templateHelper.htmlsafe(linkText);
+    }
+
     return templateHelper.linkto(item, linkText);
 }
 
