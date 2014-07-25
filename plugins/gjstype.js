@@ -10,7 +10,7 @@ exports.handlers = {
      */
     beforeParse: function(e) {
         var source = e.source,
-            gjsStyleOptionalRegex = /\{(\(?[\w]+\)?)\=\}[\t\s]+(\w+)[\t\s]+\[([\w]+)\]/g,
+            gjsStyleOptionalRegex = /\{(\(?[\w]+\)?)\=\}[\t\s]+(\w+)[\t\s]+\[([\w\s\'\"]+)\]/g,
             match,
 
             annotation,
