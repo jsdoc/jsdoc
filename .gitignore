@@ -18,3 +18,7 @@ out/
 
 # Dotfile detritus
 .DS_Store
+
+# temp
+temp/*
+.idea/*
