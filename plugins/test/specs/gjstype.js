@@ -9,9 +9,10 @@ describe('gjstype plugins', function() {
     var docSet = jasmine.getDocSetFromFile('plugins/test/fixtures/gjstype.js', parser);
 
     it('replace default annotation of parameter description field.', function() {
+        var findRegex = /\[[\w]+\=[\w\s\'\"]+\]/g;
         var myFunc = docSet.getByLongname('myFunc');
 
-        expect(myFunc.length).toEqual(1);
+        expect(myFunc[0].comment.match(findRegex).length).toEqual(2);
     });
 
 });
