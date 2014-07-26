@@ -21,9 +21,25 @@ var less = require('gulp-less');
 var path = require('path');
 var uglify = require('gulp-uglify');
 
+// Patch the `require` function so it can locate JSDoc modules and dependencies.
+// Must be called before loading Mocha.
+function patchRequire() {
+    /*eslint no-undef: 0 */
+    var jsdocPath = path.join(__dirname, 'node_modules/jsdoc');
+
+    require = require('requizzle')({
+        requirePaths: {
+            before: [path.join(jsdocPath, 'lib')],
+            after: [path.join(jsdocPath, 'node_modules')]
+        },
+        infect: true
+    });
+}
+
 var bowerPath = './bower_components';
 // TODO: make this configurable
 var source = {
+    code: ['publish.js', 'lib/**/*.js'],
     js: {
         copy: [
             path.join(bowerPath, 'jquery/dist/jquery.min.js')
@@ -36,7 +52,8 @@ var source = {
             path.join(bowerPath, 'jqtree/tree.jquery.js')
         ]
     },
-    less: './styles/bootstrap/baseline.less'
+    less: './styles/bootstrap/baseline.less',
+    tests: ['test/**/*.js']
 };
 
 var target = {
@@ -46,6 +63,22 @@ var target = {
 
 gulp.task('build', ['css-minify', 'js']);
 gulp.task('dev', ['css', 'js-copy']);
+
+gulp.task('coverage', function(cb) {
+    var istanbul;
+
+    patchRequire();
+    istanbul = require('gulp-istanbul');
+
+    gulp.src(source.code)
+        .pipe(istanbul())
+        .on('finish', function() {
+            gulp.src(source.tests)
+                .pipe(require('gulp-mocha')())
+                .pipe(istanbul.writeReports())
+                .on('end', cb);
+        });
+});
 
 gulp.task('css', function() {
     gulp.src(source.less)
@@ -75,6 +108,13 @@ gulp.task('js-minify', function() {
             .pipe(uglify())
             .pipe(gulp.dest(target.js));
     });
+});
+
+gulp.task('test', function() {
+    patchRequire();
+
+    gulp.src(source.tests, { read: false })
+        .pipe(require('gulp-mocha')());
 });
 
 gulp.task('default', ['dev']);
