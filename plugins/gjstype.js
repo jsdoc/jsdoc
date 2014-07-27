@@ -23,7 +23,7 @@ exports.handlers = {
 
             leftPart, rightPart;
 
-        while(match = gjsStyleOptionalRegex.exec(source)){
+        while((match = gjsStyleOptionalRegex.exec(source)) !== null){
             annotation = match[0];
             type = match[1];
             name = match[2];
