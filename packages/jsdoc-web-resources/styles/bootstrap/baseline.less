@@ -10,7 +10,7 @@
 @code-font: 'Inconsolata';
 @code-light-gray: lighten(#8e908c, 10%);
 @footer-height: @navbar-height;
-@h-font: 'Lato';
+@h-font: 'Noto Sans';
 @h-margin-top-large: (@line-height-computed * 2);
 @h-margin-top-small: @line-height-computed;
 
@@ -50,7 +50,7 @@ body {
 }
 
 h1, .h1 {
-    &:extend(.h-base);
+    .h-base();
     margin-top: @h-margin-top-large;
     font-weight: 700;
 
@@ -60,7 +60,7 @@ h1, .h1 {
 }
 
 h2, .h2 {
-    &:extend(.h-base);
+    .h-base();
     margin-top: @h-margin-top-large;
     font-weight: 600;
 
@@ -70,12 +70,12 @@ h2, .h2 {
 }
 
 h3, .h3 {
-    &:extend(.h-base);
+    .h-base();
     margin-top: @h-margin-top-large;
 }
 
 h4, .h4, h5, .h5, h6, .h6 {
-    &:extend(.h-base);
+    .h-base();
     margin-top: @h-margin-top-small;
 }
 
