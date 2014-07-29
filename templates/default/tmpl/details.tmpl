@@ -38,6 +38,13 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     </li></dd>
     <?js } ?>
 
+    <?js if (data.implemented && data.implements) { ?>
+    <dt class="implemented-from">Implemented From:</dt>
+    <dd class="implemented-from"><ul class="dummy"><li>
+        <?js= this.linkto(data.implements, this.htmlsafe(data.implements)) ?>
+    </li></dd>
+    <?js } ?>
+
     <?js if (data.mixes && data.mixes.length) { ?>
         <dt class="mixes">Mixes In:</dt>
 
