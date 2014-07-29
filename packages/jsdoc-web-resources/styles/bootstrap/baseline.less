@@ -35,6 +35,7 @@
 
 .code-base() {
     font-family: @code-font, monospace;
+    font-size: 100%;
 }
 
 html {
@@ -93,6 +94,16 @@ code, pre > code {
     }
 }
 
+.dl-summary-callout {
+    dt, dd {
+        margin-bottom: @line-height-computed / 2;
+    }
+
+    dt + dd {
+        margin-top: -@line-height-computed / 2;
+    }
+}
+
 dd > p {
     .p-margin();
 }
@@ -100,6 +111,16 @@ dd > p {
 .prettyprint.linenums li {
     .code-base();
     color: @code-light-gray;
+}
+
+.summary-callout {
+    font-size: @font-size-base * 0.9;
+
+    h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+        &:extend(.h4);
+        color: @brand-info;
+        margin-top: @h-margin-top-small;
+    }
 }
 
 // Use larger text in the first paragraph of the description
@@ -112,6 +133,7 @@ dd > p {
 
 /* Grid */
 
+// TODO: use class selectors
 #jsdoc-body-container, #jsdoc-footer-container, #jsdoc-navbar-container {
     .container-fluid();
 }
@@ -132,15 +154,26 @@ dd > p {
     }
 }
 
-#jsdoc-content {
+.summary-callout {
+    .container-fluid();
+}
+
+// TODO: use class selectors
+#jsdoc-content, .summary-content {
     .make-row();
 }
 
+.summary-column {
+    .make-md-column(4);
+}
+
+// TODO: use class selectors
 #jsdoc-content-container {
     .make-md-column(9);
     .make-md-column-push(3);
 }
 
+// TODO: use class selectors
 #jsdoc-toc-nav {
     .make-md-column(3);
     .make-md-column-pull(9);
@@ -177,3 +210,14 @@ td > p:last-child {
     .p-margin();
 }
 
+
+/* Callouts */
+
+.summary-callout {
+    padding: 0 1em 0 1em;
+    margin: 1em 0 1em 0;
+    border: 1px solid #eee;
+    border-left-width: 1em;
+    border-left-color: @brand-info;
+    border-radius: @border-radius-small;
+}
