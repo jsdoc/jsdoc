@@ -18,8 +18,8 @@ exports.handlers = {
         // If the summary is missing, grab the first sentence from the description
         // and use that.
         if (e.doclet && !e.doclet.summary && e.doclet.description) {
-            // The summary may end with `. ` or with `.<` (a period followed by an HTML tag).
-            e.doclet.summary = e.doclet.description.split(/\.\s|\.</)[0];
+            // The summary may end with `.$`, `. `, or `.<` (a period followed by an HTML tag).
+            e.doclet.summary = e.doclet.description.split(/\.$|\.\s|\.</)[0];
             // Append `.` as it was removed in both cases, or is possibly missing.
             e.doclet.summary += '.';
 

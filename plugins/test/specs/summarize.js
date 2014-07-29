@@ -51,6 +51,16 @@ describe('summarize', function() {
             expect(doclet.summary).toBe('This sentence is the summary.');
         });
 
+        it('should not add an extra period if there is only one sentence in the description',
+            function() {
+            var doclet = {
+                description: 'This description has only one sentence.'
+            };
+            handler({ doclet: doclet });
+
+            expect(doclet.summary).toBe('This description has only one sentence.');
+        });
+
         it('should use the entire description, plus a period, as the summary if the description ' +
             'does not contain a period', function() {
             var doclet = {
