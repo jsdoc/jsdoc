@@ -46,7 +46,7 @@ exports.publish = function(data, opts, tutorials) {
         .generateSourceFiles(docletHelper.shortPaths);
 
     // generate globals page if necessary
-    job.generateGlobals(docletHelper.globals);
+    job.generateGlobals(docletHelper.globals.get());
 
     // generate index page
     // TODO: method params will need to change
