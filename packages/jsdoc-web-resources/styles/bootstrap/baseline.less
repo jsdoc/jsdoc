@@ -51,8 +51,8 @@ body {
 
 h1, .h1 {
     .h-base();
+    font-size: floor((@font-size-base * 2.4));
     margin-top: @h-margin-top-large;
-    font-weight: 700;
 
     + section h2:first-child, + section .h2:first-child {
         margin-top: @h-margin-top-small;
@@ -61,8 +61,8 @@ h1, .h1 {
 
 h2, .h2 {
     .h-base();
+    font-size: floor((@font-size-base * 2));
     margin-top: @h-margin-top-large;
-    font-weight: 600;
 
     + section h3:first-child, + section .h3:first-child {
         margin-top: @h-margin-top-small;
@@ -71,6 +71,7 @@ h2, .h2 {
 
 h3, .h3 {
     .h-base();
+    font-size: ceil((@font-size-base * 1.5));
     margin-top: @h-margin-top-large;
 }
 
@@ -96,11 +97,11 @@ code, pre > code {
 
 .dl-summary-callout {
     dt, dd {
-        margin-bottom: @line-height-computed / 2;
+        margin-bottom: floor(@line-height-computed / 2);
     }
 
     dt + dd {
-        margin-top: -@line-height-computed / 2;
+        margin-top: ceil(-@line-height-computed / 2);
     }
 }
 
