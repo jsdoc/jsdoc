@@ -287,6 +287,7 @@ function attachModuleSymbols(doclets, modules) {
  * @param {array<object>} members.namespaces
  * @param {array<object>} members.tutorials
  * @param {array<object>} members.events
+ * @param {array<object>} members.interfaces
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
@@ -377,6 +378,14 @@ function buildNav(members) {
             nav += '<li>' + tutoriallink(t.name) + '</li>';
         });
 
+        nav += '</ul>';
+    }
+
+    if (members.interfaces.length) {
+        nav += '<h3>Interfaces</h3><ul>';
+        members.interfaces.forEach(function(i) {
+            nav += '<li>' + linkto(i.longname, i.name) + '</li>';
+        });
         nav += '</ul>';
     }
 
@@ -606,6 +615,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     var namespaces = taffy(members.namespaces);
     var mixins = taffy(members.mixins);
     var externals = taffy(members.externals);
+    var interfaces = taffy(members.interfaces);
 
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
         var myClasses = helper.find(classes, {longname: longname});
@@ -631,6 +641,11 @@ exports.publish = function(taffyData, opts, tutorials) {
         var myExternals = helper.find(externals, {longname: longname});
         if (myExternals.length) {
             generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
+        }
+
+        var myInterfaces = helper.find(interfaces, {longname: longname});
+        if (myInterfaces.length) {
+            generate('Interface: ' + myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
         }
     });
 

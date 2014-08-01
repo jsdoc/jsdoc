@@ -80,6 +80,48 @@
         <?js }); ?></dl>
     <?js } ?>
 
+    <?js
+    /* listing interface list at implemented class documents. */
+    var implements = doc.implements;
+    if (doc.kind === 'class' && implements && implements.length) {
+    ?>
+        <h3 class="subsection-title">Implements</h3>
+        <ul>
+            <?js
+                implements.forEach(function(imp) {
+            ?>
+                <li> <?js= self.linkto(imp) ?> </li>
+            <?js
+                });
+            ?>
+        </ul>
+
+    <?js
+    }
+    ?>
+
+    <?js
+    /* listing implemented class with this interface. */
+    var implemented = self.find({ 'implements': { 'isArray': true } });
+    if (doc.kind === 'interface' && implemented && implemented.length) {
+    ?>
+        <h3 class="subsection-title">Implemented Classes</h3>
+        <ul>
+            <?js
+                implemented.forEach(function(imp) {
+                    if (imp.implements.indexOf(doc.name) > -1) {
+            ?>
+                <li> <?js= self.linkto(imp.longname, self.htmlsafe(imp.longname)) ?> </li>
+            <?js
+                    }
+                });
+            ?>
+        </ul>
+
+    <?js
+    }
+    ?>
+
      <?js
         var mixins = self.find({kind: 'mixin', memberof: doc.longname});
         if (doc.kind !== 'globalobj' && mixins && mixins.length) {

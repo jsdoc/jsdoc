@@ -9,17 +9,18 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     defaultObjectClass = ' class="object-value"';
 }
 ?>
+<?js
+    var properties = data.properties;
+    if (properties && properties.length && properties.forEach) {
+?>
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl><?js= this.partial('properties.tmpl', data) ?></dl>
+
+<?js } ?>
+
 <dl class="details">
-    <?js
-        var properties = data.properties;
-        if (properties && properties.length && properties.forEach) {
-    ?>
-
-        <h5 class="subsection-title">Properties:</h5>
-
-        <dl><?js= this.partial('properties.tmpl', data) ?></dl>
-
-    <?js } ?>
 
     <?js if (data.version) {?>
     <dt class="tag-version">Version:</dt>
@@ -35,6 +36,13 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
         <?js= this.linkto(data.inherits, this.htmlsafe(data.inherits)) ?>
+    </li></dd>
+    <?js } ?>
+
+    <?js if (data.implemented && data.implements) { ?>
+    <dt class="implemented-from">Implemented From:</dt>
+    <dd class="implemented-from"><ul class="dummy"><li>
+        <?js= this.linkto(data.implements, this.htmlsafe(data.implements)) ?>
     </li></dd>
     <?js } ?>
 
