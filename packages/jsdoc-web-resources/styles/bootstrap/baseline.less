@@ -6,11 +6,11 @@
 
 /* Variables */
 
-@body-font: 'Roboto';
+@body-font: 'Noto Serif';
 @code-font: 'Inconsolata';
 @code-light-gray: lighten(#8e908c, 10%);
 @footer-height: @navbar-height;
-@h-font: 'Noto Sans';
+@h-font: 'Karla';
 @h-margin-top-large: (@line-height-computed * 2);
 @h-margin-top-small: @line-height-computed;
 
@@ -82,6 +82,10 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 code, pre > code {
     .code-base();
+}
+
+dt, th {
+    font-family: @h-font;
 }
 
 .dl-compact {
