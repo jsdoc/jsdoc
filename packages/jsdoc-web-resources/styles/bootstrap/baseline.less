@@ -139,6 +139,21 @@ dd > p {
     }
 }
 
+.symbol-index-list > dd {
+    margin-bottom: 0.75em;
+}
+
+.symbol-index-name {
+    text-indent: -1em;
+    margin-left: 1em;
+}
+
+.symbol-index-continued {
+    border-top: 1px solid @gray-lighter;
+    padding-top: 0.25em;
+    text-align: right;
+}
+
 
 /* Grid */
 
@@ -163,16 +178,16 @@ dd > p {
     }
 }
 
-.summary-callout {
+.summary-callout, .symbol-index {
     .container-fluid();
 }
 
 // TODO: use class selectors
-#jsdoc-content, .summary-content {
+#jsdoc-content, .summary-content, .symbol-index-content {
     .make-row();
 }
 
-.summary-column {
+.summary-column, .symbol-index-column {
     .make-md-column(4);
 }
 

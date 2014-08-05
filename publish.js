@@ -49,13 +49,13 @@ exports.publish = function(data, opts, tutorials) {
     job.generateGlobals(docletHelper.globals);
 
     // generate index page
-    // TODO: method params will need to change
-    job.generateIndex(docletHelper.symbols.get(CATEGORIES.PACKAGES), opts.readme);
+    job.generateIndex(docletHelper.getCategory(CATEGORIES.PACKAGES), opts.readme,
+        docletHelper.getAlphabetized());
 
     // generate the rest of the output files (excluding tutorials)
     docletHelper.getOutputLongnames().forEach(function(longname) {
-        job.generateByLongname(longname, docletHelper.longname[longname],
-            docletHelper.memberof[longname]);
+        job.generateByLongname(longname, docletHelper.getLongname(longname),
+            docletHelper.getMemberof(longname));
     });
 
     // finally, generate the TOC data and tutorials, and copy static files to the output directory
