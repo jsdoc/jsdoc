@@ -1,0 +1,29 @@
+<html>
+<head>
+  <title>parseHtmlFixture</title>
+  <!--
+    @overview Extracts javascript source and comments from HTML files
+    @module plugins/parseHtml
+    @author Aleksandar Rodic <aleksandar.xyz@gmail.com>
+  -->
+</head>
+<body>
+  <script type="text/javascript">
+        
+    var test = {
+        /**
+         * First Comment
+         */
+        method: function() {}
+    };
+
+    (function(){})();
+
+    /**
+     Second Comment
+     */
+    var two = 2;
+    
+  </script>
+</body>
+</html>
