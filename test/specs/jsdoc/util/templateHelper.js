@@ -43,6 +43,11 @@ describe("jsdoc/util/templateHelper", function() {
         expect(typeof helper.getUniqueFilename).toBe("function");
     });
 
+    it("should export a 'getUniqueId' function", function() {
+        expect(helper.getUniqueId).toBeDefined();
+        expect(typeof helper.getUniqueId).toBe('function');
+    });
+
     it("should export a 'longnameToUrl' property", function() {
         expect(helper.longnameToUrl).toBeDefined();
         expect(typeof helper.longnameToUrl).toBe("object");
@@ -86,6 +91,11 @@ describe("jsdoc/util/templateHelper", function() {
     it("should export a 'getSignatureReturns' function", function() {
         expect(helper.getSignatureReturns).toBeDefined();
         expect(typeof helper.getSignatureReturns).toBe("function");
+    });
+
+    it("should export a 'getAncestors' function", function() {
+        expect(helper.getAncestors).toBeDefined();
+        expect(typeof helper.getAncestors).toBe('function');
     });
 
     it("should export a 'getAncestorLinks' function", function() {
@@ -213,6 +223,10 @@ describe("jsdoc/util/templateHelper", function() {
             var filename = helper.getUniqueFilename('MyClass(foo, bar)');
             expect(filename).toBe('MyClass.html');
         });
+    });
+
+    xdescribe('getUniqueId', function() {
+        // TODO
     });
 
     describe("longnameToUrl", function() {
@@ -770,6 +784,10 @@ describe("jsdoc/util/templateHelper", function() {
 
             delete helper.longnameToUrl.MyClass;
         });
+    });
+
+    xdescribe('getAncestors', function() {
+        // TODO
     });
 
     describe("getAncestorLinks", function() {
