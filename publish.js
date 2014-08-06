@@ -22,11 +22,6 @@ var Template = require('./lib/template');
 
 var CATEGORIES = require('./lib/enums').CATEGORIES;
 
-/**
-    @param {TAFFY} data See <http://taffydb.com/>.
-    @param {object} opts
-    @param {Tutorial} tutorials
- */
 exports.publish = function(data, opts, tutorials) {
     var docletHelper = new DocletHelper();
     var template = new Template(opts.template, global.env.conf.templates.baseline);
