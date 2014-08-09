@@ -105,7 +105,7 @@
     var implemented = self.find({ 'implements': { 'isArray': true } });
     if (doc.kind === 'interface' && implemented && implemented.length) {
     ?>
-        <h3 class="subsection-title">Implemented Classes</h3>
+        <h3 class="subsection-title">Implementations</h3>
         <ul>
             <?js
                 implemented.forEach(function(imp) {
