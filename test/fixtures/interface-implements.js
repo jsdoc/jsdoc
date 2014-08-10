@@ -2,8 +2,28 @@
  * @interface
  */
 function ITester() {}
+
+/**
+ * @type {string}
+ */
 ITester.prototype.hello = '123';
+
+/**
+ * @enum
+ */
+ITester.type = {
+    KEYDOWN: 9,
+    KEYUP: 11
+};
+
+/**
+ * before each method
+ */
 ITester.prototype.beforeEach = function() {};
+
+/**
+ * it method.
+ */
 ITester.prototype.it = function() {};
 
 /**
@@ -11,6 +31,17 @@ ITester.prototype.it = function() {};
  * @implements {ITester}
  */
 function MyTester() {}
+
+/** @type {string} */
+MyTester.prototype.hello = '234';
+
+/** @enum */
+MyTester.type = {
+    /** keyboard up */
+    KEYDOWN: 9,
+    KEYUP: 11,
+    KEYLEFT: 10
+};
 /**
  * my tester's beforeEach method.
  */

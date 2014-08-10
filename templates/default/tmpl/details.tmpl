@@ -39,10 +39,10 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     </li></dd>
     <?js } ?>
 
-    <?js if (data.implemented && data.implements) { ?>
+    <?js if (data.implemented && data.implementProp) { ?>
     <dt class="implementes">Implementes:</dt>
     <dd class="implementes"><ul class="dummy"><li>
-        <?js= this.linkto(data.implements, this.htmlsafe(data.implements)) ?>
+        <?js= this.linkto(data.implementProp, this.htmlsafe(data.implementProp)) ?>
     </li></dd>
     <?js } ?>
 
