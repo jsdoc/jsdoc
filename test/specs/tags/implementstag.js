@@ -12,15 +12,13 @@ describe('@interface tag', function() {
         expect(foundMyTester[0].implements[0]).toEqual('ITester');
     });
 
-    it('beforeEach has "implemented" and "implementMethod" property', function() {
+    it('beforeEach has "implemented" and "implementProp" property', function() {
         expect(foundBeforeEachMethod[0].implemented).toBeDefined();
-        expect(foundBeforeEachMethod[0].implementMethod).toBeDefined();
+        expect(foundBeforeEachMethod[0].implementProp).toBeDefined();
     });
 
     it('MyWorker\'s process() method is not implemented', function() {
         expect(foundProcessMethod[0].implements).toBeUndefined();
     });
-
-
 
 });
