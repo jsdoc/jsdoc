@@ -144,6 +144,7 @@ jasmine.getDocSetFromFile = function(filename, parser, validate) {
     jsdoc.borrow.indexAll(doclets);
 
     jsdoc.augment.addInherited(doclets);
+    jsdoc.augment.addImplemented(doclets);
 
     // test assume borrows have not yet been resolved
     // require('jsdoc/borrow').resolveBorrows(doclets);

@@ -345,6 +345,7 @@ cli.parseFiles = function() {
     logger.debug('Adding inherited symbols...');
     borrow.indexAll(docs);
     augment.addInherited(docs);
+    augment.addImplemented(docs);
     borrow.resolveBorrows(docs);
 
     app.jsdoc.parser.fireProcessingComplete(docs);
