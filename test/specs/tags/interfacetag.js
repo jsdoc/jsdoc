@@ -1,16 +1,17 @@
+/*global describe, expect, it, jasmine */
+'use strict';
+
 describe('@interface tag', function() {
-    var docSet = jasmine.getDocSetFromFile("test/fixtures/interface-implements.js");
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
 
-    var foundInterface = docSet.getByLongname('ITester');
+    var testerInterface = docSet.getByLongname('ITester')[0];
+    var testerImplementation = docSet.getByLongname('MyTester')[0];
 
-    var foundClassImplementsInterface = docSet.getByLongname('MyTester');
-
-    it('ITester has "interface" value in "kind"', function() {
-        expect(foundInterface[0].kind).toBe('interface');
+    it('ITester has its kind set to "interface"', function() {
+        expect(testerInterface.kind).toBe('interface');
     });
 
-    it('MyTester class has not "interface" value in "kind"', function() {
-        expect(foundClassImplementsInterface[0].kind).not.toBe('interface');
+    it('MyTester class has its kind set to "class" (not "interface")', function() {
+        expect(testerImplementation.kind).toBe('class');
     });
-
 });
