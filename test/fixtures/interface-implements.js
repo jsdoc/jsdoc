@@ -54,6 +54,7 @@ MyTester.prototype.it = function() {};
  * @interface
  */
 function IWorker() {}
+/** Interface for doing some work. */
 IWorker.prototype.work = function() {};
 
 /**
@@ -61,6 +62,7 @@ IWorker.prototype.work = function() {};
  * @implements {IWorker}
  */
 function MyWorker() {}
+/** Do some work. */
 MyWorker.prototype.work = function() {};
 MyWorker.prototype.process = function() {};
 
