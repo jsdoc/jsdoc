@@ -63,3 +63,9 @@ IWorker.prototype.work = function() {};
 function MyWorker() {}
 MyWorker.prototype.work = function() {};
 MyWorker.prototype.process = function() {};
+
+/**
+ * @constructor
+ * @implements {IWorker}
+ */
+function MyIncompleteWorker() {}
