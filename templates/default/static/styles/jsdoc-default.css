@@ -195,8 +195,8 @@ h6
 }
 
 .details { margin-top: 14px; border-left: 2px solid #DDD; }
-.details dt { width:100px; float:left; padding-left: 10px;  padding-top: 6px; }
-.details dd { margin-left: 50px; }
+.details dt { width:120px; float:left; padding-left: 10px;  padding-top: 6px; }
+.details dd { margin-left: 70px; }
 .details ul { margin: 0; }
 .details ul { list-style-type: none; }
 .details li { margin-left: 30px; padding-top: 6px; }

@@ -39,11 +39,22 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     </li></dd>
     <?js } ?>
 
-    <?js if (data.implemented && data.implementProp) { ?>
-    <dt class="implementes">Implementes:</dt>
-    <dd class="implementes"><ul class="dummy"><li>
-        <?js= this.linkto(data.implementProp, this.htmlsafe(data.implementProp)) ?>
-    </li></dd>
+    <?js if (data.implementations && data.implementations.length) { ?>
+    <dt class="implementations">Implementations:</dt>
+    <dd class="implementations"><ul>
+        <?js data.implementations.forEach(function(impl) { ?>
+            <li><?js= self.linkto(impl, self.htmlsafe(impl)) ?></li>
+        <?js }); ?>
+    </ul></dd>
+    <?js } ?>
+
+    <?js if (data.implements && data.implements.length) { ?>
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        <?js data.implements.forEach(function(impl) { ?>
+            <li><?js= self.linkto(impl, self.htmlsafe(impl)) ?></li>
+        <?js }); ?>
+    </ul></dd>
     <?js } ?>
 
     <?js if (data.mixes && data.mixes.length) { ?>

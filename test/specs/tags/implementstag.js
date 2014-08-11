@@ -12,12 +12,13 @@ describe('@implements tag', function() {
     it('MyTester has an "implements" array', function() {
         expect(Array.isArray(myTester.implements)).toBe(true);
         expect(myTester.implements.length).toBe(1);
-        expect(myTester.implements[0]).toEqual('ITester');
+        expect(myTester.implements[0]).toBe('ITester');
     });
 
-    it('beforeEach has "implemented" and "implementProp" property', function() {
-        expect(beforeEachMethod.implemented).toBeDefined();
-        expect(beforeEachMethod.implementProp).toBeDefined();
+    it('beforeEach has an "implements" array', function() {
+        expect(Array.isArray(beforeEachMethod.implements)).toBe(true);
+        expect(beforeEachMethod.implements.length).toBe(1);
+        expect(beforeEachMethod.implements[0]).toBe('ITester#beforeEach');
     });
 
     it('MyWorker\'s process() method does not implement an interface', function() {
