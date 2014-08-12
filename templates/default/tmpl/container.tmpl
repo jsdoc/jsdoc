@@ -28,12 +28,14 @@
 
 <article>
     <div class="container-overview">
-    <?js if (doc.kind === 'module' && doc.module) { ?>
+    <?js if (doc.kind === 'module' && doc.modules) { ?>
         <?js if (doc.description) { ?>
             <div class="description"><?js= doc.description ?></div>
         <?js } ?>
 
-        <?js= self.partial('method.tmpl', doc.module) ?>
+        <?js doc.modules.forEach(function(module) { ?>
+            <?js= self.partial('method.tmpl', module) ?>
+        <?js }) ?>
     <?js } ?>
 
     <?js if (doc.kind === 'class') { ?>

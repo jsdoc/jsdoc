@@ -263,15 +263,21 @@ function attachModuleSymbols(doclets, modules) {
 
     // build a lookup table
     doclets.forEach(function(symbol) {
-        symbols[symbol.longname] = symbol;
+        symbols[symbol.longname] = symbols[symbol.longname] || [];
+        symbols[symbol.longname].push(symbol);
     });
 
     return modules.map(function(module) {
         if (symbols[module.longname]) {
-            module.module = doop(symbols[module.longname]);
-            if (module.module.kind === 'class' || module.module.kind === 'function') {
-                module.module.name = module.module.name.replace('module:', '(require("') + '"))';
-            }
+            module.modules = symbols[module.longname].map(function(symbol) {
+                symbol = doop(symbol);
+
+                if (symbol.kind === 'class' || symbol.kind === 'function') {
+                    symbol.name = symbol.name.replace('module:', '(require("') + '"))';
+                }
+
+                return symbol;
+            });
         }
     });
 }
