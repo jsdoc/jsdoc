@@ -22,6 +22,11 @@ describe('jsdoc/tag/dictionary', function() {
         expect(dictionary instanceof dictionary.Dictionary).toBe(true);
     });
 
+    it('should export a defineSynonym method', function() {
+        expect(dictionary.defineSynonym).toBeDefined();
+        expect(typeof dictionary.defineSynonym).toBe('function');
+    });
+
     it('should export a defineTag method', function() {
         expect(dictionary.defineTag).toBeDefined();
         expect(typeof dictionary.defineTag).toBe('function');
@@ -47,8 +52,15 @@ describe('jsdoc/tag/dictionary', function() {
         expect(typeof dictionary.Dictionary).toBe('function');
     });
 
-    xdescribe('default dictionary tags', function() {
-        // TODO: verify that the default dictionary includes the appropriate list of tags
+    describe('defineSynonym', function() {
+        it('adds a synonym for the specified tag', function() {
+            var synonymDict = new dictionary.Dictionary();
+
+            dictionary.defineTag('foo', {});
+            dictionary.defineSynonym('foo', 'bar');
+
+            expect(dictionary.normalise('bar')).toBe('foo');
+        });
     });
 
     describe('defineTag', function() {
