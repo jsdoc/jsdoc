@@ -135,6 +135,19 @@ Copyright (c) 2011-2013 Ariya Hidayat and other Esprima contributors.
 The source code for Esprima is available at:
 https://github.com/ariya/esprima
 
+## events ##
+
+Portions of the events source code are incorporated into the following files:
+
++ `rhino/events.js`
+
+events is distributed under the MIT license, which is reproduced above.
+
+Copyright Joyent, Inc. and other Node contributors. All rights reserved.
+
+The source code for events is available at:
+https://github.com/Gozala/events
+
 ## github-flavored-markdown ##
 
 github-flavored-markdown is distributed under the BSD 3-clause license:
@@ -239,18 +252,6 @@ above.
 
 The source code for node-browser-builtins is available at:
 https://github.com/alexgorbatchev/node-browser-builtins
-
-## node-browserify ##
-
-Portions of the node-browserify source code are incorporated into the following
-files:
-
-- `rhino/events.js`
-
-node-browserify is distributed under the MIT license, which is reproduced above.
-
-The source code for node-browserify is available at:
-https://github.com/substack/node-browserify
 
 ## Requizzle ##
 
