@@ -1,0 +1,28 @@
+{
+  // Set to `true` to remove extra whitespace from HTML output files. Set to `false` to generate
+  // output files more quickly, but with extra whitespace.
+  "beautify": true,
+  // Components to display in each HTML output file.
+  "components": {
+    // Set to `true` to display a summary section at the top of each page. Set to `false` to omit
+    // the summary section.
+    "summary": true
+  },
+  // Maps CSS class names used in the template files to class names used in the output files.
+  // IMPORTANT: The CSS class names in the template files will change. For now, don't use this
+  // option.
+  //"cssClassMap": "",
+  "dateFormat": "MMMM D, YYYY",
+  // The character encoding to write to the <meta> tag in HTML output files. You are strongly
+  // encouraged to use the default setting.
+  "encoding": "utf-8",
+  // The locale for displaying localized text.
+  "locale": "en",
+  // Set to `true` to generate pretty-printed HTML versions of the source files, and to link to
+  // the pretty-printed files from the documentation. Set to `false` to omit the pretty-printed
+  // source files and the links to these files.
+  "outputSourceFiles": "true",
+  // The path to the directory that contains resource files for each locale.
+  // IMPORTANT: The format of the resource files may change.
+  "resourcePath": "./lang"
+}
