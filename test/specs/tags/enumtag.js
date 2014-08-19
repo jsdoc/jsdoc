@@ -1,5 +1,7 @@
-/*global describe: true, expect: true, it: true, jasmine: true, xit: true */
-describe("@enum tag", function() {
+/*global describe, expect, it, jasmine, xit */
+'use strict';
+
+describe('@enum tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/enumtag.js');
     var tristate = docSet.getByLongname('TriState')[0];
 
@@ -26,8 +28,8 @@ describe("@enum tag", function() {
 
     // TODO: reenable after fixing circular-reference issues
     xit('An enum does not contain any circular references.', function() {
-        var dump = require("jsdoc/util/dumper").dump;
+        var dump = require('jsdoc/util/dumper').dump;
 
-        expect( dump(tristate) ).not.toMatch("<CircularRef>");
+        expect( dump(tristate) ).not.toMatch('<CircularRef>');
     });
 });
