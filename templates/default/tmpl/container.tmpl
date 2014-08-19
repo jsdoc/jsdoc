@@ -30,6 +30,8 @@
         <?js } ?></h2>
         <?js if (doc.classdesc) { ?>
             <div class="class-description"><?js= doc.classdesc ?></div>
+        <?js } else if (doc.kind === 'module' && doc.module && doc.module.classdesc) { ?>
+            <div class="class-description"><?js= doc.module.classdesc ?></div>
         <?js } ?>
     <?js } ?>
 </header>
