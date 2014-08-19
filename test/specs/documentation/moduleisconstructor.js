@@ -33,5 +33,11 @@ describe('module that exports a constructor', function() {
 		it('should include a "description" property that contains the module description', function() {
 			expect(modules[0].description).toEqual('Describe the module here.');
 		});
+		
+		// TODO: this is the missing piece of information -- the module property is not available when testing, but is available within the template
+		xit('should be able to access the class information via the module', function() {
+			expect(modules[0].module.description).toEqual('Create a new configuration.');
+			expect(modules[0].module.classdesc).toEqual('Describe the class here.');
+		});
 	});
 });
