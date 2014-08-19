@@ -9,3 +9,5 @@ calc.Outcome;
 /** @param {calc.NumberLike} x A number or a string. */
 calc.readNumber = function(x) {
 };
+
+/** @typedef {Object} CalculatorBattery */
