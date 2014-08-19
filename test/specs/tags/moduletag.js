@@ -26,12 +26,16 @@ describe('@module tag', function() {
         var blend = docSet.getByLongname('module:color/mixer.blend')[0];
         var darken = docSet.getByLongname('module:color/mixer.darken')[0];
 
-        it('When a @module tag defines a module module, a symbol of kind "module" is documented', function() {
+        it('When a @module tag defines a module, a symbol of kind "module" is documented', function() {
             expect(typeof mixer).toBe('object');
             expect(mixer.kind).toBe('module');
         });
 
-        it('When an object literal is lent to a module with a @lends tag, A member of that object literal is documented as a member of the module', function() {
+        it('When a @module tag defines a module, the module doclet does not have a "scope" property', function() {
+            expect(mixer.scope).not.toBeDefined();
+        });
+
+        it('When an object literal is lent to a module with a @lends tag, a member of that object literal is documented as a member of the module', function() {
             expect(typeof blend).toBe('object');
             expect(blend.kind).toBe('function');
         });
