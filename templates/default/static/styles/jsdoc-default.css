@@ -15,13 +15,13 @@
     font-family: 'Open Sans Light';
     font-weight: normal;
     font-style: normal;
-    src: url('OpenSans-Regular-webfont.eot');
+    src: url('OpenSans-Light-webfont.eot');
     src:
         local('Open Sans Light'),
         local('OpenSans Light'),
         url('OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
         url('OpenSans-Light-webfont.woff') format('woff'),
-        url('OpenSans-Light-webfont.svg#open_sansregular') format('svg');
+        url('OpenSans-Light-webfont.svg#open_sanslight') format('svg');
 }
 
 html
