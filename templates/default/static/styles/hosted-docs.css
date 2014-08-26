@@ -1,11 +1,5 @@
-* {
-	box-sizing: border-box;
-}
-
-body {
-	margin: 0;
-}
-
-.regeneratedDocsBtn, .subnav, #topnav {
-	display: none !important;
-}
+/*
+	DO NOT ADD ANY CSS HERE
+	
+	This file is replaced by the build when apps are created to be hosted on apidocs.bladerunnerjs.org.
+*/

@@ -166,6 +166,14 @@
 /**********************
 * Generate docs styling
 ***********************/
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
 .right-align {
     float: right;
 }
