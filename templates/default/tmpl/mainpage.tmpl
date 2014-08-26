@@ -7,6 +7,17 @@ var self = this;
     <h3><?js= data.name ?> <?js= data.version ?></h3>
 <?js } ?>
 
+<?js if (data.kind === 'mainpage') { ?>
+    <div class="right-align">
+        <span class="regeneratedDocsBtn">
+            <button class="round-button has-tooltip" onclick="generateDocs()">
+                <span class="button-image"></span>
+                <span class="tooltip">Build JsDoc</span>
+            </button>
+        </span>
+    </div>
+<?js } ?>
+
 <?js if (data.readme) { ?>
     <section>
         <article><?js= data.readme ?></article>
