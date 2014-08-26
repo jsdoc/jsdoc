@@ -569,14 +569,14 @@ exports.publish = function(taffyData, opts, tutorials) {
     var interfaces = taffy(members.interfaces);
 
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
-        var myClasses = helper.find(classes, {longname: longname});
-        if (myClasses.length) {
-            generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
-        }
-
         var myModules = helper.find(modules, {longname: longname});
         if (myModules.length) {
             generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
+        }
+        
+        var myClasses = helper.find(classes, {longname: longname});
+        if (myClasses.length) {
+            generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
         }
 
         var myNamespaces = helper.find(namespaces, {longname: longname});
