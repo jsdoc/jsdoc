@@ -300,7 +300,6 @@ function buildNav(members) {
     var nav = '<h2><a href="index.html">Index</a></h2>',
         seen = {};
     
-    nav += buildMemberNav(members.modules, "Modules", {}, linkto);
     nav += buildMemberNav(members.externals, "Externals", seen, linktoExternal);
     nav += buildMemberNav(members.classes, "Classes", seen, linkto);
     nav += buildMemberNav(members.events, "Events", seen, linkto);
@@ -308,6 +307,7 @@ function buildNav(members) {
     nav += buildMemberNav(members.mixins, "Mixins", seen, linkto);
     nav += buildMemberNav(members.tutorials, "Tutorials", seen, linktoTutorial);
     nav += buildMemberNav(members.interfaces, "Interfaces", seen, linkto);
+    nav += buildMemberNav(members.modules, "Modules", {}, linkto);
 
     if (members.globals.length) {
     	var globalNav = '';
