@@ -1,3 +1,11 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
 .regeneratedDocsBtn, .subnav, #topnav {
 	display: none !important;
 }
