@@ -298,104 +298,20 @@ function attachModuleSymbols(doclets, modules) {
  */
 function buildNav(members) {
     var nav = '<h2><a href="index.html">Home</a></h2>',
-        seen = {},
-        hasClassList = false,
-        classNav = '',
-        globalNav = '';
-
-    if (members.modules.length) {
-        nav += '<h3>Modules</h3><ul>';
-        members.modules.forEach(function(m) {
-            if ( !hasOwnProp.call(seen, m.longname) ) {
-                nav += '<li>' + linkto(m.longname, m.name) + '</li>';
-            }
-            seen[m.longname] = true;
-        });
-
-        nav += '</ul>';
-    }
-
-    if (members.externals.length) {
-        nav += '<h3>Externals</h3><ul>';
-        members.externals.forEach(function(e) {
-            if ( !hasOwnProp.call(seen, e.longname) ) {
-                nav += '<li>' + linkto( e.longname, e.name.replace(/(^"|"$)/g, '') ) + '</li>';
-            }
-            seen[e.longname] = true;
-        });
-
-        nav += '</ul>';
-    }
-
-    if (members.classes.length) {
-        members.classes.forEach(function(c) {
-            if ( !hasOwnProp.call(seen, c.longname) ) {
-                classNav += '<li>' + linkto(c.longname, c.name) + '</li>';
-            }
-            seen[c.longname] = true;
-        });
-
-        if (classNav !== '') {
-            nav += '<h3>Classes</h3><ul>';
-            nav += classNav;
-            nav += '</ul>';
-        }
-    }
-
-    if (members.events.length) {
-        nav += '<h3>Events</h3><ul>';
-        members.events.forEach(function(e) {
-            if ( !hasOwnProp.call(seen, e.longname) ) {
-                nav += '<li>' + linkto(e.longname, e.name) + '</li>';
-            }
-            seen[e.longname] = true;
-        });
-
-        nav += '</ul>';
-    }
-
-    if (members.namespaces.length) {
-        nav += '<h3>Namespaces</h3><ul>';
-        members.namespaces.forEach(function(n) {
-            if ( !hasOwnProp.call(seen, n.longname) ) {
-                nav += '<li>' + linkto(n.longname, n.name) + '</li>';
-            }
-            seen[n.longname] = true;
-        });
-
-        nav += '</ul>';
-    }
-
-    if (members.mixins.length) {
-        nav += '<h3>Mixins</h3><ul>';
-        members.mixins.forEach(function(m) {
-            if ( !hasOwnProp.call(seen, m.longname) ) {
-                nav += '<li>' + linkto(m.longname, m.name) + '</li>';
-            }
-            seen[m.longname] = true;
-        });
-
-        nav += '</ul>';
-    }
-
-    if (members.tutorials.length) {
-        nav += '<h3>Tutorials</h3><ul>';
-        members.tutorials.forEach(function(t) {
-            nav += '<li>' + tutoriallink(t.name) + '</li>';
-        });
-
-        nav += '</ul>';
-    }
-
-    if (members.interfaces.length) {
-        nav += '<h3>Interfaces</h3><ul>';
-        members.interfaces.forEach(function(i) {
-            nav += '<li>' + linkto(i.longname, i.name) + '</li>';
-        });
-        nav += '</ul>';
-    }
+        seen = {};
+    
+    nav += buildMemberNav(members.modules, "Modules", {}, linkto);
+    nav += buildMemberNav(members.externals, "Externals", seen, linktoExternal);
+    nav += buildMemberNav(members.classes, "Classes", seen, linkto);
+    nav += buildMemberNav(members.events, "Events", seen, linkto);
+    nav += buildMemberNav(members.namespaces, "Namespaces", seen, linkto);
+    nav += buildMemberNav(members.mixins, "Mixins", seen, linkto);
+    nav += buildMemberNav(members.tutorials, "Tutorials", seen, linktoTutorial);
+    nav += buildMemberNav(members.interfaces, "Interfaces", seen, linkto);
 
     if (members.globals.length) {
+    	var globalNav = '';
+    	
         members.globals.forEach(function(g) {
             if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
                 globalNav += '<li>' + linkto(g.longname, g.name) + '</li>';
@@ -413,6 +329,35 @@ function buildNav(members) {
     }
 
     return nav;
+}
+
+function buildMemberNav(items, itemHeading, itemsSeen) {
+	var nav = '';
+	
+	if (items.length) {
+    	var itemsNav = '';
+    	
+        items.forEach(function(item) {
+            if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+            	itemsNav += '<li>' + linkto(item.longname, item.name) + '</li>';
+            }
+            itemsSeen[item.longname] = true;
+        });
+        
+        if (itemsNav !== '') {
+            nav += '<h3>' + itemHeading  + '</h3><ul>' + itemsNav + '</ul>';
+        }
+    }
+	
+	return nav;
+}
+
+function linktoTutorial(longName, name) {
+	return tutoriallink(name);
+}
+
+function linktoExternal(longName, name) {
+	return linkto(longName, name.replace(/(^"|"$)/g, ''));
 }
 
 /**
