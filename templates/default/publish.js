@@ -339,7 +339,7 @@ function buildMemberNav(items, itemHeading, itemsSeen) {
     	
         items.forEach(function(item) {
             if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-            	itemsNav += '<li>' + linkto(item.longname, item.name) + '</li>';
+            	itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
             }
             itemsSeen[item.longname] = true;
         });
