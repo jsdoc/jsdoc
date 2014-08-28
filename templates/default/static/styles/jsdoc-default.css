@@ -64,6 +64,8 @@ header
 #main {
     float: left;
     width: 70%;
+    box-sizing: border-box;
+    padding: 12px 24px;
 }
 
 article dd {
@@ -146,7 +148,7 @@ h1
 	font-family: 'Open Sans Light', sans-serif;
     font-size: 48px;
     letter-spacing: -2px;
-    margin:12px 24px 20px;
+    margin-bottom: 20px;
 }
 
 h2, h3
