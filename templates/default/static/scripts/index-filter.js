@@ -17,17 +17,22 @@ PackageFilter.prototype.setFilter = function(filterValue) {
 
 PackageFilter.prototype.updateDisplayedItems = function(packageName) {
 	if((packageName === '') || this.validPackages[packageName]) {
-		var indexElems = document.querySelectorAll('nav li a');
+		var indexElems = document.querySelectorAll('h3 + ul li a');
 		var packageNameMatcher = new RegExp('^' + packageName + "[/.].+");
 		
 		for(var ei = 0, el = indexElems.length; ei < el; ++ei) {
 			var indexElem = indexElems[ei];
 			var displayItem = ((packageName === '') || indexElem.textContent.match(packageNameMatcher));
 			
-			indexElem.style.display = (displayItem) ? 'inline' : 'none';
+			indexElem.parentNode.style.display = (displayItem) ? 'list-item' : 'none';
 		}
 		
-		sessionStorage.setItem('package-filter', packageName);
+		if(packageName === '') {
+			sessionStorage.removeItem('package-filter');
+		}
+		else {
+			sessionStorage.setItem('package-filter', packageName);
+		}
 	}
 };
 
@@ -45,15 +50,17 @@ PackageFilter.prototype.onKeyPress = function(inputBox, keyEvent) {
 PackageFilter.prototype._initializeDataList = function() {
 	var packagesDatalist = document.getElementById('package-prefixes');
 	
-	for(var packageName in this.validPackages) {
-		var option = document.createElement('option');
-		option.value = packageName;
-		packagesDatalist.appendChild(option);
+	if(packagesDatalist.options) {
+		for(var packageName in this.validPackages) {
+			var option = document.createElement('option');
+			option.value = packageName;
+			packagesDatalist.appendChild(option);
+		}
 	}
 };
 
 PackageFilter.prototype._getValidPackages = function() {
-	var indexElems = document.querySelectorAll('nav li a');
+	var indexElems = document.querySelectorAll('h3 + ul li a');
 	var validPackages = {};
 	
 	for(var ei = 0, el = indexElems.length; ei < el; ++ei) {
