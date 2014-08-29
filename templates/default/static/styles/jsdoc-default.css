@@ -66,6 +66,7 @@ header
     width: 70%;
     box-sizing: border-box;
     padding: 12px 24px;
+    overflow: hidden;
 }
 
 article dd {
@@ -100,7 +101,7 @@ nav
     width: 30%;
     box-sizing: border-box;
     border-left: 1px solid #ccc;
-    padding-left: 16px;
+    padding: 0 16px;
 }
 
 nav ul {
