@@ -23,6 +23,15 @@
 </div>
 
 <nav>
+	<div id="filter-input-wrapper">
+        <div id="filter-input">
+		    <input type="text" list="package-prefixes" placeholder="package filter" oninput="packageFilter.updateDisplayedItems(this.value)"
+		     onkeyup="packageFilter.onKeyPress(this, event)">
+		    <button onclick="packageFilter.setFilter('')"></button>
+	    </div>
+	</div>
+	<datalist id="package-prefixes"></datalist>
+	
     <?js= this.nav ?>
 </nav>
 

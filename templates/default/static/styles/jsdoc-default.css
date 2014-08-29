@@ -348,3 +348,40 @@ h6
 .disabled {
     color: #454545;
 }
+
+#filter-input-wrapper {
+	padding-bottom:6px;
+	border-bottom:1px solid #ccc;
+	margin-bottom:20px;
+}
+
+#filter-input {
+	position: relative;
+	width:300px;
+	margin-bottom:10px;
+}
+
+#filter-input input {
+	width:271px;
+	height:28px;
+	font:inherit;
+	line-height:1;
+	padding-left:4px;
+}
+
+#filter-input input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+#filter-input button {
+	position:absolute;
+	right:0;
+	top:3px;
+	width:22px;
+	height:22px;
+	border:none !important;
+	box-shadow:none !important;
+	background:url(images/circle-x.svg) no-repeat;
+	background-size:contain;
+}
+
