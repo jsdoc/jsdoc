@@ -13,6 +13,7 @@ describe('jsdoc/src/astnode', function() {
     };
 
     // create the AST nodes we'll be testing
+    var arrayExpression = esprima.parse('[,]').body[0].expression;
     var assignmentExpression = esprima.parse('foo = 1;').body[0].expression;
     var binaryExpression = esprima.parse('foo & foo;').body[0].expression;
     var functionDeclaration1 = esprima.parse('function foo() {}').body[0];
@@ -793,6 +794,10 @@ describe('jsdoc/src/astnode', function() {
     });
 
     describe('nodeToString', function() {
+        it('should return `[null]` for the sparse array `[,]`', function() {
+            expect( astnode.nodeToString(arrayExpression) ).toBe('[null]');
+        });
+
         it('should return the variable name for assignment expressions', function() {
             expect( astnode.nodeToString(assignmentExpression) ).toBe('foo');
         });
@@ -848,7 +853,7 @@ describe('jsdoc/src/astnode', function() {
         });
 
         it('should return the variable name for variable declarators', function() {
-            expect ( astnode.nodeToString(variableDeclarator1) ).toBe('foo');
+            expect( astnode.nodeToString(variableDeclarator1) ).toBe('foo');
         });
 
         it('should return an empty string for all other nodes', function() {
