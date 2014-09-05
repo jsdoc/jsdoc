@@ -105,7 +105,7 @@ function addParamAttributes(params) {
 function buildItemTypeStrings(item) {
     var types = [];
 
-    if (item.type && item.type.names) {
+    if (item && item.type && item.type.names) {
         item.type.names.forEach(function(name) {
             types.push( linkto(name, htmlsafe(name)) );
         });

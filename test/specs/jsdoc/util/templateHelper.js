@@ -626,6 +626,20 @@ describe("jsdoc/util/templateHelper", function() {
             expect(attribs).toContain('constant');
             expect(attribs).toContain('inner');
         });
+
+        it('should return an empty array for null values', function() {
+            var emptyAttribs;
+
+            function attribs() {
+                return helper.getAttribs();
+            }
+
+            expect(attribs).not.toThrow();
+
+            emptyAttribs = attribs();
+            expect( Array.isArray(emptyAttribs) ).toBe(true);
+            expect(emptyAttribs.length).toBe(0);
+        });
     });
 
     describe("getSignatureTypes", function() {
