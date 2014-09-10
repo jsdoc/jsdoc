@@ -282,6 +282,35 @@ function attachModuleSymbols(doclets, modules) {
     });
 }
 
+function buildMemberNav(items, itemHeading, itemsSeen) {
+    var nav = '';
+
+    if (items.length) {
+        var itemsNav = '';
+
+        items.forEach(function(item) {
+            if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+                itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
+            }
+            itemsSeen[item.longname] = true;
+        });
+
+        if (itemsNav !== '') {
+            nav += '<h3>' + itemHeading  + '</h3><ul>' + itemsNav + '</ul>';
+        }
+    }
+
+    return nav;
+}
+
+function linktoTutorial(longName, name) {
+    return tutoriallink(name);
+}
+
+function linktoExternal(longName, name) {
+    return linkto(longName, name.replace(/(^"|"$)/g, ''));
+}
+
 /**
  * Create the navigation sidebar.
  * @param {object} members The members that will be used to create the sidebar.
@@ -329,35 +358,6 @@ function buildNav(members) {
     }
 
     return nav;
-}
-
-function buildMemberNav(items, itemHeading, itemsSeen) {
-    var nav = '';
-
-    if (items.length) {
-        var itemsNav = '';
-
-        items.forEach(function(item) {
-            if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
-            }
-            itemsSeen[item.longname] = true;
-        });
-
-        if (itemsNav !== '') {
-            nav += '<h3>' + itemHeading  + '</h3><ul>' + itemsNav + '</ul>';
-        }
-    }
-
-    return nav;
-}
-
-function linktoTutorial(longName, name) {
-    return tutoriallink(name);
-}
-
-function linktoExternal(longName, name) {
-    return linkto(longName, name.replace(/(^"|"$)/g, ''));
 }
 
 /**
