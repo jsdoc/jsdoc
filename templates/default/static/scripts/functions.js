@@ -56,14 +56,21 @@ PackageFilter.prototype.updateDisplayedItems = function(packageName) {
 	}
 };
 
-PackageFilter.prototype.onKeyPress = function(inputBox, keyEvent) {
+PackageFilter.prototype.onKeyUp = function(inputBox, keyEvent) {
 	// fall-back for IE8 which doesn't support 'oninput' -- it can get away with just using 'onkeypress' since it doesn't support data-lists
 	this.updateDisplayedItems(inputBox.value);
 	
 	// Chrome doesn't close the datalist when you press enter, so force it to
-	if(keyEvent.keyCode == 13) {
+	if((navigator.userAgent.match(' Chrome/')) && (keyEvent.keyCode == 13)) {
 		inputBox.nextElementSibling.focus();
 		inputBox.focus();
+	}
+};
+
+PackageFilter.prototype.onKeyPress = function(inputBox, keyEvent) {
+	// Prevent IE8 from trying to submit when the enter key is pressed
+	if((navigator.userAgent.match(/; MSIE /)) && (event.keyCode == 13)) {
+		return false;
 	}
 };
 

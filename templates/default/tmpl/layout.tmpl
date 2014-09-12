@@ -51,7 +51,7 @@
 	<div id="filter-input-wrapper">
         <div id="filter-input">
 		    <input type="text" list="package-prefixes" placeholder="package filter" oninput="packageFilter.updateDisplayedItems(this.value)"
-		     onkeyup="packageFilter.onKeyPress(this, event)" onkeypress="if(event.keyCode == 13) return false">
+		     onkeyup="packageFilter.onKeyUp(this, event)" onkeypress="packageFilter.onKeyPress(this, event)">
 		    <button onclick="packageFilter.setFilter('')"></button>
 	    </div>
 	</div>
