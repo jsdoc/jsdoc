@@ -47,13 +47,6 @@ PackageFilter.prototype.onKeyUp = function(inputBox, keyEvent) {
 	}
 };
 
-PackageFilter.prototype.onKeyPress = function(inputBox, keyEvent) {
-	// Prevent IE8 from trying to submit when the enter key is pressed
-	if((navigator.userAgent.match(/; MSIE /)) && (event.keyCode == 13)) {
-		return false;
-	}
-};
-
 PackageFilter.prototype._initializeDataList = function() {
 	var packagesDatalist = document.getElementById('package-prefixes');
 	

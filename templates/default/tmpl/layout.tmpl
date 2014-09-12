@@ -31,9 +31,11 @@
 <nav>
 	<div id="filter-input-wrapper">
         <div id="filter-input">
-		    <input type="text" list="package-prefixes" placeholder="package filter" oninput="packageFilter.updateDisplayedItems(this.value)"
-		     onkeyup="packageFilter.onKeyUp(this, event)">
-		    <button onclick="packageFilter.setFilter('')"></button>
+        	<form onsubmit="return false;">
+		    	<input type="text" list="package-prefixes" placeholder="package filter" oninput="packageFilter.updateDisplayedItems(this.value)"
+		    	 onkeyup="packageFilter.onKeyUp(this, event)">
+		    	<button type="button" onclick="packageFilter.setFilter('')"></button>
+		    </form>
 	    </div>
 	</div>
 	<datalist id="package-prefixes"></datalist>
