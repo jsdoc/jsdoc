@@ -375,8 +375,8 @@ h6
 
 #filter-input button {
 	position:absolute;
-	right:0;
-	top:3px;
+	right:-7px;
+	top:6px;
 	width:22px;
 	height:22px;
 	border:none !important;
