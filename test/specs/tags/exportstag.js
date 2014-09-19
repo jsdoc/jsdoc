@@ -13,6 +13,7 @@ describe('@exports tag', function() {
         it('When an objlit symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
             expect(typeof shirt).toEqual('object');
             expect(shirt.alias).toEqual('my/shirt');
+            expect(shirt.undocumented).not.toBeDefined();
         });
 
         it('When an objlit symbol has an @exports tag, the doclet\'s longname includes the "module:" namespace.', function() {
@@ -28,7 +29,10 @@ describe('@exports tag', function() {
             expect(color.memberof).toEqual('module:my/shirt');
 
             expect(typeof tneck).toEqual('object');
+            expect(tneck.memberof).toEqual('module:my/shirt');
+
             expect(typeof size).toEqual('object');
+            expect(size.memberof).toEqual('module:my/shirt.Turtleneck');
         });
     });
 
@@ -94,6 +98,39 @@ describe('@exports tag', function() {
 
         it('A variable defined in an inner scope should correctly shadow a variable in an outer scope.', function() {
             expect(method.description).toBe('This should be in the Foo module doc.');
+        });
+    });
+
+    describe("'exports' object as a parameter to 'define'", function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag6.js');
+        var shirt = docSet.getByLongname('module:my/shirt')[0];
+        var color = docSet.getByLongname('module:my/shirt.color')[0];
+        var tneck = docSet.getByLongname('module:my/shirt.Turtleneck')[0];
+        var size = docSet.getByLongname('module:my/shirt.Turtleneck#size')[0];
+
+        it('When a param has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
+            expect(typeof shirt).toBe('object');
+            expect(shirt.alias).toBe('my/shirt');
+            expect(shirt.undocumented).not.toBeDefined();
+        });
+
+        it('When a param has an @exports tag, the doclet\'s longname includes the "module:" namespace.', function() {
+            expect(shirt.longname).toBe('module:my/shirt');
+        });
+
+        it('When a param has an @exports tag, the doclet kind is set to module.', function() {
+            expect(shirt.kind).toEqual('module');
+        });
+
+        it('When a param has an @exports tag, the properties added to the param are documented as members of the module.', function() {
+            expect(typeof color).toBe('object');
+            expect(color.memberof).toBe('module:my/shirt');
+
+            expect(typeof tneck).toBe('object');
+            expect(tneck.memberof).toBe('module:my/shirt');
+
+            expect(typeof size).toBe('object');
+            expect(size.memberof).toBe('module:my/shirt.Turtleneck');
         });
     });
 });
