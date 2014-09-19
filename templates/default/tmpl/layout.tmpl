@@ -4,16 +4,41 @@
     <meta charset="utf-8">
     <title>JSDoc: <?js= title ?></title>
 
+    <!--[if lt IE 9]>
+        <script src="scripts/polyfills.js"> </script>
+    <![endif]-->
+
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <script src="scripts/functions.js"> </script>
+    
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/hosted-docs.css">
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
 </head>
 
-<body>
+<body onload="createAppLinks()">
+
+<header id="brjs-nav">
+    <div id="topnav">
+        <ul>
+            <li class="dashboard-link"><a href="/#"><b>BladeRunner</b>JS</a></li>
+            <li><a href="http://github.com/BladeRunnerJS/brjs/releases" target="_blank">Release Notes</a></li>
+            <li><a href="http://bladerunnerjs.org/" target="_blank">BladeRunnerJS.org</a></li>
+        </ul>
+    </div>
+    <br class="clearfloat">
+    <div class="subnav">
+        <ul>
+            <li><a href="/dashboard" class="subnav-extend-btn"></a></li>
+            <li><a id="appLink" class="subnav-btn">app</a></li>
+            <li><div class="subnav-selected" >docs</div></li>
+        </ul>
+    </div>
+</header>
 
 <div id="main">
 
@@ -23,6 +48,17 @@
 </div>
 
 <nav>
+	<div id="filter-input-wrapper">
+        <div id="filter-input">
+        	<form onsubmit="return false;">
+		    	<input type="text" list="package-prefixes" placeholder="package filter" oninput="packageFilter.updateDisplayedItems(this.value)"
+		    	 onkeyup="packageFilter.onKeyUp(this, event)">
+		    	<button type="button" onclick="packageFilter.setFilter('')"></button>
+		    </form>
+	    </div>
+	</div>
+	<datalist id="package-prefixes"></datalist>
+	
     <?js= this.nav ?>
 </nav>
 
