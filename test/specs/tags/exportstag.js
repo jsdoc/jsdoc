@@ -1,7 +1,9 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
-describe("@exports tag", function() {
+/*global describe, expect, it, jasmine */
+'use strict';
 
-    describe("object literals", function() {
+describe('@exports tag', function() {
+
+    describe('object literals', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag.js');
         var shirt = docSet.getByLongname('module:my/shirt')[0];
         var color = docSet.getByLongname('module:my/shirt.color')[0];
@@ -30,7 +32,7 @@ describe("@exports tag", function() {
         });
     });
 
-    describe("functions", function() {
+    describe('functions', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag2.js');
         var coat = docSet.getByLongname('module:my/coat')[0];
         var wool = docSet.getByLongname('module:my/coat#wool')[0];
@@ -71,7 +73,7 @@ describe("@exports tag", function() {
         });
     });
 
-    describe("inner classes", function() {
+    describe('inner classes', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag4.js');
         var module = docSet.getByLongname('module:some/module')[0];
         var innerClass = docSet.getByLongname('module:some/module~myClass')[0];
