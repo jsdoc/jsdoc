@@ -1,3 +1,0 @@
-<PUBLIC:COMPONENT lightweight="true" URN="dataavailable">
-    <PUBLIC:ATTACH EVENT="oncontentready" ONEVENT="element.fireEvent('ondataavailable', createEventObject())"/>
-</PUBLIC:COMPONENT>
