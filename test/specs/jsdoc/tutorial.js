@@ -1,69 +1,71 @@
-/*global describe: true, env: true, expect: true, it: true */
-describe("jsdoc/tutorial", function() {
-    var tutorial = require('jsdoc/tutorial'),
-        name = "tuteID",
-        content = "Tutorial content blah blah blah & <",
-        tute = new tutorial.Tutorial(name, content, tutorial.TYPES.NOTAVALUE),
-        par = new tutorial.Tutorial('parent', "# This is the parent tutorial's <em>content & stuff</em> A_B X_Y",
-                                    tutorial.TYPES.MARKDOWN),
-        par2 = new tutorial.Tutorial('parent2', "<h2>This is the second parent tutorial</h2>",
-                                    tutorial.TYPES.HTML);
+/*global afterEach, describe, expect, it */
+describe('jsdoc/tutorial', function() {
+    var tutorial = require('jsdoc/tutorial');
 
-    it("module should exist", function() {
+    var name = 'tuteID';
+    var content = 'Tutorial content blah blah blah & <';
+    var tute = new tutorial.Tutorial(name, content, tutorial.TYPES.NOTAVALUE);
+    var par = new tutorial.Tutorial('parent',
+        "# This is the parent tutorial's <em>content & stuff</em> A_B X_Y",
+        tutorial.TYPES.MARKDOWN);
+    var par2 = new tutorial.Tutorial('parent2', '<h2>This is the second parent tutorial</h2>',
+        tutorial.TYPES.HTML);
+
+    it('module should exist', function() {
         expect(tutorial).toBeDefined();
-        expect(typeof tutorial).toBe("object");
+        expect(typeof tutorial).toBe('object');
     });
 
-    it("should export a Tutorial function", function() {
+    it('should export a Tutorial function', function() {
         expect(tutorial.Tutorial).toBeDefined();
-        expect(typeof tutorial.Tutorial).toBe("function");
+        expect(typeof tutorial.Tutorial).toBe('function');
     });
 
-    it("should export a TYPES object", function() {
+    it('should export a TYPES object', function() {
         expect(tutorial.TYPES).toBeDefined();
-        expect(typeof tutorial.TYPES).toBe("object");
+        expect(typeof tutorial.TYPES).toBe('object');
     });
 
-    describe("tutorial.TYPES", function() {
-        it("should have a HTML property", function() {
+    describe('tutorial.TYPES', function() {
+        it('should have a HTML property', function() {
             expect(tutorial.TYPES.HTML).toBeDefined();
         });
 
-        it("should have a MARKDOWN property", function() {
+        it('should have a MARKDOWN property', function() {
             expect(tutorial.TYPES.MARKDOWN).toBeDefined();
         });
     });
 
-    describe("Tutorial", function() {
-        it("should have 'setParent' function", function() {
+    describe('Tutorial', function() {
+        it('should have a "setParent" method', function() {
             expect(tutorial.Tutorial.prototype.setParent).toBeDefined();
-            expect(typeof tutorial.Tutorial.prototype.setParent).toBe("function");
+            expect(typeof tutorial.Tutorial.prototype.setParent).toBe('function');
         });
 
-        it("should have 'removeChild' function", function() {
+        it('should have a "removeChild" method', function() {
             expect(tutorial.Tutorial.prototype.removeChild).toBeDefined();
-            expect(typeof tutorial.Tutorial.prototype.removeChild).toBe("function");
+            expect(typeof tutorial.Tutorial.prototype.removeChild).toBe('function');
         });
 
-        it("should have 'addChild' function", function() {
+        it('should have an "addChild" method', function() {
             expect(tutorial.Tutorial.prototype.addChild).toBeDefined();
-            expect(typeof tutorial.Tutorial.prototype.addChild).toBe("function");
+            expect(typeof tutorial.Tutorial.prototype.addChild).toBe('function');
         });
 
-        it("should have 'parse' function", function() {
+        it('should have a "parse" method', function() {
             expect(tutorial.Tutorial.prototype.parse).toBeDefined();
-            expect(typeof tutorial.Tutorial.prototype.parse).toBe("function");
+            expect(typeof tutorial.Tutorial.prototype.parse).toBe('function');
         });
 
-        it("should have a 'name' property", function() {
+        it('should have a "name" property', function() {
             expect(tute.name).toBeDefined();
-            expect(typeof tute.name).toBe("string");
+            expect(typeof tute.name).toBe('string');
             expect(tute.name).toBe(name);
         });
 
-        it("should have a 'title' property, by default set to to the tute's name", function() {
+        it("should have a 'title' property, by default set to to the tutorial's name", function() {
             expect(tute.title).toBeDefined();
-            expect(typeof tute.title).toBe("string");
+            expect(typeof tute.title).toBe('string');
             expect(tute.title).toBe(name);
             // Testing of overriding a tutorial's title in its JSON file is
             //  covered in tutorial/resolver.js tests.
@@ -71,7 +73,7 @@ describe("jsdoc/tutorial", function() {
 
         it("should have a 'content' property set to the tutorial's content", function() {
             expect(tute.content).toBeDefined();
-            expect(typeof tute.content).toBe("string");
+            expect(typeof tute.content).toBe('string');
             expect(tute.content).toBe(content);
         });
 
@@ -92,7 +94,7 @@ describe("jsdoc/tutorial", function() {
             expect(tute.children.length).toBe(0);
         });
 
-        describe("setParent", function() {
+        describe('setParent', function() {
             it("adding a parent sets the child's 'parent' property", function() {
                 tute.setParent(par);
                 expect(tute.parent).toBe(par);
@@ -102,7 +104,7 @@ describe("jsdoc/tutorial", function() {
                 expect(par.children).toContain(tute);
             });
 
-            it("re-parenting removes the child from the previous parent", function() {
+            it('re-parenting removes the child from the previous parent', function() {
                 tute.setParent(par2);
 
                 expect(tute.parent).toBe(par2);
@@ -119,7 +121,7 @@ describe("jsdoc/tutorial", function() {
             });
         });
 
-        describe("addChild", function() {
+        describe('addChild', function() {
             it("adding a child tutorial adds the child to the parent's 'children' property", function() {
                 tute.setParent(null);
                 var n = par.children.length;
@@ -134,7 +136,7 @@ describe("jsdoc/tutorial", function() {
                 expect(tute.parent).toBe(par);
             });
 
-            it("adding a child tutorial removes the child from its old parent", function() {
+            it('adding a child tutorial removes the child from its old parent', function() {
                 // tue is currently owned by par; we reparent it to par2
                 expect(tute.parent).toBe(par);
                 par2.addChild(tute);
@@ -145,12 +147,12 @@ describe("jsdoc/tutorial", function() {
             });
         });
 
-        describe("removeChild", function() {
+        describe('removeChild', function() {
             function removeChild() {
                 par2.removeChild(par);
             }
 
-            it("removing a tutorial that is not a child silently passes", function() {
+            it('removing a tutorial that is not a child silently passes', function() {
                 var n = par2.children.length;
                 expect(removeChild).not.toThrow();
                 expect(par2.children.length).toBe(n);
@@ -171,8 +173,8 @@ describe("jsdoc/tutorial", function() {
             });
         });
 
-        describe("various inheritance tests with addChild, setParent and removeChild", function() {
-            it("parenting and unparenting via addChild, setParent and removeChild makes sure inheritance is set accordingly", function() {
+        describe('various inheritance tests with addChild, setParent and removeChild', function() {
+            it('parenting and unparenting via addChild, setParent and removeChild makes sure inheritance is set accordingly', function() {
                 // unparent everything.
                 tute.setParent(null);
                 par.setParent(null);
@@ -201,21 +203,27 @@ describe("jsdoc/tutorial", function() {
             });
         });
 
-        describe("parse", function() {
-            it("Tutorials with HTML type return content as-is", function() {
-                expect(par2.parse()).toBe("<h2>This is the second parent tutorial</h2>");
+        describe('parse', function() {
+            var markdownConfig = global.env.conf.markdown;
+
+            function setMarkdownConfig(config) {
+                global.env.conf.markdown = config;
+            }
+
+            afterEach(function() {
+                global.env.conf.markdown = markdownConfig;
             });
 
-            it("Tutorials with MARKDOWN type go through the markdown parser, respecting configuration options", function() {
-                var old = env.conf.markdown;
+            it('Tutorials with HTML type return content as-is', function() {
+                expect(par2.parse()).toBe('<h2>This is the second parent tutorial</h2>');
+            });
 
-                env.conf.markdown = {parser: 'marked'};
+            it('Tutorials with MARKDOWN type go through the markdown parser, respecting configuration options', function() {
+                setMarkdownConfig({parser: 'marked'});
                 expect(par.parse()).toBe("<h1>This is the parent tutorial's <em>content & stuff</em> A_B X_Y</h1>");
-
-                env.conf.markdown = old;
             });
 
-            it("Tutorials with unrecognised type are returned as-is", function() {
+            it('Tutorials with unrecognised type are returned as-is', function() {
                 expect(tute.parse()).toBe(content);
             });
         });
