@@ -1,4 +1,4 @@
-/*global afterEach, describe, expect, it */
+/*global afterEach, beforeEach, describe, expect, it */
 describe('jsdoc/tutorial', function() {
     var tutorial = require('jsdoc/tutorial');
 
@@ -10,6 +10,9 @@ describe('jsdoc/tutorial', function() {
         tutorial.TYPES.MARKDOWN);
     var par2 = new tutorial.Tutorial('parent2', '<h2>This is the second parent tutorial</h2>',
         tutorial.TYPES.HTML);
+    var markdownEntities = new tutorial.Tutorial('markdown-entities',
+        '<pre>This Markdown tutorial contains HTML entities: &amp; &lt; &gt;</pre>',
+        tutorial.TYPES.MARKDOWN);
 
     it('module should exist', function() {
         expect(tutorial).toBeDefined();
@@ -210,6 +213,10 @@ describe('jsdoc/tutorial', function() {
                 global.env.conf.markdown = config;
             }
 
+            beforeEach(function() {
+                setMarkdownConfig({parser: 'marked'});
+            });
+
             afterEach(function() {
                 global.env.conf.markdown = markdownConfig;
             });
@@ -219,8 +226,12 @@ describe('jsdoc/tutorial', function() {
             });
 
             it('Tutorials with MARKDOWN type go through the markdown parser, respecting configuration options', function() {
-                setMarkdownConfig({parser: 'marked'});
-                expect(par.parse()).toBe("<h1>This is the parent tutorial's <em>content & stuff</em> A_B X_Y</h1>");
+                expect(par.parse()).toBe("<h1>This is the parent tutorial's <em>content &amp; stuff</em> A_B X_Y</h1>");
+            });
+
+            it('Tutorials with MARKDOWN type preserve &amp;/&lt;/&gt; entities', function() {
+                expect(markdownEntities.parse())
+                    .toBe('<pre>This Markdown tutorial contains HTML entities: &amp; &lt; &gt;</pre>');
             });
 
             it('Tutorials with unrecognised type are returned as-is', function() {
