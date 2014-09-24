@@ -29,8 +29,14 @@
             <sup class="variation"><?js= doc.variation ?></sup>
         <?js } ?></h2>
         <?js if (doc.classdesc) { ?>
+            <h2>Summary</h2>
             <div class="class-description"><?js= doc.classdesc ?></div>
         <?js } ?>
+    <?js } else if (doc.kind === 'module' && doc.modules) { ?>
+        <h2>Summary</h2>
+        <?js doc.modules.forEach(function(module) { ?>
+            <div class="class-description"><?js= module.classdesc ?></div>
+        <?js }) ?>
     <?js } ?>
 </header>
 

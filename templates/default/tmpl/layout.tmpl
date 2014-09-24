@@ -4,11 +4,18 @@
     <meta charset="utf-8">
     <title>JSDoc: <?js= title ?></title>
 
+    <!--[if lt IE 9]>
+        <script src="scripts/polyfills.js"></script>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 10]>
+        <script src="scripts/placeholder.min.js"></script>
+    <![endif]-->
+
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <script src="scripts/index-filter.js"> </script>
+
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
@@ -23,6 +30,17 @@
 </div>
 
 <nav>
+	<div id="filter-input-wrapper">
+        <div id="filter-input">
+        	<form onsubmit="return false;">
+		    	<input type="text" list="package-prefixes" placeholder="package filter" oninput="packageFilter.updateDisplayedItems(this.value)"
+		    	 onkeyup="packageFilter.onKeyUp(this, event)">
+		    	<button type="button" onclick="packageFilter.setFilter('')"></button>
+		    </form>
+	    </div>
+	</div>
+	<datalist id="package-prefixes"></datalist>
+	
     <?js= this.nav ?>
 </nav>
 

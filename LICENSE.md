@@ -253,6 +253,25 @@ above.
 The source code for node-browser-builtins is available at:
 https://github.com/alexgorbatchev/node-browser-builtins
 
+## Open Sans ##
+
+Open Sans is distributed under the Apache License 2.0, which is
+included with this package.
+
+Copyright (c) 2010-2011, Google Inc.
+
+This typeface, including the complete set of variations, are available at:
+http://www.google.com/fonts/specimen/Open+Sans
+
+## Placeholder.js ##
+
+Placeholder.js is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2012 James Allardice
+
+The source code for Placeholder.js is available at:
+https://github.com/jamesallardice/Placeholders.js
+
 ## Requizzle ##
 
 Requizzle is distributed under the MIT license, which is reproduced above.
