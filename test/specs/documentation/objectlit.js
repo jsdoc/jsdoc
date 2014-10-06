@@ -42,4 +42,26 @@ describe('object literals', function() {
             expect(found[0].scope).toBe('static');
         });
     });
+
+    describe('When an object literal\'s property names must be escaped in a regexp', function() {
+        var docSet;
+        var found;
+
+        function loadDocSet() {
+            docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit3.js');
+            found = docSet.getByLongname('tokens.(.before');
+        }
+
+        it('should not throw an error when creating a doclet', function() {
+            expect(loadDocSet).not.toThrow();
+        });
+
+        it('should have a doclet with the correct name', function() {
+            expect(found[0].name).toBe('before');
+        });
+
+        it('should have a doclet with the correct memberof', function() {
+            expect(found[0].memberof).toBe('tokens.(');
+        });
+    });
 });
