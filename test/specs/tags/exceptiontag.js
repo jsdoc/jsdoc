@@ -19,6 +19,11 @@ describe('@exception tag', function() {
         expect(pez.exceptions.length).toBe(1);
     });
 
+    it('The description and type for the @exception tag are not added to the parent doclet.', function() {
+        expect(pez.description).not.toBeDefined();
+        expect(pez.type).not.toBeDefined();
+    });
+
     it('When a symbol has a description, plus an @exception tag with a description, neither description overwrites the other.', function() {
         expect(cos.description).toBe('A description of the function.');
         expect(cos.exceptions.length).toBe(1);

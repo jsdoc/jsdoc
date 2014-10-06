@@ -1,4 +1,4 @@
-/*global describe: true, expect: true, it: true */
+/*global describe, expect, it */
 describe('jsdoc/util/doop', function() {
     var doop = require('jsdoc/util/doop');
 
@@ -14,9 +14,7 @@ describe('jsdoc/util/doop', function() {
 
     // deep-clones a simple object.
     describe('doop', function() {
-        it("should return the input object if it's simple (boolan, string etc) or a function", function() {
-            // .toBe uses === to test.
-
+        it("should return the input object if it's a value type or a function", function() {
             // test a number...
             expect(doop.doop(3)).toBe(3);
             // test a string...
@@ -77,6 +75,20 @@ describe('jsdoc/util/doop', function() {
             expect(inp).not.toBe(out);
             // double-check
             compareForEquality(inp, out);
+        });
+
+        it('should not create a circular reference if an object is seen more than once', function() {
+            var input = { a: {} };
+            var output;
+
+            function stringify() {
+                return JSON.stringify(output);
+            }
+
+            input.a.circular = input.a;
+            output = doop(input);
+
+            expect(stringify).not.toThrow();
         });
     });
 });
