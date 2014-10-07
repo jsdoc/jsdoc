@@ -33,7 +33,9 @@
         <?js } ?>
     <?js } else if (doc.kind === 'module' && doc.modules) { ?>
         <?js doc.modules.forEach(function(module) { ?>
-            <div class="class-description"><?js= module.classdesc ?></div>
+            <?js if (module.classdesc) { ?>
+                <div class="class-description"><?js= module.classdesc ?></div>
+            <?js } ?>
         <?js }) ?>
     <?js } ?>
 </header>
