@@ -4,10 +4,12 @@
 */
 
 /**
-    Create a new configuration
-    @param {string} id
-    @constructor
+    Create a new configuration.
+    
+    @classdesc Describe the class here.
+    @class
     @alias module:mymodule/config
+    @param {string} id
 */
 function Config(id) {
    /** Document me. */
