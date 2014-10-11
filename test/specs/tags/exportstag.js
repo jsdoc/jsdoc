@@ -133,4 +133,43 @@ describe('@exports tag', function() {
             expect(size.memberof).toBe('module:my/shirt.Turtleneck');
         });
     });
+
+    describe("alias to the 'exports' object", function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag7.js');
+        var shirt = docSet.getByLongname('module:my/shirt')[0];
+        var color = docSet.getByLongname('module:my/shirt.color')[0];
+        var tneck = docSet.getByLongname('module:my/shirt.Turtleneck')[0];
+        var size = docSet.getByLongname('module:my/shirt.Turtleneck#size')[0];
+        var iron = docSet.getByLongname('module:my/shirt.Turtleneck#iron')[0];
+
+        it('When a symbol has an @exports tag, the doclet is aliased to "module:" + the tag value.', function() {
+            expect(typeof shirt).toBe('object');
+            expect(shirt.alias).toBe('my/shirt');
+            expect(shirt.undocumented).not.toBeDefined();
+        });
+
+        it('When a symbol has an @exports tag, the doclet kind is set to module.', function() {
+            expect(shirt.kind).toEqual('module');
+        });
+
+        it('When a symbol tagged with @exports is an alias to "exports", the symbol properties are documented as members of the module.', function() {
+            expect(typeof color).toBe('object');
+            expect(color.memberof).toBe('module:my/shirt');
+
+            expect(typeof tneck).toBe('object');
+            expect(tneck.memberof).toBe('module:my/shirt');
+        });
+
+        it('When a symbol tagged with @exports is an alias to "exports", and a symbol property contains a class, the instance members of the class are documented correctly.', function() {
+            expect(typeof size).toBe('object');
+            expect(size.name).toBe('size');
+            expect(size.memberof).toBe('module:my/shirt.Turtleneck');
+            expect(size.scope).toBe('instance');
+
+            expect(typeof iron).toBe('object');
+            expect(iron.name).toBe('iron');
+            expect(iron.memberof).toBe('module:my/shirt.Turtleneck');
+            expect(iron.scope).toBe('instance');
+        });
+    });
 });
