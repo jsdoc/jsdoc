@@ -31,4 +31,28 @@ describe('@enum tag', function() {
 
         expect( dump(tristate) ).not.toMatch('<CircularRef>');
     });
+
+    describe('chained assignments', function() {
+        var pentaState;
+        var PENTASTATE;
+        var quadState;
+
+        docSet = jasmine.getDocSetFromFile('test/fixtures/enumtag2.js');
+        pentaState = docSet.getByLongname('module:my/enums.PentaState')[0];
+        PENTASTATE = docSet.getByLongname('module:my/enums.PENTASTATE')[0];
+        quadState = docSet.getByLongname('module:my/enums.QuadState')[0];
+
+        it('When a symbol at the start of an assignment chain has an @enum tag, that symbol has a properties array.', function() {
+            expect( Array.isArray(quadState.properties) ).toBe(true);
+            expect(quadState.properties.length).toBe(4);
+        });
+
+        it('When multiple symbols in an assignment chain have @enum tags, each symbol has a properties array.', function() {
+            expect( Array.isArray(pentaState.properties) ).toBe(true);
+            expect(pentaState.properties.length).toBe(5);
+
+            expect( Array.isArray(PENTASTATE.properties) ).toBe(true);
+            expect(pentaState.properties.length).toBe(5);
+        });
+    });
 });
