@@ -1,4 +1,4 @@
-/*global describe, expect, it, jasmine, xit */
+/*global describe, expect, it, jasmine */
 'use strict';
 
 describe('@enum tag', function() {
@@ -26,8 +26,7 @@ describe('@enum tag', function() {
         expect(tristate.properties[2].type.names.join(', ')).toBe('boolean');
     });
 
-    // TODO: reenable after fixing circular-reference issues
-    xit('An enum does not contain any circular references.', function() {
+    it('An enum does not contain any circular references.', function() {
         var dump = require('jsdoc/util/dumper').dump;
 
         expect( dump(tristate) ).not.toMatch('<CircularRef>');
