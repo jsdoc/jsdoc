@@ -1,4 +1,6 @@
 /*global describe, expect, it */
+'use strict';
+
 describe('jsdoc/util/doop', function() {
     var doop = require('jsdoc/util/doop');
 
@@ -75,6 +77,19 @@ describe('jsdoc/util/doop', function() {
             expect(inp).not.toBe(out);
             // double-check
             compareForEquality(inp, out);
+        });
+
+        it('should not clone non-enumerable properties', function() {
+            var clone;
+            var obj = { a: 1 };
+
+            Object.defineProperty(obj, 'foo', {
+                value: 2
+            });
+
+            clone = doop(obj);
+
+            expect(clone.foo).not.toBeDefined();
         });
 
         it('should not create a circular reference if an object is seen more than once', function() {
