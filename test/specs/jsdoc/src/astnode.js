@@ -48,39 +48,14 @@ describe('jsdoc/src/astnode', function() {
         expect(typeof astnode).toBe('object');
     });
 
-    it('should export a GLOBAL_NODE_ID property', function() {
-        expect(astnode.GLOBAL_NODE_ID).toBeDefined();
-        expect(typeof astnode.GLOBAL_NODE_ID).toBe('string');
-    });
-
     it('should export a nodeToString method', function() {
         expect(astnode.nodeToString).toBeDefined();
         expect(typeof astnode.nodeToString).toBe('function');
     });
 
-    it('should export an addAlias method', function() {
-        expect(astnode.addAlias).toBeDefined();
-        expect(typeof astnode.addAlias).toBe('function');
-    });
-
-    it('should export an addAllVariables method', function() {
-        expect(astnode.addAllVariables).toBeDefined();
-        expect(typeof astnode.addAllVariables).toBe('function');
-    });
-
-    it('should export an addFunction method', function() {
-        expect(astnode.addFunction).toBeDefined();
-        expect(typeof astnode.addFunction).toBe('function');
-    });
-
     it('should export an addNodeProperties method', function() {
         expect(astnode.addNodeProperties).toBeDefined();
         expect(typeof astnode.addNodeProperties).toBe('function');
-    });
-
-    it('should export an addVariable method', function() {
-        expect(astnode.addVariable).toBeDefined();
-        expect(typeof astnode.addVariable).toBe('function');
     });
 
     it('should export a getInfo method', function() {
@@ -106,145 +81,6 @@ describe('jsdoc/src/astnode', function() {
     it('should export an isScope method', function() {
         expect(astnode.isScope).toBeDefined();
         expect(typeof astnode.isScope).toBe('function');
-    });
-
-    it('should export a makeGlobalNode method', function() {
-        expect(astnode.makeGlobalNode).toBeDefined();
-        expect(typeof astnode.makeGlobalNode).toBe('function');
-    });
-
-    describe('addAlias', function() {
-        it('should throw an error when given bad input', function() {
-            function noParams() {
-                astnode.addAlias();
-            }
-
-            function noNode() {
-                astnode.addAlias(null, 'bar', 'foo');
-            }
-
-            expect(noParams).toThrow();
-            expect(noNode).toThrow();
-        });
-
-        it('should add the specified variable name as a known and owned alias', function() {
-            var aliasName = 'bar';
-            var variableName = 'foo';
-            var node = astnode.addAlias(astnode.addNodeProperties({}), variableName, aliasName);
-
-            [node.knownAliases[aliasName], node.ownedAliases[aliasName]].forEach(function(arr) {
-                expect(arr).toBeDefined();
-                expect(arr.length).toBe(1);
-                expect( arr.indexOf(variableName) ).toBe(0);
-            });
-        });
-
-        it('should not add aliases that are already defined', function() {
-            var aliasName1 = 'bar';
-            var aliasName2 = aliasName1;
-            var variableName = 'foo';
-            var node = astnode.addAlias(astnode.addNodeProperties({}), variableName, aliasName1);
-            node = astnode.addAlias(node, variableName, aliasName2);
-
-            [node.knownAliases[aliasName1], node.ownedAliases[aliasName1]].forEach(function(arr) {
-                expect(arr).toBeDefined();
-                expect(arr.length).toBe(1);
-                expect( arr.indexOf(variableName) ).toBe(0);
-            });
-        });
-    });
-
-    describe('addAllVariables', function() {
-        it('should throw an error when given bad input', function() {
-            function noParams() {
-                astnode.addAllVariables();
-            }
-
-            function noDeclarations() {
-                astnode.addAllVariables({});
-            }
-
-            expect(noParams).toThrow();
-            expect(noDeclarations).toThrow();
-        });
-
-        it('should return the node', function() {
-            var node = astnode.addNodeProperties({foo: 1});
-            node = astnode.addAllVariables(node, variableDeclaration1);
-
-            expect(node).toBeDefined();
-            expect(node.foo).toBe(1);
-        });
-
-        it('should add a declaration with one declarator to the known/owned variables', function() {
-            var node = astnode.addNodeProperties( doop(functionDeclaration1) );
-            node = astnode.addAllVariables(node, variableDeclaration1);
-
-            expect(node.knownVariables).toBeDefined();
-            expect(typeof node.knownVariables.foo).toBe('object');
-            expect(node.knownVariables.foo.value).toBe(1);
-
-            expect(node.ownedVariables.foo).toBeDefined();
-            expect(node.ownedVariables.foo).toBe(node.knownVariables.foo);
-        });
-
-        it('should add a declaration with multiple declarators to the known/owned variables',
-            function() {
-            var node = astnode.addNodeProperties( doop(functionDeclaration1) );
-            node = astnode.addAllVariables(node, variableDeclaration2);
-
-            expect(node.knownVariables).toBeDefined();
-            expect(typeof node.knownVariables.foo).toBe('object');
-            expect(node.knownVariables.foo.value).toBe(1);
-
-            expect(typeof node.knownVariables.bar).toBe('object');
-            expect(node.knownVariables.bar.value).toBe(2);
-
-            expect(node.ownedVariables.foo).toBeDefined();
-            expect(node.ownedVariables.foo).toBe(node.knownVariables.foo);
-
-            expect(node.ownedVariables.bar).toBeDefined();
-            expect(node.ownedVariables.bar).toBe(node.knownVariables.bar);
-        });
-    });
-
-    describe('addFunction', function() {
-        it('should throw an error when given bad input', function() {
-            function noParams() {
-                astnode.addFunction();
-            }
-
-            function noNode() {
-                astnode.addFunction(null, {id: {}});
-            }
-
-            function noDeclaration() {
-                astnode.addFunction({});
-            }
-
-            expect(noParams).toThrow();
-            expect(noNode).toThrow();
-            expect(noDeclaration).toThrow();
-        });
-
-        it('should return the node', function() {
-            var node = astnode.addNodeProperties({foo: 1});
-            node = astnode.addFunction(node, {id: {name: 'bar'}});
-
-            expect(node).toBeDefined();
-            expect(node.foo).toBe(1);
-        });
-
-        it('should add a function declaration to the known/owned variables', function() {
-            var node = astnode.addNodeProperties( doop(functionDeclaration1) );
-            node = astnode.addFunction(node, functionDeclaration1a);
-
-            expect(node.knownVariables.bar).toBeDefined();
-            expect(node.knownVariables.bar).toBe(null);
-
-            expect(node.ownedVariables.bar).toBeDefined();
-            expect(node.ownedVariables.bar).toBe(node.knownVariables.bar);
-        });
     });
 
     describe('addNodeProperties', function() {
@@ -418,103 +254,6 @@ describe('jsdoc/src/astnode', function() {
             expect(node.enclosingScopeId).toBe(enclosingScope.nodeId);
         });
 
-        it('should add a non-enumerable knownVariables property', function() {
-            var node = astnode.addNodeProperties({});
-            var descriptor = Object.getOwnPropertyDescriptor(node, 'knownVariables');
-
-            expect(descriptor).toBeDefined();
-            expect(typeof descriptor.value).toBe('object');
-            expect(Object.keys(descriptor.value).length).toBe(0);
-            expect(descriptor.enumerable).toBe(false);
-        });
-
-        it('should copy known variables from the enclosing scope', function() {
-            var enclosingScope = {knownVariables: {foo: 1}};
-            var node = astnode.addNodeProperties({enclosingScope: enclosingScope});
-
-            expect(Object.keys(node.knownVariables).length).toBe(1);
-            expect(node.knownVariables.foo).toBeDefined();
-            expect(node.knownVariables.foo).toBe(1);
-        });
-
-        it('should add a non-enumerable ownedVariables property', function() {
-            var node = astnode.addNodeProperties({});
-            var descriptor = Object.getOwnPropertyDescriptor(node, 'ownedVariables');
-
-            expect(descriptor).toBeDefined();
-            expect(typeof descriptor.value).toBe('object');
-            expect(Object.keys(descriptor.value).length).toBe(0);
-            expect(descriptor.enumerable).toBe(false);
-        });
-
-        it('should add a non-enumerable knownAliases property', function() {
-            var node = astnode.addNodeProperties({});
-            var descriptor = Object.getOwnPropertyDescriptor(node, 'knownAliases');
-
-            expect(descriptor).toBeDefined();
-            expect(typeof descriptor.value).toBe('object');
-            expect(Object.keys(descriptor.value).length).toBe(0);
-            expect(descriptor.enumerable).toBe(false);
-        });
-
-        it('should copy known aliases from the enclosing scope', function() {
-            var enclosingScope = {knownAliases: {foo: []}};
-            var node = astnode.addNodeProperties({enclosingScope: enclosingScope});
-
-            expect(Object.keys(node.knownAliases).length).toBe(1);
-            expect(node.knownAliases.foo).toBeDefined();
-            expect( Array.isArray(node.knownAliases.foo) ).toBe(true);
-        });
-
-        it('should add a non-enumerable ownedAliases property', function() {
-            var node = astnode.addNodeProperties({});
-            var descriptor = Object.getOwnPropertyDescriptor(node, 'ownedAliases');
-
-            expect(descriptor).toBeDefined();
-            expect(typeof descriptor.value).toBe('object');
-            expect(Object.keys(descriptor.value).length).toBe(0);
-            expect(descriptor.enumerable).toBe(false);
-        });
-    });
-
-    describe('addVariable', function() {
-        it('should throw an error when given bad input', function() {
-            function noParams() {
-                astnode.addVariable();
-            }
-
-            function noNode() {
-                astnode.addVariable(null, {id: {}});
-            }
-
-            function noDeclarations() {
-                astnode.addVariable({});
-            }
-
-            expect(noParams).toThrow();
-            expect(noNode).toThrow();
-            expect(noDeclarations).toThrow();
-        });
-
-        it('should return the node', function() {
-            var node = astnode.addNodeProperties({foo: 1});
-            node = astnode.addVariable(node, {id: {name: 'bar'}});
-
-            expect(node).toBeDefined();
-            expect(node.foo).toBe(1);
-        });
-
-        it('should add a declarator to the known/owned variables', function() {
-            var node = astnode.addNodeProperties( doop(functionDeclaration1) );
-            node = astnode.addVariable(node, variableDeclarator1);
-
-            expect(node.knownVariables.foo).toBeDefined();
-            expect(typeof node.knownVariables.foo).toBe('object');
-            expect(node.knownVariables.foo.value).toBe(1);
-
-            expect(node.ownedVariables.foo).toBeDefined();
-            expect(node.ownedVariables.foo).toBe(node.knownVariables.foo);
-        });
     });
 
     describe('getInfo', function() {
@@ -772,24 +511,6 @@ describe('jsdoc/src/astnode', function() {
 
         it('should return false for other nodes', function() {
             expect( astnode.isScope({type: Syntax.NameExpression}) ).toBe(false);
-        });
-    });
-
-    describe('makeGlobalNode', function() {
-        it('should return an object', function() {
-            expect( typeof astnode.makeGlobalNode() ).toBe('object');
-        });
-
-        it('should assign the global node ID to the nodeId, name, and type properties', function() {
-            var globalNode = astnode.makeGlobalNode();
-            expect(globalNode.nodeId).toBe(astnode.GLOBAL_NODE_ID);
-            expect(globalNode.name).toBe(astnode.GLOBAL_NODE_ID);
-            expect(globalNode.type).toBe(astnode.GLOBAL_NODE_ID);
-        });
-
-        it('should assign nodeId as a non-enumerable property', function() {
-            var keys = Object.keys( astnode.makeGlobalNode() );
-            expect( keys.indexOf('nodeId') ).toBe(-1);
         });
     });
 
