@@ -241,33 +241,68 @@ cli.main = function(cb) {
     cb(0);
 };
 
-// TODO: docs
-cli.scanFiles = function() {
-    var Filter = require('jsdoc/src/filter').Filter;
+function readPackageJson(filepath) {
+    var fs = require('jsdoc/fs');
+
+    try {
+        return stripJsonComments( fs.readFileSync(filepath, 'utf8') );
+    }
+    catch (e) {
+        logger.error('Unable to read the package file "%s"', filepath);
+        return null;
+    }
+}
+
+function buildSourceList() {
     var fs = require('jsdoc/fs');
     var Readme = require('jsdoc/readme');
 
-    var filter;
-    var opt;
+    var packageJson;
+    var readmeHtml;
+    var sourceFile;
+    var sourceFiles = env.opts._ ? env.opts._.slice(0) : [];
 
     if (env.conf.source && env.conf.source.include) {
-        env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
+        sourceFiles = sourceFiles.concat(env.conf.source.include);
     }
 
-    // source files named `package.json` or `README.md` get special treatment
-    for (var i = 0, l = env.opts._.length; i < l; i++) {
-        opt = env.opts._[i];
+    // load the user-specified package/README files, if any
+    if (env.opts.package) {
+        packageJson = readPackageJson(env.opts.package);
+    }
+    if (env.opts.readme) {
+        readmeHtml = new Readme(env.opts.readme).html;
+    }
 
-        if ( /\bpackage\.json$/i.test(opt) ) {
-            props.packageJson = fs.readFileSync(opt, 'utf8');
-            env.opts._.splice(i--, 1);
+    // source files named `package.json` or `README.md` get special treatment, unless the user
+    // explicitly specified a package and/or README file
+    for (var i = 0, l = sourceFiles.length; i < l; i++) {
+        sourceFile = sourceFiles[i];
+
+        if ( !env.opts.package && /\bpackage\.json$/i.test(sourceFile) ) {
+            packageJson = readPackageJson(sourceFile);
+            sourceFiles.splice(i--, 1);
         }
 
-        if ( /(\bREADME|\.md)$/i.test(opt) ) {
-            env.opts.readme = new Readme(opt).html;
-            env.opts._.splice(i--, 1);
+        if ( !env.opts.readme && /(\bREADME|\.md)$/i.test(sourceFile) ) {
+            readmeHtml = new Readme(sourceFile).html;
+            sourceFiles.splice(i--, 1);
         }
     }
+
+    props.packageJson = packageJson;
+    env.opts.readme = readmeHtml;
+
+    return sourceFiles;
+}
+
+// TODO: docs
+cli.scanFiles = function() {
+    var Filter = require('jsdoc/src/filter').Filter;
+
+    var filter;
+
+    env.opts._ = buildSourceList();
 
     // are there any files to scan and parse?
     if (env.conf.source && env.opts._.length) {
