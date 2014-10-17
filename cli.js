@@ -241,13 +241,6 @@ cli.main = function(cb) {
     cb(0);
 };
 
-function getRandomId() {
-    var MIN = 100000;
-    var MAX = 999999;
-
-    return Math.floor(Math.random() * (MAX - MIN + 1) + MIN);
-}
-
 // TODO: docs
 cli.scanFiles = function() {
     var Filter = require('jsdoc/src/filter').Filter;
@@ -290,7 +283,6 @@ cli.scanFiles = function() {
 function resolvePluginPaths(paths) {
     var path = require('jsdoc/path');
 
-    var isNode = require('jsdoc/util/runtime').isNode();
     var pluginPaths = [];
 
     paths.forEach(function(plugin) {
@@ -390,7 +382,6 @@ cli.generateDocs = function() {
     var template;
 
     env.opts.template = (function() {
-        var isNode = require('jsdoc/util/runtime').isNode();
         var publish = env.opts.template || 'templates/default';
         var templatePath = path.getResourcePath(publish);
 
