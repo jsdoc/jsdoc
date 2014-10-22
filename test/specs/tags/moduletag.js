@@ -77,4 +77,14 @@ describe('@module tag', function() {
             expect(virtFunc2.memberof).toBe('module:M1');
         });
     });
+
+    describe('"module:" namespace included in the name', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag5.js');
+        var bookshelf = docSet.getByLongname('module:bookshelf')[0];
+
+        it('When the name for a @module tag begins with the "module:" namespace, we remove the namespace', function() {
+            expect(typeof bookshelf).toBe('object');
+            expect(bookshelf.name).toBe('bookshelf');
+        });
+    });
 });

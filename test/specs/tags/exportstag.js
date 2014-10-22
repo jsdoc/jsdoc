@@ -202,4 +202,14 @@ describe('@exports tag', function() {
             expect(iron.scope).toBe('instance');
         });
     });
+
+    describe('"module:" namespace included in the name', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag8.js');
+        var shirt = docSet.getByLongname('module:my/shirt')[0];
+
+        it('When the name for an @exports tag begins with the "module:" namespace, we remove the namespace', function() {
+            expect(typeof shirt).toBe('object');
+            expect(shirt.name).toBe('my/shirt');
+        });
+    });
 });
