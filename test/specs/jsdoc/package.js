@@ -1,6 +1,8 @@
 /*global beforeEach, describe, expect, it, spyOn */
 'use strict';
 
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
 describe('jsdoc/package', function() {
     var emptyPackage;
     var jsdocPackage = require('jsdoc/package');
@@ -61,8 +63,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('author', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.author).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'author') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -71,8 +73,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('bugs', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.bugs).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'bugs') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -81,8 +83,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('contributors', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.contributors).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'contributors') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -94,8 +96,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('dependencies', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.dependencies).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'dependencies') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -104,8 +106,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('description', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.description).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'description') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -114,8 +116,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('devDependencies', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.devDependencies).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'devDependencies') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -124,8 +126,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('engines', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.engines).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'engines') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -147,8 +149,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('homepage', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.homepage).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'homepage') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -157,8 +159,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('keywords', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.keywords).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'keywords') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -167,8 +169,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('licenses', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.licenses).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'licenses') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -214,8 +216,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('main', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.main).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'main') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -224,8 +226,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('name', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.name).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'name') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -234,8 +236,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('repository', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.repository).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'repository') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
@@ -247,8 +249,8 @@ describe('jsdoc/package', function() {
         });
 
         describe('version', function() {
-            it('should be undefined by default', function() {
-                expect(emptyPackage.version).not.toBeDefined();
+            it('should not exist by default', function() {
+                expect( hasOwnProp.call(emptyPackage, 'version') ).toBe(false);
             });
 
             it('should contain the value from the package file', function() {
