@@ -1,4 +1,4 @@
-/*global beforeEach, describe, expect, it, spyOn */
+/*global beforeEach, describe, expect, it, jasmine, spyOn */
 'use strict';
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
@@ -15,6 +15,9 @@ describe('jsdoc/package', function() {
 
         obj[name] = value;
         myPackage = new Package( JSON.stringify(obj) );
+        // add the package object to the cached parse results, so we can validate it against the
+        // doclet schema
+        jasmine.addParseResults('package-property-' + name + '.js', [myPackage]);
 
         // use toEqual so we can test array/object values
         expect(myPackage[name]).toEqual(value);

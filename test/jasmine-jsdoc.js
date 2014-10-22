@@ -24,7 +24,18 @@ var jasmineNode = ( require('./reporter') )(jasmine);
 
 var reporter = null;
 
-jasmine.parseResults = [];
+var parseResults = [];
+
+jasmine.addParseResults = function(filename, doclets) {
+    parseResults.push({
+        filename: filename,
+        doclets: doclets
+    });
+};
+
+jasmine.getParseResults = function() {
+    return parseResults;
+};
 
 // use the requested parser, or default to Esprima (on Node.js) or Rhino (on Rhino)
 jasmine.jsParser = (function() {
@@ -151,10 +162,7 @@ jasmine.getDocSetFromFile = function(filename, parser, validate) {
 
     // store the parse results for later validation
     if (validate !== false) {
-        jasmine.parseResults.push({
-            filename: filename,
-            doclets: doclets
-        });
+        jasmine.addParseResults(filename, doclets);
     }
 
     return {
