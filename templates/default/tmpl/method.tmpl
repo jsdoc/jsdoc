@@ -20,6 +20,11 @@ var self = this;
     </div>
     <?js } ?>
 
+    <?js if (data.augments && data.alias && data.alias.indexOf('module:') === 0) { ?>
+        <h5>Extends:</h5>
+        <?js= self.partial('augments.tmpl', data) ?>
+    <?js } ?>
+
     <?js if (kind === 'event' && data.type && data.type.names) {?>
         <h5>Type:</h5>
         <ul>
