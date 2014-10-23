@@ -1,6 +1,8 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
-describe("aliases", function() {
-    describe("standard", function() {
+/*global describe, expect, it, jasmine */
+'use strict';
+
+describe('aliases', function() {
+    describe('standard', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/alias.js');
         var found = docSet.getByLongname('myObject').filter(function($) {
             return ! $.undocumented;
@@ -35,6 +37,16 @@ describe("aliases", function() {
         expect(tcmValue.memberof).toEqual('trackr.CookieManager');
     });
 
+    it('When a symbol is a function expression that has an alias, the symbol should get the correct longname', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/alias4.js');
+        var jacketClass = docSet.getByLongname('module:jacket').filter(function($) {
+            return $.kind === 'class';
+        });
+
+        expect(jacketClass.length).toBe(1);
+        expect(jacketClass[0].longname).toBe('module:jacket');
+    });
+
     it('When a symbol is documented as a static member of <global>, its scope is "global" and not "static".', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal.js');
         var log = docSet.getByLongname('log')[0];
@@ -50,7 +62,7 @@ describe("aliases", function() {
         expect(run.memberof).toEqual('Test');
     });
 
-    describe("resolving", function() {
+    describe('resolving', function() {
         it('When a local reference has alias, put all members into aliased definition. Local modifications should be visible to outside.', function() {
             var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasresolve.js');
             var method = docSet.getByLongname('A.F.method');

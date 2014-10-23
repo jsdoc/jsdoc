@@ -1,4 +1,6 @@
-/*global describe: true, expect: true, it: true */
+/*global describe, expect, it */
+'use strict';
+
 describe('jsdoc/opts/args', function() {
     var args = require('jsdoc/opts/args');
     var querystring = require('querystring');
@@ -245,6 +247,34 @@ describe('jsdoc/opts/args', function() {
             var r = args.get();
 
             expect(r.nocolor).toBe(true);
+        });
+
+        it('should accept a "-P" option and return an object with a "package" property', function() {
+            args.parse(['-P', 'path/to/package/file.json']);
+            var r = args.get();
+
+            expect(r.package).toBe('path/to/package/file.json');
+        });
+
+        it('should accept a "--package" option and return an object with a "package" property', function() {
+            args.parse(['--package', 'path/to/package/file.json']);
+            var r = args.get();
+
+            expect(r.package).toBe('path/to/package/file.json');
+        });
+
+        it('should accept a "-R" option and return an object with a "readme" property', function() {
+            args.parse(['-R', 'path/to/readme/file.md']);
+            var r = args.get();
+
+            expect(r.readme).toBe('path/to/readme/file.md');
+        });
+
+        it('should accept a "--readme" option and return an object with a "readme" property', function() {
+            args.parse(['--readme', 'path/to/readme/file.md']);
+            var r = args.get();
+
+            expect(r.readme).toBe('path/to/readme/file.md');
         });
 
         it('should accept a "-v" option and return an object with a "version" property', function() {

@@ -241,40 +241,68 @@ cli.main = function(cb) {
     cb(0);
 };
 
-function getRandomId() {
-    var MIN = 100000;
-    var MAX = 999999;
+function readPackageJson(filepath) {
+    var fs = require('jsdoc/fs');
 
-    return Math.floor(Math.random() * (MAX - MIN + 1) + MIN);
+    try {
+        return stripJsonComments( fs.readFileSync(filepath, 'utf8') );
+    }
+    catch (e) {
+        logger.error('Unable to read the package file "%s"', filepath);
+        return null;
+    }
+}
+
+function buildSourceList() {
+    var fs = require('jsdoc/fs');
+    var Readme = require('jsdoc/readme');
+
+    var packageJson;
+    var readmeHtml;
+    var sourceFile;
+    var sourceFiles = env.opts._ ? env.opts._.slice(0) : [];
+
+    if (env.conf.source && env.conf.source.include) {
+        sourceFiles = sourceFiles.concat(env.conf.source.include);
+    }
+
+    // load the user-specified package/README files, if any
+    if (env.opts.package) {
+        packageJson = readPackageJson(env.opts.package);
+    }
+    if (env.opts.readme) {
+        readmeHtml = new Readme(env.opts.readme).html;
+    }
+
+    // source files named `package.json` or `README.md` get special treatment, unless the user
+    // explicitly specified a package and/or README file
+    for (var i = 0, l = sourceFiles.length; i < l; i++) {
+        sourceFile = sourceFiles[i];
+
+        if ( !env.opts.package && /\bpackage\.json$/i.test(sourceFile) ) {
+            packageJson = readPackageJson(sourceFile);
+            sourceFiles.splice(i--, 1);
+        }
+
+        if ( !env.opts.readme && /(\bREADME|\.md)$/i.test(sourceFile) ) {
+            readmeHtml = new Readme(sourceFile).html;
+            sourceFiles.splice(i--, 1);
+        }
+    }
+
+    props.packageJson = packageJson;
+    env.opts.readme = readmeHtml;
+
+    return sourceFiles;
 }
 
 // TODO: docs
 cli.scanFiles = function() {
     var Filter = require('jsdoc/src/filter').Filter;
-    var fs = require('jsdoc/fs');
-    var Readme = require('jsdoc/readme');
 
     var filter;
-    var opt;
 
-    if (env.conf.source && env.conf.source.include) {
-        env.opts._ = (env.opts._ || []).concat(env.conf.source.include);
-    }
-
-    // source files named `package.json` or `README.md` get special treatment
-    for (var i = 0, l = env.opts._.length; i < l; i++) {
-        opt = env.opts._[i];
-
-        if ( /\bpackage\.json$/i.test(opt) ) {
-            props.packageJson = fs.readFileSync(opt, 'utf8');
-            env.opts._.splice(i--, 1);
-        }
-
-        if ( /(\bREADME|\.md)$/i.test(opt) ) {
-            env.opts.readme = new Readme(opt).html;
-            env.opts._.splice(i--, 1);
-        }
-    }
+    env.opts._ = buildSourceList();
 
     // are there any files to scan and parse?
     if (env.conf.source && env.opts._.length) {
@@ -290,7 +318,6 @@ cli.scanFiles = function() {
 function resolvePluginPaths(paths) {
     var path = require('jsdoc/path');
 
-    var isNode = require('jsdoc/util/runtime').isNode();
     var pluginPaths = [];
 
     paths.forEach(function(plugin) {
@@ -345,6 +372,7 @@ cli.parseFiles = function() {
     logger.debug('Adding inherited symbols...');
     borrow.indexAll(docs);
     augment.addInherited(docs);
+    augment.addImplemented(docs);
     borrow.resolveBorrows(docs);
 
     app.jsdoc.parser.fireProcessingComplete(docs);
@@ -389,7 +417,6 @@ cli.generateDocs = function() {
     var template;
 
     env.opts.template = (function() {
-        var isNode = require('jsdoc/util/runtime').isNode();
         var publish = env.opts.template || 'templates/default';
         var templatePath = path.getResourcePath(publish);
 

@@ -1,6 +1,7 @@
 /*global env: true */
 'use strict';
 
+var doop = require('jsdoc/util/doop');
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');
 var logger = require('jsdoc/util/logger');
@@ -96,13 +97,15 @@ function updateItemName(item) {
 }
 
 function addParamAttributes(params) {
-    return params.map(updateItemName);
+    return params.filter(function(param) {
+        return param.name && param.name.indexOf('.') === -1;
+    }).map(updateItemName);
 }
 
 function buildItemTypeStrings(item) {
     var types = [];
 
-    if (item.type && item.type.names) {
+    if (item && item.type && item.type.names) {
         item.type.names.forEach(function(name) {
             types.push( linkto(name, htmlsafe(name)) );
         });
@@ -260,13 +263,21 @@ function attachModuleSymbols(doclets, modules) {
 
     // build a lookup table
     doclets.forEach(function(symbol) {
-        symbols[symbol.longname] = symbol;
+        symbols[symbol.longname] = symbols[symbol.longname] || [];
+        symbols[symbol.longname].push(symbol);
     });
 
     return modules.map(function(module) {
         if (symbols[module.longname]) {
-            module.module = symbols[module.longname];
-            module.module.name = module.module.name.replace('module:', '(require("') + '"))';
+            module.modules = symbols[module.longname].map(function(symbol) {
+                symbol = doop(symbol);
+
+                if (symbol.kind === 'class' || symbol.kind === 'function') {
+                    symbol.name = symbol.name.replace('module:', '(require("') + '"))';
+                }
+
+                return symbol;
+            });
         }
     });
 }
@@ -282,6 +293,7 @@ function attachModuleSymbols(doclets, modules) {
  * @param {array<object>} members.namespaces
  * @param {array<object>} members.tutorials
  * @param {array<object>} members.events
+ * @param {array<object>} members.interfaces
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
@@ -372,6 +384,14 @@ function buildNav(members) {
             nav += '<li>' + tutoriallink(t.name) + '</li>';
         });
 
+        nav += '</ul>';
+    }
+
+    if (members.interfaces.length) {
+        nav += '<h3>Interfaces</h3><ul>';
+        members.interfaces.forEach(function(i) {
+            nav += '<li>' + linkto(i.longname, i.name) + '</li>';
+        });
         nav += '</ul>';
     }
 
@@ -473,7 +493,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     // update outdir if necessary, then create outdir
     var packageInfo = ( find({kind: 'package'}) || [] ) [0];
     if (packageInfo && packageInfo.name) {
-        outdir = path.join(outdir, packageInfo.name, packageInfo.version);
+        outdir = path.join( outdir, packageInfo.name, (packageInfo.version || '') );
     }
     fs.mkPath(outdir);
 
@@ -576,8 +596,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     // once for all
     view.nav = buildNav(members);
-    attachModuleSymbols( find({ kind: ['class', 'function'], longname: {left: 'module:'} }),
-        members.modules );
+    attachModuleSymbols( find({ longname: {left: 'module:'} }), members.modules );
 
     // generate the pretty-printed source files first so other pages can link to them
     if (outputSourceFiles) {
@@ -602,6 +621,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     var namespaces = taffy(members.namespaces);
     var mixins = taffy(members.mixins);
     var externals = taffy(members.externals);
+    var interfaces = taffy(members.interfaces);
 
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
         var myClasses = helper.find(classes, {longname: longname});
@@ -627,6 +647,11 @@ exports.publish = function(taffyData, opts, tutorials) {
         var myExternals = helper.find(externals, {longname: longname});
         if (myExternals.length) {
             generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
+        }
+
+        var myInterfaces = helper.find(interfaces, {longname: longname});
+        if (myInterfaces.length) {
+            generate('Interface: ' + myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
         }
     });
 

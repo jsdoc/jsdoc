@@ -98,7 +98,10 @@ global.env = {
         // plugins, and within JSDoc itself. It also allows external templates and plugins to
         // require JSDoc's module dependencies without installing them locally.
         require = require('requizzle')({
-            requirePaths: [path.join(__dirname, 'lib'), path.join(__dirname, 'node_modules')],
+            requirePaths: {
+                before: [path.join(__dirname, 'lib')],
+                after: [path.join(__dirname, 'node_modules')]
+            },
             infect: true
         });
     }
