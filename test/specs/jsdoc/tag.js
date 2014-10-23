@@ -112,6 +112,26 @@ describe('jsdoc/tag', function() {
                 expect(tagType.text).toBeDefined();
                 expect(tagType.text).toBe(def.onTagText('MyType'));
             });
+
+            it('should be enclosed in quotes, with no whitespace trimming, if it is a symbol name with leading or trailing whitespace', function() {
+                var wsBoth;
+                var wsLeading;
+                var wsOnly;
+                var wsTrailing;
+
+                spyOn(logger, 'error');
+
+                wsOnly = new jsdoc.tag.Tag('name', ' ', { code: { name: ' ' } });
+                wsLeading = new jsdoc.tag.Tag('name', '  foo', { code: { name: '  foo' } });
+                wsTrailing = new jsdoc.tag.Tag('name', 'foo  ', { code: { name: 'foo  ' } });
+                wsBoth = new jsdoc.tag.Tag('name', '  foo  ', { code: { name: '  foo  ' } });
+
+                expect(logger.error).not.toHaveBeenCalled();
+                expect(wsOnly.text).toBe('" "');
+                expect(wsLeading.text).toBe('"  foo"');
+                expect(wsTrailing.text).toBe('"foo  "');
+                expect(wsBoth.text).toBe('"  foo  "');
+            });
         });
 
         describe("'value' property", function() {
