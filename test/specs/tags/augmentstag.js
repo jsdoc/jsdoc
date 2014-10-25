@@ -1,9 +1,12 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
- describe("@augments tag", function() {
+/*global describe, expect, it, jasmine */
+'use strict';
+
+ describe('@augments tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentstag.js');
     var docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js');
     var docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js');
     var docSet4 = jasmine.getDocSetFromFile('test/fixtures/augmentstag4.js');
+    var docSet5 = jasmine.getDocSetFromFile('test/fixtures/augmentstag5.js');
 
     it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
         var bar = docSet.getByLongname('Bar')[0];
@@ -127,5 +130,13 @@
         expect(derivedMethod1All.length).toBe(2);
         expect(derivedMethod1.undocumented).not.toBe(true);
         expect(derivedMethod1.description).toBe(baseMethod1.description);
+    });
+
+    it('When a symbol inherits two methods that would both have the same longname, the last one wins', function() {
+        var base1CommonMethod = docSet5.getByLongname('Base1#methodOfBaseCommon')[0];
+        var classCommonMethod = docSet5.getByLongname('Class#methodOfBaseCommon');
+
+        expect(classCommonMethod.length).toBe(1);
+        expect(classCommonMethod[0].description).toBe(base1CommonMethod.description);
     });
 });
