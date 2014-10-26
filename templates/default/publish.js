@@ -461,7 +461,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
                 if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
                     caption = RegExp.$1;
-                    code    = RegExp.$3;
+                    code = RegExp.$3;
                 }
 
                 return {
