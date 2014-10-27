@@ -23,7 +23,6 @@ exports.handlers = {
             tag,
             value;
 
-        //console.log(e.doclet);
         // any user-defined tags in this doclet?
         if (typeof tags !== 'undefined') {
             // only interested in the @source tags

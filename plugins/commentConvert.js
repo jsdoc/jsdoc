@@ -5,6 +5,8 @@
  */
 'use strict';
 
+/*eslint spaced-line-comment: 0 */
+
 exports.handlers = {
     ///
     /// Convert ///-style comments into jsdoc comments.

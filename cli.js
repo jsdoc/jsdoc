@@ -460,5 +460,4 @@ cli.exit = function(exitCode, message) {
 };
 
 return cli;
-
 })();
