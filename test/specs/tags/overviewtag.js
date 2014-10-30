@@ -48,6 +48,7 @@ describe("@overview tag", function() {
     it('The name should not include the entire filepath when the source file is outside the ' +
         'JSDoc directory', function() {
         var Doclet = require('jsdoc/doclet').Doclet;
+        var os = require('os');
 
         var doclet;
         var docletMeta;
@@ -59,6 +60,12 @@ describe("@overview tag", function() {
         env.pwd = '/Users/jdoe/someproject';
         env.sourceFiles = [];
         env.opts._ = [fakePath];
+
+        // ensure that paths are resolved consistently on Windows
+        if (os.platform().indexOf('win') === 0) {
+            fakePath = 'c:' + fakePath;
+            env.pwd = 'c:' + env.pwd;
+        }
 
         // create a doclet with a fake filepath, then add a `@file` tag
         docletSrc = '/** @class */';

@@ -19,7 +19,7 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 var data;
 var view;
 
-var outdir = env.opts.destination;
+var outdir = path.normalize(env.opts.destination);
 
 function find(spec) {
     return helper.find(data, spec);
@@ -426,8 +426,8 @@ exports.publish = function(taffyData, opts, tutorials) {
     var conf = env.conf.templates || {};
     conf['default'] = conf['default'] || {};
 
-    var templatePath = opts.template;
-    view = new template.Template(templatePath + '/tmpl');
+    var templatePath = path.normalize(opts.template);
+    view = new template.Template( path.join(templatePath, 'tmpl') );
 
     // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
     // doesn't try to hand them out later
@@ -512,7 +512,11 @@ exports.publish = function(taffyData, opts, tutorials) {
     var staticFileFilter;
     var staticFileScanner;
     if (conf['default'].staticFiles) {
-        staticFilePaths = conf['default'].staticFiles.paths || [];
+        // The canonical property name is `include`. We accept `paths` for backwards compatibility
+        // with a bug in JSDoc 3.2.x.
+        staticFilePaths = conf['default'].staticFiles.include ||
+            conf['default'].staticFiles.paths ||
+            [];
         staticFileFilter = new (require('jsdoc/src/filter')).Filter(conf['default'].staticFiles);
         staticFileScanner = new (require('jsdoc/src/scanner')).Scanner();
 
