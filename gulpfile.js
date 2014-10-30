@@ -63,17 +63,17 @@ gulp.task('lint', function() {
 });
 
 gulp.task('test-node', function(cb) {
-    var cmd = util.format('%s %s -T', options.nodePath, options.nodeBin);
+    var cmd = util.format('%s "%s" -T', options.nodePath, options.nodeBin);
     exec(cmd, execCb.bind(null, cb));
 });
 
 gulp.task('test-rhino', function(cb) {
-    var cmd = util.format('%s -T -q "parser=rhino"', options.rhinoBin);
+    var cmd = util.format('"%s" -T -q "parser=rhino"', options.rhinoBin);
     exec(cmd, execCb.bind(null, cb));
 });
 
 gulp.task('test-rhino-esprima', function(cb) {
-    var cmd = util.format('%s -T -q "parser=esprima"', options.rhinoBin);
+    var cmd = util.format('"%s" -T -q "parser=esprima"', options.rhinoBin);
     exec(cmd, execCb.bind(null, cb));
 });
 
