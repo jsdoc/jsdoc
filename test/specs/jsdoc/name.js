@@ -248,6 +248,22 @@ describe('jsdoc/name', function() {
             expect(parts.name).toBe('socket');
             expect(parts.description).toBe('- The networking kind, not the wrench.');
         });
+
+        it('should allow default values to have brackets', function() {
+            var startName = '[path=["home", "user"]] - Path split into components'
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts.name).toBe('[path=["home", "user"]]');
+            expect(parts.description).toBe('Path split into components');
+        });
+
+        it('should allow default values to have unmatched brackets inside strings', function() {
+            var startName = '[path=["Unmatched begin: ["]] - Path split into components'
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts.name).toBe('[path=["Unmatched begin: ["]]');
+            expect(parts.description).toBe('Path split into components');
+        });
     });
 
     describe('resolve', function() {
