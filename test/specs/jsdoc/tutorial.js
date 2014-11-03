@@ -1,4 +1,5 @@
-/*global afterEach, beforeEach, describe, expect, it */
+'use strict';
+
 describe('jsdoc/tutorial', function() {
     var tutorial = require('jsdoc/tutorial');
 
@@ -22,6 +23,11 @@ describe('jsdoc/tutorial', function() {
     it('should export a Tutorial function', function() {
         expect(tutorial.Tutorial).toBeDefined();
         expect(typeof tutorial.Tutorial).toBe('function');
+    });
+
+    it('should export a RootTutorial function', function() {
+        expect(tutorial.RootTutorial).toBeDefined();
+        expect(typeof tutorial.RootTutorial).toBe('function');
     });
 
     it('should export a TYPES object', function() {
@@ -236,6 +242,42 @@ describe('jsdoc/tutorial', function() {
 
             it('Tutorials with unrecognised type are returned as-is', function() {
                 expect(tute.parse()).toBe(content);
+            });
+        });
+    });
+
+    describe('RootTutorial', function() {
+        it('should inherit from Tutorial', function() {
+            var root = new tutorial.RootTutorial();
+
+            expect(root instanceof tutorial.Tutorial).toBe(true);
+        });
+
+        it('should have a "getByName" method', function() {
+            expect(tutorial.RootTutorial.prototype.getByName).toBeDefined();
+            expect(typeof tutorial.RootTutorial.prototype.getByName).toBe('function');
+        });
+
+        describe('getByName', function() {
+            var root;
+
+            beforeEach(function() {
+                root = new tutorial.RootTutorial();
+            });
+
+            it('can retrieve tutorials by name', function() {
+                var myTutorial = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
+                root._addTutorial(myTutorial);
+
+                expect(root.getByName('myTutorial')).toBe(myTutorial);
+            });
+
+            it('returns nothing for non-existent tutorials', function() {
+                expect(root.getByName('asdf')).toBeFalsy();
+            });
+
+            it('uses hasOwnProperty when it checks for the tutorial', function() {
+                expect(root.getByName('prototype')).toBeFalsy();
             });
         });
     });
