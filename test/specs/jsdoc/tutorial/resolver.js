@@ -218,13 +218,15 @@ describe('jsdoc/tutorial/resolver', function() {
             expect(logger.warn).toHaveBeenCalled();
         });
 
-        it('allows tutorials to be defined in a .json file and redefined in another; the last one wins', function() {
+        it('allows tutorials to be defined in one .json file and redefined in another', function() {
             resolver.load(global.env.dirname + '/test/tutorials/duplicateDefined');
             resolver.resolve();
 
             expect(logger.error).not.toHaveBeenCalled();
             expect(logger.warn).toHaveBeenCalled();
-            expect(resolver.root.getByName('asdf').title).toBe('Conflicting title');
+            // we don't check to see which one wins; it depends on the order in which the JS engine
+            // iterates over object keys
+            expect(resolver.root.getByName('asdf')).toBeDefined();
         });
     });
 });
