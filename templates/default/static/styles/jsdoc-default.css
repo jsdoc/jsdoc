@@ -45,7 +45,7 @@ a, a:visited, a:active {
 }
 
 a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 header
@@ -67,7 +67,7 @@ header
 }
 
 article dd {
-	margin-bottom:40px;
+    margin-bottom:40px;
 }
 
 section
@@ -137,13 +137,13 @@ p {
 }
 
 h1, h2, h3, h4 {
-	font-weight: 200;
-	margin: 0;
+    font-weight: 200;
+    margin: 0;
 }
 
 h1
 {
-	font-family: 'Open Sans Light', sans-serif;
+    font-family: 'Open Sans Light', sans-serif;
     font-size: 48px;
     letter-spacing: -2px;
     margin:12px 24px 20px;
@@ -241,7 +241,7 @@ h6
 
 .prettyprint code
 {
-	font-family: 'Courier New', 'Andale Mono', monospace;
+    font-family: 'Courier New', 'Andale Mono', monospace;
     font-size: 100%;
     line-height: 18px;
     display: block;
@@ -297,7 +297,7 @@ h6
 }
 
 .params .name, .props .name, .name code {
-	color: #4D4E53;
+    color: #4D4E53;
     font-family: 'Courier New', 'Andale Mono', monospace;
     font-size: 100%;
 }
