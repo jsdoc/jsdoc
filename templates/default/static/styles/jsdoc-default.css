@@ -54,6 +54,10 @@ header
     padding: 0px 4px;
 }
 
+tt, code, kbd, samp {
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+}
+
 .class-description {
     font-size: 130%;
     line-height: 140%;
@@ -115,7 +119,7 @@ nav ul {
 }
 
 nav ul a, nav ul a:visited, nav ul a:active {
-    font-family: 'Courier New', 'Andale Mono', monospace;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
     line-height: 18px;
     color: #4D4E53;
 }
@@ -207,7 +211,7 @@ h6
 }
 
 .name, .signature {
-    font-family: 'Courier New', 'Andale Mono', monospace;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
 }
 
 .details { margin-top: 14px; border-left: 2px solid #DDD; }
@@ -244,7 +248,6 @@ h6
 
 .prettyprint code
 {
-    font-family: 'Courier New', 'Andale Mono', monospace;
     font-size: 100%;
     line-height: 18px;
     display: block;
@@ -301,7 +304,7 @@ h6
 
 .params .name, .props .name, .name code {
     color: #4D4E53;
-    font-family: 'Courier New', 'Andale Mono', monospace;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
     font-size: 100%;
 }
 
