@@ -28,7 +28,7 @@ html
 {
     overflow: auto;
     background-color: #fff;
-    font-size:14px;
+    font-size: 14px;
 }
 
 body
@@ -67,7 +67,7 @@ header
 }
 
 article dd {
-    margin-bottom:40px;
+    margin-bottom: 40px;
 }
 
 section
@@ -105,9 +105,9 @@ nav ul {
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
     font-size: 100%;
     line-height: 17px;
-    padding:0;
-    margin:0;
-    list-style-type:none;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
 }
 
 nav ul a, nav ul a:visited, nav ul a:active {
@@ -146,7 +146,7 @@ h1
     font-family: 'Open Sans Light', sans-serif;
     font-size: 48px;
     letter-spacing: -2px;
-    margin:12px 24px 20px;
+    margin: 12px 24px 20px;
 }
 
 h2, h3
@@ -207,7 +207,7 @@ h6
 }
 
 .details { margin-top: 14px; border-left: 2px solid #DDD; }
-.details dt { width:120px; float:left; padding-left: 10px;  padding-top: 6px; }
+.details dt { width: 120px; float: left; padding-left: 10px;  padding-top: 6px; }
 .details dd { margin-left: 70px; }
 .details ul { margin: 0; }
 .details ul { list-style-type: none; }
