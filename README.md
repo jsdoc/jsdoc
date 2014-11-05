@@ -111,6 +111,15 @@ generate and customize your documentation. Here are just a few:
 + [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
 + [JSDoc ant task](https://github.com/jannon/jsdoc3-ant-task)
 
+### Generating Typeface Fonts
+
+JSDoc 3 uses the [OpenSans](https://www.google.com/fonts/specimen/Open+Sans) typeface, the fonts for which can be re-generated as follows:
+
+1. Open the [OpenSans page at Font Squirrel](<http://www.fontsquirrel.com/fonts/open-sans>).
+2. Click on the 'Webfont Kit' tab.
+3. Either leave the subset drop-down as 'Western Latin (Default)', or if we decide we need more glyphs than change it to 'No Subsetting'.
+4. Click the 'DOWNLOAD @FONT-FACE KIT' button.
+5. For each typeface variant we plan to use, copy the 'eot', 'svg' and 'woff' files into the 'templates/default/static/fonts' directory.
 
 For More Information
 --------------------
