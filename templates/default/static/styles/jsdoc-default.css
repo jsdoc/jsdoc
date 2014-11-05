@@ -51,7 +51,7 @@ a:hover {
 header
 {
     display: block;
-    padding: 6px 4px;
+    padding: 0px 4px;
 }
 
 .class-description {
@@ -59,6 +59,10 @@ header
     line-height: 140%;
     margin-bottom: 1em;
     margin-top: 1em;
+}
+
+.class-description:empty {
+    margin: 0;
 }
 
 #main {
