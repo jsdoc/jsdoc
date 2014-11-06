@@ -1,57 +1,90 @@
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/OpenSans-Regular-webfont.eot');
+    src:
+        local('Open Sans'),
+        local('OpenSans'),
+        url('../fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/OpenSans-Regular-webfont.woff') format('woff'),
+        url('../fonts/OpenSans-Regular-webfont.svg#open_sansregular') format('svg');
+}
+
+@font-face {
+    font-family: 'Open Sans Light';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/OpenSans-Light-webfont.eot');
+    src:
+        local('Open Sans Light'),
+        local('OpenSans Light'),
+        url('../fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/OpenSans-Light-webfont.woff') format('woff'),
+        url('../fonts/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
+}
+
 html
 {
     overflow: auto;
     background-color: #fff;
+    font-size: 14px;
 }
 
 body
 {
-    font: 14px "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    line-height: 130%;
-    color: #000;
-    background-color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.5;
+    color: #4d4e53;
+    background-color: white;
 }
 
-a {
-    color: #444;
+a, a:visited, a:active {
+    color: #0095dd;
+    text-decoration: none;
 }
 
-a:visited {
-    color: #444;
-}
-
-a:active {
-    color: #444;
+a:hover {
+    text-decoration: underline;
 }
 
 header
 {
     display: block;
-    padding: 6px 4px;
+    padding: 0px 4px;
+}
+
+tt, code, kbd, samp {
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
 }
 
 .class-description {
-    font-style: italic;
-    font-family: Palatino, 'Palatino Linotype', serif;
     font-size: 130%;
     line-height: 140%;
     margin-bottom: 1em;
     margin-top: 1em;
 }
 
+.class-description:empty {
+    margin: 0;
+}
+
 #main {
     float: left;
-    width: 100%;
+    width: 70%;
+}
+
+article dl {
+    margin-bottom: 40px;
 }
 
 section
 {
     display: block;
-
     background-color: #fff;
     padding: 12px 24px;
     border-bottom: 1px solid #ccc;
-    margin-right: 240px;
+    margin-right: 30px;
 }
 
 .variation {
@@ -68,26 +101,27 @@ section
 nav
 {
     display: block;
-    float: left;
-    margin-left: -230px;
+    float: right;
     margin-top: 28px;
-    width: 220px;
+    width: 30%;
+    box-sizing: border-box;
     border-left: 1px solid #ccc;
-    padding-left: 9px;
+    padding-left: 16px;
 }
 
 nav ul {
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
     font-size: 100%;
     line-height: 17px;
-    padding:0;
-    margin:0;
-    list-style-type:none;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
 }
 
-nav h2 a, nav h2 a:visited {
-    color: #A35A00;
-    text-decoration: none;
+nav ul a, nav ul a:visited, nav ul a:active {
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+    line-height: 18px;
+    color: #4D4E53;
 }
 
 nav h3 {
@@ -98,18 +132,6 @@ nav li {
     margin-top: 6px;
 }
 
-nav a {
-    color: #5C5954;
-}
-
-nav a:visited {
-    color: #5C5954;
-}
-
-nav a:active {
-    color: #5C5954;
-}
-
 footer {
     display: block;
     padding: 6px;
@@ -118,39 +140,37 @@ footer {
     font-size: 90%;
 }
 
+p {
+    margin-bottom: 24px;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 200;
+    margin: 0;
+}
+
 h1
 {
-    font-size: 200%;
-    font-weight: bold;
-    letter-spacing: -0.01em;
-    margin: 6px 0 9px 0;
+    font-family: 'Open Sans Light', sans-serif;
+    font-size: 48px;
+    letter-spacing: -2px;
+    margin: 12px 24px 20px;
 }
 
-h2
+h2, h3
 {
-    font-size: 170%;
-    font-weight: bold;
-    letter-spacing: -0.01em;
-    margin: 6px 0 3px 0;
-}
-
-h3
-{
-    font-size: 150%;
-    font-weight: bold;
-    letter-spacing: -0.01em;
-    margin-top: 16px;
-    margin: 6px 0 3px 0;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
 }
 
 h4
 {
-    font-size: 130%;
-    font-weight: bold;
-    letter-spacing: -0.01em;
-    margin-top: 16px;
-    margin: 18px 0 3px 0;
-    color: #A35A00;
+    font-size: 18px;
+    letter-spacing: -0.33px;
+    margin-bottom: 12px;
+    color: #4d4e53;
 }
 
 h5, .container-overview .subsection-title
@@ -191,11 +211,11 @@ h6
 }
 
 .name, .signature {
-    font-family: Consolas, "Lucida Console", Monaco, monospace;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
 }
 
 .details { margin-top: 14px; border-left: 2px solid #DDD; }
-.details dt { width:120px; float:left; padding-left: 10px;  padding-top: 6px; }
+.details dt { width: 120px; float: left; padding-left: 10px;  padding-top: 6px; }
 .details dd { margin-left: 70px; }
 .details ul { margin: 0; }
 .details ul { list-style-type: none; }
@@ -205,14 +225,12 @@ h6
 
 .description {
     margin-bottom: 1em;
-    margin-left: -16px;
     margin-top: 1em;
 }
 
 .code-caption
 {
     font-style: italic;
-    font-family: Palatino, 'Palatino Linotype', serif;
     font-size: 107%;
     margin: 0;
 }
@@ -230,14 +248,13 @@ h6
 
 .prettyprint code
 {
-    font-family: Consolas, 'Lucida Console', Monaco, monospace;
     font-size: 100%;
     line-height: 18px;
     display: block;
     padding: 4px 12px;
     margin: 0;
     background-color: #fff;
-    color: #000;
+    color: #4D4E53;
 }
 
 .prettyprint code span.line
@@ -286,8 +303,8 @@ h6
 }
 
 .params .name, .props .name, .name code {
-    color: #A35A00;
-    font-family: Consolas, 'Lucida Console', Monaco, monospace;
+    color: #4D4E53;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
     font-size: 100%;
 }
 
