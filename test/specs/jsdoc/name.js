@@ -264,6 +264,24 @@ describe('jsdoc/name', function() {
             expect(parts.name).toBe('[path=["Unmatched begin: ["]]');
             expect(parts.description).toBe('Path split into components');
         });
+
+        it('should fail gracefully when the default value has an unmatched bracket', function() {
+            var startName = '[path=["home", "user"] - Path split into components'
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts).not.toBe(null);
+            expect(parts.name).toBe('[path=["home", "user"]');
+            expect(parts.description).toBe('Path split into components');
+        });
+
+        it('should fail gracefully when the default value has an unmatched quote', function() {
+            var startName = '[path=["home", "user] - Path split into components'
+            var parts = jsdoc.name.splitName(startName);
+
+            expect(parts).not.toBe(null);
+            expect(parts.name).toBe('[path=["home", "user]');
+            expect(parts.description).toBe('Path split into components');
+        });
     });
 
     describe('resolve', function() {
