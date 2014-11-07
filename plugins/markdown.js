@@ -1,4 +1,3 @@
-/*global env: true */
 /**
  * @overview Translate doclet descriptions from MarkDown into HTML.
  * @module plugins/markdown
@@ -7,8 +6,16 @@
  */
 'use strict';
 
-var conf = env.conf.markdown;
-var defaultTags = [ 'classdesc', 'description', 'params', 'properties', 'returns', 'see'];
+var config = global.env.conf.markdown || {};
+var defaultTags = [
+    'classdesc',
+    'description',
+    'exceptions',
+    'params',
+    'properties',
+    'returns',
+    'see'
+];
 var hasOwnProp = Object.prototype.hasOwnProperty;
 var parse = require('jsdoc/util/markdown').getParser();
 var tags = [];
@@ -58,12 +65,12 @@ function process(doclet) {
 }
 
 // set up the list of "tags" (properties) to process
-if (conf && conf.tags) {
-    tags = conf.tags.slice();
+if (config.tags) {
+    tags = config.tags.slice();
 }
 // set up the list of default tags to exclude from processing
-if (conf && conf.excludeTags) {
-    excludeTags = conf.excludeTags.slice();
+if (config.excludeTags) {
+    excludeTags = config.excludeTags.slice();
 }
 defaultTags.forEach(function(tag) {
     if (excludeTags.indexOf(tag) === -1 && tags.indexOf(tag) === -1) {
