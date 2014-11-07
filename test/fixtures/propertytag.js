@@ -1,10 +1,12 @@
 /**
  * @namespace
- * @property {Object}  defaults   The default values.
- * @property {Number}  defaults.a The a property of the defaults.
- * @property {String}  defaults.b The b property of the defaults.
+ * @property {String} id=abc123   The identifier.
+ * @property {Object} defaults    The default values.
+ * @property {Number} defaults.a  The a property of the defaults.
+ * @property {String} defaults.b  The b property of the defaults.
  */
-myobject = {
+var myobject = {
+    id: "abc123",
     defaults: {
         a: 1,
         b: "Hit the light",
