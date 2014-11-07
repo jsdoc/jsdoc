@@ -1,16 +1,16 @@
-/*global afterEach, beforeEach, describe, expect, env, it, jasmine, spyOn, xdescribe */
 /*eslint quotes:0 */
 'use strict';
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", function() {
-    var helper = require('jsdoc/util/templateHelper'),
-        doclet = require('jsdoc/doclet'),
-        doop = require('jsdoc/util/doop'),
-        logger = require('jsdoc/util/logger'),
-        resolver = require('jsdoc/tutorial/resolver'),
-        taffy = require('taffydb').taffy;
+    var helper = require('jsdoc/util/templateHelper');
+    var doclet = require('jsdoc/doclet');
+    var doop = require('jsdoc/util/doop');
+    var logger = require('jsdoc/util/logger');
+    var resolver = require('jsdoc/tutorial/resolver');
+    var taffy = require('taffydb').taffy;
+
     helper.registerLink('test', 'path/to/test.html');
 
     it("should exist", function() {
@@ -200,6 +200,10 @@ describe("jsdoc/util/templateHelper", function() {
         it('should replace other problematic characters with underscores', function() {
             var filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename');
             expect(filename).toBe('a very strange __________ filename.html');
+        });
+
+        it('should not allow a filename to start with an underscore', function() {
+            expect( helper.getUniqueFilename('') ).toBe('X_.html');
         });
 
         it('should not return the same filename twice', function() {
