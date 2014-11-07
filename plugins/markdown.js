@@ -8,7 +8,7 @@
 'use strict';
 
 var conf = env.conf.markdown;
-var defaultTags = [ 'classdesc', 'description', 'params', 'properties', 'returns', 'see'];
+var defaultTags = [ 'classdesc', 'description', 'params', 'properties', 'returns', 'see', 'exceptions' ];
 var hasOwnProp = Object.prototype.hasOwnProperty;
 var parse = require('jsdoc/util/markdown').getParser();
 var tags = [];
