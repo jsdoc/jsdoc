@@ -17,12 +17,10 @@
     "cardinal": "2.2.5"
   },
   "dependencies": {
-    "uikit": "~2.6.0",
     "bootstrap": "~3.1.1",
-    "jqtree": "~0.21.0",
-    "jquery.cookie": "~1.4.1",
     "google-code-prettify": "~1.0.1",
-    "velocity": "~0.4.1"
+    "jqtree": "~0.21.0",
+    "jquery.cookie": "~1.4.1"
   },
   "resolutions": {
     "jquery": ">= 1.9.0"
