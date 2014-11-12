@@ -7,7 +7,7 @@ var helper = require('jsdoc/util/templateHelper');
 var docletHelper = require('jsdoc/util/docletHelper');
 var logger = require('jsdoc/util/logger');
 var path = require('jsdoc/path');
-var taffy = require('taffydb').taffy;
+var _ = require('underscore'); // should replace it with lodash
 var template = require('jsdoc/template');
 var util = require('util');
 
@@ -16,8 +16,6 @@ var linkto = helper.linkto;
 var resolveAuthorLinks = helper.resolveAuthorLinks;
 var scopeToPunc = helper.scopeToPunc;
 var hasOwnProp = Object.prototype.hasOwnProperty;
-
-var _ = require('underscore');
 
 var data;
 var view;
@@ -463,41 +461,33 @@ exports.publish = function(taffyData, opts, tutorials) {
         ).concat(files),
     indexUrl);
 
-    // set up the lists that we'll use to generate pages
-    var classes = taffy(members.classes);
-    var modules = taffy(members.modules);
-    var namespaces = taffy(members.namespaces);
-    var mixins = taffy(members.mixins);
-    var externals = taffy(members.externals);
-    var interfaces = taffy(members.interfaces);
-
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
-        var myClasses = helper.find(classes, {longname: longname});
+        var myClasses = _.where(members.classes, {longname: longname});
         if (myClasses.length) {
             generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
         }
 
-        var myModules = helper.find(modules, {longname: longname});
+        var myModules = _.where(members.modules, {longname: longname});
         if (myModules.length) {
             generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
         }
 
-        var myNamespaces = helper.find(namespaces, {longname: longname});
+        var myNamespaces = _.where(members.namespaces, {longname: longname});
         if (myNamespaces.length) {
             generate('Namespace: ' + myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
         }
 
-        var myMixins = helper.find(mixins, {longname: longname});
+        var myMixins = _.where(members.mixins, {longname: longname});
         if (myMixins.length) {
             generate('Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
         }
 
-        var myExternals = helper.find(externals, {longname: longname});
+        var myExternals = _.where(members.externals, {longname: longname});
         if (myExternals.length) {
             generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
         }
 
-        var myInterfaces = helper.find(interfaces, {longname: longname});
+        var myInterfaces = _.where(members.interfaces, {longname: longname});
         if (myInterfaces.length) {
             generate('Interface: ' + myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
         }
