@@ -1,4 +1,3 @@
-/*global describe, expect, it, jasmine */
 'use strict';
 
  describe('@augments tag', function() {
@@ -25,8 +24,8 @@
         var fooProp1 = docSet.getByLongname('Foo#prop1')[0];
         var barProp1 = docSet.getByLongname('Bar#prop1')[0];
 
-        expect(fooProp1.memberof).toBe("Foo");
-        expect(barProp1.memberof).toBe("Bar");
+        expect(fooProp1.memberof).toBe('Foo');
+        expect(barProp1.memberof).toBe('Bar');
         expect(barProp1.description).toBe(fooProp1.description);
     });
 
@@ -34,8 +33,8 @@
         var fooProp2 = docSet.getByLongname('Foo#prop2')[0];
         var barProp2 = docSet.getByLongname('Bar#prop2')[0];
 
-        expect(fooProp2.memberof).toBe("Foo");
-        expect(barProp2.memberof).toBe("Bar");
+        expect(fooProp2.memberof).toBe('Foo');
+        expect(barProp2.memberof).toBe('Bar');
         expect(barProp2.description).toBe(fooProp2.description);
     });
 
@@ -43,8 +42,8 @@
         var fooMethod1 = docSet.getByLongname('Foo#method1')[0];
         var barMethod1 = docSet.getByLongname('Bar#method1')[0];
 
-        expect(fooMethod1.memberof).toBe("Foo");
-        expect(barMethod1.memberof).toBe("Bar");
+        expect(fooMethod1.memberof).toBe('Foo');
+        expect(barMethod1.memberof).toBe('Bar');
         expect(barMethod1.description).toBe(fooMethod1.description);
     });
 
@@ -52,10 +51,10 @@
         var fooMethod2 = docSet.getByLongname('Foo#method2')[0];
         var barMethod2 = docSet.getByLongname('Bar#method2')[0];
 
-        expect(fooMethod2.memberof).toBe("Foo");
-        expect(fooMethod2.description).toBe("Second parent method.");
-        expect(barMethod2.memberof).toBe("Bar");
-        expect(barMethod2.description).toBe("Second child method.");
+        expect(fooMethod2.memberof).toBe('Foo');
+        expect(fooMethod2.description).toBe('Second parent method.');
+        expect(barMethod2.memberof).toBe('Bar');
+        expect(barMethod2.description).toBe('Second child method.');
     });
 
     it('When an object is extended, and it overrides an ancestor method, the child does not include docs for the ancestor method.', function() {
@@ -72,16 +71,16 @@
         var bazMethod2 = docSet.getByLongname('Baz#method2')[0];
         var bazMethod3 = docSet.getByLongname('Baz#method3')[0];
 
-        expect(fooProp1.memberof).toBe("Foo");
-        expect(barProp1.memberof).toBe("Bar");
-        expect(bazProp1.memberof).toBe("Baz");
-        expect(bazProp1.description).toBe("Override prop1");
-        expect(bazMethod1.memberof).toBe("Baz");
-        expect(bazMethod2.memberof).toBe("Baz");
-        expect(bazMethod3.memberof).toBe("Baz");
+        expect(fooProp1.memberof).toBe('Foo');
+        expect(barProp1.memberof).toBe('Bar');
+        expect(bazProp1.memberof).toBe('Baz');
+        expect(bazProp1.description).toBe('Override prop1');
+        expect(bazMethod1.memberof).toBe('Baz');
+        expect(bazMethod2.memberof).toBe('Baz');
+        expect(bazMethod3.memberof).toBe('Baz');
     });
 
-     it('(Grand)children correctly identify the original source of inherited members', function(){
+     it('(Grand)children correctly identify the original source of inherited members', function() {
         var fooProp1 = docSet.getByLongname('Foo#prop1')[0];
         var barProp1 = docSet.getByLongname('Bar#prop1')[0];
         var barProp3 = docSet.getByLongname('Bar#prop3')[0];
@@ -91,10 +90,10 @@
 
         expect(fooProp1.inherits).not.toBeDefined();
         expect(barProp3.inherits).not.toBeDefined();
-        expect(barProp1.inherits).toBe("Foo#prop1");
-        expect(bazProp2.inherits).toBe("Foo#prop2");
-        expect(bazProp3.inherits).toBe("Bar#prop3");
-        expect(bazMethod1.inherits).toBe("Foo#method1");
+        expect(barProp1.inherits).toBe('Foo#prop1');
+        expect(bazProp2.inherits).toBe('Foo#prop2');
+        expect(bazProp3.inherits).toBe('Bar#prop3');
+        expect(bazMethod1.inherits).toBe('Foo#method1');
      });
 
     it('When an object is extended, and it overrides an ancestor property, the child does not include docs for the ancestor property.', function() {
