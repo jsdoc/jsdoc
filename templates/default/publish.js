@@ -4,6 +4,7 @@
 var doop = require('jsdoc/util/doop');
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');
+var docletHelper = require('jsdoc/util/docletHelper');
 var logger = require('jsdoc/util/logger');
 var path = require('jsdoc/path');
 var taffy = require('taffydb').taffy;
@@ -33,158 +34,6 @@ function getAncestorLinks(doclet) {
     return helper.getAncestorLinks(data, doclet);
 }
 
-function hashToLink(doclet, hash) {
-    if ( !/^(#.+)/.test(hash) ) { return hash; }
-
-    var url = helper.createLink(doclet);
-
-    url = url.replace(/(#.+|$)/, hash);
-    return '<a href="' + url + '">' + hash + '</a>';
-}
-
-function needsSignature(doclet) {
-    var needsSig = false;
-
-    // function and class definitions always get a signature
-    if (doclet.kind === 'function' || doclet.kind === 'class') {
-        needsSig = true;
-    }
-    // typedefs that contain functions get a signature, too
-    else if (doclet.kind === 'typedef' && doclet.type && doclet.type.names &&
-        doclet.type.names.length) {
-        for (var i = 0, l = doclet.type.names.length; i < l; i++) {
-            if (doclet.type.names[i].toLowerCase() === 'function') {
-                needsSig = true;
-                break;
-            }
-        }
-    }
-
-    return needsSig;
-}
-
-function getSignatureAttributes(item) {
-    var attributes = [];
-
-    if (item.optional) {
-        attributes.push('opt');
-    }
-
-    if (item.nullable === true) {
-        attributes.push('nullable');
-    }
-    else if (item.nullable === false) {
-        attributes.push('non-null');
-    }
-
-    return attributes;
-}
-
-function updateItemName(item) {
-    var attributes = getSignatureAttributes(item);
-    var itemName = item.name || '';
-
-    if (item.variable) {
-        itemName = '&hellip;' + itemName;
-    }
-
-    if (attributes && attributes.length) {
-        itemName = util.format( '%s<span class="signature-attributes">%s</span>', itemName,
-            attributes.join(', ') );
-    }
-
-    return itemName;
-}
-
-function addParamAttributes(params) {
-    return params.filter(function(param) {
-        return param.name && param.name.indexOf('.') === -1;
-    }).map(updateItemName);
-}
-
-function buildItemTypeStrings(item) {
-    var types = [];
-
-    if (item && item.type && item.type.names) {
-        item.type.names.forEach(function(name) {
-            types.push( linkto(name, htmlsafe(name)) );
-        });
-    }
-
-    return types;
-}
-
-function buildAttribsString(attribs) {
-    var attribsString = '';
-
-    if (attribs && attribs.length) {
-        attribsString = htmlsafe( util.format('(%s) ', attribs.join(', ')) );
-    }
-
-    return attribsString;
-}
-
-function addNonParamAttributes(items) {
-    var types = [];
-
-    items.forEach(function(item) {
-        types = types.concat( buildItemTypeStrings(item) );
-    });
-
-    return types;
-}
-
-function addSignatureParams(f) {
-    var params = f.params ? addParamAttributes(f.params) : [];
-
-    f.signature = util.format( '%s(%s)', (f.signature || ''), params.join(', ') );
-}
-
-function addSignatureReturns(f) {
-    var attribs = [];
-    var attribsString = '';
-    var returnTypes = [];
-    var returnTypesString = '';
-
-    // jam all the return-type attributes into an array. this could create odd results (for example,
-    // if there are both nullable and non-nullable return types), but let's assume that most people
-    // who use multiple @return tags aren't using Closure Compiler type annotations, and vice-versa.
-    if (f.returns) {
-        f.returns.forEach(function(item) {
-            helper.getAttribs(item).forEach(function(attrib) {
-                if (attribs.indexOf(attrib) === -1) {
-                    attribs.push(attrib);
-                }
-            });
-        });
-
-        attribsString = buildAttribsString(attribs);
-    }
-
-    if (f.returns) {
-        returnTypes = addNonParamAttributes(f.returns);
-    }
-    if (returnTypes.length) {
-        returnTypesString = util.format( ' &rarr; %s{%s}', attribsString, returnTypes.join('|') );
-    }
-
-    f.signature = '<span class="signature">' + (f.signature || '') + '</span>' +
-        '<span class="type-signature">' + returnTypesString + '</span>';
-}
-
-function addSignatureTypes(f) {
-    var types = f.type ? buildItemTypeStrings(f) : [];
-
-    f.signature = (f.signature || '') + '<span class="type-signature">' +
-        (types.length ? ' :' + types.join('|') : '') + '</span>';
-}
-
-function addAttribs(f) {
-    var attribs = helper.getAttribs(f);
-    var attribsString = buildAttribsString(attribs);
-
-    f.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
-}
 
 function shortenPaths(files, commonPrefix) {
     Object.keys(files).forEach(function(file) {
@@ -196,15 +45,6 @@ function shortenPaths(files, commonPrefix) {
     return files;
 }
 
-function getPathFromDoclet(doclet) {
-    if (!doclet.meta) {
-        return null;
-    }
-
-    return doclet.meta.path && doclet.meta.path !== 'null' ?
-        path.join(doclet.meta.path, doclet.meta.filename) :
-        doclet.meta.filename;
-}
 
 function generate(title, docs, filename, resolveLinks) {
     resolveLinks = resolveLinks === false ? false : true;
@@ -472,14 +312,14 @@ exports.publish = function(taffyData, opts, tutorials) {
         }
         if (doclet.see) {
             doclet.see.forEach(function(seeItem, i) {
-                doclet.see[i] = hashToLink(doclet, seeItem);
+                doclet.see[i] = docletHelper.hashToLink(doclet, seeItem);
             });
         }
 
         // build a list of source files
         var sourcePath;
         if (doclet.meta) {
-            sourcePath = getPathFromDoclet(doclet);
+            sourcePath = docletHelper.getPathFromDoclet(doclet);
             sourceFiles[sourcePath] = {
                 resolved: sourcePath,
                 shortened: null
@@ -542,7 +382,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         // add a shortened version of the full path
         var docletPath;
         if (doclet.meta) {
-            docletPath = getPathFromDoclet(doclet);
+            docletPath = docletHelper.getPathFromDoclet(doclet);
             docletPath = sourceFiles[docletPath].shortened;
             if (docletPath) {
                 doclet.meta.shortpath = docletPath;
@@ -560,10 +400,10 @@ exports.publish = function(taffyData, opts, tutorials) {
             doclet.id = doclet.name;
         }
 
-        if ( needsSignature(doclet) ) {
-            addSignatureParams(doclet);
-            addSignatureReturns(doclet);
-            addAttribs(doclet);
+        if ( docletHelper.needsSignature(doclet) ) {
+            docletHelper.addSignatureParams(doclet);
+            docletHelper.addSignatureReturns(doclet);
+            docletHelper.addAttribs(doclet);
         }
     });
 
@@ -572,13 +412,13 @@ exports.publish = function(taffyData, opts, tutorials) {
         doclet.ancestors = getAncestorLinks(doclet);
 
         if (doclet.kind === 'member') {
-            addSignatureTypes(doclet);
-            addAttribs(doclet);
+            docletHelper.addSignatureTypes(doclet);
+            docletHelper.addAttribs(doclet);
         }
 
         if (doclet.kind === 'constant') {
-            addSignatureTypes(doclet);
-            addAttribs(doclet);
+            docletHelper.addSignatureTypes(doclet);
+            docletHelper.addAttribs(doclet);
             doclet.kind = 'member';
         }
     });
