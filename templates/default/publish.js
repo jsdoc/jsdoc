@@ -17,6 +17,8 @@ var resolveAuthorLinks = helper.resolveAuthorLinks;
 var scopeToPunc = helper.scopeToPunc;
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
+var _ = require('underscore');
+
 var data;
 var view;
 
@@ -264,7 +266,12 @@ exports.publish = function(taffyData, opts, tutorials) {
     data = taffyData;
 
     var conf = env.conf.templates || {};
-    conf['default'] = conf['default'] || {};
+    var defaultConfig = {
+        layoutFile: 'layout.tmpl',
+        staticFiles: false,
+        outputSourceFiles: true
+    };
+    var config = _.extend({}, conf['default'] || {}, defaultConfig);
 
     var templatePath = path.normalize(opts.template);
     view = new template.Template( path.join(templatePath, 'tmpl') );
@@ -278,10 +285,10 @@ exports.publish = function(taffyData, opts, tutorials) {
     helper.registerLink('global', globalUrl);
 
     // set up templating
-    view.layout = conf['default'].layoutFile ?
-        path.getResourcePath(path.dirname(conf['default'].layoutFile),
-            path.basename(conf['default'].layoutFile) ) :
-        'layout.tmpl';
+    view.layout = (config.layoutFile !== defaultConfig.layoutFile) ?
+        path.getResourcePath(path.dirname(config.layoutFile), path.basename(config.layoutFile)) :
+        config.layoutFile;
+
 
     // set up tutorials for helper
     helper.setTutorials(tutorials);
@@ -351,13 +358,11 @@ exports.publish = function(taffyData, opts, tutorials) {
     var staticFilePaths;
     var staticFileFilter;
     var staticFileScanner;
-    if (conf['default'].staticFiles) {
+    if (config.staticFiles) {
         // The canonical property name is `include`. We accept `paths` for backwards compatibility
         // with a bug in JSDoc 3.2.x.
-        staticFilePaths = conf['default'].staticFiles.include ||
-            conf['default'].staticFiles.paths ||
-            [];
-        staticFileFilter = new (require('jsdoc/src/filter')).Filter(conf['default'].staticFiles);
+        staticFilePaths = config.staticFiles.include || config.staticFiles.paths || [];
+        staticFileFilter = new (require('jsdoc/src/filter')).Filter(config.staticFiles);
         staticFileScanner = new (require('jsdoc/src/scanner')).Scanner();
 
         staticFilePaths.forEach(function(filePath) {
@@ -427,8 +432,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     members.tutorials = tutorials.children;
 
     // output pretty-printed source files by default
-    var outputSourceFiles = conf['default'] && conf['default'].outputSourceFiles !== false ? true :
-        false;
+    var outputSourceFiles = config.outputSourceFiles !== false;
 
     // add template helpers
     view.find = find;
