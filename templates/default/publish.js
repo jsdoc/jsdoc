@@ -1,4 +1,5 @@
 /*global env: true */
+/*eslint no-new:0 */
 'use strict';
 
 var TemplateRenderer = require('jsdoc/util/view');
