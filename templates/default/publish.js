@@ -2,7 +2,7 @@
 /*eslint no-new:0 */
 'use strict';
 
-var TemplateRenderer = require('jsdoc/util/view');
+var TemplateRenderer = require('jsdoc/util/templateRenderer');
 
 /**
     @param {TAFFY} taffyData See <http://taffydb.com/>.
