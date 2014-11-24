@@ -282,6 +282,35 @@ function attachModuleSymbols(doclets, modules) {
     });
 }
 
+function buildMemberNav(items, itemHeading, itemsSeen) {
+  var nav = '';
+
+  if (items.length) {
+    var itemsNav = '';
+
+    items.forEach(function(item) {
+      if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+        itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
+      }
+      itemsSeen[item.longname] = true;
+    });
+
+    if (itemsNav !== '') {
+      nav += '<h3>' + itemHeading  + '</h3><ul>' + itemsNav + '</ul>';
+    }
+  }
+
+  return nav;
+}
+
+function linktoTutorial(longName, name) {
+  return tutoriallink(name);
+}
+
+function linktoExternal(longName, name) {
+  return linkto(longName, name.replace(/(^"|"$)/g, ''));
+}
+
 /**
  * Create the navigation sidebar.
  * @param {object} members The members that will be used to create the sidebar.
@@ -300,17 +329,17 @@ function buildNav(members) {
     var nav = '<h2><a href="index.html">Home</a></h2>',
         seen = {};
 
-    nav += buildMemberNav(members.modules, "Modules", {}, linkto);
-    nav += buildMemberNav(members.externals, "Externals", seen, linktoExternal);
-    nav += buildMemberNav(members.classes, "Classes", seen, linkto);
-    nav += buildMemberNav(members.events, "Events", seen, linkto);
-    nav += buildMemberNav(members.namespaces, "Namespaces", seen, linkto);
-    nav += buildMemberNav(members.mixins, "Mixins", seen, linkto);
-    nav += buildMemberNav(members.tutorials, "Tutorials", seen, linktoTutorial);
-    nav += buildMemberNav(members.interfaces, "Interfaces", seen, linkto);
+    nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
+    nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
+    nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
+    nav += buildMemberNav(members.events, 'Events', seen, linkto);
+    nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
+    nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
+    nav += buildMemberNav(members.tutorials, 'Tutorials', seen, linktoTutorial);
+    nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
 
     if (members.globals.length) {
-    	var globalNav = '';
+      var globalNav = '';
 
         members.globals.forEach(function(g) {
             if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
@@ -329,35 +358,6 @@ function buildNav(members) {
     }
 
     return nav;
-}
-
-function buildMemberNav(items, itemHeading, itemsSeen) {
-	var nav = '';
-
-	if (items.length) {
-    	var itemsNav = '';
-
-        items.forEach(function(item) {
-            if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-            	itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
-            }
-            itemsSeen[item.longname] = true;
-        });
-
-        if (itemsNav !== '') {
-            nav += '<h3>' + itemHeading  + '</h3><ul>' + itemsNav + '</ul>';
-        }
-    }
-
-	return nav;
-}
-
-function linktoTutorial(longName, name) {
-	return tutoriallink(name);
-}
-
-function linktoExternal(longName, name) {
-	return linkto(longName, name.replace(/(^"|"$)/g, ''));
 }
 
 /**
