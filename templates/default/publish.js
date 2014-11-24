@@ -299,7 +299,7 @@ function attachModuleSymbols(doclets, modules) {
 function buildNav(members) {
     var nav = '<h2><a href="index.html">Home</a></h2>',
         seen = {};
-    
+
     nav += buildMemberNav(members.modules, "Modules", {}, linkto);
     nav += buildMemberNav(members.externals, "Externals", seen, linktoExternal);
     nav += buildMemberNav(members.classes, "Classes", seen, linkto);
@@ -311,7 +311,7 @@ function buildNav(members) {
 
     if (members.globals.length) {
     	var globalNav = '';
-    	
+
         members.globals.forEach(function(g) {
             if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
                 globalNav += '<li>' + linkto(g.longname, g.name) + '</li>';
@@ -333,22 +333,22 @@ function buildNav(members) {
 
 function buildMemberNav(items, itemHeading, itemsSeen) {
 	var nav = '';
-	
+
 	if (items.length) {
     	var itemsNav = '';
-    	
+
         items.forEach(function(item) {
             if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
             	itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
             }
             itemsSeen[item.longname] = true;
         });
-        
+
         if (itemsNav !== '') {
             nav += '<h3>' + itemHeading  + '</h3><ul>' + itemsNav + '</ul>';
         }
     }
-	
+
 	return nav;
 }
 
@@ -577,7 +577,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         if (myModules.length) {
             generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
         }
-        
+
         var myClasses = helper.find(classes, {longname: longname});
         if (myClasses.length) {
             generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
