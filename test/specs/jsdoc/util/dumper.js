@@ -140,5 +140,33 @@ describe('jsdoc/util/dumper', function() {
 
             expect(actual).toBe(expected);
         });
+
+        it('should not treat references between different objects as circular refs', function() {
+            var a = [
+                {
+                    b: {
+                        c: 1
+                    }
+                }
+            ];
+            a[1] = { d: a[0].b };
+
+            var actual = dumper.dump(a);
+            var expected = '' +
+                '[\n' +
+                '    {\n' +
+                '        "b": {\n' +
+                '            "c": 1\n' +
+                '        }\n' +
+                '    },\n' +
+                '    {\n' +
+                '        "d": {\n' +
+                '            "c": 1\n' +
+                '        }\n' +
+                '    }\n' +
+                ']';
+
+            expect(actual).toBe(expected);
+        });
     });
 });
