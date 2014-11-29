@@ -1,0 +1,15 @@
+<?js var nav = this.nav; ?>
+<?js Object.keys(nav).forEach(function (element) { ?>
+    <?js if (nav[element].link) { ?>
+        <h2><a href="<?js= nav[element].link ?>"><?js= nav[element].title ?></a></h2>
+    <?js } else { ?>
+        <h3><?js= nav[element].title ?></h3>
+    <?js } ?>
+    <?js if (nav[element].members.length) { ?>
+        <ul>
+            <?js nav[element].members.forEach(function (item) { ?>
+                <li><?js= item.url ?></li>
+            <?js }); ?>
+        </ul>
+    <?js } ?>
+<?js }.bind(this)); ?>
