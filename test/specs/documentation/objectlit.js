@@ -1,4 +1,4 @@
-/*global describe, expect, it, jasmine */
+'use strict';
 
 describe('object literals', function() {
     describe('When a child of an objlit has no @name or @memberof tags', function() {

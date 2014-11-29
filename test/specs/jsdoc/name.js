@@ -1,4 +1,3 @@
-/*global describe, expect, it */
 'use strict';
 
 describe('jsdoc/name', function() {
@@ -250,7 +249,7 @@ describe('jsdoc/name', function() {
         });
 
         it('should allow default values to have brackets', function() {
-            var startName = '[path=["home", "user"]] - Path split into components'
+            var startName = '[path=["home", "user"]] - Path split into components';
             var parts = jsdoc.name.splitName(startName);
 
             expect(parts.name).toBe('[path=["home", "user"]]');
@@ -258,7 +257,7 @@ describe('jsdoc/name', function() {
         });
 
         it('should allow default values to have unmatched brackets inside strings', function() {
-            var startName = '[path=["Unmatched begin: ["]] - Path split into components'
+            var startName = '[path=["Unmatched begin: ["]] - Path split into components';
             var parts = jsdoc.name.splitName(startName);
 
             expect(parts.name).toBe('[path=["Unmatched begin: ["]]');
@@ -266,7 +265,7 @@ describe('jsdoc/name', function() {
         });
 
         it('should fail gracefully when the default value has an unmatched bracket', function() {
-            var startName = '[path=["home", "user"] - Path split into components'
+            var startName = '[path=["home", "user"] - Path split into components';
             var parts = jsdoc.name.splitName(startName);
 
             expect(parts).not.toBe(null);
@@ -275,7 +274,7 @@ describe('jsdoc/name', function() {
         });
 
         it('should fail gracefully when the default value has an unmatched quote', function() {
-            var startName = '[path=["home", "user] - Path split into components'
+            var startName = '[path=["home", "user] - Path split into components';
             var parts = jsdoc.name.splitName(startName);
 
             expect(parts).not.toBe(null);

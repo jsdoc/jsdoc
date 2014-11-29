@@ -1,4 +1,5 @@
-/*global beforeEach, describe, expect, it, jasmine */
+'use strict';
+
 describe('@type tag inline with function parameters', function() {
     var info;
 

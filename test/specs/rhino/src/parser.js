@@ -1,4 +1,5 @@
-/*global beforeEach: true, describe: true, expect: true, it: true, jasmine: true, spyOn: true */
+'use strict';
+
 describe('rhino/jsdoc/src/parser', function() {
     var jsdoc = {
         src: {
@@ -91,6 +92,7 @@ describe('rhino/jsdoc/src/parser', function() {
         });
 
         describe('parse', function() {
+            /*eslint no-script-url: 0 */
             beforeEach(newParser);
 
             var sourceCode = ['javascript:/** foo */var foo;'];

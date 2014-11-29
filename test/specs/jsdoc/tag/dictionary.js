@@ -1,4 +1,3 @@
-/*global describe, expect, it, xdescribe */
 'use strict';
 
 describe('jsdoc/tag/dictionary', function() {

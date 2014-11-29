@@ -1,4 +1,5 @@
-/*global describe: true */
-describe("fs", function() {
+'use strict';
+
+xdescribe('rhino/fs', function() {
     // TODO
 });

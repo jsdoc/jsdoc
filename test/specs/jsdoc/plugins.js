@@ -1,19 +1,19 @@
-/*global describe: true, expect: true, it: true, xdescribe: true */
+'use strict';
 
-describe("jsdoc/plugins", function() {
+describe('jsdoc/plugins', function() {
     var plugins = require('jsdoc/plugins');
 
-    it("should exist", function() {
+    it('should exist', function() {
         expect(plugins).toBeDefined();
-        expect(typeof plugins).toEqual('object');
+        expect(typeof plugins).toBe('object');
     });
 
-    it("should export an 'installPlugins' function", function() {
+    it('should export an "installPlugins" function', function() {
         expect(plugins.installPlugins).toBeDefined();
-        expect(typeof plugins.installPlugins).toEqual('function');
+        expect(typeof plugins.installPlugins).toBe('function');
     });
 
-    xdescribe("installPlugins", function() {
+    xdescribe('installPlugins', function() {
         // TODO
     });
 });

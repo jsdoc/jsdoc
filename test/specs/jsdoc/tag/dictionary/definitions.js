@@ -1,4 +1,3 @@
-/*global afterEach, beforeEach, describe, expect, it, spyOn */
 'use strict';
 
 describe('jsdoc/tag/dictionary/definitions', function() {

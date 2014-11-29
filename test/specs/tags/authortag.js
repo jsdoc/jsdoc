@@ -1,7 +1,9 @@
-describe("@author tag", function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/authortag.js'),
-        Thingy = docSet.getByLongname('Thingy')[0],
-        Thingy2 = docSet.getByLongname('Thingy2')[0];
+'use strict';
+
+describe('@author tag', function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/authortag.js');
+    var Thingy = docSet.getByLongname('Thingy')[0];
+    var Thingy2 = docSet.getByLongname('Thingy2')[0];
 
     it('When a symbol has a @author tag, the doclet has a author property with that value.', function() {
         expect(Thingy.author).toBeDefined();

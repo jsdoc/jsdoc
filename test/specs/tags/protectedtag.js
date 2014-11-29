@@ -1,4 +1,3 @@
-/*global afterEach, describe, expect, it, jasmine, spyOn */
 'use strict';
 
 var definitions = require('jsdoc/tag/dictionary/definitions');
@@ -52,24 +51,24 @@ describe('@protected tag', function() {
             function() {
             var dict = new Dictionary();
             var protectedDocs;
-            var uidCounter;
+            var counter;
 
             definitions.defineTags(dict, definitions.closureTags);
             doclet._replaceDictionary(dict);
             spyOn(logger, 'warn');
 
             protectedDocs = jasmine.getDocSetFromFile('test/fixtures/protectedtag2.js');
-            uidCounter = protectedDocs.getByLongname('uidCounter')[0];
+            counter = protectedDocs.getByLongname('uidCounter')[0];
 
             expect(logger.warn).not.toHaveBeenCalled();
 
-            expect(uidCounter).toBeDefined();
-            expect(uidCounter.access).toBe('protected');
+            expect(counter).toBeDefined();
+            expect(counter.access).toBe('protected');
 
-            expect(uidCounter.type).toBeDefined();
-            expect(uidCounter.type.names).toBeDefined();
-            expect(uidCounter.type.names.length).toBe(1);
-            expect(uidCounter.type.names[0]).toBe('number');
+            expect(counter.type).toBeDefined();
+            expect(counter.type.names).toBeDefined();
+            expect(counter.type.names.length).toBe(1);
+            expect(counter.type.names[0]).toBe('number');
         });
     });
 });

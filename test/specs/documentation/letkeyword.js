@@ -1,4 +1,5 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+'use strict';
+
 describe('let keyword', function() {
     var docSet;
     var exampleModule;

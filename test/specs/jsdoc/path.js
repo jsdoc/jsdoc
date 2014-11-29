@@ -1,5 +1,4 @@
-/*global afterEach: true, beforeEach: true, describe: true, expect: true, it: true, spyOn: true,
-xdescribe: true */
+'use strict';
 
 describe('jsdoc/path', function() {
     var os = require('os');

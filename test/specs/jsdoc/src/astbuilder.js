@@ -1,4 +1,5 @@
-/*global beforeEach, describe, expect, it, spyOn, xdescribe */
+'use strict';
+
 describe('jsdoc/src/astbuilder', function() {
     var astbuilder = require('jsdoc/src/astbuilder');
 

@@ -27,7 +27,8 @@ var options = {
         'lib/**/*.js',
         'plugins/*.js',
         'templates/default/*.js',
-        'templates/haruki/*.js'
+        'templates/haruki/*.js',
+        'test/specs/**/*.js'
     ],
     nodeBin: path.resolve(__dirname, './jsdoc.js'),
     nodePath: process.execPath,

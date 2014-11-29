@@ -1,4 +1,5 @@
-/*global describe, expect, it, xdescribe */
+'use strict';
+
 describe('jsdoc/src/walker', function() {
     var walker = require('jsdoc/src/walker');
 

@@ -1,4 +1,3 @@
-/*global afterEach, describe, expect, it, jasmine, spyOn */
 'use strict';
 
 var definitions = require('jsdoc/tag/dictionary/definitions');

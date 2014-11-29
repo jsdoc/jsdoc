@@ -1,4 +1,3 @@
-/*global afterEach, beforeEach, describe, env, expect, it */
 'use strict';
 
 describe('jsdoc/src/astnode', function() {
@@ -253,7 +252,6 @@ describe('jsdoc/src/astnode', function() {
 
             expect(node.enclosingScopeId).toBe(enclosingScope.nodeId);
         });
-
     });
 
     describe('getInfo', function() {

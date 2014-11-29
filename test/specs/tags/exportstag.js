@@ -1,8 +1,6 @@
-/*global describe, expect, it, jasmine */
 'use strict';
 
 describe('@exports tag', function() {
-
     describe('object literals', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag.js');
         var shirt = docSet.getByLongname('module:my/shirt')[0];
@@ -86,7 +84,6 @@ describe('@exports tag', function() {
         it('When a function symbol has an @exports tag and there are members assigned to an "exports" name, the members are documented as members of the module.', function() {
             expect(typeof inhead).toEqual('object');
             expect(inhead.memberof).toEqual('module:html/utils');
-
         });
     });
 

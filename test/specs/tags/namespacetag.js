@@ -1,5 +1,6 @@
-/*global describe, expect, it, jasmine */
-describe("@namespace tag", function() {
+'use strict';
+
+describe('@namespace tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/namespacetag.js');
     var x = docSet.getByLongname('x')[0];
     var Foo = docSet.getByLongname('Foo')[0];

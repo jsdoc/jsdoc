@@ -1,6 +1,8 @@
-describe("@undocumented tag", function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/undocumentedtag.js'),
-        doc = docSet.getByLongname('x')[0];
+'use strict';
+
+describe('@undocumented tag', function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/undocumentedtag.js');
+    var doc = docSet.getByLongname('x')[0];
 
     it("sets the doclet's 'undocumented' property to true", function () {
         expect(doc.undocumented).toBeTruthy();

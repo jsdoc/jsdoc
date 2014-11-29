@@ -1,4 +1,5 @@
-/*global describe, expect, it */
+'use strict';
+
 describe('jsdoc/src/syntax', function() {
     var Syntax = require('jsdoc/src/syntax').Syntax;
 

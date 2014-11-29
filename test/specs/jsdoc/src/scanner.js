@@ -1,4 +1,5 @@
-/*global describe, env, expect, it */
+'use strict';
+
 describe('jsdoc/src/scanner', function() {
     var path = require('jsdoc/path');
     var scanner = require('jsdoc/src/scanner');
@@ -7,7 +8,7 @@ describe('jsdoc/src/scanner', function() {
         includePattern: new RegExp('.+\\.js(doc)?$'),
         excludePattern: new RegExp('(^|\\/|\\\\)_')
     });
-    var sourcePath = path.normalize(env.pwd + '/test/fixtures/src');
+    var sourcePath = path.normalize(global.env.pwd + '/test/fixtures/src');
 
     it('should exist', function() {
         expect(scanner).toBeDefined();
@@ -40,7 +41,7 @@ describe('jsdoc/src/scanner', function() {
                 var sourceFiles = testScanner.scan([sourcePath], 3, filter);
 
                 sourceFiles = sourceFiles.map(function($) {
-                    return path.relative(env.pwd, $);
+                    return path.relative(global.env.pwd, $);
                 });
 
                 expect(sourceFiles.length).toEqual(3);

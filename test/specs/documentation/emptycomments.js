@@ -1,4 +1,3 @@
-/*global describe, expect, it, jasmine, spyOn */
 'use strict';
 
 var logger = require('jsdoc/util/logger');

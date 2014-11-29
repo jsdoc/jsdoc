@@ -1,4 +1,3 @@
-/*global beforeEach, describe, expect, it, spyOn */
 'use strict';
 
 describe('jsdoc/util/error', function() {

@@ -1,4 +1,3 @@
-/*global describe, expect, it, jasmine */
 'use strict';
 
 describe('@exception tag', function() {

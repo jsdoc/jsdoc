@@ -1,4 +1,5 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+'use strict';
+
 describe('function expressions', function() {
     function checkLongnames(docSet, namespace) {
         var memberName = (namespace || '') + 'Foo#member1';

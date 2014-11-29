@@ -1,4 +1,5 @@
-/*global describe: true */
-describe("os", function() {
+'use strict';
+
+xdescribe('rhino/os', function() {
     // TODO
 });

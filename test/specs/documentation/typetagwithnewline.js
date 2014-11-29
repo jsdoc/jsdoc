@@ -1,4 +1,4 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+'use strict';
 
 describe('@type tag containing a newline character', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/typetagwithnewline.js');

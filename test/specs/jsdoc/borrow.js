@@ -1,3 +1,5 @@
-describe("jsdoc/borrow", function() {
+'use strict';
+
+xdescribe('jsdoc/borrow', function() {
     //TODO
 });

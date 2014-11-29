@@ -1,10 +1,11 @@
-/*global beforeEach, afterEach, describe, env, expect, it, jasmine */
+'use strict';
 
-describe("@overview tag", function() {
+describe('@overview tag', function() {
     var path = require('jsdoc/path');
     var runtime = require('jsdoc/util/runtime');
 
     var doclets;
+    var env = global.env;
 
     var pwd = env.pwd;
     var srcParser = null;
@@ -35,7 +36,7 @@ describe("@overview tag", function() {
         expect(doclets[0].name).toMatch(/^file\.js$/);
     });
 
-    it("The name and longname should be equal", function() {
+    it('The name and longname should be equal', function() {
         var filename = 'test/fixtures/file.js';
 
         env.sourceFiles.push(filename);
