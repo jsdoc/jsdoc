@@ -958,8 +958,8 @@ describe("jsdoc/util/templateHelper", function() {
         it('should only keep public members if env.opts.public is truthy', function() {
             var pruned;
 
-            env.opts.private = false;
-            env.opts.public = true;
+            global.env.opts.private = false;
+            global.env.opts.public = true;
             pruned = helper.prune( taffy(arrayPublic) )().get();
             compareObjectArrays(keepPublic, pruned);
         });
