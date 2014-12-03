@@ -1,4 +1,3 @@
-/*global afterEach, beforeEach, describe, expect, it */
 'use strict';
 
 describe('jsdoc/opts/argparser', function() {

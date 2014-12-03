@@ -1,11 +1,12 @@
-/*global afterEach: true, beforeEach: true, describe: true, env: true, expect: true, it: true,
-jasmine: true, spyOn: true */
-describe("module names", function() {
+'use strict';
+
+describe('module names', function() {
     var path = require('jsdoc/path');
     var runtime = require('jsdoc/util/runtime');
 
     var doclets;
 
+    var env = global.env;
     var pwd = env.pwd;
     var srcParser = null;
     var sourceFiles = env.sourceFiles.slice(0);
@@ -25,7 +26,7 @@ describe("module names", function() {
         env.sourceFiles = sourceFiles;
     });
 
-    it("should create a name from the file path when no documented module name exists", function() {
+    it('should create a name from the file path when no documented module name exists', function() {
         var filename = 'test/fixtures/modules/data/mod-1.js';
 
         env.sourceFiles.push(filename);
@@ -33,12 +34,12 @@ describe("module names", function() {
             path.normalize( path.join(env.pwd, filename) )
         );
         expect(doclets.length).toBeGreaterThan(1);
-        expect(doclets[0].longname).toEqual('module:mod-1');
+        expect(doclets[0].longname).toBe('module:mod-1');
     });
 
-    // only works on Windows (which is fine)
+    // Windows-specific test
     if ( /^win/.test(require('os').platform()) ) {
-        it("should always use forward slashes when creating a name from the file path", function() {
+        it('should always use forward slashes when creating a name from the file path', function() {
             var Doclet = require('jsdoc/doclet').Doclet;
             var doclet;
 
@@ -57,7 +58,7 @@ describe("module names", function() {
         });
     }
 
-    it("should use the documented module name if available", function() {
+    it('should use the documented module name if available', function() {
         var filename = 'test/fixtures/modules/data/mod-2.js';
 
         env.sourceFiles.push(filename);
@@ -66,6 +67,6 @@ describe("module names", function() {
         );
 
         expect(doclets.length).toBeGreaterThan(1);
-        expect(doclets[0].longname).toEqual('module:my/module/name');
+        expect(doclets[0].longname).toBe('module:my/module/name');
     });
 });

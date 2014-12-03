@@ -1,4 +1,3 @@
-/*global describe, expect, it */
 'use strict';
 
 describe('jsdoc/opts/args', function() {
@@ -312,6 +311,6 @@ describe('jsdoc/opts/args', function() {
             expect(r._).toEqual(['myfile1', 'myfile2']);
         });
 
-        //TODO: tests for args that must have values
+        // TODO: tests for args that must have values
     });
 });

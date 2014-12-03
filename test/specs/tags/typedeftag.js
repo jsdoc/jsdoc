@@ -1,4 +1,5 @@
-/*global describe, expect, it, jasmine */
+'use strict';
+
 describe('@typedef tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag.js');
     var numberlike = docSet.getByLongname('calc.NumberLike')[0];

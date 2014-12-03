@@ -1,4 +1,3 @@
-/*global beforeEach, describe, expect, it, jasmine, spyOn */
 'use strict';
 
 var hasOwnProp = Object.prototype.hasOwnProperty;

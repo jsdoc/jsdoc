@@ -1,4 +1,3 @@
-/*global beforeEach, describe, expect, it, jasmine, spyOn */
 /*eslint no-script-url: 0 */
 'use strict';
 
@@ -253,7 +252,7 @@ describe('jsdoc/src/parser', function() {
 
             it('should fire a "processingComplete" event when fireProcessingComplete is called', function() {
                 var spy = jasmine.createSpy();
-                var doclets = ['a','b'];
+                var doclets = ['a', 'b'];
 
                 parser.on('processingComplete', spy).fireProcessingComplete(doclets);
 

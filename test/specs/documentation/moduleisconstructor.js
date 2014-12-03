@@ -1,4 +1,4 @@
-/*global describe, expect, it, jasmine */
+'use strict';
 
 describe('module that exports a constructor', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/moduleisconstructor.js');

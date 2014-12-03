@@ -1,4 +1,5 @@
-/*global describe: true, expect: true, it: true, xdescribe: true, xit: true */
+'use strict';
+
 xdescribe('jsdoc/template', function() {
     // TODO
 });

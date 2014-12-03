@@ -525,7 +525,8 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("getAttribs", function() {
-        var doc, attribs;
+        var doc;
+        var attribs;
 
         it('should return an array of strings', function() {
             doc = new doclet.Doclet('/** ljklajsdf */', {});
@@ -541,16 +542,15 @@ describe("jsdoc/util/templateHelper", function() {
                 if (tests.hasOwnProperty(src)) {
                     doc = new doclet.Doclet('/** ' + src + ' */', {});
                     attribs = helper.getAttribs(doc);
+
                     if (tests[src]) {
                         expect(attribs).toContain(tests[src]);
-                    } else {
-                        if (Array.isArray(whatNotToContain)) {
-                            for (var i = 0; i < whatNotToContain.length; ++i) {
-                                expect(attribs).not.toContain(whatNotToContain[i]);
-                            }
-                        } else {
-                            expect(attribs.length).toBe(0);
+                    } else if (Array.isArray(whatNotToContain)) {
+                        for (var i = 0; i < whatNotToContain.length; ++i) {
+                            expect(attribs).not.toContain(whatNotToContain[i]);
                         }
+                    } else {
+                        expect(attribs.length).toBe(0);
                     }
                 }
             }
@@ -623,10 +623,11 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it("should detect multiple attributes", function() {
-            var doc = new doclet.Doclet('/** @const module:fdsa~FOO\n@readonly\n@private */', {});
-            attribs = helper.getAttribs(doc);
+            var fdsaFoo = new doclet.Doclet('/** @const module:fdsa~FOO\n@readonly\n@private */', {});
+            attribs = helper.getAttribs(fdsaFoo);
+
             expect(attribs).toContain('private');
-            //expect(attribs).toContain('readonly'); // kind is 'constant' not 'member'.
+            // expect(attribs).toContain('readonly'); // kind is 'constant' not 'member'.
             expect(attribs).toContain('constant');
             expect(attribs).toContain('inner');
         });
@@ -634,13 +635,13 @@ describe("jsdoc/util/templateHelper", function() {
         it('should return an empty array for null values', function() {
             var emptyAttribs;
 
-            function attribs() {
+            function getAttribs() {
                 return helper.getAttribs();
             }
 
-            expect(attribs).not.toThrow();
+            expect(getAttribs).not.toThrow();
 
-            emptyAttribs = attribs();
+            emptyAttribs = getAttribs();
             expect( Array.isArray(emptyAttribs) ).toBe(true);
             expect(emptyAttribs.length).toBe(0);
         });
@@ -901,12 +902,12 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("prune", function() {
-        var priv = !!env.opts.private;
-        var pub = !!env.opts.public;
+        var priv = !!global.env.opts.private;
+        var pub = !!global.env.opts.public;
 
         afterEach(function() {
-            env.opts.private = priv;
-            env.opts.public = pub;
+            global.env.opts.private = priv;
+            global.env.opts.public = pub;
         });
 
         var array = [
@@ -948,8 +949,8 @@ describe("jsdoc/util/templateHelper", function() {
         it('should prune private members if env.opts.private is falsy', function() {
             var pruned;
 
-            env.opts.private = false;
-            env.opts.public = false;
+            global.env.opts.private = false;
+            global.env.opts.public = false;
             pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays([], pruned);
         });
@@ -966,7 +967,7 @@ describe("jsdoc/util/templateHelper", function() {
         it('should not prune private members if env.opts.private is truthy', function() {
             var pruned;
 
-            env.opts.private = true;
+            global.env.opts.private = true;
             pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays(arrayPrivate, pruned);
         });
@@ -1019,7 +1020,7 @@ describe("jsdoc/util/templateHelper", function() {
 
         it("creates links to tutorials if they exist", function() {
             // load the tutorials we already have for the tutorials tests
-            resolver.load(env.dirname + "/test/tutorials/tutorials");
+            resolver.load(global.env.dirname + "/test/tutorials/tutorials");
             resolver.resolve();
 
             var url = helper.tutorialToUrl('test');
@@ -1088,7 +1089,7 @@ describe("jsdoc/util/templateHelper", function() {
         // now we do non-missing tutorials.
         it("returns a link to the tutorial if not missing", function() {
             // load the tutorials we already have for the tutorials tests
-            resolver.load(env.dirname + "/test/tutorials/tutorials");
+            resolver.load(global.env.dirname + "/test/tutorials/tutorials");
             resolver.resolve();
 
             var link = helper.toTutorial('constructor', 'The Constructor tutorial');
@@ -1112,9 +1113,9 @@ describe("jsdoc/util/templateHelper", function() {
         var keys = Object.keys(hash);
         var storage = {};
         for (var i = 0; i < keys.length; ++i) {
-            storage[keys[i]] = env.conf.templates[keys[i]];
+            storage[keys[i]] = global.env.conf.templates[keys[i]];
             // works because hash[key] is a scalar not an array/object
-            env.conf.templates[keys[i]] = hash[keys[i]];
+            global.env.conf.templates[keys[i]] = hash[keys[i]];
         }
         return storage;
     }
@@ -1122,7 +1123,7 @@ describe("jsdoc/util/templateHelper", function() {
     function restoreConfTemplates(storage) {
         var keys = Object.keys(storage);
         for (var i = 0; i < keys.length; ++i) {
-            env.conf.templates[keys[i]] = storage[keys[i]];
+            global.env.conf.templates[keys[i]] = storage[keys[i]];
         }
     }
 
@@ -1335,7 +1336,6 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a> and <a href="http://github.com">http://github.com</a>');
             restoreConfTemplates(storage);
         });
-
     });
 
     describe("createLink", function() {

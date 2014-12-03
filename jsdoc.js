@@ -136,10 +136,10 @@ global.app = {
 global.dump = function() {
     'use strict';
 
-    var doop = require('./lib/jsdoc/util/doop').doop;
     var _dump = require('./lib/jsdoc/util/dumper').dump;
+
     for (var i = 0, l = arguments.length; i < l; i++) {
-        console.log( _dump(doop(arguments[i])) );
+        console.log( _dump(arguments[i]) );
     }
 };
 

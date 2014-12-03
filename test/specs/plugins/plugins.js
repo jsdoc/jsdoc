@@ -1,10 +1,12 @@
-/*global afterEach: true, app: true, beforeEach: true, describe: true, env: true, expect: true,
-it: true, jasmine: true */
+'use strict';
+
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
-describe("plugins", function() {
+describe('plugins', function() {
     var path = require('jsdoc/path');
 
+    var app = global.app;
     var docSet;
+    var env = global.env;
 
     var pluginPaths = [
         path.normalize(env.dirname + '/test/fixtures/testPlugin1'),
@@ -22,36 +24,36 @@ describe("plugins", function() {
 
     it("should fire the plugin's event handlers", function() {
         expect(global.jsdocPluginsTest.plugin1.fileBegin).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin1.fileBegin).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin1.fileBegin).toBe(true);
         expect(global.jsdocPluginsTest.plugin1.beforeParse).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin1.beforeParse).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin1.beforeParse).toBe(true);
         expect(global.jsdocPluginsTest.plugin1.jsdocCommentFound).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin1.jsdocCommentFound).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin1.jsdocCommentFound).toBe(true);
         expect(global.jsdocPluginsTest.plugin1.symbolFound).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin1.symbolFound).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin1.symbolFound).toBe(true);
         expect(global.jsdocPluginsTest.plugin1.newDoclet).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin1.newDoclet).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin1.newDoclet).toBe(true);
         expect(global.jsdocPluginsTest.plugin1.fileComplete).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin1.fileComplete).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin1.fileComplete).toBe(true);
 
         expect(global.jsdocPluginsTest.plugin2.fileBegin).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin2.fileBegin).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin2.fileBegin).toBe(true);
         expect(global.jsdocPluginsTest.plugin2.beforeParse).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin2.beforeParse).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin2.beforeParse).toBe(true);
         expect(global.jsdocPluginsTest.plugin2.jsdocCommentFound).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin2.jsdocCommentFound).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin2.jsdocCommentFound).toBe(true);
         expect(global.jsdocPluginsTest.plugin2.symbolFound).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin2.symbolFound).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin2.symbolFound).toBe(true);
         expect(global.jsdocPluginsTest.plugin2.newDoclet).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin2.newDoclet).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin2.newDoclet).toBe(true);
         expect(global.jsdocPluginsTest.plugin2.fileComplete).toBeDefined();
-        expect(global.jsdocPluginsTest.plugin2.fileComplete).toEqual(true);
+        expect(global.jsdocPluginsTest.plugin2.fileComplete).toBe(true);
     });
 
     it("should add the plugin's tag definitions to the dictionary", function() {
-        var test = docSet.getByLongname("test");
+        var test = docSet.getByLongname('test');
 
-        expect(test[0].longname).toEqual("test");
-        expect(test[0].foo).toEqual(true);
+        expect(test[0].longname).toBe('test');
+        expect(test[0].foo).toBe(true);
     });
 });

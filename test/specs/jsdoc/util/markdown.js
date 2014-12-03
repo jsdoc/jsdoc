@@ -1,4 +1,3 @@
-/*global afterEach, describe, env, expect, it, spyOn */
 'use strict';
 
 describe('jsdoc/util/markdown', function() {
@@ -15,14 +14,14 @@ describe('jsdoc/util/markdown', function() {
     });
 
     describe('getParser', function() {
-        var originalMarkdownConf = env.conf.markdown;
+        var originalMarkdownConf = global.env.conf.markdown;
 
         function setMarkdownConf(hash) {
-            env.conf.markdown = hash;
+            global.env.conf.markdown = hash;
         }
 
         afterEach(function() {
-            env.conf.markdown = originalMarkdownConf;
+            global.env.conf.markdown = originalMarkdownConf;
         });
 
         it('should retrieve a function when called with default settings', function() {

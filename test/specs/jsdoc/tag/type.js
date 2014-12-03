@@ -1,4 +1,3 @@
-/*global describe, expect, it */
 'use strict';
 
 function buildText(type, name, desc) {

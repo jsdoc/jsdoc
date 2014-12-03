@@ -1,4 +1,5 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+'use strict';
+
 describe('callback tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/callbacktag.js');
 

@@ -1,4 +1,5 @@
-/*global beforeEach: true, describe: true, expect: true, it: true */
+'use strict';
+
 describe('rhino/jsdoc/src/visitor', function() {
     var runtime = require('jsdoc/util/runtime');
     var jsdoc = {

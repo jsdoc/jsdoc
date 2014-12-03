@@ -1,6 +1,6 @@
-/*global describe, expect, it, jasmine */
-describe('virtual symbols', function() {
+'use strict';
 
+describe('virtual symbols', function() {
     describe('simple cases', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/virtual.js');
         var dimensions = docSet.getByLongname('dimensions');

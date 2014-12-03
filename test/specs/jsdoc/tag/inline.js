@@ -1,4 +1,3 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
 'use strict';
 
 describe('jsdoc/tag/inline', function() {
@@ -192,7 +191,6 @@ describe('jsdoc/tag/inline', function() {
 
             expect(result.newString).toBe('some stuff with multiple stuff');
         });
-
     });
 
     // largely covered by the replaceInlineTag tests
@@ -217,7 +215,6 @@ describe('jsdoc/tag/inline', function() {
 
             var result = jsdoc.tag.inline.replaceInlineTags(text, replacers);
             expect(result.newString).toBe('some stuff with {@bar multiple} tags');
-
         });
 
         it('should work with an object with multiple replacers', function() {
