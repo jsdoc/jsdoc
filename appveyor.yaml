@@ -1,0 +1,26 @@
+# http://www.appveyor.com/docs/appveyor-yml
+
+# we're just running test scripts, not compiling anything
+build: off
+version: "{build}"
+
+environment:
+  matrix:
+    - nodejs: "0.10"
+    - nodejs: "0.11"
+
+install:
+  # prerequisites
+  - ps: Install-Product node $env:nodejs
+
+  # module dependencies
+  - npm install
+  - npm install -g gulp
+
+test_script:
+  # useful debugging info
+  - node --version
+  - npm --version
+  - node jsdoc.js --version
+
+  - cmd: npm test
