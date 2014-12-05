@@ -283,32 +283,32 @@ function attachModuleSymbols(doclets, modules) {
 }
 
 function buildMemberNav(items, itemHeading, itemsSeen) {
-  var nav = '';
+    var nav = '';
 
-  if (items.length) {
-    var itemsNav = '';
+    if (items.length) {
+        var itemsNav = '';
 
-    items.forEach(function(item) {
-      if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-        itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
-      }
-      itemsSeen[item.longname] = true;
-    });
+        items.forEach(function(item) {
+            if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+                itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
+            }
+            itemsSeen[item.longname] = true;
+        });
 
-    if (itemsNav !== '') {
-      nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
+        if (itemsNav !== '') {
+            nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
+        }
     }
-  }
 
-  return nav;
+    return nav;
 }
 
 function linktoTutorial(longName, name) {
-  return tutoriallink(name);
+    return tutoriallink(name);
 }
 
 function linktoExternal(longName, name) {
-  return linkto(longName, name.replace(/(^"|"$)/g, ''));
+    return linkto(longName, name.replace(/(^"|"$)/g, ''));
 }
 
 /**
@@ -339,7 +339,7 @@ function buildNav(members) {
     nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
 
     if (members.globals.length) {
-      var globalNav = '';
+        var globalNav = '';
 
         members.globals.forEach(function(g) {
             if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
