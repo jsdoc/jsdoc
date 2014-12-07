@@ -109,6 +109,20 @@ describe('jsdoc/opts/args', function() {
             expect(r.private).toBe(true);
         });
 
+        it('should accept a "-o" option and return an object with a "public" property', function() {
+            args.parse(['-o']);
+            var r = args.get();
+
+            expect(r.public).toBe(true);
+        });
+
+        it('should accept a "--public" option and return an object with a "public" property', function() {
+            args.parse(['--public']);
+            var r = args.get();
+
+            expect(r.public).toBe(true);
+        });
+
         it('should accept a "-r" option and return an object with a "recurse" property', function() {
             args.parse(['-r']);
             var r = args.get();

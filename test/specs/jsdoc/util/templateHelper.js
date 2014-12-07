@@ -569,8 +569,8 @@ describe("jsdoc/util/templateHelper", function() {
                  '@access private': 'private',
                  '@protected': 'protected',
                  '@access protected': 'protected',
-                 '@public': false,
-                 '@access public': false,
+                 '@public': 'public',
+                 '@access public': 'public',
                  'asdf': false
             };
             doTests(tests);
@@ -903,9 +903,11 @@ describe("jsdoc/util/templateHelper", function() {
 
     describe("prune", function() {
         var priv = !!global.env.opts.private;
+        var pub = !!global.env.opts.public;
 
         afterEach(function() {
             global.env.opts.private = priv;
+            global.env.opts.public = pub;
         });
 
         var array = [
@@ -926,6 +928,17 @@ describe("jsdoc/util/templateHelper", function() {
             // prune (unless env.opts.private is truthy)
             {access: 'private'}
         ];
+        var arrayPublic = [
+            // keep
+            {access: 'public'},
+            // prune if env.opts.public is truthy
+            {asdf: true},
+            // prune if env.opts.public is truthy
+            {access: 'protected'},
+            // prune
+            {access: 'private'}
+        ];
+        var keepPublic = arrayPublic.slice(0, 1);
         var keep = array.slice(0, 3);
 
         it('should prune the correct members', function() {
@@ -937,8 +950,18 @@ describe("jsdoc/util/templateHelper", function() {
             var pruned;
 
             global.env.opts.private = false;
+            global.env.opts.public = false;
             pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays([], pruned);
+        });
+
+        it('should only keep public members if env.opts.public is truthy', function() {
+            var pruned;
+
+            global.env.opts.private = false;
+            global.env.opts.public = true;
+            pruned = helper.prune( taffy(arrayPublic) )().get();
+            compareObjectArrays(keepPublic, pruned);
         });
 
         it('should not prune private members if env.opts.private is truthy', function() {
