@@ -1,4 +1,3 @@
-/*global describe, expect, it */
 'use strict';
 
 function buildText(type, name, desc) {
@@ -242,6 +241,13 @@ describe('jsdoc/tag/type', function() {
                 var info = jsdoc.tag.type.parse(desc, true, true);
                 expect(info.type).toEqual( ['string'] );
                 expect(info.variable).toBe(true);
+            });
+
+            it('should set the type correctly for type applications that contain type unions',
+                function() {
+                var desc = '{Array.<(string|number)>} foo - Foo.';
+                var info = jsdoc.tag.type.parse(desc, true, true);
+                expect(info.type).toEqual(['Array.<(string|number)>']);
             });
         });
     });

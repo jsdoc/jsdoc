@@ -1,9 +1,11 @@
-describe("@member tag", function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/membertag.js'),
-        doc = docSet.getByLongname('x')[0],
-        doc2 = docSet.getByLongname('foobar')[0],
-        doc3 = docSet.getByLongname('baz')[0],
-        doc4 = docSet.getByLongname('y')[0];
+'use strict';
+
+describe('@member tag', function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/membertag.js');
+    var doc = docSet.getByLongname('x')[0];
+    var doc2 = docSet.getByLongname('foobar')[0];
+    var doc3 = docSet.getByLongname('baz')[0];
+    var doc4 = docSet.getByLongname('y')[0];
 
     it("sets the doclet's 'kind' property to 'member'", function() {
         expect(doc.kind).toBe('member');

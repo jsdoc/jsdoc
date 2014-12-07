@@ -1,7 +1,9 @@
-describe("@class tag", function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/classtag.js'),
-        ticker = docSet.getByLongname('Ticker')[0],
-        news = docSet.getByLongname('NewsSource')[0];
+'use strict';
+
+describe('@class tag', function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/classtag.js');
+    var ticker = docSet.getByLongname('Ticker')[0];
+    var news = docSet.getByLongname('NewsSource')[0];
 
     it('When a symbol has a @class tag, the doclet has a kind property set to "class".', function() {
         expect(ticker.kind).toBe('class');

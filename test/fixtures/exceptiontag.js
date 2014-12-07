@@ -18,3 +18,10 @@ function bar(x) {
 function pez(x) {
 
 }
+
+/**
+ * A description of the function.
+ *
+ * @exception {Object} A description of the exception.
+ */
+function cos(x) {}

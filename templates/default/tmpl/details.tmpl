@@ -9,17 +9,18 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     defaultObjectClass = ' class="object-value"';
 }
 ?>
+<?js
+    var properties = data.properties;
+    if (properties && properties.length && properties.forEach) {
+?>
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl><?js= this.partial('properties.tmpl', data) ?></dl>
+
+<?js } ?>
+
 <dl class="details">
-    <?js
-        var properties = data.properties;
-        if (properties && properties.length && properties.forEach) {
-    ?>
-
-        <h5 class="subsection-title">Properties:</h5>
-
-        <dl><?js= this.partial('properties.tmpl', properties) ?></dl>
-
-    <?js } ?>
 
     <?js if (data.version) {?>
     <dt class="tag-version">Version:</dt>
@@ -28,7 +29,7 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
 
     <?js if (data.since) {?>
     <dt class="tag-since">Since:</dt>
-    <dd class="tag-since"><ul class="dummy"><li><?js= since ?></dd>
+    <dd class="tag-since"><ul class="dummy"><li><?js= since ?></li></dd>
     <?js } ?>
 
     <?js if (data.inherited && data.inherits) { ?>
@@ -36,6 +37,41 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     <dd class="inherited-from"><ul class="dummy"><li>
         <?js= this.linkto(data.inherits, this.htmlsafe(data.inherits)) ?>
     </li></dd>
+    <?js } ?>
+
+    <?js if (data.overrides) { ?>
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <?js= this.linkto(data.overrides, this.htmlsafe(data.overrides)) ?>
+    </li></dd>
+    <?js } ?>
+
+    <?js if (data.implementations && data.implementations.length) { ?>
+    <dt class="implementations">Implementations:</dt>
+    <dd class="implementations"><ul>
+        <?js data.implementations.forEach(function(impl) { ?>
+            <li><?js= self.linkto(impl, self.htmlsafe(impl)) ?></li>
+        <?js }); ?>
+    </ul></dd>
+    <?js } ?>
+
+    <?js if (data.implements && data.implements.length) { ?>
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        <?js data.implements.forEach(function(impl) { ?>
+            <li><?js= self.linkto(impl, self.htmlsafe(impl)) ?></li>
+        <?js }); ?>
+    </ul></dd>
+    <?js } ?>
+
+    <?js if (data.mixes && data.mixes.length) { ?>
+        <dt class="mixes">Mixes In:</dt>
+
+        <dd class="mixes"><ul>
+        <?js data.mixes.forEach(function(a) { ?>
+            <li><?js= self.linkto(a, a) ?></li>
+        <?js }); ?>
+        </ul></dd>
     <?js } ?>
 
     <?js if (data.deprecated) { ?>

@@ -1,4 +1,5 @@
-/*global describe, expect, it, jasmine */
+'use strict';
+
 describe('@returns tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/returnstag.js');
 

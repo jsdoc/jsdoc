@@ -1,10 +1,21 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+'use strict';
+
 describe('jsdoc/schema', function() {
     var schema = require('jsdoc/schema');
 
     it('should exist', function() {
         expect(schema).toBeDefined();
         expect(typeof schema).toBe('object');
+    });
+
+    it('should export a "BUGS_SCHEMA" object', function() {
+        expect(schema.BUGS_SCHEMA).toBeDefined();
+        expect(typeof schema.BUGS_SCHEMA).toBe('object');
+    });
+
+    it('should export a "CONTACT_INFO_SCHEMA" object', function() {
+        expect(schema.CONTACT_INFO_SCHEMA).toBeDefined();
+        expect(typeof schema.CONTACT_INFO_SCHEMA).toBe('object');
     });
 
     it('should export a "DOCLET_SCHEMA" object', function() {
@@ -57,7 +68,7 @@ describe('jsdoc/schema', function() {
         });
 
         it('should not find any validation errors in the JSDoc parse results', function() {
-            jasmine.parseResults.forEach(function(doclets) {
+            jasmine.getParseResults().forEach(function(doclets) {
                 var validationResult;
                 validationResult = validate(doclets.doclets, schema.DOCLETS_SCHEMA);
 

@@ -3,18 +3,30 @@ var data = obj;
 var self = this;
 ?>
 <dt>
-    <h4 class="name" id="<?js= id ?>"><?js= data.attribs + (kind === 'class' ? 'new ' : '') + name + (kind !== 'event' ? data.signature : '') ?></h4>
+    <?js if (data.kind !== 'module') { ?>
+        <?js if (kind === 'class') { ?>
+        <h2>Constructor</h2>
+        <?js } ?>
 
-    <?js if (data.summary) { ?>
-    <p class="summary"><?js= summary ?></p>
+        <h4 class="name" id="<?js= id ?>"><?js= data.attribs + (kind === 'class' ? 'new ' : '') +
+        name + (data.signature || '') ?></h4>
+
+        <?js if (data.summary) { ?>
+        <p class="summary"><?js= summary ?></p>
+        <?js } ?>
     <?js } ?>
 </dt>
 <dd>
 
-    <?js if (data.description) { ?>
+    <?js if (data.kind !== 'module' && data.description) { ?>
     <div class="description">
         <?js= data.description ?>
     </div>
+    <?js } ?>
+
+    <?js if (data.augments && data.alias && data.alias.indexOf('module:') === 0) { ?>
+        <h5>Extends:</h5>
+        <?js= self.partial('augments.tmpl', data) ?>
     <?js } ?>
 
     <?js if (kind === 'event' && data.type && data.type.names) {?>
@@ -38,7 +50,7 @@ var self = this;
 
     <?js= this.partial('details.tmpl', data) ?>
 
-    <?js if (data.requires && data.requires.length) { ?>
+    <?js if (data.kind !== 'module' && data.requires && data.requires.length) { ?>
     <h5>Requires:</h5>
     <ul><?js data.requires.forEach(function(r) { ?>
         <li><?js= self.linkto(r) ?></li>

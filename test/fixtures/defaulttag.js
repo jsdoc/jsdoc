@@ -49,3 +49,9 @@ var multilineObject = {
 
 /** @default */
 var arr = ['foo', true, 19];
+
+/**
+ * @default
+ * @type {string}
+ */
+var defaultWithType = 'a';

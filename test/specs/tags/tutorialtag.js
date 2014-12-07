@@ -1,7 +1,9 @@
-describe("@tutorial tag", function() {
+'use strict';
+
+describe('@tutorial tag', function() {
     // these are tests for the block usage, not the inline usage. see util/templateHelper for that.
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/tutorialtag.js'),
-        doc = docSet.getByLongname('x')[0];
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/tutorialtag.js');
+    var doc = docSet.getByLongname('x')[0];
 
     it("adds the listed tutorials to a 'tutorials' array on the doclet", function () {
         expect(Array.isArray(doc.tutorials)).toBeTruthy();

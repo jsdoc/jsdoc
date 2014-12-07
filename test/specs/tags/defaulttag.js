@@ -1,5 +1,6 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
-describe("@default tag", function() {
+'use strict';
+
+describe('@default tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/defaulttag.js');
 
     it('When symbol set to null has a @default tag with no text, the doclet\'s defaultValue property should be: null', function() {
@@ -63,5 +64,11 @@ describe("@default tag", function() {
 
         expect(arr.defaultvalue).toBe( JSON.stringify(testArray) );
         expect(arr.defaultvaluetype).toBe('array');
+    });
+
+    it('When symbol has a @default tag and a @type tag, the default value should be set correctly', function() {
+        var defaultWithType = docSet.getByLongname('defaultWithType')[0];
+
+        expect(defaultWithType.defaultvalue).toBe('a');
     });
 });

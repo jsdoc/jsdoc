@@ -85,7 +85,10 @@ exports.readdir = asyncify(readdirSync);
 
 // JSDoc extension to `fs` module
 var toDir = exports.toDir = function toDir(_path) {
-    var f = new java.io.File( path.resolve(global.env.pwd, _path) );
+    var f;
+
+    _path = path.normalize(_path);
+    f = new java.io.File( path.resolve(global.env.pwd, _path) );
 
     if ( f.isDirectory() ){
        return _path;

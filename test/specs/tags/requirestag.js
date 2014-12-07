@@ -1,5 +1,6 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
-describe("@requires tag", function() {
+'use strict';
+
+describe('@requires tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/requirestag.js');
     var foo = docSet.getByLongname('foo')[0];
     var bar = docSet.getByLongname('bar')[0];

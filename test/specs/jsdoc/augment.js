@@ -1,4 +1,5 @@
-/*global describe: true, env: true, it: true */
-describe("jsdoc/augment", function() {
+'use strict';
+
+xdescribe('jsdoc/augment', function() {
     // TODO
 });

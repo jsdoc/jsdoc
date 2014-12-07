@@ -197,7 +197,6 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
     @param {object} opts
  */
 exports.publish = function(data, opts) {
-
     var root = {},
         docs;
 
@@ -218,5 +217,4 @@ exports.publish = function(data, opts) {
     else {
         console.log('This template only supports output to the console. Use the option "-d console" when you run JSDoc.');
     }
-
 };

@@ -1,7 +1,9 @@
-describe("@this tag", function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/thistag.js'),
-        setName = docSet.getByLongname('setName')[0],
-        fooName = docSet.getByLongname('Foo#name')[0];
+'use strict';
+
+describe('@this tag', function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/thistag.js');
+    var setName = docSet.getByLongname('setName')[0];
+    var fooName = docSet.getByLongname('Foo#name')[0];
 
     it('When a symbol has a @this tag, the doclet has a this property that is set to that value.', function() {
         expect(setName['this']).toBe('Foo');

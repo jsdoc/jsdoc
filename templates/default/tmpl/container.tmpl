@@ -1,8 +1,16 @@
 <?js
     var self = this;
+    var isGlobalPage;
+
     docs.forEach(function(doc, i) {
 ?>
 
+<?js
+    // we only need to check this once
+    if (typeof isGlobalPage === 'undefined') {
+        isGlobalPage = (doc.kind === 'globalobj');
+    }
+?>
 <?js if (doc.kind === 'mainpage' || (doc.kind === 'package')) { ?>
     <?js= self.partial('mainpage.tmpl', doc) ?>
 <?js } else if (doc.kind === 'source') { ?>
@@ -12,25 +20,37 @@
 <section>
 
 <header>
-    <h2><?js if (doc.ancestors && doc.ancestors.length) { ?>
-        <span class="ancestors"><?js= doc.ancestors.join('') ?></span>
-    <?js } ?>
-    <?js= doc.name ?>
-    <?js if (doc.variation) { ?>
-        <sup class="variation"><?js= doc.variation ?></sup>
-    <?js } ?></h2>
-    <?js if (doc.classdesc) { ?>
-        <div class="class-description"><?js= doc.classdesc ?></div>
+    <?js if (!doc.longname || doc.kind !== 'module') { ?>
+        <h2><?js if (doc.ancestors && doc.ancestors.length) { ?>
+            <span class="ancestors"><?js= doc.ancestors.join('') ?></span>
+        <?js } ?>
+        <?js= doc.name ?>
+        <?js if (doc.variation) { ?>
+            <sup class="variation"><?js= doc.variation ?></sup>
+        <?js } ?></h2>
+        <?js if (doc.classdesc) { ?>
+            <div class="class-description"><?js= doc.classdesc ?></div>
+        <?js } ?>
+    <?js } else if (doc.kind === 'module' && doc.modules) { ?>
+        <?js doc.modules.forEach(function(module) { ?>
+            <?js if (module.classdesc) { ?>
+                <div class="class-description"><?js= module.classdesc ?></div>
+            <?js } ?>
+        <?js }) ?>
     <?js } ?>
 </header>
 
 <article>
     <div class="container-overview">
-    <?js if (doc.kind === 'module' && doc.module) { ?>
-        <?js= self.partial('method.tmpl', doc.module) ?>
-    <?js } ?>
+    <?js if (doc.kind === 'module' && doc.modules) { ?>
+        <?js if (doc.description) { ?>
+            <div class="description"><?js= doc.description ?></div>
+        <?js } ?>
 
-    <?js if (doc.kind === 'class') { ?>
+        <?js doc.modules.forEach(function(module) { ?>
+            <?js= self.partial('method.tmpl', module) ?>
+        <?js }) ?>
+    <?js } else if (doc.kind === 'class') { ?>
         <?js= self.partial('method.tmpl', doc) ?>
     <?js } else { ?>
         <?js if (doc.description) { ?>
@@ -49,17 +69,7 @@
     <?js if (doc.augments && doc.augments.length) { ?>
         <h3 class="subsection-title">Extends</h3>
 
-        <ul><?js doc.augments.forEach(function(a) { ?>
-            <li><?js= self.linkto(a, a) ?></li>
-        <?js }); ?></ul>
-    <?js } ?>
-
-    <?js if (doc.mixes && doc.mixes.length) { ?>
-        <h3 class="subsection-title">Mixes In</h3>
-
-        <ul><?js doc.mixes.forEach(function(a) { ?>
-            <li><?js= self.linkto(a, a) ?></li>
-        <?js }); ?></ul>
+        <?js= self.partial('augments.tmpl', doc) ?>
     <?js } ?>
 
     <?js if (doc.requires && doc.requires.length) { ?>
@@ -72,7 +82,7 @@
 
     <?js
         var classes = self.find({kind: 'class', memberof: doc.longname});
-        if (doc.kind !== 'globalobj' && classes && classes.length) {
+        if (!isGlobalPage && classes && classes.length) {
     ?>
         <h3 class="subsection-title">Classes</h3>
 
@@ -84,7 +94,7 @@
 
      <?js
         var mixins = self.find({kind: 'mixin', memberof: doc.longname});
-        if (doc.kind !== 'globalobj' && mixins && mixins.length) {
+        if (!isGlobalPage && mixins && mixins.length) {
     ?>
         <h3 class="subsection-title">Mixins</h3>
 
@@ -96,18 +106,25 @@
 
     <?js
         var namespaces = self.find({kind: 'namespace', memberof: doc.longname});
-        if (doc.kind !== 'globalobj' && namespaces && namespaces.length) {
+        if (!isGlobalPage && namespaces && namespaces.length) {
     ?>
         <h3 class="subsection-title">Namespaces</h3>
 
         <dl><?js namespaces.forEach(function(n) { ?>
-            <dt><a href="namespaces.html#<?js= n.longname ?>"><?js= self.linkto(n.longname, n.name) ?></a></dt>
+            <dt><?js= self.linkto(n.longname, n.name) ?></dt>
             <dd><?js if (n.summary) { ?><?js= n.summary ?><?js } ?></dd>
         <?js }); ?></dl>
     <?js } ?>
 
     <?js
-        var members = self.find({kind: 'member', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
+        var members = self.find({kind: 'member', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+
+        // symbols that are assigned to module.exports are not globals, even though they're not a memberof anything
+        if (isGlobalPage && members && members.length && members.forEach) {
+            members = members.filter(function(m) {
+                return m.longname && m.longname.indexOf('module:') !== 0;
+            });
+        }
         if (members && members.length && members.forEach) {
     ?>
         <h3 class="subsection-title">Members</h3>
@@ -118,7 +135,7 @@
     <?js } ?>
 
     <?js
-        var methods = self.find({kind: 'function', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
+        var methods = self.find({kind: 'function', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (methods && methods.length && methods.forEach) {
     ?>
         <h3 class="subsection-title">Methods</h3>
@@ -129,7 +146,7 @@
     <?js } ?>
 
     <?js
-        var typedefs = self.find({kind: 'typedef', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
+        var typedefs = self.find({kind: 'typedef', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (typedefs && typedefs.length && typedefs.forEach) {
     ?>
         <h3 class="subsection-title">Type Definitions</h3>
@@ -149,7 +166,7 @@
     <?js } ?>
 
     <?js
-        var events = self.find({kind: 'event', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
+        var events = self.find({kind: 'event', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (events && events.length && events.forEach) {
     ?>
         <h3 class="subsection-title">Events</h3>

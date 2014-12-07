@@ -1,4 +1,5 @@
-/*global afterEach, describe, expect, it, jasmine */
+'use strict';
+
 describe('jsdoc/util/logger', function() {
     var logger = require('jsdoc/util/logger');
 

@@ -1,4 +1,4 @@
-/*global describe: true, expect: true, it: true, jasmine: true */
+'use strict';
 
 describe('module that exports a function that is not a constructor', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/moduleisfunction.js');

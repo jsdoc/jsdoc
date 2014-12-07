@@ -1,6 +1,8 @@
-describe("@todo tag", function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/todotag.js'),
-        doc = docSet.getByLongname('x')[0];
+'use strict';
+
+describe('@todo tag', function() {
+    var docSet = jasmine.getDocSetFromFile('test/fixtures/todotag.js');
+    var doc = docSet.getByLongname('x')[0];
 
     it("adds the entries into a 'todo' array on the doclet", function() {
         expect(doc.todo).toBeDefined();

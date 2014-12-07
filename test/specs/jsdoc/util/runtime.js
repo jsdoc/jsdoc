@@ -1,10 +1,11 @@
-/*global describe: true, expect: true, it: true, xit: true */
-describe("jsdoc/util/runtime", function() {
+'use strict';
+
+describe('jsdoc/util/runtime', function() {
     var runtime = require('jsdoc/util/runtime');
     var isRhino;
     var isNode;
 
-    it("should exist", function() {
+    it('should exist', function() {
         expect(runtime).toBeDefined();
         expect(typeof runtime).toEqual('object');
     });
@@ -28,14 +29,14 @@ describe("jsdoc/util/runtime", function() {
         expect(typeof runtime.isNode).toEqual('function');
     });
 
-    describe("isRhino", function() {
+    describe('isRhino', function() {
         isRhino = runtime.isRhino();
 
-        it("should return a boolean", function() {
+        it('should return a boolean', function() {
             expect(typeof isRhino).toEqual('boolean');
         });
 
-        it("should return the opposite value from isNode()", function() {
+        it('should return the opposite value from isNode()', function() {
             if (isNode === undefined) {
                 isNode = runtime.isNode();
             }
@@ -44,14 +45,14 @@ describe("jsdoc/util/runtime", function() {
         });
     });
 
-    describe("isNode", function() {
+    describe('isNode', function() {
         isNode = runtime.isNode();
 
-        it("should return a boolean", function() {
+        it('should return a boolean', function() {
             expect(typeof isNode).toEqual('boolean');
         });
 
-        it("should return the opposite value from isRhino()", function() {
+        it('should return the opposite value from isRhino()', function() {
             if (isRhino === undefined) {
                 isRhino = runtime.isRhino();
             }

@@ -8,6 +8,8 @@ var wrench = require('wrench');
 var toDir = exports.toDir = function(_path) {
     var isDirectory;
 
+    _path = path.normalize(_path);
+
     try {
         isDirectory = fs.statSync(_path).isDirectory();
     }
@@ -15,7 +17,7 @@ var toDir = exports.toDir = function(_path) {
         isDirectory = false;
     }
 
-    if (isDirectory){
+    if (isDirectory) {
        return _path;
     } else {
         return path.dirname(_path);

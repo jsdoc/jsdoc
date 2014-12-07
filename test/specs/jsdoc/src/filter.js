@@ -1,4 +1,5 @@
-/*global beforeEach, describe, expect, it, jasmine */
+'use strict';
+
 describe('jsdoc/src/filter', function() {
     var filter = require('jsdoc/src/filter');
     var path = require('jsdoc/path');
@@ -163,5 +164,4 @@ describe('jsdoc/src/filter', function() {
             });
         });
     });
-
 });

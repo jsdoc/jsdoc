@@ -1,4 +1,5 @@
-/*global describe: true, env: true, expect: true, it: true, xdescribe: true */
+'use strict';
+
 xdescribe('jsdoc/src/visitor', function() {
     // TODO
 });
