@@ -91,13 +91,13 @@ describe('jsdoc/name', function() {
     });
 
     describe('shorten', function() {
-        it('should break up a longname into the correct memberof, name and scope parts', function() {
+        it('should break up a longname into the correct memberof, name and scopePunc parts', function() {
             var startName = 'lib.Panel#open';
             var parts = jsdoc.name.shorten(startName);
 
             expect(parts.name).toEqual('open');
             expect(parts.memberof).toEqual('lib.Panel');
-            expect(parts.scope).toEqual('#');
+            expect(parts.scopePunc).toEqual('#');
         });
 
         it('should work on static names', function() {
@@ -106,7 +106,7 @@ describe('jsdoc/name', function() {
 
             expect(parts.name).toEqual('getVisible');
             expect(parts.memberof).toEqual('elements.selected');
-            expect(parts.scope).toEqual('.');
+            expect(parts.scopePunc).toEqual('.');
         });
 
         it('should work on protoyped names', function() {
@@ -115,7 +115,7 @@ describe('jsdoc/name', function() {
 
             expect(parts.name).toEqual('$element');
             expect(parts.memberof).toEqual('Validator');
-            expect(parts.scope).toEqual('#');
+            expect(parts.scopePunc).toEqual('#');
         });
 
         it('should work on inner names', function() {
@@ -124,7 +124,7 @@ describe('jsdoc/name', function() {
 
             expect(parts.name).toEqual('_onclick');
             expect(parts.memberof).toEqual('Button');
-            expect(parts.scope).toEqual('~');
+            expect(parts.scopePunc).toEqual('~');
         });
 
         it('should work on global names', function() {
@@ -133,7 +133,7 @@ describe('jsdoc/name', function() {
 
             expect(parts.name).toEqual('close');
             expect(parts.memberof).toEqual('');
-            expect(parts.scope).toEqual('');
+            expect(parts.scopePunc).toEqual('');
         });
 
         it('should work when a single property uses bracket notation', function() {
@@ -142,7 +142,7 @@ describe('jsdoc/name', function() {
 
             expect(parts.name).toEqual('open');
             expect(parts.memberof).toEqual('channels."#ops"');
-            expect(parts.scope).toEqual('#');
+            expect(parts.scopePunc).toEqual('#');
         });
 
         it('should work when consecutive properties use bracket notation', function() {
@@ -151,7 +151,7 @@ describe('jsdoc/name', function() {
 
             expect(parts.name).toEqual('"log.max"');
             expect(parts.memberof).toEqual('channels."#bots"');
-            expect(parts.scope).toEqual('.');
+            expect(parts.scopePunc).toEqual('.');
         });
 
         it('should work when a property uses single-quoted bracket notation', function() {
@@ -160,7 +160,7 @@ describe('jsdoc/name', function() {
 
             expect(parts.name).toBe("'#ops'");
             expect(parts.memberof).toBe('channels');
-            expect(parts.scope).toBe('.');
+            expect(parts.scopePunc).toBe('.');
         });
 
         it('should work on double-quoted strings', function() {
@@ -170,7 +170,7 @@ describe('jsdoc/name', function() {
             expect(parts.name).toEqual('"foo.bar"');
             expect(parts.longname).toEqual('"foo.bar"');
             expect(parts.memberof).toEqual('');
-            expect(parts.scope).toEqual('');
+            expect(parts.scopePunc).toEqual('');
         });
 
         it('should work on single-quoted strings', function() {
@@ -180,7 +180,7 @@ describe('jsdoc/name', function() {
             expect(parts.name).toBe("'foo.bar'");
             expect(parts.longname).toBe("'foo.bar'");
             expect(parts.memberof).toBe('');
-            expect(parts.scope).toBe('');
+            expect(parts.scopePunc).toBe('');
         });
 
         it('should find the variation', function() {
@@ -190,6 +190,17 @@ describe('jsdoc/name', function() {
             expect(parts.variation).toEqual('2');
             expect(parts.name).toEqual('fadein');
             expect(parts.longname).toEqual('anim.fadein(2)');
+        });
+
+        it('should have a deprecated "scope" property that matches the "scopePunc" property', function() {
+            var parts;
+
+            spyOn(console, 'error');
+            parts = jsdoc.name.shorten('ClassA#instanceMethod');
+
+            expect(parts.scope).toBeDefined();
+            expect(parts.scope).toBe(parts.scopePunc);
+            expect(console.error).toHaveBeenCalled();
         });
     });
 

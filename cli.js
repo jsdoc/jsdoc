@@ -369,11 +369,13 @@ cli.parseFiles = function() {
     packageDocs.files = env.sourceFiles || [];
     docs.push(packageDocs);
 
-    logger.debug('Adding inherited symbols...');
+    logger.debug('Indexing doclets...');
     borrow.indexAll(docs);
-    augment.addInherited(docs);
-    augment.addImplemented(docs);
+    logger.debug('Adding inherited symbols, mixins, and interface implementations...');
+    augment.augmentAll(docs);
+    logger.debug('Adding borrowed doclets...');
     borrow.resolveBorrows(docs);
+    logger.debug('Post-processing complete.');
 
     app.jsdoc.parser.fireProcessingComplete(docs);
 
