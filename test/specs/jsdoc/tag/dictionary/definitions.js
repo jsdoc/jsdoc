@@ -54,6 +54,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
                 'param',
                 'private',
                 'protected',
+                'public',
                 'return',
                 'this',
                 'throws',
