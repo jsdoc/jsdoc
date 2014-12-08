@@ -26,7 +26,7 @@ function OtherThingy() {
     /** @protected */
     this._bar = 1;
 
-    /** @access public */
+    /** @public */
     this._gnu = 2;
 
     /** nothing */
