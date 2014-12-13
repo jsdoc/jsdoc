@@ -153,7 +153,7 @@
         "space-in-parens": 0, // TODO: enable?
         "space-infix-ops": 2,
         "space-return-throw-case": 2,
-        "space-unary-ops": [2, "always"],
+        "space-unary-ops": 2,
         "spaced-line-comment": [2, "always"],
         "wrap-regex": 0,
 
