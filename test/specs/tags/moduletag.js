@@ -20,7 +20,7 @@ describe('@module tag', function() {
     describe('misc', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag2.js');
         var mixer = docSet.getByLongname('module:color/mixer').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         })[0];
         var blend = docSet.getByLongname('module:color/mixer.blend')[0];
         var darken = docSet.getByLongname('module:color/mixer.darken')[0];
@@ -48,7 +48,7 @@ describe('@module tag', function() {
     describe('virtual comments', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag4.js');
         var m1 = docSet.getByLongname('module:M1').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         })[0];
         var clickProperties = docSet.getByLongname('module:M1~ClickProperties')[0];
         var virtFunc = docSet.getByLongname('module:M1.VirtualComment')[0];

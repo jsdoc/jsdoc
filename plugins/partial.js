@@ -20,8 +20,8 @@ exports.handlers = {
      */
     beforeParse: function(e) {
         e.source = e.source.replace(/(@partial \".*\")+/g, function($) {
-            var pathArg = $.match(/\".*\"/)[0].replace(/"/g,'');
-            var fullPath = path.join(e.filename , '..', pathArg);
+            var pathArg = $.match(/\".*\"/)[0].replace(/"/g, '');
+            var fullPath = path.join(e.filename, '..', pathArg);
 
             var partialData = fs.readFileSync(fullPath, global.env.opts.encoding);
 

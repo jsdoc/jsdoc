@@ -4,7 +4,7 @@ describe('aliases', function() {
     describe('standard', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/alias.js');
         var found = docSet.getByLongname('myObject').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         });
         var foundMember = docSet.getByLongname('myObject.myProperty');
 

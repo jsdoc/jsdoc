@@ -3,7 +3,7 @@
 describe('lends', function() {
     describe('when a documented member is inside an object literal associated with a @lends tag', function() {
         function removeUndocumented($) {
-            return !$.undocumented;
+            return !($.undocumented);
         }
 
         describe('standard case', function() {
@@ -22,9 +22,7 @@ describe('lends', function() {
 
         describe('case containing constructor', function() {
             var docSet = jasmine.getDocSetFromFile('test/fixtures/lends2.js');
-            var person = docSet.getByLongname('Person').filter(function($) {
-                    return ! $.undocumented;
-                })[0];
+            var person = docSet.getByLongname('Person').filter(removeUndocumented)[0];
             var name = docSet.getByLongname('Person#name');
 
             it('A tag with a @constructs tag is documented as a constructor.', function() {
