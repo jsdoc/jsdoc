@@ -16,6 +16,7 @@
 'use strict';
 
 var csso = require('gulp-csso');
+var eslint = require('gulp-eslint');
 var gulp = require('gulp');
 var less = require('gulp-less');
 var path = require('path');
@@ -39,7 +40,7 @@ function patchRequire() {
 var bowerPath = './bower_components';
 // TODO: make this configurable
 var source = {
-    code: ['publish.js', 'lib/**/*.js'],
+    code: ['publish.js', 'lib/**/*.js', 'scripts/**/*.js'],
     js: {
         copy: [
             path.join(bowerPath, 'jquery/dist/jquery.min.js')
@@ -108,6 +109,13 @@ gulp.task('js-minify', function() {
             .pipe(uglify())
             .pipe(gulp.dest(target.js));
     });
+});
+
+gulp.task('lint', function() {
+    gulp.src(source.code.concat(source.tests))
+        .pipe(eslint())
+        .pipe(eslint.formatEach())
+        .pipe(eslint.failOnError());
 });
 
 gulp.task('test', function() {

@@ -1,5 +1,7 @@
 /*global document */
 (function() {
+    'use strict';
+
     var counter = 0;
     var numbered;
     var source = document.getElementsByClassName('prettyprint');
