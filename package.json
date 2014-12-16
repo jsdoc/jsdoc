@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "async": "~0.1.22",
-    "catharsis": "~0.8.4",
+    "catharsis": "~0.8.5",
     "escape-string-regexp": "~1.0.0",
     "esprima": "https://github.com/ariya/esprima/tarball/49a2eccb243f29bd653b11e9419241a9d726af7c",
     "js2xmlparser": "~0.1.0",
