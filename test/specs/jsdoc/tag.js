@@ -221,7 +221,7 @@ describe('jsdoc/tag', function() {
                 spyOn(logger, 'error');
             });
 
-            it('logs an error for bad tags', function() {
+            it('logs an error for tags with bad type expressions', function() {
                 var tag = new jsdoc.tag.Tag('param', '{!*!*!*!} foo');
 
                 expect(logger.error).toHaveBeenCalled();
