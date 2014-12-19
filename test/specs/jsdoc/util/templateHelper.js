@@ -265,8 +265,48 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe('getUniqueId', function() {
-        // TODO
+    describe('getUniqueId', function() {
+        it('should return the provided string in normal cases', function() {
+            var id = helper.getUniqueId('futon.html', 'backrest');
+            expect(id).toBe('backrest');
+        });
+
+        it('should return an empty string if no base ID is provided', function() {
+            var id = helper.getUniqueId('futon.html', '');
+            expect(id).toBe('');
+        });
+
+        it('should remove whitespace characters', function() {
+            var id = helper.getUniqueId('futon.html', 'a very long identifier');
+            expect(id).toBe('averylongidentifier');
+        });
+
+        it('should not return the same ID twice for a given file', function() {
+            var filename = 'futon.html';
+            var name = 'polymorphic';
+            var id1 = helper.getUniqueId(filename, name);
+            var id2 = helper.getUniqueId(filename, name);
+
+            expect(id1).not.toBe(id2);
+        });
+
+        it('should allow duplicate IDs if they are in different files', function() {
+            var name = 'magnificence';
+            var id1 = helper.getUniqueId('supersensational.html', name);
+            var id2 = helper.getUniqueId('razzledazzle.html', name);
+
+            expect(id1).toBe(id2);
+        });
+
+        it('should not consider the same name with different letter case to be unique', function() {
+            var camel = 'myJavaScriptIdentifier';
+            var pascal = 'MyJavaScriptIdentifier';
+            var filename = 'mercutio.html';
+            var id1 = helper.getUniqueId(filename, camel);
+            var id2 = helper.getUniqueId(filename, pascal);
+
+            expect( id1.toLowerCase() ).not.toBe( id2.toLowerCase() );
+        });
     });
 
     describe("longnameToUrl", function() {
@@ -1356,7 +1396,8 @@ describe("jsdoc/util/templateHelper", function() {
             var mockDoclet = {
                     kind: 'function',
                     longname: 'foo',
-                    name: 'foo'
+                    name: 'foo',
+                    scope: 'global'
                 },
                 url = helper.createLink(mockDoclet);
 
@@ -1467,6 +1508,45 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(badModuleDocletUrl).toBe('module-qux.html');
             expect(memberDocletUrl).toBe('module-qux.html#frozzle');
+        });
+
+        it('should include the scope punctuation in the fragment ID for static members', function() {
+            var functionDoclet = {
+                kind: 'function',
+                longname: 'Milk.pasteurize',
+                name: 'pasteurize',
+                memberof: 'Milk',
+                scope: 'static'
+            };
+            var docletUrl = helper.createLink(functionDoclet);
+
+            expect(docletUrl).toBe('Milk.html#.pasteurize');
+        });
+
+        it('should include the scope punctuation in the fragment ID for inner members', function() {
+            var functionDoclet = {
+                kind: 'function',
+                longname: 'Milk~removeSticksAndLeaves',
+                name: 'removeSticksAndLeaves',
+                memberof: 'Milk',
+                scope: 'inner'
+            };
+            var docletUrl = helper.createLink(functionDoclet);
+
+            expect(docletUrl).toBe('Milk.html#~removeSticksAndLeaves');
+        });
+
+        it('should omit the scope punctuation from the fragment ID for instance members', function() {
+            var propertyDoclet = {
+                kind: 'member',
+                longname: 'Milk#calcium',
+                name: 'calcium',
+                memberof: 'Milk',
+                scope: 'instance'
+            };
+            var docletUrl = helper.createLink(propertyDoclet);
+
+            expect(docletUrl).toBe('Milk.html#calcium');
         });
     });
 
