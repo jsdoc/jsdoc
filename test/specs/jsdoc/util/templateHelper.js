@@ -212,7 +212,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it('should not allow a filename to start with an underscore', function() {
-            expect( helper.getUniqueFilename('') ).toBe('X_.html');
+            expect( helper.getUniqueFilename('') ).toBe('-_.html');
         });
 
         it('should not return the same filename twice', function() {
