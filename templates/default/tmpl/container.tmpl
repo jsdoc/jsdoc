@@ -47,11 +47,11 @@
             <div class="description"><?js= doc.description ?></div>
         <?js } ?>
 
-        <?js doc.modules.forEach(function(module) { ?>
+        <dl><?js doc.modules.forEach(function(module) { ?>
             <?js= self.partial('method.tmpl', module) ?>
-        <?js }) ?>
+        <?js }) ?></dl>
     <?js } else if (doc.kind === 'class') { ?>
-        <?js= self.partial('method.tmpl', doc) ?>
+        <dl><?js= self.partial('method.tmpl', doc) ?></dl>
     <?js } else { ?>
         <?js if (doc.description) { ?>
             <div class="description"><?js= doc.description ?></div>
