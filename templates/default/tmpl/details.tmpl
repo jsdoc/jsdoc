@@ -29,21 +29,21 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
 
     <?js if (data.since) {?>
     <dt class="tag-since">Since:</dt>
-    <dd class="tag-since"><ul class="dummy"><li><?js= since ?></li></dd>
+    <dd class="tag-since"><ul class="dummy"><li><?js= since ?></li></ul></dd>
     <?js } ?>
 
     <?js if (data.inherited && data.inherits) { ?>
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
         <?js= this.linkto(data.inherits, this.htmlsafe(data.inherits)) ?>
-    </li></dd>
+    </li></ul></dd>
     <?js } ?>
 
     <?js if (data.overrides) { ?>
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
         <?js= this.linkto(data.overrides, this.htmlsafe(data.overrides)) ?>
-    </li></dd>
+    </li></ul></dd>
     <?js } ?>
 
     <?js if (data.implementations && data.implementations.length) { ?>
