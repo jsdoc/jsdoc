@@ -71,7 +71,10 @@ cli.loadConfig = function() {
         env.opts = args.parse(env.args);
     }
     catch (e) {
-        cli.exit(1, e.message + '\n' + FATAL_ERROR_MESSAGE);
+        console.error(e.message + '\n');
+        cli.printHelp(function() {
+            cli.exit(1);
+        });
     }
 
     confPath = env.opts.configure || path.join(env.dirname, 'conf.json');
