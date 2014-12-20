@@ -196,6 +196,11 @@ h6
     text-decoration: none;
 }
 
+.clear
+{
+    clear: both;
+}
+
 .important
 {
     font-weight: bold;
