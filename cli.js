@@ -71,7 +71,10 @@ cli.loadConfig = function() {
         env.opts = args.parse(env.args);
     }
     catch (e) {
-        cli.exit(1, e.message + '\n' + FATAL_ERROR_MESSAGE);
+        console.error(e.message + '\n');
+        cli.printHelp(function() {
+            cli.exit(1);
+        });
     }
 
     confPath = env.opts.configure || path.join(env.dirname, 'conf.json');
@@ -369,11 +372,13 @@ cli.parseFiles = function() {
     packageDocs.files = env.sourceFiles || [];
     docs.push(packageDocs);
 
-    logger.debug('Adding inherited symbols...');
+    logger.debug('Indexing doclets...');
     borrow.indexAll(docs);
-    augment.addInherited(docs);
-    augment.addImplemented(docs);
+    logger.debug('Adding inherited symbols, mixins, and interface implementations...');
+    augment.augmentAll(docs);
+    logger.debug('Adding borrowed doclets...');
     borrow.resolveBorrows(docs);
+    logger.debug('Post-processing complete.');
 
     app.jsdoc.parser.fireProcessingComplete(docs);
 

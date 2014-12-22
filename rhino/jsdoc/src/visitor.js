@@ -15,6 +15,11 @@ var Visitor = exports.Visitor = function(parser) {
     // Rhino nodes retrieved from the org.jsdoc.AstBuilder instance
     this._rhinoNodes = null;
 
+    // only visit nodes, not their comments--the parser visits all the comments at once
+    this._visitors = [
+        this.visitNode
+    ];
+
     this.addAstNodeVisitor({
         visitNode: this._visitRhinoNode.bind(this)
     });
@@ -27,6 +32,14 @@ Visitor.prototype.addRhinoNodeVisitor = function(visitor) {
 };
 
 // TODO: docs (deprecated)
+Visitor.prototype.removeRhinoNodeVisitor = function(visitor) {
+    var idx = this._rhinoNodeVisitors.indexOf(visitor);
+    if (idx !== -1) {
+        this._rhinoNodeVisitors.splice(idx, 1);
+    }
+};
+
+// TODO: docs (deprecated)
 Visitor.prototype.getRhinoNodeVisitors = function() {
     return this._rhinoNodeVisitors;
 };
@@ -34,9 +47,8 @@ Visitor.prototype.getRhinoNodeVisitors = function() {
 // TODO: docs (deprecated)
 Visitor.prototype._visitRhinoNode = function(astNode, e, parser, filename) {
     var rhinoNode;
-
     var visitors = this._rhinoNodeVisitors;
-    // if there are no visitors, bail out before we retrieve all the nodes
+
     if (!visitors.length) {
         return;
     }

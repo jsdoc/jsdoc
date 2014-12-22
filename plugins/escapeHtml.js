@@ -13,8 +13,8 @@ exports.handlers = {
     newDoclet: function(e) {
         if (e.doclet.description) {
             e.doclet.description = e.doclet.description
-                                   .replace(/&/g,'&amp;')
-                                   .replace(/</g,'&lt;')
+                                   .replace(/&/g, '&amp;')
+                                   .replace(/</g, '&lt;')
                                    .replace(/\r\n|\n|\r/g, '<br>');
         }
     }

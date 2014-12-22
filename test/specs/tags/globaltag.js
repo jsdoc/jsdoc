@@ -5,7 +5,7 @@ describe('@global tag', function() {
 
     it('When an inner symbol has a @global tag it is documented as if it were global.', function() {
         var found = docSet.getByLongname('foo').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         });
 
         expect(found[0].name).toBe('foo');
@@ -16,7 +16,7 @@ describe('@global tag', function() {
 
     it('When an nested symbol has a @global tag it is documented as if it were global.', function() {
         var found = docSet.getByLongname('Bar').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         });
 
         expect(found[0].name).toBe('Bar');

@@ -4,9 +4,11 @@
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", function() {
-    var helper = require('jsdoc/util/templateHelper');
+    var definitions = require('jsdoc/tag/dictionary/definitions');
+    var dictionary = require('jsdoc/tag/dictionary');
     var doclet = require('jsdoc/doclet');
     var doop = require('jsdoc/util/doop');
+    var helper = require('jsdoc/util/templateHelper');
     var logger = require('jsdoc/util/logger');
     var resolver = require('jsdoc/tutorial/resolver');
     var taffy = require('taffydb').taffy;
@@ -185,6 +187,13 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("getUniqueFilename", function() {
+        afterEach(function() {
+            var dict = new dictionary.Dictionary();
+
+            definitions.defineTags(dict);
+            doclet._replaceDictionary(dict);
+        });
+
         // TODO: needs more tests for unusual values and things that get special treatment (such as
         // inner members)
         it('should convert a simple string into the string plus the default extension', function() {
@@ -203,7 +212,7 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         it('should not allow a filename to start with an underscore', function() {
-            expect( helper.getUniqueFilename('') ).toBe('X_.html');
+            expect( helper.getUniqueFilename('') ).toBe('-_.html');
         });
 
         it('should not return the same filename twice', function() {
@@ -227,10 +236,77 @@ describe("jsdoc/util/templateHelper", function() {
             var filename = helper.getUniqueFilename('MyClass(foo, bar)');
             expect(filename).toBe('MyClass.html');
         });
+
+        it('should generate the correct filename for built-in namespaces', function() {
+            var filenameEvent = helper.getUniqueFilename('event:userDidSomething');
+            var filenameExternal = helper.getUniqueFilename('external:NotInThisPackage');
+            var filenameModule = helper.getUniqueFilename('module:some/sort/of/module');
+            var filenamePackage = helper.getUniqueFilename('package:node-solve-all-your-problems');
+
+            expect(filenameEvent).toBe('event-userDidSomething.html');
+            expect(filenameExternal).toBe('external-NotInThisPackage.html');
+            expect(filenameModule).toBe('module-some_sort_of_module.html');
+            expect(filenamePackage).toBe('package-node-solve-all-your-problems.html');
+        });
+
+        it('should generate the correct filename for user-specified namespaces', function() {
+            var filename;
+            var dict = new dictionary.Dictionary();
+
+            dict.defineTag('anaphylaxis', {
+                isNamespace: true
+            });
+            definitions.defineTags(dict);
+            doclet._replaceDictionary(dict);
+
+            filename = helper.getUniqueFilename('anaphylaxis:peanut');
+
+            expect(filename).toBe('anaphylaxis-peanut.html');
+        });
     });
 
-    xdescribe('getUniqueId', function() {
-        // TODO
+    describe('getUniqueId', function() {
+        it('should return the provided string in normal cases', function() {
+            var id = helper.getUniqueId('futon.html', 'backrest');
+            expect(id).toBe('backrest');
+        });
+
+        it('should return an empty string if no base ID is provided', function() {
+            var id = helper.getUniqueId('futon.html', '');
+            expect(id).toBe('');
+        });
+
+        it('should remove whitespace characters', function() {
+            var id = helper.getUniqueId('futon.html', 'a very long identifier');
+            expect(id).toBe('averylongidentifier');
+        });
+
+        it('should not return the same ID twice for a given file', function() {
+            var filename = 'futon.html';
+            var name = 'polymorphic';
+            var id1 = helper.getUniqueId(filename, name);
+            var id2 = helper.getUniqueId(filename, name);
+
+            expect(id1).not.toBe(id2);
+        });
+
+        it('should allow duplicate IDs if they are in different files', function() {
+            var name = 'magnificence';
+            var id1 = helper.getUniqueId('supersensational.html', name);
+            var id2 = helper.getUniqueId('razzledazzle.html', name);
+
+            expect(id1).toBe(id2);
+        });
+
+        it('should not consider the same name with different letter case to be unique', function() {
+            var camel = 'myJavaScriptIdentifier';
+            var pascal = 'MyJavaScriptIdentifier';
+            var filename = 'mercutio.html';
+            var id1 = helper.getUniqueId(filename, camel);
+            var id2 = helper.getUniqueId(filename, pascal);
+
+            expect( id1.toLowerCase() ).not.toBe( id2.toLowerCase() );
+        });
     });
 
     describe("longnameToUrl", function() {
@@ -1320,7 +1396,8 @@ describe("jsdoc/util/templateHelper", function() {
             var mockDoclet = {
                     kind: 'function',
                     longname: 'foo',
-                    name: 'foo'
+                    name: 'foo',
+                    scope: 'global'
                 },
                 url = helper.createLink(mockDoclet);
 
@@ -1433,16 +1510,57 @@ describe("jsdoc/util/templateHelper", function() {
             expect(memberDocletUrl).toBe('module-qux.html#frozzle');
         });
 
-        it('should create a url for an empty package definition', function() {
-            var packageDoclet = {
-                kind: 'package',
-                name: undefined,
-                longname: 'package:undefined'
+        it('should include the scope punctuation in the fragment ID for static members', function() {
+            var functionDoclet = {
+                kind: 'function',
+                longname: 'Milk.pasteurize',
+                name: 'pasteurize',
+                memberof: 'Milk',
+                scope: 'static'
             };
+            var docletUrl = helper.createLink(functionDoclet);
 
-            var packageDocletUrl = helper.createLink(packageDoclet);
+            expect(docletUrl).toBe('Milk.html#.pasteurize');
+        });
 
-            expect(packageDocletUrl).toBe('global.html');
+        it('should include the scope punctuation in the fragment ID for inner members', function() {
+            var functionDoclet = {
+                kind: 'function',
+                longname: 'Milk~removeSticksAndLeaves',
+                name: 'removeSticksAndLeaves',
+                memberof: 'Milk',
+                scope: 'inner'
+            };
+            var docletUrl = helper.createLink(functionDoclet);
+
+            expect(docletUrl).toBe('Milk.html#~removeSticksAndLeaves');
+        });
+
+        it('should omit the scope punctuation from the fragment ID for instance members', function() {
+            var propertyDoclet = {
+                kind: 'member',
+                longname: 'Milk#calcium',
+                name: 'calcium',
+                memberof: 'Milk',
+                scope: 'instance'
+            };
+            var docletUrl = helper.createLink(propertyDoclet);
+
+            expect(docletUrl).toBe('Milk.html#calcium');
+        });
+
+        it('should include the variation, if present, in the fragment ID', function() {
+            var variationDoclet = {
+                kind: 'function',
+                longname: 'Milk#fat(percent)',
+                name: 'fat',
+                memberof: 'Milk',
+                scope: 'instance',
+                variation: '(percent)'
+            };
+            var docletUrl = helper.createLink(variationDoclet);
+
+            expect(docletUrl).toBe('Milk.html#fat(percent)');
         });
     });
 

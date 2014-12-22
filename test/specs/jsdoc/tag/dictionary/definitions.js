@@ -31,39 +31,11 @@ describe('jsdoc/tag/dictionary/definitions', function() {
     });
 
     describe('baseTags', function() {
-        it('should be identical to jsdocTags', function() {
-            expect(definitions.baseTags).toBe(definitions.jsdocTags);
-        });
+        // nothing to test except which tags are on the list, which would duplicate the code
     });
 
     describe('closureTags', function() {
-        // this test just makes sure all the definitions are here; we have other tests for tag
-        // behavior
-        it('should contain the expected tag definitions', function() {
-            var expectedTagNames = [
-                'const',
-                'constructor',
-                'deprecated',
-                'enum',
-                'extends',
-                'final',
-                'implements',
-                'interface',
-                'lends',
-                'license',
-                'param',
-                'private',
-                'protected',
-                'return',
-                'this',
-                'throws',
-                'type',
-                'typedef'
-            ].sort();
-            var actualTagNames = Object.keys(definitions.closureTags).sort();
-
-            expect(expectedTagNames).toEqual(actualTagNames);
-        });
+        // nothing to test except which tags are on the list, which would duplicate the code
     });
 
     describe('defineTags', function() {
@@ -156,75 +128,6 @@ describe('jsdoc/tag/dictionary/definitions', function() {
     });
 
     describe('jsdocTags', function() {
-        // this test just makes sure all the definitions are here; we have other tests for tag
-        // behavior
-        it('should contain the expected tag definitions', function() {
-            var expectedTagNames = [
-                'abstract',
-                'access',
-                'alias',
-                'also',
-                'augments',
-                'author',
-                'borrows',
-                'class',
-                'classdesc',
-                'constant',
-                'constructs',
-                'copyright',
-                'default',
-                'deprecated',
-                'description',
-                'enum',
-                'event',
-                'example',
-                'exports',
-                'external',
-                'file',
-                'fires',
-                'function',
-                'global',
-                'ignore',
-                'inner',
-                'instance',
-                'implements',
-                'interface',
-                'kind',
-                'lends',
-                'license',
-                'listens',
-                'member',
-                'memberof',
-                'mixes',
-                'mixin',
-                'module',
-                'name',
-                'namespace',
-                'param',
-                'private',
-                'property',
-                'protected',
-                'public',
-                'readonly',
-                'requires',
-                'returns',
-                'see',
-                'since',
-                'static',
-                'summary',
-                'this',
-                'throws',
-                'todo',
-                'tutorial',
-                'type',
-                'typedef',
-                'undocumented',
-                'variation',
-                'version'
-            ].sort();
-            var actualTagNames = Object.keys(definitions.jsdocTags).sort();
-
-            expect(expectedTagNames).toEqual(actualTagNames);
-        });
+        // nothing to test except which tags are on the list, which would duplicate the code
     });
 });

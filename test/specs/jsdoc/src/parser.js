@@ -340,6 +340,71 @@ describe('jsdoc/src/parser', function() {
                     expect(doclet.comment).toMatch('REPLACED!');
                 });
             });
+
+            describe('event order', function() {
+                var events = {
+                    all: [],
+                    jsdocCommentFound: [],
+                    symbolFound: []
+                };
+                var source = fs.readFileSync(path.join(global.env.dirname,
+                    'test/fixtures/eventorder.js'), 'utf8');
+
+                function pushEvent(e) {
+                    events.all.push(e);
+                    events[e.event].push(e);
+                }
+
+                function sourceOrderSort(atom1, atom2) {
+                    if (atom1.range[1] < atom2.range[0]) {
+                        return -1;
+                    }
+                    else if (atom1.range[0] < atom2.range[0] && atom1.range[1] === atom2.range[1]) {
+                        return 1;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+
+                // Rhino fires events in a different order
+                if (jasmine.jsParser === 'rhino') {
+                    it('should fire all jsdocCommentFound events, in source order, ' +
+                        'then all symbolFound events, in source order', function() {
+                        parser.on('jsdocCommentFound', pushEvent);
+
+                        parser.on('symbolFound', pushEvent);
+
+                        jsdoc.src.handlers.attachTo(parser);
+                        parser.parse('javascript:' + source);
+
+                        // make sure jsdocCommentFound events are in the correct order
+                        events.jsdocCommentFound.slice(0).sort(sourceOrderSort)
+                            .forEach(function(e, i) {
+                            expect(e).toBe(events.jsdocCommentFound[i]);
+                        });
+                        // make sure symbolFound events are in the correct order
+                        events.symbolFound.slice(0).sort(sourceOrderSort).forEach(function(e, i) {
+                            expect(e).toBe(events.symbolFound[i]);
+                        });
+                        // make sure jsdocCommentFound events are all first
+                        events.all.slice(0, events.jsdocCommentFound.length)
+                            .forEach(function(e, i) {
+                            expect(e).toBe(events.all[i]);
+                        });
+                    });
+                }
+                else {
+                    it('should fire interleaved jsdocCommentFound and symbolFound events, ' +
+                        'in source order', function() {
+                        jsdoc.src.handlers.attachTo(parser);
+                        parser.parse(source);
+                        events.all.slice(0).sort(sourceOrderSort).forEach(function(e, i) {
+                            expect(e).toBe(events.all[i]);
+                        });
+                    });
+                }
+            });
         });
 
         describe('addAstNodeVisitor', function() {

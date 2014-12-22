@@ -32,6 +32,16 @@ describe('jsdoc/name', function() {
         expect(typeof jsdoc.name.shorten).toBe('function');
     });
 
+    it('should export a "combine" function', function() {
+        expect(jsdoc.name.combine).toBeDefined();
+        expect(typeof jsdoc.name.combine).toBe('function');
+    });
+
+    it('should export a "longnamesToTree" function', function() {
+        expect(jsdoc.name.longnamesToTree).toBeDefined();
+        expect(typeof jsdoc.name.longnamesToTree).toBe('function');
+    });
+
     it("should export a 'splitName' function", function() {
         expect(jsdoc.name.splitName).toBeDefined();
         expect(typeof jsdoc.name.splitName).toBe('function');
@@ -221,6 +231,14 @@ describe('jsdoc/name', function() {
 
             expect(endName, 'lib.Panel#event:open');
         });
+    });
+
+    xdescribe('combine', function() {
+        // TODO: tests
+    });
+
+    xdescribe('longnamesToTree', function() {
+        // TODO: tests
     });
 
     describe('splitName', function() {

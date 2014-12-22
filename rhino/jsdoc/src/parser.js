@@ -36,3 +36,13 @@ Parser.prototype.addNodeVisitor = function(visitor) {
 Parser.prototype.getNodeVisitors = function() {
     return this._visitor.getRhinoNodeVisitors();
 };
+
+// TODO: docs
+Parser.prototype._walkAst = function(ast, visitor, sourceName) {
+    // On Rhino, we visit the comments all at once before we walk the AST
+    this._visitor.visitNodeComments({
+        leadingComments: ast.comments
+    }, this, sourceName);
+
+    Parser.super_.prototype._walkAst.call(this, ast, visitor, sourceName);
+};

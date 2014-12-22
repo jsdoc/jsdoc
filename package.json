@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
-  "version": "3.3.0-alpha11",
-  "revision": "1417914572291",
+  "version": "3.3.0-alpha12",
+  "revision": "1419273933467",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
     "documentation",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "async": "~0.1.22",
-    "catharsis": "~0.8.4",
+    "catharsis": "~0.8.5",
     "escape-string-regexp": "~1.0.0",
     "esprima": "https://github.com/ariya/esprima/tarball/49a2eccb243f29bd653b11e9419241a9d726af7c",
     "js2xmlparser": "~0.1.0",
@@ -26,7 +26,7 @@
     "wrench": "~1.3.9"
   },
   "devDependencies": {
-    "eslint": "~0.9.1",
+    "eslint": "~0.10.2",
     "gulp": "~3.8.5",
     "gulp-eslint": "~0.1.7",
     "gulp-json-editor": "~2.0.2",

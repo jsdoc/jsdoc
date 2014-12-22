@@ -4,7 +4,7 @@ describe('@borrows tag', function() {
     it('When a symbol has a @borrows-as tag, that is added to the symbol\'s "borrowed" property.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/borrowstag.js');
         var util = docSet.getByLongname('util').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         })[0];
 
         expect(util.borrowed.length).toBe(1);
@@ -19,7 +19,7 @@ describe('@borrows tag', function() {
         borrow.resolveBorrows(docSet.doclets);
 
         var strRtrim = docSet.getByLongname('str.rtrim').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         })[0];
 
         expect(typeof strRtrim).toBe('object');

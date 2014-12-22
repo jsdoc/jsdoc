@@ -28,7 +28,7 @@ describe('@constructs tag', function() {
     it('When a function symbol has a @constructs tag with no value, in a @lends block with a "Name#" value, the function is documented as a constructor of "Name".', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/constructstag4.js');
         var person = docSet.getByLongname('Person').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         })[0];
 
         expect(person.kind).toBe('class');
@@ -45,7 +45,7 @@ describe('@constructs tag', function() {
     it('When a object literal property has a @constructs tag with no value, and the object has a @lends, the property is documented as the lent class.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/constructstag5.js');
         var duck = docSet.getByLongname('Duck').filter(function($) {
-            return ! $.undocumented;
+            return !($.undocumented);
         })[0];
 
         expect(duck.longname).toBe('Duck');
