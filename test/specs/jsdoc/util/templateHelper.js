@@ -1548,6 +1548,20 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(docletUrl).toBe('Milk.html#calcium');
         });
+
+        it('should include the variation, if present, in the fragment ID', function() {
+            var variationDoclet = {
+                kind: 'function',
+                longname: 'Milk#fat(percent)',
+                name: 'fat',
+                memberof: 'Milk',
+                scope: 'instance',
+                variation: '(percent)'
+            };
+            var docletUrl = helper.createLink(variationDoclet);
+
+            expect(docletUrl).toBe('Milk.html#fat(percent)');
+        });
     });
 
     describe("resolveAuthorLinks", function() {
