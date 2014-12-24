@@ -59,7 +59,7 @@ var source = {
         ]
     },
     less: './styles/bootstrap/baseline.less',
-    tests: ['test/**/*.js'],
+    tests: ['test/specs/**/*.js'],
     views: ['./views/**/*.hbs']
 };
 
