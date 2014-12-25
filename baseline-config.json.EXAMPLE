@@ -1,6 +1,6 @@
 {
-  // Set to `true` to remove extra whitespace from HTML output files. Set to `false` to generate
-  // output files more quickly, but with extra whitespace.
+  // Set to `true` to reindent the HTML output files. Set to `false` to generate output files more
+  // quickly, but with extra whitespace.
   "beautify": true,
   // Components to display in each HTML output file.
   "components": {
@@ -12,7 +12,6 @@
   // IMPORTANT: The CSS class names in the template files will change. For now, don't use this
   // option.
   //"cssClassMap": "",
-  "dateFormat": "MMMM D, YYYY",
   // The character encoding to write to the <meta> tag in HTML output files. You are strongly
   // encouraged to use the default setting.
   "encoding": "utf-8",
@@ -23,6 +22,5 @@
   // source files and the links to these files.
   "outputSourceFiles": "true",
   // The path to the directory that contains resource files for each locale.
-  // IMPORTANT: The format of the resource files may change.
   "resourcePath": "./lang"
 }
