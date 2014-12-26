@@ -154,4 +154,9 @@ gulp.task('test', function() {
         .pipe(require('gulp-mocha')());
 });
 
+gulp.task('watch-dev', function() {
+    gulp.watch(['scripts/**/*.js', 'styles/**/*', 'views/**/*.hbs', path.join(bowerPath, '**/*')],
+        ['dev']);
+});
+
 gulp.task('default', ['dev']);
