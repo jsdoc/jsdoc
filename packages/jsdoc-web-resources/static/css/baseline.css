@@ -4560,12 +4560,8 @@ th {
 .dl-compact dd pre {
   margin-bottom: 0;
 }
-.dl-summary-callout dt,
 .dl-summary-callout dd {
   margin-bottom: 10px;
-}
-.dl-summary-callout dt + dd {
-  margin-top: -10px;
 }
 dd > p {
   margin-bottom: 0;
