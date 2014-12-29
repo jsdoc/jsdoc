@@ -4438,8 +4438,31 @@ li.L7,
 li.L9 {
   /* */ }
 
+.jqtree_common {
+  list-style: none;
+}
+ul.jqtree_common {
+  padding-left: 1.5em;
+}
+li.jqtree_common {
+  clear: both;
+}
 li.jqtree-closed > ul {
   display: none;
+}
+.jqtree-title {
+  margin-left: 1.5em;
+}
+.jqtree-title.jqtree-title-folder {
+  margin-left: 0;
+}
+.jqtree-toggler {
+  margin-left: 0.2em;
+  margin-right: 0.6em;
+}
+.jqtree-toggler.jqtree-closed {
+  margin-left: 0;
+  margin-right: 0.45em;
 }
 .jqtree-toggler:hover {
   text-decoration: none;
@@ -4451,7 +4474,7 @@ html {
   min-height: 100%;
 }
 body {
-  font-family: 'Noto Serif', sans-serif;
+  font-family: 'Noto Serif', serif;
   margin-bottom: 50px;
 }
 h1,
@@ -4722,6 +4745,8 @@ dd > p {
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
+  font-family: 'Karla', sans-serif;
+  margin-top: 50px;
 }
 @media (min-width: 992px) {
   #jsdoc-toc-nav {
