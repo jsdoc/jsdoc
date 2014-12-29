@@ -23,6 +23,11 @@ Foo.prototype.method1 = function() {};
 Foo.prototype.method2 = function() {};
 
 /**
+ * Third parent method.
+ */
+Foo.prototype.method3 = function() {};
+
+/**
  * @constructor
  * @extends Foo
  */

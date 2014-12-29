@@ -101,10 +101,16 @@
         expect(bazMethod2.inherits).toBe('Bar#method2');
     });
 
-    it('When the grandparent has a method, and the parent overrides it, the child should say it overrides the parent', function() {
+    it('When the grandparent has a method, the parent overrides it, and the child inherits it, the child should not say it overrides anything', function() {
         var bazMethod2 = docSet.getByLongname('Baz#method2')[0];
 
-        expect(bazMethod2.overrides).toBe('Bar#method2');
+        expect(bazMethod2.overrides).not.toBeDefined();
+    });
+
+    it('When the grandparent has a method, the parent inherits it, and the child overrides it, the child should say it overrides the parent', function() {
+        var bazMethod3 = docSet.getByLongname('Baz#method3')[0];
+
+        expect(bazMethod3.overrides).toBe('Bar#method3');
     });
 
     it('When an object is extended, and it overrides an ancestor property, the child does not include docs for the ancestor property.', function() {
