@@ -288,15 +288,18 @@ function attachModuleSymbols(doclets, modules) {
     });
 }
 
-function buildMemberNav(items, itemHeading, itemsSeen) {
+function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     var nav = '';
 
     if (items.length) {
         var itemsNav = '';
 
         items.forEach(function(item) {
-            if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
+            if ( !hasOwnProp.call(item, 'longname') ) {
+                itemsNav += '<li>' + linktoFn('', item.name) + '</li>';
+            }
+            else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+                itemsNav += '<li>' + linktoFn(item.longname, item.name.replace(/^module:/, '')) + '</li>';
                 itemsSeen[item.longname] = true;
             }
         });
