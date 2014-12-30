@@ -3,7 +3,7 @@ var data = obj;
 var self = this;
 ?>
 <?js if (data.kind !== 'module') { ?>
-    <?js if (kind === 'class') { ?>
+    <?js if (data.kind === 'class' && data.classdesc) { ?>
     <h2>Constructor</h2>
     <?js } ?>
 
