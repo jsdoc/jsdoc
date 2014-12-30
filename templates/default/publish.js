@@ -288,7 +288,7 @@ function attachModuleSymbols(doclets, modules) {
     });
 }
 
-function buildMemberNav(items, itemHeading, itemsSeen) {
+function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     var nav = '';
 
     if (items.length) {
@@ -296,7 +296,7 @@ function buildMemberNav(items, itemHeading, itemsSeen) {
 
         items.forEach(function(item) {
             if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
+                itemsNav += '<li>' + linktoFn(item.longname, item.name.replace(/^module:/, '')) + '</li>';
                 itemsSeen[item.longname] = true;
             }
         });
