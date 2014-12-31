@@ -333,11 +333,13 @@ describe("jsdoc/util/templateHelper", function() {
         beforeEach(function() {
             helper.longnameToUrl.linktoTest = 'test.html';
             helper.longnameToUrl.LinktoFakeClass = 'fakeclass.html';
+            helper.longnameToUrl['Foo#bar(baz)'] = 'foo-bar-baz.html';
         });
 
         afterEach(function() {
             delete helper.longnameToUrl.linktoTest;
             delete helper.longnameToUrl.LinktoFakeClass;
+            delete helper.longnameToUrl['Foo#bar(baz)'];
         });
 
         it('returns the longname if only the longname is specified and has no URL', function() {
@@ -412,6 +414,12 @@ describe("jsdoc/util/templateHelper", function() {
 
             helper.linkto('<anonymous>~foo');
             expect(logger.error).not.toHaveBeenCalled();
+        });
+
+        it('does not treat a longname with a variation as a type application', function() {
+            var link = helper.linkto('Foo#bar(baz)', 'link text');
+
+            expect(link).toBe('<a href="foo-bar-baz.html">link text</a>');
         });
 
         it('returns a link when a URL is specified', function() {
