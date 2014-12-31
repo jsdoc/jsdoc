@@ -605,8 +605,8 @@ describe("jsdoc/util/templateHelper", function() {
                  '@access private': 'private',
                  '@protected': 'protected',
                  '@access protected': 'protected',
-                 '@public': 'public',
-                 '@access public': 'public',
+                 '@public': false,
+                 '@access public': false,
                  'asdf': false
             };
             doTests(tests);
