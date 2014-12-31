@@ -4480,6 +4480,7 @@ body {
 h1,
 .h1 {
   font-family: 'Karla', sans-serif;
+  border-bottom: 1px solid #eeeeee;
   font-size: 33px;
   margin-top: 40px;
 }
@@ -4500,6 +4501,7 @@ h1 + section .h2:first-child,
 h2,
 .h2 {
   font-family: 'Karla', sans-serif;
+  border-bottom: 1px solid #eeeeee;
   font-size: 28px;
   margin-top: 40px;
 }
@@ -4589,6 +4591,9 @@ th {
 dd > p {
   margin-bottom: 0;
 }
+.page-header {
+  border-bottom: 0;
+}
 .prettyprint.linenums li {
   font-family: 'Inconsolata', monospace;
   font-size: 100%;
@@ -4615,6 +4620,9 @@ dd > p {
 .summary-callout .h6 {
   color: #5bc0de;
   margin-top: 20px;
+}
+.summary-callout-heading {
+  border-bottom: 0;
 }
 .symbol-classdesc p:first-child,
 .symbol-description p:first-child {

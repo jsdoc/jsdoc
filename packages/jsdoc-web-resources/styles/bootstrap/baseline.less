@@ -33,6 +33,10 @@
     }
 }
 
+.h-border() {
+    border-bottom: 1px solid @gray-lighter;
+}
+
 .code-base() {
     font-family: @code-font, monospace;
     font-size: 100%;
@@ -51,6 +55,7 @@ body {
 
 h1, .h1 {
     .h-base();
+    .h-border();
     font-size: floor((@font-size-base * 2.4));
     margin-top: @h-margin-top-large;
 
@@ -61,6 +66,7 @@ h1, .h1 {
 
 h2, .h2 {
     .h-base();
+    .h-border();
     font-size: floor((@font-size-base * 2));
     margin-top: @h-margin-top-large;
 
@@ -111,6 +117,10 @@ dd > p {
     .p-margin();
 }
 
+.page-header {
+    border-bottom: 0;
+}
+
 .prettyprint.linenums li {
     .code-base();
     color: @code-light-gray;
@@ -129,6 +139,10 @@ dd > p {
         color: @brand-info;
         margin-top: @h-margin-top-small;
     }
+}
+
+.summary-callout-heading {
+    border-bottom: 0;
 }
 
 // Use larger text in the first paragraph of the description
