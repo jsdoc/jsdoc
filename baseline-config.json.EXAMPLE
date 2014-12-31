@@ -17,10 +17,16 @@
     "encoding": "utf-8",
     // The locale for displaying localized text.
     "locale": "en",
-    // Set to `true` to generate pretty-printed HTML versions of the source files, and to link to
-    // the pretty-printed files from the documentation. Set to `false` to omit the pretty-printed
-    // source files and the links to these files.
-    "outputSourceFiles": "true",
     // The path to the directory that contains resource files for each locale.
-    "resourcePath": "./lang"
+    "resourcePath": "./lang",
+    "sourceFiles": {
+        // Set to `true` to generate pretty-printed HTML versions of the source files, and to link to
+        // the pretty-printed files from the documentation. Set to `false` to omit the pretty-printed
+        // source files and the links to these files.
+        "generate": true,
+        // Set to `true` to include a single link to the source file in the documentation, near the
+        // top of the page. Set to `false` to include a source-file link with each symbol in the
+        // documentation.
+        "singleLink": true
+    }
 }
