@@ -4599,6 +4599,10 @@ dd > p {
   font-size: 100%;
   color: #a8a9a6;
 }
+.signature-params,
+.signature-returns {
+  color: #a8a9a6;
+}
 .source-link {
   font-size: 11.2px;
   margin-top: -0.75em;
@@ -4648,6 +4652,9 @@ dd > p {
   border-top: 1px solid #eeeeee;
   padding-top: 0.25em;
   text-align: right;
+}
+.symbol-name {
+  font-weight: bold;
 }
 /* Grid */
 #jsdoc-body-container,
