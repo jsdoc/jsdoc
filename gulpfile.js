@@ -69,7 +69,7 @@ var target = {
 };
 
 gulp.task('build', ['compile', 'css-minify', 'js']);
-gulp.task('dev', ['compile', 'css', 'js-copy']);
+gulp.task('dev', ['compile', 'css', 'js']);
 
 // Precompile the Handlebars views.
 gulp.task('compile', function(cb) {
@@ -154,7 +154,7 @@ gulp.task('test', function() {
         .pipe(require('gulp-mocha')());
 });
 
-gulp.task('watch-dev', function() {
+gulp.task('watch-dev', ['dev'], function() {
     gulp.watch(['scripts/**/*.js', 'styles/**/*', 'views/**/*.hbs', path.join(bowerPath, '**/*')],
         ['dev']);
 });
