@@ -7,13 +7,20 @@
 /* Variables */
 
 @body-font: 'Noto Serif';
+@serif-font: @body-font;
 @code-font: 'Inconsolata';
 @code-light-gray: lighten(#8e908c, 10%);
 @footer-height: @navbar-height;
 @h-font: 'Karla';
+@sans-serif-font: @h-font;
 @h-margin-top-large: (@line-height-computed * 2);
 @h-margin-top-small: @line-height-computed;
 
+@blue-light: #90CAF9;
+@green-light: #A5D6A7;
+@orange-light: #FFCC80;
+@deep-orange-light: #FFAB91;
+@deep-purple-light: #B39DDB;
 
 /* Typography */
 
@@ -91,7 +98,7 @@ code, pre > code {
 }
 
 dt, th {
-    font-family: @h-font;
+    font-family: @sans-serif-font;
 }
 
 .dl-compact {
@@ -115,6 +122,30 @@ dt, th {
 
 dd > p {
     .p-margin();
+}
+
+.label {
+    font-family: @sans-serif-font;
+    font-size: 100%;
+    font-weight: normal;
+    padding: 0.1em 0.5em 0.1em;
+    text-transform: uppercase;
+}
+
+.label-private, .label-protected, .label-public {
+    background-color: @blue-light;
+}
+
+.label-constant, .label-readonly {
+    background-color: @deep-orange-light;
+}
+
+.label-inner, .label-static {
+    background-color: @green-light;
+}
+
+.label-virtual {
+    background-color: @deep-purple-light;
 }
 
 .page-header {
@@ -154,6 +185,12 @@ dd > p {
     p:first-child {
         .lead();
     }
+}
+
+.symbol-detail-labels {
+    clear: right;
+    font-size: @font-size-base * 0.8;
+    margin-bottom: ceil(@font-size-base / 4);
 }
 
 .symbol-index-list > dd {
