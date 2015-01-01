@@ -2842,19 +2842,18 @@ tbody.collapse.in {
     margin-left: 0;
   }
 }
-.navbar-static-top,
-.jsdoc-navbar {
+.navbar-static-top {
   z-index: 1000;
   border-width: 0 0 1px;
 }
 @media (min-width: 768px) {
-  .navbar-static-top,
-  .jsdoc-navbar {
+  .navbar-static-top {
     border-radius: 0;
   }
 }
 .navbar-fixed-top,
-.navbar-fixed-bottom {
+.navbar-fixed-bottom,
+.jsdoc-navbar {
   position: fixed;
   right: 0;
   left: 0;
@@ -2862,11 +2861,13 @@ tbody.collapse.in {
 }
 @media (min-width: 768px) {
   .navbar-fixed-top,
-  .navbar-fixed-bottom {
+  .navbar-fixed-bottom,
+  .jsdoc-navbar {
     border-radius: 0;
   }
 }
-.navbar-fixed-top {
+.navbar-fixed-top,
+.jsdoc-navbar {
   top: 0;
   border-width: 0 0 1px;
 }
@@ -4476,6 +4477,7 @@ html {
 body {
   font-family: 'Noto Serif', serif;
   margin-bottom: 50px;
+  padding-top: 75px;
 }
 h1,
 .h1 {

@@ -56,8 +56,9 @@ html {
 
 body {
     font-family: @body-font, serif;
-    // leave space for the footer
+    // leave space for the header and footer
     margin-bottom: @footer-height;
+    padding-top: @navbar-height * 1.5;
 }
 
 h1, .h1 {
@@ -267,7 +268,7 @@ dd > p {
 /* Navigation */
 
 .jsdoc-navbar {
-    &:extend(.navbar, .navbar-default, .navbar-static-top);
+    &:extend(.navbar, .navbar-default, .navbar-fixed-top);
 }
 
 .jsdoc-navbar-package-name {
