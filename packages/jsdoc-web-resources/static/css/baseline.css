@@ -4569,6 +4569,9 @@ dd > p {
 .label-readonly {
   background-color: #ffab91;
 }
+.label-kind {
+  background-color: #ffcc80;
+}
 .label-inner,
 .label-static {
   background-color: #a5d6a7;
