@@ -30,14 +30,6 @@
 
 .h-base() {
     font-family: @h-font, sans-serif;
-
-    small {
-        margin-left: @font-size-base;
-    }
-
-    small:first-child {
-        margin-left: inherit;
-    }
 }
 
 .h-border() {
@@ -156,6 +148,10 @@ dd > p {
 .prettyprint.linenums li {
     .code-base();
     color: @code-light-gray;
+}
+
+.property-type {
+    margin-left: @font-size-base;
 }
 
 .signature-params, .signature-returns {

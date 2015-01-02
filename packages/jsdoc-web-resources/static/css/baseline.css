@@ -4486,14 +4486,6 @@ h1,
   font-size: 33px;
   margin-top: 40px;
 }
-h1 small,
-.h1 small {
-  margin-left: 14px;
-}
-h1 small:first-child,
-.h1 small:first-child {
-  margin-left: inherit;
-}
 h1 + section h2:first-child,
 .h1 + section h2:first-child,
 h1 + section .h2:first-child,
@@ -4507,14 +4499,6 @@ h2,
   font-size: 28px;
   margin-top: 40px;
 }
-h2 small,
-.h2 small {
-  margin-left: 14px;
-}
-h2 small:first-child,
-.h2 small:first-child {
-  margin-left: inherit;
-}
 h2 + section h3:first-child,
 .h2 + section h3:first-child,
 h2 + section .h3:first-child,
@@ -4526,14 +4510,6 @@ h3,
   font-family: 'Karla', sans-serif;
   font-size: 21px;
   margin-top: 40px;
-}
-h3 small,
-.h3 small {
-  margin-left: 14px;
-}
-h3 small:first-child,
-.h3 small:first-child {
-  margin-left: inherit;
 }
 h4,
 .h4,
@@ -4555,22 +4531,6 @@ h6,
 .summary-callout .h6 {
   font-family: 'Karla', sans-serif;
   margin-top: 20px;
-}
-h4 small,
-.h4 small,
-h5 small,
-.h5 small,
-h6 small,
-.h6 small {
-  margin-left: 14px;
-}
-h4 small:first-child,
-.h4 small:first-child,
-h5 small:first-child,
-.h5 small:first-child,
-h6 small:first-child,
-.h6 small:first-child {
-  margin-left: inherit;
 }
 code,
 pre > code {
@@ -4623,6 +4583,9 @@ dd > p {
   font-family: 'Inconsolata', monospace;
   font-size: 100%;
   color: #a8a9a6;
+}
+.property-type {
+  margin-left: 14px;
 }
 .signature-params,
 .signature-returns {
