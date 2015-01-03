@@ -15,6 +15,7 @@
 */
 'use strict';
 
+var config = require('./lib/config');
 var DocletHelper = require('./lib/doclethelper');
 var helper = require('jsdoc/util/templateHelper');
 var PublishJob = require('./lib/publishjob');
@@ -23,8 +24,9 @@ var Template = require('./lib/template');
 var CATEGORIES = require('./lib/enums').CATEGORIES;
 
 exports.publish = function(data, opts, tutorials) {
+    var conf = config.loadConfig(global.env.conf.templates.baseline, opts.template);
     var docletHelper = new DocletHelper();
-    var template = new Template(opts.template, global.env.conf.templates.baseline);
+    var template = new Template(conf);
     var job = new PublishJob(template, opts);
 
     // set up tutorials
