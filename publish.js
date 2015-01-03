@@ -28,7 +28,6 @@ exports.publish = function(data, opts, tutorials) {
     var job = new PublishJob(template, opts);
 
     // set up tutorials
-    // TODO: why does templateHelper need to be involved?
     helper.setTutorials(tutorials);
 
     docletHelper.addDoclets(data);
