@@ -16,18 +16,34 @@
 'use strict';
 
 var config = require('./lib/config');
-var DocletHelper = require('./lib/doclethelper');
+var DocletHelper;
+var ENUMS;
+var finder;
 var helper = require('jsdoc/util/templateHelper');
-var PublishJob = require('./lib/publishjob');
-var Template = require('./lib/template');
+var PublishJob;
+var Template;
 
-var CATEGORIES = require('./lib/enums').CATEGORIES;
+function initialize(filepaths) {
+    finder = require('./lib/filefinder').get('modules', filepaths);
+
+    DocletHelper = finder.require('./doclethelper');
+    ENUMS = finder.require('./enums');
+    PublishJob = finder.require('./publishjob');
+    Template = finder.require('./template');
+}
 
 exports.publish = function(data, opts, tutorials) {
     var conf = config.loadConfig(global.env.conf.templates.baseline, opts.template);
-    var docletHelper = new DocletHelper();
-    var template = new Template(conf);
-    var job = new PublishJob(template, opts);
+    var docletHelper;
+    var job;
+    var template;
+
+    // load the core modules from the user's preferred directory
+    initialize(conf.modules);
+
+    docletHelper = new DocletHelper();
+    template = new Template(conf);
+    job = new PublishJob(template, opts);
 
     // set up tutorials
     helper.setTutorials(tutorials);
@@ -45,7 +61,7 @@ exports.publish = function(data, opts, tutorials) {
     job.generateGlobals(docletHelper.globals);
 
     // generate index page
-    job.generateIndex(docletHelper.getCategory(CATEGORIES.PACKAGES), opts.readme,
+    job.generateIndex(docletHelper.getCategory(ENUMS.CATEGORIES.PACKAGES), opts.readme,
         docletHelper.getAlphabetized());
 
     // generate the rest of the output files (excluding tutorials)
