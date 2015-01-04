@@ -986,12 +986,12 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("prune", function() {
+        var access = global.env.opts.access;
         var priv = !!global.env.opts.private;
-        var pub = !!global.env.opts.public;
 
         afterEach(function() {
+            global.env.opts.access = access;
             global.env.opts.private = priv;
-            global.env.opts.public = pub;
         });
 
         var array = [
@@ -1083,6 +1083,15 @@ describe("jsdoc/util/templateHelper", function() {
             global.env.opts.access = ['public', 'protected'];
             pruned = helper.prune( taffy(arrayMixed) )().get();
             compareObjectArrays(keepPublicProtected, pruned);
+        });
+
+        it('should keep everything if env.opts.access contains "all"', function() {
+            var pruned;
+
+            global.env.opts.access = 'all';
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+
+            compareObjectArrays(arrayMixed, pruned);
         });
 
         it('should not prune private members if env.opts.private is truthy', function() {
