@@ -33,12 +33,12 @@ function initialize(filepaths) {
 }
 
 exports.publish = function(data, opts, tutorials) {
-    var conf = config.loadConfig(global.env.conf.templates.baseline, opts.template);
+    var conf = config.load();
     var docletHelper;
     var job;
     var template;
 
-    // load the core modules from the user's preferred directory
+    // load the core modules using the file finder
     initialize(conf.modules);
 
     docletHelper = new DocletHelper();
