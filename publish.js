@@ -33,7 +33,7 @@ function initialize(filepaths) {
 }
 
 exports.publish = function(data, opts, tutorials) {
-    var conf = config.load();
+    var conf = config.loadSync().get();
     var docletHelper;
     var job;
     var template;
