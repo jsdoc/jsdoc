@@ -45,7 +45,7 @@ function patchRequire() {
 var bowerPath = './bower_components';
 // TODO: make this configurable
 var source = {
-    code: ['publish.js', 'lib/**/*.js', 'scripts/**/*.js'],
+    code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
     js: {
         copy: [
             path.join(bowerPath, 'jquery/dist/jquery.min.js')
@@ -59,7 +59,7 @@ var source = {
         ]
     },
     less: './styles/bootstrap/baseline.less',
-    tests: ['test/specs/**/*.js'],
+    tests: ['./test/specs/**/*.js'],
     views: ['./views/**/*.hbs']
 };
 
