@@ -18,18 +18,20 @@
 var config = require('./lib/config');
 var DocletHelper;
 var ENUMS;
-var finder;
+var finders;
 var helper = require('jsdoc/util/templateHelper');
 var PublishJob;
 var Template;
 
-function initialize(filepaths) {
-    finder = require('./lib/filefinder').get('modules', filepaths);
+function init(filepaths) {
+    finders = {
+        modules: require('./lib/filefinder').get('modules', filepaths)
+    };
 
-    DocletHelper = finder.require('./doclethelper');
-    ENUMS = finder.require('./enums');
-    PublishJob = finder.require('./publishjob');
-    Template = finder.require('./template');
+    DocletHelper = finders.modules.require('./doclethelper');
+    ENUMS = finders.modules.require('./enums');
+    PublishJob = finders.modules.require('./publishjob');
+    Template = finders.modules.require('./template');
 }
 
 exports.publish = function(data, opts, tutorials) {
@@ -39,7 +41,7 @@ exports.publish = function(data, opts, tutorials) {
     var template;
 
     // load the core modules using the file finder
-    initialize(conf.modules);
+    init(conf.modules);
 
     docletHelper = new DocletHelper();
     template = new Template(conf);
