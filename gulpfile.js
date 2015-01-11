@@ -147,16 +147,18 @@ gulp.task('lint', function() {
         .pipe(eslint.failOnError());
 });
 
-gulp.task('test', function() {
+gulp.task('mocha', function() {
     patchRequire();
 
     gulp.src(source.tests, { read: false })
         .pipe(require('gulp-mocha')());
 });
 
+gulp.task('test', ['lint', 'mocha']);
+
 gulp.task('watch-dev', ['dev'], function() {
     gulp.watch(['scripts/**/*.js', 'styles/**/*', 'views/**/*.hbs', path.join(bowerPath, '**/*')],
         ['dev']);
 });
 
-gulp.task('default', ['dev']);
+gulp.task('default', ['test']);
