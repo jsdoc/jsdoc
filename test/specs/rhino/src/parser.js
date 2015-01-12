@@ -101,7 +101,7 @@ describe('rhino/jsdoc/src/parser', function() {
                 var args;
 
                 var visitor = {
-                    visitNode: function(rhinoNode, e, parser, sourceName) {
+                    visitNode: function(rhinoNode, e, visitParser, sourceName) {
                         if (e && e.code && !args) {
                             args = Array.prototype.slice.call(arguments);
                         }
@@ -137,7 +137,7 @@ describe('rhino/jsdoc/src/parser', function() {
                 var doclet;
 
                 var visitor = {
-                    visitNode: function(rhinoNode, e, parser, sourceName) {
+                    visitNode: function(rhinoNode, e, visitParser, sourceName) {
                         if (e && e.code && e.code.name === 'foo') {
                             e.code.name = 'bar';
                         }
@@ -161,12 +161,12 @@ describe('rhino/jsdoc/src/parser', function() {
                 var doclet;
 
                 var visitor1 = {
-                    visitNode: function(rhinoNode, e, parser, sourceName) {
+                    visitNode: function(rhinoNode, e, visitParser, sourceName) {
                         e.stopPropagation = true;
                     }
                 };
                 var visitor2 = {
-                    visitNode: function(rhinoNode, e, parser, sourceName) {
+                    visitNode: function(rhinoNode, e, visitParser, sourceName) {
                         e.propertyThatWillNeverBeSet = ':(';
                     }
                 };

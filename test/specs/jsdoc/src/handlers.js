@@ -52,6 +52,6 @@ describe('jsdoc/src/handlers', function() {
     });
 
     xdescribe('symbolFound handler', function() {
-        //TODO
+        // TODO
     });
 });

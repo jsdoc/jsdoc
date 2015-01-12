@@ -30,8 +30,8 @@ describe('jsdoc/tag/validator', function() {
         var goodTag = new tag.Tag('name', 'MyDocletName', meta); // mustHaveValue
         var goodTag2 = new tag.Tag('ignore', '', meta); // mustNotHaveValue
 
-        function validateTag(tag) {
-            validator.validate(tag, dictionary.lookUp(tag.title), meta);
+        function validateTag(theTag) {
+            validator.validate(theTag, dictionary.lookUp(theTag.title), meta);
         }
 
         beforeEach(function() {

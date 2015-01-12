@@ -171,7 +171,7 @@ describe('jsdoc/src/parser', function() {
 
                 var sourceCode = ['javascript:/** foo */var foo;'];
                 var visitor = {
-                    visitNode: function(node, e, parser, sourceName) {
+                    visitNode: function(node, e, visitParser, sourceName) {
                         if (e && e.code && !args) {
                             args = Array.prototype.slice.call(arguments);
                         }
@@ -209,7 +209,7 @@ describe('jsdoc/src/parser', function() {
 
                 var sourceCode = ['javascript:/** foo */var foo;'];
                 var visitor = {
-                    visitNode: function(node, e, parser, sourceName) {
+                    visitNode: function(node, e, visitParser, sourceName) {
                         if (e && e.code && e.code.name === 'foo') {
                             e.code.name = 'bar';
                         }
