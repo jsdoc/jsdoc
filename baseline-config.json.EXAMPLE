@@ -28,5 +28,10 @@
         // top of the page. Set to `false` to include a source-file link with each symbol in the
         // documentation.
         "singleLink": true
+    },
+    "tables": {
+        // Set to `true` to embed child properties of parameters within the same table row as the
+        // parameter. Set to `false` to list child properties on their own rows.
+        "nestedPropertyTables": true
     }
 }
