@@ -366,17 +366,29 @@ h6,
 .h5,
 .h6,
 .summary-callout h1,
+.symbol-index-section h1,
 .summary-callout .h1,
+.symbol-index-section .h1,
 .summary-callout h2,
+.symbol-index-section h2,
 .summary-callout .h2,
+.symbol-index-section .h2,
 .summary-callout h3,
+.symbol-index-section h3,
 .summary-callout .h3,
+.symbol-index-section .h3,
 .summary-callout h4,
+.symbol-index-section h4,
 .summary-callout .h4,
+.symbol-index-section .h4,
 .summary-callout h5,
+.symbol-index-section h5,
 .summary-callout .h5,
+.symbol-index-section .h5,
 .summary-callout h6,
-.summary-callout .h6 {
+.symbol-index-section h6,
+.summary-callout .h6,
+.symbol-index-section .h6 {
   font-family: inherit;
   font-weight: 500;
   line-height: 1.1;
@@ -440,17 +452,29 @@ h5,
 h6,
 .h6,
 .summary-callout h1,
+.symbol-index-section h1,
 .summary-callout .h1,
+.symbol-index-section .h1,
 .summary-callout h2,
+.symbol-index-section h2,
 .summary-callout .h2,
+.symbol-index-section .h2,
 .summary-callout h3,
+.symbol-index-section h3,
 .summary-callout .h3,
+.symbol-index-section .h3,
 .summary-callout h4,
+.symbol-index-section h4,
 .summary-callout .h4,
+.symbol-index-section .h4,
 .summary-callout h5,
+.symbol-index-section h5,
 .summary-callout .h5,
+.symbol-index-section .h5,
 .summary-callout h6,
-.summary-callout .h6 {
+.symbol-index-section h6,
+.summary-callout .h6,
+.symbol-index-section .h6 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -483,17 +507,29 @@ h3,
 h4,
 .h4,
 .summary-callout h1,
+.symbol-index-section h1,
 .summary-callout .h1,
+.symbol-index-section .h1,
 .summary-callout h2,
+.symbol-index-section h2,
 .summary-callout .h2,
+.symbol-index-section .h2,
 .summary-callout h3,
+.symbol-index-section h3,
 .summary-callout .h3,
+.symbol-index-section .h3,
 .summary-callout h4,
+.symbol-index-section h4,
 .summary-callout .h4,
+.symbol-index-section .h4,
 .summary-callout h5,
+.symbol-index-section h5,
 .summary-callout .h5,
+.symbol-index-section .h5,
 .summary-callout h6,
-.summary-callout .h6 {
+.symbol-index-section h6,
+.summary-callout .h6,
+.symbol-index-section .h6 {
   font-size: 18px;
 }
 h5,
@@ -4518,17 +4554,29 @@ h5,
 h6,
 .h6,
 .summary-callout h1,
+.symbol-index-section h1,
 .summary-callout .h1,
+.symbol-index-section .h1,
 .summary-callout h2,
+.symbol-index-section h2,
 .summary-callout .h2,
+.symbol-index-section .h2,
 .summary-callout h3,
+.symbol-index-section h3,
 .summary-callout .h3,
+.symbol-index-section .h3,
 .summary-callout h4,
+.symbol-index-section h4,
 .summary-callout .h4,
+.symbol-index-section .h4,
 .summary-callout h5,
+.symbol-index-section h5,
 .summary-callout .h5,
+.symbol-index-section .h5,
 .summary-callout h6,
-.summary-callout .h6 {
+.symbol-index-section h6,
+.summary-callout .h6,
+.symbol-index-section .h6 {
   font-family: 'Karla', sans-serif;
   margin-top: 20px;
 }
@@ -4598,25 +4646,39 @@ dd > p {
   font-size: 11.2px;
   margin-top: -0.75em;
 }
-.summary-callout {
+.summary-callout,
+.symbol-index-section {
   font-size: 12.6px;
 }
 .summary-callout h1,
+.symbol-index-section h1,
 .summary-callout .h1,
+.symbol-index-section .h1,
 .summary-callout h2,
+.symbol-index-section h2,
 .summary-callout .h2,
+.symbol-index-section .h2,
 .summary-callout h3,
+.symbol-index-section h3,
 .summary-callout .h3,
+.symbol-index-section .h3,
 .summary-callout h4,
+.symbol-index-section h4,
 .summary-callout .h4,
+.symbol-index-section .h4,
 .summary-callout h5,
+.symbol-index-section h5,
 .summary-callout .h5,
+.symbol-index-section .h5,
 .summary-callout h6,
-.summary-callout .h6 {
+.symbol-index-section h6,
+.summary-callout .h6,
+.symbol-index-section .h6 {
   color: #5bc0de;
   margin-top: 20px;
 }
-.summary-callout-heading {
+.summary-callout-heading,
+.symbol-index-section-heading {
   border-bottom: 0;
 }
 .symbol-classdesc p:first-child,
@@ -4643,11 +4705,6 @@ dd > p {
 .symbol-index-name {
   text-indent: -1em;
   margin-left: 1em;
-}
-.symbol-index-continued {
-  border-top: 1px solid #eeeeee;
-  padding-top: 0.25em;
-  text-align: right;
 }
 .symbol-name {
   font-weight: bold;

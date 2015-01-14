@@ -52,7 +52,9 @@ exports.publish = function(data, opts, tutorials) {
 
     docletHelper.addDoclets(data);
 
-    job.setPackage(docletHelper.getPackage());
+    job.setPackage(docletHelper.getPackage())
+        .setNavTree(docletHelper.navTree)
+        .setAllLongnamesTree(docletHelper.allLongnamesTree);
 
     // create the output directory so we can start generating files
     job.createOutputDirectory()
@@ -62,9 +64,9 @@ exports.publish = function(data, opts, tutorials) {
     // generate globals page if necessary
     job.generateGlobals(docletHelper.globals);
 
-    // generate index page
-    job.generateIndex(docletHelper.getCategory(ENUMS.CATEGORIES.PACKAGES), opts.readme,
-        docletHelper.getAlphabetized());
+    // generate TOC data and index page
+    job.generateTocData({ hasGlobals: docletHelper.hasGlobals() })
+        .generateIndex(docletHelper.getCategory(ENUMS.CATEGORIES.PACKAGES), opts.readme);
 
     // generate the rest of the output files (excluding tutorials)
     docletHelper.getOutputLongnames().forEach(function(longname) {
@@ -72,8 +74,7 @@ exports.publish = function(data, opts, tutorials) {
             docletHelper.getMemberof(longname));
     });
 
-    // finally, generate the TOC data and tutorials, and copy static files to the output directory
+    // finally, generate the tutorials, and copy static files to the output directory
     job.generateTutorials(tutorials)
-        .generateTocData(docletHelper.navTree, { hasGlobals: docletHelper.hasGlobals() })
         .copyStaticFiles();
 };
