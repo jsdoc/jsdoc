@@ -16,6 +16,7 @@ describe('markdown plugin', function() {
 
         plugin.handlers.newDoclet({ doclet: myClass });
         [
+            myClass.author[0],
             myClass.classdesc,
             myClass.description,
             myClass.exceptions[0].description,

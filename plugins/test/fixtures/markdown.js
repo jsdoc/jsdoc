@@ -11,6 +11,7 @@ function foo() {}
 function bar() {}
 
 /**
+ * @author [Mr. Macintosh](http://www.folklore.org/StoryView.py?story=Mister_Macintosh.txt)
  * @classdesc My class.
  * @description My class.
  * @exception {Error} Some error.
@@ -20,5 +21,5 @@ function bar() {}
  * @see [Example Inc.](http://example.com)
  */
 function MyClass(myParam) {
-	this.value = myParam;
+    this.value = myParam;
 }

@@ -8,6 +8,7 @@
 
 var config = global.env.conf.markdown || {};
 var defaultTags = [
+    'author',
     'classdesc',
     'description',
     'exceptions',
@@ -22,14 +23,11 @@ var tags = [];
 var excludeTags = [];
 
 function shouldProcessString(tagName, text) {
-    var shouldProcess = false;
+    var shouldProcess = true;
 
-    if (tagName !== 'see') {
-        shouldProcess = true;
-    }
-    // we only want to process `@see` tags that contain Markdown links
-    else if (tagName === 'see' && text.indexOf('[') !== -1) {
-        shouldProcess = true;
+    // we only want to process `@author` and `@see` tags that contain Markdown links
+    if ( (tagName === 'author' || tagName === 'see') && text.indexOf('[') === -1 ) {
+        shouldProcess = false;
     }
 
     return shouldProcess;
