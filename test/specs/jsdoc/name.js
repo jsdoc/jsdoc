@@ -293,6 +293,12 @@ describe('jsdoc/name', function() {
             expect(hasAncestor).toBe(true);
         });
 
+        it('should correctly identify when a non-ancestor is passed in', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'foo');
+
+            expect(hasAncestor).toBe(false);
+        });
+
         it('should not say that a longname is its own ancestor', function() {
             var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'module:foo');
 
