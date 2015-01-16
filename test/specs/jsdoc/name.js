@@ -25,6 +25,10 @@ describe('jsdoc/name', function() {
         expect(typeof jsdoc.name.stripNamespace).toBe('function');
     });
 
+    it('should export a "hasAncestor" function', function() {
+        expect(typeof jsdoc.name.hasAncestor).toBe('function');
+    });
+
     // TODO: add tests for other exported constants
     it('should export a SCOPE enum', function() {
         expect(jsdoc.name.SCOPE).toBeDefined();
@@ -261,6 +265,38 @@ describe('jsdoc/name', function() {
             var endName = jsdoc.name.stripNamespace(startName);
 
             expect(endName).toBe('foo/bar/baz');
+        });
+    });
+
+    describe('hasAncestor', function() {
+        it('should return false if "parent" is missing', function() {
+            var hasAncestor = jsdoc.name.hasAncestor(null, 'foo');
+
+            expect(hasAncestor).toBe(false);
+        });
+
+        it('should return false if "child" is missing', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('foo');
+
+            expect(hasAncestor).toBe(false);
+        });
+
+        it('should correctly identify when the immediate parent is passed in', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'module:foo~bar');
+
+            expect(hasAncestor).toBe(true);
+        });
+
+        it('should correctly identify when an ancestor is passed in', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'module:foo~bar.Baz#qux');
+
+            expect(hasAncestor).toBe(true);
+        });
+
+        it('should not say that a longname is its own ancestor', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'module:foo');
+
+            expect(hasAncestor).toBe(false);
         });
     });
 
