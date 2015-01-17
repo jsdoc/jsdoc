@@ -17,6 +17,8 @@
     "encoding": "utf-8",
     // The locale for displaying localized text.
     "locale": "en",
+    // Set to `true` to convert text from Markdown to HTML or `false` to disable Markdown support.
+    "markdown": true,
     // The path to the directory that contains resource files for each locale.
     "resourcePath": "./lang",
     "sourceFiles": {
