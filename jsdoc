@@ -1,4 +1,14 @@
 #!/bin/sh
+#
+# Arguments:
+#   any argument supported by jsdoc.js
+#
+#   -modules path        path where rhino looks up require.js modules 
+#
+#                        include more than once in the parameter list if 
+#                        multiple paths have to be configured.
+#      
+# 
 
 SOURCE="$0"
 while [ -h "$SOURCE" ] ; do
@@ -29,5 +39,26 @@ then
     java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -opt -1 -modules "${BASEPATH}/lib" -modules "${BASEPATH}/node_modules" -modules "${BASEPATH}/rhino" -modules "${BASEPATH}" "${BASEPATH}/jsdoc.js" "$@"
 
 else
-    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} -modules "${BASEPATH}/lib" -modules "${BASEPATH}/node_modules" -modules "${BASEPATH}/rhino" -modules "${BASEPATH}" "${BASEPATH}/jsdoc.js" "$@"
+    JSDOC_ARGS=""
+    EXT_MODULES=""
+    while [ $# != 0 ]; do
+      case "$1" in 
+        -modules) 
+          if [ -n "$2" ]; then
+            EXT_MODULES="$EXT_MODULES -modules $2"
+            shift 2
+          else
+            echo "warning: missing value for argument '-modules'"
+            shift
+          fi
+        ;;
+        *)
+          JSDOC_ARGS="$JSDOC_ARGS $1"
+          shift
+          ;;
+      esac
+    done
+    echo EXT_MODULES=$EXT_MODULES
+    java -classpath "${BASEPATH}/rhino/js.jar" ${CMD} ${EXT_MODULES} -modules "${BASEPATH}/lib" -modules "${BASEPATH}/node_modules" -modules "${BASEPATH}/rhino" -modules "${BASEPATH}" "${BASEPATH}/jsdoc.js" $JSDOC_ARGS
 fi
+
