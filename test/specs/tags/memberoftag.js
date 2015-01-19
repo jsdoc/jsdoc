@@ -80,4 +80,13 @@ describe('@memberof tag', function() {
 
         expect(leaf.longname, 'module:terrain.Forest#Tree#leaf');
     });
+
+    it('Properties of a symbol with a @memberof tag inherit the @memberof info.', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag5.js');
+        var open = docSet.getByLongname('module:network.Socket#open')[0];
+        var uid = docSet.getByLongname('module:network.Socket.uid')[0];
+
+        expect(open).toBeDefined();
+        expect(uid).toBeDefined();
+    });
 });
