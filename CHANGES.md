@@ -4,7 +4,7 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 
 ## 3.3.0 (January 2015)
 
-**Note**: This draft changelog is current through December 27, 2014, and is subject to change before JSDoc 3.3.0 is released.
+**Note**: This draft changelog is current through January 21, 2015, and is subject to change before JSDoc 3.3.0 is released.
 
 ### Major changes
 + You can now run JSDoc on Node.js. (#93)
@@ -17,6 +17,7 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 
 ### Enhancements
 + You can now use the `--pedantic` flag to treat all errors as fatal errors, and to treat warnings as errors. This flag replaces the `--lenient` flag, which had roughly the opposite meaning and is no longer available. (#416)
++ You can now use the `-a/--access` flag to control whether private, protected, and public symbols appear in the documentation. (#860, #861)
 + You can now use the `--debug` flag to log detailed debugging information to the console. This information can help you diagnose bugs in JSDoc itself. (#416)
 + JSDoc's configuration file can now contain JavaScript comments. (#660)
 + You can now include source files from a directory, but exclude one of its subdirectories, by adding the subdirectory to the `source.exclude` option in the configuration file. (#484)
@@ -50,18 +51,22 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + JSDoc now sets the `scope` property to `global` for all global doclets. (#684)
 + Module doclets no longer have a `scope` property. (#782)
 + In Markdown tutorials, JSDoc no longer unescapes HTML entities. (#743)
++ If a longname includes a variation (for example, `Foo#bar(variation)`), the link text is now preserved when generating HTML links. (#857)
 + When a single JSDoc comment includes `@class`, `@classdesc`, and `@constructor` tags, JSDoc no longer ignores the value of the `@classdesc` tag. (#806)
 + For tags where the name and type are both optional (`@constant`, `@external`, `@member`, `@module`, `@namespace`, and `@param`), JSDoc now parses the tag correctly when it includes a type but not a name. (#351, #535)
 + The `@default` tag now works correctly when used with an array literal. (#604)
 + The `@enum` tag now works correctly when the enumeration is part of a chain of assignments (for example, `var FOO = exports.FOO = {/* enumerated values */}`). (#702)
 + The `@exports` and `@module` tags now work correctly when their value includes a `module:` namespace (for example, `@exports module:foo`). (#786)
++ The `@memberof` tag now works correctly when it refers to a module that is defined in a separate file. (#880)
 + The `@variation` tag now works correctly when its value is enclosed in parentheses (for example, `@variation (foo)`). (#850)
 
 ### Plugins
 + Tag definitions can now have a `mustNotHaveDescription` property. When this property is set to `true`, JSDoc will warn the user if the tag text includes a description (such as `The description` in `@param {string} foo - The description`). (#615)
++ Tag definitions can now call the method `dictionary.normalize`, which is a synonym for `dictionary.normalise`. (#884)
 + The Markdown plugin no longer prevents inline `{@link}` tags from working. (#518)
-+ The Markdown plugin now converts `exceptions` properties to HTML by default. (#736)
++ The Markdown plugin now converts `@author` and `@throws` tag values to HTML by default. (#736, #878)
 + JSDoc now includes a `summarize` plugin that automatically generates summaries based on the description. (#485)
++ JSDoc now includes an `underscore` plugin that finds symbols whose names begin with an underscore and automatically tags them as `@private`. (#471)
 + Plugins can now replace the `doclet` property of `newDoclet` events. (#584)
 
 ### Template improvements
@@ -70,11 +75,13 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + You can now use the property `templates.default.staticFiles.include` to list files that will be copied to the output directory. For backwards compatibility, the property `templates.default.staticFiles.paths` is also supported but is deprecated. (#785)
 + The `templates.default.staticFiles` options now work correctly on Windows. (#785)
 + Output files no longer show the default value for members of an enumeration. (#689)
++ In certain types of AMD modules, the module-overview section is no longer duplicated. (#853)
 + If a constructor is assigned to `module.exports`, the value of the `@classdesc` tag now appears in the documentation. (#740)
 + If a constructor is assigned to `module.exports`, and the constructor inherits from another class, the parent class is now listed in the documentation. (#594)
 + Text within an `@example` tag, including HTML tags, is now properly escaped. (#511)
 + If a member has a `@fires` tag, the tag information now appears in the documentation. (#568)
 + If a symbol has members that use the `@mixin` tag, the mixins are now listed in the documentation. (#379, #602)
++ When multiple `@param` tags are used to document properties of array values (for example, `@param {Object[]} foo` and `@param {string} foo[].bar`), the properties are now grouped into the appropriate row of the parameters table. (#870)
 + If a member has a `@requires` tag, the tag information now appears in the documentation. (#563)
 + Type expressions are now presented more clearly. (#618)
 + Pretty-printed source files now include line numbers. (#532)
