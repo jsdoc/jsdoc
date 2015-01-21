@@ -46,6 +46,10 @@ describe('jsdoc/tag/dictionary', function() {
         expect(typeof dictionary.normalise).toBe('function');
     });
 
+    it('should export a normalize method', function() {
+        expect(typeof dictionary.normalize).toBe('function');
+    });
+
     it('should export a Dictionary constructor', function() {
         expect(dictionary.Dictionary).toBeDefined();
         expect(typeof dictionary.Dictionary).toBe('function');
@@ -128,6 +132,12 @@ describe('jsdoc/tag/dictionary', function() {
 
         it('should return the canonical name of a tag if the synonym is normalised', function() {
             expect(testDictionary.normalise(tagSynonym)).toBe(tagDef.title);
+        });
+    });
+
+    describe('normalize', function() {
+        it('should be identical to "normalise"', function() {
+            expect(testDictionary.normalize).toBe(testDictionary.normalise);
         });
     });
 
