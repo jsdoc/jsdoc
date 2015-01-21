@@ -109,6 +109,28 @@ describe('jsdoc/opts/args', function() {
             expect(r.private).toBe(true);
         });
 
+        it('should accept a "-a" option and return an object with an "access" property', function() {
+            args.parse(['-a', 'public']);
+            var r = args.get();
+
+            expect(r.access).toBe('public');
+        });
+
+        it('should accept a "--access" option and return an object with an "access" property', function() {
+            args.parse(['--access', 'public']);
+            var r = args.get();
+
+            expect(r.access).toBe('public');
+        });
+
+        it('should accept multiple "--access" options and return an object with an "access" property', function() {
+            args.parse(['--access', 'public', '--access', 'protected']);
+            var r = args.get();
+
+            expect(r.access).toContain('public');
+            expect(r.access).toContain('protected');
+        });
+
         it('should accept a "-r" option and return an object with a "recurse" property', function() {
             args.parse(['-r']);
             var r = args.get();

@@ -269,28 +269,37 @@ function attachModuleSymbols(doclets, modules) {
 
     return modules.map(function(module) {
         if (symbols[module.longname]) {
-            module.modules = symbols[module.longname].map(function(symbol) {
-                symbol = doop(symbol);
+            module.modules = symbols[module.longname]
+                // Only show symbols that have a description. Make an exception for classes, because
+                // we want to show the constructor-signature heading no matter what.
+                .filter(function(symbol) {
+                    return symbol.description || symbol.kind === 'class';
+                })
+                .map(function(symbol) {
+                    symbol = doop(symbol);
 
-                if (symbol.kind === 'class' || symbol.kind === 'function') {
-                    symbol.name = symbol.name.replace('module:', '(require("') + '"))';
-                }
+                    if (symbol.kind === 'class' || symbol.kind === 'function') {
+                        symbol.name = symbol.name.replace('module:', '(require("') + '"))';
+                    }
 
-                return symbol;
-            });
+                    return symbol;
+                });
         }
     });
 }
 
-function buildMemberNav(items, itemHeading, itemsSeen) {
+function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     var nav = '';
 
     if (items.length) {
         var itemsNav = '';
 
         items.forEach(function(item) {
-            if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                itemsNav += '<li>' + linkto(item.longname, item.name.replace(/^module:/, '')) + '</li>';
+            if ( !hasOwnProp.call(item, 'longname') ) {
+                itemsNav += '<li>' + linktoFn('', item.name) + '</li>';
+            }
+            else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+                itemsNav += '<li>' + linktoFn(item.longname, item.name.replace(/^module:/, '')) + '</li>';
                 itemsSeen[item.longname] = true;
             }
         });
@@ -326,8 +335,9 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">Home</a></h2>',
-        seen = {};
+    var nav = '<h2><a href="index.html">Home</a></h2>';
+    var seen = {};
+    var seenTutorials = {};
 
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
     nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
@@ -335,7 +345,7 @@ function buildNav(members) {
     nav += buildMemberNav(members.events, 'Events', seen, linkto);
     nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
     nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
-    nav += buildMemberNav(members.tutorials, 'Tutorials', seen, linktoTutorial);
+    nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial);
     nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
 
     if (members.globals.length) {
@@ -369,7 +379,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     data = taffyData;
 
     var conf = env.conf.templates || {};
-    conf['default'] = conf['default'] || {};
+    conf.default = conf.default || {};
 
     var templatePath = path.normalize(opts.template);
     view = new template.Template( path.join(templatePath, 'tmpl') );
@@ -383,9 +393,9 @@ exports.publish = function(taffyData, opts, tutorials) {
     helper.registerLink('global', globalUrl);
 
     // set up templating
-    view.layout = conf['default'].layoutFile ?
-        path.getResourcePath(path.dirname(conf['default'].layoutFile),
-            path.basename(conf['default'].layoutFile) ) :
+    view.layout = conf.default.layoutFile ?
+        path.getResourcePath(path.dirname(conf.default.layoutFile),
+            path.basename(conf.default.layoutFile) ) :
         'layout.tmpl';
 
     // set up tutorials for helper
@@ -456,13 +466,13 @@ exports.publish = function(taffyData, opts, tutorials) {
     var staticFilePaths;
     var staticFileFilter;
     var staticFileScanner;
-    if (conf['default'].staticFiles) {
+    if (conf.default.staticFiles) {
         // The canonical property name is `include`. We accept `paths` for backwards compatibility
         // with a bug in JSDoc 3.2.x.
-        staticFilePaths = conf['default'].staticFiles.include ||
-            conf['default'].staticFiles.paths ||
+        staticFilePaths = conf.default.staticFiles.include ||
+            conf.default.staticFiles.paths ||
             [];
-        staticFileFilter = new (require('jsdoc/src/filter')).Filter(conf['default'].staticFiles);
+        staticFileFilter = new (require('jsdoc/src/filter')).Filter(conf.default.staticFiles);
         staticFileScanner = new (require('jsdoc/src/scanner')).Scanner();
 
         staticFilePaths.forEach(function(filePath) {
@@ -532,7 +542,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     members.tutorials = tutorials.children;
 
     // output pretty-printed source files by default
-    var outputSourceFiles = conf['default'] && conf['default'].outputSourceFiles !== false ? true :
+    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false ? true :
         false;
 
     // add template helpers

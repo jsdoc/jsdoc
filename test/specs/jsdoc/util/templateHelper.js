@@ -333,11 +333,13 @@ describe("jsdoc/util/templateHelper", function() {
         beforeEach(function() {
             helper.longnameToUrl.linktoTest = 'test.html';
             helper.longnameToUrl.LinktoFakeClass = 'fakeclass.html';
+            helper.longnameToUrl['Foo#bar(baz)'] = 'foo-bar-baz.html';
         });
 
         afterEach(function() {
             delete helper.longnameToUrl.linktoTest;
             delete helper.longnameToUrl.LinktoFakeClass;
+            delete helper.longnameToUrl['Foo#bar(baz)'];
         });
 
         it('returns the longname if only the longname is specified and has no URL', function() {
@@ -412,6 +414,12 @@ describe("jsdoc/util/templateHelper", function() {
 
             helper.linkto('<anonymous>~foo');
             expect(logger.error).not.toHaveBeenCalled();
+        });
+
+        it('does not treat a longname with a variation as a type application', function() {
+            var link = helper.linkto('Foo#bar(baz)', 'link text');
+
+            expect(link).toBe('<a href="foo-bar-baz.html">link text</a>');
         });
 
         it('returns a link when a URL is specified', function() {
@@ -978,9 +986,11 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("prune", function() {
+        var access = global.env.opts.access;
         var priv = !!global.env.opts.private;
 
         afterEach(function() {
+            global.env.opts.access = access;
             global.env.opts.private = priv;
         });
 
@@ -998,11 +1008,24 @@ describe("jsdoc/util/templateHelper", function() {
             // prune
             {memberof: '<anonymous>'}
         ];
+        var keep = [
+            // keep
+            {undocumented: false},
+            // keep
+            {ignore: false},
+            // keep
+            {memberof: 'SomeClass'}
+        ];
         var arrayPrivate = [
             // prune (unless env.opts.private is truthy)
             {access: 'private'}
         ];
-        var keep = array.slice(0, 3);
+        var arrayMixed = [
+            {access: 'public'},
+            {asdf: true},
+            {access: 'protected'},
+            {access: 'private'}
+        ];
 
         it('should prune the correct members', function() {
             var pruned = helper.prune( taffy(array) )().get();
@@ -1015,6 +1038,60 @@ describe("jsdoc/util/templateHelper", function() {
             global.env.opts.private = false;
             pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays([], pruned);
+        });
+
+        it('should only keep public members if env.opts.access only contains "public"', function() {
+            var pruned;
+            var keepPublic = [{access: 'public'}];
+
+            global.env.opts.access = 'public';
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+            compareObjectArrays(keepPublic, pruned);
+        });
+
+        it('should only keep undefined members if env.opts.access only contains "undefined"', function() {
+            var pruned;
+            var keepUndefined = [{asdf: true}];
+
+            global.env.opts.access = 'undefined';
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+            compareObjectArrays(keepUndefined, pruned);
+        });
+
+        it('should only keep protected members if env.opts.access only contains "protected"', function() {
+            var pruned;
+            var keepProtected = [{access: 'protected'}];
+
+            global.env.opts.access = 'protected';
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+            compareObjectArrays(keepProtected, pruned);
+        });
+
+        it('should only keep private members if env.opts.access only contains "private"', function() {
+            var pruned;
+            var keepPrivate = [{access: 'private'}];
+
+            global.env.opts.access = 'private';
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+            compareObjectArrays(keepPrivate, pruned);
+        });
+
+        it('should keep public and protected members if env.opts.access contains "public" and "protected"', function() {
+            var pruned;
+            var keepPublicProtected = [{access: 'public'}, {access: 'protected'}];
+
+            global.env.opts.access = ['public', 'protected'];
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+            compareObjectArrays(keepPublicProtected, pruned);
+        });
+
+        it('should keep everything if env.opts.access contains "all"', function() {
+            var pruned;
+
+            global.env.opts.access = 'all';
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+
+            compareObjectArrays(arrayMixed, pruned);
         });
 
         it('should not prune private members if env.opts.private is truthy', function() {

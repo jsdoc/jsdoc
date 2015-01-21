@@ -21,6 +21,14 @@ describe('jsdoc/name', function() {
         expect(typeof jsdoc.name.applyNamespace).toBe('function');
     });
 
+    it('should export a "stripNamespace" function', function() {
+        expect(typeof jsdoc.name.stripNamespace).toBe('function');
+    });
+
+    it('should export a "hasAncestor" function', function() {
+        expect(typeof jsdoc.name.hasAncestor).toBe('function');
+    });
+
     // TODO: add tests for other exported constants
     it('should export a SCOPE enum', function() {
         expect(jsdoc.name.SCOPE).toBeDefined();
@@ -35,6 +43,10 @@ describe('jsdoc/name', function() {
     it('should export a "combine" function', function() {
         expect(jsdoc.name.combine).toBeDefined();
         expect(typeof jsdoc.name.combine).toBe('function');
+    });
+
+    it('should export a "stripVariation" function', function() {
+        expect(typeof jsdoc.name.stripVariation).toBe('function');
     });
 
     it('should export a "longnamesToTree" function', function() {
@@ -233,8 +245,85 @@ describe('jsdoc/name', function() {
         });
     });
 
+    describe('stripNamespace', function() {
+        it('should not change longnames without a leading namespace', function() {
+            var startName = 'Foo#bar';
+            var endName = jsdoc.name.stripNamespace(startName);
+
+            expect(endName).toBe(startName);
+        });
+
+        it('should not change longnames with an embedded namespace', function() {
+            var startName = 'foo/bar.baz~event:qux';
+            var endName = jsdoc.name.stripNamespace(startName);
+
+            expect(endName).toBe(startName);
+        });
+
+        it('should remove the leading namespace, if present', function() {
+            var startName = 'module:foo/bar/baz';
+            var endName = jsdoc.name.stripNamespace(startName);
+
+            expect(endName).toBe('foo/bar/baz');
+        });
+    });
+
+    describe('hasAncestor', function() {
+        it('should return false if "parent" is missing', function() {
+            var hasAncestor = jsdoc.name.hasAncestor(null, 'foo');
+
+            expect(hasAncestor).toBe(false);
+        });
+
+        it('should return false if "child" is missing', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('foo');
+
+            expect(hasAncestor).toBe(false);
+        });
+
+        it('should correctly identify when the immediate parent is passed in', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'module:foo~bar');
+
+            expect(hasAncestor).toBe(true);
+        });
+
+        it('should correctly identify when an ancestor is passed in', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'module:foo~bar.Baz#qux');
+
+            expect(hasAncestor).toBe(true);
+        });
+
+        it('should correctly identify when a non-ancestor is passed in', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'foo');
+
+            expect(hasAncestor).toBe(false);
+        });
+
+        it('should not say that a longname is its own ancestor', function() {
+            var hasAncestor = jsdoc.name.hasAncestor('module:foo', 'module:foo');
+
+            expect(hasAncestor).toBe(false);
+        });
+    });
+
     xdescribe('combine', function() {
         // TODO: tests
+    });
+
+    describe('stripVariation', function() {
+        it('should not change longnames without a variation', function() {
+            var startName = 'Foo#bar';
+            var endName = jsdoc.name.stripVariation(startName);
+
+            expect(endName).toBe(startName);
+        });
+
+        it('should remove the variation, if present', function() {
+            var startName = 'Foo#bar(qux)';
+            var endName = jsdoc.name.stripVariation(startName);
+
+            expect(endName).toBe('Foo#bar');
+        });
     });
 
     xdescribe('longnamesToTree', function() {

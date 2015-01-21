@@ -8,7 +8,10 @@ function Thingy() {
     this._bar = 1;
 
     /** @access public */
-    this.pez = 2;
+    this._gnu = 2;
+
+    /** nothing */
+    this.pez = 3;
 
 }
 
@@ -24,6 +27,9 @@ function OtherThingy() {
     this._bar = 1;
 
     /** @public */
-    this.pez = 2;
+    this._gnu = 2;
+
+    /** nothing */
+    this.pez = 3;
 
 }

@@ -32,7 +32,7 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     <dd class="tag-since"><ul class="dummy"><li><?js= since ?></li></ul></dd>
     <?js } ?>
 
-    <?js if (data.inherited && data.inherits) { ?>
+    <?js if (data.inherited && data.inherits && !data.overrides) { ?>
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
         <?js= this.linkto(data.inherits, this.htmlsafe(data.inherits)) ?>

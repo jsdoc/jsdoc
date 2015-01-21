@@ -72,6 +72,11 @@ describe('jsdoc/tutorial', function() {
             expect(tute.name).toBe(name);
         });
 
+        it('should have a "longname" property', function() {
+            expect(typeof tute.longname).toBe('string');
+            expect(tute.longname).toBe(name);
+        });
+
         it("should have a 'title' property, by default set to to the tutorial's name", function() {
             expect(tute.title).toBeDefined();
             expect(typeof tute.title).toBe('string');

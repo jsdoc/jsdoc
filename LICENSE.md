@@ -4,7 +4,7 @@ JSDoc 3 is free software, licensed under the Apache License, Version 2.0 (the
 "License"). Commercial and non-commercial use are permitted in compliance with
 the License.
 
-Copyright (c) 2011-2014 Michael Mathews <micmath@gmail.com> and the
+Copyright (c) 2011-2015 Michael Mathews <micmath@gmail.com> and the
 [contributors to JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).
 All rights reserved.
 
@@ -76,6 +76,16 @@ Copyright (c) 2010 Caolan McMahon.
 
 The source code for Async.js is available at:
 https://github.com/caolan/async
+
+## buffer-browserify ##
+
+buffer-browserify is distributed under the MIT license, which is reproduced
+above.
+
+Copyright (c) Romain Beauxis.
+
+The source code for buffer-browserify is available at:
+https://github.com/toots/buffer-browserify
 
 ## Catharsis ##
 
@@ -369,6 +379,15 @@ Reporters & Editors.
 
 The source code for Underscore.js is available at:
 https://github.com/jashkenas/underscore
+
+## url ##
+
+url is distributed under the MIT license, which is reproduced above.
+
+Copyright Joyent, Inc. and other Node contributors.
+
+The source code for url is available at:
+https://github.com/defunctzombie/node-url
 
 ## wrench-js ##
 
