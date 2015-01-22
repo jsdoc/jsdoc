@@ -87,5 +87,5 @@
 			"many": "or <%= element %>) <%= suffix %>"
 		}
 	},
-	"unknown": "unknown type"
+	"unknown": "unknown"
 }

@@ -149,6 +149,14 @@ global.process = {
     nextTick: function nextTick(callback) {
         setTimeout(callback, 0);
     },
+    platform: (function() {
+        if ( String(java.lang.System.getProperty('os.name')).match(/^[Ww]in/) ) {
+            return 'win32';
+        }
+        else {
+            return 'linux';
+        }
+    })(),
     stderr: {
         // Java can't reliably find the terminal width across platforms, so we hard-code a
         // reasonable value
