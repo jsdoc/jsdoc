@@ -1,4 +1,5 @@
-/*global env: true, Packages: true */
+/*global env, java, Packages, version */
+/*eslint-disable strict */
 /**
  * @overview A minimal emulation of the standard features of Node.js necessary
  * to get JSDoc to run.
@@ -149,6 +150,15 @@ global.process = {
     nextTick: function nextTick(callback) {
         setTimeout(callback, 0);
     },
+    platform: (function() {
+        if ( String(java.lang.System.getProperty('os.name')).match(/^[Ww]in/) ) {
+            return 'win32';
+        }
+        else {
+            // not necessarily accurate, but good enough
+            return 'linux';
+        }
+    })(),
     stderr: {
         // Java can't reliably find the terminal width across platforms, so we hard-code a
         // reasonable value
