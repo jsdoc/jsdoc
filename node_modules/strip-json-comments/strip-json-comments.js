@@ -34,6 +34,9 @@
 			} else if (insideComment === 'single' && currentChar + nextChar === '\r\n') {
 				insideComment = false;
 				i++;
+				ret += currentChar;
+				ret += nextChar;
+				continue;
 			} else if (insideComment === 'single' && currentChar === '\n') {
 				insideComment = false;
 			} else if (!insideComment && currentChar + nextChar === '/*') {
