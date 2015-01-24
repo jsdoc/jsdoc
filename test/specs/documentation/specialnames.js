@@ -20,13 +20,11 @@ describe('documenting symbols with special names', function() {
         expect(hasOwnProp).toBeDefined();
     });
 
-    // currently broken: https://github.com/jsdoc3/jsdoc/issues/891
-    xit('When a symbol is named "prototype", the symbol should appear in the docs.', function() {
+    it('When a symbol is named "prototype", the symbol should appear in the docs.', function() {
         expect(proto).toBeDefined();
     });
 
-    // currently broken: https://github.com/jsdoc3/jsdoc/issues/891
-    xit('When a symbol is named "prototype", its members are resolved correctly.', function() {
+    it('When a symbol is named "prototype", its members are resolved correctly.', function() {
         expect(protoValueOf).toBeDefined();
     });
 });
