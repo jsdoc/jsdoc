@@ -78,5 +78,5 @@ gulp.task('test-rhino-esprima', function(cb) {
     exec(cmd, execCb.bind(null, cb));
 });
 
-gulp.task('test', ['lint', 'test-node', 'test-rhino', 'test-rhino-esprima']);
-gulp.task('default', ['test']);
+gulp.task('test', ['test-node', 'test-rhino', 'test-rhino-esprima']);
+gulp.task('default', ['lint', 'test']);
