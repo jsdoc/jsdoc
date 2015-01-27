@@ -16,6 +16,15 @@ Connection.prototype.open = function() {};
 Connection.prototype.close = function() {};
 
 /**
+ * Read the specified number of bytes from the connection.
+ *
+ * @function Connection#read
+ * @param {number} bytes - The number of bytes to read.
+ * @return {Buffer} The bytes that were read.
+ */
+Connection.prototype.read = function(bytes) {};
+
+/**
  * Child class.
  * @class
  * @extends Connection
@@ -31,3 +40,6 @@ Socket.prototype.open = function() {};
  * @inheritdoc
  */
 Socket.prototype.close = function() {};
+
+/** @inheritdoc */
+Socket.prototype.read = function(bytes) {};

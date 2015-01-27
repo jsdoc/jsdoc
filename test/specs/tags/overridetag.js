@@ -31,6 +31,14 @@ describe('@override tag', function() {
         expect(open.virtual).not.toBeDefined();
     });
 
+    it('should work with interface members whose names are specified in the comment', function() {
+        var connectionRead = docSet.getByLongname('Connection#read').filter(ignored)[0];
+        var socketRead = docSet.getByLongname('Socket#read').filter(ignored)[0];
+
+        expect(socketRead).toBeDefined();
+        expect(socketRead.description).toBe(connectionRead.description);
+    });
+
     xit('should only be available if the Closure dictionary is enabled', function() {
         // TODO
     });

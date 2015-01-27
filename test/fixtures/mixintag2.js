@@ -24,7 +24,8 @@ exports.ObjectB = {};
  */
 exports.ObjectC = {
     /**
-     * Super-sweet method.
+     * Super-sweet method that's named in the comment, making this a virtual comment.
+     * @function module:mixy.ObjectC.superSweet
      */
     superSweet: function() {}
 };
