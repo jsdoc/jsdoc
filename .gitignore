@@ -9,6 +9,11 @@ node_modules/istanbul
 # Node.js-only modules
 node_modules/requizzle
 
+# Unused files from committed modules
+node_modules/espree/README.md
+node_modules/espree/bin
+node_modules/espree/test
+
 # User-specific files
 conf.json
 

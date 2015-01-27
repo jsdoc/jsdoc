@@ -16,7 +16,7 @@
     "async": "~0.9.0",
     "catharsis": "~0.8.6",
     "escape-string-regexp": "~1.0.2",
-    "esprima": "https://github.com/ariya/esprima/tarball/49a2eccb243f29bd653b11e9419241a9d726af7c",
+    "espree": "1.7.1",
     "js2xmlparser": "~0.1.7",
     "marked": "~0.3.2",
     "requizzle": "~0.2.0",

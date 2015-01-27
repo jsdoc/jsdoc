@@ -3,44 +3,39 @@
 describe('jsdoc/src/astnode', function() {
     var astnode = require('jsdoc/src/astnode');
     var doop = require('jsdoc/util/doop');
-    var esprima = require('esprima');
+    var espree = require('espree');
     var Syntax = require('jsdoc/src/syntax').Syntax;
 
-    // we need this in Esprima <1.1.0 for some node types
-    var opts = {
-        raw: true
-    };
-
     // create the AST nodes we'll be testing
-    var arrayExpression = esprima.parse('[,]').body[0].expression;
-    var assignmentExpression = esprima.parse('foo = 1;').body[0].expression;
-    var binaryExpression = esprima.parse('foo & foo;').body[0].expression;
-    var functionDeclaration1 = esprima.parse('function foo() {}').body[0];
-    var functionDeclaration1a = esprima.parse('function bar() {}').body[0];
-    var functionDeclaration2 = esprima.parse('function foo(bar) {}').body[0];
-    var functionDeclaration3 = esprima.parse('function foo(bar, baz, qux) {}').body[0];
-    var functionExpression1 = esprima.parse('var foo = function() {};').body[0].declarations[0]
+    var arrayExpression = espree.parse('[,]').body[0].expression;
+    var assignmentExpression = espree.parse('foo = 1;').body[0].expression;
+    var binaryExpression = espree.parse('foo & foo;').body[0].expression;
+    var functionDeclaration1 = espree.parse('function foo() {}').body[0];
+    var functionDeclaration1a = espree.parse('function bar() {}').body[0];
+    var functionDeclaration2 = espree.parse('function foo(bar) {}').body[0];
+    var functionDeclaration3 = espree.parse('function foo(bar, baz, qux) {}').body[0];
+    var functionExpression1 = espree.parse('var foo = function() {};').body[0].declarations[0]
         .init;
-    var functionExpression2 = esprima.parse('var foo = function(bar) {};').body[0].declarations[0]
+    var functionExpression2 = espree.parse('var foo = function(bar) {};').body[0].declarations[0]
         .init;
-    var identifier = esprima.parse('foo;').body[0].expression;
-    var literal = esprima.parse('1;').body[0].expression;
-    var memberExpression = esprima.parse('foo.bar;').body[0].expression;
-    var memberExpressionComputed1 = esprima.parse('foo["bar"];', opts).body[0].expression;
-    var memberExpressionComputed2 = esprima.parse('foo[\'bar\'];', opts).body[0].expression;
-    var propertyGet = esprima.parse('var foo = { get bar() {} };').body[0].declarations[0].init
+    var identifier = espree.parse('foo;').body[0].expression;
+    var literal = espree.parse('1;').body[0].expression;
+    var memberExpression = espree.parse('foo.bar;').body[0].expression;
+    var memberExpressionComputed1 = espree.parse('foo["bar"];').body[0].expression;
+    var memberExpressionComputed2 = espree.parse('foo[\'bar\'];').body[0].expression;
+    var propertyGet = espree.parse('var foo = { get bar() {} };').body[0].declarations[0].init
         .properties[0];
-    var propertyInit = esprima.parse('var foo = { bar: {} };').body[0].declarations[0].init
+    var propertyInit = espree.parse('var foo = { bar: {} };').body[0].declarations[0].init
         .properties[0];
-    var propertySet = esprima.parse('var foo = { set bar(a) {} };').body[0].declarations[0].init
+    var propertySet = espree.parse('var foo = { set bar(a) {} };').body[0].declarations[0].init
         .properties[0];
-    var thisExpression = esprima.parse('this;').body[0].expression;
-    var unaryExpression1 = esprima.parse('+1;').body[0].expression;
-    var unaryExpression2 = esprima.parse('+foo;').body[0].expression;
-    var variableDeclaration1 = esprima.parse('var foo = 1;').body[0];
-    var variableDeclaration2 = esprima.parse('var foo = 1, bar = 2;').body[0];
-    var variableDeclarator1 = esprima.parse('var foo = 1;').body[0].declarations[0];
-    var variableDeclarator2 = esprima.parse('var foo;').body[0].declarations[0];
+    var thisExpression = espree.parse('this;').body[0].expression;
+    var unaryExpression1 = espree.parse('+1;').body[0].expression;
+    var unaryExpression2 = espree.parse('+foo;').body[0].expression;
+    var variableDeclaration1 = espree.parse('var foo = 1;').body[0];
+    var variableDeclaration2 = espree.parse('var foo = 1, bar = 2;').body[0];
+    var variableDeclarator1 = espree.parse('var foo = 1;').body[0].declarations[0];
+    var variableDeclarator2 = espree.parse('var foo;').body[0].declarations[0];
 
     it('should exist', function() {
         expect(astnode).toBeDefined();
@@ -561,7 +556,7 @@ describe('jsdoc/src/astnode', function() {
             function postfixNodeToString() {
                 // there's no valid source representation for this one, so we fake it
                 var unaryExpressionPostfix = (function() {
-                    var node = esprima.parse('+1;').body[0].expression;
+                    var node = espree.parse('+1;').body[0].expression;
                     node.prefix = false;
                     return node;
                 })();
