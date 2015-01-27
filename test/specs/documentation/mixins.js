@@ -31,6 +31,14 @@ describe('mixins', function() {
             expect(objectCMethod.mixes[0]).toBe('module:mixy.ObjectB.method');
         });
 
+        it('should work with mixed-in doclets whose names are specified in the comment', function() {
+            var superSweetStatic = docSet.getByLongname('module:mixy.ObjectC.superSweet')[0];
+            var superSweetInstance = docSet.getByLongname('module:mixy.ClassB#superSweet')[0];
+
+            expect(superSweetInstance).toBeDefined();
+            expect(superSweetInstance.comment).toBe(superSweetStatic.comment);
+        });
+
         describe('classes and mixins', function() {
             it('should define symbols mixed into a class as instance members', function() {
                 var classAMethod = docSet.getByLongname('module:mixy.ClassA#method')[0];

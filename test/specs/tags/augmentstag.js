@@ -148,6 +148,14 @@
         expect(derivedMethod1.description).toBe(baseMethod1.description);
     });
 
+    it('When a symbol inherits an explicitly named symbol, the inherited symbol is documented', function() {
+        var baseMethod3 = docSet4.getByLongname('Base#test3')[0];
+        var derivedMethod3 = docSet4.getByLongname('Derived#test3')[0];
+
+        expect(derivedMethod3).toBeDefined();
+        expect(derivedMethod3.comment).toBe(baseMethod3.comment);
+    });
+
     it('When a symbol inherits two methods that would both have the same longname, the last one wins', function() {
         var base1CommonMethod = docSet5.getByLongname('Base1#methodOfBaseCommon')[0];
         var classCommonMethod = docSet5.getByLongname('Class#methodOfBaseCommon');
