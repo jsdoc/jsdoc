@@ -17,7 +17,6 @@
 
 var config = require('./lib/config');
 var DocletHelper;
-var ENUMS;
 var finders;
 var helper = require('jsdoc/util/templateHelper');
 var PublishJob;
@@ -29,7 +28,6 @@ function init(filepaths) {
     };
 
     DocletHelper = finders.modules.require('./doclethelper');
-    ENUMS = finders.modules.require('./enums');
     PublishJob = finders.modules.require('./publishjob');
     Template = finders.modules.require('./template');
 }
@@ -66,7 +64,7 @@ exports.publish = function(data, opts, tutorials) {
 
     // generate TOC data and index page
     job.generateTocData({ hasGlobals: docletHelper.hasGlobals() })
-        .generateIndex(docletHelper.getCategory(ENUMS.CATEGORIES.PACKAGES), opts.readme);
+        .generateIndex(opts.readme);
 
     // generate the rest of the output files (excluding tutorials)
     docletHelper.getOutputLongnames().forEach(function(longname) {
