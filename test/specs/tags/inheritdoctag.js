@@ -38,8 +38,4 @@ describe('@inheritdoc tag', function() {
         expect(socketRead).toBeDefined();
         expect(socketRead.description).toBe(connectionRead.description);
     });
-
-    xit('should only be available if the Closure dictionary is enabled', function() {
-        // TODO
-    });
 });
