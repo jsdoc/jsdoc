@@ -13,3 +13,6 @@ var mySocket;
 
 /** @const ROCKET */
 var myRocket;
+
+/** auto-detected const */
+const myPocket = 1;
