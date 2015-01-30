@@ -6,6 +6,7 @@
     var docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js');
     var docSet4 = jasmine.getDocSetFromFile('test/fixtures/augmentstag4.js');
     var docSet5 = jasmine.getDocSetFromFile('test/fixtures/augmentstag5.js');
+    var docSet6 = jasmine.getDocSetFromFile('test/fixtures/augmentstag6.js');
 
     it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', function() {
         var bar = docSet.getByLongname('Bar')[0];
@@ -162,5 +163,13 @@
 
         expect(classCommonMethod.length).toBe(1);
         expect(classCommonMethod[0].description).toBe(base1CommonMethod.description);
+    });
+
+    it('Interfaces can augment other interfaces', function() {
+        var connectionOpen = docSet6.getByLongname('IConnection#open')[0];
+        var closableConnectionOpen = docSet6.getByLongname('IClosableConnection#open')[0];
+
+        expect(closableConnectionOpen).toBeDefined();
+        expect(closableConnectionOpen.description).toBe(connectionOpen.description);
     });
 });
