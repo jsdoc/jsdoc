@@ -38,43 +38,39 @@ describe('jsdoc/src/astnode', function() {
     var variableDeclarator2 = espree.parse('var foo;').body[0].declarations[0];
 
     it('should exist', function() {
-        expect(astnode).toBeDefined();
         expect(typeof astnode).toBe('object');
     });
 
-    it('should export a nodeToString method', function() {
-        expect(astnode.nodeToString).toBeDefined();
-        expect(typeof astnode.nodeToString).toBe('function');
-    });
-
     it('should export an addNodeProperties method', function() {
-        expect(astnode.addNodeProperties).toBeDefined();
         expect(typeof astnode.addNodeProperties).toBe('function');
     });
 
     it('should export a getInfo method', function() {
-        expect(astnode.getInfo).toBeDefined();
         expect(typeof astnode.getInfo).toBe('function');
     });
 
     it('should export a getParamNames method', function() {
-        expect(astnode.getParamNames).toBeDefined();
         expect(typeof astnode.getParamNames).toBe('function');
     });
 
     it('should export an isAccessor method', function() {
-        expect(astnode.isAccessor).toBeDefined();
         expect(typeof astnode.isAccessor).toBe('function');
     });
 
     it('should export an isAssignment method', function() {
-        expect(astnode.isAssignment).toBeDefined();
         expect(typeof astnode.isAssignment).toBe('function');
     });
 
     it('should export an isScope method', function() {
-        expect(astnode.isScope).toBeDefined();
         expect(typeof astnode.isScope).toBe('function');
+    });
+
+    it('should export a nodeToString method', function() {
+        expect(typeof astnode.nodeToString).toBe('function');
+    });
+
+    it('should export a nodeToValue method', function() {
+        expect(typeof astnode.nodeToValue).toBe('function');
     });
 
     describe('addNodeProperties', function() {
@@ -269,7 +265,7 @@ describe('jsdoc/src/astnode', function() {
 
             expect(info.name).toBe('foo');
             expect(info.type).toBe(Syntax.Literal);
-            expect(info.value).toBe('1');
+            expect(info.value).toBe(1);
         });
 
         it('should return the correct info for a FunctionDeclaration', function() {
@@ -366,7 +362,7 @@ describe('jsdoc/src/astnode', function() {
 
             expect(info.name).toBe('foo');
             expect(info.type).toBe(Syntax.Literal);
-            expect(info.value).toBe('1');
+            expect(info.value).toBe(1);
         });
 
         it('should return the correct info for a VariableDeclarator with no value', function() {
@@ -508,70 +504,76 @@ describe('jsdoc/src/astnode', function() {
     });
 
     describe('nodeToString', function() {
+        it('should be an alias to nodeToValue', function() {
+            expect(astnode.nodeToString).toBe(astnode.nodeToValue);
+        });
+    });
+
+    describe('nodeToValue', function() {
         it('should return `[null]` for the sparse array `[,]`', function() {
-            expect( astnode.nodeToString(arrayExpression) ).toBe('[null]');
+            expect( astnode.nodeToValue(arrayExpression) ).toBe('[null]');
         });
 
         it('should return the variable name for assignment expressions', function() {
-            expect( astnode.nodeToString(assignmentExpression) ).toBe('foo');
+            expect( astnode.nodeToValue(assignmentExpression) ).toBe('foo');
         });
 
         it('should return "function" for function declarations', function() {
-            expect( astnode.nodeToString(functionDeclaration1) ).toBe('function');
+            expect( astnode.nodeToValue(functionDeclaration1) ).toBe('function');
         });
 
         it('should return "function" for function expressions', function() {
-            expect( astnode.nodeToString(functionExpression1) ).toBe('function');
+            expect( astnode.nodeToValue(functionExpression1) ).toBe('function');
         });
 
         it('should return the identifier name for identifiers', function() {
-            expect( astnode.nodeToString(identifier) ).toBe('foo');
+            expect( astnode.nodeToValue(identifier) ).toBe('foo');
         });
 
-        it('should return the literal value (as a string) for literals', function() {
-            expect( astnode.nodeToString(literal) ).toBe('1');
+        it('should return the literal value for literals', function() {
+            expect( astnode.nodeToValue(literal) ).toBe(1);
         });
 
         it('should return the object and property for noncomputed member expressions', function() {
-            expect( astnode.nodeToString(memberExpression) ).toBe('foo.bar');
+            expect( astnode.nodeToValue(memberExpression) ).toBe('foo.bar');
         });
 
         it('should return the object and property, with a computed property that uses the same ' +
             'quote character as the original source, for computed member expressions', function() {
-            expect( astnode.nodeToString(memberExpressionComputed1) ).toBe('foo["bar"]');
-            expect( astnode.nodeToString(memberExpressionComputed2) ).toBe('foo[\'bar\']');
+            expect( astnode.nodeToValue(memberExpressionComputed1) ).toBe('foo["bar"]');
+            expect( astnode.nodeToValue(memberExpressionComputed2) ).toBe('foo[\'bar\']');
         });
 
         it('should return "this" for this expressions', function() {
-            expect( astnode.nodeToString(thisExpression) ).toBe('this');
+            expect( astnode.nodeToValue(thisExpression) ).toBe('this');
         });
 
-        it('should return the operator and nodeToString value for prefix unary expressions',
+        it('should return the operator and nodeToValue value for prefix unary expressions',
             function() {
-            expect( astnode.nodeToString(unaryExpression1) ).toBe('+1');
-            expect( astnode.nodeToString(unaryExpression2) ).toBe('+foo');
+            expect( astnode.nodeToValue(unaryExpression1) ).toBe('+1');
+            expect( astnode.nodeToValue(unaryExpression2) ).toBe('+foo');
         });
 
         it('should throw an error for postfix unary expressions', function() {
-            function postfixNodeToString() {
+            function postfixNodeToValue() {
                 // there's no valid source representation for this one, so we fake it
                 var unaryExpressionPostfix = (function() {
                     var node = espree.parse('+1;').body[0].expression;
                     node.prefix = false;
                     return node;
                 })();
-                return astnode.nodeToString(unaryExpressionPostfix);
+                return astnode.nodeToValue(unaryExpressionPostfix);
             }
 
-            expect(postfixNodeToString).toThrow();
+            expect(postfixNodeToValue).toThrow();
         });
 
         it('should return the variable name for variable declarators', function() {
-            expect( astnode.nodeToString(variableDeclarator1) ).toBe('foo');
+            expect( astnode.nodeToValue(variableDeclarator1) ).toBe('foo');
         });
 
         it('should return an empty string for all other nodes', function() {
-            expect( astnode.nodeToString(binaryExpression) ).toBe('');
+            expect( astnode.nodeToValue(binaryExpression) ).toBe('');
         });
     });
 });

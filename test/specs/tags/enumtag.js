@@ -18,7 +18,7 @@ describe('@enum tag', function() {
     });
 
     it('A property of an enum gets its defaultvalue set.', function() {
-        expect(tristate.properties[1].defaultvalue).toBe('-1');
+        expect(tristate.properties[1].defaultvalue).toBe(-1);
     });
 
     it('If a @type is given for the property, it is reflected in the property value.', function() {
