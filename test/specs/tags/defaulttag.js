@@ -5,7 +5,7 @@ describe('@default tag', function() {
 
     it('When symbol set to null has a @default tag with no text, the doclet\'s defaultValue property should be: null', function() {
         var request = docSet.getByLongname('request')[0];
-        expect(request.defaultvalue).toBe('null');
+        expect(request.defaultvalue).toBe(null);
     });
 
     it('When symbol set to a string has a @default tag with no text, the doclet\'s defaultValue property should be that string', function() {
@@ -15,7 +15,7 @@ describe('@default tag', function() {
 
     it('When symbol set to a number has a @default tag with no text, the doclet\'s defaultValue property should be that number.', function() {
         var rcode = docSet.getByLongname('rcode')[0];
-        expect(rcode.defaultvalue).toBe('200');
+        expect(rcode.defaultvalue).toBe(200);
     });
 
     it('When symbol has a @default tag with text, the doclet\'s defaultValue property should be that text.', function() {
@@ -25,12 +25,12 @@ describe('@default tag', function() {
 
     it('When symbol has a @default tag with true.', function() {
         var rvalid = docSet.getByLongname('rvalid')[0];
-        expect(rvalid.defaultvalue).toBe('true');
+        expect(rvalid.defaultvalue).toBe(true);
     });
 
     it('When symbol has a @default tag with false.', function() {
         var rerrored = docSet.getByLongname('rerrored')[0];
-        expect(rerrored.defaultvalue, 'false');
+        expect(rerrored.defaultvalue, false);
     });
 
     it('When symbol has a @default tag with a function call.', function() {
