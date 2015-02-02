@@ -79,7 +79,7 @@ describe('@param tag', function() {
         expect(request.params.length).toBe(1);
         expect(request.params[0].type).toBeUndefined();
         expect(request.params[0].name).toBe('async');
-        expect(request.params[0].defaultvalue).toBe('true');
+        expect(request.params[0].defaultvalue).toBe(true);
         expect(request.params[0].optional).toBe(true);
         expect(request.params[0].description).toBe('whether to be asynchronous');
     });
