@@ -1,9 +1,9 @@
 /**
  * @namespace
- * @property {String} id=abc123   The identifier.
- * @property {Object} defaults    The default values.
- * @property {Number} defaults.a  The a property of the defaults.
- * @property {String} defaults.b  The b property of the defaults.
+ * @property {String} id=abc123 The identifier.
+ * @property {Object} defaults The default values.
+ * @property {Number} defaults.a=1 The a property of the defaults.
+ * @property {String} defaults.b The b property of the defaults.
  */
 var myobject = {
     id: "abc123",

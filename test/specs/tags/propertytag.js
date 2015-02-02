@@ -14,6 +14,7 @@ describe('@property tag', function() {
         expect(myobject.properties[3].name).toBe('defaults.b');
 
         expect(myobject.properties[0].defaultvalue).toBe('abc123');
+        expect(myobject.properties[2].defaultvalue).toBe(1);
 
         expect(myobject.properties[1].description).toBe('The default values.');
         expect(myobject.properties[1].type.names[0]).toBe('Object');
