@@ -39,7 +39,7 @@ describe('jsdoc/augment', function() {
 
     describe('augmentAll', function() {
         it('should call all other methods that the module exports', function() {
-            var docSet = jasmine.getDocSetFromFile('test/fixtures/mixintag2.js');
+            var docSet = jasmine.getDocSetFromFile('test/fixtures/mixintag2.js', null, null, false);
             var methodNames = Object.keys(augment).filter(function(name) {
                 return name !== 'augmentAll';
             });
@@ -48,11 +48,22 @@ describe('jsdoc/augment', function() {
                 spyOn(augment, name);
             });
 
-            augment.augmentAll(docSet);
+            augment.augmentAll(docSet.doclets);
 
             methodNames.forEach(function(name) {
                 expect(augment[name]).toHaveBeenCalled();
             });
+        });
+
+        it('should process @implements tags before @augments tags', function() {
+            var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentall.js', null, null, false);
+            var open;
+
+            augment.augmentAll(docSet.doclets);
+
+            open = docSet.getByLongname('EncryptedSocket#open')[0];
+
+            expect(open.description).toBe('Open the connection.');
         });
     });
 });
