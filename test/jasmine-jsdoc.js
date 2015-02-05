@@ -142,7 +142,7 @@ jasmine.asyncSpecDone = function() {
     jasmine.asyncSpecWait.done = true;
 };
 
-jasmine.getDocSetFromFile = function(filename, parser, validate) {
+jasmine.getDocSetFromFile = function(filename, parser, validate, augment) {
     var doclets;
     var validationResult;
 
@@ -154,8 +154,9 @@ jasmine.getDocSetFromFile = function(filename, parser, validate) {
     doclets = testParser.parse('javascript:' + sourceCode);
     jsdoc.borrow.indexAll(doclets);
 
-    jsdoc.augment.addInherited(doclets);
-    jsdoc.augment.addImplemented(doclets);
+    if (augment !== false) {
+        jsdoc.augment.augmentAll(doclets);
+    }
 
     // test assume borrows have not yet been resolved
     // require('jsdoc/borrow').resolveBorrows(doclets);
