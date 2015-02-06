@@ -157,7 +157,8 @@
         expect(derivedMethod3.comment).toBe(baseMethod3.comment);
     });
 
-    it('When a symbol inherits two methods that would both have the same longname, the last one wins', function() {
+    // https://github.com/jsdoc3/jsdoc/issues/911
+    xit('When a symbol inherits two methods that would both have the same longname, the last one wins', function() {
         var base1CommonMethod = docSet5.getByLongname('Base1#methodOfBaseCommon')[0];
         var classCommonMethod = docSet5.getByLongname('Class#methodOfBaseCommon');
 
