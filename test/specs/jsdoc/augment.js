@@ -55,15 +55,32 @@ describe('jsdoc/augment', function() {
             });
         });
 
-        it('should process @implements tags before @augments tags', function() {
+        it('should work when a class extends another class that implements an interface', function() {
             var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentall.js', null, null, false);
             var open;
 
             augment.augmentAll(docSet.doclets);
 
-            open = docSet.getByLongname('EncryptedSocket#open')[0];
+            open = docSet.getByLongname('EncryptedSocket#open').filter(function(d) {
+                return !d.ignore;
+            });
 
-            expect(open.description).toBe('Open the connection.');
+            expect(open.length).toBe(1);
+            expect(open[0].description).toBe('Open the connection.');
+        });
+
+        it('should work when a class implements an interface that extends another interface', function() {
+            var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentall2.js', null, null, false);
+            var open;
+
+            augment.augmentAll(docSet.doclets);
+
+            open = docSet.getByLongname('EncryptedSocket#open').filter(function(d) {
+                return !d.ignore;
+            });
+
+            expect(open.length).toBe(1);
+            expect(open[0].description).toBe('Open the connection.');
         });
     });
 });
