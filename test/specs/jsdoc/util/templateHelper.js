@@ -473,6 +473,15 @@ describe("jsdoc/util/templateHelper", function() {
             var input = '<h1>Foo & Friends</h1>';
             expect( helper.htmlsafe(input) ).toBe('&lt;h1>Foo &amp; Friends&lt;/h1>');
         });
+
+        it('should convert non-strings to strings', function() {
+            function htmlsafe() {
+                return helper.htmlsafe(false);
+            }
+
+            expect(htmlsafe).not.toThrow();
+            expect(htmlsafe()).toBe('false');
+        });
     });
 
     describe("find", function() {
