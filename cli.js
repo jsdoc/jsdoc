@@ -53,7 +53,7 @@ cli.setVersionInfo = function() {
 
 // TODO: docs
 cli.loadConfig = function() {
-    var _ = require('underscore');
+    var _ = require('lodash');
     var args = require('jsdoc/opts/args');
     var Config = require('jsdoc/config');
     var fs = require('jsdoc/fs');
