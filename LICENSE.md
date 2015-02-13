@@ -233,6 +233,15 @@ Copyright (c) 2012 Michael Kourlas.
 The source code for js2xmlparser is available at:
 https://github.com/michaelkourlas/node-js2xmlparser
 
+## lodash ##
+
+lodash is distributed under the MIT license, which is reproduced above.
+
+Copyright (c) 2012-2015 The Dojo Foundation.
+
+The source code for lodash is available at:
+https://github.com/lodash/lodash
+
 ## Node.js ##
 
 Portions of the Node.js source code are incorporated into the following files:
@@ -369,16 +378,6 @@ is reproduced above.
 
 The source code for tv4 is available at:
 https://github.com/geraintluff/tv4
-
-## Underscore.js ##
-
-Underscore.js is distributed under the MIT license, which is reproduced above.
-
-Copyright (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative
-Reporters & Editors.
-
-The source code for Underscore.js is available at:
-https://github.com/jashkenas/underscore
 
 ## url ##
 

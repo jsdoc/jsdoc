@@ -2,7 +2,7 @@
 
 describe('jsdoc/doclet', function() {
     // TODO: more tests
-    var _ = require('underscore');
+    var _ = require('lodash');
     var Doclet = require('jsdoc/doclet').Doclet;
 
     var debug = !!global.env.opts.debug;
