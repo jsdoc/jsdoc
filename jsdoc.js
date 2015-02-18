@@ -59,16 +59,22 @@ global.env = (function() {
 /**
  * Data that must be shared across the entire application.
  *
+ * @deprecated As of JSDoc 3.4.0. Avoid using the `app` object. The global `app` object and the
+ * `jsdoc/app` module will be removed in a future release.
  * @namespace
  * @name app
  */
-global.app = {
-    jsdoc: {
-        name: require('./lib/jsdoc/name'),
-        parser: null,
-        scanner: new (require('./lib/jsdoc/src/scanner').Scanner)()
+global.app = (function() {
+    'use strict';
+
+    // See comment in `global.env` to find out why we jump through this hoop.
+    if (require('./lib/jsdoc/util/runtime').isRhino()) {
+        return require('jsdoc/app');
     }
-};
+    else {
+        return require('./lib/jsdoc/app');
+    }
+})();
 
 /**
  * Recursively print an object's properties to stdout. This method is safe to use with objects that
