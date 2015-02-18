@@ -2,11 +2,11 @@
 
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe('plugins', function() {
+    var env = require('jsdoc/env');
     var path = require('jsdoc/path');
 
     var app = global.app;
     var docSet;
-    var env = global.env;
 
     var pluginPaths = [
         path.normalize(env.dirname + '/test/fixtures/testPlugin1'),

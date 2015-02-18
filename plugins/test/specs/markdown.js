@@ -1,10 +1,11 @@
 'use strict';
 
+var env = require('jsdoc/env');
 var path = require('jsdoc/path');
 
 describe('markdown plugin', function() {
     var pluginPath = 'plugins/markdown';
-    var pluginPathResolved = path.join(global.env.dirname, pluginPath);
+    var pluginPathResolved = path.join(env.dirname, pluginPath);
     var plugin = require(pluginPathResolved);
 
     var docSet = jasmine.getDocSetFromFile('plugins/test/fixtures/markdown.js');

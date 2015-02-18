@@ -1,14 +1,13 @@
-/*global describe, expect, it, jasmine */
 'use strict';
 
 describe('sourcetag plugin', function() {
-    var parser = jasmine.createParser();
+    var env = require('jsdoc/env');
     var path = require('jsdoc/path');
 
     var docSet;
-
+    var parser = jasmine.createParser();
     var pluginPath = 'plugins/sourcetag';
-    var pluginPathResolved = path.join(global.env.dirname, pluginPath);
+    var pluginPathResolved = path.join(env.dirname, pluginPath);
     var plugin = require(pluginPathResolved);
 
     require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);

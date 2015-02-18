@@ -6,82 +6,6 @@
  * @license See LICENSE.md file included in this distribution.
  */
 
-/**
- * Data representing the environment in which this app is running.
- *
- * @namespace
- * @name env
- */
-global.env = {
-    /**
-     * Running start and finish times.
-     *
-     * @memberof env
-     */
-    run: {
-        start: new Date(),
-        finish: null
-    },
-
-    /**
-     * The command-line arguments passed into JSDoc.
-     *
-     * @type Array
-     * @memberof env
-     */
-    args: [],
-
-    /**
-     * The parsed JSON data from the configuration file.
-     *
-     * @type Object
-     * @memberof env
-     */
-    conf: {},
-
-    /**
-     * The absolute path to the base directory of the JSDoc application.
-     *
-     * @private
-     * @type string
-     * @memberof env
-     */
-    dirname: '.',
-
-    /**
-     * The user's working directory at the time that JSDoc was started.
-     *
-     * @private
-     * @type string
-     * @memberof env
-     */
-    pwd: null,
-
-    /**
-     * The command-line options, parsed into a key/value hash.
-     *
-     * @type Object
-     * @memberof env
-     * @example if (global.env.opts.help) { console.log('Helpful message.'); }
-    */
-    opts: {},
-
-    /**
-     * The source files that JSDoc will parse.
-     * @type Array
-     * @memberof env
-     */
-    sourceFiles: [],
-
-    /**
-     * The JSDoc version number and revision date.
-     *
-     * @type Object
-     * @memberof env
-     */
-    version: {}
-};
-
 // initialize the environment for the current JavaScript VM
 (function(args) {
     'use strict';
@@ -108,6 +32,29 @@ global.env = {
 
     require('./lib/jsdoc/util/runtime').initialize(args);
 })( Array.prototype.slice.call(arguments, 0) );
+
+/**
+ * Data about the environment in which JSDoc is running, including the configuration settings that
+ * were used to run JSDoc.
+ *
+ * @deprecated As of JSDoc 3.4.0. Use `require('jsdoc/env')` to access the `env` object. The global
+ * `env` object will be removed in a future release.
+ * @namespace
+ * @name env
+ */
+global.env = (function() {
+    'use strict';
+
+    // This bit of joy is here because Rhino treats `./lib/jsdoc/env` and `jsdoc/env` as separate
+    // modules. In contrast, Node.js errors out on `jsdoc/env` because we don't patch `require()`
+    // until after this file is loaded.
+    if (require('./lib/jsdoc/util/runtime').isRhino()) {
+        return require('jsdoc/env');
+    }
+    else {
+        return require('./lib/jsdoc/env');
+    }
+})();
 
 /**
  * Data that must be shared across the entire application.
@@ -146,6 +93,7 @@ global.dump = function() {
 (function() {
     'use strict';
 
+    var env = global.env;
     var logger = require('./lib/jsdoc/util/logger');
     var runtime = require('./lib/jsdoc/util/runtime');
     var cli = require('./cli');
@@ -158,7 +106,7 @@ global.dump = function() {
     cli.setVersionInfo()
         .loadConfig();
 
-    if (!global.env.opts.test) {
+    if (!env.opts.test) {
         cli.configureLogger();
     }
 

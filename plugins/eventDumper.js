@@ -1,4 +1,3 @@
-/*global env: true */
 /**
  * @overview Dump information about parser events to the console.
  * @module plugins/eventDumper
@@ -7,6 +6,7 @@
 'use strict';
 
 var _ = require('underscore');
+var env = require('jsdoc/env');
 var util = require('util');
 
 var conf = env.conf.eventDumper || {};

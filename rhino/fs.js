@@ -4,6 +4,7 @@
  */
 'use strict';
 
+var env = require('jsdoc/env');
 var path = require('path');
 var util = require('util');
 
@@ -88,7 +89,7 @@ var toDir = exports.toDir = function toDir(_path) {
     var f;
 
     _path = path.normalize(_path);
-    f = new java.io.File( path.resolve(global.env.pwd, _path) );
+    f = new java.io.File( path.resolve(env.pwd, _path) );
 
     if ( f.isDirectory() ){
        return _path;
@@ -109,7 +110,7 @@ exports.mkPath = function mkPath(_path) {
         _path = _path.join('');
     }
 
-    ( new java.io.File(path.resolve(global.env.pwd, _path)) ).mkdirs();
+    ( new java.io.File(path.resolve(env.pwd, _path)) ).mkdirs();
 };
 
 // JSDoc extension to `fs` module

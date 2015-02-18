@@ -4,6 +4,7 @@
 describe('jsdoc/src/parser', function() {
     var fs = require('jsdoc/fs');
     var jsdoc = {
+        env: require('jsdoc/env'),
         src: {
             handlers: require('jsdoc/src/handlers'),
             parser: require('jsdoc/src/parser')
@@ -269,7 +270,7 @@ describe('jsdoc/src/parser', function() {
                 it('should not throw errors when parsing files with ES6 syntax', function() {
                     function parse() {
                         var parserSrc = 'javascript:' + fs.readFileSync(
-                            path.join(global.env.dirname, 'test/fixtures/es6.js'), 'utf8');
+                            path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8');
                         parser.parse(parserSrc);
                     }
 
@@ -278,7 +279,7 @@ describe('jsdoc/src/parser', function() {
             }
 
             it('should be able to parse its own source file', function() {
-                var parserSrc = 'javascript:' + fs.readFileSync(path.join(global.env.dirname,
+                var parserSrc = 'javascript:' + fs.readFileSync(path.join(jsdoc.env.dirname,
                     'lib/jsdoc/src/parser.js'), 'utf8');
 
                 function parse() {
@@ -349,7 +350,7 @@ describe('jsdoc/src/parser', function() {
                     jsdocCommentFound: [],
                     symbolFound: []
                 };
-                var source = fs.readFileSync(path.join(global.env.dirname,
+                var source = fs.readFileSync(path.join(jsdoc.env.dirname,
                     'test/fixtures/eventorder.js'), 'utf8');
 
                 function pushEvent(e) {

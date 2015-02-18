@@ -16,6 +16,7 @@
 module.exports = (function() {
 'use strict';
 
+var env = require('jsdoc/env');
 var logger = require('jsdoc/util/logger');
 var stripJsonComments = require('strip-json-comments');
 
@@ -29,7 +30,6 @@ var props = {
 };
 
 var app = global.app;
-var env = global.env;
 
 var FATAL_ERROR_MESSAGE = 'Exiting JSDoc because an error occurred. See the previous log ' +
     'messages for details.';

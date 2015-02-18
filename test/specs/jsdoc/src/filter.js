@@ -1,6 +1,7 @@
 'use strict';
 
 describe('jsdoc/src/filter', function() {
+    var env = require('jsdoc/env');
     var filter = require('jsdoc/src/filter');
     var path = require('jsdoc/path');
 
@@ -60,7 +61,7 @@ describe('jsdoc/src/filter', function() {
                     exclude: [filename]
                 });
 
-                expect(myFilter.exclude).toEqual([path.resolve(global.env.pwd, filename)]);
+                expect(myFilter.exclude).toEqual([path.resolve(env.pwd, filename)]);
             });
         });
 
@@ -100,7 +101,7 @@ describe('jsdoc/src/filter', function() {
                     '/yes.jsdoc',
                     '/_nope.js',
                     '.ignore',
-                    path.normalize(global.env.pwd + '/scratch/conf.js')
+                    path.normalize(env.pwd + '/scratch/conf.js')
                 ];
                 myFilter = new filter.Filter({
                     includePattern: defaultIncludePattern,

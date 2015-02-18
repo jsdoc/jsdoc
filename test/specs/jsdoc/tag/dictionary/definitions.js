@@ -1,6 +1,7 @@
 'use strict';
 
 describe('jsdoc/tag/dictionary/definitions', function() {
+    var env = require('jsdoc/env');
     var definitions = require('jsdoc/tag/dictionary/definitions');
     var Dictionary = require('jsdoc/tag/dictionary').Dictionary;
     var logger = require('jsdoc/util/logger');
@@ -39,20 +40,20 @@ describe('jsdoc/tag/dictionary/definitions', function() {
     });
 
     describe('defineTags', function() {
-        var dictionaryConfig = global.env.conf.tags.dictionaries.slice(0);
+        var dictionaryConfig = env.conf.tags.dictionaries.slice(0);
         var tagDict;
 
         beforeEach(function() {
-            global.env.conf.tags.dictionaries = [];
+            env.conf.tags.dictionaries = [];
             tagDict = new Dictionary();
         });
 
         afterEach(function() {
-            global.env.conf.tags.dictionaries = dictionaryConfig.slice(0);
+            env.conf.tags.dictionaries = dictionaryConfig.slice(0);
         });
 
         it('should log an error if `env.conf.tags.dictionaries` is undefined', function() {
-            global.env.conf.tags.dictionaries = undefined;
+            env.conf.tags.dictionaries = undefined;
             spyOn(logger, 'error');
             definitions.defineTags(tagDict);
 
@@ -60,7 +61,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
         });
 
         it('should log an error if an unknown dictionary is requested', function() {
-            global.env.conf.tags.dictionaries = ['jsmarmoset'];
+            env.conf.tags.dictionaries = ['jsmarmoset'];
             spyOn(logger, 'error');
             definitions.defineTags(tagDict);
 
@@ -68,7 +69,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
         });
 
         it('should add both JSDoc and Closure tags by default', function() {
-            global.env.conf.tags.dictionaries = dictionaryConfig.slice(0);
+            env.conf.tags.dictionaries = dictionaryConfig.slice(0);
             definitions.defineTags(tagDict);
 
             // Check for one tag from the JSDoc tagdefs and another tag from the Closure tagdefs.
@@ -78,7 +79,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
         });
 
         it('should add only the JSDoc tags if requested', function() {
-            global.env.conf.tags.dictionaries = ['jsdoc'];
+            env.conf.tags.dictionaries = ['jsdoc'];
             definitions.defineTags(tagDict);
 
             // Check for one tag from the JSDoc tagdefs and another tag from another set of tagdefs.
@@ -88,7 +89,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
         });
 
         it('should add only the Closure tags if requested', function() {
-            global.env.conf.tags.dictionaries = ['closure'];
+            env.conf.tags.dictionaries = ['closure'];
             definitions.defineTags(tagDict);
 
             // Check for one tag from the Closure tagdefs and another tag from another set of
@@ -98,14 +99,14 @@ describe('jsdoc/tag/dictionary/definitions', function() {
         });
 
         it('should prefer tagdefs from the first dictionary on the list', function() {
-            global.env.conf.tags.dictionaries = ['closure', 'jsdoc'];
+            env.conf.tags.dictionaries = ['closure', 'jsdoc'];
             definitions.defineTags(tagDict);
 
             expect(tagDict.lookUp('deprecated').synonyms).not.toBeDefined();
         });
 
         it('should add tag synonyms', function() {
-            global.env.conf.tags.dictionaries = ['jsdoc'];
+            env.conf.tags.dictionaries = ['jsdoc'];
             definitions.defineTags(tagDict);
 
             expect(tagDict.lookUp('extends')).not.toBe(false);
@@ -119,7 +120,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
                 }
             };
 
-            global.env.conf.tags.dictionaries = ['jsdoc'];
+            env.conf.tags.dictionaries = ['jsdoc'];
             definitions.defineTags(tagDict, tagDefs);
 
             expect(tagDict.lookUp('foo')).not.toBe(false);

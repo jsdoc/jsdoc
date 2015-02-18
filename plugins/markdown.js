@@ -6,7 +6,9 @@
  */
 'use strict';
 
-var config = global.env.conf.markdown || {};
+var env = require('jsdoc/env');
+
+var config = env.conf.markdown || {};
 var defaultTags = [
     'author',
     'classdesc',

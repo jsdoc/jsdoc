@@ -4,8 +4,9 @@ describe('jsdoc/doclet', function() {
     // TODO: more tests
     var _ = require('underscore');
     var Doclet = require('jsdoc/doclet').Doclet;
+    var env = require('jsdoc/env');
 
-    var debug = !!global.env.opts.debug;
+    var debug = !!env.opts.debug;
     var docSet = jasmine.getDocSetFromFile('test/fixtures/doclet.js');
     var test1 = docSet.getByLongname('test1')[0];
     var test2 = docSet.getByLongname('test2')[0];
@@ -14,7 +15,7 @@ describe('jsdoc/doclet', function() {
     var expectStrong = '**Strong** is strong';
 
     afterEach(function() {
-        global.env.opts.debug = debug;
+        env.opts.debug = debug;
     });
 
     it('does not mangle Markdown in a description that uses leading asterisks', function() {
@@ -32,7 +33,7 @@ describe('jsdoc/doclet', function() {
         var descriptor;
         var doclet;
 
-        global.env.opts.debug = true;
+        env.opts.debug = true;
         doclet = jasmine.getDocSetFromFile('test/fixtures/doclet.js').getByLongname('test1')[0];
         descriptor = Object.getOwnPropertyDescriptor(doclet.meta.code, 'node');
 

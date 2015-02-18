@@ -1,12 +1,12 @@
 'use strict';
 
 describe('module names', function() {
+    var env = require('jsdoc/env');
     var path = require('jsdoc/path');
     var runtime = require('jsdoc/util/runtime');
 
     var doclets;
 
-    var env = global.env;
     var pwd = env.pwd;
     var srcParser = null;
     var sourceFiles = env.sourceFiles.slice(0);

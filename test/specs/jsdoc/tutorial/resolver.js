@@ -1,6 +1,7 @@
 'use strict';
 
 describe('jsdoc/tutorial/resolver', function() {
+    var env = require('jsdoc/env');
     var logger = require('jsdoc/util/logger');
     var resolver = require('jsdoc/tutorial/resolver');
     var tutorial = require('jsdoc/tutorial');
@@ -20,7 +21,7 @@ describe('jsdoc/tutorial/resolver', function() {
     function loadTutorials() {
         resetRootTutorial();
 
-        resolver.load(global.env.dirname + '/test/tutorials/tutorials');
+        resolver.load(env.dirname + '/test/tutorials/tutorials');
 
         childNames = resolver.root.children.map(function (t) { return t.name; });
         test = resolver.root.getByName('test');
@@ -94,17 +95,17 @@ describe('jsdoc/tutorial/resolver', function() {
         });
 
         it('recurses into subdirectories when the --recurse flag is used', function() {
-            var recurse = global.env.opts.recurse;
+            var recurse = env.opts.recurse;
             var recursiveTute;
 
-            global.env.opts.recurse = true;
+            env.opts.recurse = true;
             loadTutorials();
             recursiveTute = resolver.root.getByName('test_recursive');
 
             expect(recursiveTute).toBeDefined();
             expect(recursiveTute instanceof tutorial.Tutorial).toBe(true);
 
-            global.env.opts.recurse = recurse;
+            env.opts.recurse = recurse;
         });
 
         it('all tutorials are added, initially as top-level tutorials', function() {
@@ -204,7 +205,7 @@ describe('jsdoc/tutorial/resolver', function() {
         });
 
         it('logs an error for missing tutorials', function() {
-            resolver.load(global.env.dirname + '/test/tutorials/incomplete');
+            resolver.load(env.dirname + '/test/tutorials/incomplete');
             resolver.resolve();
 
             expect(logger.error).toHaveBeenCalled();
@@ -219,7 +220,7 @@ describe('jsdoc/tutorial/resolver', function() {
         });
 
         it('allows tutorials to be defined in one .json file and redefined in another', function() {
-            resolver.load(global.env.dirname + '/test/tutorials/duplicateDefined');
+            resolver.load(env.dirname + '/test/tutorials/duplicateDefined');
             resolver.resolve();
 
             expect(logger.error).not.toHaveBeenCalled();

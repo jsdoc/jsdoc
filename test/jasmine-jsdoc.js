@@ -1,4 +1,6 @@
-/*global env: true, expect: true, runs: true, waits: true */
+/*global expect, jasmine: true, runs, waits */
+'use strict';
+
 var fs = require('jsdoc/fs');
 var path = require('jsdoc/path');
 var util = require('util');
@@ -6,6 +8,7 @@ var util = require('util');
 var jsdoc = {
     augment: require('jsdoc/augment'),
     borrow: require('jsdoc/borrow'),
+    env: require('jsdoc/env'),
     schema: require('jsdoc/schema'),
     src: {
         handlers: require('jsdoc/src/handlers'),
@@ -41,10 +44,10 @@ jasmine.getParseResults = function() {
 jasmine.jsParser = (function() {
     var parser = jsdoc.util.runtime.isRhino() ? 'rhino' : 'esprima';
 
-    if (env.opts.query && env.opts.query.parser) {
-        parser = env.opts.query.parser;
+    if (jsdoc.env.opts.query && jsdoc.env.opts.query.parser) {
+        parser = jsdoc.env.opts.query.parser;
         // remove this so the config tests don't complain
-        delete env.opts.query;
+        delete jsdoc.env.opts.query;
     }
 
     return parser;
@@ -61,11 +64,11 @@ jasmine.initialize = function(done, verbose) {
     }
 
     var reporterOpts = {
-        color: env.opts.nocolor === true ? false : true,
+        color: jsdoc.env.opts.nocolor === true ? false : true,
         onComplete: done
     };
 
-    reporter = env.opts.verbose ? new jasmineNode.TerminalVerboseReporter(reporterOpts) :
+    reporter = jsdoc.env.opts.verbose ? new jasmineNode.TerminalVerboseReporter(reporterOpts) :
         new jasmineNode.TerminalReporter(reporterOpts);
     jasmineEnv.addReporter(reporter);
 
@@ -94,9 +97,10 @@ function capitalize(str) {
  * @param {RegExp} opts.matcher A regular expression to filter specs by. Only matching specs run.
  */
 jasmine.executeSpecsInFolder = function(folder, done, opts) {
-    var fileMatcher = opts.matcher || new RegExp(".(js)$", "i"),
-        specs = require('./spec-collection'),
-        jasmineEnv = jasmine.initialize(done, opts.verbose);
+    var specs = require('./spec-collection');
+
+    var fileMatcher = opts.matcher || new RegExp('.(js)$', 'i');
+    var jasmineEnv = jasmine.initialize(done, opts.verbose);
 
     // Load the specs
     specs.load(folder, fileMatcher, true);
@@ -108,7 +112,7 @@ jasmine.executeSpecsInFolder = function(folder, done, opts) {
     for (var i = 0, len = specsList.length; i < len; ++i) {
         filename = specsList[i];
         require(filename.path().replace(/\\/g, '/').
-            replace(new RegExp('^' + env.dirname + '/test'), './').
+            replace(new RegExp('^' + jsdoc.env.dirname + '/test'), './').
             replace(/\.\w+$/, ''));
     }
 
@@ -146,12 +150,14 @@ jasmine.getDocSetFromFile = function(filename, parser, validate, augment) {
     var doclets;
     var validationResult;
 
-    var sourceCode = fs.readFileSync( path.join(env.dirname, filename), 'utf8' );
+    var sourceCode = fs.readFileSync( path.join(jsdoc.env.dirname, filename), 'utf8' );
     var testParser = parser || jasmine.createParser();
 
     jsdoc.src.handlers.attachTo(testParser);
 
+    /*eslint-disable no-script-url */
     doclets = testParser.parse('javascript:' + sourceCode);
+    /*eslint-enable no-script-url */
     jsdoc.borrow.indexAll(doclets);
 
     if (augment !== false) {

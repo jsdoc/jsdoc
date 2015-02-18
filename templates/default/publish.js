@@ -1,7 +1,7 @@
-/*global env: true */
 'use strict';
 
 var doop = require('jsdoc/util/doop');
+var env = require('jsdoc/env');
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');
 var logger = require('jsdoc/util/logger');
@@ -210,6 +210,7 @@ function generate(title, docs, filename, resolveLinks) {
     resolveLinks = resolveLinks === false ? false : true;
 
     var docData = {
+        env: env,
         title: title,
         docs: docs
     };

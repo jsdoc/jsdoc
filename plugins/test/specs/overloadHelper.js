@@ -1,10 +1,11 @@
-/*global describe: true, env: true, expect: true, it: true, jasmine: true, xit: true */
+'use strict';
+
 describe('plugins/overloadHelper', function() {
-    var parser = jasmine.createParser();
+    var env = require('jsdoc/env');
     var path = require('jsdoc/path');
 
     var docSet;
-
+    var parser = jasmine.createParser();
     var pluginPath = 'plugins/overloadHelper';
     var pluginPathResolved = path.resolve(env.dirname, pluginPath);
     var plugin = require(pluginPathResolved);

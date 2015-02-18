@@ -1,4 +1,5 @@
-/*global env: true */
+'use strict';
+
 var fs = require('jsdoc/fs');
 var path = require('jsdoc/path');
 var runtime = require('jsdoc/util/runtime');
@@ -18,10 +19,10 @@ var createSpecObj = function(_path, root) {
         },
         relativePath: relativePath,
         directory: function() {
-            return _path.replace(/[\/\\][\s\w\.\-]*$/, "").replace(/\\/g, '/');
+            return _path.replace(/[\/\\][\s\w\.\-]*$/, '').replace(/\\/g, '/');
         },
         relativeDirectory: function() {
-            return relativePath().replace(/[\/\\][\s\w\.\-]*$/, "").replace(/\\/g, '/');
+            return relativePath().replace(/[\/\\][\s\w\.\-]*$/, '').replace(/\\/g, '/');
         },
         filename: function() {
             return _path.replace(/^.*[\\\/]/, '');

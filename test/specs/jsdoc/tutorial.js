@@ -1,6 +1,7 @@
 'use strict';
 
 describe('jsdoc/tutorial', function() {
+    var env = require('jsdoc/env');
     var tutorial = require('jsdoc/tutorial');
 
     var name = 'tuteID';
@@ -218,10 +219,10 @@ describe('jsdoc/tutorial', function() {
         });
 
         describe('parse', function() {
-            var markdownConfig = global.env.conf.markdown;
+            var markdownConfig = env.conf.markdown;
 
             function setMarkdownConfig(config) {
-                global.env.conf.markdown = config;
+                env.conf.markdown = config;
             }
 
             beforeEach(function() {
@@ -229,7 +230,7 @@ describe('jsdoc/tutorial', function() {
             });
 
             afterEach(function() {
-                global.env.conf.markdown = markdownConfig;
+                env.conf.markdown = markdownConfig;
             });
 
             it('Tutorials with HTML type return content as-is', function() {

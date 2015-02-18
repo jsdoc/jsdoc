@@ -1,6 +1,7 @@
 'use strict';
 
 describe('jsdoc/path', function() {
+    var env = require('jsdoc/env');
     var os = require('os');
     var path = require('jsdoc/path');
     var standardPath = require('path');
@@ -36,13 +37,13 @@ describe('jsdoc/path', function() {
         var cwd;
 
         beforeEach(function() {
-            oldPwd = global.env.pwd;
-            global.env.pwd = isWindows ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
-            cwd = global.env.pwd.split(path.sep);
+            oldPwd = env.pwd;
+            env.pwd = isWindows ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
+            cwd = env.pwd.split(path.sep);
         });
 
         afterEach(function() {
-            global.env.pwd = oldPwd;
+            env.pwd = oldPwd;
         });
 
         it('finds the correct prefix for a single relative path', function() {

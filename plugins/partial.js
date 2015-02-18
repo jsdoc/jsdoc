@@ -5,6 +5,7 @@
  */
 'use strict';
 
+var env = require('jsdoc/env');
 var fs = require('jsdoc/fs');
 var path = require('path');
 
@@ -23,7 +24,7 @@ exports.handlers = {
             var pathArg = $.match(/\".*\"/)[0].replace(/"/g, '');
             var fullPath = path.join(e.filename, '..', pathArg);
 
-            var partialData = fs.readFileSync(fullPath, global.env.opts.encoding);
+            var partialData = fs.readFileSync(fullPath, env.opts.encoding);
 
             return partialData;
         });

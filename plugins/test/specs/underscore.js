@@ -1,11 +1,11 @@
 'use strict';
 
 describe('underscore plugin', function () {
-    var parser = jasmine.createParser();
+    var env = require('jsdoc/env');
     var path = require('jsdoc/path');
 
     var docSet;
-
+    var parser = jasmine.createParser();
     var pluginPath = 'plugins/underscore';
     var fixturePath = 'plugins/test/fixtures/underscore';
     var pluginPathResolved = path.join(env.dirname, pluginPath);

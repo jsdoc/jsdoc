@@ -1,4 +1,4 @@
-/*global env: true, jasmine: true */
+/*global jasmine */
 /*
  * Test Steps:
  * 1. Get Jasmine
@@ -6,6 +6,7 @@
  * 3. Get the list of directories to run tests from
  * 4. Run Jasmine on each directory
  */
+var env = require('jsdoc/env');
 var fs = require('jsdoc/fs');
 var logger = require('jsdoc/util/logger');
 var path = require('path');
