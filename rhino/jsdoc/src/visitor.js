@@ -2,13 +2,13 @@
 'use strict';
 
 // TODO: docs
-var Visitor = exports.Visitor = function(parser) {
+var Visitor = exports.Visitor = function() {
     var runtime = require('jsdoc/util/runtime');
     if ( !runtime.isRhino() ) {
         throw new Error('You must run JSDoc on Mozilla Rhino to use the Rhino node visitor.');
     }
 
-    Visitor.super_.call(this, parser);
+    Visitor.super_.call(this);
 
     // Rhino node visitors added by plugins (deprecated in JSDoc 3.3)
     this._rhinoNodeVisitors = [];

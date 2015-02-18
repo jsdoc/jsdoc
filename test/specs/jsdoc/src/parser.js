@@ -44,7 +44,9 @@ describe('jsdoc/src/parser', function() {
 
         it('should accept an astBuilder, visitor, and walker as arguments', function() {
             var astBuilder = {};
-            var visitor = {};
+            var visitor = {
+                setParser: function() {}
+            };
             var walker = {};
 
             var myParser = new jsdoc.src.parser.Parser(astBuilder, visitor, walker);
