@@ -76,26 +76,6 @@ global.app = (function() {
     }
 })();
 
-/**
- * Recursively print an object's properties to stdout. This method is safe to use with objects that
- * contain circular references. In addition, on Mozilla Rhino, this method is safe to use with
- * native Java objects.
- *
- * @global
- * @name dump
- * @private
- * @param {Object} obj - Object(s) to print to stdout.
- */
-global.dump = function() {
-    'use strict';
-
-    var _dump = require('./lib/jsdoc/util/dumper').dump;
-
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        console.log( _dump(arguments[i]) );
-    }
-};
-
 (function() {
     'use strict';
 
@@ -117,6 +97,24 @@ global.dump = function() {
     }
 
     cli.logStart();
+
+    if (env.opts.debug) {
+        /**
+         * Recursively print an object's properties to stdout. This method is safe to use with
+         * objects that contain circular references. In addition, on Mozilla Rhino, this method is
+         * safe to use with native Java objects.
+         *
+         * This method is available only when JSDoc is run with the `--debug` option.
+         *
+         * @global
+         * @name dump
+         * @private
+         * @param {...*} obj - Object(s) to print to stdout.
+         */
+        global.dump = function() {
+            console.log(require('./lib/jsdoc/util/dumper').dump(arguments));
+        };
+    }
 
     // On Rhino, we use a try/catch block so we can log the Java exception (if available)
     if ( runtime.isRhino() ) {

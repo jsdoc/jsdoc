@@ -397,7 +397,7 @@ cli.processParseResults = function() {
 };
 
 cli.dumpParseResults = function() {
-    global.dump(props.docs);
+    console.log(require('jsdoc/util/dumper').dump(props.docs));
 
     return cli;
 };

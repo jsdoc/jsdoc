@@ -169,4 +169,20 @@ describe('jsdoc/util/dumper', function() {
             expect(actual).toBe(expected);
         });
     });
+
+    describe('multiple arguments', function() {
+        it('should dump all of its arguments, separated by newlines', function() {
+            var a = { b: 1 };
+            var b = 'hello';
+
+            var actual = dumper.dump(a, b);
+            var expected = '' +
+                '{\n' +
+                '    "b": 1\n' +
+                '}\n' +
+                '"hello"';
+
+            expect(actual).toBe(expected);
+        });
+    });
 });
