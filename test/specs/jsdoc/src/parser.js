@@ -8,6 +8,10 @@ describe('jsdoc/src/parser', function() {
         src: {
             handlers: require('jsdoc/src/handlers'),
             parser: require('jsdoc/src/parser')
+        },
+        util: {
+            logger: require('jsdoc/util/logger'),
+            runtime: require('jsdoc/util/runtime')
         }
     };
     var path = require('jsdoc/path');
@@ -17,9 +21,43 @@ describe('jsdoc/src/parser', function() {
         expect(typeof jsdoc.src.parser).toBe('object');
     });
 
+    it('should export a "createParser" method', function() {
+        expect(typeof jsdoc.src.parser.createParser).toBe('function');
+    });
+
     it('should export a "Parser" constructor', function() {
-        expect(jsdoc.src.parser.Parser).toBeDefined();
         expect(typeof jsdoc.src.parser.Parser).toBe('function');
+    });
+
+    describe('createParser', function() {
+        it('should return a Parser when called without arguments', function() {
+            // we don't check instanceof because we get different objects on Node.js and Rhino
+            expect(typeof jsdoc.src.parser.createParser()).toBe('object');
+        });
+
+        it('should create a jsdoc/src/parser.Parser instance with the argument "js"', function() {
+            var parser = jsdoc.src.parser.createParser('js');
+
+            expect(parser instanceof jsdoc.src.parser.Parser).toBe(true);
+        });
+
+        if (jsdoc.util.runtime.isRhino()) {
+            it('should create a Rhino parser with the argument "rhino"', function() {
+                var RhinoParser = require('rhino/jsdoc/src/parser').Parser;
+                var parser = jsdoc.src.parser.createParser('rhino');
+
+                expect(parser instanceof RhinoParser).toBe(true);
+            });
+        }
+
+        it('should log a fatal error on bad input', function() {
+            var parser;
+
+            spyOn(jsdoc.util.logger, 'fatal');
+            parser = jsdoc.src.parser.createParser('not-a-real-parser-ever');
+
+            expect(jsdoc.util.logger.fatal).toHaveBeenCalled();
+        });
     });
 
     describe('Parser', function() {

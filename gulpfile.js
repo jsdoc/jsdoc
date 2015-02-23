@@ -73,10 +73,10 @@ gulp.task('test-rhino', function(cb) {
     exec(cmd, execCb.bind(null, cb));
 });
 
-gulp.task('test-rhino-esprima', function(cb) {
-    var cmd = util.format('"%s" -T -q "parser=esprima"', options.rhinoBin);
+gulp.task('test-rhino-jsparser', function(cb) {
+    var cmd = util.format('"%s" -T -q "parser=js"', options.rhinoBin);
     exec(cmd, execCb.bind(null, cb));
 });
 
-gulp.task('test', ['test-node', 'test-rhino', 'test-rhino-esprima']);
+gulp.task('test', ['test-node', 'test-rhino', 'test-rhino-jsparser']);
 gulp.task('default', ['lint', 'test']);
