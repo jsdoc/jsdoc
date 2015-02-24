@@ -81,6 +81,40 @@ describe('this', function() {
         });
     });
 
+    describe('When "this" is assigned inside an explicit definition of the class constructor', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/this4.js');
+        var found = docSet.getByLongname('Template#render');
+
+        it('should have a longname like Constructor#member', function() {
+            expect(found.length).toBe(1);
+        });
+
+        it('should have the correct name', function() {
+            expect(found[0].name).toBe('render');
+        });
+
+        it('should have the correct memberof', function() {
+            expect(found[0].memberof).toBe('Template');
+        });
+    });
+
+    describe('When "this" is assigned in a chained declaration in a module', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/this5.js');
+        var found = docSet.getByLongname('module:template.Template#view');
+
+        it('should have a longname like Constructor#member', function() {
+            expect(found.length).toBe(1);
+        });
+
+        it('should have the correct name', function() {
+            expect(found[0].name).toBe('view');
+        });
+
+        it('should have the correct memberof', function() {
+            expect(found[0].memberof).toBe('module:template.Template');
+        });
+    });
+
     describe('When a member is nested inside an objectlit "this" property inside a constructor', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/this-and-objectlit.js');
         var found = docSet.getByLongname('Page#parts.body.heading');
