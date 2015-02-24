@@ -13,6 +13,8 @@ exports.handlers = {
         var comments = e.source.match(/\/\*\*[\s\S]+?\*\//g);
         if (comments) {
             e.source = comments.join('\n\n');
+        } else {
+            e.source = ''; // If file has no comments, parser should still receive no code
         }
     }
 };
