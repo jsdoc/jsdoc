@@ -116,9 +116,9 @@ Copyright (c) Sindre Sorhus <sindresorhus@gmail.com>.
 The source code for escape-string-regexp is available at:
 https://github.com/sindresorhus/escape-string-regexp
 
-## Esprima ##
+## Espree ##
 
-Esprima is distributed under the BSD 2-clause license:
+Espree is distributed under the BSD 2-clause license:
 
 > Redistribution and use in source and binary forms, with or without
 > modification, are permitted provided that the following conditions are met:
@@ -140,10 +140,10 @@ Esprima is distributed under the BSD 2-clause license:
 > (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 > THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Copyright (c) 2011-2013 Ariya Hidayat and other Esprima contributors.
+Copyright (c) 2011-2015 by the Espree contributors.
 
 The source code for Esprima is available at:
-https://github.com/ariya/esprima
+https://github.com/eslint/espree
 
 ## events ##
 
