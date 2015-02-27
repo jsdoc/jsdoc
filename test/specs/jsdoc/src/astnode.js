@@ -20,6 +20,7 @@ describe('jsdoc/src/astNode', function() {
     var functionDeclaration1a = parse('function bar() {}').body[0];
     var functionDeclaration2 = parse('function foo(bar) {}').body[0];
     var functionDeclaration3 = parse('function foo(bar, baz, qux) {}').body[0];
+    var functionDeclaration4 = parse('function foo(...bar) {}').body[0];
     var functionExpression1 = parse('var foo = function() {};').body[0].declarations[0].init;
     var functionExpression2 = parse('var foo = function(bar) {};').body[0].declarations[0].init;
     var identifier = parse('foo;').body[0].expression;
@@ -429,6 +430,14 @@ describe('jsdoc/src/astNode', function() {
             expect(params[0]).toBe('bar');
             expect(params[1]).toBe('baz');
             expect(params[2]).toBe('qux');
+        });
+
+        it('should include rest parameters', function() {
+            var params = astNode.getParamNames(functionDeclaration4);
+
+            expect( Array.isArray(params) ).toBe(true);
+            expect(params.length).toBe(1);
+            expect(params[0]).toBe('bar');
         });
     });
 
