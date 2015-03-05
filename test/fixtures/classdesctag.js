@@ -12,3 +12,10 @@ function Foo() {}
  * @class Bar
  * @constructor
  */
+
+/**
+ * The Baz class.
+ * @class
+ * Description of the Baz class.
+ */
+function Baz() {}
