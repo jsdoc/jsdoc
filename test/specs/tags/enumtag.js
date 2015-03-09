@@ -31,6 +31,13 @@ describe('@enum tag', function() {
         expect( dump(tristate) ).not.toMatch('<CircularRef>');
     });
 
+    it('Should support numeric keys', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/numericenum.js');
+        var numericEnum = docSet.getByLongname('NumericEnum')[0];
+        expect(numericEnum.properties[0].name).toBe('0');
+        expect(numericEnum.properties[1].name).toBe('1');
+    });
+
     describe('chained assignments', function() {
         var pentaState;
         var PENTASTATE;
