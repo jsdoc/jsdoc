@@ -6,6 +6,7 @@
 'use strict';
 
 var _ = require('underscore');
+var dump = require('jsdoc/util/dumper').dump;
 var env = require('jsdoc/env');
 var util = require('util');
 
@@ -107,9 +108,9 @@ exports.handlers = {};
 
 events.forEach(function(eventType) {
     exports.handlers[eventType] = function(e) {
-        console.log( JSON.stringify({
+        console.log( dump({
             type: eventType,
             content: cleanse(e)
-        }, null, 4) );
+        }) );
     };
 });
