@@ -9,3 +9,13 @@ var TriState = {
     /** @type {boolean} */
     MAYBE: true
 };
+
+/**
+ * Numeric enum for true/false values.
+ * @enum {boolean}
+ */
+var TrueFalseNumeric = {
+    /** false */
+    0: false,
+    1: true
+};
