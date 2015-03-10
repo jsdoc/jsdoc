@@ -31,15 +31,20 @@ describe('@enum tag', function() {
         expect( dump(tristate) ).not.toMatch('<CircularRef>');
     });
 
-    describe('chained assignments', function() {
-        var pentaState;
-        var PENTASTATE;
-        var quadState;
+    describe('numeric object properties', function() {
+        it('When an enum is defined with numeric object properties, the enum is parsed correctly.', function() {
+            var zero = docSet.getByLongname('TrueFalseNumeric.0')[0];
 
-        docSet = jasmine.getDocSetFromFile('test/fixtures/enumtag2.js');
-        pentaState = docSet.getByLongname('module:my/enums.PentaState')[0];
-        PENTASTATE = docSet.getByLongname('module:my/enums.PENTASTATE')[0];
-        quadState = docSet.getByLongname('module:my/enums.QuadState')[0];
+            expect(zero).toBeDefined();
+            expect(zero.description).toBe('false');
+        });
+    });
+
+    describe('chained assignments', function() {
+        var docSet2 = jasmine.getDocSetFromFile('test/fixtures/enumtag2.js');
+        var pentaState = docSet2.getByLongname('module:my/enums.PentaState')[0];
+        var PENTASTATE = docSet2.getByLongname('module:my/enums.PENTASTATE')[0];
+        var quadState = docSet2.getByLongname('module:my/enums.QuadState')[0];
 
         it('When a symbol at the start of an assignment chain has an @enum tag, that symbol has a properties array.', function() {
             expect( Array.isArray(quadState.properties) ).toBe(true);
