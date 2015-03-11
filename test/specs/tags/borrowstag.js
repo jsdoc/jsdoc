@@ -1,11 +1,13 @@
 'use strict';
 
+function filterUndocumented($) {
+    return !($.undocumented);
+}
+
 describe('@borrows tag', function() {
     it('When a symbol has a @borrows-as tag, that is added to the symbol\'s "borrowed" property.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/borrowstag.js');
-        var util = docSet.getByLongname('util').filter(function($) {
-            return !($.undocumented);
-        })[0];
+        var util = docSet.getByLongname('util').filter(filterUndocumented)[0];
 
         expect(util.borrowed.length).toBe(1);
         expect(util.borrowed[0].from).toBe('trstr');
@@ -23,5 +25,16 @@ describe('@borrows tag', function() {
         })[0];
 
         expect(typeof strRtrim).toBe('object');
+    });
+
+    it('When a symbol has a `@borrows X as Y` tag, X and Y may contain whitespace.', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/borrowstag3.js');
+        var util = docSet.getByLongname('util').filter(filterUndocumented)[0];
+
+        expect(util.borrowed.length).toBe(2);
+        expect(util.borrowed[0].from).toBe('trstr');
+        expect(util.borrowed[0].as).toBe('trim string');
+        expect(util.borrowed[1].from).toBe('util.hidden util');
+        expect(util.borrowed[1].as).toBe('hidden');
     });
 });
