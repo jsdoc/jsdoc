@@ -49,7 +49,7 @@ describe('object literals', function() {
 
         function loadDocSet() {
             docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit3.js');
-            found = docSet.getByLongname('tokens.(.before');
+            found = docSet.getByLongname('tokens."(".before');
         }
 
         it('should not throw an error when creating a doclet', function() {
@@ -61,7 +61,7 @@ describe('object literals', function() {
         });
 
         it('should have a doclet with the correct memberof', function() {
-            expect(found[0].memberof).toBe('tokens.(');
+            expect(found[0].memberof).toBe('tokens."("');
         });
     });
 });
