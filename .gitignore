@@ -10,6 +10,9 @@ node_modules/istanbul
 node_modules/requizzle
 
 # Unused files from committed modules
+node_modules/bluebird/README.md
+node_modules/bluebird/changelog.md
+node_modules/bluebird/js/browser/*
 node_modules/espree/README.md
 node_modules/espree/bin
 node_modules/espree/test

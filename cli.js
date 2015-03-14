@@ -20,6 +20,7 @@ var app = require('jsdoc/app');
 var env = require('jsdoc/env');
 var logger = require('jsdoc/util/logger');
 var stripJsonComments = require('strip-json-comments');
+var Promise = require('bluebird');
 
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -71,7 +72,7 @@ cli.loadConfig = function() {
     }
     catch (e) {
         console.error(e.message + '\n');
-        cli.printHelp(function() {
+        cli.printHelp().then(function () {
             cli.exit(1);
         });
     }
@@ -166,15 +167,6 @@ cli.runCommand = function(cb) {
 
     var opts = env.opts;
 
-    function done(errorCode) {
-        if (!errorCode && props.shouldExitWithError) {
-            cb(1);
-        }
-        else {
-            cb(errorCode);
-        }
-    }
-
     if (opts.help) {
         cmd = cli.printHelp;
     }
@@ -188,27 +180,30 @@ cli.runCommand = function(cb) {
         cmd = cli.main;
     }
 
-    cmd(done);
+    cmd().then(function (errorCode) {
+        if (!errorCode && props.shouldExitWithError) {
+            errorCode = 1;
+        }
+        cb(errorCode);
+    });
 };
 
 // TODO: docs
-cli.printHelp = function(cb) {
+cli.printHelp = function() {
     cli.printVersion();
     console.log( '\n' + require('jsdoc/opts/args').help() + '\n' );
     console.log('Visit http://usejsdoc.org for more information.');
-    cb(0);
+    return Promise.resolve(0);
 };
 
 // TODO: docs
-cli.runTests = function(cb) {
+cli.runTests = function() {
     var path = require('jsdoc/path');
 
-    var runner = require( path.join(env.dirname, 'test/runner') );
+    var runner = Promise.promisify(require( path.join(env.dirname, 'test/runner') ));
 
     console.log('Running tests...');
-    runner(function(failCount) {
-        cb(failCount);
-    });
+    return runner();
 };
 
 // TODO: docs
@@ -217,30 +212,27 @@ cli.getVersion = function() {
 };
 
 // TODO: docs
-cli.printVersion = function(cb) {
+cli.printVersion = function() {
     console.log( cli.getVersion() );
-
-    if (cb) {
-        cb(0);
-    }
+    return Promise.resolve(0);
 };
 
 // TODO: docs
-cli.main = function(cb) {
+cli.main = function() {
     cli.scanFiles();
 
-    if (env.sourceFiles.length) {
-        cli.createParser()
-            .parseFiles()
-            .processParseResults();
-    }
-    else {
+    if (env.sourceFiles.length === 0) {
         console.log('There are no input files to process.\n');
-        cli.printHelp(cb);
+        return cli.printHelp();
+    } else {
+        return cli.createParser()
+            .parseFiles()
+            .processParseResults()
+            .then(function () {
+                env.run.finish = new Date();
+                return 0;
+            });
     }
-
-    env.run.finish = new Date();
-    cb(0);
 };
 
 function readPackageJson(filepath) {
@@ -387,13 +379,12 @@ cli.parseFiles = function() {
 cli.processParseResults = function() {
     if (env.opts.explain) {
         cli.dumpParseResults();
+        return Promise.resolve();
     }
     else {
         cli.resolveTutorials();
-        cli.generateDocs();
+        return cli.generateDocs();
     }
-
-    return cli;
 };
 
 cli.dumpParseResults = function() {
@@ -439,19 +430,20 @@ cli.generateDocs = function() {
     // templates should include a publish.js file that exports a "publish" function
     if (template.publish && typeof template.publish === 'function') {
         logger.printInfo('Generating output files...');
-        template.publish(
+        var publishPromise = template.publish(
             taffy(props.docs),
             env.opts,
             resolver.root
         );
         logger.info('complete.');
+
+        return Promise.resolve(publishPromise);
     }
     else {
         logger.fatal(env.opts.template + ' does not export a "publish" function. Global ' +
             '"publish" functions are no longer supported.');
     }
-
-    return cli;
+    return Promise.resolve();
 };
 
 // TODO: docs
