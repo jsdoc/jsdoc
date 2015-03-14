@@ -72,7 +72,7 @@ cli.loadConfig = function() {
     }
     catch (e) {
         console.error(e.message + '\n');
-        cli.printHelp(function() {
+        cli.printHelp().then(function () {
             cli.exit(1);
         });
     }
