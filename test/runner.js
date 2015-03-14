@@ -51,7 +51,7 @@ var runNextFolder = module.exports = function(callback) {
     }
     else {
         process.nextTick(function() {
-            testsCompleteCallback(failedCount);
+            testsCompleteCallback(null, failedCount);
         });
     }
 };
