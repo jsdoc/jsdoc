@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "async": "~0.9.0",
-    "bluebird": "^2.9.14",
+    "bluebird": "~2.9.14",
     "catharsis": "~0.8.6",
     "escape-string-regexp": "~1.0.2",
     "espree": "~1.9.1",
