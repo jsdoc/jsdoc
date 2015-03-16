@@ -443,6 +443,13 @@ describe("jsdoc/util/templateHelper", function() {
             expect(link).toBe('<a href="fakeclass.html#fragment">LinktoFakeClass</a>');
         });
 
+        it('returns the original text if an HTML <a> tag is specified', function() {
+            var text = '<a href="http://example.com">text</a>';
+            var link = helper.linkto(text);
+
+            expect(link).toBe(text);
+        });
+
         it('returns the original text if an inline {@link} tag is specified', function() {
             var link;
             var text = '{@link Foo}';
