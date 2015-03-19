@@ -44,13 +44,15 @@ var runNextFolder = module.exports = function(callback) {
     testsCompleteCallback = testsCompleteCallback || callback;
 
     // silence the logger while we run the tests
-    logger.setLevel(logger.LEVELS.SILENT);
+    logger.mute();
 
     if (index < specFolders.length) {
         jasmine.executeSpecsInFolder(specFolders[index], onComplete, opts);
     }
     else {
         process.nextTick(function() {
+            // reset the number of logged errors
+            logger.resetErrors();
             testsCompleteCallback(null, failedCount);
         });
     }
