@@ -13,4 +13,17 @@ describe('@class tag', function() {
         expect(news.kind).toBe('class');
         expect(news.longname).toBe('NewsSource');
     });
+
+    if (jasmine.jsParser !== 'rhino') {
+        describe('ES 2015 classes', function() {
+            var docSet2 = jasmine.getDocSetFromFile('test/fixtures/classtag2.js');
+            var subscription = docSet2.getByLongname('Subscription')[0];
+
+            it('When a symbol is a class declaration, the doclet does not require the @class tag', function() {
+                expect(subscription.kind).toBe('class');
+                expect(subscription.longname).toBe('Subscription');
+                expect(subscription.classdesc).toBe('Describe the Subscription class here.');
+            });
+        });
+    }
 });
