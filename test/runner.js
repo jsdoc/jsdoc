@@ -51,8 +51,6 @@ var runNextFolder = module.exports = function(callback) {
     }
     else {
         process.nextTick(function() {
-            // reset the number of logged errors
-            logger.resetErrors();
             testsCompleteCallback(null, failedCount);
         });
     }

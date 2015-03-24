@@ -27,6 +27,7 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 var props = {
     docs: [],
     packageJson: null,
+    shouldExitWithError: false,
     tmpdir: null
 };
 
@@ -105,6 +106,14 @@ cli.loadConfig = function() {
 
 // TODO: docs
 cli.configureLogger = function() {
+    function recoverableError() {
+        props.shouldExitWithError = true;
+    }
+
+    function fatalError() {
+        cli.exit(1);
+    }
+
     if (env.opts.debug) {
         logger.setLevel(logger.LEVELS.DEBUG);
     }
@@ -113,12 +122,14 @@ cli.configureLogger = function() {
     }
 
     if (env.opts.pedantic) {
-        logger.enablePedanticMode();
+        logger.once('logger:warn', recoverableError);
+        logger.once('logger:error', fatalError);
+    }
+    else {
+        logger.once('logger:error', recoverableError);
     }
 
-    logger.once('fatal', function () {
-        cli.exit();
-    });
+    logger.once('logger:fatal', fatalError);
 
     return cli;
 };
@@ -170,7 +181,7 @@ cli.runCommand = function(cb) {
     }
 
     cmd().then(function (errorCode) {
-        if (!errorCode && logger.hasErrors()) {
+        if (!errorCode && props.shouldExitWithError) {
             errorCode = 1;
         }
         cb(errorCode);

@@ -12,7 +12,6 @@ describe('jsdoc/util/logger', function() {
 
     afterEach(function () {
         logger.setLevel(this.oldLogLevel);
-        logger.resetErrors();
     });
 
     it('should exist', function() {
@@ -430,70 +429,4 @@ describe('jsdoc/util/logger', function() {
         });
     });
 
-    describe('hasErrors', function () {
-        it('should return false if no errors were thrown', function () {
-            expect(logger.hasErrors()).toBe(false);
-            logger.info(loggerArgs);
-            expect(logger.hasErrors()).toBe(false);
-            logger.warn(loggerArgs);
-            expect(logger.hasErrors()).toBe(false);
-        });
-
-        it('should return true if an error was thrown', function () {
-            logger.error(loggerArgs);
-            expect(logger.hasErrors()).toBe(true);
-        });
-
-        it('should return true if a fatal error was thrown', function () {
-            logger.fatal(loggerArgs);
-            expect(logger.hasErrors()).toBe(true);
-        });
-    });
-
-    describe('resetErrors', function () {
-        it('should reset the number of errors to 0', function () {
-            logger.error(loggerArgs);
-            expect(logger.hasErrors()).toBe(true);
-            logger.resetErrors();
-            expect(logger.hasErrors()).toBe(false);
-        });
-    });
-
-    describe('Fatal Event', function () {
-        it('should not emit a fatal event when an error is logged', function () {
-            var fatalEventSpy = jasmine.createSpy();
-            logger.on('fatal', fatalEventSpy);
-            logger.error(loggerArgs);
-            expect(fatalEventSpy).not.toHaveBeenCalled();
-        });
-
-        it('should emit a fatal event when a fatal error is logged', function () {
-            var fatalEventSpy = jasmine.createSpy();
-            logger.on('fatal', fatalEventSpy);
-            logger.fatal(loggerArgs);
-            expect(fatalEventSpy).toHaveBeenCalled();
-        });
-    });
-
-    describe('enablePedanticMode', function () {
-        beforeEach(function () {
-            logger.enablePedanticMode();
-        });
-        afterEach(function () {
-            logger.disablePedanticMode();
-        });
-        it('should consider warnings as errors', function () {
-            logger.info(loggerArgs);
-            expect(logger.hasErrors()).toBe(false);
-            logger.warn(loggerArgs);
-            expect(logger.hasErrors()).toBe(true);
-        });
-
-        it('should consider errors as fatal errors', function () {
-            var fatalEventSpy = jasmine.createSpy();
-            logger.on('fatal', fatalEventSpy);
-            logger.error(loggerArgs);
-            expect(fatalEventSpy).toHaveBeenCalled();
-        });
-    });
 });
