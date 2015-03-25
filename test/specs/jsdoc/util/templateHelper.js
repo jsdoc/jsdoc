@@ -202,12 +202,12 @@ describe("jsdoc/util/templateHelper", function() {
             expect(filename).toBe('BackusNaur.html');
         });
 
-        it('should replace slashes with underscores', function() {
+        it('should replace slashes with dashes', function() {
             var filename = helper.getUniqueFilename('tick/tock');
             expect(filename).toBe('tick-tock.html');
         });
 
-        it('should replace other problematic characters with underscores', function() {
+        it('should replace other problematic characters with dashes', function() {
             var filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename');
             expect(filename).toBe('a very strange ---------- filename.html');
         });
