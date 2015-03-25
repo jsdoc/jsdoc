@@ -204,12 +204,12 @@ describe("jsdoc/util/templateHelper", function() {
 
         it('should replace slashes with underscores', function() {
             var filename = helper.getUniqueFilename('tick/tock');
-            expect(filename).toBe('tick_tock.html');
+            expect(filename).toBe('tick-tock.html');
         });
 
         it('should replace other problematic characters with underscores', function() {
             var filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename');
-            expect(filename).toBe('a very strange __________ filename.html');
+            expect(filename).toBe('a very strange ---------- filename.html');
         });
 
         it('should not allow a filename to start with an underscore', function() {
@@ -246,7 +246,7 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(filenameEvent).toBe('event-userDidSomething.html');
             expect(filenameExternal).toBe('external-NotInThisPackage.html');
-            expect(filenameModule).toBe('module-some_sort_of_module.html');
+            expect(filenameModule).toBe('module-some-sort-of-module.html');
             expect(filenamePackage).toBe('package-node-solve-all-your-problems.html');
         });
 
@@ -1549,7 +1549,7 @@ describe("jsdoc/util/templateHelper", function() {
                 },
                 url = helper.createLink(mockDoclet);
 
-            expect(url).toEqual('ns1._!_.html#%22*foo%22');
+            expect(url).toEqual('ns1.-!-.html#%22*foo%22');
         });
 
         it('should create a url for a function that is the only symbol exported by a module.',
