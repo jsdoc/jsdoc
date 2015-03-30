@@ -97,7 +97,7 @@ describe('jsdoc/util/markdown', function() {
 
             expect(parser(markdownText)).toBe(convertedText);
         });
-        
+
         it('should hardwrap new lines when hardwrap is enabled', function() {
             var storage = setMarkdownConf({hardwrap: true});
             var parser = markdown.getParser();
