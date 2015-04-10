@@ -18,11 +18,32 @@ describe('@class tag', function() {
         describe('ES 2015 classes', function() {
             var docSet2 = jasmine.getDocSetFromFile('test/fixtures/classtag2.js');
             var subscription = docSet2.getByLongname('Subscription')[0];
+            var expire = docSet2.getByLongname('Subscription#expire')[0];
+            var subscriber = docSet2.getByLongname('Subscriber')[0];
+            var hasCallback = docSet2.getByLongname('Subscriber#hasCallback')[0];
 
             it('When a symbol is a class declaration, the doclet does not require the @class tag', function() {
                 expect(subscription.kind).toBe('class');
-                expect(subscription.longname).toBe('Subscription');
+                expect(subscription.name).toBe('Subscription');
                 expect(subscription.classdesc).toBe('Describe the Subscription class here.');
+            });
+
+            it('When a symbol is a class declaration, its members get the correct longname and memberof', function() {
+                expect(expire.kind).toBe('function');
+                expect(expire.name).toBe('expire');
+                expect(expire.memberof).toBe('Subscription');
+            });
+
+            it('When a symbol is a class expression, the doclet does not require the @class tag', function() {
+                expect(subscriber.kind).toBe('class');
+                expect(subscriber.name).toBe('Subscriber');
+                expect(subscriber.classdesc).toBe('Describe the Subscriber class here.');
+            });
+
+            it('When a symbol is a class expression, its members get the correct longname and memberof', function() {
+                expect(hasCallback.kind).toBe('function');
+                expect(hasCallback.name).toBe('hasCallback');
+                expect(hasCallback.memberof).toBe('Subscriber');
             });
         });
     }
