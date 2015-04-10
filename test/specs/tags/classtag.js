@@ -28,6 +28,12 @@ describe('@class tag', function() {
                 expect(subscription.classdesc).toBe('Describe the Subscription class here.');
             });
 
+            it('When a symbol is a class declaration, the constructor info is merged into the doclet for the symbol', function() {
+                expect(subscription.description).toBe('Describe the constructor here.');
+                expect(subscription.params.length).toBe(1);
+                expect(subscription.params[0].name).toBe('name');
+            });
+
             it('When a symbol is a class declaration, its members get the correct longname and memberof', function() {
                 expect(expire.kind).toBe('function');
                 expect(expire.name).toBe('expire');
@@ -38,6 +44,12 @@ describe('@class tag', function() {
                 expect(subscriber.kind).toBe('class');
                 expect(subscriber.name).toBe('Subscriber');
                 expect(subscriber.classdesc).toBe('Describe the Subscriber class here.');
+            });
+
+            it('When a symbol is a class expression, the constructor info is merged into the doclet for the symbol', function() {
+                expect(subscriber.description).toBe('Describe the constructor here.');
+                expect(subscriber.params.length).toBe(1);
+                expect(subscriber.params[0].name).toBe('name');
             });
 
             it('When a symbol is a class expression, its members get the correct longname and memberof', function() {
