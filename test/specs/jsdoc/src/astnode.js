@@ -349,8 +349,8 @@ describe('jsdoc/src/astNode', function() {
             expect(info.node.type).toBe(Syntax.FunctionExpression);
 
             expect(info.name).toBe('bar');
-            expect(info.type).toBe('function');
-            expect(info.value).toBe('function');
+            expect(info.type).toBeUndefined();
+            expect(info.value).toBeUndefined();
             expect( Array.isArray(info.paramnames) ).toBe(true);
             expect(info.paramnames.length).toBe(1);
             expect(info.paramnames[0]).toBe('a');
@@ -530,12 +530,12 @@ describe('jsdoc/src/astNode', function() {
             expect( astNode.nodeToValue(assignmentExpression) ).toBe('foo');
         });
 
-        it('should return "function" for function declarations', function() {
-            expect( astNode.nodeToValue(functionDeclaration1) ).toBe('function');
+        it('should return the function name for function declarations', function() {
+            expect( astNode.nodeToValue(functionDeclaration1) ).toBe('foo');
         });
 
-        it('should return "function" for function expressions', function() {
-            expect( astNode.nodeToValue(functionExpression1) ).toBe('function');
+        it('should return undefined for anonymous function expressions', function() {
+            expect( astNode.nodeToValue(functionExpression1) ).toBeUndefined();
         });
 
         it('should return the identifier name for identifiers', function() {

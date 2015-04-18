@@ -86,4 +86,74 @@ describe('@module tag', function() {
             expect(bookshelf.name).toBe('bookshelf');
         });
     });
+
+    if (jasmine.jsParser !== 'rhino') {
+        describe('ES 2015 modules', function() {
+            describe('that export a default', function() {
+                describe('value type', function() {
+                    var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag6.js');
+                    var exports = docSet.getByLongname('module:appname').filter(function(d) {
+                        return d.kind === 'member';
+                    })[0];
+
+                    it('When a value type is exported, it has the same name as the module longname', function() {
+                        expect(exports.name).toBe('module:appname');
+                    });
+                });
+
+                describe('object', function() {
+                    var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag7.js');
+                    var blend = docSet.getByLongname('module:color/mixer.blend')[0];
+
+                    it('When an object is exported, its members have the correct name, memberof, and kind', function() {
+                        expect(blend.name).toBe('blend');
+                        expect(blend.memberof).toBe('module:color/mixer');
+                        expect(blend.kind).toBe('function');
+                    });
+                });
+            });
+
+            describe('that export named values', function() {
+                var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag8.js');
+                var blend = docSet.getByLongname('module:color/mixer.blend')[0];
+                var lastColor = docSet.getByLongname('module:color/mixer.lastColor')[0];
+                var name = docSet.getByLongname('module:color/mixer.name')[0];
+                var toRgb = docSet.getByLongname('module:color/mixer.toRgb')[0];
+
+                it('When a method is exported, it has the correct name, memberof, and kind', function() {
+                    expect(blend.name).toBe('blend');
+                    expect(blend.memberof).toBe('module:color/mixer');
+                    expect(blend.kind).toBe('function');
+                });
+
+                it('When a variable is exported, it has the correct name, memberof, and kind', function() {
+                    expect(lastColor.name).toBe('lastColor');
+                    expect(lastColor.memberof).toBe('module:color/mixer');
+                    expect(lastColor.kind).toBe('member');
+                });
+
+                it('When a constant is exported, it has the correct name, memberof, and kind', function() {
+                    expect(name.name).toBe('name');
+                    expect(name.memberof).toBe('module:color/mixer');
+                    expect(name.kind).toBe('constant');
+                });
+
+                it('When a symbol is exported under a different name, it has the correct name, memberof, and kind', function() {
+                    expect(toRgb.name).toBe('toRgb');
+                    expect(toRgb.memberof).toBe('module:color/mixer');
+                    expect(toRgb.kind).toBe('function');
+                });
+            });
+
+            describe('that export another module in its entirety', function() {
+                it('should not crash JSDoc', function() {
+                    function getDocSet() {
+                        jasmine.getDocSetFromFile('test/fixtures/moduletag9.js');
+                    }
+
+                    expect(getDocSet).not.toThrow();
+                });
+            });
+        });
+    }
 });
