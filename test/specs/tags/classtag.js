@@ -21,6 +21,7 @@ describe('@class tag', function() {
             var expire = docSet2.getByLongname('Subscription#expire')[0];
             var subscriber = docSet2.getByLongname('Subscriber')[0];
             var hasCallback = docSet2.getByLongname('Subscriber#hasCallback')[0];
+            var expiringSubscription = docSet2.getByLongname('subclasses.ExpiringSubscription')[0];
 
             it('When a symbol is a class declaration, the doclet does not require the @class tag', function() {
                 expect(subscription.kind).toBe('class');
@@ -56,6 +57,12 @@ describe('@class tag', function() {
                 expect(hasCallback.kind).toBe('function');
                 expect(hasCallback.name).toBe('hasCallback');
                 expect(hasCallback.memberof).toBe('Subscriber');
+            });
+
+            it('When a class expression is assigned to an object property, it is parsed correctly', function() {
+                expect(expiringSubscription.kind).toBe('class');
+                expect(expiringSubscription.name).toBe('ExpiringSubscription');
+                expect(expiringSubscription.params[0].name).toBe('name');
             });
         });
     }

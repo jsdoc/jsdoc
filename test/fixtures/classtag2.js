@@ -27,3 +27,22 @@ const Subscriber = class Foo {
     /** Check whether the subscriber has a callback. */
     hasCallback() {}
 }
+
+/**
+ * Subclass namespace.
+ * @namespace
+ */
+let subclasses = {};
+
+/**
+ * Expiring subscription subclass.
+ * @class
+ */
+subclasses.ExpiringSubscription = class ExpiringSubscription {
+    /**
+     * Describe the constructor here.
+     *
+     * @param {string} name - The name of the subscription.
+     */
+    constructor(name) {}
+}
