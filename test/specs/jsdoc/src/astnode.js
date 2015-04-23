@@ -585,6 +585,7 @@ describe('jsdoc/src/astNode', function() {
         });
 
         it('should return an empty string for all other nodes', function() {
+            expect( astNode.nodeToValue(null) ).toBe('');
             expect( astNode.nodeToValue(binaryExpression) ).toBe('');
         });
     });
