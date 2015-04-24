@@ -102,6 +102,14 @@ generate and customize your documentation. Here are just a few:
   ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))
 + [minami](https://github.com/Nijikokun/minami)
 
+### Export JSON
+
+You can easily export JSON result by using haruki template:
+
+    jsdoc -r dir  -t templates/haruki -d console 
+
+See detail in [templates/haruki](./templates/haruki)
+
 ### Build Tools
 
 + [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
