@@ -22,6 +22,7 @@ describe('@class tag', function() {
             var subscriber = docSet2.getByLongname('Subscriber')[0];
             var hasCallback = docSet2.getByLongname('Subscriber#hasCallback')[0];
             var expiringSubscription = docSet2.getByLongname('subclasses.ExpiringSubscription')[0];
+            var invalidSubscriptionFoo = docSet2.getByLongname('subclasses.InvalidSubscription#foo')[0];
 
             it('When a symbol is a class declaration, the doclet does not require the @class tag', function() {
                 expect(subscription.kind).toBe('class');
@@ -63,6 +64,12 @@ describe('@class tag', function() {
                 expect(expiringSubscription.kind).toBe('class');
                 expect(expiringSubscription.name).toBe('ExpiringSubscription');
                 expect(expiringSubscription.params[0].name).toBe('name');
+            });
+
+            it('When a class is a static memberof something else, the class\' instance methods have the correct scope', function() {
+                expect(invalidSubscriptionFoo.kind).toBe('function');
+                expect(invalidSubscriptionFoo.name).toBe('foo');
+                expect(invalidSubscriptionFoo.scope).toBe('instance');
             });
         });
     }

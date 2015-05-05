@@ -46,3 +46,9 @@ subclasses.ExpiringSubscription = class ExpiringSubscription {
      */
     constructor(name) {}
 }
+
+/** @memberof subclasses */
+class InvalidSubscription {
+    /** Instance method. */
+    foo() {}
+}
