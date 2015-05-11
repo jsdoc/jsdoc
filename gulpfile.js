@@ -150,7 +150,7 @@ gulp.task('lint', function() {
 gulp.task('mocha', function() {
     patchRequire();
 
-    gulp.src(source.tests, { read: false })
+    return gulp.src(source.tests, { read: false })
         .pipe(require('gulp-mocha')());
 });
 
