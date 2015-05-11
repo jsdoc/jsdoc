@@ -21,9 +21,9 @@ supports Node.js 0.10 and later.
 You can install JSDoc in your project's `node_modules` folder, or you can
 install it globally.
 
-To install the latest alpha version:
+To install the latest version available on NPM:
 
-    npm install jsdoc@"<=3.3.0"
+    npm install jsdoc
 
 To install the latest development version:
 
@@ -119,7 +119,7 @@ Overflow](http://stackoverflow.com/questions/tagged/jsdoc).
 License
 -------
 
-JSDoc 3 is copyright (c) 2011-2014 Michael Mathews <micmath@gmail.com> and the
+JSDoc 3 is copyright (c) 2011-2015 Michael Mathews <micmath@gmail.com> and the
 [contributors to JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).
 
 JSDoc 3 is free software, licensed under the Apache License, Version 2.0. See
