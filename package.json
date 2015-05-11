@@ -22,7 +22,7 @@
     "marked": "~0.3.2",
     "requizzle": "~0.2.0",
     "strip-json-comments": "~1.0.2",
-    "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
+    "taffydb": "~2.7.2",
     "underscore": "~1.7.0",
     "wrench": "~1.5.8"
   },
