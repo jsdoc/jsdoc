@@ -2,9 +2,7 @@
 
 This file describes notable changes in each version of JSDoc 3. To download a specific version of JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
-## 3.3.0 (January 2015)
-
-**Note**: This draft changelog is current through January 21, 2015, and is subject to change before JSDoc 3.3.0 is released.
+## 3.3.0 (May 2015)
 
 ### Major changes
 + You can now run JSDoc on Node.js. (#93)
@@ -73,7 +71,9 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 + You can now override the default template's main layout file, `layout.tmpl`, by setting the `templates.default.layoutFile` option in JSDoc's configuration file. The property can contain a relative or absolute path to the replacement for `layout.tmpl`. Relative paths are resolved against the path to the configuration file; the current working directory; and the JSDoc directory, in that order. (#480)
 + When the `templates.default.outputSourceFiles` option is set to `false`, the documentation no longer shows the path to each source file. (#571)
 + You can now use the property `templates.default.staticFiles.include` to list files that will be copied to the output directory. For backwards compatibility, the property `templates.default.staticFiles.paths` is also supported but is deprecated. (#785)
++ The property `templates.default.staticFiles.include` now works correctly when an absolute path is specified. (#939)
 + The `templates.default.staticFiles` options now work correctly on Windows. (#785)
++ In output files, you can now prevent the date from appearing in the footer by setting the property `templates.default.includeDate` to `false`. (#910)
 + Output files no longer show the default value for members of an enumeration. (#689)
 + In certain types of AMD modules, the module-overview section is no longer duplicated. (#853)
 + If a constructor is assigned to `module.exports`, the value of the `@classdesc` tag now appears in the documentation. (#740)
