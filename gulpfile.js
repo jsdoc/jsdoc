@@ -102,6 +102,7 @@ gulp.task('coverage', function(cb) {
 
     gulp.src(source.code)
         .pipe(istanbul())
+        .pipe(istanbul.hookRequire())
         .on('finish', function() {
             gulp.src(source.tests)
                 .pipe(require('gulp-mocha')())
