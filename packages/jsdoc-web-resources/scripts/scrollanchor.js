@@ -9,8 +9,6 @@
     // top navbar height
     var TOP_OFFSET = 50;
 
-    var currentHash = window.location.hash;
-
     function scrollTo(hash) {
         var element = document.getElementById(hash.replace(/^#/, ''));
         var elementOffset;
@@ -26,13 +24,17 @@
         }
     }
 
-    // if we're loading a URL with an anchor, scroll appropriately
-    if (currentHash && currentHash !== '#') {
-        scrollTo(currentHash);
-    }
+    window.addEventListener('load', function() {
+        var currentHash = window.location.hash;
 
-    // if the user clicks on an in-page anchor tag, scroll appropriately
-    window.addEventListener('hashchange', function() {
-        scrollTo(window.location.hash);
+        // if we're loading a URL with an anchor, scroll appropriately
+        if (currentHash && currentHash !== '#') {
+            scrollTo(currentHash);
+        }
+
+        // if the user clicks on an in-page anchor tag, scroll appropriately
+        window.addEventListener('hashchange', function() {
+            scrollTo(window.location.hash);
+        });
     });
 })();
