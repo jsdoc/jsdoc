@@ -5,9 +5,6 @@ var Types = require('./types');
 function Stringifier(options) {
 	this._options = options || {};
 	this._options.linkClass = this._options.linkClass || this._options.cssClass;
-
-	// in a list of function signature params, repeatable params are stringified differently
-	this._inFunctionSignatureParams = false;
 }
 
 Stringifier.prototype.applications = function(applications) {
@@ -54,7 +51,7 @@ Stringifier.prototype.name = function(name) {
 	return name || '';
 };
 
-Stringifier.prototype['new'] = function(funcNew) {
+Stringifier.prototype.new = function(funcNew) {
 	return funcNew ? 'new:' + this.type(funcNew) : '';
 };
 
@@ -98,7 +95,7 @@ Stringifier.prototype.result = function(result) {
 	return result ? ': ' + this.type(result) : '';
 };
 
-Stringifier.prototype['this'] = function(funcThis) {
+Stringifier.prototype.this = function(funcThis) {
 	return funcThis ? 'this:' + this.type(funcThis) : '';
 };
 
@@ -188,19 +185,17 @@ function combineNameAndType(nameString, typeString) {
 Stringifier.prototype._addModifiers = function(type, typeString) {
 	var combined;
 
-	var open = '';
-	var close = '';
 	var optional = '';
+	var repeatable = '';
 
 	if (type.repeatable) {
-		open = this._inFunctionSignatureParams ? '...[' : '...';
-		close = this._inFunctionSignatureParams ? ']' : '';
+		repeatable = '...';
 	}
 
 	combined = this.nullable(type.nullable) + combineNameAndType('', typeString);
 	optional = this.optional(type.optional);
 
-	return open + combined + close + optional;
+	return repeatable + combined + optional;
 };
 
 Stringifier.prototype._addLinks = function(nameString) {
@@ -243,7 +238,6 @@ Stringifier.prototype._signature = function(type) {
 		'params'
 	];
 
-	this._inFunctionSignatureParams = true;
 	for (var i = 0, l = props.length; i < l; i++) {
 		prop = props[i];
 		param = this[prop](type[prop]);
@@ -251,7 +245,6 @@ Stringifier.prototype._signature = function(type) {
 			params.push(param);
 		}
 	}
-	this._inFunctionSignatureParams = false;
 
 	signature = 'function(' + params.join(', ') + ')';
 	signature += this.result(type.result);
