@@ -116,7 +116,6 @@ function modifierKind(useLongFormat) {
 }
 
 function buildModifierStrings(describer, modifiers, type, useLongFormat) {
-	var modifierStrings = {};
 	var result = {};
 
 	modifiers.forEach(function(modifier) {
@@ -280,7 +279,7 @@ Describer.prototype.elements = function(type, useLongFormat) {
 	return result;
 };
 
-Describer.prototype['new'] = function(funcNew) {
+Describer.prototype.new = function(funcNew) {
 	var context = new Context({'functionNew': this.type(funcNew).description});
 	var key = funcNew ? 'new' : '';
 
@@ -367,7 +366,7 @@ Describer.prototype.params = function(params, functionContext) {
 	return result;
 };
 
-Describer.prototype['this'] = function(funcThis) {
+Describer.prototype.this = function(funcThis) {
 	var context = new Context({'functionThis': this.type(funcThis).description});
 	var key = funcThis ? 'this' : '';
 
