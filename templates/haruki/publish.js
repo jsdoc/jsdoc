@@ -211,7 +211,8 @@ exports.publish = function(data, opts) {
             console.log( xml('jsdoc', root) );
         }
         else {
-            global.dump(root);
+            // global.dump(root);
+            console.log(root);
         }
     }
     else {
