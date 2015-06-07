@@ -2,6 +2,13 @@
 
 This file describes notable changes in each version of JSDoc 3. To download a specific version of JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
+
+## 3.3.1 (June 2015)
+
++ Fixed a crash in the Haruki template. (#1005)
++ When a type expression includes a record type with numeric keys (for example, `{0: string}`), the type expression is now parsed correctly. (#1016)
+
+
 ## 3.3.0 (May 2015)
 
 ### Major changes
