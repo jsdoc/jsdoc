@@ -138,5 +138,23 @@ describe('@param tag', function() {
             expect(func.params[2].name).toBe('options.something');
             expect(func.params[3].name).toBe('callback');
         });
+
+        it('When a @param tag is named starting with "..." and sits amongst unnamed @param tags, the code\'s names will be walked in-order', function() {
+            var basic = docSet3.getByLongname('dotNaming')[0];
+            var nested = docSet3.getByLongname('nestedDotNaming')[0];
+
+            expect(typeof basic.params).toBe('object');
+            expect(basic.params[0].name).toBe('options');
+            expect(basic.params[1].name).toBe('options.aThing');
+            expect(basic.params[2].name).toBe('options.something');
+            expect(basic.params[3].name).toBe('callback');
+
+            expect(typeof nested.params).toBe('object');
+            expect(nested.params[0].name).toBe('options');
+            expect(nested.params[1].name).toBe('options.aThing');
+            expect(nested.params[2].name).toBe('options.extras');
+            expect(nested.params[3].name).toBe('options.extras.value');
+            expect(nested.params[4].name).toBe('callback');
+        });
     });
 });
