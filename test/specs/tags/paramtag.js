@@ -128,5 +128,15 @@ describe('@param tag', function() {
             expect(mixedNaming.params[1].name).toBe('options.something');
             expect(mixedNaming.params[2].name).toBe('callback');
         });
+
+        it('When a @param tag is implicilty named and sits amongst unnamed @param tags, the code\'s names will be walked in-order', function() {
+            var func = docSet3.getByLongname('implicitNaming')[0];
+
+            expect(typeof func.params).toBe('object');
+            expect(func.params[0].name).toBe('options');
+            expect(func.params[1].name).toBe('options.aThing');
+            expect(func.params[2].name).toBe('options.something');
+            expect(func.params[3].name).toBe('callback');
+        });
     });
 });
