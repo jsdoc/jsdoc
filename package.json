@@ -27,9 +27,8 @@
     "wrench": "~1.5.8"
   },
   "devDependencies": {
-    "eslint": "~0.13.0",
     "gulp": "~3.8.5",
-    "gulp-eslint": "~0.2.0",
+    "gulp-eslint": "~0.13.2",
     "gulp-json-editor": "~2.0.2",
     "istanbul": "~0.2.16",
     "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
