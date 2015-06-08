@@ -116,4 +116,17 @@ describe('@param tag', function() {
 
         expect(test.description).not.toBeDefined();
     });
+
+    describe('without names', function() {
+        var docSet3 = jasmine.getDocSetFromFile('test/fixtures/paramtag3.js');
+
+        it('When a @param tag is named and sits in-between two unnamed @param tags, the names will be taken in-order from the code', function() {
+            var mixedNaming = docSet3.getByLongname('mixedNaming')[0];
+
+            expect(typeof mixedNaming.params).toBe('object');
+            expect(mixedNaming.params[0].name).toBe('options');
+            expect(mixedNaming.params[1].name).toBe('options.something');
+            expect(mixedNaming.params[2].name).toBe('callback');
+        });
+    });
 });
