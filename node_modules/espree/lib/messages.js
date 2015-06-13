@@ -69,7 +69,7 @@ module.exports = {
     StrictParamName: "Parameter name eval or arguments is not allowed in strict mode",
     StrictParamDupe: "Strict mode function may not have duplicate parameter names",
     TemplateOctalLiteral: "Octal literals are not allowed in template strings.",
-    ParameterAfterRestParameter: "Rest parameter must be final parameter of an argument list",
+    ParameterAfterRestParameter: "Rest parameter must be last formal parameter",
     DefaultRestParameter: "Rest parameter can not have a default value",
     ElementAfterSpreadElement: "Spread must be the final element of an element list",
     ObjectPatternAsRestParameter: "Invalid rest parameter",
