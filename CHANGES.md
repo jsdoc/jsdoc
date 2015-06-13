@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3. To download a specific version of JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
 
+## 3.3.2 (June 2015)
+
+JSDoc no longer crashes when parsing a large number of files, or a single object that has a large number of properties. (#976)
+
+
 ## 3.3.1 (June 2015)
 
 + Fixed a crash in the Haruki template. (#1005)
