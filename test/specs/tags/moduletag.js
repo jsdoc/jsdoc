@@ -154,6 +154,16 @@ describe('@module tag', function() {
                     expect(getDocSet).not.toThrow();
                 });
             });
+
+            describe('that export an unnamed default function', function() {
+                it('should not crash JSDoc', function() {
+                    function getDocSet() {
+                        jasmine.getDocSetFromFile('test/fixtures/moduletag10.js');
+                    }
+
+                    expect(getDocSet).not.toThrow();
+                });
+            });
         });
     }
 });
