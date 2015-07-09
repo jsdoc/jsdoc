@@ -56,6 +56,10 @@ global.env = (function() {
     }
 })();
 
+if (process && process.env && process.env.jsDocArgs) {
+    global.env.args = process.env.jsDocArgs.split(",");
+}
+
 /**
  * Data that must be shared across the entire application.
  *
