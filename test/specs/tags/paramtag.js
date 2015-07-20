@@ -156,5 +156,17 @@ describe('@param tag', function() {
             expect(nested.params[3].name).toBe('options.extras.value');
             expect(nested.params[4].name).toBe('callback');
         });
+
+        it('When a @param tag is implicitly named and sits after a named @param, the code\'s names will be mapped', function() {
+            var func = docSet3.getByLongname('muddledNaming')[0];
+
+            expect(typeof func.params).toBe('object');
+            expect(func.params[0].name).toBe('config');
+            expect(func.params[1].name).toBe('config.aThing');
+            expect(func.params[2].name).toBe('config.something');
+            expect(func.params[3].name).toBe('callback');
+            expect(func.params[4].name).toBe('description');
+            expect(func.params[5].name).toBe('num');
+        });
     });
 });

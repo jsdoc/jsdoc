@@ -29,3 +29,13 @@ function dotNaming(options, callback){}
  * @param {function} - a callback invoked on completion
  */
 function nestedDotNaming(options, callback){}
+
+/**
+ @param {object} config - The options
+ @param {string} .aThing - Required option
+ @param {string} [.something] - Optional option
+ @param {function} - a callback invoked on completion
+ @param {string} description - a description
+ @param {int} - the number
+ */
+function muddledNaming(options, callback, str, num){}
