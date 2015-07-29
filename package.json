@@ -13,24 +13,24 @@
     "url": "https://github.com/jsdoc3/jsdoc"
   },
   "dependencies": {
-    "async": "~0.9.0",
-    "bluebird": "~2.9.14",
+    "async": "~1.4.0",
+    "bluebird": "~2.9.34",
     "catharsis": "~0.8.7",
-    "escape-string-regexp": "~1.0.2",
-    "espree": "~2.0.3",
-    "js2xmlparser": "~0.1.7",
-    "marked": "~0.3.2",
+    "escape-string-regexp": "~1.0.3",
+    "espree": "~2.2.3",
+    "js2xmlparser": "~1.0.0",
+    "marked": "~0.3.4",
     "requizzle": "~0.2.0",
     "strip-json-comments": "~1.0.2",
     "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
-    "underscore": "~1.7.0",
+    "underscore": "~1.8.3",
     "wrench": "~1.5.8"
   },
   "devDependencies": {
-    "gulp": "~3.8.5",
-    "gulp-eslint": "~0.13.2",
-    "gulp-json-editor": "~2.0.2",
-    "istanbul": "~0.2.16",
+    "gulp": "~3.9.0",
+    "gulp-eslint": "~0.15.0",
+    "gulp-json-editor": "~2.2.1",
+    "istanbul": "~0.3.17",
     "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
   },
   "engines": {

@@ -226,7 +226,8 @@ https://github.com/mhevery/jasmine-node
 
 ## js2xmlparser ##
 
-js2xmlparser is distributed under the MIT license, which is reproduced above.
+js2xmlparser is distributed under the Apache License 2.0, which is
+included with this package.
 
 Copyright (c) 2012 Michael Kourlas.
 
@@ -374,7 +375,7 @@ https://github.com/geraintluff/tv4
 
 Underscore.js is distributed under the MIT license, which is reproduced above.
 
-Copyright (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative
+Copyright (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative
 Reporters & Editors.
 
 The source code for Underscore.js is available at:
