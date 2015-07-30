@@ -1,6 +1,6 @@
 JSDoc 3
 =======
-[![Build Status](https://img.shields.io/travis/jsdoc3/jsdoc.svg)](http://travis-ci.org/jsdoc3/jsdoc)
+[![Build Status](https://travis-ci.org/jsdoc3/jsdoc.svg?branch=master)](http://travis-ci.org/jsdoc3/jsdoc)
 
 An API documentation generator for JavaScript.
 
