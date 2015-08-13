@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/*eslint spaced-line-comment: 0 */
+/* eslint spaced-comment: 0 */
 
 exports.handlers = {
     ///

@@ -1,4 +1,4 @@
-/*eslint max-nested-callbacks: 0 */
+/* eslint max-nested-callbacks: 0 */
 'use strict';
 
 var eslint = require('gulp-eslint');

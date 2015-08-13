@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-/*global arguments, require: true */
+/* global arguments, require: true */
+/* eslint strict: [2, "function"] */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
