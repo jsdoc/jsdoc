@@ -300,7 +300,14 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                 itemsNav += '<li>' + linktoFn('', item.name) + '</li>';
             }
             else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                itemsNav += '<li>' + linktoFn(item.longname, item.name.replace(/^module:/, '')) + '</li>';
+                var displayName;
+                if (env.conf.templates.default.useLongnameInNav) {
+                    displayName = item.longname;
+                } else {
+                    displayName = item.name;
+                }
+                itemsNav += '<li>' + linktoFn(item.longname, displayName.replace(/\b(module|event):/g, '')) + '</li>';
+
                 itemsSeen[item.longname] = true;
             }
         });
