@@ -14,6 +14,7 @@ describe('jsdoc/src/astNode', function() {
 
     // create the AST nodes we'll be testing
     var arrayExpression = parse('[,]').body[0].expression;
+    var arrowFunctionExpression = parse('var foo = () => {};').body[0].declarations[0].init;
     var assignmentExpression = parse('foo = 1;').body[0].expression;
     var binaryExpression = parse('foo & foo;').body[0].expression;
     var functionDeclaration1 = parse('function foo() {}').body[0];
@@ -28,6 +29,7 @@ describe('jsdoc/src/astNode', function() {
     var memberExpression = parse('foo.bar;').body[0].expression;
     var memberExpressionComputed1 = parse('foo["bar"];').body[0].expression;
     var memberExpressionComputed2 = parse('foo[\'bar\'];').body[0].expression;
+    var methodDefinition = parse('class Foo { bar() {} }').body[0].body.body[0];
     var propertyGet = parse('var foo = { get bar() {} };').body[0].declarations[0].init
         .properties[0];
     var propertyInit = parse('var foo = { bar: {} };').body[0].declarations[0].init.properties[0];
@@ -63,6 +65,10 @@ describe('jsdoc/src/astNode', function() {
 
     it('should export an isAssignment method', function() {
         expect(typeof astNode.isAssignment).toBe('function');
+    });
+
+    it('should export an isFunction method', function() {
+        expect(typeof astNode.isFunction).toBe('function');
     });
 
     it('should export an isScope method', function() {
@@ -486,6 +492,28 @@ describe('jsdoc/src/astNode', function() {
 
         it('should return true for VariableDeclarator nodes', function() {
             expect( astNode.isAssignment(variableDeclarator1) ).toBe(true);
+        });
+    });
+
+    describe('isFunction', function() {
+        it('should recognize function declarations as functions', function() {
+            expect( astNode.isFunction(functionDeclaration1) ).toBe(true);
+        });
+
+        it('should recognize function expressions as functions', function() {
+            expect( astNode.isFunction(functionExpression1) ).toBe(true);
+        });
+
+        it('should recognize method definitions as functions', function() {
+            expect( astNode.isFunction(methodDefinition) ).toBe(true);
+        });
+
+        it('should recognize arrow function expressions as functions', function() {
+            expect( astNode.isFunction(arrowFunctionExpression) ).toBe(true);
+        });
+
+        it('should recognize non-functions', function() {
+            expect( astNode.isFunction(arrayExpression) ).toBe(false);
         });
     });
 
