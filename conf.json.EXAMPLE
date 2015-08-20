@@ -3,7 +3,7 @@
         "allowUnknownTags": true
     },
     "source": {
-        "includePattern": ".+\\.js(doc)?$",
+        "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "plugins": [],
