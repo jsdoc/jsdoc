@@ -7,6 +7,8 @@
  */
 'use strict';
 
+var hasOwnProp = Object.prototype.hasOwnProperty;
+
 function graft(parentNode, childNodes, parentLongname, parentName) {
     childNodes
     .filter(function (element) {
@@ -83,7 +85,7 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                         'name': element.params[i].name,
                         'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
                         'description': element.params[i].description || '',
-                        'default': element.params[i].defaultvalue || '',
+                        'default': hasOwnProp.call(element.params[i], 'defaultvalue') ? element.params[i].defaultvalue : '',
                         'optional': typeof element.params[i].optional === 'boolean'? element.params[i].optional : '',
                         'nullable': typeof element.params[i].nullable === 'boolean'? element.params[i].nullable : ''
                     });
@@ -138,7 +140,7 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                         'name': element.params[i].name,
                         'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
                         'description': element.params[i].description || '',
-                        'default': element.params[i].defaultvalue || '',
+                        'default': hasOwnProp.call(element.params[i], 'defaultvalue') ? element.params[i].defaultvalue : '',
                         'optional': typeof element.params[i].optional === 'boolean'? element.params[i].optional : '',
                         'nullable': typeof element.params[i].nullable === 'boolean'? element.params[i].nullable : ''
                     });
@@ -180,7 +182,7 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
                         'name': element.params[i].name,
                         'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
                         'description': element.params[i].description || '',
-                        'default': element.params[i].defaultvalue || '',
+                        'default': hasOwnProp.call(element.params[i], 'defaultvalue') ? element.params[i].defaultvalue : '',
                         'optional': typeof element.params[i].optional === 'boolean'? element.params[i].optional : '',
                         'nullable': typeof element.params[i].nullable === 'boolean'? element.params[i].nullable : ''
                     });
