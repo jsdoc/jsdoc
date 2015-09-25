@@ -116,4 +116,57 @@ describe('@param tag', function() {
 
         expect(test.description).not.toBeDefined();
     });
+
+    describe('without names', function() {
+        var docSet3 = jasmine.getDocSetFromFile('test/fixtures/paramtag3.js');
+
+        it('When a @param tag is named and sits in-between two unnamed @param tags, the names will be taken in-order from the code', function() {
+            var mixedNaming = docSet3.getByLongname('mixedNaming')[0];
+
+            expect(typeof mixedNaming.params).toBe('object');
+            expect(mixedNaming.params[0].name).toBe('options');
+            expect(mixedNaming.params[1].name).toBe('options.something');
+            expect(mixedNaming.params[2].name).toBe('callback');
+        });
+
+        it('When a @param tag is implicilty named and sits amongst unnamed @param tags, the code\'s names will be walked in-order', function() {
+            var func = docSet3.getByLongname('implicitNaming')[0];
+
+            expect(typeof func.params).toBe('object');
+            expect(func.params[0].name).toBe('options');
+            expect(func.params[1].name).toBe('options.aThing');
+            expect(func.params[2].name).toBe('options.something');
+            expect(func.params[3].name).toBe('callback');
+        });
+
+        it('When a @param tag is named starting with "..." and sits amongst unnamed @param tags, the code\'s names will be walked in-order', function() {
+            var basic = docSet3.getByLongname('dotNaming')[0];
+            var nested = docSet3.getByLongname('nestedDotNaming')[0];
+
+            expect(typeof basic.params).toBe('object');
+            expect(basic.params[0].name).toBe('options');
+            expect(basic.params[1].name).toBe('options.aThing');
+            expect(basic.params[2].name).toBe('options.something');
+            expect(basic.params[3].name).toBe('callback');
+
+            expect(typeof nested.params).toBe('object');
+            expect(nested.params[0].name).toBe('options');
+            expect(nested.params[1].name).toBe('options.aThing');
+            expect(nested.params[2].name).toBe('options.extras');
+            expect(nested.params[3].name).toBe('options.extras.value');
+            expect(nested.params[4].name).toBe('callback');
+        });
+
+        it('When a @param tag is implicitly named and sits after a named @param, the code\'s names will be mapped', function() {
+            var func = docSet3.getByLongname('muddledNaming')[0];
+
+            expect(typeof func.params).toBe('object');
+            expect(func.params[0].name).toBe('config');
+            expect(func.params[1].name).toBe('config.aThing');
+            expect(func.params[2].name).toBe('config.something');
+            expect(func.params[3].name).toBe('callback');
+            expect(func.params[4].name).toBe('description');
+            expect(func.params[5].name).toBe('num');
+        });
+    });
 });
