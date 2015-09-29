@@ -106,6 +106,11 @@ describe("jsdoc/util/templateHelper", function() {
         expect(typeof helper.getAncestorLinks).toBe("function");
     });
 
+    it("should export a 'addEventFirers' function", function() {
+        expect(helper.addEventFirers).toBeDefined();
+        expect(typeof helper.addEventFirers).toBe("function");
+    });
+
     it("should export a 'addEventListeners' function", function() {
         expect(helper.addEventListeners).toBeDefined();
         expect(typeof helper.addEventListeners).toBe("function");
@@ -971,6 +976,10 @@ describe("jsdoc/util/templateHelper", function() {
             delete helper.longnameToUrl['module:mafia/gangs'];
             delete helper.longnameToUrl['module:mafia/gangs.Sharks~Henchman'];
         });
+    });
+
+    describe("addEventFirers", function() {
+        // TODO
     });
 
     describe("addEventListeners", function() {
