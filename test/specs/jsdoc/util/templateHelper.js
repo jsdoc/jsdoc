@@ -979,7 +979,26 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("addEventFirers", function() {
-        // TODO
+        var doclets = (taffy(doop(jasmine.getDocSetFromFile('test/fixtures/eventfirestag.js').doclets))),
+            ev = helper.find(doclets, {longname: 'Hurl#event:snowball'})[0],
+            ev2 = helper.find(doclets, {longname: 'Hurl#event:footballMatch'})[0];
+
+        helper.addEventFirers(doclets);
+
+        it("adds a 'firers' array to events with the longnames of the firers", function() {
+            expect(Array.isArray(ev.firers)).toBe(true);
+            expect(Array.isArray(ev2.firers)).toBe(true);
+
+            expect(ev.firers.length).toBe(1);
+            expect(ev.firers).toContain('Hurl#snowball');
+
+            expect(ev2.firers.length).toBe(1);
+            expect(ev2.firers).toContain('Hurl#footballMatch');
+        });
+
+        it("does not make spurious doclets if something @fires to a non-existent symbol", function() {
+            expect(helper.find(doclets, {longname: 'Hurl#event:brick'}).length).toBe(0);
+        });
     });
 
     describe("addEventListeners", function() {
