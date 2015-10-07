@@ -607,7 +607,7 @@ jasmine.XmlHttpRequest = (typeof XMLHttpRequest == "undefined") ? function() {
   function tryIt(f) {
     try {
       return f();
-    } catch(e) {
+    } catch (e) {
     }
     return null;
   }
@@ -806,7 +806,7 @@ jasmine.Env.prototype.describe = function(description, specDefinitions) {
   var declarationError = null;
   try {
     specDefinitions.call(suite);
-  } catch(e) {
+  } catch (e) {
     declarationError = e;
   }
 
@@ -1608,7 +1608,7 @@ jasmine.FakeTimer.prototype.runFunctionsWithinRange = function(oldMillis, nowMil
               funcToRun.millis,
               true);
         }
-      } catch(e) {
+      } catch (e) {
       }
     }
     this.runFunctionsWithinRange(oldMillis, nowMillis);

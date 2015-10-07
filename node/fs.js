@@ -13,7 +13,7 @@ var toDir = exports.toDir = function(_path) {
     try {
         isDirectory = fs.statSync(_path).isDirectory();
     }
-    catch(e) {
+    catch (e) {
         isDirectory = false;
     }
 

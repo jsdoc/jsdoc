@@ -81,7 +81,7 @@ cli.loadConfig = function() {
     try {
         isFile = fs.statSync(confPath).isFile();
     }
-    catch(e) {
+    catch (e) {
         isFile = false;
     }
 
@@ -423,7 +423,7 @@ cli.generateDocs = function() {
     try {
         template = require(env.opts.template + '/publish');
     }
-    catch(e) {
+    catch (e) {
         logger.fatal('Unable to load template: ' + e.message || e);
     }
 

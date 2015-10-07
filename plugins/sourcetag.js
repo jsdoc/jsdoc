@@ -37,7 +37,7 @@ exports.handlers = {
                 try {
                     value = JSON.parse(tag.value);
                 }
-                catch(e) {
+                catch (e) {
                     logger.error('@source tag expects a valid JSON value, like { "filename": "myfile.js", "lineno": 123 }.');
                     return;
                 }

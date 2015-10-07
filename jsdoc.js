@@ -122,7 +122,7 @@ global.app = (function() {
         try {
             cli.runCommand(cb);
         }
-        catch(e) {
+        catch (e) {
             if (e.rhinoException) {
                 logger.fatal( e.rhinoException.printStackTrace() );
             } else {
