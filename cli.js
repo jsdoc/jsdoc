@@ -314,11 +314,17 @@ function resolvePluginPaths(paths) {
     paths.forEach(function(plugin) {
         var basename = path.basename(plugin);
         var dirname = path.dirname(plugin);
-        var pluginPath = path.getResourcePath(dirname);
+        // convoluted way to detect the correct path for the plugins; done this round-about way to cope
+        // with scenarios where JSDoc is executed in another project's working directory where that
+        // project has plugins of itself in a similar directory structure (plugins/*)
+        var pluginPath = path.getResourcePath(dirname, basename + ".js");
 
         if (!pluginPath) {
             logger.error('Unable to find the plugin "%s"', plugin);
             return;
+        } else {
+            // correct the path to the plugin:
+            pluginPath = path.dirname(pluginPath);
         }
 
         pluginPaths.push( path.join(pluginPath, basename) );
@@ -410,7 +416,18 @@ cli.generateDocs = function() {
 
     env.opts.template = (function() {
         var publish = env.opts.template || 'templates/default';
-        var templatePath = path.getResourcePath(publish);
+        // convoluted way to detect the correct path for the templates; done this round-about way to cope
+        // with scenarios where JSDoc is executed in another project's working directory where that
+        // project has templates of itself in a similar directory structure (templates/<name>/)
+        var templatePath = path.getResourcePath(publish, "publish.js");
+
+        if (!templatePath) {
+            logger.error('Unable to find the template "%s"', publish);
+            return publish;
+        } else {
+            // correct the path to the template:
+            templatePath = path.dirname(templatePath);
+        }
 
         // if we didn't find the template, keep the user-specified value so the error message is
         // useful
