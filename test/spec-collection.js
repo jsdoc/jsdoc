@@ -54,7 +54,7 @@ function isValidSpec(file, matcher) {
             // ...be relevant to the current runtime
             file.indexOf(skipPath) === -1;
     }
-    catch(e) {
+    catch (e) {
         result = false;
     }
 
