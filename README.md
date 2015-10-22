@@ -71,6 +71,7 @@ you may need to remove the file `~/Library/Java/Extensions/js.jar`.)
 do not install JSDoc with npm. Use one of the methods described above.
 
 #### Running JSDoc with Mozilla Rhino
+Requires Java installed.
 
 On OS X, Linux, and other POSIX systems, to generate documentation for the file
 `yourJavaScriptFile.js`:
@@ -86,12 +87,20 @@ can use the `--destination` (`-d`) option to specify another directory.
 
 Run `jsdoc --help` for a complete list of command-line options.
 
+### Commands
+To see jsdoc documentation please refer to http://usejsdoc.org.
+
+#### Quick instructions
+File list is divided by space. Calling jsdoc should work from command-line with either node.js or Java installed.
+
+    jsdoc folder/file.js second.js all_from_dir/ -d output_directory
 
 Templates and Build Tools
 -------------------------
 
 The JSDoc community has created numerous templates and other tools to help you
 generate and customize your documentation. Here are just a few:
+
 
 ### Templates
 
