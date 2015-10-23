@@ -27,7 +27,7 @@ To install the latest version available on NPM:
 
 To install the latest development version:
 
-    npm install git+https://github.com/jsdoc3/jsdoc.git
+    npm install jsdoc3/jsdoc
 
 #### Running JSDoc with Node.js
 
@@ -60,7 +60,7 @@ or a [previous release](https://github.com/jsdoc3/jsdoc/tags).
 You can also use git to clone the
 [JSDoc repository](https://github.com/jsdoc3/jsdoc):
 
-    git clone git+https://github.com/jsdoc3/jsdoc.git
+    git clone https://github.com/jsdoc3/jsdoc
 
 The JSDoc repository includes a
 [customized version of Mozilla Rhino](https://github.com/jsdoc3/rhino). Make
