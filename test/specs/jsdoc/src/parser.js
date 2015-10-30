@@ -31,7 +31,6 @@ describe('jsdoc/src/parser', function() {
 
     describe('createParser', function() {
         it('should return a Parser when called without arguments', function() {
-            // we don't check instanceof because we get different objects on Node.js and Rhino
             expect(typeof jsdoc.src.parser.createParser()).toBe('object');
         });
 
@@ -40,15 +39,6 @@ describe('jsdoc/src/parser', function() {
 
             expect(parser instanceof jsdoc.src.parser.Parser).toBe(true);
         });
-
-        if (jsdoc.util.runtime.isRhino()) {
-            it('should create a Rhino parser with the argument "rhino"', function() {
-                var RhinoParser = require('rhino/jsdoc/src/parser').Parser;
-                var parser = jsdoc.src.parser.createParser('rhino');
-
-                expect(parser instanceof RhinoParser).toBe(true);
-            });
-        }
 
         it('should log a fatal error on bad input', function() {
             var parser;
@@ -303,18 +293,15 @@ describe('jsdoc/src/parser', function() {
                 expect(spy.mostRecentCall.args[0].doclets).toBe(doclets);
             });
 
-            // Rhino can't parse ES6
-            if (jasmine.jsParser !== 'rhino') {
-                it('should not throw errors when parsing files with ES6 syntax', function() {
-                    function parse() {
-                        var parserSrc = 'javascript:' + fs.readFileSync(
-                            path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8');
-                        parser.parse(parserSrc);
-                    }
+            it('should not throw errors when parsing files with ES6 syntax', function() {
+                function parse() {
+                    var parserSrc = 'javascript:' + fs.readFileSync(
+                        path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8');
+                    parser.parse(parserSrc);
+                }
 
-                    expect(parse).not.toThrow();
-                });
-            }
+                expect(parse).not.toThrow();
+            });
 
             it('should be able to parse its own source file', function() {
                 var parserSrc = 'javascript:' + fs.readFileSync(path.join(jsdoc.env.dirname,
@@ -408,43 +395,14 @@ describe('jsdoc/src/parser', function() {
                     }
                 }
 
-                // Rhino fires events in a different order
-                if (jasmine.jsParser === 'rhino') {
-                    it('should fire all jsdocCommentFound events, in source order, ' +
-                        'then all symbolFound events, in source order', function() {
-                        parser.on('jsdocCommentFound', pushEvent);
-
-                        parser.on('symbolFound', pushEvent);
-
-                        jsdoc.src.handlers.attachTo(parser);
-                        parser.parse('javascript:' + source);
-
-                        // make sure jsdocCommentFound events are in the correct order
-                        events.jsdocCommentFound.slice(0).sort(sourceOrderSort)
-                            .forEach(function(e, i) {
-                            expect(e).toBe(events.jsdocCommentFound[i]);
-                        });
-                        // make sure symbolFound events are in the correct order
-                        events.symbolFound.slice(0).sort(sourceOrderSort).forEach(function(e, i) {
-                            expect(e).toBe(events.symbolFound[i]);
-                        });
-                        // make sure jsdocCommentFound events are all first
-                        events.all.slice(0, events.jsdocCommentFound.length)
-                            .forEach(function(e, i) {
-                            expect(e).toBe(events.all[i]);
-                        });
+                it('should fire interleaved jsdocCommentFound and symbolFound events, ' +
+                    'in source order', function() {
+                    jsdoc.src.handlers.attachTo(parser);
+                    parser.parse(source);
+                    events.all.slice(0).sort(sourceOrderSort).forEach(function(e, i) {
+                        expect(e).toBe(events.all[i]);
                     });
-                }
-                else {
-                    it('should fire interleaved jsdocCommentFound and symbolFound events, ' +
-                        'in source order', function() {
-                        jsdoc.src.handlers.attachTo(parser);
-                        parser.parse(source);
-                        events.all.slice(0).sort(sourceOrderSort).forEach(function(e, i) {
-                            expect(e).toBe(events.all[i]);
-                        });
-                    });
-                }
+                });
             });
         });
 

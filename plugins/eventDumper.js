@@ -11,7 +11,6 @@ var env = require('jsdoc/env');
 var util = require('util');
 
 var conf = env.conf.eventDumper || {};
-var isRhino = require('jsdoc/util/runtime').isRhino();
 
 // Dump the included parser events (defaults to all events)
 var events = conf.include || [
@@ -28,20 +27,6 @@ var events = conf.include || [
 // Don't dump the excluded parser events
 if (conf.exclude) {
     events = _.difference(events, conf.exclude);
-}
-
-/**
- * Check whether a variable appears to be a Java native object.
- *
- * @param {*} o - The variable to check.
- * @return {boolean} Set to `true` for Java native objects and `false` in all other cases.
- */
-function isJavaNativeObject(o) {
-    if (!isRhino) {
-        return false;
-    }
-
-    return o && typeof o === 'object' && typeof o.getClass === 'function';
 }
 
 /**
@@ -91,8 +76,7 @@ function cleanse(e) {
         }
         // never include functions that belong to the object
         else if (typeof e[prop] !== 'function') {
-            // don't call JSON.stringify() on Java native objects--Rhino will throw an exception
-            result[prop] = isJavaNativeObject(e[prop]) ? String(e[prop]) : e[prop];
+            result[prop] = e[prop];
         }
     });
 

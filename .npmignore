@@ -4,11 +4,4 @@
 .gitignore
 .travis.yml
 gulpfile.js
-
-# scripts for launching JSDoc with Mozilla Rhino
-/jsdoc*
-!/jsdoc.js
-
-# Rhino and test directories
-rhino/
 test/

@@ -40,9 +40,9 @@ jasmine.getParseResults = function() {
     return parseResults;
 };
 
-// use the requested parser, or default to the pure JS parser (on Node.js) or Rhino (on Rhino)
+// use the requested parser, or default to the pure JS parser (on Node.js)
 jasmine.jsParser = (function() {
-    var parser = jsdoc.util.runtime.isRhino() ? 'rhino' : 'js';
+    var parser = 'js';
 
     if (jsdoc.env.opts.query && jsdoc.env.opts.query.parser) {
         parser = jsdoc.env.opts.query.parser;

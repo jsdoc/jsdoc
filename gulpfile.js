@@ -31,16 +31,7 @@ var options = {
         'test/specs/**/*.js'
     ],
     nodeBin: path.resolve(__dirname, './jsdoc.js'),
-    nodePath: process.execPath,
-    rhinoBin: (function() {
-        var filepath = path.resolve(__dirname, './jsdoc');
-
-        if (os.platform().indexOf('win') === 0) {
-            filepath += '.cmd';
-        }
-
-        return filepath;
-    })()
+    nodePath: process.execPath
 };
 
 gulp.task('bump', function() {
@@ -63,20 +54,9 @@ gulp.task('lint', function() {
         .pipe(eslint.failOnError());
 });
 
-gulp.task('test-node', function(cb) {
+gulp.task('test', function(cb) {
     var cmd = util.format('%s "%s" -T', options.nodePath, options.nodeBin);
     exec(cmd, execCb.bind(null, cb));
 });
 
-gulp.task('test-rhino', function(cb) {
-    var cmd = util.format('"%s" -T -q "parser=rhino"', options.rhinoBin);
-    exec(cmd, execCb.bind(null, cb));
-});
-
-gulp.task('test-rhino-jsparser', function(cb) {
-    var cmd = util.format('"%s" -T -q "parser=js"', options.rhinoBin);
-    exec(cmd, execCb.bind(null, cb));
-});
-
-gulp.task('test', ['test-node', 'test-rhino', 'test-rhino-jsparser']);
 gulp.task('default', ['lint', 'test']);
