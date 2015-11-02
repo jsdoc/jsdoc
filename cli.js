@@ -447,11 +447,12 @@ cli.generateDocs = function() {
 
 // TODO: docs
 cli.exit = function(exitCode, message) {
-    if (message && exitCode > 0) {
-        console.error(message);
+    if (exitCode > 0) {
+        if (message) {
+            console.error(message);
+        }
+        process.exit(exitCode);
     }
-
-    process.exit(exitCode || 0);
 };
 
 return cli;
