@@ -1,5 +1,3 @@
-node_modules/*
-rhino/*
 templates/default/static/scripts/*
 test/fixtures/*
 test/lib/*

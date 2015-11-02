@@ -43,7 +43,7 @@ function addSpec(file, target) {
 function isValidSpec(file, matcher) {
     var result;
 
-    var skipPath = runtime.isRhino() ? runtime.NODE : runtime.RHINO;
+    var skipPath = runtime.NODE;
 
     // valid specs must...
     try {

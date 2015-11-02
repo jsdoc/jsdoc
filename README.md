@@ -9,17 +9,8 @@ Want to contribute to JSDoc? Please read `CONTRIBUTING.md`.
 Installation and Usage
 ----------------------
 
-You can run JSDoc on either Node.js or Mozilla Rhino.
-
-### Node.js
-
-Native support for Node.js is available in JSDoc 3.3.0 and later. JSDoc
-supports Node.js 0.10 and later.
-
-#### Installing JSDoc for Node.js
-
-You can install JSDoc in your project's `node_modules` folder, or you can
-install it globally.
+JSDoc supports Node.js 0.10 and later. You can install JSDoc in your project's
+`node_modules` folder, or you can install it globally.
 
 To install the latest version available on NPM:
 
@@ -28,8 +19,6 @@ To install the latest version available on NPM:
 To install the latest development version:
 
     npm install git+https://github.com/jsdoc3/jsdoc.git
-
-#### Running JSDoc with Node.js
 
 If you installed JSDoc locally, the JSDoc command-line tool is available in
 `./node_modules/.bin`. To generate documentation for the file
@@ -45,47 +34,6 @@ By default, the generated documentation is saved in a directory named `out`. You
 can use the `--destination` (`-d`) option to specify another directory.
 
 Run `jsdoc --help` for a complete list of command-line options.
-
-### Mozilla Rhino
-
-All versions of JSDoc 3 run on a customized version of Mozilla Rhino, which
-requires Java. You can run JSDoc 3 on Java 1.6 and later.
-
-#### Installing JSDoc for Mozilla Rhino
-
-To install JSDoc, download a .zip file for the
-[latest development version](https://github.com/jsdoc3/jsdoc/archive/master.zip)
-or a [previous release](https://github.com/jsdoc3/jsdoc/tags).
-
-You can also use git to clone the
-[JSDoc repository](https://github.com/jsdoc3/jsdoc):
-
-    git clone git+https://github.com/jsdoc3/jsdoc.git
-
-The JSDoc repository includes a
-[customized version of Mozilla Rhino](https://github.com/jsdoc3/rhino). Make
-sure your Java classpath does not include any other versions of Rhino. (On OS X,
-you may need to remove the file `~/Library/Java/Extensions/js.jar`.)
-
-**Note**: In JSDoc 3.3.0 and later, if you need to run JSDoc on Mozilla Rhino,
-do not install JSDoc with npm. Use one of the methods described above.
-
-#### Running JSDoc with Mozilla Rhino
-
-On OS X, Linux, and other POSIX systems, to generate documentation for the file
-`yourJavaScriptFile.js`:
-
-    ./jsdoc yourJavaScriptFile.js
-
-Or on Windows:
-
-    jsdoc yourJavaScriptFile.js
-
-By default, the generated documentation is saved in a directory named `out`. You
-can use the `--destination` (`-d`) option to specify another directory.
-
-Run `jsdoc --help` for a complete list of command-line options.
-
 
 Templates and Build Tools
 -------------------------

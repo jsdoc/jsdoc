@@ -45,16 +45,7 @@
  */
 global.env = (function() {
     'use strict';
-
-    // This bit of joy is here because Rhino treats `./lib/jsdoc/env` and `jsdoc/env` as separate
-    // modules. In contrast, Node.js errors out on `jsdoc/env` because we don't patch `require()`
-    // until after this file is loaded.
-    if (require('./lib/jsdoc/util/runtime').isRhino()) {
-        return require('jsdoc/env');
-    }
-    else {
-        return require('./lib/jsdoc/env');
-    }
+    return require('./lib/jsdoc/env');
 })();
 
 /**
@@ -67,14 +58,7 @@ global.env = (function() {
  */
 global.app = (function() {
     'use strict';
-
-    // See comment in `global.env` to find out why we jump through this hoop.
-    if (require('./lib/jsdoc/util/runtime').isRhino()) {
-        return require('jsdoc/app');
-    }
-    else {
-        return require('./lib/jsdoc/app');
-    }
+    return require('./lib/jsdoc/app');
 })();
 
 (function() {
@@ -102,8 +86,7 @@ global.app = (function() {
     if (env.opts.debug) {
         /**
          * Recursively print an object's properties to stdout. This method is safe to use with
-         * objects that contain circular references. In addition, on Mozilla Rhino, this method is
-         * safe to use with native Java objects.
+         * objects that contain circular references.
          *
          * This method is available only when JSDoc is run with the `--debug` option.
          *
@@ -117,21 +100,5 @@ global.app = (function() {
         };
     }
 
-    // On Rhino, we use a try/catch block so we can log the Java exception (if available)
-    if ( runtime.isRhino() ) {
-        try {
-            cli.runCommand(cb);
-        }
-        catch (e) {
-            if (e.rhinoException) {
-                logger.fatal( e.rhinoException.printStackTrace() );
-            } else {
-                console.trace(e);
-                cli.exit(1);
-            }
-        }
-    }
-    else {
-        cli.runCommand(cb);
-    }
+    cli.runCommand(cb);
 })();

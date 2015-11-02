@@ -8,14 +8,12 @@ describe('const declarations', function() {
         expect(myPocket.kind).toBe('constant');
     });
 
-    if (jasmine.jsParser !== 'rhino') {
-        describe('ES 2015 only', function() {
-            it('should not override kind="class" when a const is autodetected', function() {
-                var docSet = jasmine.getDocSetFromFile('test/fixtures/constanttag2.js');
-                var foo = docSet.getByLongname('Foo')[0];
+    describe('ES 2015 only', function() {
+        it('should not override kind="class" when a const is autodetected', function() {
+            var docSet = jasmine.getDocSetFromFile('test/fixtures/constanttag2.js');
+            var foo = docSet.getByLongname('Foo')[0];
 
-                expect(foo.kind).toBe('class');
-            });
+            expect(foo.kind).toBe('class');
         });
-    }
+    });
 });

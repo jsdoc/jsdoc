@@ -31,29 +31,27 @@ describe('When a getter or setter is part of a class', function() {
         });
     });
 
-    if (jasmine.jsParser !== 'rhino') {
-        describe('in an ES 2015 class', function() {
-            var docSet2 = jasmine.getDocSetFromFile('test/fixtures/getset2.js');
-            var location = docSet2.getByLongname('Employee#location');
+    describe('in an ES 2015 class', function() {
+        var docSet2 = jasmine.getDocSetFromFile('test/fixtures/getset2.js');
+        var location = docSet2.getByLongname('Employee#location');
 
-            it('should have a doclet with the correct longname', function() {
-                expect(location.length).toBe(2);
-            });
-
-            it('should have a doclet with the correct name', function() {
-                expect(location[0].name).toBe('location');
-                expect(location[1].name).toBe('location');
-            });
-
-            it('should have a doclet with the correct kind', function() {
-                expect(location[0].kind).toBe('member');
-                expect(location[1].kind).toBe('member');
-            });
-
-            it('should have a doclet with the correct memberof', function() {
-                expect(location[0].memberof).toBe('Employee');
-                expect(location[1].memberof).toBe('Employee');
-            });
+        it('should have a doclet with the correct longname', function() {
+            expect(location.length).toBe(2);
         });
-    }
+
+        it('should have a doclet with the correct name', function() {
+            expect(location[0].name).toBe('location');
+            expect(location[1].name).toBe('location');
+        });
+
+        it('should have a doclet with the correct kind', function() {
+            expect(location[0].kind).toBe('member');
+            expect(location[1].kind).toBe('member');
+        });
+
+        it('should have a doclet with the correct memberof', function() {
+            expect(location[0].memberof).toBe('Employee');
+            expect(location[1].memberof).toBe('Employee');
+        });
+    });
 });

@@ -145,19 +145,6 @@ Copyright (c) 2011-2015 by the Espree contributors.
 The source code for Esprima is available at:
 https://github.com/eslint/espree
 
-## events ##
-
-Portions of the events source code are incorporated into the following files:
-
-+ `rhino/events.js`
-
-events is distributed under the MIT license, which is reproduced above.
-
-Copyright Joyent, Inc. and other Node contributors. All rights reserved.
-
-The source code for events is available at:
-https://github.com/Gozala/events
-
 ## github-flavored-markdown ##
 
 github-flavored-markdown is distributed under the BSD 3-clause license:
@@ -234,36 +221,6 @@ Copyright (c) 2012 Michael Kourlas.
 The source code for js2xmlparser is available at:
 https://github.com/michaelkourlas/node-js2xmlparser
 
-## Node.js ##
-
-Portions of the Node.js source code are incorporated into the following files:
-
-- `rhino/fs.js`
-- `rhino/path.js`
-- `rhino/querystring.js`
-- `rhino/util.js`
-
-Node.js is distributed under the MIT license, which is reproduced above.
-
-Copyright Joyent, Inc. and other Node contributors. All rights reserved.
-
-The source code for Node.js is available at:
-https://github.com/joyent/node
-
-## node-browser-builtins ##
-
-Portions of the node-browser-builtins source code are incorporated into the
-following files:
-
-- `rhino/assert.js`
-- `rhino/rhino-shim.js`
-
-node-browser-builtins is distributed under the MIT license, which is reproduced
-above.
-
-The source code for node-browser-builtins is available at:
-https://github.com/alexgorbatchev/node-browser-builtins
-
 ## Open Sans ##
 
 Open Sans is distributed under the Apache License 2.0, which is
@@ -283,46 +240,6 @@ Copyright (c) 2012-2013 Johannes Ewald.
 
 The source code for Requizzle is available at:
 https://github.com/hegemonic/requizzle
-
-## Rhino ##
-
-Rhino is distributed under the following licenses:
-
-### MPL 2.0 License ###
-The majority of the source code for Rhino is available under the Mozilla Public
-License (MPL) 2.0, which is included in this distribution.
-
-### License for portions of the Rhino debugger ###
-Additionally, some files are available under the BSD 3-clause license:
-
-> Copyright 1997, 1998 Sun Microsystems, Inc.  All Rights Reserved.
->
-> Redistribution and use in source and binary forms, with or without
-> modification, are permitted provided that the following conditions are met:
->
-> - Redistributions of source code must retain the above copyright notice,
->   this list of conditions and the following disclaimer.
-> - Redistributions in binary form must reproduce the above copyright
->   notice, this list of conditions and the following disclaimer in the
->   documentation and/or other materials provided with the distribution.
-> - Neither the name of Sun Microsystems nor the names of its contributors
->   may be used to endorse or promote products derived from this software
->   without specific prior written permission.
->
-> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-> AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-> IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-> DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-> FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-> DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-> SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-> CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-> OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-> OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-### Source Code ###
-The source code for Rhino is available at:
-https://github.com/jsdoc3/rhino
 
 ## TaffyDB ##
 
