@@ -343,7 +343,7 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">' + (env.conf.title ? : env.conf.title : 'Home') + '</a></h2>';
+    var nav = '<h2><a href="index.html">' + (env.conf.title ? env.conf.title : 'Home') + '</a></h2>';
     var seen = {};
     var seenTutorials = {};
 
