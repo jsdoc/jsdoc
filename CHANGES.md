@@ -3,6 +3,33 @@
 This file describes notable changes in each version of JSDoc 3. To download a specific version of JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
 
+## 3.4.0 (November 2015)
+
+### Major changes
++ JSDoc is now compatible with Node.js 4.0.0 and later.
++ JSDoc no longer runs on Mozilla Rhino. Use Node.js to run JSDoc.
++ JSDoc can now parse ECMAScript 2015 code, including code that uses native classes and modules. (#555)
++ JSDoc can now parse [JSX](https://facebook.github.io/jsx/) files. (#1001)
++ JSDoc's `app` and `env` global variables are now deprecated. Avoid using the `app` global. Use the `jsdoc/env` module instead of the `env` global. (#812)
+
+### Enhancements
++ `const` declarations are now automatically treated as constants. (#555)
++ Templates may now run asynchronously. To create an asynchronous template, simply return a promise from your template's `publish` method. (#953)
+
+### Bug fixes
++ Symbols now get the correct longname when they are defined as properties of a prototype and include special characters, such as `#` and `.` (for example, `Foo.prototype['this#is#bar']`). (#888)
++ Instance members that are defined as computed properties of `this` (for example, `this['bar']`) now get the correct longname. (#890)
++ When an instance member (for example, `this.bar`) is documented within a member of a prototype (for example, `Foo.prototype.setBar`), the instance member's longname is now set correctly. (#1011)
++ The `@borrows` tag now works with symbol names that contain whitespace. (#818)
+
+### Plugins
++ For the Markdown plugin, you can now autogenerate a heading ID for each heading by setting the configuration property `markdown.idInHeadings` to `true`. (#1032)
+
+### Template improvements
++ In the default template, you can now show the full namepath of each object in the navigation column by setting the configuration property `templates.default.useLongnameInNav` to `true`. (#986)
++ In the Haruki template, falsy default values now appear in the output. (#1063)
+
+
 ## 3.3.3 (September 2015)
 
 + Symbols named `prototype` are now handled correctly. (#891)
