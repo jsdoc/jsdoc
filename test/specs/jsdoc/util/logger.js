@@ -5,6 +5,15 @@ describe('jsdoc/util/logger', function() {
 
     var loggerArgs = ['foo bar %s', 'hello'];
 
+
+    beforeEach(function () {
+        this.oldLogLevel = logger.getLevel();
+    });
+
+    afterEach(function () {
+        logger.setLevel(this.oldLogLevel);
+    });
+
     it('should exist', function() {
         expect(logger).toBeDefined();
         expect(typeof logger).toBe('object');
@@ -87,6 +96,19 @@ describe('jsdoc/util/logger', function() {
         expect(args[1]).toBe(loggerArgs[1]);
     }
 
+    function loggerMethodIsCalled(methodLevel, level) {
+        var handlerSpy = spyOn(logger.handlers, methodLevel);
+        logger.setLevel(level);
+        logger[methodLevel.toLowerCase()](loggerArgs);
+        expect(handlerSpy).toHaveBeenCalledWith(loggerArgs);
+    }
+    function loggerMethodIsNotCalled(methodLevel, level) {
+        var handlerSpy = spyOn(logger.handlers, methodLevel);
+        logger.setLevel(level);
+        logger[methodLevel.toLowerCase()](loggerArgs);
+        expect(handlerSpy).not.toHaveBeenCalledWith(loggerArgs);
+    }
+
     describe('debug', function() {
         var methodName = 'debug';
 
@@ -96,6 +118,36 @@ describe('jsdoc/util/logger', function() {
 
         it('should pass its arguments to listeners', function() {
             eventGetsArguments(methodName);
+        });
+
+        describe('Log Levels', function () {
+            it("should call its handler if the log level is VERBOSE", function () {
+                loggerMethodIsCalled(logger.LEVELS.DEBUG, logger.LEVELS.VERBOSE);
+            });
+
+            it("should call its handler if the log level is DEBUG", function () {
+                loggerMethodIsCalled(logger.LEVELS.DEBUG, logger.LEVELS.DEBUG);
+            });
+
+            it("should not call its handler if the log level is INFO", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.DEBUG, logger.LEVELS.INFO);
+            });
+
+            it("should not call its handler if the log level is WARN", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.DEBUG, logger.LEVELS.WARN);
+            });
+
+            it("should not call its handler if the log level is ERROR", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.DEBUG, logger.LEVELS.ERROR);
+            });
+
+            it("should not call its handler if the log level is FATAL", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.DEBUG, logger.LEVELS.FATAL);
+            });
+
+            it("should not call its handler if the log level is SILENT", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.DEBUG, logger.LEVELS.SILENT);
+            });
         });
     });
 
@@ -109,6 +161,36 @@ describe('jsdoc/util/logger', function() {
         it('should pass its arguments to listeners', function() {
             eventGetsArguments(methodName);
         });
+
+        describe('Log Levels', function () {
+            it("should call its handler if the log level is VERBOSE", function () {
+                loggerMethodIsCalled(logger.LEVELS.ERROR, logger.LEVELS.VERBOSE);
+            });
+
+            it("should call its handler if the log level is DEBUG", function () {
+                loggerMethodIsCalled(logger.LEVELS.ERROR, logger.LEVELS.DEBUG);
+            });
+
+            it("should not call its handler if the log level is INFO", function () {
+                loggerMethodIsCalled(logger.LEVELS.ERROR, logger.LEVELS.INFO);
+            });
+
+            it("should not call its handler if the log level is WARN", function () {
+                loggerMethodIsCalled(logger.LEVELS.ERROR, logger.LEVELS.WARN);
+            });
+
+            it("should not call its handler if the log level is ERROR", function () {
+                loggerMethodIsCalled(logger.LEVELS.ERROR, logger.LEVELS.ERROR);
+            });
+
+            it("should not call its handler if the log level is FATAL", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.ERROR, logger.LEVELS.FATAL);
+            });
+
+            it("should not call its handler if the log level is SILENT", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.ERROR, logger.LEVELS.SILENT);
+            });
+        });
     });
 
     describe('fatal', function() {
@@ -120,6 +202,36 @@ describe('jsdoc/util/logger', function() {
 
         it('should pass its arguments to listeners', function() {
             eventGetsArguments(methodName);
+        });
+
+        describe('Log Levels', function () {
+            it("should call its handler if the log level is VERBOSE", function () {
+                loggerMethodIsCalled(logger.LEVELS.FATAL, logger.LEVELS.VERBOSE);
+            });
+
+            it("should call its handler if the log level is DEBUG", function () {
+                loggerMethodIsCalled(logger.LEVELS.FATAL, logger.LEVELS.DEBUG);
+            });
+
+            it("should not call its handler if the log level is INFO", function () {
+                loggerMethodIsCalled(logger.LEVELS.FATAL, logger.LEVELS.INFO);
+            });
+
+            it("should not call its handler if the log level is WARN", function () {
+                loggerMethodIsCalled(logger.LEVELS.FATAL, logger.LEVELS.WARN);
+            });
+
+            it("should not call its handler if the log level is ERROR", function () {
+                loggerMethodIsCalled(logger.LEVELS.FATAL, logger.LEVELS.ERROR);
+            });
+
+            it("should not call its handler if the log level is FATAL", function () {
+                loggerMethodIsCalled(logger.LEVELS.FATAL, logger.LEVELS.FATAL);
+            });
+
+            it("should not call its handler if the log level is SILENT", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.FATAL, logger.LEVELS.SILENT);
+            });
         });
     });
 
@@ -139,6 +251,36 @@ describe('jsdoc/util/logger', function() {
         it('should pass its arguments to listeners', function() {
             eventGetsArguments(methodName);
         });
+
+        describe('Log Levels', function () {
+            it("should call its handler if the log level is VERBOSE", function () {
+                loggerMethodIsCalled(logger.LEVELS.INFO, logger.LEVELS.VERBOSE);
+            });
+
+            it("should call its handler if the log level is DEBUG", function () {
+                loggerMethodIsCalled(logger.LEVELS.INFO, logger.LEVELS.DEBUG);
+            });
+
+            it("should not call its handler if the log level is INFO", function () {
+                loggerMethodIsCalled(logger.LEVELS.INFO, logger.LEVELS.INFO);
+            });
+
+            it("should not call its handler if the log level is WARN", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.INFO, logger.LEVELS.WARN);
+            });
+
+            it("should not call its handler if the log level is ERROR", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.INFO, logger.LEVELS.ERROR);
+            });
+
+            it("should not call its handler if the log level is FATAL", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.INFO, logger.LEVELS.FATAL);
+            });
+
+            it("should not call its handler if the log level is SILENT", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.INFO, logger.LEVELS.SILENT);
+            });
+        });
     });
 
     describe('LEVELS', function() {
@@ -153,13 +295,6 @@ describe('jsdoc/util/logger', function() {
             expect(LEVELS.SILENT).toBeDefined();
         });
 
-        it('should weight the logging levels correctly relative to one another', function() {
-            expect(LEVELS.VERBOSE).toBeGreaterThan(LEVELS.DEBUG);
-            expect(LEVELS.DEBUG).toBeGreaterThan(LEVELS.INFO);
-            expect(LEVELS.INFO).toBeGreaterThan(LEVELS.WARN);
-            expect(LEVELS.WARN).toBeGreaterThan(LEVELS.ERROR);
-            expect(LEVELS.ERROR).toBeGreaterThan(LEVELS.SILENT);
-        });
     });
 
     describe('setLevel', function() {
@@ -185,6 +320,36 @@ describe('jsdoc/util/logger', function() {
         it('should pass its arguments to listeners', function() {
             eventGetsArguments(methodName);
         });
+
+        describe('Log Levels', function () {
+            it("should call its handler if the log level is VERBOSE", function () {
+                loggerMethodIsCalled(logger.LEVELS.VERBOSE, logger.LEVELS.VERBOSE);
+            });
+
+            it("should call its handler if the log level is DEBUG", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.VERBOSE, logger.LEVELS.DEBUG);
+            });
+
+            it("should not call its handler if the log level is INFO", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.VERBOSE, logger.LEVELS.INFO);
+            });
+
+            it("should not call its handler if the log level is WARN", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.VERBOSE, logger.LEVELS.WARN);
+            });
+
+            it("should not call its handler if the log level is ERROR", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.VERBOSE, logger.LEVELS.ERROR);
+            });
+
+            it("should not call its handler if the log level is FATAL", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.VERBOSE, logger.LEVELS.FATAL);
+            });
+
+            it("should not call its handler if the log level is SILENT", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.VERBOSE, logger.LEVELS.SILENT);
+            });
+        });
     });
 
     describe('warn', function() {
@@ -197,5 +362,71 @@ describe('jsdoc/util/logger', function() {
         it('should pass its arguments to listeners', function() {
             eventGetsArguments(methodName);
         });
+
+        describe('Log Levels', function () {
+            it("should call its handler if the log level is VERBOSE", function () {
+                loggerMethodIsCalled(logger.LEVELS.WARN, logger.LEVELS.VERBOSE);
+            });
+
+            it("should call its handler if the log level is DEBUG", function () {
+                loggerMethodIsCalled(logger.LEVELS.WARN, logger.LEVELS.DEBUG);
+            });
+
+            it("should not call its handler if the log level is INFO", function () {
+                loggerMethodIsCalled(logger.LEVELS.WARN, logger.LEVELS.INFO);
+            });
+
+            it("should not call its handler if the log level is WARN", function () {
+                loggerMethodIsCalled(logger.LEVELS.WARN, logger.LEVELS.WARN);
+            });
+
+            it("should not call its handler if the log level is ERROR", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.WARN, logger.LEVELS.ERROR);
+            });
+
+            it("should not call its handler if the log level is FATAL", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.WARN, logger.LEVELS.FATAL);
+            });
+
+            it("should not call its handler if the log level is SILENT", function () {
+                loggerMethodIsNotCalled(logger.LEVELS.WARN, logger.LEVELS.SILENT);
+            });
+        });
     });
+
+    describe('setHandler', function () {
+        it('should override the default log handler', function () {
+            var spy = jasmine.createSpy();
+            logger.setLevel(logger.LEVELS.WARN);
+            logger.setHandler(logger.LEVELS.ERROR, spy);
+            logger.error(loggerArgs);
+            expect(spy).toHaveBeenCalled();
+            logger.mute();
+        });
+    });
+
+    describe('setHandlers', function () {
+        it('should override the default log handlers', function () {
+            var spyInfo = jasmine.createSpy('info');
+            var spyDebug = jasmine.createSpy('debug');
+            var spyFatal = jasmine.createSpy('fatal');
+            logger.setHandlers([
+                { level: logger.LEVELS.DEBUG, handler: spyDebug },
+                { level: logger.LEVELS.INFO, handler: spyInfo },
+                { level: logger.LEVELS.FATAL, handler: spyFatal }
+            ]);
+            logger.setLevel(logger.LEVELS.VERBOSE);
+
+            logger.info(loggerArgs);
+            expect(spyInfo).toHaveBeenCalled();
+            expect(spyDebug).not.toHaveBeenCalled();
+            expect(spyFatal).not.toHaveBeenCalled();
+            logger.debug(loggerArgs);
+            expect(spyDebug).toHaveBeenCalled();
+            logger.fatal(loggerArgs);
+            expect(spyFatal).toHaveBeenCalled();
+            logger.mute();
+        });
+    });
+
 });
