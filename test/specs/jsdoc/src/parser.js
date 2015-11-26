@@ -1,4 +1,4 @@
-/*eslint no-script-url: 0 */
+/* eslint no-script-url: 0 */
 'use strict';
 
 describe('jsdoc/src/parser', function() {
@@ -10,8 +10,7 @@ describe('jsdoc/src/parser', function() {
             parser: require('jsdoc/src/parser')
         },
         util: {
-            logger: require('jsdoc/util/logger'),
-            runtime: require('jsdoc/util/runtime')
+            logger: require('jsdoc/util/logger')
         }
     };
     var path = require('jsdoc/path');

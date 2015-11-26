@@ -3,7 +3,6 @@
 describe('module names', function() {
     var env = require('jsdoc/env');
     var path = require('jsdoc/path');
-    var runtime = require('jsdoc/util/runtime');
 
     var doclets;
 

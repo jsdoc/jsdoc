@@ -2,7 +2,6 @@
 
 describe('jsdoc/src/handlers', function() {
     var handlers = require('jsdoc/src/handlers');
-    var runtime = require('jsdoc/util/runtime');
 
     var testParser = jasmine.createParser();
     handlers.attachTo(testParser);
@@ -41,7 +40,7 @@ describe('jsdoc/src/handlers', function() {
     });
 
     describe('jsdocCommentFound handler', function() {
-        /*eslint no-script-url: 0 */
+        /* eslint no-script-url: 0 */
         var sourceCode = 'javascript:/** @name bar */';
         var result = testParser.parse(sourceCode);
 
