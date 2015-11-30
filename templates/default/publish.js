@@ -340,22 +340,20 @@ function linktoExternal(longName, name) {
  * @param {array<object>} members.tutorials
  * @param {array<object>} members.events
  * @param {array<object>} members.interfaces
- * @param {array<object>} members.controllers
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
     var nav = '<h2><a href="index.html">Home</a></h2>';
     var seen = {};
     var seenTutorials = {};
-    
+
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
     nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
     nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial);
 
     var alreadyDefined = ['modules', 'externals', 'tutorials', 'globals'];
-    helper.containers().forEach(function(container) {
-        var name = container;
-        name += (name.charAt(name.length-1) === "s") ? "es" : "s";
+    helper.containers.forEach(function(container) {
+        var name = container.container;
         if (alreadyDefined.indexOf(name) === -1) {
             var title = name.charAt(0).toUpperCase() + name.slice(1);
 
@@ -593,9 +591,8 @@ exports.publish = function(taffyData, opts, tutorials) {
     indexUrl);
 
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
-        helper.containers().forEach(function(container){
-            var name = container;
-            name += (name.charAt(name.length - 1) === "s") ? "es" : "s";
+        helper.containers.forEach(function(container){
+            var name = container.container;
             var collection = taffy(members[name]);
 
             name = name.charAt(0).toUpperCase() + name.slice(1);
