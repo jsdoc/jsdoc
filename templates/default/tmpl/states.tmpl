@@ -1,0 +1,55 @@
+<?js
+    var data = obj;
+    var self = this;
+
+    data.forEach(function(state) { ?>
+    
+    <table class="props">
+        <thead>
+            <tr>
+                <?js if (state.name) { ?>
+                    <td>Name</td>
+                <?js } ?>
+                <?js if (state.url) { ?>
+                    <td>URL</td>
+                <?js } ?>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <?js if (state.name) { ?>
+                    <td><?js= state.name ?></td>
+                <?js } ?>
+                <?js if (state.url) { ?>
+                    <td><?js= state.url ?></td>
+                <?js } ?>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <table class="props">
+        <thead>
+            <tr>
+                <td>
+                    View Location<?js if (state.views.length > 1) { ?>s<?js } ?>
+                <td>
+            <tr>
+        </thead>
+        <tbody>
+            <?js for(var view in state.views) { ?>
+            <tr>
+                <td>Location</td>
+                <td><?js= view ?></td>
+            </tr>
+            <tr>
+                <td>Template</td>
+                <td><?js= state.views[view]["templateUrl"] ?></td>
+            </tr>
+            <tr>
+                <td>Controller</td>
+                <td><?js= state.views[view]["controller"] ?></td>
+            </tr>
+            <?js } ?>
+        </tbody>
+    </table>
+<?js }); ?>

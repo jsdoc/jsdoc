@@ -439,6 +439,29 @@ exports.publish = function(taffyData, opts, tutorials) {
                 };
             });
         }
+        
+        if (doclet.states) {
+            doclet.states = doclet.states.map(function(state) {
+                var code, name, object;
+
+                if (state.match(/(.state\(\")(.*?)(\",)/i)) {
+                    name = RegExp.$2;
+                }
+                
+                if (state.match(/(\{\s*[\n\r][\s\S]+\})/i)) {
+                    console.log(RegExp.$1);
+                    code = RegExp.$1;
+                    object = JSON.parse(code);
+                }
+
+                return {
+                    url: object.url,
+                    name: name,
+                    views: object.views
+                };
+            });
+        }
+        
         if (doclet.see) {
             doclet.see.forEach(function(seeItem, i) {
                 doclet.see[i] = hashToLink(doclet, seeItem);

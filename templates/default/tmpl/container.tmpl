@@ -59,7 +59,12 @@
 
         <?js= self.partial('details.tmpl', doc) ?>
 
-        <?js if (doc.examples && doc.examples.length) { ?>
+        <?js if (doc.states && doc.states.length) { ?>
+            <h3>State Definition<?js= doc.states.length > 1? 's':'' ?></h3>
+            <?js= self.partial('states.tmpl', doc.states) ?>
+        <?js } ?>
+        
+        <?js if (doc.stgate && doc.examples.length) { ?>
             <h3>Example<?js= doc.examples.length > 1? 's':'' ?></h3>
             <?js= self.partial('examples.tmpl', doc.examples) ?>
         <?js } ?>
