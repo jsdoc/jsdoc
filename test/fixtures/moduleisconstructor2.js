@@ -5,7 +5,10 @@
 
 /** Describe the class here. */
 export default class Config {
-    /** Create a new configuration. */
+    /**
+     * Create a new configuration.
+     * @param {string} id
+     */
     constructor(id) {
         /** Document me. */
         this.id = id;

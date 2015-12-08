@@ -2,7 +2,10 @@
 
 /** Test class */
 export default class {
-    /** Test constructor */
+    /**
+     * Test constructor
+     * @param {string} foo - The foo parameter
+     */
     constructor(foo) {
         /** Test member */
         this.foo = foo;
