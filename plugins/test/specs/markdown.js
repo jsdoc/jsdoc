@@ -31,6 +31,15 @@ describe('markdown plugin', function() {
         });
     });
 
+    it('should unescape &quot; entities in inline tags, but not elsewhere', function() {
+        var myOtherClass = docSet.getByLongname('MyOtherClass')[0];
+
+        plugin.handlers.newDoclet({ doclet: myOtherClass });
+
+        expect(myOtherClass.description).toContain('chat."#channel"."say-\\"hello\\""');
+        expect(myOtherClass.description).toContain('&quot;See&quot;');
+    });
+
     describe('@see tag support', function() {
         var foo = docSet.getByLongname('foo')[0];
         var bar = docSet.getByLongname('bar')[0];

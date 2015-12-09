@@ -23,3 +23,8 @@ function bar() {}
 function MyClass(myParam) {
     this.value = myParam;
 }
+
+/**
+ * "See" {@link chat."#channel"."say-\"hello\""}.
+ */
+function MyOtherClass() {}
