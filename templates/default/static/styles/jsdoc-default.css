@@ -153,11 +153,18 @@ h1
     margin: 12px 24px 20px;
 }
 
-h2, h3
+h2, h3.subsection-title
 {
     font-size: 30px;
     font-weight: 700;
     letter-spacing: -1px;
+    margin-bottom: 12px;
+}
+
+h3
+{
+    font-size: 24px;
+    letter-spacing: -0.5px;
     margin-bottom: 12px;
 }
 
