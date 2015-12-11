@@ -30,7 +30,7 @@ var wrap = require('gulp-wrap');
 // Patch the `require` function so it can locate JSDoc modules and dependencies.
 // Must be called before any Gulp task that uses JSDoc modules.
 function patchRequire() {
-    /*eslint no-undef: 0 */
+    /* eslint-disable no-undef, no-native-reassign */
     var jsdocPath = path.join(__dirname, 'node_modules/jsdoc');
 
     require = require('requizzle')({
@@ -40,6 +40,7 @@ function patchRequire() {
         },
         infect: true
     });
+    /* eslint-enable no-undef, no-native-reassign */
 }
 
 var bowerPath = './bower_components';
