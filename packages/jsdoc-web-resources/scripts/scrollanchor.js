@@ -1,5 +1,5 @@
-/*global document, window */
-
+/* global document, window */
+/* eslint strict: [2, "function"]*/
 // Function to prevent the top navbar from obscuring the page content.
 (function() {
     'use strict';

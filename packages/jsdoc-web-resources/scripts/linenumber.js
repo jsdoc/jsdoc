@@ -1,4 +1,5 @@
-/*global document */
+/* global document */
+/* eslint strict: [2, "function"]*/
 (function() {
     'use strict';
 
