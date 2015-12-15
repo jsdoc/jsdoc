@@ -15,17 +15,12 @@
 */
 'use strict';
 
-var concat = require('gulp-concat');
 var csso = require('gulp-csso');
-var declare = require('gulp-declare');
 var eslint = require('gulp-eslint');
 var gulp = require('gulp');
-var handlebars = require('gulp-handlebars');
 var less = require('gulp-less');
-var map = require('vinyl-map');
 var path = require('path');
 var uglify = require('gulp-uglify');
-var wrap = require('gulp-wrap');
 
 // Patch the `require` function so it can locate JSDoc modules and dependencies.
 // Must be called before any Gulp task that uses JSDoc modules.
@@ -69,31 +64,8 @@ var target = {
     js: './static/scripts'
 };
 
-gulp.task('build', ['compile', 'css-minify', 'js']);
-gulp.task('dev', ['compile', 'css', 'js']);
-
-// Precompile the Handlebars views.
-gulp.task('compile', function(cb) {
-    var preprocess = require('./lib/loader').preprocess;
-
-    gulp.src(source.views)
-        // preprocess the views before Handlebars compiles them
-        .pipe(map(function(src) {
-            return preprocess(src.toString());
-        }))
-        .pipe(handlebars({
-            handlebars: require('handlebars')
-        }))
-        .pipe(wrap('handlebars.template(<%= contents %>)'))
-        .pipe(declare({
-            root: 'exports',
-            noRedeclare: true
-        }))
-        .pipe(concat('index.js'))
-        .pipe(wrap('var handlebars = require(\'handlebars\');\n\n<%= contents %>'))
-        .pipe(gulp.dest('./views'))
-        .on('end', cb);
-});
+gulp.task('build', ['css-minify', 'js']);
+gulp.task('dev', ['css', 'js']);
 
 gulp.task('coverage', function(cb) {
     var istanbul;
