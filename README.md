@@ -45,7 +45,7 @@ generate and customize your documentation. Here are just a few:
 
 + [jaguarjs-jsdoc](https://github.com/davidshimjs/jaguarjs-jsdoc)
   ([example](http://davidshimjs.github.io/jaguarjs/doc))
-+ [DocStrap](https://github.com/terryweiss/docstrap)
++ [DocStrap](https://github.com/docstrap/docstrap) ([example](https://docstrap.github.io/docstrap))
 + [jsdoc3Template](https://github.com/DBCDK/jsdoc3Template)
   ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))
 + [minami](https://github.com/Nijikokun/minami)
