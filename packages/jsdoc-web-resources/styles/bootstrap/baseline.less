@@ -189,9 +189,25 @@ dd > p {
 }
 
 .symbol-detail-labels {
-    clear: right;
     font-size: @font-size-base * 0.8;
     margin-bottom: ceil(@font-size-base / 4);
+    margin-top: @h-margin-top-large;
+}
+
+// Remove whitespace above the first set of labels to follow an h2
+h2 + section > .symbol-detail-labels:first-child,
+.h2 + section > .symbol-detail-labels:first-child {
+    margin-top: 0;
+}
+
+// Remove whitespace above a heading that follows a set of labels
+.symbol-detail-labels + h1, .symbol-detail-labels + .h1,
+.symbol-detail-labels + h2, .symbol-detail-labels + .h2,
+.symbol-detail-labels + h3, .symbol-detail-labels + .h3,
+.symbol-detail-labels + h4, .symbol-detail-labels + .h4,
+.symbol-detail-labels + h5, .symbol-detail-labels + .h5,
+.symbol-detail-labels + h6, .symbol-detail-labels + .h6 {
+    margin-top: 0;
 }
 
 .symbol-index-list > dd {

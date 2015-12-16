@@ -4695,9 +4695,27 @@ dd > p {
   }
 }
 .symbol-detail-labels {
-  clear: right;
   font-size: 11.2px;
   margin-bottom: 4px;
+  margin-top: 40px;
+}
+h2 + section > .symbol-detail-labels:first-child,
+.h2 + section > .symbol-detail-labels:first-child {
+  margin-top: 0;
+}
+.symbol-detail-labels + h1,
+.symbol-detail-labels + .h1,
+.symbol-detail-labels + h2,
+.symbol-detail-labels + .h2,
+.symbol-detail-labels + h3,
+.symbol-detail-labels + .h3,
+.symbol-detail-labels + h4,
+.symbol-detail-labels + .h4,
+.symbol-detail-labels + h5,
+.symbol-detail-labels + .h5,
+.symbol-detail-labels + h6,
+.symbol-detail-labels + .h6 {
+  margin-top: 0;
 }
 .symbol-index-list > dd {
   margin-bottom: 0.75em;
