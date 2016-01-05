@@ -42,6 +42,7 @@ describe('jsdoc/src/astNode', function() {
     var variableDeclaration2 = parse('var foo = 1, bar = 2;').body[0];
     var variableDeclarator1 = parse('var foo = 1;').body[0].declarations[0];
     var variableDeclarator2 = parse('var foo;').body[0].declarations[0];
+    var experimentalObjectRestSpread = parse('var one = {...two, three: 4};').body[0].declarations[0].init;
 
     it('should exist', function() {
         expect(typeof astNode).toBe('object');
@@ -614,6 +615,10 @@ describe('jsdoc/src/astNode', function() {
 
         it('should return an empty string for all other nodes', function() {
             expect( astNode.nodeToValue(binaryExpression) ).toBe('');
+        });
+
+        it('should understand and ignore ExperimentalSpreadProperty', function() {
+            expect( astNode.nodeToValue(experimentalObjectRestSpread) ).toBe('{"three":4}');
         });
     });
 });
