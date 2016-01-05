@@ -52,7 +52,7 @@ function isValidSpec(file, matcher) {
             // ...match the matcher
             matcher.test( path.basename(file) ) &&
             // ...be relevant to the current runtime
-            file.indexOf(skipPath) === -1;
+            file.indexOf('/' + skipPath + '/') === -1;
     }
     catch (e) {
         result = false;
