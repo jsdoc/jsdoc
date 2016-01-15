@@ -49,4 +49,14 @@ describe('default parameters', function() {
     it('should ignore non-literal default values, such as variable identifiers', function() {
         expect(setPizzaToppings.params[0].defaultvalue).toBeUndefined();
     });
+
+    describe('ES2015 methods', function() {
+        var docSet2 = jasmine.getDocSetFromFile('test/fixtures/defaultparams2.js');
+
+        var setSardines = docSet2.getByLongname('PizzaToppings#setSardines')[0];
+
+        it('should autodetect default parameters', function() {
+            expect(setSardines.params[0].defaultvalue).toBe(true);
+        });
+    });
 });

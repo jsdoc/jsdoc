@@ -18,4 +18,14 @@ describe('rest parameters', function() {
         expect(restParam.name).toBe('users');
         expect(restParam.variable).toBe(true);
     });
+
+    describe('ES2015 methods', function() {
+        var docSet2 = jasmine.getDocSetFromFile('test/fixtures/restparams2.js');
+
+        var addUsers = docSet2.getByLongname('Widget#addUsers')[0];
+
+        it('should autodetect rest parameters', function() {
+            expect(addUsers.params[0].variable).toBe(true);
+        });
+    });
 });
