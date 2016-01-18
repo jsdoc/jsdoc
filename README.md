@@ -68,7 +68,7 @@ Overflow](http://stackoverflow.com/questions/tagged/jsdoc).
 License
 -------
 
-JSDoc 3 is copyright (c) 2011-2015 Michael Mathews <micmath@gmail.com> and the
+JSDoc 3 is copyright (c) 2011-present Michael Mathews <micmath@gmail.com> and the
 [contributors to JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).
 
 JSDoc 3 is free software, licensed under the Apache License, Version 2.0. See
