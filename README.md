@@ -49,6 +49,7 @@ generate and customize your documentation. Here are just a few:
 + [jsdoc3Template](https://github.com/DBCDK/jsdoc3Template)
   ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))
 + [minami](https://github.com/Nijikokun/minami)
++ [docdash](https://github.com/clenemt/docdash)
 
 ### Build Tools
 
