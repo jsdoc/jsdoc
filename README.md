@@ -53,9 +53,9 @@ generate and customize your documentation. Here are just a few:
 
 ### Build Tools
 
++ [JSDoc Ant task](https://github.com/jannon/jsdoc3-ant-task)
 + [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
-+ [JSDoc ant task](https://github.com/jannon/jsdoc3-ant-task)
-
++ [JSDoc Gulp plugin](https://github.com/mlucool/gulp-jsdoc3)
 
 For More Information
 --------------------
