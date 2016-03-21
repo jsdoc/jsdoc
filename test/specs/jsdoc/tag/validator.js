@@ -51,8 +51,22 @@ describe('jsdoc/tag/validator', function() {
             expect(logger.error).toHaveBeenCalled();
         });
 
+        it('logs an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is does not include it', function() {
+            env.conf.tags.allowUnknownTags = [];
+            validateTag(badTag);
+
+            expect(logger.error).toHaveBeenCalled();
+        });
+
         it('does not log an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is true', function() {
             env.conf.tags.allowUnknownTags = true;
+            validateTag(badTag);
+
+            expect(logger.error).not.toHaveBeenCalled();
+        });
+
+        it('does not log an error if the tag is not in the dictionary and conf.tags.allowUnknownTags includes it', function() {
+            env.conf.tags.allowUnknownTags = [badTag.title];
             validateTag(badTag);
 
             expect(logger.error).not.toHaveBeenCalled();
