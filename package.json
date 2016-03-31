@@ -24,7 +24,7 @@
     "strip-json-comments": "~2.0.1",
     "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
     "underscore": "~1.8.3",
-    "wrench": "~1.5.9"
+    "fs-extra": "~0.26.7"
   },
   "devDependencies": {
     "gulp": "~3.9.1",
