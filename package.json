@@ -21,14 +21,14 @@
     "js2xmlparser": "~1.0.0",
     "marked": "~0.3.5",
     "requizzle": "~0.2.1",
-    "strip-json-comments": "~1.0.4",
+    "strip-json-comments": "~2.0.1",
     "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
     "underscore": "~1.8.3",
     "wrench": "~1.5.9"
   },
   "devDependencies": {
     "gulp": "~3.9.1",
-    "gulp-eslint": "~1.1.1",
+    "gulp-eslint": "~2.0.0",
     "gulp-json-editor": "~2.2.1",
     "istanbul": "~0.4.2",
     "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
