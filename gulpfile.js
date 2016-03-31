@@ -48,7 +48,7 @@ gulp.task('coverage', function(cb) {
 });
 
 gulp.task('lint', function() {
-    var pipeline = gulp.src(options.lintPaths)
+    return gulp.src(options.lintPaths)
         .pipe(eslint())
         .pipe(eslint.formatEach())
         .pipe(eslint.failOnError());
