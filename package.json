@@ -15,7 +15,7 @@
   "dependencies": {
     "async": "~1.4.0",
     "bluebird": "~2.9.34",
-    "catharsis": "~0.8.7",
+    "catharsis": "~0.8.8",
     "escape-string-regexp": "~1.0.3",
     "espree": "~2.2.3",
     "js2xmlparser": "~1.0.0",
