@@ -422,14 +422,18 @@ exports.publish = function(taffyData, opts, tutorials) {
             doclet.examples = doclet.examples.map(function(example) {
                 var caption, code;
 
+                code = example;
+
                 if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
                     caption = RegExp.$1;
                     code = RegExp.$3;
                 }
 
+                code = code.replace('*\\/', '*/' );
+
                 return {
                     caption: caption || '',
-                    code: code || example
+                    code: code
                 };
             });
         }
