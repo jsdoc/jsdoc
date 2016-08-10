@@ -314,7 +314,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         });
 
         if (itemsNav !== '') {
-            nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
+            nav += '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">' + itemHeading + ' <span class="caret"></span></a><ul class="dropdown-menu">' + itemsNav + '</ul></li>';
         }
     }
 
@@ -344,7 +344,7 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">' + homeTitle + '</a></h2>';
+    var nav = '<div class="container-fluid"><div class="navbar-header"><a class="navbar-brand" href="index.html"><img alt="Brand" src="images\\aclara_logo.gif" style="display: inline; margin-right: 4px;">' + homeTitle + '</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav">';
     var seen = {};
     var seenTutorials = {};
 
@@ -377,10 +377,11 @@ function buildNav(members) {
             nav += '<h3>' + linkto('global', 'Global') + '</h3>';
         }
         else {
-            nav += '<h3>Global</h3><ul>' + globalNav + '</ul>';
+            nav += '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Global <span class="caret"></span></a><ul class="dropdown-menu">' + globalNav + '</ul></li>';
         }
     }
 
+    nav += '</ul></div></div>';
     return nav;
 }
 
@@ -440,6 +441,7 @@ exports.publish = function(taffyData, opts, tutorials) {
             });
         }
         
+        // Break out, use are part of tag definition
         if (doclet.states) {
             doclet.states = doclet.states.map(function(state) {
                 var code, name, object;

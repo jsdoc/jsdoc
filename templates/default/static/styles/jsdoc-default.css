@@ -37,6 +37,7 @@ body
     line-height: 1.5;
     color: #4d4e53;
     background-color: white;
+    padding-top: 70px;
 }
 
 a, a:visited, a:active {
@@ -69,11 +70,6 @@ tt, code, kbd, samp {
     margin: 0;
 }
 
-#main {
-    float: left;
-    width: 70%;
-}
-
 article dl {
     margin-bottom: 40px;
 }
@@ -96,40 +92,6 @@ section
     color: #aaa;
     font-style: italic;
     font-weight: lighter;
-}
-
-nav
-{
-    display: block;
-    float: right;
-    margin-top: 28px;
-    width: 30%;
-    box-sizing: border-box;
-    border-left: 1px solid #ccc;
-    padding-left: 16px;
-}
-
-nav ul {
-    font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
-    font-size: 100%;
-    line-height: 17px;
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-}
-
-nav ul a, nav ul a:visited, nav ul a:active {
-    font-family: Consolas, Monaco, 'Andale Mono', monospace;
-    line-height: 18px;
-    color: #4D4E53;
-}
-
-nav h3 {
-    margin-top: 12px;
-}
-
-nav li {
-    margin-top: 6px;
 }
 
 footer {

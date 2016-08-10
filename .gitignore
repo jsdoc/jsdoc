@@ -12,3 +12,5 @@ out/
 
 # Dotfile detritus
 .DS_Store
+
+*.log
