@@ -1,4 +1,4 @@
-/*eslint no-nested-ternary:0, space-infix-ops: 0 */
+/* eslint no-nested-ternary:0, space-infix-ops: 0 */
 /**
     @overview Builds a tree-like JSON string from the doclet data.
     @version 0.0.3

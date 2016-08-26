@@ -100,21 +100,21 @@ jasmine.executeSpecsInFolder = function(folder, done, opts) {
     var jasmineEnv = jasmine.initialize(done, opts.verbose);
 
     // Load the specs
-    specs.load(folder, fileMatcher, true);
+    specs.load(folder, fileMatcher, true, function() {
+        var specsList = specs.getSpecs();
+        var filename;
 
-    var specsList = specs.getSpecs();
-    var filename;
+        // Add the specs to the context
+        for (var i = 0, len = specsList.length; i < len; ++i) {
+            filename = specsList[i];
+            require(filename.path().replace(/\\/g, '/')
+                .replace(new RegExp('^' + jsdoc.env.dirname + '/test'), './')
+                .replace(/\.\w+$/, ''));
+        }
 
-    // Add the specs to the context
-    for (var i = 0, len = specsList.length; i < len; ++i) {
-        filename = specsList[i];
-        require(filename.path().replace(/\\/g, '/')
-            .replace(new RegExp('^' + jsdoc.env.dirname + '/test'), './')
-            .replace(/\.\w+$/, ''));
-    }
-
-    // Run Jasmine
-    jasmineEnv.execute();
+        // Run Jasmine
+        jasmineEnv.execute();
+    });
 };
 
 function now() {
