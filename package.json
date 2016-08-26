@@ -15,7 +15,7 @@
   "dependencies": {
     "async": "~1.5.2",
     "bluebird": "~3.3.4",
-    "catharsis": "~0.8.7",
+    "catharsis": "~0.8.8",
     "escape-string-regexp": "~1.0.5",
     "espree": "~2.2.5",
     "js2xmlparser": "~1.0.0",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "gulp": "~3.9.1",
-    "gulp-eslint": "~2.0.0",
+    "gulp-eslint": "~3.0.1",
     "gulp-json-editor": "~2.2.1",
     "istanbul": "~0.4.2",
     "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
