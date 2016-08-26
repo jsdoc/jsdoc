@@ -1,4 +1,4 @@
-/*eslint quotes:0 */
+/* eslint quotes:0 */
 'use strict';
 
 var hasOwnProp = Object.prototype.hasOwnProperty;

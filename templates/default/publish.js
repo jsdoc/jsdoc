@@ -239,7 +239,7 @@ function generateSourceFiles(sourceFiles, encoding) {
                 code: helper.htmlsafe( fs.readFileSync(sourceFiles[file].resolved, encoding) )
             };
         }
-        catch(e) {
+        catch (e) {
             logger.error('Error while generating source file %s: %s', file, e.message);
         }
 
