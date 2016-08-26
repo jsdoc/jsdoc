@@ -20,7 +20,7 @@
     "espree": "~2.2.5",
     "fs-extra": "~0.26.7",
     "js2xmlparser": "~1.0.0",
-    "marked": "~0.3.5",
+    "marked": "~0.3.6",
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
     "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
