@@ -17,7 +17,7 @@
     "bluebird": "~2.9.34",
     "catharsis": "~0.8.8",
     "escape-string-regexp": "~1.0.3",
-    "espree": "~2.2.3",
+    "espree": "~3.1.4",
     "js2xmlparser": "~1.0.0",
     "marked": "~0.3.4",
     "requizzle": "~0.2.0",
