@@ -23,7 +23,7 @@
     "marked": "~0.3.6",
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
-    "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
+    "taffydb-jsdoc": "2.6.2",
     "underscore": "~1.8.3"
   },
   "devDependencies": {
