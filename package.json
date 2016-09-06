@@ -13,12 +13,11 @@
     "url": "https://github.com/jsdoc3/jsdoc"
   },
   "dependencies": {
-    "async": "~1.5.2",
-    "bluebird": "~3.3.4",
+    "bluebird": "~3.4.6",
     "catharsis": "~0.8.8",
     "escape-string-regexp": "~1.0.5",
     "espree": "~2.2.5",
-    "fs-extra": "~0.26.7",
+    "fs-extra": "~0.30.0",
     "js2xmlparser": "~1.0.0",
     "marked": "~0.3.6",
     "requizzle": "~0.2.1",
@@ -30,7 +29,7 @@
     "gulp": "~3.9.1",
     "gulp-eslint": "~3.0.1",
     "gulp-json-editor": "~2.2.1",
-    "istanbul": "~0.4.2",
+    "istanbul": "~0.4.5",
     "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
   },
   "engines": {
