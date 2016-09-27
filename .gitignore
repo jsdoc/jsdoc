@@ -12,3 +12,6 @@ out/
 
 # Dotfile detritus
 .DS_Store
+
+# IDE files
+.idea
