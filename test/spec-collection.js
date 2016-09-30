@@ -3,7 +3,7 @@
 var fs = require('jsdoc/fs');
 var path = require('jsdoc/path');
 var runtime = require('jsdoc/util/runtime');
-var fse = require('fs-extra');
+var klaw = require('klaw');
 
 var specs = [];
 var finalSpecs = [];
@@ -81,7 +81,7 @@ exports.load = function(loadpath, matcher, clear, callback) {
     }
 
     var wannaBeSpecs = [];
-    fse.walk(loadpath)
+    klaw(loadpath)
       .on('data', function(spec) {
         wannaBeSpecs.push(spec.path);
       })
