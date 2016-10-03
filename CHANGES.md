@@ -3,6 +3,13 @@
 This file describes notable changes in each version of JSDoc 3. To download a specific version of JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
 
+## 3.4.2 (October 2016)
+
++ Classes exported from an ES2015 module are now documented correctly. (#1137)
++ Fixed an issue that prevented plugins and templates from being loaded correctly. (#1259)
++ Fixed a crash when using the experimental object spread operator in assignments. (#1258)
+
+
 ## 3.4.1 (September 2016)
 
 ### Enhancements
