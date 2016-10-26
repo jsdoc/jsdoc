@@ -448,8 +448,8 @@ cli.exit = function(exitCode, message) {
         if (message) {
             console.error(message);
         }
-        process.exit(exitCode);
     }
+    process.exit(exitCode)
 };
 
 return cli;
