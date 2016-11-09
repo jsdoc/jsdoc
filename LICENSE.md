@@ -68,121 +68,6 @@ Copyright (C) 2012 Marijn Haverbeke <marijnh@gmail.com>.
 The source code for Acorn is available at:
 https://github.com/marijnh/acorn
 
-## Async.js ##
-
-Async.js is distributed under the MIT license, which is reproduced above.
-
-Copyright (c) 2010 Caolan McMahon.
-
-The source code for Async.js is available at:
-https://github.com/caolan/async
-
-## buffer-browserify ##
-
-buffer-browserify is distributed under the MIT license, which is reproduced
-above.
-
-Copyright (c) Romain Beauxis.
-
-The source code for buffer-browserify is available at:
-https://github.com/toots/buffer-browserify
-
-## Catharsis ##
-
-Catharsis is distributed under the MIT license, which is reproduced above.
-
-Copyright (c) 2012-2014 Jeff Williams.
-
-The source code for Catharsis is available at:
-https://github.com/hegemonic/catharsis
-
-## crypto-browserify ##
-
-crypto-browserify is distributed under the MIT license, which is reproduced
-above.
-
-Copyright (c) 2013 Dominic Tarr.
-
-The source code for crypto-browserify is available at:
-https://github.com/dominictarr/crypto-browserify
-
-## escape-string-regexp ##
-
-escape-string-regexp is distributed under the MIT License, which is reproduced
-above.
-
-Copyright (c) Sindre Sorhus <sindresorhus@gmail.com>.
-
-The source code for escape-string-regexp is available at:
-https://github.com/sindresorhus/escape-string-regexp
-
-## Espree ##
-
-Espree is distributed under the BSD 2-clause license:
-
-> Redistribution and use in source and binary forms, with or without
-> modification, are permitted provided that the following conditions are met:
->
-> - Redistributions of source code must retain the above copyright notice,
->   this list of conditions and the following disclaimer.
-> - Redistributions in binary form must reproduce the above copyright notice,
->   this list of conditions and the following disclaimer in the documentation
->   and/or other materials provided with the distribution.
->
-> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-> AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-> IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-> ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-> DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-> (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-> LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-> ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-> (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-> THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-Copyright (c) 2011-2015 by the Espree contributors.
-
-The source code for Esprima is available at:
-https://github.com/eslint/espree
-
-## github-flavored-markdown ##
-
-github-flavored-markdown is distributed under the BSD 3-clause license:
-
-> Copyright (c) 2007, John Fraser <http://www.attacklab.net/> All rights
-> reserved.
->
-> Original Markdown copyright (c) 2004, John Gruber <http://daringfireball.net/>
-> All rights reserved.
->
-> Redistribution and use in source and binary forms, with or without
-> modification, are permitted provided that the following conditions are met:
->
-> - Redistributions of source code must retain the above copyright notice,
->   this list of conditions and the following disclaimer.
->
-> - Redistributions in binary form must reproduce the above copyright notice,
->   this list of conditions and the following disclaimer in the documentation
->   and/or other materials provided with the distribution.
-
-> - Neither the name "Markdown" nor the names of its contributors may be used
->   to endorse or promote products derived from this software without specific
->   prior written permission.
->
-> This software is provided by the copyright holders and contributors "as is"
-> and any express or implied warranties, including, but not limited to, the
-> implied warranties of merchantability and fitness for a particular purpose are
-> disclaimed. In no event shall the copyright owner or contributors be liable
-> for any direct, indirect, incidental, special, exemplary, or consequential
-> damages (including, but not limited to, procurement of substitute goods or
-> services; loss of use, data, or profits; or business interruption) however
-> caused and on any theory of liability, whether in contract, strict liability,
-> or tort (including negligence or otherwise) arising in any way out of the use
-> of this software, even if advised of the possibility of such damage.
-
-The source code for github-flavored-markdown is available at:
-https://github.com/hegemonic/github-flavored-markdown
-
 ## Google Code Prettify ##
 
 Google Code Prettify is distributed under the Apache License 2.0, which is
@@ -211,16 +96,6 @@ Copyright (c) 2010 Adam Abrons and Misko Hevery (http://getangular.com).
 The source code for jasmine-node is available at:
 https://github.com/mhevery/jasmine-node
 
-## js2xmlparser ##
-
-js2xmlparser is distributed under the Apache License 2.0, which is
-included with this package.
-
-Copyright (c) 2012 Michael Kourlas.
-
-The source code for js2xmlparser is available at:
-https://github.com/michaelkourlas/node-js2xmlparser
-
 ## Open Sans ##
 
 Open Sans is distributed under the Apache License 2.0, which is
@@ -231,87 +106,12 @@ Copyright (c) 2010-2011, Google Inc.
 This typeface, including the complete set of variations, are available at:
 http://www.google.com/fonts/specimen/Open+Sans
 
-## Requizzle ##
-
-Requizzle is distributed under the MIT license, which is reproduced above.
-
-Copyright (c) 2014 Google Inc. All rights reserved.
-Copyright (c) 2012-2013 Johannes Ewald.
-
-The source code for Requizzle is available at:
-https://github.com/hegemonic/requizzle
-
-## TaffyDB ##
-
-TaffyDB is distributed under a modified BSD license:
-
-> All rights reserved.
->
-> Redistribution and use of this software in source and binary forms, with or
-> without modification, are permitted provided that the following condition is
-> met:
->
-> Redistributions of source code must retain the above copyright notice, this
-> list of conditions and the following disclaimer.
->
-> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-> AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-> IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-> ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-> LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-> CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-> SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-> INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-> CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-> ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-> POSSIBILITY OF SUCH DAMAGE.
-
-The source code for TaffyDB is available at:
-https://github.com/hegemonic/taffydb
-
 ## Tomorrow Theme for Google Code Prettify ##
 
-License information for the Tomorrow Theme for Google Code Prettify is not
-available. It is assumed that the package is distributed under an open source
-license that is compatible with the Apache License 2.0.
+The Tomorrow Theme for Google Code Prettify is distributed under the MIT
+license, which is reproduced above.
 
-Copyright (c) Yoshihide Jimbo.
+Copyright (c) 2016 Yoshihide Jimbo.
 
 The source code for the Tomorrow Theme is available at:
 https://github.com/jmblog/color-themes-for-google-code-prettify
-
-## tv4 ##
-
-tv4 is in the public domain. It is also distributed under the MIT license, which
-is reproduced above.
-
-The source code for tv4 is available at:
-https://github.com/geraintluff/tv4
-
-## Underscore.js ##
-
-Underscore.js is distributed under the MIT license, which is reproduced above.
-
-Copyright (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative
-Reporters & Editors.
-
-The source code for Underscore.js is available at:
-https://github.com/jashkenas/underscore
-
-## url ##
-
-url is distributed under the MIT license, which is reproduced above.
-
-Copyright Joyent, Inc. and other Node contributors.
-
-The source code for url is available at:
-https://github.com/defunctzombie/node-url
-
-## wrench-js ##
-
-wrench-js is distributed under the MIT license, which is reproduced above.
-
-Copyright (c) 2010 Ryan McGrath.
-
-The source code for wrench-js is available at:
-https://github.com/ryanmcgrath/wrench-js
