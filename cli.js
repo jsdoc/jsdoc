@@ -313,8 +313,16 @@ function resolvePluginPaths(paths) {
 
     paths.forEach(function(plugin) {
         var basename = path.basename(plugin);
-        var dirname = plugin.split(path.sep).length > 1 ?
-            path.dirname(plugin) : undefined;
+        var dirname = path.dirname(plugin);
+
+        // support plugin specification as an installed package, which
+        // then may not have a directory component, resulting in
+        // path.dirname() to return '.', which, if passed on, would
+        // result in different path resolution semantics
+        if (dirname.indexOf('.') === 0 && plugin.indexOf('.') !== 0) {
+            dirname = undefined;
+        }
+
         var pluginPath = path.getResourcePath(dirname, basename);
 
         if (!pluginPath) {
