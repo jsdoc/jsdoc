@@ -201,6 +201,15 @@ describe('jsdoc/path', function() {
             expect( resolved ).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
         });
+
+        it('resolves installed module using \'module\'', function() {
+            var p = 'marked';
+            var resolved = path.getResourcePath(undefined, p);
+
+            expect( resolved ).not.toBeNull();
+            expect( path.isAbsolute(resolved) ).toBe(true);
+        });
+
         it('leaves an absolute path as is', function() {
             var p = path.resolve([env.dirname, 'anything'].join(path.sep));
             var resolved = path.getResourcePath(path.dirname(p), 'anything');

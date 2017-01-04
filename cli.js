@@ -313,15 +313,16 @@ function resolvePluginPaths(paths) {
 
     paths.forEach(function(plugin) {
         var basename = path.basename(plugin);
-        var dirname = path.dirname(plugin);
-        var pluginPath = path.getResourcePath(dirname);
+        var dirname = plugin.split(path.sep).length > 1 ?
+            path.dirname(plugin) : undefined;
+        var pluginPath = path.getResourcePath(dirname, basename);
 
         if (!pluginPath) {
             logger.error('Unable to find the plugin "%s"', plugin);
             return;
         }
 
-        pluginPaths.push( path.join(pluginPath, basename) );
+        pluginPaths.push( pluginPath );
     });
 
     return pluginPaths;
