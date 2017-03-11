@@ -44,7 +44,6 @@ generate and customize your documentation. Here are just a few:
 ### Templates
 
 + [jaguarjs-jsdoc](https://github.com/davidshimjs/jaguarjs-jsdoc)
-  ([example](http://davidshimjs.github.io/jaguarjs/doc))
 + [DocStrap](https://github.com/docstrap/docstrap) ([example](https://docstrap.github.io/docstrap))
 + [jsdoc3Template](https://github.com/DBCDK/jsdoc3Template)
   ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))
@@ -53,7 +52,6 @@ generate and customize your documentation. Here are just a few:
 
 ### Build Tools
 
-+ [JSDoc Ant task](https://github.com/jannon/jsdoc3-ant-task)
 + [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
 + [JSDoc Gulp plugin](https://github.com/mlucool/gulp-jsdoc3)
 
