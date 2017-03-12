@@ -190,7 +190,32 @@ function graft(parentNode, childNodes, parentLongname, parentName) {
             }
 
             graft(thisClass, childNodes, element.longname, element.name);
-       }
+        }
+        else if (element.kind === 'typedef') {
+            var prop,
+                thisTypedef = {
+                    'name': element.name,
+                    'type': element.type ? (element.type.names.length === 1 ? element.type.names[0] : element.type.names) : '',
+                    'description': element.description || '',
+                    'properties': []
+                };
+            for (i = 0, len = element.properties.length; i < len; i++) {
+                prop = element.properties[i];
+                thisTypedef.properties.push({
+                    'name': prop.name,
+                    'type': prop.type ? (prop.type.names.length === 1 ? prop.type.names[0] : prop.type.names) : '',
+                    'description': prop.description || '',
+                    'default': prop.defaultvalue || '',
+                    'optional': typeof prop.optional === 'boolean' ? prop.optional : '',
+                    'nullable': typeof prop.nullable === 'boolean' ? prop.optional : ''
+                });
+            }
+            if (! parentNode.typedefs) {
+                parentNode.typedefs = [];
+            }
+            parentNode.typedefs.push(thisTypedef);
+
+        }
     });
 }
 
