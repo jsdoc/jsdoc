@@ -1,0 +1,37 @@
+<!--{
+    "title":       "@file",
+    "out":         "tags-file.html",
+    "description": "Describe a file."
+}-->
+<h3>Overview</h3>
+
+<p>Gives a description of the file. Place the comment at the top of the file. 
+The text following the @file tag will be used as the description of the file 
+in the default template.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+</p>
+
+{{#example}}Giving an overview of a file
+/**
+ * @file Describe the file
+ * @author Some Author
+ * @version 20121008
+ */
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-version.html">@version</a></li>
+    <li><a href="tags-author.html">@author</a></li>
+</ul
+
+<h5>Contributers to these docs</h5>
+
+<ul>
+    <li><a href="https://github.com/matthewkastor">matthewkastor</a></li>
+</ul>

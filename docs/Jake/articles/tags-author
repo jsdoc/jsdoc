@@ -1,0 +1,39 @@
+<!--{
+    "title":       "@author",
+    "out":         "tags-author.html",
+    "description": "Documents the author of an item."
+}-->
+
+<h3>Overview</h3>
+
+<p>Document the author of an item. The text following the @author tag 
+will be used to describe the author in the default template.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+</p>
+
+{{#example}}Documenting the author of an item.
+/**
+ * @author Some Author
+ * @version 20121008
+ */
+function wobble() {
+	return 'flam';
+}
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-version.html">@version</a></li>
+	<li><a href="tags-file.html">@file</a></li>
+</ul>
+
+<h5>Contributers to these docs</h5>
+
+<ul>
+    <li><a href="https://github.com/matthewkastor">matthewkastor</a></li>
+</ul>

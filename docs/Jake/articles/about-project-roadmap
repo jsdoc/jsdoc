@@ -1,0 +1,83 @@
+<!--{
+    title: 'Project Roadmap',
+    out: 'about-project-roadmap.html',
+    description: 'A high-level overview of the plans for future work on the JSDoc 3 application.'
+}-->
+<h3>Project Roadmap</h3>
+
+<p>
+This is a high-level overview of the plans for future work on the JSDoc 3 application. To propose new goals or discuss existing goals please post to the <a href="http://groups.google.com/group/jsdoc">official JSDoc mailing list</a>.
+</p>
+
+<h3>Version 3.0</h3>
+
+<ol>
+    <li>&#10003; Support doclets associated with multiple <code>var</code> declarations, separated by commas.
+    <pre>
+    <code>
+/** for a */
+var a,
+/** for b */
+b;
+</code>
+    </pre>
+    </li>
+    
+    <li>&#10003; Support multiple doclets associated with a single code symbol.
+    <pre>
+    <code>
+/**
+ * Set the name.
+ * @param {string} newName
+ *//**
+ * Get the name.
+ * @returns {string}
+ */
+this.name = function(newName){
+    if (typeof newName === 'string') {
+        this._name = newName;
+    }
+    else {
+        return this._name;
+    }
+}
+</code>
+    </pre>
+    </li>
+    
+    <li>&#10003; Support documenting CommonJS modules with exported symbols.
+    <pre>
+    <code>
+/**
+ * @module foo/bar
+ */
+
+/**
+ * An exported function.
+ */
+exports.doit = function(){
+}
+</code>
+    </pre>
+    </li>
+
+    <li>Improve compatibility with <a href="http://code.google.com/closure/compiler/docs/js-for-compiler.html#tags">Google's Closure Compiler</a>.
+    </li>
+    
+    <li>&#10003; Add @default tag. Support automatic @default for simple values types like strings, numbers, null, or named variables.
+    <pre>
+    <code>
+/**
+ * Is documented as having a default value of 1.
+ * @type {number}
+ * @default
+ */
+var count = 1;
+</code>
+    </pre>
+    </li>
+    
+    <li>&#10003; Simplify the commandline arguments as much as possible.</li>
+    
+    <li>&#10003; Replace the bespoke templating toolset with an open source third party tool.</li>
+</ol>

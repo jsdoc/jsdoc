@@ -1,0 +1,53 @@
+<!--{
+    "title":       "@constructs",
+    "out":         "tags-constructs.html",
+    "description": "This function member will be the constructor for the previous class."
+}-->
+<h3>Overview</h3>
+
+<p>
+When using an object literal to define a class (for example with the <code>@lends</code> tag) the <code>@constructs</code> tag allows you to document that a particular function will be used to construct instances of that class.
+</p>
+
+<h3>Syntax</h3>
+
+<code>@constructs [&lt;name>]</code>
+
+<h3>Examples</h3>
+
+{{#example}}Using the @constructs tag with @lends
+var Person = makeClass(
+    /** @lends Person.prototype */
+    {
+        /** @constructs */
+        initialize: function(name) {
+            this.name = name;
+        },
+        /** Describe me. */
+        say: function(message) {
+            return this.name + " says: " + message;
+        }
+    }
+);
+{{/example}}
+
+{{#example}}Whithout @lends you must provide the name of the class
+makeClass('Menu', 
+    /**
+        @constructs Menu
+        @param items
+     */
+    function (items) { },
+    {
+        /** @memberof Menu# */
+        show: function(){
+        }
+    }
+);
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tag-lends.html">@lends</a></li>
+</ul>

@@ -1,0 +1,24 @@
+<!--{
+    "title":       "@todo",
+    "out":         "tags-todo.html",
+    "description": "[todo] Document tasks to be completed for an object."
+}-->
+<h3>Overview</h3>
+
+<p>
+</p>
+
+<h3>Examples</h3>
+
+<p>
+</p>
+
+{{#example}}Example goes here
+// todo
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="#">...</a></li>
+</ul>

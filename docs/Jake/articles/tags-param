@@ -1,0 +1,126 @@
+<!--{
+    "title":       "@param",
+    "out":         "tags-param.html",
+    "description": ">Document the parameter to a function."
+}-->
+
+<h3>Synonyms</h3>
+
+<ul>
+    <li>@arg</li>
+    <li>@argument</li>
+</ul>
+
+<h3>Overview</h3>
+
+<p>
+The @param tag (or @arg or @argument) documents a parameter of a function.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+The following examples show the basic usage of @param.
+</p>
+
+{{#example}}Basic usage of @param
+/**
+ * @param somebody
+ */
+function sayHello(somebody) {
+    alert('Hello ' + somebody);
+}
+{{/example}}
+
+{{#example}}Using a type with @param
+/**
+ * @param {String} somebody
+ */
+function sayHello(somebody) {
+    alert('Hello ' + somebody);
+}
+{{/example}}
+
+
+{{#example}}Using type and description with @param
+/**
+ * @param {String} somebody Name
+ */
+function sayHello(somebody) {
+    alert('Hello ' + somebody);
+}
+{{/example}}
+
+<p>
+The following examples show how to indicate that a parameter can be optional and has a default value
+</p>
+
+{{#example}}An optional parameter
+/**
+ * @param {String} [somebody] Name
+ */
+function sayHello(somebody) {
+    if (!somebody) {
+        somebody = 'John Doe';
+    }
+    alert('Hello ' + somebody);
+}
+{{/example}}
+
+{{#example}}Optional parameter and default value
+/**
+ * @param {String} [somebody=John Doe] Name
+ */
+function sayHello(somebody) {
+    if (!somebody) {
+        somebody = 'John Doe';
+    }
+    alert('Hello ' + somebody);
+}
+{{/example}}
+
+<p>
+A parameter could also have several types instead of just one. It can also be used multiple times. The following examples reflect these situations.
+</p>
+
+{{#example}}Multiple types
+/**
+ * @param {String|Array} [somebody=John Doe] Name or array of names
+ */
+function sayHello(somebody) {
+    if (!somebody) {
+        somebody = 'John Doe';
+    } else if (Array.isArray(somebody)) {
+        somebody = somebody.join(', ');
+    }
+    alert('Hello ' + somebody);
+}
+{{/example}}
+
+{{#example}}Variable parameter
+/**
+ * Returns the sum of all numbers passed to the function.
+ * @param {...Number} num A positive or negative number
+ */
+function sum(num) {
+    var i=0, n=arguments.length, t=0;
+    for (; i&lt;n; i++) {
+        t += arguments[i];
+    }
+    return t;
+}
+{{/example}}
+
+
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-returns.html">@returns</a></li>
+</ul>
+
+<h5>Contributers to these docs</h5>
+
+<ul>
+    <li><a href="https://github.com/customcommander">customcommander</a></li>
+</ul>

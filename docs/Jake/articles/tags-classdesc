@@ -1,0 +1,42 @@
+<!--{
+    "title":       "@classdesc",
+    "out":         "tags-classdesc.html",
+    "description": "Use the following text to describe the entire class."
+}-->
+<h3>Syntax</h3>
+
+<code>@class &lt;SomeClassName&gt;<br>
+@classdesc &lt;some description&gt;</code>
+
+<h3>Overview</h3>
+
+<p>
+    The @classdesc tag is used to provide a description for a class, separate from the constructor function's description.
+</p>
+
+<p>
+    The functionality of the @classdesc tag in JSDoc 3 duplicates that of the @class in previous versions. As of version 3, the syntax and functionality of the @class tag now exactly matches the @constructor tag, and the @classdesc tag more explicitly communicates its purpose: to document a class's description.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+    As shown below, a class has places for two descriptions, one applies to the function itself, while the other applies to the class in general.
+</p>
+
+{{#example}}A doclet with both a description and a class description
+/**
+ * This is a description of the MyClass constructor function.
+ * @class
+ * @classdesc This is a description of the MyClass class.
+ */
+function MyClass() {
+}
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-description.html">@description</a></li>
+    <li><a href="tags-constructor.html">@class</a></li>
+</ul>

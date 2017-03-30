@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Document a property of an object."><title>Use JSDoc: @property</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>@property</h1>
+
+<h3>Overview</h3>
+
+<p>
+    The @property tag is a way to easily document a list of static properties of a class, namespace or other object.
+</p>
+
+<p>
+    Normally JSDoc templates would create an entire new page to display information about each level of a nested namespace hierarchy. Sometimes what you really want is to just list all the properties, including nested properties, all together on the same page.
+</p>
+
+<p>
+    Note that property tags must be used in doc comments for the thing that they are properties of, a namespace or a class for example. This tag is intended for simple collections of static properties, it does not allow you to provide @examples or similar complex information for each property, just the type, name and description.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+    In this example we have a namespace named "config." We want all the information about the defaults property, including it's nested values to appear on the same page with the documentation for config.
+</p>
+
+<dl class="example">
+<dt>A namespace with defaults and nested default properties</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+ * @namespace
+ * @property {object}  defaults               - The default values for parties.
+ * @property {number}  defaults.players       - The default number of players.
+ * @property {string}  defaults.level         - The default level for the party.
+ * @property {object}  defaults.treasure      - The default treasure.
+ * @property {number}  defaults.treasure.gold - How much gold the party starts with.
+ */
+var config = {
+    defaults: {
+        players: 1,
+        level:   'beginner',
+        treasure: {
+            gold: 0
+        }
+    }
+};</code></pre>
+</dd>
+</dl><h3>See Also</h3>
+
+<ul>
+    <li>Contrast this tag with the <a href="tags-member.html">@member</a> tag.</li>
+    <li><a href="tags-enum.html">@enum</a></li>
+</ul>
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+

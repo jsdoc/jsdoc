@@ -1,0 +1,48 @@
+<!--{
+    "title":       "Testing JSDoc3",
+    "out":         "about-testing-jsdoc3.html",
+    "description": "How to run and write tests for JSDoc3"
+}-->
+
+<h1>Testing JSDoc 3</h1>
+
+<h2>Running Tests</h2>
+
+<p>Running tests is easy.  Just change your working directory to the jsdoc folder
+and run the following command on Windows:</p>
+
+<pre><code>jsdoc -T</code></pre>
+
+<p>... or on a Max OSX or *nix platform:</p>
+
+<pre><code>./jsdoc -T</code></pre>
+
+<p>If you can't get the short-form commands to work, try invoking Java directly:</p>
+
+<pre><code>java -cp lib/js.jar org.mozilla.javascript.tools.shell.Main -opt -1 \
+-modules nodejs_modules -modules rhino_modules -modules . \
+jsdoc.js -T</code></pre>
+
+<h2>Writing Tests</h2>
+
+<p>Adding tests is pretty easy, too.  You can write tests for jsdoc itself (to 
+make sure tags and the parser, etc. are working properly), tests for plugins, and/or
+tests for templates.</p>
+
+<p>JSDoc 3 uses Jasmine (https://github.com/pivotal/jasmine) as its testing framework.
+Take a look at that project's wiki for documentation on writing tests in general.</p>
+
+<h3>Tests for JSDoc</h3>
+
+<p>Take a look at the files in the <code>test</code> directory for many examples of
+writing tests for JSDoc itself.  the <code>test\fixtures</code> directory hold fixtures
+for use in the tests and the <code>test\specs</code> directory holds the tests themselves.</p>
+
+<h3>Tests for plugins</h3>
+
+<p>Tests for plugins are found in <code>plugins\test</code> directory.   Plugins containing
+tests that were installed with the Jakefile install task will be run automatically.</p>
+
+<h3>Tests for templates</h3>
+
+<p>TODO</p>

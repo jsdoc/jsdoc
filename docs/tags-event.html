@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Document an event."><title>Use JSDoc: @event</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>@event</h1>
+
+<h3>Syntax</h3>
+
+<code>@event &lt;className>#[event:]&lt;eventName></code>
+
+<h3>Overview</h3>
+
+<p>
+    The @event tag allows you to document an event that can be fired. A typical event is represented
+    by an object with a defined set of properties.
+</p>
+
+<p>
+    Once you have used the @event tag to define a specific type of event, you can use the @fires tag
+    to indicate that a method can fire that event.
+</p>
+
+<p>
+    JSDoc automatically prepends the namespace <code>event:</code> to each event's name. In general,
+    you must include this namespace when you link to the event in another doclet. (The @fires tag is
+    a notable exception; it allows you to omit the namespace.)
+</p>
+
+<p>
+    <strong>Note</strong>: JSDoc 3 uses @event doclets to document the content of an event. In
+    contrast, JSDoc Toolkit 2 used @event doclets to identify a function that can be fired when an
+    event of the same name occurs.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+    The following examples show how to document an event in the <code>Hurl</code> class called
+    <code>snowball</code>. The event contains an object with a single property.
+</p>
+
+<dl class="example">
+<dt>Documenting a function call as an event</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+ * Throw a snowball.
+ *
+ * @fires Hurl#snowball
+ */
+Hurl.prototype.snowball = function() {
+    /**
+     * Snowball event.
+     *
+     * @event Hurl#snowball
+     * @type {object}
+     * @property {boolean} isPacked - Indicates whether the snowball is tightly packed.
+     */
+    this.emit('snowball', {
+        isPacked: this._snowball.isPacked
+    });
+};</code></pre>
+</dd>
+</dl><dl class="example">
+<dt>Using a named doclet to document an event</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+ * Throw a snowball.
+ *
+ * @fires Hurl#snowball
+ */
+Hurl.prototype.snowball = function() {
+    // ...
+};
+
+/**
+ * Snowball event.
+ *
+ * @event Hurl#snowball
+ * @type {object}
+ * @property {boolean} isPacked - Indicates whether the snowball is tightly packed.
+ */</code></pre>
+</dd>
+</dl><h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-fires.html">@fires</a></li>
+</ul>
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+

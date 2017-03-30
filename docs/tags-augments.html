@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="This object adds onto a parent object."><title>Use JSDoc: @augments</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>@augments</h1>
+
+
+<h3>Synonyms</h3>
+
+<ul>
+    <li>@extends</li>
+</ul>
+
+<h3>Syntax</h3>
+
+<code>@augments &lt;namepath&gt;</code>
+
+<h3>Overview</h3>
+
+<p>
+    The @augments or @extends tag marks a symbol as augmenting another symbol.
+</p>
+
+<p>
+    While current versions of JavaScript don't allow classes or subclasses in the same way that class-based languages like Java do, many programmers choose to think of their code structure in these terms. For this purpose JSDoc provides the @class and @extends tags. If you wish to express a similar relationship between two symbols, but don't wish to promote the classical analogy, you can use the @contructor and @augments tags instead.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+    In the example below I wish to document the fact that Ducks are a specialised form of Animal: meaning that Duck instances are like Animal instances which have been augmented with additional properties.
+</p>
+
+<dl class="example">
+<dt>Documenting a class/subclass type of relationship.</dt>
+<dd>
+<pre><code class="prettyprint lang-js">/**
+ * @constructor
+ */
+function Animal() {
+    /** Is this animal alive? */
+    this.alive = true;
+}
+
+/**
+ * @constructor
+ * @augments Animal
+ */
+function Duck() {
+}
+Duck.prototype = new Animal();
+
+/** What do ducks say? */
+Duck.prototype.speak = function() {
+    if (this.alive) {
+        alert('Quack!');
+    }
+}
+
+var d = new Duck();
+d.speak(); // Quack!
+d.alive = false; // dead duck?
+d.speak;</code></pre>
+</dd>
+</dl><p>
+    A related pattern can be documented with the @mixin and @mixes tags. Or, if the augmented symbol is only reusing one or two members of another symbol, you may find the @borrows tag more convenient.
+</p>
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-constructor.html">@constructor or @class</a></li>
+    <li><a href="tags-mixin.html">@mixin</a></li>
+    <li><a href="tags-mixes.html">@mixes</a></li>
+    <li><a href="tags-borrows.html">@borrows</a></li>
+</ul>
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+

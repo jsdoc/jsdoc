@@ -1,0 +1,41 @@
+<!--{
+    "title":       "@borrows",
+    "out":         "tags-borrows.html",
+    "description": "This object uses something from another object."
+}-->
+<h3>Syntax</h3>
+
+<code>@borrows &lt;that namepath&gt; as &lt;this namepath&gt;</code>
+
+<h3>Overview</h3>
+
+<p>
+    The @borrows tag allows you to add documentation for another symbol to your documentation.
+</p>
+
+<p>
+    This tag would be useful if you had more than one way to reference a function, but you didn't want to duplicate the same documentation in two places.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+    In this example there exists documentation for the "trstr" function, but "util.trim" is just a reference to that same function by a different name.
+</p>
+
+{{#example}}Duplicate the documentation for trstr as util.trim
+/**
+    @namespace
+    @borrows trstr as trim
+*/
+var util = {
+    trim: trstr
+};
+
+/** 
+    Remove whitespace from around a string.
+    @param {string} str
+ */
+function trstr(str) {
+}
+{{/example}}

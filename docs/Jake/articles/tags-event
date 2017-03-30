@@ -1,0 +1,84 @@
+<!--{
+    "title":       "@event",
+    "out":         "tags-event.html",
+    "description": "Document an event."
+}-->
+<h3>Syntax</h3>
+
+<code>@event &lt;className>#[event:]&lt;eventName></code>
+
+<h3>Overview</h3>
+
+<p>
+    The @event tag allows you to document an event that can be fired. A typical event is represented
+    by an object with a defined set of properties.
+</p>
+
+<p>
+    Once you have used the @event tag to define a specific type of event, you can use the @fires tag
+    to indicate that a method can fire that event.
+</p>
+
+<p>
+    JSDoc automatically prepends the namespace <code>event:</code> to each event's name. In general,
+    you must include this namespace when you link to the event in another doclet. (The @fires tag is
+    a notable exception; it allows you to omit the namespace.)
+</p>
+
+<p>
+    <strong>Note</strong>: JSDoc 3 uses @event doclets to document the content of an event. In
+    contrast, JSDoc Toolkit 2 used @event doclets to identify a function that can be fired when an
+    event of the same name occurs.
+</p>
+
+<h3>Examples</h3>
+
+<p>
+    The following examples show how to document an event in the <code>Hurl</code> class called
+    <code>snowball</code>. The event contains an object with a single property.
+</p>
+
+{{#example}}Documenting a function call as an event
+/**
+ * Throw a snowball.
+ *
+ * @fires Hurl#snowball
+ */
+Hurl.prototype.snowball = function() {
+    /**
+     * Snowball event.
+     *
+     * @event Hurl#snowball
+     * @type {object}
+     * @property {boolean} isPacked - Indicates whether the snowball is tightly packed.
+     */
+    this.emit('snowball', {
+        isPacked: this._snowball.isPacked
+    });
+};
+{{/example}}
+
+{{#example}}Using a named doclet to document an event
+/**
+ * Throw a snowball.
+ *
+ * @fires Hurl#snowball
+ */
+Hurl.prototype.snowball = function() {
+    // ...
+};
+
+/**
+ * Snowball event.
+ *
+ * @event Hurl#snowball
+ * @type {object}
+ * @property {boolean} isPacked - Indicates whether the snowball is tightly packed.
+ */
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="tags-fires.html">@fires</a></li>
+</ul>

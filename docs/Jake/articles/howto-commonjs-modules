@@ -1,0 +1,186 @@
+<!--{
+    title:       'Document CommonJS Modules',
+    out:         'howto-commonjs-modules.html',
+    description: 'Documenting code that conforms to the CommonJS server-side modules standard.'
+}-->
+<h3>Overview</h3>
+
+<p>
+JSDoc 3 has built-in support for JavaScript code that is written to conform to the <a href="http://wiki.commonjs.org/wiki/Modules/1.1">CommonJS Modules standard</a>. This allows you to easily document your own JavaScript modules and the members they export.
+</p>
+
+<h3>Document a Simple CommonJS Module</h3>
+
+<p>
+Add a single <code>@module &lt;module identifier></code> tag at the top of the file that defines your module and any documented members of the <code>exports</code> object in that file will automatically be included in the documentation for that module.
+</p>
+
+{{#example}}The putOn and unbutton methods are documented as members of the "my/shirt" module.
+/** @module my/shirt */
+
+/** Try it on. */
+exports.putOn = function(someShirt) {
+}
+
+/** Make it easier to put on and remove. */
+exports.unbutton = function(someShirt) {
+}
+{{/example}}
+
+<h3>Document Members Assigned to <code>module.exports</code></h3>
+
+<p>
+Some implementations of the CommonJS Modules standard allow you to assign an object literal to the <code>module.exports</code> namespace directly. This pattern is automatically supported by JSDoc 3.
+</p>
+
+{{#example}}The blend and darken methods are documented as members of the "color/mixer" module.
+/** @module color/mixer */
+
+module.exports = {
+    /** Blend two colors together. */
+    blend: function(color1, color2) { }
+}
+
+/** Darken a color by the given shade. */
+exports.darken = function(color, shade) { }
+{{/example}}
+
+<h3>Document Members Exported on the Global <code>this</code></h3>
+
+<p>
+JSDoc 3 understands the NodeJS convention of exporting properties and functions when they are assigned to a global <code>this</code> variable, as shown below.
+</p>
+
+{{#example}}The Book class is documented as a member of the "bookshelf" module.
+/**
+ * @module bookshelf
+ */
+
+/**
+ * @class
+ */
+this.Book = function(title) {
+    /** The title of the book. */
+    this.title = title;
+}
+{{/example}}
+
+<h3>Document a Function that returns a RequireJS Module</h3>
+
+<p>The RequireJS library provides a <code>define</code> method that allows you to write a function to return a module object. Use the <code>@exports</code> tag to document that all the members of an object literal should be documented as members of a module.</p>
+
+{{#example}}The color property and the Turtleneck class are documented as members of the "my/shirt" module.
+define('my/shirt', function () {
+   /** 
+        A module representing a shirt.
+        @exports my/shirt
+        @version 1.0
+     */
+    var shirt = {
+    
+        /** A property of the module. */
+        color: "black",
+        
+        /** @constructor */
+        Turtleneck: function(size) {
+            /** A property of the class. */
+            this.size = size;
+        }
+    };
+
+    return shirt;
+});
+{{/example}}
+
+
+<h3>Document a Module as a Constructor</h3>
+
+<p>The following examples illustrate patterns for documenting modules that are constructors.</p>
+
+{{#example}}Use the @alias tag simplify documenting a constructor-module in RequireJS.
+/** 
+    A module representing a jacket.
+    @module jacket
+ */
+define('jacket', function () {
+    /**
+        @constructor
+        @alias module:jacket
+     */
+    var exports = function() {
+    }
+    
+    /** Open and close your Jacket. */
+    exports.prototype.zip = function() {
+    }
+          
+    return exports;
+});
+{{/example}}
+
+<p>The same pattern can be documented in CommonJS environments.</p>
+
+{{#example}}Use the @alias tag to document constructor-modules in CommonJS.
+/** 
+    A module representing a jacket.
+    @module jacket
+ */
+
+/**
+    @constructor
+    @alias module:jacket
+ */
+function Jacket() {
+}
+
+/** Open and close your Jacket. */
+Jacket.prototype.zip = function() {
+}
+      
+module.exports = Jacket;
+{{/example}}
+
+<h3>Document Multiple RequireJS Modules Defined in a Single File</h3>
+
+<p>If you have multiple calls to <code>define</code> in a single file use the <code>@exports</code> tag to document each function that returns module code. Name the exported objects "exports" and JSDoc 3 will automatically document any of their members as members of their module.</p>
+
+{{#example}}The getStyleProperty and isInHead methods are documented as members of the "html/utils" module. The Tag class is documented as a member of the "tag" module.
+// one module
+define('html/utils',
+    /** 
+        Utility functions to ease working with DOM elements.
+        @exports html/utils
+     */
+    function() {
+        var exports = {
+            /** Get the value of a property on an element. */
+            getStyleProperty: function(element, propertyName) { }
+        };
+        
+        /** Determine if an element is in the document head. */
+        exports.isInHead = function(element) { }
+        
+        return exports;
+    }
+);
+
+// another module
+define('tag',
+    /** @exports tag */
+    function() {
+        var exports = {
+            /** @class */
+            Tag: function(tagName) { }
+        };
+        
+        return exports;
+    }
+);
+{{/example}}
+
+<h3>See Also</h3>
+
+<ul>
+    <li><a href="http://requirejs.org/docs/api.html#define">Defining RequireJS Modules</a></li>
+    <li><a href="http://nodejs.org/docs/v0.4.1/api/modules.html">NodeJS Modules Tutorial</a></li>
+</ul>

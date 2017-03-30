@@ -1,0 +1,83 @@
+<!--{
+    title: 'Index',
+    out: 'index.html',
+	description: 'Official documentation for JSDoc3. The best documentation tool for JavaScript, ever.'
+}-->
+
+<h1>JSDoc3 Documentation</h1>
+
+<h2>Table of Contents</h2>
+
+<ol>
+	<li>
+		<a href="#Getting_Started">Getting Started</a>
+	</li>
+
+	<li>
+		<a href="#JSDoc_Examples">JSDoc Examples</a>
+	</li>
+
+	<li>
+		<a href="#Contribute">Contribute</a>
+	</li>
+
+	<li>
+		<a href="#JSDoc3_Tag_Dictionary">JSDoc3 Tag Dictionary</a>
+	</li>
+</ol>
+
+<h2 name="Getting_Started" id="Getting_Started">Getting Started</h2>
+<dl>
+	<dt><a href="about-jsdoc3.html">README</a></dt>
+        <dd>Basic info on JSDoc3</dd>
+	<dt><a href="about-getting-started.html">An introduction to JSDoc 3</a></dt>
+		<dd>A quick-start to documenting JavaScript with JSDoc.</dd>
+	<dt><a href="about-namepaths.html">Using namepaths with JSDoc 3</a></dt>
+		<dd>A guide to using namepaths with JSDoc 3.</dd>
+    <dt><a href="about-tutorials.html">Tutorials mechanism</a></dt>
+        <dd>Additional longtext tutorials for your code.</dd>
+	<dt><a href="about-including-readme.html">Adding Content to Index.html</a></dt>
+        <dd>Using Readme files to add content to the default index.html</dd>
+	<dt><a href="about-plugins.html">All about plugins</a></dt>
+        <dd>Installing plugins and writing your own.</dd>
+	<dt><a href="about-templates.html">Customized templates</a></dt>
+        <dd>How to create customized templates.</dd>
+	<dt><a href="plugins-markdown.html">Configuring the markdown plugin</a></dt>
+        <dd>This allows markdown in code comments and offers 2 flavors.</dd>
+	<dt><a href="about-testing-jsdoc3.html">Testing JSDoc3</a></dt>
+        <dd>About running the self tests included with JSDoc3.</dd>
+	<dt><a href="about-license-jsdoc3.html">License</a></dt>
+        <dd>The license covering JSDoc3 code</dd>
+</dl>
+
+<h2 name="JSDoc_Examples" id="JSDoc_Examples">JSDoc Examples</h2>
+<dl>
+	<dt><a href="howto-commonjs-modules.html">CommonJS Modules</a></dt>
+		<dd>Documenting code that conforms to the CommonJS server-side modules standard.</dd>
+</dl>
+
+<h2 name="Contribute" id="Contribute">Contribute</h2>
+<dl>
+	<dt><a href="about-contributors.html">Glorious Contributors</a></dt>
+		<dd>A list of the Glorious Contributors to JSDoc3.</dd>
+	<dt><a href="about-project-roadmap.html">Project Roadmap</a></dt>
+		<dd>A high-level overview of the plans for future work on JSDoc 3</dd>
+	<dt><a href="about-contributing.html">Contributing to JSDoc3</a></dt>
+        <dd>Guidelines for contributors.</dd>
+	<dt><a href="https://github.com/jsdoc3/jsdoc">JSDoc 3 at github</a></dt>
+		<dd>Contribute to the JSDoc3 project.</dd>
+	<dt><a href="https://github.com/micmath/micmath.github.com">JSDoc 3 Documentation</a></dt>
+		<dd>contribute to the JSDoc3 Documentation project.</dd>
+</dl>
+
+<h2 name="JSDoc3_Tag_Dictionary" id="JSDoc3_Tag_Dictionary">JSDoc3 Tag Dictionary</h2>
+<dl>
+{{#tagRefEntry}}
+ {{tagRefEntry}}
+{{/tagRefEntry}}
+</dl>
+
+<p>
+<link href="styles/css3-github-ribbon.css" rel="stylesheet" />
+<a href="https://github.com/jsdoc3/jsdoc" class="github-ribbon">Fork me on GitHub</a>
+</p>

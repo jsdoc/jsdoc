@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="JSDoc3 Template Reference"><title>Use JSDoc: JSDoc3 Template Reference</title>
+	
+	<link rel="stylesheet" href="lib/prettify.css" />
+	<script src="lib/prettify.js"></script>
+	
+	<script type="text/javascript">
+	    /* Make HTML 5 elements stylable in IE */
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('article');
+        document.createElement('footer');
+        document.createElement('hgroup');
+	</script>
+	
+	<style>
+		body { font: .85em 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+		
+		body
+		{
+			padding: 0;
+			margin: 0;
+		}
+		
+		a, a:visited, a:active { color: #605C89; }
+		
+		dl
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+		
+		dt
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+			margin-top: 8px;
+		}
+		
+		dt a, dt a:visited {
+			color: #3E00B6;
+		}
+		
+		dd
+		{
+			margin-left: 16px;
+			padding-left: 4px;
+		}
+		
+		code { font: .85em Consolas, "Lucida Console", Monaco, monospace; }
+		
+		/* Make HTML 5 elements display block-level for consistent styling */
+		header, nav, article, footer, address { display: block; }
+		
+		header
+		{
+			background-color: #EBEBEB;
+			color: #006FBB;
+			margin: 0;
+			margin-bottom: 32px;
+			padding: 18px;
+			font-size: 2.4em;
+			font-weight: bold;
+			border-bottom: 1px #C6C6C6 solid;
+		}
+		
+		header a, header a:visited {
+		    color: #006FBB;
+			text-decoration: none;
+		}
+		
+		h1 { color: #B93A38; }
+		article { margin: 18px; }
+		
+		pre
+		{
+			display: block;
+			border: 1px solid #999;
+			margin: 12px;
+			padding: 8px;
+		}
+		
+		.example dt { font-weight: bold; }
+		
+		footer
+		{
+			margin: 16px;
+			margin-top: 32px;
+			font-style: italic;
+			font-size: .8em;
+		}
+
+	</style>
+</head>
+
+<body>
+	<header>
+	    <a href="./index.html">@use JSDoc</a>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<article>
+	<h1>JSDoc3 Template Reference</h1>
+
+
+<p>To create or use your own template, create a folder, and give it the name of your template, for example "mycooltemplate". Within this folder create a file named "publish.js". That file must define a global method named "publish". For example:</p>
+
+<p><code>javascript
+/**
+ * Turn the data about your docs into file output.
+ * @global
+ * @param {TAFFY} data - A TaffyDB collection representing
+ *                       all the symbols documented in your code.
+ * @param {object} opts - An object with options information.
+ */
+function publish(data, opts) {
+    // do stuff here to generate your output files
+}
+</code></p>
+
+<p>To invoke JSDoc 3 with your own template, use the <code>-t</code> command line option, giving it the path to your template folder.</p>
+
+<p><code>
+./jsdoc mycode.js -t /path/to/mycooltemplate
+</code></p>
+    </article>
+    
+    <footer>
+        Copyright &#169; 2011 Michael Mathews &lt;micmath@gmail.com><br>
+        This site is <a href="https://github.com/micmath/micmath.github.com">open source</a> and licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</footer>
+
+	<script>prettyPrint()</script>
+</body>
+</html>
+
