@@ -50,6 +50,14 @@ generate and customize your documentation. Here are just a few:
 + [minami](https://github.com/Nijikokun/minami)
 + [docdash](https://github.com/clenemt/docdash) ([example](http://clenemt.github.io/docdash/))
 
+### Export JSON
+
+You can easily export JSON result by using haruki template:
+
+    jsdoc -r dir  -t templates/haruki -d console 
+
+See detail in [templates/haruki](./templates/haruki)
+
 ### Build Tools
 
 + [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
