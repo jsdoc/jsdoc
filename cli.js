@@ -87,8 +87,20 @@ cli.loadConfig = function() {
     }
 
     try {
-        env.conf = new Config( stripJsonComments(fs.readFileSync(confPath, 'utf8')) )
-            .get();
+        var config;
+
+        switch (path.extname(confPath)) {
+            case '.js':
+                config = require(confPath) || {};
+                break;
+            case '.json':
+            case '.EXAMPLE':
+                config = stripJsonComments(fs.readFileSync(confPath, 'utf8'));
+                break;
+            default:
+                throw new Error('Cannot use config file ' + confPath + '. Only js and json files are supported!');
+        }
+        env.conf = new Config(config).get();
     }
     catch (e) {
         cli.exit(1, 'Cannot parse the config file ' + confPath + ': ' + e + '\n' +

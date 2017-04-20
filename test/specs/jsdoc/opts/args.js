@@ -39,18 +39,32 @@ describe('jsdoc/opts/args', function() {
             expect(r.template).toBe('mytemplate');
         });
 
-        it('should accept a "-c" option and return an object with a "configure" property', function() {
+        it('should accept a "-c" option with a json file and return an object with a "configure" property', function() {
             args.parse(['-c', 'myconf.json']);
             var r = args.get();
 
             expect(r.configure).toBe('myconf.json');
         });
 
-        it('should accept a "--configure" option and return an object with a "configure" property', function() {
+        it('should accept a "--configure" option with a json file and return an object with a "configure" property', function() {
             args.parse(['--configure', 'myconf.json']);
             var r = args.get();
 
             expect(r.configure).toBe('myconf.json');
+        });
+
+        it('should accept a "-c" option with a js file and return an object with a "configure" property', function() {
+            args.parse(['-c', 'myconf.js']);
+            var r = args.get();
+
+            expect(r.configure).toBe('myconf.js');
+        });
+
+        it('should accept a "--configure" option with a js file and return an object with a "configure" property', function() {
+            args.parse(['--configure', 'myconf.js']);
+            var r = args.get();
+
+            expect(r.configure).toBe('myconf.js');
         });
 
         it('should accept an "-e" option and return an object with a "encoding" property', function() {
