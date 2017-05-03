@@ -78,6 +78,10 @@ article dl {
     margin-bottom: 40px;
 }
 
+article img {
+  max-width: 100%;
+}
+
 section
 {
     display: block;
