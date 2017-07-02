@@ -9,7 +9,7 @@ Want to contribute to JSDoc? Please read `CONTRIBUTING.md`.
 Installation and Usage
 ----------------------
 
-JSDoc supports Node.js 0.10 and later. You can install JSDoc in your project's
+JSDoc supports Node.js 4.2.0 and later. You can install JSDoc in your project's
 `node_modules` folder, or you can install it globally.
 
 To install the latest version available on NPM:
