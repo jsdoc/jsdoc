@@ -1,4 +1,5 @@
 # Development-related files
+.nyc_output
 .tern-port
 coverage/
 /node_modules/

@@ -30,7 +30,7 @@
     "gulp": "~3.9.1",
     "gulp-eslint": "~4.0.0",
     "gulp-json-editor": "~2.2.1",
-    "istanbul": "~0.4.5",
+    "nyc": "~11.0.3",
     "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
   },
   "engines": {
