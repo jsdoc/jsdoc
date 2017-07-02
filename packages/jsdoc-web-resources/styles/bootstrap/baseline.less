@@ -16,11 +16,12 @@
 @h-margin-top-large: (@line-height-computed * 2);
 @h-margin-top-small: @line-height-computed;
 
-@blue-light: #90CAF9;
-@green-light: #A5D6A7;
-@orange-light: #FFCC80;
-@deep-orange-light: #FFAB91;
-@deep-purple-light: #B39DDB;
+@blue-light: #90CAF9;        // Material Design Blue 200
+@green-light: #A5D6A7;       // Material Design Green 200
+@light-green-light: #C5E1A5; // Material Design Light Green 200
+@orange-light: #FFCC80;      // Material Design Orange 200
+@deep-orange-light: #FFAB91; // Material Design Deep Orange 200
+@deep-purple-light: #B39DDB; // Material Design Deep Purple 200
 
 /* Typography */
 
@@ -123,6 +124,10 @@ dd > p {
     font-weight: normal;
     padding: 0.1em 0.5em 0.1em;
     text-transform: uppercase;
+}
+
+.label-async {
+    background-color: @light-green-light;
 }
 
 .label-private, .label-protected, .label-public {
