@@ -723,6 +723,11 @@ describe("jsdoc/util/templateHelper", function() {
             doTests(tests, 'constant');
         });
 
+        it('should detect if a doclet is async', function() {
+            var tests = { '@async': 'async' };
+            doTests(tests, 'async');
+        });
+
         it("should detect multiple attributes", function() {
             var fdsaFoo = new doclet.Doclet('/** @const module:fdsa~FOO\n@readonly\n@private */', {});
             attribs = helper.getAttribs(fdsaFoo);
