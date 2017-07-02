@@ -45,6 +45,14 @@ describe('jsdoc/package', function() {
             expect(newPackage).not.toThrow();
         });
 
+        it('should accept a JSON-format string with a leading BOM', function() {
+            function newPackage() {
+                return new Package('\uFEFF{}');
+            }
+
+            expect(newPackage).not.toThrow();
+        });
+
         it('should work when called with no arguments', function() {
             function newPackage() {
                 return new Package();

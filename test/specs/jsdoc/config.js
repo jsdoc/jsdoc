@@ -36,6 +36,16 @@ describe('jsdoc/config', function() {
         });
     });
 
+    describe('constructor with leading BOM', function() {
+        it('should be possible to construct a Config with JSON that has a leading BOM', function() {
+            function getConfig() {
+                return new Config('\uFEFF{}').get();
+            }
+
+            expect(getConfig).not.toThrow();
+        });
+    });
+
     describe('constructor with plugins value', function() {
         it('should be possible to construct a Config with JSON of an object literal that has a plugin value', function() {
             var config = new Config('{"plugins":[42]}').get();

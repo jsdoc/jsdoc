@@ -142,6 +142,16 @@ describe('jsdoc/tutorial/resolver', function() {
             expect(test6.type).toBe(tutorial.TYPES.HTML);
             expect(constr.type).toBe(tutorial.TYPES.MARKDOWN);
         });
+
+        it('JSON files with a leading BOM are handled correctly', function() {
+            resetRootTutorial();
+
+            function loadBomTutorials() {
+                resolver.load(env.dirname + '/test/tutorials/bom');
+            }
+
+            expect(loadBomTutorials).not.toThrow();
+        });
     });
 
     // resolve

@@ -1,4 +1,3 @@
-/* global java */
 /* eslint no-process-exit:0, strict: [2, "function"] */
 /**
  * Helper methods for running JSDoc on the command line.
@@ -16,6 +15,7 @@ module.exports = (function() {
 var app = require('jsdoc/app');
 var env = require('jsdoc/env');
 var logger = require('jsdoc/util/logger');
+var stripBom = require('jsdoc/util/stripbom');
 var stripJsonComments = require('strip-json-comments');
 var Promise = require('bluebird');
 
@@ -38,7 +38,7 @@ cli.setVersionInfo = function() {
     var path = require('path');
 
     // allow this to throw--something is really wrong if we can't read our own package file
-    var info = JSON.parse( fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8') );
+    var info = JSON.parse( stripBom.strip(fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8')) );
 
     env.version = {
         number: info.version,
