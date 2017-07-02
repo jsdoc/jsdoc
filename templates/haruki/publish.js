@@ -210,7 +210,7 @@ exports.publish = function(data, opts) {
     if (opts.destination === 'console') {
         if (opts.query && opts.query.format === 'xml') {
             var xml = require('js2xmlparser');
-            console.log( xml('jsdoc', root) );
+            console.log( xml.parse('jsdoc', root) );
         }
         else {
             console.log( require('jsdoc/util/dumper').dump(root) );
