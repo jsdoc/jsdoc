@@ -173,6 +173,11 @@ describe('@module tag', function() {
                 expect(foo).toBeDefined();
             });
 
+            it('should merge the doclet for the constructor with the doclet for the ' +
+                'class', function() {
+                expect(foo.description).toBe('Test class constructor.');
+            });
+
             it('should identify the correct scope for the exported class\'s methods', function() {
                 expect(testMethod).toBeDefined();
             });
