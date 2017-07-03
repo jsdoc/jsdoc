@@ -535,6 +535,9 @@ describe("jsdoc/util/templateHelper", function() {
             {kind: 'class'}, // global
             {kind: 'class', memberof: 'SomeNamespace'} // not global
         ];
+        var nonClasses = [
+            {kind: 'class', name: 'module:MyClass', longname: 'module:MyClass'} // module
+        ];
         var externals = [
             {kind: 'external', name: 'foo'}
         ];
@@ -545,6 +548,7 @@ describe("jsdoc/util/templateHelper", function() {
             {kind: 'mixin'}
         ];
         var modules = [
+            {kind: 'module', name: 'module:MyClass', longname: 'module:MyClass'},
             {kind: 'module'}
         ];
         var namespaces = [
@@ -562,7 +566,7 @@ describe("jsdoc/util/templateHelper", function() {
             {kind: 'member', name: 'module:bar', longname: 'module:bar'}
         ];
         var misc = miscGlobal.concat(miscNonGlobal);
-        var array = classes.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc))))));
+        var array = classes.concat(nonClasses.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc)))))));
         var data = taffy(array);
         var members = helper.getMembers(data);
 
