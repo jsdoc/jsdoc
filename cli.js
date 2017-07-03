@@ -38,7 +38,8 @@ cli.setVersionInfo = function() {
     var path = require('path');
 
     // allow this to throw--something is really wrong if we can't read our own package file
-    var info = JSON.parse( stripBom.strip(fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8')) );
+    var info = JSON.parse( stripBom.strip(fs.readFileSync(path.join(env.dirname, 'package.json'),
+        'utf8')) );
 
     env.version = {
         number: info.version,
@@ -444,12 +445,10 @@ cli.generateDocs = function() {
 
 // TODO: docs
 cli.exit = function(exitCode, message) {
-    if (exitCode > 0) {
-        if (message) {
-            console.error(message);
-        }
-        process.exit(exitCode);
+    if (exitCode > 0 && message) {
+        console.error(message);
     }
+    process.exit(exitCode);
 };
 
 return cli;
