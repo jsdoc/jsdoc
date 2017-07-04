@@ -54,6 +54,7 @@ cli.loadConfig = function() {
     var _ = require('underscore');
     var args = require('jsdoc/opts/args');
     var Config = require('jsdoc/config');
+    var config;
     var fs = require('jsdoc/fs');
     var path = require('jsdoc/path');
 
@@ -88,8 +89,19 @@ cli.loadConfig = function() {
     }
 
     try {
-        env.conf = new Config( stripJsonComments(fs.readFileSync(confPath, 'utf8')) )
-            .get();
+        switch ( path.extname(confPath) ) {
+            case '.js':
+                config = require(confPath) || {};
+                break;
+            case '.json':
+            case '.EXAMPLE':
+                config = fs.readFileSync(confPath, 'utf8');
+                break;
+            default:
+                cli.exit(1, 'Cannot use config file ' + confPath + '. Only .js and .json files ' +
+                    'are supported.\n' + FATAL_ERROR_MESSAGE);
+        }
+        env.conf = new Config(config).get();
     }
     catch (e) {
         cli.exit(1, 'Cannot parse the config file ' + confPath + ': ' + e + '\n' +
