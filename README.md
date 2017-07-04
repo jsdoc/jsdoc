@@ -49,6 +49,7 @@ generate and customize your documentation. Here are just a few:
   ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))
 + [minami](https://github.com/Nijikokun/minami)
 + [docdash](https://github.com/clenemt/docdash) ([example](http://clenemt.github.io/docdash/))
++ [tui-jsdoc-template](https://github.com/nhnent/tui.jsdoc-template) ([example](https://nhnent.github.io/tui.jsdoc-template/latest/))
 
 ### Build Tools
 
