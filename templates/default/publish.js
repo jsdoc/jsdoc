@@ -343,7 +343,7 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">Home</a></h2>';
+    var nav = '<h2><a href="index.html">' + (env.conf.title ? env.conf.title : 'Home') + '</a></h2>';
     var seen = {};
     var seenTutorials = {};
 
@@ -579,7 +579,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     var files = find({kind: 'file'}),
         packages = find({kind: 'package'});
 
-    generate('Home',
+    generate(env.conf.title ? env.conf.title : 'Home',
         packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
         ).concat(files),
