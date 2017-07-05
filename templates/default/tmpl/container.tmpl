@@ -59,7 +59,22 @@
 
         <?js= self.partial('details.tmpl', doc) ?>
 
-        <?js if (doc.examples && doc.examples.length) { ?>
+        <?js if (doc.states && doc.states.length) { ?>
+            <div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">State Definition<?js= doc.states.length > 1? 's':'' ?></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <?js= self.partial('states.tmpl', doc.states) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?js } ?>
+        
+        <?js if (doc.stgate && doc.examples.length) { ?>
             <h3>Example<?js= doc.examples.length > 1? 's':'' ?></h3>
             <?js= self.partial('examples.tmpl', doc.examples) ?>
         <?js } ?>
@@ -127,11 +142,20 @@
         }
         if (members && members.length && members.forEach) {
     ?>
-        <h3 class="subsection-title">Members</h3>
-
-        <?js members.forEach(function(p) { ?>
-            <?js= self.partial('members.tmpl', p) ?>
-        <?js }); ?>
+        <div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Members</h3>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <?js members.forEach(function(p) { ?>
+                            <?js= self.partial('members.tmpl', p) ?>
+                        <?js }); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     <?js } ?>
 
     <?js

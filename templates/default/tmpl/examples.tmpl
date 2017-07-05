@@ -7,7 +7,8 @@
     ?>
         <p class="code-caption"><?js= example.caption ?></p>
     <?js } ?>
-    <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre>
+    <figure class="highlight"><pre><code class="language-scss" data-lang="scss"><?js= self.htmlsafe(example.code) ?></code></pre></figure> 
+    <!-- <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre> -->
 <?js
     });
 ?>

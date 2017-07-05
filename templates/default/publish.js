@@ -15,6 +15,7 @@ var linkto = helper.linkto;
 var resolveAuthorLinks = helper.resolveAuthorLinks;
 var scopeToPunc = helper.scopeToPunc;
 var hasOwnProp = Object.prototype.hasOwnProperty;
+var homeTitle = env.conf.title ? env.conf.title : 'Home';
 
 var data;
 var view;
@@ -313,7 +314,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         });
 
         if (itemsNav !== '') {
-            nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
+            nav += '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">' + itemHeading + ' <span class="caret"></span></a><ul class="dropdown-menu">' + itemsNav + '</ul></li>';
         }
     }
 
@@ -343,18 +344,23 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">Home</a></h2>';
+    var nav = '<div class="container-fluid"><div class="navbar-header"><a class="navbar-brand" href="index.html"><img alt="Brand" src="images\\aclara_logo.gif" style="display: inline; margin-right: 4px;">' + homeTitle + '</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav">';
     var seen = {};
     var seenTutorials = {};
 
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
     nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
-    nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
-    nav += buildMemberNav(members.events, 'Events', seen, linkto);
-    nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
-    nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
     nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial);
-    nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
+
+    var alreadyDefined = ['modules', 'externals', 'tutorials', 'globals'];
+    helper.containers.forEach(function(container) {
+        var name = container.container;
+        if (alreadyDefined.indexOf(name) === -1) {
+            var title = name.charAt(0).toUpperCase() + name.slice(1);
+
+            nav += buildMemberNav(members[name], title, seen, linkto);
+        }
+    })
 
     if (members.globals.length) {
         var globalNav = '';
@@ -371,10 +377,11 @@ function buildNav(members) {
             nav += '<h3>' + linkto('global', 'Global') + '</h3>';
         }
         else {
-            nav += '<h3>Global</h3><ul>' + globalNav + '</ul>';
+            nav += '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Global <span class="caret"></span></a><ul class="dropdown-menu">' + globalNav + '</ul></li>';
         }
     }
 
+    nav += '</ul></div></div>';
     return nav;
 }
 
@@ -433,6 +440,30 @@ exports.publish = function(taffyData, opts, tutorials) {
                 };
             });
         }
+        
+        // Break out, use are part of tag definition
+        if (doclet.states) {
+            doclet.states = doclet.states.map(function(state) {
+                var code, name, object;
+
+                if (state.match(/(.state\(\")(.*?)(\",)/i)) {
+                    name = RegExp.$2;
+                }
+                
+                if (state.match(/(\{\s*[\n\r][\s\S]+\})/i)) {
+                    console.log(RegExp.$1);
+                    code = RegExp.$1;
+                    object = JSON.parse(code);
+                }
+
+                return {
+                    url: object.url,
+                    name: name,
+                    views: object.views
+                };
+            });
+        }
+        
         if (doclet.see) {
             doclet.see.forEach(function(seeItem, i) {
                 doclet.see[i] = hashToLink(doclet, seeItem);
@@ -579,50 +610,24 @@ exports.publish = function(taffyData, opts, tutorials) {
     var files = find({kind: 'file'}),
         packages = find({kind: 'package'});
 
-    generate('Home',
+    generate(homeTitle,
         packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
         ).concat(files),
     indexUrl);
 
-    // set up the lists that we'll use to generate pages
-    var classes = taffy(members.classes);
-    var modules = taffy(members.modules);
-    var namespaces = taffy(members.namespaces);
-    var mixins = taffy(members.mixins);
-    var externals = taffy(members.externals);
-    var interfaces = taffy(members.interfaces);
-
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
-        var myModules = helper.find(modules, {longname: longname});
-        if (myModules.length) {
-            generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
-        }
+        helper.containers.forEach(function(container){
+            var name = container.container;
+            var collection = taffy(members[name]);
 
-        var myClasses = helper.find(classes, {longname: longname});
-        if (myClasses.length) {
-            generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
-        }
+            name = name.charAt(0).toUpperCase() + name.slice(1);
+            var items = helper.find(collection, {longname: longname});
 
-        var myNamespaces = helper.find(namespaces, {longname: longname});
-        if (myNamespaces.length) {
-            generate('Namespace: ' + myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
-        }
-
-        var myMixins = helper.find(mixins, {longname: longname});
-        if (myMixins.length) {
-            generate('Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
-        }
-
-        var myExternals = helper.find(externals, {longname: longname});
-        if (myExternals.length) {
-            generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
-        }
-
-        var myInterfaces = helper.find(interfaces, {longname: longname});
-        if (myInterfaces.length) {
-            generate('Interface: ' + myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
-        }
+            if (items.length) {
+                generate(name + ': ' + items[0].name, items, helper.longnameToUrl[longname]);
+            }
+        })
     });
 
     // TODO: move the tutorial functions to templateHelper.js
