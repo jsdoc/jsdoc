@@ -33,8 +33,6 @@
  * will assign numeric variations instead, starting at `(1)` and counting upwards.
  *
  * @module plugins/overloadHelper
- * @author Jeff Williams <jeffrey.l.williams@gmail.com>
- * @license Apache License 2.0
  */
 'use strict';
 

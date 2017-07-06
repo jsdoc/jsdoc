@@ -1,9 +1,7 @@
 /**
- * @overview Remove everything in a file except JSDoc-style comments. By enabling this plugin, you
- * can document source files that are not valid JavaScript (including source files for other
- * languages).
+ * Remove everything in a file except JSDoc-style comments. By enabling this plugin, you can
+ * document source files that are not valid JavaScript (including source files for other languages).
  * @module plugins/commentsOnly
- * @author Jeff Williams <jeffrey.l.williams@gmail.com>
  */
 'use strict';
 

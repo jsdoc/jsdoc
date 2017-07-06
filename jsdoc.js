@@ -1,11 +1,6 @@
 #!/usr/bin/env node
 /* global require: true */
 /* eslint strict: ["error", "function"] */
-/**
- * @project jsdoc
- * @author Michael Mathews <micmath@gmail.com>
- * @license See LICENSE.md file included in this distribution.
- */
 
 // initialize the environment for Node.js
 (function() {

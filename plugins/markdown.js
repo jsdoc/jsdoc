@@ -1,8 +1,7 @@
 /**
- * @overview Translate doclet descriptions from MarkDown into HTML.
+ * Translate doclet descriptions from Markdown into HTML.
+ *
  * @module plugins/markdown
- * @author Michael Mathews <micmath@gmail.com>
- * @author Ben Blank <ben.blank@gmail.com>
  */
 'use strict';
 
@@ -36,10 +35,10 @@ function shouldProcessString(tagName, text) {
 }
 
 /**
- * Process the markdown source in a doclet. The properties that should be
- * processed are configurable, but always include "classdesc", "description",
- * "params", "properties", and "returns".  Handled properties can be bare
- * strings, objects, or arrays of objects.
+ * Process the markdown source in a doclet. The properties that should be processed are
+ * configurable, but always include "author", "classdesc", "description", "exceptions", "params",
+ * "properties",  "returns", and "see".  Handled properties can be bare strings, objects, or arrays
+ * of objects.
  */
 function process(doclet) {
     tags.forEach(function(tag) {
@@ -81,7 +80,7 @@ defaultTags.forEach(function(tag) {
 
 exports.handlers = {
     /**
-     * Translate markdown syntax in a new doclet's description into HTML. Is run
+     * Translate Markdown syntax in a new doclet's description into HTML. Is run
      * by JSDoc 3 whenever a "newDoclet" event fires.
      */
     newDoclet: function(e) {

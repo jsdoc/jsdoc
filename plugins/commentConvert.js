@@ -1,8 +1,8 @@
 /* eslint-disable spaced-comment */
 /**
-    @overview Demonstrate how to modify the source code before the parser sees it.
-    @module plugins/commentConvert
-    @author Michael Mathews <micmath@gmail.com>
+ * Demonstrate how to modify the source code before the parser sees it.
+ *
+ * @module plugins/commentConvert
  */
 'use strict';
 

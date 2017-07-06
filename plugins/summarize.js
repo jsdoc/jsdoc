@@ -1,8 +1,7 @@
 /**
- * @overview This plugin creates a summary tag, if missing, from the first sentence in the
- * description.
+ * This plugin creates a summary tag, if missing, from the first sentence in the description.
+ *
  * @module plugins/summarize
- * @author Mads Bondo Dydensborg <mbd@dbc.dk>
  */
 'use strict';
 

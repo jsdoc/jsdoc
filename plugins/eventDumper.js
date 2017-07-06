@@ -1,7 +1,7 @@
 /**
- * @overview Dump information about parser events to the console.
+ * Dump information about parser events to the console.
+ *
  * @module plugins/eventDumper
- * @author Jeff Williams <jeffrey.l.williams@gmail.com>
  */
 'use strict';
 

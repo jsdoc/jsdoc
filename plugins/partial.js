@@ -1,7 +1,7 @@
 /**
-    @overview Adds support for reusable partial jsdoc files.
-    @module plugins/partial
-    @author Ludo Antonov <ludo@hulu.com>
+ * Adds support for reusable partial jsdoc files.
+ *
+ * @module plugins/partial
  */
 'use strict';
 
