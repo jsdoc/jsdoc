@@ -4,7 +4,6 @@ describe('jsdoc/src/astNode', function() {
     var astBuilder = require('jsdoc/src/astbuilder');
     var astNode = require('jsdoc/src/astnode');
     var babylon = require('babylon');
-    var doop = require('jsdoc/util/doop');
     var env = require('jsdoc/env');
     var Syntax = require('jsdoc/src/syntax').Syntax;
 
@@ -19,7 +18,6 @@ describe('jsdoc/src/astNode', function() {
     var binaryExpression = parse('foo & foo;').expression;
     var experimentalObjectRestSpread = parse('var one = {...two, three: 4};').declarations[0].init;
     var functionDeclaration1 = parse('function foo() {}');
-    var functionDeclaration1a = parse('function bar() {}');
     var functionDeclaration2 = parse('function foo(bar) {}');
     var functionDeclaration3 = parse('function foo(bar, baz, qux) {}');
     var functionDeclaration4 = parse('function foo(...bar) {}');
@@ -37,8 +35,6 @@ describe('jsdoc/src/astNode', function() {
     var thisExpression = parse('this;').expression;
     var unaryExpression1 = parse('+1;').expression;
     var unaryExpression2 = parse('+foo;').expression;
-    var variableDeclaration1 = parse('var foo = 1;');
-    var variableDeclaration2 = parse('var foo = 1, bar = 2;');
     var variableDeclarator1 = parse('var foo = 1;').declarations[0];
     var variableDeclarator2 = parse('var foo;').declarations[0];
 
@@ -86,7 +82,7 @@ describe('jsdoc/src/astNode', function() {
         var debugEnabled;
 
         beforeEach(function() {
-            debugEnabled = !!env.opts.debug;
+            debugEnabled = Boolean(env.opts.debug);
         });
 
         afterEach(function() {
@@ -171,7 +167,6 @@ describe('jsdoc/src/astNode', function() {
         });
 
         it('should provide a null parentId in debug mode for nodes with no parent', function() {
-            var descriptor;
             var node;
 
             env.opts.debug = true;
@@ -181,7 +176,6 @@ describe('jsdoc/src/astNode', function() {
         });
 
         it('should provide a non-null parentId in debug mode for nodes with a parent', function() {
-            var descriptor;
             var node;
             var parent;
 
@@ -230,18 +224,16 @@ describe('jsdoc/src/astNode', function() {
 
         it('should provide a null enclosingScopeId in debug mode for nodes with no enclosing scope',
             function() {
-            var descriptor;
-            var node;
+                var node;
 
-            env.opts.debug = true;
-            node = astNode.addNodeProperties({});
+                env.opts.debug = true;
+                node = astNode.addNodeProperties({});
 
-            expect(node.enclosingScopeId).toBe(null);
-        });
+                expect(node.enclosingScopeId).toBe(null);
+            });
 
         it('should provide a non-null enclosingScopeId in debug mode for nodes with an enclosing ' +
             'scope', function() {
-            var descriptor;
             var enclosingScope;
             var node;
 
@@ -589,18 +581,21 @@ describe('jsdoc/src/astNode', function() {
 
         it('should return the operator and nodeToValue value for prefix unary expressions',
             function() {
-            expect( astNode.nodeToValue(unaryExpression1) ).toBe('+1');
-            expect( astNode.nodeToValue(unaryExpression2) ).toBe('+foo');
-        });
+                expect( astNode.nodeToValue(unaryExpression1) ).toBe('+1');
+                expect( astNode.nodeToValue(unaryExpression2) ).toBe('+foo');
+            });
 
         it('should throw an error for postfix unary expressions', function() {
             function postfixNodeToValue() {
                 // there's no valid source representation for this one, so we fake it
                 var unaryExpressionPostfix = (function() {
                     var node = parse('+1;').body[0].expression;
+
                     node.prefix = false;
+
                     return node;
                 })();
+
                 return astNode.nodeToValue(unaryExpressionPostfix);
             }
 

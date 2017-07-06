@@ -22,7 +22,6 @@ describe('inner scope', function() {
 
     describe('other cases', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/innerscope2.js');
-        var to = docSet.getByLongname('Message~headers.to');
         var from = docSet.getByLongname('<anonymous>~headers.from');
         var cache = docSet.getByLongname('<anonymous>~headers.cache');
 

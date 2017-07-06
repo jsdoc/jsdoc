@@ -169,6 +169,7 @@ describe('jsdoc/tutorial', function() {
 
             it('removing a tutorial that is not a child silently passes', function() {
                 var n = par2.children.length;
+
                 expect(removeChild).not.toThrow();
                 expect(par2.children.length).toBe(n);
             });
@@ -273,6 +274,7 @@ describe('jsdoc/tutorial', function() {
 
             it('can retrieve tutorials by name', function() {
                 var myTutorial = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
+
                 root._addTutorial(myTutorial);
 
                 expect(root.getByName('myTutorial')).toBe(myTutorial);

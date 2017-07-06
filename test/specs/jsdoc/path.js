@@ -88,16 +88,16 @@ describe('jsdoc/path', function() {
 
         it('finds the correct prefix for a group of absolute paths and dotted relative paths',
             function() {
-            var paths = [
-                path.join('..', 'jsdoc', 'foo', 'bar', 'baz', 'qux', 'quux', 'test.js'),
-                cwd.concat('foo', 'bar', 'bazzy.js').join(path.sep),
-                path.join('..', '..', 'Users', 'jsdoc', 'foo', 'bar', 'foobar.js')
-            ];
-            // we expect a trailing slash
-            var expected = cwd.concat('foo', 'bar', '').join(path.sep);
+                var paths = [
+                    path.join('..', 'jsdoc', 'foo', 'bar', 'baz', 'qux', 'quux', 'test.js'),
+                    cwd.concat('foo', 'bar', 'bazzy.js').join(path.sep),
+                    path.join('..', '..', 'Users', 'jsdoc', 'foo', 'bar', 'foobar.js')
+                ];
+                // we expect a trailing slash
+                var expected = cwd.concat('foo', 'bar', '').join(path.sep);
 
-            expect( path.commonPrefix(paths) ).toEqual(expected);
-        });
+                expect( path.commonPrefix(paths) ).toEqual(expected);
+            });
 
         it('returns an empty string when the paths array is empty', function() {
             var paths = [];
@@ -133,12 +133,10 @@ describe('jsdoc/path', function() {
 
     describe('getResourcePath', function() {
         var oldPwd;
-        var cwd;
 
         beforeEach(function() {
             oldPwd = env.pwd;
             env.pwd = __dirname;
-            cwd = env.pwd.split(path.sep);
         });
 
         afterEach(function() {
@@ -195,8 +193,7 @@ describe('jsdoc/path', function() {
 
         it('resolves path using node_modules/', function() {
             var p = ['node_modules', 'marked'].join(path.sep);
-            var resolved = path.getResourcePath(path.dirname(p),
-                                                path.basename(p));
+            var resolved = path.getResourcePath( path.dirname(p), path.basename(p) );
 
             expect( resolved ).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);

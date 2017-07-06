@@ -26,9 +26,10 @@ describe('jsdoc/util/markdown', function() {
         });
 
         it('should retrieve a function when called with default settings', function() {
-            var storage = setMarkdownConf({});
+            var parser;
 
-            var parser = markdown.getParser();
+            setMarkdownConf({});
+            parser = markdown.getParser();
             expect(typeof parser).toEqual('function');
 
             setMarkdownConf({parser: 'marked'});
@@ -37,38 +38,43 @@ describe('jsdoc/util/markdown', function() {
         });
 
         it('should use the marked parser when evilstreak is requested', function() {
-            var storage = setMarkdownConf({parser: 'evilstreak'});
-            var parser = markdown.getParser();
+            var parser;
+
+            setMarkdownConf({parser: 'evilstreak'});
+            parser = markdown.getParser();
             expect(parser._parser).toEqual('marked');
         });
 
         it('should use the marked parser when requested', function() {
-            var storage = setMarkdownConf({parser: 'marked'});
-            var parser = markdown.getParser();
+            var parser;
+
+            setMarkdownConf({parser: 'marked'});
+            parser = markdown.getParser();
             expect(parser._parser).toEqual('marked');
         });
 
         it('should use the marked parser when GFM is requested', function() {
-            var storage = setMarkdownConf({parser: 'gfm'});
-            var parser = markdown.getParser();
+            var parser;
+
+            setMarkdownConf({parser: 'gfm'});
+            parser = markdown.getParser();
             expect(parser._parser).toEqual('marked');
         });
 
         it('should log an error if an unrecognized Markdown parser is requested', function() {
             var logger = require('jsdoc/util/logger');
-            var parser;
-            var storage = setMarkdownConf({parser: 'not-a-real-markdown-parser'});
 
+            setMarkdownConf({parser: 'not-a-real-markdown-parser'});
             spyOn(logger, 'error');
-
-            parser = markdown.getParser();
-
+            markdown.getParser();
             expect(logger.error).toHaveBeenCalled();
         });
 
         it('should not apply formatting to inline tags when the marked parser is enabled', function() {
-            var storage = setMarkdownConf({parser: 'marked'});
-            var parser = markdown.getParser();
+            var parser;
+
+            setMarkdownConf({parser: 'marked'});
+            parser = markdown.getParser();
 
             // get the marked parser and do the test
             expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toEqual(
@@ -99,8 +105,10 @@ describe('jsdoc/util/markdown', function() {
         });
 
         it('should hardwrap new lines when hardwrap is enabled', function() {
-            var storage = setMarkdownConf({hardwrap: true});
-            var parser = markdown.getParser();
+            var parser;
+
+            setMarkdownConf({hardwrap: true});
+            parser = markdown.getParser();
 
             expect(parser('line one\nline two')).toEqual(
                 '<p>line one<br>line two</p>');

@@ -30,13 +30,12 @@ describe('@protected tag', function() {
 
         it('When JSDoc tags are enabled, the @protected tag does not accept a value.', function() {
             var dict = new Dictionary();
-            var protectedDocs;
 
             definitions.defineTags(dict, definitions.jsdocTags);
             doclet._replaceDictionary(dict);
             spyOn(logger, 'warn');
 
-            protectedDocs = jasmine.getDocSetFromFile('test/fixtures/protectedtag2.js');
+            jasmine.getDocSetFromFile('test/fixtures/protectedtag2.js');
 
             expect(logger.warn).toHaveBeenCalled();
         });
@@ -49,26 +48,26 @@ describe('@protected tag', function() {
 
         it('When Closure Compiler tags are enabled, the @private tag accepts a type expression.',
             function() {
-            var dict = new Dictionary();
-            var protectedDocs;
-            var counter;
+                var dict = new Dictionary();
+                var protectedDocs;
+                var counter;
 
-            definitions.defineTags(dict, definitions.closureTags);
-            doclet._replaceDictionary(dict);
-            spyOn(logger, 'warn');
+                definitions.defineTags(dict, definitions.closureTags);
+                doclet._replaceDictionary(dict);
+                spyOn(logger, 'warn');
 
-            protectedDocs = jasmine.getDocSetFromFile('test/fixtures/protectedtag2.js');
-            counter = protectedDocs.getByLongname('uidCounter')[0];
+                protectedDocs = jasmine.getDocSetFromFile('test/fixtures/protectedtag2.js');
+                counter = protectedDocs.getByLongname('uidCounter')[0];
 
-            expect(logger.warn).not.toHaveBeenCalled();
+                expect(logger.warn).not.toHaveBeenCalled();
 
-            expect(counter).toBeDefined();
-            expect(counter.access).toBe('protected');
+                expect(counter).toBeDefined();
+                expect(counter.access).toBe('protected');
 
-            expect(counter.type).toBeDefined();
-            expect(counter.type.names).toBeDefined();
-            expect(counter.type.names.length).toBe(1);
-            expect(counter.type.names[0]).toBe('number');
-        });
+                expect(counter.type).toBeDefined();
+                expect(counter.type.names).toBeDefined();
+                expect(counter.type.names.length).toBe(1);
+                expect(counter.type.names[0]).toBe('number');
+            });
     });
 });

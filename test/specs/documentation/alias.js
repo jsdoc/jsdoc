@@ -30,7 +30,6 @@ describe('aliases', function() {
 
     it('When a symbol is a member of an aliased class, a this-variable is documented as if it were a member that class.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/alias3.js');
-        var tcm = docSet.getByLongname('trackr.CookieManager')[0];
         var tcmValue = docSet.getByLongname('trackr.CookieManager#value')[0];
 
         expect(tcmValue.memberof).toEqual('trackr.CookieManager');

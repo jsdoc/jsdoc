@@ -78,7 +78,10 @@ describe('jsdoc/package', function() {
             });
 
             it('should contain the value from the package file', function() {
-                checkPackageProperty('author', { name: 'Jane Smith', email: 'jsmith@example.com' });
+                checkPackageProperty('author', {
+                    name: 'Jane Smith',
+                    email: 'jsmith@example.com'
+                });
             });
         });
 

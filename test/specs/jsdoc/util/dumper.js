@@ -53,8 +53,10 @@ describe('jsdoc/util/dumper', function() {
     });
 
     it('can dump function values', function() {
+        /* eslint-disable no-empty-function */
         expect(dumper.dump(function myFunc() {})).toBe('"<Function myFunc>"');
         expect(dumper.dump(function() {})).toBe('"<Function>"');
+        /* eslint-enable no-empty-function */
     });
 
     it('can dump array values', function() {
@@ -78,7 +80,9 @@ describe('jsdoc/util/dumper', function() {
         function Foo(name) {
             this.name = name;
         }
+        /* eslint-disable no-empty-function */
         Foo.prototype.sayHello = function() {};
+        /* eslint-enable no-empty-function */
 
         actual = dumper.dump(new Foo('hello'));
         expected = '{\n    "name": "hello"\n}';
@@ -87,7 +91,9 @@ describe('jsdoc/util/dumper', function() {
     });
 
     it('can dump complex mixed values', function() {
+        /* eslint-disable no-empty-function */
         function Foo() {}
+        /* eslint-enable no-empty-function */
 
         var actual = dumper.dump([
             undefined,
@@ -100,7 +106,9 @@ describe('jsdoc/util/dumper', function() {
             /foo/gi,
             new Date('December 26, 2010 GMT'),
             {
+                /* eslint-disable func-name-matching, no-empty-function */
                 f: function myFunc() {},
+                /* eslint-enable func-name-matching, no-empty-function */
                 o: {
                     a: 1
                 }
@@ -133,10 +141,12 @@ describe('jsdoc/util/dumper', function() {
     describe('circular references', function() {
         it('should not crash on circular references', function() {
             var a = {};
-            a.b = a;
+            var actual;
+            var expected;
 
-            var actual = dumper.dump(a);
-            var expected = '{\n    "b": "<CircularRef>"\n}';
+            a.b = a;
+            actual = dumper.dump(a);
+            expected = '{\n    "b": "<CircularRef>"\n}';
 
             expect(actual).toBe(expected);
         });
@@ -149,10 +159,12 @@ describe('jsdoc/util/dumper', function() {
                     }
                 }
             ];
-            a[1] = { d: a[0].b };
+            var actual;
+            var expected;
 
-            var actual = dumper.dump(a);
-            var expected = '' +
+            a[1] = { d: a[0].b };
+            actual = dumper.dump(a);
+            expected = '' +
                 '[\n' +
                 '    {\n' +
                 '        "b": {\n' +
@@ -174,7 +186,6 @@ describe('jsdoc/util/dumper', function() {
         it('should dump all of its arguments, separated by newlines', function() {
             var a = { b: 1 };
             var b = 'hello';
-
             var actual = dumper.dump(a, b);
             var expected = '' +
                 '{\n' +

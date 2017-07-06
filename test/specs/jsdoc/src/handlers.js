@@ -4,6 +4,7 @@ describe('jsdoc/src/handlers', function() {
     var handlers = require('jsdoc/src/handlers');
 
     var testParser = jasmine.createParser();
+
     handlers.attachTo(testParser);
 
     it('should exist', function() {
@@ -19,6 +20,7 @@ describe('jsdoc/src/handlers', function() {
     describe('attachTo', function() {
         it('should attach a "jsdocCommentFound" handler to the parser', function() {
             var callbacks = testParser.listeners('jsdocCommentFound');
+
             expect(callbacks).toBeDefined();
             expect(callbacks.length).toEqual(1);
             expect(typeof callbacks[0]).toEqual('function');
@@ -26,6 +28,7 @@ describe('jsdoc/src/handlers', function() {
 
         it('should attach a "symbolFound" handler to the parser', function() {
             var callbacks = testParser.listeners('symbolFound');
+
             expect(callbacks).toBeDefined();
             expect(callbacks.length).toEqual(1);
             expect(typeof callbacks[0]).toEqual('function');
@@ -33,6 +36,7 @@ describe('jsdoc/src/handlers', function() {
 
         it('should attach a "fileComplete" handler to the parser', function() {
             var callbacks = testParser.listeners('fileComplete');
+
             expect(callbacks).toBeDefined();
             expect(callbacks.length).toEqual(1);
             expect(typeof callbacks[0]).toEqual('function');
@@ -40,8 +44,9 @@ describe('jsdoc/src/handlers', function() {
     });
 
     describe('jsdocCommentFound handler', function() {
-        /* eslint no-script-url: 0 */
+        /* eslint-disable no-script-url */
         var sourceCode = 'javascript:/** @name bar */';
+        /* eslint-enable no-script-url */
         var result = testParser.parse(sourceCode);
 
         it('should create a doclet for comments with "@name" tags', function() {

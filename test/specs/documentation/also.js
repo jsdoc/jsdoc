@@ -52,8 +52,7 @@ describe('multiple doclets per symbol', function() {
         'option is set to false, the file can be parsed without errors.', function() {
         var logger = require('jsdoc/util/logger');
 
-        var allowUnknownTags = !!env.conf.tags.allowUnknownTags;
-        var docs;
+        var allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
         var errors = [];
 
         function errorListener(err) {
@@ -63,7 +62,7 @@ describe('multiple doclets per symbol', function() {
         logger.addListener('logger:error', errorListener);
         env.conf.tags.allowUnknownTags = false;
 
-        docs = jasmine.getDocSetFromFile('test/fixtures/also2.js');
+        jasmine.getDocSetFromFile('test/fixtures/also2.js');
         expect(errors[0]).not.toBeDefined();
 
         logger.removeListener('logger:error', errorListener);

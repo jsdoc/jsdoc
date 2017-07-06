@@ -7,10 +7,11 @@ describe('jsdoc/opts/argparser', function() {
 
     function trueFalse(v) {
         var r = false;
+
         if (v) {
             if (v === 'true') { r = true; }
             else if (v === 'false') { r = false; }
-            else { v = !!r; }
+            else { v = Boolean(r); }
         }
 
         return r;

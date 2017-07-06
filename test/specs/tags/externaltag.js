@@ -2,7 +2,8 @@
 
 describe('@external tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/externaltag.js');
-    var docSet2 = jasmine.getDocSetFromFile('test/fixtures/externaltag2.js');
+    // TODO: why don't we test anything from docSet2?
+    // var docSet2 = jasmine.getDocSetFromFile('test/fixtures/externaltag2.js');
     var docSet3 = jasmine.getDocSetFromFile('test/fixtures/externaltag3.js');
 
     var fooBarBazExternal = docSet3.getByLongname('external:"foo.bar.baz"')[0];

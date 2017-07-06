@@ -38,13 +38,12 @@ describe('@type tag', function() {
 
         it('When JSDoc tags are enabled, the @type tag does not accept a description.', function() {
             var dict = new Dictionary();
-            var typeDocs;
 
             definitions.defineTags(dict, definitions.jsdocTags);
             doclet._replaceDictionary(dict);
             spyOn(logger, 'warn');
 
-            typeDocs = jasmine.getDocSetFromFile('test/fixtures/typetag2.js');
+            jasmine.getDocSetFromFile('test/fixtures/typetag2.js');
 
             expect(logger.warn).toHaveBeenCalled();
         });

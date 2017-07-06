@@ -57,8 +57,6 @@ describe('jsdoc/tag/dictionary', function() {
 
     describe('defineSynonym', function() {
         it('adds a synonym for the specified tag', function() {
-            var synonymDict = new dictionary.Dictionary();
-
             dictionary.defineTag('foo', {});
             dictionary.defineSynonym('foo', 'bar');
 

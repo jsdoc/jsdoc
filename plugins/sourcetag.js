@@ -19,9 +19,9 @@ exports.handlers = {
         @source { "filename": "sourcetag.js", "lineno": 13 }
      */
     newDoclet: function(e) {
-        var tags = e.doclet.tags,
-            tag,
-            value;
+        var tags = e.doclet.tags;
+        var tag;
+        var value;
 
         // any user-defined tags in this doclet?
         if (typeof tags !== 'undefined') {
@@ -39,6 +39,7 @@ exports.handlers = {
                 }
                 catch (ex) {
                     logger.error('@source tag expects a valid JSON value, like { "filename": "myfile.js", "lineno": 123 }.');
+
                     return;
                 }
 

@@ -47,14 +47,11 @@ describe('@module tag', function() {
 
     describe('virtual comments', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag4.js');
-        var m1 = docSet.getByLongname('module:M1').filter(function($) {
-            return !($.undocumented);
-        })[0];
         var clickProperties = docSet.getByLongname('module:M1~ClickProperties')[0];
         var virtFunc = docSet.getByLongname('module:M1.VirtualComment')[0];
         var virtFunc2 = docSet.getByLongname('module:M1#VirtualComment2')[0];
 
-        it('When a virtual comment typedef is inside a module, the typedef is a memberof the module', function () {
+        it('When a virtual comment typedef is inside a module, the typedef is a memberof the module', function() {
             expect(clickProperties.memberof).toBe('module:M1');
         });
 
@@ -66,7 +63,7 @@ describe('@module tag', function() {
             expect(clickProperties.scope).toBe('inner');
         });
 
-        it('When a virtual comment function is inside a module with a static scope, the function has the correct memberof and longname', function () {
+        it('When a virtual comment function is inside a module with a static scope, the function has the correct memberof and longname', function() {
             expect(virtFunc.longname).toBe('module:M1.VirtualComment');
             expect(virtFunc.memberof).toBe('module:M1');
         });

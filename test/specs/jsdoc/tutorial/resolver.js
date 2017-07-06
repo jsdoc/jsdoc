@@ -23,7 +23,7 @@ describe('jsdoc/tutorial/resolver', function() {
 
         resolver.load(env.dirname + '/test/tutorials/tutorials');
 
-        childNames = resolver.root.children.map(function (t) { return t.name; });
+        childNames = resolver.root.children.map(function(t) { return t.name; });
         test = resolver.root.getByName('test');
         test2 = resolver.root.getByName('test2');
         test3 = resolver.root.getByName('test3');
@@ -223,6 +223,7 @@ describe('jsdoc/tutorial/resolver', function() {
 
         it('logs a warning for duplicate-named tutorials (e.g. test.md, test.html)', function() {
             var tute = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
+
             resolver.addTutorial(tute);
             resolver.addTutorial(tute);
 

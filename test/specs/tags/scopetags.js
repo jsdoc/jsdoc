@@ -1,6 +1,6 @@
 'use strict';
 
-describe('scope tags', function () {
+describe('scope tags', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/scopetags.js');
 
     // @inner, @instance, @static (@global has its own file)

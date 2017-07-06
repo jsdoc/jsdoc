@@ -5,7 +5,7 @@ describe('@tutorial tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/tutorialtag.js');
     var doc = docSet.getByLongname('x')[0];
 
-    it("adds the listed tutorials to a 'tutorials' array on the doclet", function () {
+    it("adds the listed tutorials to a 'tutorials' array on the doclet", function() {
         expect(Array.isArray(doc.tutorials)).toBeTruthy();
         expect(doc.tutorials.length).toBe(2);
         expect(doc.tutorials).toContain('tute1');

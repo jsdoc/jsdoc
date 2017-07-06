@@ -15,8 +15,8 @@ describe('@private tag', function() {
 
     it('When a symbol has a @private tag, the doclet has an `access` property set to `private`.',
         function() {
-        expect(foo.access).toBe('private');
-    });
+            expect(foo.access).toBe('private');
+        });
 
     it('When a symbol tagged with @private has members, the members do not inherit the @private ' +
         'tag.', function() {
@@ -30,13 +30,12 @@ describe('@private tag', function() {
 
         it('When JSDoc tags are enabled, the @private tag does not accept a value.', function() {
             var dict = new Dictionary();
-            var privateDocs;
 
             definitions.defineTags(dict, definitions.jsdocTags);
             doclet._replaceDictionary(dict);
             spyOn(logger, 'warn');
 
-            privateDocs = jasmine.getDocSetFromFile('test/fixtures/privatetag2.js');
+            jasmine.getDocSetFromFile('test/fixtures/privatetag2.js');
 
             expect(logger.warn).toHaveBeenCalled();
         });
@@ -49,26 +48,26 @@ describe('@private tag', function() {
 
         it('When Closure Compiler tags are enabled, the @private tag accepts a type expression.',
             function() {
-            var connectionPorts;
-            var dict = new Dictionary();
-            var privateDocs;
+                var connectionPorts;
+                var dict = new Dictionary();
+                var privateDocs;
 
-            definitions.defineTags(dict, definitions.closureTags);
-            doclet._replaceDictionary(dict);
-            spyOn(logger, 'warn');
+                definitions.defineTags(dict, definitions.closureTags);
+                doclet._replaceDictionary(dict);
+                spyOn(logger, 'warn');
 
-            privateDocs = jasmine.getDocSetFromFile('test/fixtures/privatetag2.js');
-            connectionPorts = privateDocs.getByLongname('connectionPorts')[0];
+                privateDocs = jasmine.getDocSetFromFile('test/fixtures/privatetag2.js');
+                connectionPorts = privateDocs.getByLongname('connectionPorts')[0];
 
-            expect(logger.warn).not.toHaveBeenCalled();
+                expect(logger.warn).not.toHaveBeenCalled();
 
-            expect(connectionPorts).toBeDefined();
-            expect(connectionPorts.access).toBe('private');
+                expect(connectionPorts).toBeDefined();
+                expect(connectionPorts.access).toBe('private');
 
-            expect(connectionPorts.type).toBeDefined();
-            expect(connectionPorts.type.names).toBeDefined();
-            expect(connectionPorts.type.names.length).toBe(1);
-            expect(connectionPorts.type.names[0]).toBe('Object.<string, number>');
-        });
+                expect(connectionPorts.type).toBeDefined();
+                expect(connectionPorts.type.names).toBeDefined();
+                expect(connectionPorts.type.names.length).toBe(1);
+                expect(connectionPorts.type.names[0]).toBe('Object.<string, number>');
+            });
     });
 });

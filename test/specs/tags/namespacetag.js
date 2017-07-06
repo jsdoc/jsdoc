@@ -7,7 +7,7 @@ describe('@namespace tag', function() {
     var Bar = docSet.getByLongname('Bar')[0];
     var Socket = docSet.getByLongname('S.Socket')[0];
 
-    it("sets the doclet's kind to 'namespace'", function () {
+    it("sets the doclet's kind to 'namespace'", function() {
         expect(x.kind).toBe('namespace');
         expect(Foo.kind).toBe('namespace');
         expect(Bar.kind).toBe('namespace');
@@ -28,7 +28,7 @@ describe('@namespace tag', function() {
 
     it("sets the doclet's longname correctly when the namespace is a substring of the name",
         function() {
-        expect(Socket).toBeDefined();
-        expect(Socket.name).toBe('Socket');
-    });
+            expect(Socket).toBeDefined();
+            expect(Socket.name).toBe('Socket');
+        });
 });

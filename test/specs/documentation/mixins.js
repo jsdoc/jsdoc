@@ -6,6 +6,7 @@ var name = require('jsdoc/name');
 describe('mixins', function() {
     describe('doclet augmentation', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/mixintag2.js');
+
         augment.augmentAll(docSet.doclets);
 
         it('should create doclets for mixed-in symbols', function() {

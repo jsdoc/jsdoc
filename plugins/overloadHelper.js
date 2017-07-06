@@ -44,6 +44,7 @@ var functionDoclets;
 function hasUniqueValues(obj) {
     var isUnique = true;
     var seen = [];
+
     Object.keys(obj).forEach(function(key) {
         if (seen.indexOf(obj[key]) !== -1) {
             isUnique = false;
@@ -60,6 +61,7 @@ function getParamNames(params) {
 
     params.forEach(function(param) {
         var name = param.name || '';
+
         if (param.variable) {
             name = '...' + name;
         }

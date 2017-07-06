@@ -1,6 +1,6 @@
 'use strict';
 
- describe('@augments tag', function() {
+describe('@augments tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/augmentstag.js');
     var docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js');
     var docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js');

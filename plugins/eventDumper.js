@@ -24,6 +24,7 @@ var events = conf.include || [
     'parseComplete',
     'processingComplete'
 ];
+
 // Don't dump the excluded parser events
 if (conf.exclude) {
     events = _.difference(events, conf.exclude);

@@ -16,6 +16,10 @@ describe('jsdoc/util/doop', function() {
     // deep-clones a simple object.
     describe('doop', function() {
         it("should return the input object if it's a value type or a function", function() {
+            /* eslint-disable no-empty-function */
+            var f = function() {};
+            /* eslint-enable no-empty-function */
+
             // test a number...
             expect(doop.doop(3)).toBe(3);
             // test a string...
@@ -23,31 +27,37 @@ describe('jsdoc/util/doop', function() {
             // test a boolean...
             expect(doop.doop(true)).toBe(true);
             // test a function...
-            var f = function () {};
             expect(doop.doop(f)).toBe(f);
         });
 
         it('should return a clone of an array', function() {
             var inp = [1, 2, 3];
             var out = doop.doop(inp);
-            // toEqual is a comparison on properties; toBe is === comparison.
+
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
         });
 
         it('should return a clone of an object', function() {
-            var inp = {a: 1, b: 2, 'asdf-fdsa': 3};
+            var inp = {
+                a: 1,
+                b: 2,
+                'asdf-fdsa': 3
+            };
             var out = doop.doop(inp);
-            // toEqual is a comparison on properties; toBe is === comparison.
+
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
         });
 
         it('should return an object with the same prototype as the original object', function() {
+            /* eslint-disable no-empty-function */
             function Foo() {}
+            /* eslint-enable no-empty-function */
 
             var foo = new Foo();
             var bar = doop(foo);
+
             expect( Object.getPrototypeOf(foo) ).toBe( Object.getPrototypeOf(bar) );
         });
 
@@ -58,7 +68,9 @@ describe('jsdoc/util/doop', function() {
                 // if it's an object and not a function, it should clone.
                 var keysA = Object.keys(a).sort();
                 var keysB = Object.keys(b).sort();
+
                 expect(keysA).toEqual(keysB);
+
                 for (var i = 0; i < keysA.length; ++i) {
                     compareForEquality(a[keysA[i]], b[keysB[i]]);
                 }
@@ -69,9 +81,16 @@ describe('jsdoc/util/doop', function() {
         }
 
         it('should clone recursively', function() {
-            var inp = {a: 1, b: 2, 'asdf-fdsa': {a: 'fdsa', b: [1, 2, 3]}};
+            var inp = {
+                a: 1,
+                b: 2,
+                'asdf-fdsa': {
+                    a: 'fdsa',
+                    b: [1, 2, 3]
+                }
+            };
             var out = doop.doop(inp);
-            // toEqual is a comparison on properties; toBe is === comparison.
+
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
             // double-check
@@ -80,7 +99,9 @@ describe('jsdoc/util/doop', function() {
 
         it('should not clone non-enumerable properties', function() {
             var clone;
-            var obj = { a: 1 };
+            var obj = {
+                a: 1
+            };
 
             Object.defineProperty(obj, 'foo', {
                 value: 2
@@ -92,7 +113,9 @@ describe('jsdoc/util/doop', function() {
         });
 
         it('should not create a circular reference if an object is seen more than once', function() {
-            var input = { a: {} };
+            var input = {
+                a: {}
+            };
             var output;
 
             function stringify() {

@@ -45,6 +45,7 @@
  */
 global.env = (function() {
     'use strict';
+
     return require('./lib/jsdoc/env');
 })();
 
@@ -58,6 +59,7 @@ global.env = (function() {
  */
 global.app = (function() {
     'use strict';
+
     return require('./lib/jsdoc/app');
 })();
 
@@ -65,8 +67,6 @@ global.app = (function() {
     'use strict';
 
     var env = global.env;
-    var logger = require('./lib/jsdoc/util/logger');
-    var runtime = require('./lib/jsdoc/util/runtime');
     var cli = require('./cli');
 
     function cb(errorCode) {

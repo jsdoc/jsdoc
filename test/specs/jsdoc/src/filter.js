@@ -24,6 +24,7 @@ describe('jsdoc/src/filter', function() {
         beforeEach(function() {
             myFilter = new filter.Filter({});
         });
+
         it('should have an "exclude" property', function() {
             expect(myFilter.exclude).toBeDefined();
         });
@@ -48,15 +49,16 @@ describe('jsdoc/src/filter', function() {
 
             it('should be null if the value passed to the constructor was not an array',
                 function() {
-                myFilter = new filter.Filter({
-                    exclude: 'foo'
-                });
+                    myFilter = new filter.Filter({
+                        exclude: 'foo'
+                    });
 
-                expect(myFilter.exclude).toBe(null);
-            });
+                    expect(myFilter.exclude).toBe(null);
+                });
 
             it('should resolve paths relative to the user\'s working directory', function() {
                 var filename = 'bar.js';
+
                 myFilter = new filter.Filter({
                     exclude: [filename]
                 });
@@ -73,6 +75,7 @@ describe('jsdoc/src/filter', function() {
             it('should contain the regexp passed to the constructor', function() {
                 var regExp = new RegExp('^foo$');
                 var options = {};
+
                 options[name] = regExp;
                 myFilter = new filter.Filter(options);
 
@@ -82,6 +85,7 @@ describe('jsdoc/src/filter', function() {
             it('should contain a regexp if a string was passed to the constructor', function() {
                 var regExpString = '^foo$';
                 var options = {};
+
                 options[name] = regExpString;
                 myFilter = new filter.Filter(options);
 
@@ -103,6 +107,7 @@ describe('jsdoc/src/filter', function() {
                     '.ignore',
                     path.normalize(env.pwd + '/scratch/conf.js')
                 ];
+
                 myFilter = new filter.Filter({
                     includePattern: defaultIncludePattern,
                     excludePattern: defaultExcludePattern,
@@ -125,6 +130,7 @@ describe('jsdoc/src/filter', function() {
                     'module/yes.js',
                     'module/topsecret/nope.js'
                 ];
+
                 myFilter = new filter.Filter({
                     includePattern: defaultIncludePattern,
                     excludePattern: defaultExcludePattern,
@@ -147,6 +153,7 @@ describe('jsdoc/src/filter', function() {
                     'module/yes.js',
                     'module/topsecret/nested/nope.js'
                 ];
+
                 myFilter = new filter.Filter({
                     includePattern: defaultIncludePattern,
                     excludePattern: defaultExcludePattern,

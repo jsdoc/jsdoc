@@ -69,8 +69,7 @@ describe('jsdoc/schema', function() {
 
         it('should not find any validation errors in the JSDoc parse results', function() {
             jasmine.getParseResults().forEach(function(doclets) {
-                var validationResult;
-                validationResult = validate(doclets.doclets, schema.DOCLETS_SCHEMA);
+                var validationResult = validate(doclets.doclets, schema.DOCLETS_SCHEMA);
 
                 // hack to get the filename/errors in the test results
                 if (validationResult.errors.length) {

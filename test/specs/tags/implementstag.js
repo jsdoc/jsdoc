@@ -4,7 +4,6 @@ describe('@implements tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
 
     var myTester = docSet.getByLongname('MyTester')[0];
-    var myIncompleteWorker = docSet.getByLongname('MyWorker')[0];
     var beforeEachMethod = docSet.getByLongname('MyTester#beforeEach')[0];
     var itMethod = docSet.getByLongname('MyTester#it').filter(function($) {
         return !$.undocumented;

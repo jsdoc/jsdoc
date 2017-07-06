@@ -27,6 +27,7 @@ describe('jsdoc/doclet', function() {
         it('should accept the correct scope names', function() {
             function setScope(scopeName) {
                 var doclet = new Doclet('/** Huzzah, a doclet! */', {});
+
                 doclet.setScope(scopeName);
             }
 
@@ -38,6 +39,7 @@ describe('jsdoc/doclet', function() {
         it('should throw an error for invalid scope names', function() {
             function setScope() {
                 var doclet = new Doclet('/** Woe betide this doclet. */', {});
+
                 doclet.setScope('fiddlesticks');
             }
 

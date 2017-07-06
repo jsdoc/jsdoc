@@ -20,7 +20,7 @@ describe('jsdoc/tag/validator', function() {
     describe('validate', function() {
         var dictionary = require('jsdoc/tag/dictionary');
 
-        var allowUnknown = !!env.conf.tags.allowUnknownTags;
+        var allowUnknown = Boolean(env.conf.tags.allowUnknownTags);
         var badTag = { title: 'lkjasdlkjfb' };
         var badTag2 = new tag.Tag('type', '{string} I am a string!');
         var meta = {
@@ -81,6 +81,7 @@ describe('jsdoc/tag/validator', function() {
 
         it('logs an error if the tag has no text but mustHaveValue is true', function() {
             var missingName = doop(goodTag);
+
             missingName.text = null;
             validateTag(missingName);
 
@@ -89,6 +90,7 @@ describe('jsdoc/tag/validator', function() {
 
         it('logs a warning if the tag has text but mustNotHaveValue is true', function() {
             var missingText = doop(goodTag2);
+
             missingText.mustNotHaveValue = true;
             missingText.text = missingText.text || 'asdf';
             validateTag(missingText);

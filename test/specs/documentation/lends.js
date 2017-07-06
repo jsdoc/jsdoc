@@ -118,7 +118,6 @@ describe('lends', function() {
     describe('when a documented member is inside an objlit associated with a @lends tag that has no value.', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/lendsglobal.js');
         var testf = docSet.getByLongname('test')[0];
-        var test1 = docSet.getByLongname('test1')[0];
         var test12 = docSet.getByLongname('test1.test2')[0];
 
         it('The members of the objlit are not members of any symbol', function() {

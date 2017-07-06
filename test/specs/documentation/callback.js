@@ -18,11 +18,13 @@ describe('callback tag', function() {
 
     it('correctly handles callbacks that do not define a {type}', function() {
         var callback = docSet.getByLongname('requestResponseCallback')[0];
+
         callbackTests(callback);
     });
 
     it('correctly handles callbacks that define an incorrect {type}', function() {
         var callback = docSet.getByLongname('wrongTypeCallback')[0];
+
         callbackTests(callback);
     });
 });

@@ -8,7 +8,6 @@ describe('default parameters', function() {
     var setDogName = docSet.getByLongname('setDogName')[0];
     var setFirstName = docSet.getByLongname('setFirstName')[0];
     var setLastName = docSet.getByLongname('setLastName')[0];
-    var setManager = docSet.getByLongname('setManager')[0];
     var setName = docSet.getByLongname('setName')[0];
     var setPizzaToppings = docSet.getByLongname('setPizzaToppings')[0];
 

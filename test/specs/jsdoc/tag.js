@@ -22,7 +22,10 @@ describe('jsdoc/tag', function() {
     });
 
     describe('Tag', function() {
-        var meta = {lineno: 1, filename: 'asdf.js'};
+        var meta = {
+            lineno: 1,
+            filename: 'asdf.js'
+        };
         var desc = 'lalblakd lkjasdlib\n  lija';
         var text = '{!number} [foo=1] - ' + desc;
         var exampleRaw = [
@@ -108,6 +111,7 @@ describe('jsdoc/tag', function() {
 
             it("'text' property should have onTagText run on it if it has it.", function() {
                 var def = jsdoc.dictionary.lookUp('type');
+
                 expect(def.onTagText).toBeDefined();
                 expect(typeof def.onTagText).toBe('function');
 
@@ -144,7 +148,7 @@ describe('jsdoc/tag', function() {
                 expect(tagExample.value).toBe(tagExample.text);
             });
 
-            it("'value' property should be an object if tagDef can have type or name", function () {
+            it("'value' property should be an object if tagDef can have type or name", function() {
                 expect(typeof tagType.value).toBe('object');
                 expect(typeof tagArg.value).toBe('object');
             });
@@ -175,13 +179,13 @@ describe('jsdoc/tag', function() {
                     expect(typeof tag.value.type.parsedType).toBe('object');
 
                     descriptor = Object.getOwnPropertyDescriptor(tag.value.type, 'parsedType');
-                    expect(descriptor.enumerable).toBe(!!jsdoc.env.opts.debug);
+                    expect(descriptor.enumerable).toBe( Boolean(jsdoc.env.opts.debug) );
                 }
             }
 
             it('if the tag has a type, tag.value should contain the type information', function() {
                 // we assume jsdoc/tag/type.parse works (it has its own tests to verify this);
-                var debug = !!jsdoc.env.opts.debug;
+                var debug = Boolean(jsdoc.env.opts.debug);
 
                 [true, false].forEach(function(bool) {
                     jsdoc.env.opts.debug = bool;
@@ -223,13 +227,17 @@ describe('jsdoc/tag', function() {
             });
 
             it('logs an error for tags with bad type expressions', function() {
+                /* eslint-disable no-unused-vars */
                 var tag = new jsdoc.tag.Tag('param', '{!*!*!*!} foo');
+                /* eslint-enable no-unused-vars */
 
                 expect(logger.error).toHaveBeenCalled();
             });
 
             it('validates tags with no text', function() {
+                /* eslint-disable no-unused-vars */
                 var tag = new jsdoc.tag.Tag('copyright');
+                /* eslint-enable no-unused-vars */
 
                 expect(logger.error).toHaveBeenCalled();
             });

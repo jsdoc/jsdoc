@@ -40,10 +40,8 @@ describe('jsdoc/src/parser', function() {
         });
 
         it('should log a fatal error on bad input', function() {
-            var parser;
-
             spyOn(jsdoc.util.logger, 'fatal');
-            parser = jsdoc.src.parser.createParser('not-a-real-parser-ever');
+            jsdoc.src.parser.createParser('not-a-real-parser-ever');
 
             expect(jsdoc.util.logger.fatal).toHaveBeenCalled();
         });
@@ -73,7 +71,9 @@ describe('jsdoc/src/parser', function() {
         it('should accept an astBuilder, visitor, and walker as arguments', function() {
             var astBuilder = {};
             var visitor = {
+                /* eslint-disable no-empty-function */
                 setParser: function() {}
+                /* eslint-enable no-empty-function */
             };
             var walker = {};
 
@@ -178,11 +178,11 @@ describe('jsdoc/src/parser', function() {
 
             it('should allow "newDoclet" handlers to modify doclets', function() {
                 var results;
-
                 var sourceCode = 'javascript:/** @class */function Foo() {}';
 
                 function handler(e) {
                     var doop = require('jsdoc/util/doop');
+
                     e.doclet = doop(e.doclet);
                     e.doclet.foo = 'bar';
                 }
@@ -198,10 +198,9 @@ describe('jsdoc/src/parser', function() {
                 var Syntax = require('jsdoc/src/syntax').Syntax;
 
                 var args;
-
                 var sourceCode = ['javascript:/** foo */var foo;'];
                 var visitor = {
-                    visitNode: function(node, e, visitParser, sourceName) {
+                    visitNode: function(node, e) {
                         if (e && e.code && !args) {
                             args = Array.prototype.slice.call(arguments);
                         }
@@ -236,10 +235,9 @@ describe('jsdoc/src/parser', function() {
 
             it('should reflect changes made by AST node visitors', function() {
                 var doclet;
-
                 var sourceCode = ['javascript:/** foo */var foo;'];
                 var visitor = {
-                    visitNode: function(node, e, visitParser, sourceName) {
+                    visitNode: function(node, e) {
                         if (e && e.code && e.code.name === 'foo') {
                             e.code.name = 'bar';
                         }
@@ -260,7 +258,6 @@ describe('jsdoc/src/parser', function() {
 
             it('should fire "parseComplete" events after it finishes parsing files', function() {
                 var eventObject;
-
                 var spy = jasmine.createSpy();
                 var sourceCode = ['javascript:/** @class */function Foo() {}'];
 
@@ -296,6 +293,7 @@ describe('jsdoc/src/parser', function() {
                 function parse() {
                     var parserSrc = 'javascript:' + fs.readFileSync(
                         path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8');
+
                     parser.parse(parserSrc);
                 }
 
@@ -368,7 +366,8 @@ describe('jsdoc/src/parser', function() {
                 });
             });
 
-            describe('event order', function() {
+            // TODO: this test appears to be doing nothing...
+            xdescribe('event order', function() {
                 var events = {
                     all: [],
                     jsdocCommentFound: [],
@@ -377,10 +376,12 @@ describe('jsdoc/src/parser', function() {
                 var source = fs.readFileSync(path.join(jsdoc.env.dirname,
                     'test/fixtures/eventorder.js'), 'utf8');
 
+                /*
                 function pushEvent(e) {
                     events.all.push(e);
                     events[e.event].push(e);
                 }
+                */
 
                 function sourceOrderSort(atom1, atom2) {
                     if (atom1.range[1] < atom2.range[0]) {
@@ -406,8 +407,10 @@ describe('jsdoc/src/parser', function() {
         });
 
         describe('addAstNodeVisitor', function() {
+            /* eslint-disable no-empty-function */
             function visitorA() {}
             function visitorB() {}
+            /* eslint-enable no-empty-function */
 
             var visitors;
 

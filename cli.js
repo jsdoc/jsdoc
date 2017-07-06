@@ -1,4 +1,4 @@
-/* eslint no-process-exit:0, strict: [2, "function"] */
+/* eslint indent: "off", no-process-exit: "off", strict: ["error", "function"] */
 /**
  * Helper methods for running JSDoc on the command line.
  *
@@ -18,8 +18,6 @@ var logger = require('jsdoc/util/logger');
 var stripBom = require('jsdoc/util/stripbom');
 var stripJsonComments = require('strip-json-comments');
 var Promise = require('bluebird');
-
-var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var props = {
     docs: [],
@@ -71,7 +69,7 @@ cli.loadConfig = function() {
     }
     catch (e) {
         console.error(e.message + '\n');
-        cli.printHelp().then(function () {
+        cli.printHelp().then(function() {
             cli.exit(1);
         });
     }
@@ -190,7 +188,7 @@ cli.runCommand = function(cb) {
         cmd = cli.main;
     }
 
-    cmd().then(function (errorCode) {
+    cmd().then(function(errorCode) {
         if (!errorCode && props.shouldExitWithError) {
             errorCode = 1;
         }
@@ -203,6 +201,7 @@ cli.printHelp = function() {
     cli.printVersion();
     console.log( '\n' + require('jsdoc/opts/args').help() + '\n' );
     console.log('Visit http://usejsdoc.org for more information.');
+
     return Promise.resolve(0);
 };
 
@@ -213,6 +212,7 @@ cli.runTests = function() {
     var runner = Promise.promisify(require( path.join(env.dirname, 'test/runner') ));
 
     console.log('Running tests...');
+
     return runner();
 };
 
@@ -224,6 +224,7 @@ cli.getVersion = function() {
 // TODO: docs
 cli.printVersion = function() {
     console.log( cli.getVersion() );
+
     return Promise.resolve(0);
 };
 
@@ -233,13 +234,15 @@ cli.main = function() {
 
     if (env.sourceFiles.length === 0) {
         console.log('There are no input files to process.\n');
+
         return cli.printHelp();
     } else {
         return cli.createParser()
             .parseFiles()
             .processParseResults()
-            .then(function () {
+            .then(function() {
                 env.run.finish = new Date();
+
                 return 0;
             });
     }
@@ -253,12 +256,12 @@ function readPackageJson(filepath) {
     }
     catch (e) {
         logger.error('Unable to read the package file "%s"', filepath);
+
         return null;
     }
 }
 
 function buildSourceList() {
-    var fs = require('jsdoc/fs');
     var Readme = require('jsdoc/readme');
 
     var packageJson;
@@ -340,6 +343,7 @@ function resolvePluginPaths(paths) {
 
         if (!pluginPath) {
             logger.error('Unable to find the plugin "%s"', plugin);
+
             return;
         }
 
@@ -352,7 +356,6 @@ function resolvePluginPaths(paths) {
 cli.createParser = function() {
     var handlers = require('jsdoc/src/handlers');
     var parser = require('jsdoc/src/parser');
-    var path = require('jsdoc/path');
     var plugins = require('jsdoc/plugins');
 
     app.jsdoc.parser = parser.createParser(env.conf.parser);
@@ -398,10 +401,12 @@ cli.parseFiles = function() {
 cli.processParseResults = function() {
     if (env.opts.explain) {
         cli.dumpParseResults();
+
         return Promise.resolve();
     }
     else {
         cli.resolveTutorials();
+
         return cli.generateDocs();
     }
 };
@@ -448,8 +453,10 @@ cli.generateDocs = function() {
 
     // templates should include a publish.js file that exports a "publish" function
     if (template.publish && typeof template.publish === 'function') {
+        var publishPromise;
+
         logger.info('Generating output files...');
-        var publishPromise = template.publish(
+        publishPromise = template.publish(
             taffy(props.docs),
             env.opts,
             resolver.root
@@ -461,6 +468,7 @@ cli.generateDocs = function() {
         logger.fatal(env.opts.template + ' does not export a "publish" function. Global ' +
             '"publish" functions are no longer supported.');
     }
+
     return Promise.resolve();
 };
 

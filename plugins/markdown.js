@@ -53,6 +53,7 @@ function process(doclet) {
         else if ( Array.isArray(doclet[tag]) ) {
             doclet[tag].forEach(function(value, index, original) {
                 var inner = {};
+
                 inner[tag] = value;
                 process(inner);
                 original[index] = inner[tag];
