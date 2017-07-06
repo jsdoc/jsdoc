@@ -1,38 +1,45 @@
 #!/usr/bin/env node
-/* global arguments, require: true */
-/* eslint strict: [2, "function"] */
+/* global require: true */
+/* eslint strict: ["error", "function"] */
 /**
  * @project jsdoc
  * @author Michael Mathews <micmath@gmail.com>
  * @license See LICENSE.md file included in this distribution.
  */
 
-// initialize the environment for the current JavaScript VM
-(function(args) {
+// initialize the environment for Node.js
+(function() {
     'use strict';
 
-    var path;
+    var fs = require('fs');
+    var path = require('path');
 
-    if (args[0] && typeof args[0] === 'object') {
-        // we should be on Node.js
-        args = [__dirname, process.cwd()];
-        path = require('path');
+    var env;
+    var jsdocPath = __dirname;
+    var pwd = process.cwd();
 
-        // Create a custom require method that adds `lib/jsdoc` and `node_modules` to the module
-        // lookup path. This makes it possible to `require('jsdoc/foo')` from external templates and
-        // plugins, and within JSDoc itself. It also allows external templates and plugins to
-        // require JSDoc's module dependencies without installing them locally.
-        require = require('requizzle')({
-            requirePaths: {
-                before: [path.join(__dirname, 'lib')],
-                after: [path.join(__dirname, 'node_modules')]
-            },
-            infect: true
-        });
+    // Create a custom require method that adds `lib/jsdoc` and `node_modules` to the module
+    // lookup path. This makes it possible to `require('jsdoc/foo')` from external templates and
+    // plugins, and within JSDoc itself. It also allows external templates and plugins to
+    // require JSDoc's module dependencies without installing them locally.
+    require = require('requizzle')({
+        requirePaths: {
+            before: [path.join(__dirname, 'lib')],
+            after: [path.join(__dirname, 'node_modules')]
+        },
+        infect: true
+    });
+
+    // resolve the path if it's a symlink
+    if ( fs.statSync(jsdocPath).isSymbolicLink() ) {
+        jsdocPath = path.resolve( path.dirname(jsdocPath), fs.readlinkSync(jsdocPath) );
     }
 
-    require('./lib/jsdoc/util/runtime').initialize(args);
-})( Array.prototype.slice.call(arguments, 0) );
+    env = require('./lib/jsdoc/env');
+    env.dirname = jsdocPath;
+    env.pwd = pwd;
+    env.args = process.argv.slice(2);
+})();
 
 /**
  * Data about the environment in which JSDoc is running, including the configuration settings that
