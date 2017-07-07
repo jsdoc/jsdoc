@@ -14,3 +14,10 @@ function setAdmins(...users) {}
  * @param {User} users - The users who will receive rights to access the widget.
  */
 function setWidgetAccess(widget, ...users) {}
+
+/**
+ * Set the list of users who are managers.
+ *
+ * @param {User} users - The users who are managers.
+ */
+var setManagers = function(...users) {};

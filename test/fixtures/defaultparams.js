@@ -62,3 +62,10 @@ function setDogName(dogName = '') {}
  * @param {PizzaToppings} toppings - The user's favorite toppings.
  */
 function setPizzaToppings(toppings = PIZZA_TOPPING_DEFAULTS) {}
+
+/**
+ * Set whether the user is a ninja.
+ *
+ * @param {boolean} isNinja - Set to `true` if the user is a ninja; otherwise, `false`.
+ */
+var setIsNinja = function(isNinja = true) {};

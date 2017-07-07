@@ -7,6 +7,7 @@ describe('default parameters', function() {
     var setBirthYear = docSet.getByLongname('setBirthYear')[0];
     var setDogName = docSet.getByLongname('setDogName')[0];
     var setFirstName = docSet.getByLongname('setFirstName')[0];
+    var setIsNinja = docSet.getByLongname('setIsNinja')[0];
     var setLastName = docSet.getByLongname('setLastName')[0];
     var setName = docSet.getByLongname('setName')[0];
     var setPizzaToppings = docSet.getByLongname('setPizzaToppings')[0];
@@ -47,6 +48,10 @@ describe('default parameters', function() {
 
     it('should ignore non-literal default values, such as variable identifiers', function() {
         expect(setPizzaToppings.params[0].defaultvalue).toBeUndefined();
+    });
+
+    it('should work when the function is assigned to a variable', function() {
+        expect(setIsNinja.params[0].defaultvalue).toBe(true);
     });
 
     describe('ES2015 methods', function() {
