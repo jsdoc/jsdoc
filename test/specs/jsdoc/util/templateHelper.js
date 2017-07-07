@@ -1840,6 +1840,14 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("resolveAuthorLinks", function() {
+        it('should not crash JSDoc if no text is specified', function() {
+            function resolve() {
+                helper.resolveAuthorLinks();
+            }
+
+            expect(resolve).not.toThrow();
+        });
+
         // convert Jane Doe <jdoe@example.org> to a mailto link.
         it('should convert email addresses in angle brackets *after* a name to mailto links', function() {
             var str = ' John Doe  <asdf.fdsa-2@gmail.com> ';
