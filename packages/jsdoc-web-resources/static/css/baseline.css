@@ -4614,6 +4614,7 @@ dd > p {
 .label-generator {
   background-color: #9FA8DA;
 }
+.label-package,
 .label-private,
 .label-protected,
 .label-public {
