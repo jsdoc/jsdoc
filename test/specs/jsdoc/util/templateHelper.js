@@ -1167,6 +1167,7 @@ describe("jsdoc/util/templateHelper", function() {
             {access: 'private'}
         ];
         var arrayMixed = [
+            {access: 'package'},
             {access: 'public'},
             {asdf: true},
             {access: 'protected'},
@@ -1185,6 +1186,15 @@ describe("jsdoc/util/templateHelper", function() {
             env.opts.private = false;
             pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays([], pruned);
+        });
+
+        it('should only keep package-private members if env.opts.access only contains "package"', function() {
+            var pruned;
+            var keepPackage = [{access: 'package'}];
+
+            env.opts.access = 'package';
+            pruned = helper.prune( taffy(arrayMixed) )().get();
+            compareObjectArrays(keepPackage, pruned);
         });
 
         it('should only keep public members if env.opts.access only contains "public"', function() {
