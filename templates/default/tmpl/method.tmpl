@@ -7,8 +7,15 @@ var self = this;
     <h2>Constructor</h2>
     <?js } ?>
 
-    <h4 class="name" id="<?js= id ?>"><?js= data.attribs + (kind === 'class' ? 'new ' : '') +
-    name + (data.signature || '') ?></h4>
+    <h4 class="name" id="<?js= id ?>"><?js= data.attribs ?><?js
+      if(kind === 'class' && name.indexOf('module:') === 0) {
+        print('new (require("' + name.slice(7) + '"))');
+      } else if(kind === 'class') {
+        print('new ' + name);
+      } else {
+        print(name);
+      }
+    ?><?js= (data.signature || '') ?></h4>
 
     <?js if (data.summary) { ?>
     <p class="summary"><?js= summary ?></p>
