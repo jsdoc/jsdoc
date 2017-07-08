@@ -1,5 +1,6 @@
+/* global require: true */
 /*
-    Copyright 2014-2015 Google Inc. All rights reserved.
+    Copyright 2014-2017 Google Inc. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,7 +26,6 @@ var uglify = require('gulp-uglify');
 // Patch the `require` function so it can locate JSDoc modules and dependencies.
 // Must be called before any Gulp task that uses JSDoc modules.
 function patchRequire() {
-    /* eslint-disable no-undef, no-native-reassign */
     var jsdocPath = path.join(__dirname, 'node_modules/jsdoc');
 
     require = require('requizzle')({
@@ -35,7 +35,6 @@ function patchRequire() {
         },
         infect: true
     });
-    /* eslint-enable no-undef, no-native-reassign */
 }
 
 var bowerPath = './bower_components';
@@ -115,7 +114,7 @@ gulp.task('js-minify', function() {
 });
 
 gulp.task('lint', function() {
-    gulp.src(source.code.concat(source.tests))
+    return gulp.src(source.code.concat(source.tests))
         .pipe(eslint())
         .pipe(eslint.formatEach())
         .pipe(eslint.failOnError());
