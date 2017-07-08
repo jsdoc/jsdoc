@@ -21,13 +21,14 @@
 
 <header>
     <?js if (!doc.longname || doc.kind !== 'module') { ?>
-        <h2><?js if (doc.ancestors && doc.ancestors.length) { ?>
+        <h2><?js if (doc.attribs) { ?><span class="attribs"><?js= doc.attribs ?></span><?js }
+            if (doc.ancestors && doc.ancestors.length) { ?>
             <span class="ancestors"><?js= doc.ancestors.join('') ?></span><?js
-         } 
+         }
         ?><?js= doc.name ?><?js
          if (doc.variation) { ?>
-            <sup class="variation"><?js= doc.variation ?></sup>
-        <?js } ?></h2>
+            <sup class="variation"><?js= doc.variation ?></sup><?js }
+         if (doc.signature) { ?><?js= doc.signature ?><?js } ?></h2>
         <?js if (doc.classdesc) { ?>
             <div class="class-description"><?js= doc.classdesc ?></div>
         <?js } ?>
@@ -50,7 +51,7 @@
         <?js doc.modules.forEach(function(module) { ?>
             <?js= self.partial('method.tmpl', module) ?>
         <?js }) ?>
-    <?js } else if (doc.kind === 'class') { ?>
+    <?js } else if (doc.kind === 'class' || (doc.kind === 'namespace' && doc.signature)) { ?>
         <?js= self.partial('method.tmpl', doc) ?>
     <?js } else { ?>
         <?js if (doc.description) { ?>
