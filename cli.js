@@ -89,7 +89,7 @@ cli.loadConfig = function() {
     try {
         switch ( path.extname(confPath) ) {
             case '.js':
-                config = require(confPath) || {};
+                config = require( path.resolve(confPath) ) || {};
                 break;
             case '.json':
             case '.EXAMPLE':
