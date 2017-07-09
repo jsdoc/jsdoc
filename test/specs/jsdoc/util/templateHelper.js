@@ -956,8 +956,6 @@ describe("jsdoc/util/templateHelper", function() {
     });
 
     describe("getSignatureReturns", function() {
-        // retrieves links to types that the member can return.
-
         it("returns a value with correctly escaped HTML", function() {
             var mockDoclet = {
                 returns: [
@@ -990,6 +988,21 @@ describe("jsdoc/util/templateHelper", function() {
 
             expect(Array.isArray(returns)).toBe(true);
             expect(returns.length).toBe(0);
+        });
+
+        it('uses the value of the `yields` property', function() {
+            var doc = new doclet.Doclet('/** @yields {string} A string. */', {});
+            var html = helper.getSignatureReturns(doc);
+
+            expect(html).toContain('string');
+        });
+
+        it('prefers `yields` over `returns`', function() {
+            var doc = new doclet.Doclet('/** @yields {string}\n@returns {number} */', {});
+            var html = helper.getSignatureReturns(doc);
+
+            expect(html).toContain('string');
+            expect(html).not.toContain('number');
         });
 
         it("creates links for return types if relevant", function() {
