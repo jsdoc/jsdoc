@@ -4,6 +4,83 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
 
+## 3.5.0 (July 2017)
+
+### Major changes
+
++ JSDoc now uses the [Babylon](https://github.com/babel/babylon) JavaScript parser, which means that
+JSDoc can parse any JavaScript or JSX file that is supported by the [Babel](https://babeljs.io/)
+compiler. For example, JSDoc can now parse JavaScript files that include all of the following
+language features:
+
+    + [Decorators](https://github.com/tc39/proposal-decorators)
+    + [Public and private class fields](https://github.com/tc39/proposal-class-fields)
+    + [Asynchronous iterators](https://github.com/tc39/proposal-async-iteration)
+    + [Dynamic `import()`](https://github.com/tc39/proposal-dynamic-import)
+    + [Optional chaining](https://github.com/tc39/proposal-optional-chaining)
+
++ You can now use a JavaScript file to configure JSDoc. The JavaScript file must be a CommonJS
+module that exports a single configuration object. See the
+[documentation](http://usejsdoc.org/about-configuring-jsdoc.html) for details and examples.
++ Fixed multiple issues with documenting ES2015 classes and modules. See "Bug fixes" for details.
+
+### New tags
+
+**Note**: Third-party templates may not support these new tags.
+
++ You can now use the new [`@async` tag](http://usejsdoc.org/tags-async.html) to indicate that a
+function is asynchronous (that is, that it was declared with the syntax `async function foo() {}`).
+In general, you do not need to use this tag, because JSDoc autodetects asynchronous functions.
+(#1188)
++ You can now use the new [`@generator` tag](http://usejsdoc.org/tags-generator.html) to indicate
+that a function is a generator function. In general, you do not need to use this tag, because JSDoc
+autodetects generator functions. (#1158)
++ You can now use the new [`@hideconstructor` tag](http://usejsdoc.org/tags-hideconstructor.html) to
+tell JSDoc to hide a class's constructor from the documentation. (#952)
++ You can now use the new [`@package` tag](http://usejsdoc.org/tags-package.html) to indicate that a
+symbol is package-private. (#962)
++ You can now use the new [`@yields` tag](http://usejsdoc.org/tags-yields.html) to document the
+value that is yielded by a generator function. (#1388)
+
+### Enhancements
+
++ JSDoc can now parse files that contain asynchronous functions (that is, functions declared as
+`async function foo() {}`), and JSDoc autodetects when a function is asynchronous. (#1188)
++ JSDoc now autodetects generator functions. (#1158)
++ When JSDoc cannot parse a type expression, it now logs the line number on which the type
+expression was found. (#1057)
++ When JSDoc fires `jsdocCommentFound` and `symbolFound` events, the event now includes a `columnno`
+property indicating the column number on which the comment or symbol was found. (#1362)
++ You can now use the new `sourceType` configuration option to control how JavaScript files are
+parsed. The default value is `module`. Set the value to `script` to suppress implied strict mode;
+this setting will also prevent you from using ES2015 modules. (#1210)
++ You can now use the new `recurseDepth` configuration option to control how many levels deep JSDoc
+will recursively search for files. The default value is 10. (#1340)
+
+### Bug fixes
+
++ JSDoc now correctly documents the constructors and instance properties of ES2015 classes. (#1182)
++ JSDoc now correctly documents the constructor of an ES2015 class exported from an ES2015 module.
+(#1272)
++ JSDoc now uses the correct scope for exported symbols, and their children, in ES2015 modules.
+(#1293)
++ When JSDoc is run in a directory that has a `plugins/` or `templates/` directory, JSDoc can now
+discover plugins and templates in other directories. (#1081, #1308)
++ JSDoc no longer crashes when it reads a UTF-8 JSON file with a leading BOM. (#1256, #1297)
++ When a function is assigned to a variable, JSDoc now autodetects the function's default and
+repeatable parameters. (#1054)
++ JSDoc no longer crashes when the `@author` tag does not have a value. (#1289)
++ JSDoc now always calls `process.exit()` when exiting. (#1287)
+
+### Default template
+
++ The default template now identifies asynchronous and generator functions. (#1158, #1188)
++ The default template now displays appropriate documentation for namespaces that are also
+functions. (#955)
++ Images that are wider than the text area are now displayed correctly. (#1359)
+
+
+
 ## 3.4.3 (November 2016)
 
 Updated JSDoc's `LICENSE.md` file.
@@ -41,7 +118,7 @@ discover plugins and templates in other directories. (#1081)
 
 + The default template now uses appropriate styles for displaying tables. (#1064)
 + The default template's CSS file no longer uses the same style for both `<h2>` and `<h3>` elements.
-	(#1108)
+(#1108)
 + JSDoc now includes a `silent` template that generates no output. This template makes it easier to
 use JSDoc as a linter to check for syntax errors and unrecognized tags in documentation comments.
 (#1160)
