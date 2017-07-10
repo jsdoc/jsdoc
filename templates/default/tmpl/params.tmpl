@@ -11,7 +11,14 @@
         }
 
         if (parentParam && parentParam.name && param.name) {
-            paramRegExp = new RegExp('^(?:' + parentParam.name + '(?:\\[\\])*)\\.(.+)$');
+            try {
+                paramRegExp = new RegExp('^(?:' + parentParam.name + '(?:\\[\\])*)\\.(.+)$');
+            }
+            catch (e) {
+                // there's probably a typo in the JSDoc comment that resulted in a weird
+                // parameter name
+                return;
+            }
 
             if ( paramRegExp.test(param.name) ) {
                 param.name = RegExp.$1;
