@@ -4,6 +4,13 @@ This file describes notable changes in each version of JSDoc 3. To download a sp
 JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
 
 
+## 3.5.1 (July 2017)
+
++ Fixed an issue that prevented JSDoc from working on versions of Node.js prior to 5.10.0. (#1393)
++ If the JSDoc configuration file does not have a file extension, JSDoc now assumes that the file
+is in JSON format. (#1391)
+
+
 ## 3.5.0 (July 2017)
 
 ### Major changes
