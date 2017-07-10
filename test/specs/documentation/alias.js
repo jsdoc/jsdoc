@@ -45,6 +45,34 @@ describe('aliases', function() {
         expect(jacketClass[0].longname).toBe('module:jacket');
     });
 
+    describe('formats', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/alias5.js');
+        var toast = docSet.getByLongname('Toaster#toast')[0];
+        var getInstance = docSet.getByLongname('Toaster.getInstance')[0];
+        var clean = docSet.getByLongname('Toaster#clean')[0];
+
+        it('should work when the alias value specifies an instance member', function() {
+            expect(toast).toBeDefined();
+            expect(toast.name).toBe('toast');
+            expect(toast.memberof).toBe('Toaster');
+            expect(toast.scope).toBe('instance');
+        });
+
+        it('should work when the alias value specifies a static member', function() {
+            expect(getInstance).toBeDefined();
+            expect(getInstance.name).toBe('getInstance');
+            expect(getInstance.memberof).toBe('Toaster');
+            expect(getInstance.scope).toBe('static');
+        });
+
+        it('should work when the alias value only specifies the short name', function() {
+            expect(clean).toBeDefined();
+            expect(clean.name).toBe('clean');
+            expect(clean.memberof).toBe('Toaster');
+            expect(clean.scope).toBe('instance');
+        });
+    });
+
     it('When a symbol is documented as a static member of <global>, its scope is "global" and not "static".', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal.js');
         var log = docSet.getByLongname('log')[0];

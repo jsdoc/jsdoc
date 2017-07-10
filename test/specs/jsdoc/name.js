@@ -399,143 +399,185 @@ describe('jsdoc/name', function() {
             return new jsdoc.doclet.Doclet(comment, {});
         }
 
-        // @event testing.
-        var event = '@event';
-        var memberOf = '@memberof MyClass';
-        var name = '@name A';
+        describe('aliases', function() {
+            // If `doclet.alias` is defined, `doclet.name` will be set to the same value by the time
+            // we call `resolve()`. Therefore, we set both `@alias` and `@name` in these tests.
 
-        // Test the basic @event that is not nested.
-        it('unnested @event gets resolved correctly', function() {
-            var doclet = makeDoclet([event, name]);
+            it('can resolve aliases that identify instance members', function() {
+                var doclet = makeDoclet(['@alias Foo#bar', '@name Foo#bar']);
 
-            jsdoc.name.resolve(doclet);
+                jsdoc.name.resolve(doclet);
+                console.log(JSON.stringify(doclet, null, 2));
 
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toBeUndefined();
-            expect(doclet.longname).toEqual('event:A');
+                expect(doclet.name).toBe('bar');
+                expect(doclet.memberof).toBe('Foo');
+                expect(doclet.scope).toBe('instance');
+                expect(doclet.longname).toBe('Foo#bar');
+            });
+
+            it('can resolve aliases that identify static members', function() {
+                var doclet = makeDoclet(['@alias Foo.bar', '@name Foo.bar']);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toBe('bar');
+                expect(doclet.memberof).toBe('Foo');
+                expect(doclet.scope).toBe('static');
+                expect(doclet.longname).toBe('Foo.bar');
+            });
+
+            it('works when the alias only specifies the short name', function() {
+                var doclet = makeDoclet(['@alias bar', '@name bar', '@memberof Foo', '@instance']);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toBe('bar');
+                expect(doclet.memberof).toBe('Foo');
+                expect(doclet.scope).toBe('instance');
+                expect(doclet.longname).toBe('Foo#bar');
+            });
         });
 
-        // test all permutations of @event @name [name] @memberof.
-        it('@event @name @memberof resolves correctly', function() {
-            var doclet = makeDoclet([event, name, memberOf]);
+        describe('events', function() {
+            var event = '@event';
+            var memberOf = '@memberof MyClass';
+            var name = '@name A';
 
-            jsdoc.name.resolve(doclet);
+            // Test the basic @event that is not nested.
+            it('unnested @event gets resolved correctly', function() {
+                var doclet = makeDoclet([event, name]);
 
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toBeUndefined();
+                expect(doclet.longname).toEqual('event:A');
+            });
+
+            // test all permutations of @event @name [name] @memberof.
+            it('@event @name @memberof resolves correctly', function() {
+                var doclet = makeDoclet([event, name, memberOf]);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+            it('@event @memberof @name resolves correctly', function() {
+                var doclet = makeDoclet([event, memberOf, name]);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+            it('@name @event @memberof resolves correctly', function() {
+                var doclet = makeDoclet([name, event, memberOf]);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+            it('@name @memberof @event resolves correctly', function() {
+                var doclet = makeDoclet([name, memberOf, event]);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+            it('@memberof @event @name resolves correctly', function() {
+                var doclet = makeDoclet([memberOf, event, name]);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+            it('@memberof @name @event resolves correctly', function() {
+                var doclet = makeDoclet([memberOf, name, event]);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+
+            // test all permutations of @event [name]  @memberof
+            it('@event [name] @memberof resolves correctly', function() {
+                var doclet = makeDoclet(['@event A', memberOf]);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+            it('@memberof @event [name] resolves correctly', function() {
+                var doclet = makeDoclet([memberOf, '@event A']);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+
+            // test full @event A.B
+            it('full @event definition works', function() {
+                var doclet = makeDoclet(['@event MyClass.A']);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+            it('full @event definition with event: works', function() {
+                var doclet = makeDoclet(['@event MyClass.event:A']);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('event:A');
+                expect(doclet.memberof).toEqual('MyClass');
+                expect(doclet.longname).toEqual('MyClass.event:A');
+            });
+
+            // a double-nested one just in case
+            it('@event @name MyClass.EventName @memberof somethingelse works', function() {
+                var doclet = makeDoclet([event, '@name MyClass.A', '@memberof MyNamespace']);
+
+                jsdoc.name.resolve(doclet);
+
+                expect(doclet.name).toEqual('A');
+                expect(doclet.memberof).toEqual('MyNamespace.MyClass');
+                expect(doclet.longname).toEqual('MyNamespace.MyClass.event:A');
+            });
         });
-        it('@event @memberof @name resolves correctly', function() {
-            var doclet = makeDoclet([event, memberOf, name]);
 
-            jsdoc.name.resolve(doclet);
+        describe('special names', function() {
+            // TODO: this test doesn't test what it claims to test! copy-and-paste error?
+            it('correctly handles a function parameter named "prototype"', function() {
+                var doclet = makeDoclet([
+                    '@name Bar.prototype.baz',
+                    '@function',
+                    '@memberof module:foo',
+                    '@param {string} qux'
+                ]);
 
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-        it('@name @event @memberof resolves correctly', function() {
-            var doclet = makeDoclet([name, event, memberOf]);
+                jsdoc.name.resolve(doclet);
 
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-        it('@name @memberof @event resolves correctly', function() {
-            var doclet = makeDoclet([name, memberOf, event]);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-        it('@memberof @event @name resolves correctly', function() {
-            var doclet = makeDoclet([memberOf, event, name]);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-        it('@memberof @name @event resolves correctly', function() {
-            var doclet = makeDoclet([memberOf, name, event]);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-
-        // test all permutations of @event [name]  @memberof
-        it('@event [name] @memberof resolves correctly', function() {
-            var doclet = makeDoclet(['@event A', memberOf]);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-        it('@memberof @event [name] resolves correctly', function() {
-            var doclet = makeDoclet([memberOf, '@event A']);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-
-        // test full @event A.B
-        it('full @event definition works', function() {
-            var doclet = makeDoclet(['@event MyClass.A']);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-        it('full @event definition with event: works', function() {
-            var doclet = makeDoclet(['@event MyClass.event:A']);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('event:A');
-            expect(doclet.memberof).toEqual('MyClass');
-            expect(doclet.longname).toEqual('MyClass.event:A');
-        });
-
-        // a double-nested one just in case
-        it('@event @name MyClass.EventName @memberof somethingelse works', function() {
-            var doclet = makeDoclet([event, '@name MyClass.A', '@memberof MyNamespace']);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toEqual('A');
-            expect(doclet.memberof).toEqual('MyNamespace.MyClass');
-            expect(doclet.longname).toEqual('MyNamespace.MyClass.event:A');
-        });
-
-        // other cases
-        it('correctly handles a function parameter named "prototype"', function() {
-            var doclet = makeDoclet([
-                '@name Bar.prototype.baz',
-                '@function',
-                '@memberof module:foo',
-                '@param {string} qux'
-            ]);
-
-            jsdoc.name.resolve(doclet);
-
-            expect(doclet.name).toBe('baz');
-            expect(doclet.memberof).toBe('module:foo.Bar');
-            expect(doclet.longname).toBe('module:foo.Bar#baz');
+                expect(doclet.name).toBe('baz');
+                expect(doclet.memberof).toBe('module:foo.Bar');
+                expect(doclet.longname).toBe('module:foo.Bar#baz');
+            });
         });
     });
 });
