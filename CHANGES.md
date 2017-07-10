@@ -23,6 +23,7 @@ language features:
 module that exports a single configuration object. See the
 [documentation](http://usejsdoc.org/about-configuring-jsdoc.html) for details and examples.
 + Fixed multiple issues with documenting ES2015 classes and modules. See "Bug fixes" for details.
++ JSDoc now requires Node.js 4.2.0 or later.
 
 ### New tags
 
