@@ -93,11 +93,9 @@ cli.loadConfig = function() {
                 break;
             case '.json':
             case '.EXAMPLE':
+            default:
                 config = fs.readFileSync(confPath, 'utf8');
                 break;
-            default:
-                cli.exit(1, 'Cannot use config file ' + confPath + '. Only .js and .json files ' +
-                    'are supported.\n' + FATAL_ERROR_MESSAGE);
         }
         env.conf = new Config(config).get();
     }
