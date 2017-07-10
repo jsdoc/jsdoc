@@ -19,6 +19,7 @@ function bar() {}
  * @property {string} value - Value of myParam.
  * @return {MyClass} Class instance.
  * @see [Example Inc.](http://example.com)
+ * @summary My class.
  */
 function MyClass(myParam) {
     this.value = myParam;
