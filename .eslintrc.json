@@ -132,7 +132,7 @@
         "callback-return": "off",
         "global-require": "off", // TODO: enable
         "handle-callback-err": "error",
-        "no-buffer-constructor": "error",
+        "no-buffer-constructor": "off", // TODO: enable when we stop supporting Node.js 4.x
         "no-mixed-requires": "error",
         "no-new-require": "error",
         "no-path-concat": "error",
