@@ -115,6 +115,17 @@ describe('this', function() {
         });
     });
 
+    describe('When `this` is within the constructor in a class that has an `@alias` tag within a module', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/this6.js');
+        var someProperty = docSet.getByLongname('module:example#_someProperty')[0];
+
+        it('should have the correct longname, name, and scope', function() {
+            expect(someProperty).toBeDefined();
+            expect(someProperty.name).toBe('_someProperty');
+            expect(someProperty.scope).toBe('instance');
+        });
+    });
+
     describe('When a member is nested inside an objectlit "this" property inside a constructor', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/this-and-objectlit.js');
         var found = docSet.getByLongname('Page#parts.body.heading');
