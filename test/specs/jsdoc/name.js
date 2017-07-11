@@ -407,7 +407,6 @@ describe('jsdoc/name', function() {
                 var doclet = makeDoclet(['@alias Foo#bar', '@name Foo#bar']);
 
                 jsdoc.name.resolve(doclet);
-                console.log(JSON.stringify(doclet, null, 2));
 
                 expect(doclet.name).toBe('bar');
                 expect(doclet.memberof).toBe('Foo');
