@@ -146,56 +146,57 @@ describe('jsdoc/path', function() {
         it('resolves package-relative path that exists', function() {
             var resolved = path.getResourcePath('plugins');
 
-            expect( resolved ).not.toBeNull();
+            expect(resolved).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
         });
 
         it('fails to resolve package-relative path that exists in ./', function() {
             var resolved = path.getResourcePath('util');
 
-            expect( resolved ).toBeNull();
+            expect(resolved).toBeNull();
         });
 
         it('resolves relative to ./ path that exists', function() {
+            // `path.join` discards the `.`, so we join with `path.sep` instead
             var p = ['.', 'util'].join(path.sep);
             var resolved = path.getResourcePath(p);
 
-            expect( resolved ).not.toBeNull();
+            expect(resolved).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
         });
 
         it('resolves relative to ../ path that exists', function() {
-            var p = ['..', 'jsdoc', 'util'].join(path.sep);
+            var p = path.join('..', 'jsdoc', 'util');
             var resolved = path.getResourcePath(p);
 
-            expect( resolved ).not.toBeNull();
+            expect(resolved).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
         });
 
         it('resolves relative to ../ path that exists in ../ and package', function() {
-            var prel = ['..', 'plugins'].join(path.sep);
+            var prel = path.join('..', 'plugins');
             var pabs = 'plugins';
             var resolved = path.getResourcePath(prel);
 
-            expect( resolved ).not.toBeNull();
+            expect(resolved).not.toBeNull();
             expect( path.getResourcePath(pabs) ).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
-            expect( path.getResourcePath(pabs) ).not.toBe( resolved );
+            expect( path.getResourcePath(pabs) ).not.toBe(resolved);
         });
 
         it('resolves relative to . path that exists in package', function() {
-            var p = ['.', 'plugins'].join(path.sep);
+            var p = path.join('.', 'plugins');
             var resolved = path.getResourcePath(p);
 
-            expect( resolved ).not.toBeNull();
+            expect(resolved).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
         });
 
         it('resolves path using node_modules/', function() {
-            var p = ['node_modules', 'marked'].join(path.sep);
+            var p = path.join('node_modules', 'marked');
             var resolved = path.getResourcePath( path.dirname(p), path.basename(p) );
 
-            expect( resolved ).not.toBeNull();
+            expect(resolved).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
         });
 
@@ -203,16 +204,16 @@ describe('jsdoc/path', function() {
             var p = 'marked';
             var resolved = path.getResourcePath(undefined, p);
 
-            expect( resolved ).not.toBeNull();
+            expect(resolved).not.toBeNull();
             expect( path.isAbsolute(resolved) ).toBe(true);
         });
 
         it('leaves an absolute path as is', function() {
-            var p = path.resolve([env.dirname, 'anything'].join(path.sep));
+            var p = path.resolve( path.join(env.dirname, 'anything') );
             var resolved = path.getResourcePath(path.dirname(p), 'anything');
 
-            expect( resolved ).not.toBeNull();
-            expect( p ).toEqual( resolved );
+            expect(resolved).not.toBeNull();
+            expect(p).toBe(resolved);
         });
     });
 });
