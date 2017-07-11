@@ -42,7 +42,7 @@ var self = this;
     <ul><li><?js= this.linkto(data['this'], data['this']) ?></li></ul>
 <?js } ?>
 
-<?js if (data.params && params.length) { ?>
+<?js if (data.params && params.length && !data.hideconstructor) { ?>
     <h5>Parameters:</h5>
     <?js= this.partial('params.tmpl', params) ?>
 <?js } ?>
