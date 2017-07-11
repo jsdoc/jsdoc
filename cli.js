@@ -329,10 +329,9 @@ function resolvePluginPaths(paths) {
         var basename = path.basename(plugin);
         var dirname = path.dirname(plugin);
 
-        // support plugin specification as an installed package, which
-        // then may not have a directory component, resulting in
-        // path.dirname() to return '.', which, if passed on, would
-        // result in different path resolution semantics
+        // support plugin specification as an installed package, which then may not have a directory
+        // component, resulting in `path.dirname()` to return `.`, which, if passed on, would result
+        // in different path resolution semantics
         if (dirname.indexOf('.') === 0 && plugin.indexOf('.') !== 0) {
             dirname = undefined;
         }
