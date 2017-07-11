@@ -11,7 +11,7 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
 ?>
 <?js
     var properties = data.properties;
-    if (properties && properties.length && properties.forEach) {
+    if (properties && properties.length && properties.forEach && !data.hideconstructor) {
 ?>
 
     <h5 class="subsection-title">Properties:</h5>
