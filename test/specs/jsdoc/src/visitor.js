@@ -93,6 +93,27 @@ describe('jsdoc/src/visitor', function() {
             expect(events).toEqual([]);
         });
 
+        it('should ignore empty block comments', function() {
+            var node = {
+                leadingComments: [
+                    {
+                        type: 'CommentBlock',
+                        value: '',
+                        loc: {
+                            start: {
+                                line: 0,
+                                column: 0
+                            }
+                        }
+                    }
+                ]
+            };
+
+            visitor.visitNodeComments(node, parser, 'fake');
+
+            expect(events).toEqual([]);
+        });
+
         it('should fire an event for JSDoc comments', function() {
             var node = {
                 leadingComments: [
