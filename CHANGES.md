@@ -1,7 +1,21 @@
 # JSDoc 3 change history
 
-This file describes notable changes in each version of JSDoc 3. To download a specific version of
-JSDoc 3, see [GitHub's tags page](https://github.com/jsdoc3/jsdoc/tags).
+This file describes notable changes in each version of JSDoc 3.
+
+
+## 3.5.2 (July 2017)
+
++ The default template now hides parameters and properties for class constructors that are hidden
+with the `@hideconstructor` tag. (#1397)
++ Non-JSDoc comments (comments that do not begin with `/**`) are now ignored. (#1398)
++ JSDoc now uses an improved algorithm for locating plugins and template resources. (#1394)
++ When the `@alias` tag identifies an instance member (for example, `@alias Foo#bar`), the alias is
+now applied correctly. (#1385)
++ When the `@alias` tag is applied to a class that is within a module and is aliased to the module
+name, the class's instance members are now documented correctly. (#1134)
++ Fixed a crash when a `@param` tag uses the wrong delimiter to close the type expression (for
+example, `@param {Object)`). (#1221)
++ The Markdown plugin now converts Markdown-formatted text in the `@summary` tag. (#1149)
 
 
 ## 3.5.1 (July 2017)
