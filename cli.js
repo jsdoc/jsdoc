@@ -231,9 +231,9 @@ cli.main = function() {
     cli.scanFiles();
 
     if (env.sourceFiles.length === 0) {
-        console.log('There are no input files to process.\n');
+        console.log('There are no input files to process.');
 
-        return cli.printHelp();
+        return Promise.resolve(0);
     } else {
         return cli.createParser()
             .parseFiles()
