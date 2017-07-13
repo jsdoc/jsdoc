@@ -93,7 +93,19 @@
         <?js }); ?></dl>
     <?js } ?>
 
-     <?js
+    <?js
+        var interfaces = self.find({kind: 'interface', memberof: doc.longname});
+        if (!isGlobalPage && interfaces && interfaces.length) {
+    ?>
+        <h3 class="subsection-title">Interfaces</h3>
+
+        <dl><?js interfaces.forEach(function(i) { ?>
+            <dt><?js= self.linkto(i.longname, i.name) ?></dt>
+            <dd><?js if (i.summary) { ?><?js= i.summary ?><?js } ?></dd>
+        <?js }); ?></dl>
+    <?js } ?>
+
+    <?js
         var mixins = self.find({kind: 'mixin', memberof: doc.longname});
         if (!isGlobalPage && mixins && mixins.length) {
     ?>
