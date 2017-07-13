@@ -46,8 +46,8 @@ By default, the generated documentation is saved in a directory named `out`. You
 
 Run `jsdoc --help` for a complete list of command-line options.
 
-Templates and Build Tools
--------------------------
+Templates and Tools
+-------------------
 
 The JSDoc community has created numerous templates and other tools to help you generate and
 customize your documentation. Here are just a few:
@@ -66,6 +66,12 @@ customize your documentation. Here are just a few:
 
 + [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
 + [JSDoc Gulp plugin](https://github.com/mlucool/gulp-jsdoc3)
+
+### Other Tools
+
++ [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown)
++ [Integrating GitBook with
+JSDoc](https://medium.com/@kevinast/integrate-gitbook-jsdoc-974be8df6fb3)
 
 For More Information
 --------------------
