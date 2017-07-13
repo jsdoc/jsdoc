@@ -23,7 +23,7 @@
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
-    "taffydb": "2.7.3",
+    "taffydb": "2.6.2",
     "underscore": "~1.8.3"
   },
   "devDependencies": {
@@ -41,6 +41,11 @@
   },
   "bin": {
     "jsdoc": "./jsdoc.js"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "taffydb"
+    ]
   },
   "bugs": "https://github.com/jsdoc3/jsdoc/issues",
   "author": {
