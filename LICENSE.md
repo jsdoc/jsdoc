@@ -55,19 +55,6 @@ license, which is reproduced below:
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
 
-## Acorn ##
-
-Portions of the Acorn source code are incorporated into the following files:
-
-- `lib/jsdoc/src/walker.js`
-
-Acorn is distributed under the MIT license, which is reproduced above.
-
-Copyright (C) 2012 Marijn Haverbeke <marijnh@gmail.com>.
-
-The source code for Acorn is available at:
-https://github.com/marijnh/acorn
-
 ## Google Code Prettify ##
 
 Google Code Prettify is distributed under the Apache License 2.0, which is
