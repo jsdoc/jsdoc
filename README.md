@@ -79,6 +79,7 @@ For More Information
 
 + Documentation is available at [Use JSDoc](http://usejsdoc.org).
 + Contribute to the docs at [jsdoc3/jsdoc3.github.com](https://github.com/jsdoc3/jsdoc3.github.com).
++ [Join JSDoc's Slack channel](https://jsdoc-slack.appspot.com/).
 + Ask for help on the [JSDoc Users mailing list](http://groups.google.com/group/jsdoc-users).
 + Post questions tagged `jsdoc` to [Stack
 Overflow](http://stackoverflow.com/questions/tagged/jsdoc).
