@@ -73,6 +73,15 @@ describe('aliases', function() {
         });
     });
 
+    it('When a symbol is a constructor of a class with an alias, the constructor should get the correct longname', function() {
+        var docSet = jasmine.getDocSetFromFile('test/fixtures/alias6.js');
+        var constructor = docSet.getByLongname('module:example')[2];
+
+        expect(constructor.undocumented).toBe(true);
+        expect(constructor.name).toBe('module:example');
+        expect(constructor.alias).toBe('module:example');
+    });
+
     it('When a symbol is documented as a static member of <global>, its scope is "global" and not "static".', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal.js');
         var log = docSet.getByLongname('log')[0];
