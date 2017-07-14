@@ -1,7 +1,11 @@
-# development-related files
+.editorconfig
 .eslintignore
-.eslintrc
+.eslintrc.json
 .gitignore
+.github/
 .travis.yml
+CHANGES.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
 gulpfile.js
 test/
