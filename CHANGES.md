@@ -3,11 +3,24 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.5.3 (July 2017)
+
++ Non-JSDoc comments (comments that do not begin with `/**`) are now ignored. (#1398)
++ JSDoc no longer crashes when it parses a class property with no value assigned to it. (#1400)
++ When there are JSDoc comments at the end of a source file that has a `'use strict';` directive,
+the comments are no longer ignored. (#1396)
++ Namepaths that contain an `@` sign (for example, `module:@prefix/my-module~myCallback`) are now
+parsed correctly. (#1302)
++ The default template now displays interfaces that belong to a namespace. (#1406)
++ When an ES2015 class inside a module uses an `@alias` tag, the class's constructor now gets the
+correct longname. (#1395)
++ When there are no input files to process, JSDoc no longer prints help text to the console. (#1404)
+
+
 ## 3.5.2 (July 2017)
 
 + The default template now hides parameters and properties for class constructors that are hidden
 with the `@hideconstructor` tag. (#1397)
-+ Non-JSDoc comments (comments that do not begin with `/**`) are now ignored. (#1398)
 + JSDoc now uses an improved algorithm for locating plugins and template resources. (#1394)
 + When the `@alias` tag identifies an instance member (for example, `@alias Foo#bar`), the alias is
 now applied correctly. (#1385)
