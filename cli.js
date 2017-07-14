@@ -466,7 +466,7 @@ cli.exit = function(exitCode, message) {
     if (exitCode > 0 && message) {
         console.error(message);
     }
-    process.exit(exitCode);
+    process.on('exit', function() { process.exit(exitCode); });
 };
 
 return cli;
