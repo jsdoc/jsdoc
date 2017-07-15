@@ -92,47 +92,47 @@ describe('jsdoc/doclet', function() {
                     });
                 });
 
-            it('should use the new doclet\'s params and properties if the new doclet has at ' +
-                'least as many of them as the old doclet', function() {
-                var originalComment = [
-                    '/**',
-                    ' * @param {string} foo - The foo.',
-                    ' * @property {number} bar - The bar.',
-                    ' */'
-                ].join('\n');
-                var originalDoclet = new Doclet(originalComment);
-                var newComment = [
-                    '/**',
-                    ' * @param {number} baz - The baz.',
-                    ' * @property {string} qux - The qux.',
-                    ' */'
-                ].join('\n');
-                var newDoclet = new Doclet(newComment);
+            it('should use the new doclet\'s params and properties if the new doclet has some',
+                function() {
+                    var originalComment = [
+                        '/**',
+                        ' * @param {string} foo - The foo.',
+                        ' * @property {number} bar - The bar.',
+                        ' */'
+                    ].join('\n');
+                    var originalDoclet = new Doclet(originalComment);
+                    var newComment = [
+                        '/**',
+                        ' * @param {number} baz - The baz.',
+                        ' * @property {string} qux - The qux.',
+                        ' */'
+                    ].join('\n');
+                    var newDoclet = new Doclet(newComment);
 
-                originalDoclet.merge(newDoclet);
+                    originalDoclet.merge(newDoclet);
 
-                properties.forEach(function(property) {
-                    expect(originalDoclet[property]).toEqual(newDoclet[property]);
+                    properties.forEach(function(property) {
+                        expect(originalDoclet[property]).toEqual(newDoclet[property]);
+                    });
                 });
-            });
 
-            it('should use the old doclet\'s params and properties if the new doclet has fewer ' +
-                'of them', function() {
-                var originalComment = [
-                    '/**',
-                    ' * @param {string} foo - The foo.',
-                    ' * @property {number} bar - The bar.',
-                    ' */'
-                ].join('\n');
-                var originalDoclet = new Doclet(originalComment);
-                var newDoclet = new Doclet('/** Hello! */');
+            it('should use the old doclet\'s params and properties if the new doclet has none',
+                function() {
+                    var originalComment = [
+                        '/**',
+                        ' * @param {string} foo - The foo.',
+                        ' * @property {number} bar - The bar.',
+                        ' */'
+                    ].join('\n');
+                    var originalDoclet = new Doclet(originalComment);
+                    var newDoclet = new Doclet('/** Hello! */');
 
-                originalDoclet.merge(newDoclet);
+                    originalDoclet.merge(newDoclet);
 
-                properties.forEach(function(property) {
-                    expect(originalDoclet[property]).not.toEqual(newDoclet[property]);
+                    properties.forEach(function(property) {
+                        expect(originalDoclet[property]).not.toEqual(newDoclet[property]);
+                    });
                 });
-            });
         });
     });
 });
