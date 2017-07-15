@@ -1,10 +1,14 @@
 'use strict';
 
+function filter($) {
+    return !$.undocumented;
+}
+
 describe('module classes', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/moduleclasses.js');
-    var bar = docSet.getByLongname('module:foo~Bar')[0];
+    var bar = docSet.getByLongname('module:foo~Bar').filter(filter)[0];
     var barBar = docSet.getByLongname('module:foo~Bar#bar')[0];
-    var baz = docSet.getByLongname('module:foo.Baz')[0];
+    var baz = docSet.getByLongname('module:foo.Baz').filter(filter)[0];
     var bazBaz = docSet.getByLongname('module:foo.Baz#baz')[0];
 
     describe('inner classes', function() {

@@ -3,7 +3,9 @@
 describe('@hideconstructor tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/hideconstructortag.js');
     var toaster = docSet.getByLongname('Toaster')[0];
-    var waffleIron = docSet.getByLongname('WaffleIron')[0];
+    var waffleIron = docSet.getByLongname('WaffleIron').filter(function($) {
+        return !$.undocumented;
+    })[0];
 
     it('should add a `hideconstructor` attribute to pre-ES2015 classes', function() {
         expect(toaster.hideconstructor).toBe(true);

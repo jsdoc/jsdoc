@@ -6,6 +6,8 @@ class Subscription {
      * Describe the constructor here.
      *
      * @param {string} name - The name of the subscription.
+     * @example
+     * var subscription = new Subscription();
      */
     constructor(name) {}
 

@@ -1,5 +1,9 @@
 'use strict';
 
+function filter($) {
+    return !$.undocumented;
+}
+
 describe('@class tag', function() {
     var docSet = jasmine.getDocSetFromFile('test/fixtures/classtag.js');
     var ticker = docSet.getByLongname('Ticker')[0];
@@ -16,11 +20,12 @@ describe('@class tag', function() {
 
     describe('ES 2015 classes', function() {
         var docSet2 = jasmine.getDocSetFromFile('test/fixtures/classtag2.js');
-        var subscription = docSet2.getByLongname('Subscription')[0];
+        var subscription = docSet2.getByLongname('Subscription').filter(filter)[0];
         var expire = docSet2.getByLongname('Subscription#expire')[0];
-        var subscriber = docSet2.getByLongname('Subscriber')[0];
+        var subscriber = docSet2.getByLongname('Subscriber').filter(filter)[0];
         var hasCallback = docSet2.getByLongname('Subscriber#hasCallback')[0];
-        var expiringSubscription = docSet2.getByLongname('subclasses.ExpiringSubscription')[0];
+        var expiringSubscription = docSet2.getByLongname('subclasses.ExpiringSubscription')
+            .filter(filter)[0];
         var invalidSubscriptionFoo = docSet2.getByLongname('subclasses.InvalidSubscription#foo')[0];
 
         it('When a symbol is a class declaration, the doclet does not require the @class tag', function() {
@@ -33,6 +38,8 @@ describe('@class tag', function() {
             expect(subscription.description).toBe('Describe the constructor here.');
             expect(subscription.params.length).toBe(1);
             expect(subscription.params[0].name).toBe('name');
+            expect(subscription.examples.length).toBe(1);
+            expect(subscription.examples[0]).toBe('var subscription = new Subscription();');
         });
 
         it('When a symbol is a class declaration, its members get the correct longname and memberof', function() {

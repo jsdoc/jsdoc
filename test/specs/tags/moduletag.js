@@ -1,5 +1,9 @@
 'use strict';
 
+function filter($) {
+    return !$.undocumented;
+}
+
 describe('@module tag', function() {
     describe("using 'this'", function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag.js');
@@ -19,9 +23,7 @@ describe('@module tag', function() {
 
     describe('misc', function() {
         var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag2.js');
-        var mixer = docSet.getByLongname('module:color/mixer').filter(function($) {
-            return !($.undocumented);
-        })[0];
+        var mixer = docSet.getByLongname('module:color/mixer').filter(filter)[0];
         var blend = docSet.getByLongname('module:color/mixer.blend')[0];
         var darken = docSet.getByLongname('module:color/mixer.darken')[0];
 
@@ -163,7 +165,7 @@ describe('@module tag', function() {
 
         describe('that export a class', function() {
             var docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag11.js');
-            var foo = docSet.getByLongname('module:foo.Foo')[0];
+            var foo = docSet.getByLongname('module:foo.Foo').filter(filter)[0];
             var testMethod = docSet.getByLongname('module:foo.Foo#testMethod')[0];
 
             it('should identify the correct scope for the exported class', function() {
