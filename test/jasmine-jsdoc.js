@@ -3,7 +3,6 @@
 
 var fs = require('jsdoc/fs');
 var path = require('jsdoc/path');
-var util = require('util');
 
 var jsdoc = {
     augment: require('jsdoc/augment'),
@@ -15,8 +14,6 @@ var jsdoc = {
         parser: require('jsdoc/src/parser')
     }
 };
-
-var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var jasmineAll = require('./lib/jasmine');
 var jasmine = jasmineAll.jasmine;
@@ -50,7 +47,7 @@ jasmine.jsParser = (function() {
     return parser;
 })();
 
-jasmine.initialize = function(done, verbose) {
+jasmine.initialize = function(done) {
     var jasmineEnv = jasmine.getEnv();
 
     if (reporter !== null) {
@@ -61,7 +58,7 @@ jasmine.initialize = function(done, verbose) {
     }
 
     var reporterOpts = {
-        color: jsdoc.env.opts.nocolor === true ? false : true,
+        color: !jsdoc.env.opts.nocolor,
         onComplete: done
     };
 
@@ -79,10 +76,6 @@ jasmine.initialize = function(done, verbose) {
 jasmine.createParser = function(type) {
     return jsdoc.src.parser.createParser(type || jasmine.jsParser);
 };
-
-function capitalize(str) {
-    return str[0].toUpperCase() + str.slice(1);
-}
 
 /**
  * Execute the specs in the specified folder.
@@ -123,6 +116,7 @@ function now() {
 
 jasmine.asyncSpecWait = function() {
     var wait = this.asyncSpecWait;
+
     wait.start = now();
     wait.done = false;
     (function innerWait() {
@@ -145,7 +139,6 @@ jasmine.asyncSpecDone = function() {
 
 jasmine.getDocSetFromFile = function(filename, parser, validate, augment) {
     var doclets;
-    var validationResult;
 
     var sourceCode = fs.readFileSync( path.join(jsdoc.env.dirname, filename), 'utf8' );
     var testParser = parser || jasmine.createParser();
@@ -155,7 +148,6 @@ jasmine.getDocSetFromFile = function(filename, parser, validate, augment) {
     /* eslint-disable no-script-url */
     doclets = testParser.parse('javascript:' + sourceCode);
     /* eslint-enable no-script-url */
-    jsdoc.borrow.indexAll(doclets);
 
     if (augment !== false) {
         jsdoc.augment.augmentAll(doclets);
