@@ -374,8 +374,6 @@ cli.parseFiles = function() {
     packageDocs.files = env.sourceFiles || [];
     docs.push(packageDocs);
 
-    logger.debug('Indexing doclets...');
-    borrow.indexAll(docs);
     logger.debug('Adding inherited symbols, mixins, and interface implementations...');
     augment.augmentAll(docs);
     logger.debug('Adding borrowed doclets...');
