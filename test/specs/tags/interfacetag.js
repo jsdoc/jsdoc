@@ -1,9 +1,6 @@
 'use strict';
 
 describe('@interface tag', function() {
-    var definitions = require('jsdoc/tag/dictionary/definitions');
-    var Dictionary = require('jsdoc/tag/dictionary').Dictionary;
-    var doclet = require('jsdoc/doclet');
     var logger = require('jsdoc/util/logger');
 
     var docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
@@ -19,25 +16,19 @@ describe('@interface tag', function() {
     });
 
     describe('virtual doclets', function() {
-        var tagDict;
-
         beforeEach(function() {
             spyOn(logger, 'warn');
         });
 
         afterEach(function() {
-            tagDict = new Dictionary();
-            definitions.defineTags(tagDict);
-            doclet._replaceDictionary(tagDict);
+            jasmine.restoreTagDictionary();
         });
 
         it('should support virtual doclets with the JSDoc tag dictionary', function() {
             var docSet2;
             var virtualInterface;
 
-            tagDict = new Dictionary();
-            definitions.defineTags(tagDict, definitions.jsdocTags);
-            doclet._replaceDictionary(tagDict);
+            jasmine.replaceTagDictionary('jsdoc');
 
             docSet2 = jasmine.getDocSetFromFile('test/fixtures/interfacetag2.js');
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];
@@ -51,9 +42,7 @@ describe('@interface tag', function() {
             var docSet2;
             var virtualInterface;
 
-            tagDict = new Dictionary();
-            definitions.defineTags(tagDict, definitions.closureTags);
-            doclet._replaceDictionary(tagDict);
+            jasmine.replaceTagDictionary('closure');
 
             docSet2 = jasmine.getDocSetFromFile('test/fixtures/interfacetag2.js');
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];

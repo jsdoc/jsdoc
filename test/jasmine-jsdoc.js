@@ -1,4 +1,4 @@
-/* global expect, jasmine: true, runs, waits */
+/* global jasmine: true */
 'use strict';
 
 var fs = require('jsdoc/fs');
@@ -6,14 +6,20 @@ var path = require('jsdoc/path');
 
 var jsdoc = {
     augment: require('jsdoc/augment'),
-    borrow: require('jsdoc/borrow'),
+    doclet: require('jsdoc/doclet'),
     env: require('jsdoc/env'),
     schema: require('jsdoc/schema'),
     src: {
         handlers: require('jsdoc/src/handlers'),
         parser: require('jsdoc/src/parser')
+    },
+    tag: {
+        dictionary: require('jsdoc/tag/dictionary'),
+        definitions: require('jsdoc/tag/dictionary/definitions')
     }
 };
+
+var originalDictionary = jsdoc.tag.dictionary;
 
 var jasmineAll = require('./lib/jasmine');
 var jasmine = jasmineAll.jasmine;
@@ -169,6 +175,26 @@ jasmine.getDocSetFromFile = function(filename, parser, validate, augment) {
             });
         }
     };
+};
+
+jasmine.replaceTagDictionary = function(dictionaryNames) {
+    var dict = new jsdoc.tag.dictionary.Dictionary();
+    var originalDictionaries = jsdoc.env.conf.tags.dictionaries.slice(0);
+
+    if (!Array.isArray(dictionaryNames)) {
+        dictionaryNames = [dictionaryNames];
+    }
+
+    jsdoc.env.conf.tags.dictionaries = dictionaryNames;
+
+    jsdoc.tag.definitions.defineTags(dict);
+    jsdoc.doclet._replaceDictionary(dict);
+
+    jsdoc.env.conf.tags.dictionaries = originalDictionaries;
+};
+
+jasmine.restoreTagDictionary = function() {
+    jsdoc.doclet._replaceDictionary(originalDictionary);
 };
 
 // set up jasmine's global functions

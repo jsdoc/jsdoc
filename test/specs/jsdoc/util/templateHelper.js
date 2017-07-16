@@ -193,10 +193,7 @@ describe("jsdoc/util/templateHelper", function() {
 
     describe("getUniqueFilename", function() {
         afterEach(function() {
-            var dict = new dictionary.Dictionary();
-
-            definitions.defineTags(dict);
-            doclet._replaceDictionary(dict);
+            jasmine.restoreTagDictionary();
         });
 
         // TODO: needs more tests for unusual values and things that get special treatment (such as
