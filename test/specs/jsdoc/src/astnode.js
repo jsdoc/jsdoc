@@ -28,7 +28,9 @@ describe('jsdoc/src/astNode', function() {
     var memberExpression = parse('foo.bar;').expression;
     var memberExpressionComputed1 = parse('foo["bar"];').expression;
     var memberExpressionComputed2 = parse('foo[\'bar\'];').expression;
-    var methodDefinition = parse('class Foo { bar() {} }').body.body[0];
+    var methodDefinition1 = parse('class Foo { bar() {} }').body.body[0];
+    var methodDefinition2 = parse('var foo = () => class { bar() {} };').declarations[0].init.body
+        .body[0];
     var propertyGet = parse('var foo = { get bar() {} };').declarations[0].init.properties[0];
     var propertyInit = parse('var foo = { bar: {} };').declarations[0].init.properties[0];
     var propertySet = parse('var foo = { set bar(a) {} };').declarations[0].init.properties[0];
@@ -496,7 +498,7 @@ describe('jsdoc/src/astNode', function() {
         });
 
         it('should recognize method definitions as functions', function() {
-            expect( astNode.isFunction(methodDefinition) ).toBe(true);
+            expect( astNode.isFunction(methodDefinition1) ).toBe(true);
         });
 
         it('should recognize arrow function expressions as functions', function() {
@@ -573,6 +575,15 @@ describe('jsdoc/src/astNode', function() {
             'quote character as the original source, for computed member expressions', function() {
             expect( astNode.nodeToValue(memberExpressionComputed1) ).toBe('foo["bar"]');
             expect( astNode.nodeToValue(memberExpressionComputed2) ).toBe('foo[\'bar\']');
+        });
+
+        // TODO: we can't test this here because JSDoc, not Babylon, adds the `parent` property to
+        // nodes. also, we currently return an empty string instead of `<anonymous>` in this case;
+        // see `module:jsdoc/src/astnode.nodeToValue` and the comment on `Syntax.MethodDefinition`
+        // for details
+        xit('should return `<anonymous>` for method definitions inside classes that were ' +
+            'returned by an arrow function expression', function() {
+            expect( astNode.nodeToValue(methodDefinition2) ).toBe('<anonymous>');
         });
 
         it('should return "this" for this expressions', function() {
