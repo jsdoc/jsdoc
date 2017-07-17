@@ -51,4 +51,22 @@ describe('@interface tag', function() {
             expect(virtualInterface).not.toBeDefined();
         });
     });
+
+    describe('Closure Compiler tags', function() {
+        afterEach(function() {
+            jasmine.restoreTagDictionary();
+        });
+
+        it('should support @record as a synonym for @interface', function() {
+            var docSet2;
+            var myStructuralInterface;
+
+            jasmine.replaceTagDictionary('closure');
+
+            docSet2 = jasmine.getDocSetFromFile('test/fixtures/interfacetag3.js');
+            myStructuralInterface = docSet2.getByLongname('MyStructuralInterface')[0];
+
+            expect(myStructuralInterface.kind).toBe('interface');
+        });
+    });
 });
