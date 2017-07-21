@@ -1,6 +1,7 @@
 # Development-related files
 .nyc_output
 .tern-port
+.vscode/
 coverage/
 /node_modules/
 
