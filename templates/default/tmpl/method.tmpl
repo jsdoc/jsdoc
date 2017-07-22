@@ -77,6 +77,18 @@ var self = this;
 <?js }); ?></ul>
 <?js } ?>
 
+<?js if (data.modifies && modifies.length) {?>
+<h5>Modifies:</h5>
+<?js if (modifies.length > 1) { ?><ul><?js
+    modifies.forEach(function(m) { ?>
+        <li><?js= self.partial('modifies.tmpl', m) ?></li>
+    <?js });
+?></ul><?js } else {
+    modifies.forEach(function(m) { ?>
+        <?js= self.partial('modifies.tmpl', m) ?>
+    <?js });
+} } ?>
+
 <?js if (data.exceptions && exceptions.length) { ?>
 <h5>Throws:</h5>
 <?js if (exceptions.length > 1) { ?><ul><?js
