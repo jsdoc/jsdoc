@@ -54,7 +54,13 @@ describe('jsdoc/schema', function() {
     });
 
     describe('validation', function() {
-        var validate = require('tv4').validateMultiple;
+        var Ajv = require('ajv');
+
+        var ajv = new Ajv({
+            allErrors: true,
+            ownProperties: true
+        });
+        var validate = ajv.compile(schema.DOCLETS_SCHEMA);
 
         it('should find validation errors in bogus input', function() {
             var doclets = [
@@ -62,22 +68,22 @@ describe('jsdoc/schema', function() {
                     foo: 'bar'
                 }
             ];
-            var validationResult = validate(doclets, schema.DOCLETS_SCHEMA);
+            var isValid = validate(doclets);
 
-            expect(validationResult.valid).toBe(false);
+            expect(isValid).toBe(false);
         });
 
         it('should not find any validation errors in the JSDoc parse results', function() {
             jasmine.getParseResults().forEach(function(doclets) {
-                var validationResult = validate(doclets.doclets, schema.DOCLETS_SCHEMA);
+                var isValid = validate(doclets.doclets);
 
                 // hack to get the filename/errors in the test results
-                if (validationResult.errors.length) {
+                if (!isValid) {
                     expect(doclets.filename).toBe('');
-                    expect(validationResult.errors).toEqual([]);
+                    expect(validate.errors).toEqual([]);
                 }
                 else {
-                    expect(validationResult.errors.length).toBe(0);
+                    expect(validate.errors).toBe(null);
                 }
             });
         });
