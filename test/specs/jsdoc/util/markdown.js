@@ -122,5 +122,14 @@ describe('jsdoc/util/markdown', function() {
 
             expect(parser('# Hello')).toBe('<h1 id="hello">Hello</h1>');
         });
+
+        it('should not pretty-print code blocks that start with "```plain"', function() {
+            var parser = markdown.getParser();
+            var markdownText = '```plain\nconsole.log("foo");\n```';
+            var convertedText = '<pre class="source"><code>console.log(&quot;foo&quot;);\n' +
+                '</code></pre>';
+
+            expect(parser(markdownText)).toBe(convertedText);
+        });
     });
 });
