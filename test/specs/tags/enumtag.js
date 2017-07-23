@@ -59,4 +59,13 @@ describe('@enum tag', function() {
             expect(pentaState.properties.length).toBe(5);
         });
     });
+
+    describe('combined with @exports tag', function() {
+        var docSet3 = jasmine.getDocSetFromFile('test/fixtures/enumtag3.js');
+        var mymodule = docSet3.getByLongname('module:mymodule')[0];
+
+        it('When a symbol has both an @exports tag and an @enum tag, its kind is set to `module`', function() {
+            expect(mymodule.kind).toBe('module');
+        });
+    });
 });
