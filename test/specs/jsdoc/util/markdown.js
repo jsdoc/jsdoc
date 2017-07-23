@@ -2,6 +2,7 @@
 
 describe('jsdoc/util/markdown', function() {
     var env = require('jsdoc/env');
+    var logger = require('jsdoc/util/logger');
     var markdown = require('jsdoc/util/markdown');
 
     it('should exist', function() {
@@ -66,11 +67,10 @@ describe('jsdoc/util/markdown', function() {
         });
 
         it('should log an error if an unrecognized Markdown parser is requested', function() {
-            var logger = require('jsdoc/util/logger');
-
             setMarkdownConf({parser: 'not-a-real-markdown-parser'});
             spyOn(logger, 'error');
             markdown.getParser();
+
             expect(logger.error).toHaveBeenCalled();
         });
 
@@ -130,6 +130,54 @@ describe('jsdoc/util/markdown', function() {
                 '</code></pre>';
 
             expect(parser(markdownText)).toBe(convertedText);
+        });
+
+        describe('syntax highlighter', function() {
+            it('should support a `highlight` function defined in the config file', function() {
+                var parser;
+
+                setMarkdownConf({
+                    highlight: function(code, language) {
+                        return '<pre><code>' + code + ' highlighted as ' + language +
+                            '</code></pre>';
+                    }
+                });
+                parser = markdown.getParser();
+
+                expect(parser('```js\nhello\n```')).toBe(
+                    '<pre><code>hello\n highlighted as js</code></pre>'
+                );
+            });
+
+            it('should support `highlight` as the path to a highlighter module', function() {
+                var parser;
+
+                setMarkdownConf({ highlight: 'test/fixtures/markdown/highlighter' });
+                parser = markdown.getParser();
+
+                expect(parser('```js\nhello\n```')).toBe(
+                    '<pre><code>hello\n in this language: js</code></pre>'
+                );
+            });
+
+            it('should log an error if the `highlight` module cannot be found', function() {
+                spyOn(logger, 'error');
+
+                setMarkdownConf({ highlight: 'foo/bar/baz' });
+                markdown.getParser();
+
+                expect(logger.error).toHaveBeenCalled();
+            });
+
+            it('should log an error if the `highlight` module does not assign a method to ' +
+                '`exports.highlight`', function() {
+                spyOn(logger, 'error');
+
+                setMarkdownConf({ highlight: 'test/fixtures/markdown/badhighlighter' });
+                markdown.getParser();
+
+                expect(logger.error).toHaveBeenCalled();
+            });
         });
     });
 });
