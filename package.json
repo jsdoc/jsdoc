@@ -19,6 +19,8 @@
     "escape-string-regexp": "~1.0.5",
     "js2xmlparser": "~3.0.0",
     "klaw": "~2.0.0",
+    "markdown-it": "~8.3.1",
+    "markdown-it-anchor": "~4.0.0",
     "marked": "~0.3.6",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",

@@ -6,12 +6,12 @@ describe('jsdoc/util/markdown', function() {
 
     it('should exist', function() {
         expect(markdown).toBeDefined();
-        expect(typeof markdown).toEqual('object');
+        expect(typeof markdown).toBe('object');
     });
 
     it('should export a "getParser" function', function() {
         expect(markdown.getParser).toBeDefined();
-        expect(typeof markdown.getParser).toEqual('function');
+        expect(typeof markdown.getParser).toBe('function');
     });
 
     describe('getParser', function() {
@@ -30,19 +30,23 @@ describe('jsdoc/util/markdown', function() {
 
             setMarkdownConf({});
             parser = markdown.getParser();
-            expect(typeof parser).toEqual('function');
-
-            setMarkdownConf({parser: 'marked'});
-            parser = markdown.getParser();
-            expect(typeof parser).toEqual('function');
+            expect(typeof parser).toBe('function');
         });
 
-        it('should use the marked parser when evilstreak is requested', function() {
+        it('should use the markdown-it parser by default', function() {
+            var parser;
+
+            setMarkdownConf({});
+            parser = markdown.getParser();
+            expect(parser._parser).toBe('markdownit');
+        });
+
+        it('should use the markdown-it parser when evilstreak is requested', function() {
             var parser;
 
             setMarkdownConf({parser: 'evilstreak'});
             parser = markdown.getParser();
-            expect(parser._parser).toEqual('marked');
+            expect(parser._parser).toBe('markdownit');
         });
 
         it('should use the marked parser when requested', function() {
@@ -50,15 +54,15 @@ describe('jsdoc/util/markdown', function() {
 
             setMarkdownConf({parser: 'marked'});
             parser = markdown.getParser();
-            expect(parser._parser).toEqual('marked');
+            expect(parser._parser).toBe('marked');
         });
 
-        it('should use the marked parser when GFM is requested', function() {
+        it('should use the markdown-it parser when GFM is requested', function() {
             var parser;
 
             setMarkdownConf({parser: 'gfm'});
             parser = markdown.getParser();
-            expect(parser._parser).toEqual('marked');
+            expect(parser._parser).toBe('markdownit');
         });
 
         it('should log an error if an unrecognized Markdown parser is requested', function() {
@@ -70,14 +74,10 @@ describe('jsdoc/util/markdown', function() {
             expect(logger.error).toHaveBeenCalled();
         });
 
-        it('should not apply formatting to inline tags when the marked parser is enabled', function() {
-            var parser;
+        it('should not apply formatting to inline tags', function() {
+            var parser = markdown.getParser();
 
-            setMarkdownConf({parser: 'marked'});
-            parser = markdown.getParser();
-
-            // get the marked parser and do the test
-            expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toEqual(
+            expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toBe(
                 '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>');
         });
 
@@ -98,7 +98,7 @@ describe('jsdoc/util/markdown', function() {
                 '```';
             var convertedText = '' +
                 '<pre class="prettyprint source lang-html"><code>' +
-                '&lt;p>&lt;a href=&quot;#&quot;>Sample \'HTML.\'&lt;/a>&lt;/p>' +
+                '&lt;p>&lt;a href=&quot;#&quot;>Sample \'HTML.\'&lt;/a>&lt;/p>\n' +
                 '</code></pre>';
 
             expect(parser(markdownText)).toBe(convertedText);
@@ -110,8 +110,17 @@ describe('jsdoc/util/markdown', function() {
             setMarkdownConf({hardwrap: true});
             parser = markdown.getParser();
 
-            expect(parser('line one\nline two')).toEqual(
-                '<p>line one<br>line two</p>');
+            expect(parser('line one\nline two')).toBe(
+                '<p>line one<br>\nline two</p>');
+        });
+
+        it('should add heading IDs when idInHeadings is enabled', function() {
+            var parser;
+
+            setMarkdownConf({idInHeadings: true});
+            parser = markdown.getParser();
+
+            expect(parser('# Hello')).toBe('<h1 id="hello">Hello</h1>');
         });
     });
 });
