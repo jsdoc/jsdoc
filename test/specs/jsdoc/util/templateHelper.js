@@ -1432,30 +1432,17 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    // couple of convenience functions letting me set conf variables and restore
-    // them back to the originals later.
-    function setConfTemplatesVariables(hash) {
-        var keys = Object.keys(hash);
-        var storage = {};
-
-        for (var i = 0; i < keys.length; ++i) {
-            storage[keys[i]] = env.conf.templates[keys[i]];
-            // works because hash[key] is a scalar not an array/object
-            env.conf.templates[keys[i]] = hash[keys[i]];
-        }
-
-        return storage;
-    }
-
-    function restoreConfTemplates(storage) {
-        var keys = Object.keys(storage);
-
-        for (var i = 0; i < keys.length; ++i) {
-            env.conf.templates[keys[i]] = storage[keys[i]];
-        }
-    }
-
     describe("resolveLinks", function() {
+        var conf;
+
+        beforeEach(function() {
+            conf = doop(env.conf.templates);
+        });
+
+        afterEach(function() {
+            env.conf.templates = conf;
+        });
+
         it('should translate {@link test} into a HTML link.', function() {
             var input = 'This is a {@link test}.';
             var output = helper.resolveLinks(input);
@@ -1606,84 +1593,103 @@ describe("jsdoc/util/templateHelper", function() {
         // conf.monospaceLinks. check that
         // a) it works
         it('if conf.monospaceLinks is true, all {@link} should be monospace', function() {
-            var storage = setConfTemplatesVariables({monospaceLinks: true});
             var input = 'Link to {@link test}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.monospaceLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
-            restoreConfTemplates(storage);
         });
 
         // b) linkcode and linkplain are still respected
         it('if conf.monospaceLinks is true, all {@linkcode} should still be monospace', function() {
-            var storage = setConfTemplatesVariables({monospaceLinks: true});
             var input = 'Link to {@linkcode test}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.monospaceLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
-            restoreConfTemplates(storage);
         });
 
         it('if conf.monospaceLinks is true, all {@linkplain} should still be plain', function() {
-            var storage = setConfTemplatesVariables({monospaceLinks: true});
             var input = 'Link to {@linkplain test}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.monospaceLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
-            restoreConfTemplates(storage);
         });
 
         // conf.cleverLinks. check that
         // a) it works
         it('if conf.cleverLinks is true, {@link symbol} should be in monospace', function() {
-            var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@link test}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.cleverLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
-            restoreConfTemplates(storage);
         });
 
         it('if conf.cleverLinks is true, {@link URL} should be in plain text', function() {
-            var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@link http://github.com}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.cleverLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
-            restoreConfTemplates(storage);
         });
 
         // b) linkcode and linkplain are still respected
         it('if conf.cleverLinks is true, all {@linkcode} should still be clever', function() {
-            var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@linkcode test}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.cleverLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
-            restoreConfTemplates(storage);
         });
 
         it('if conf.cleverLinks is true, all {@linkplain} should still be plain', function() {
-            var storage = setConfTemplatesVariables({cleverLinks: true});
             var input = 'Link to {@linkplain test}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.cleverLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
-            restoreConfTemplates(storage);
         });
 
         // c) if monospaceLinks is additionally `true` it is ignored in favour
         //    of cleverLinks
         it('if conf.cleverLinks is true and so is conf.monospaceLinks, cleverLinks overrides', function() {
-            var storage = setConfTemplatesVariables({
-                cleverLinks: true,
-                monospaceLinks: true
-            });
             var input = 'Link to {@link test} and {@link http://github.com}';
-            var output = helper.resolveLinks(input);
+            var output;
+
+            env.conf.templates.cleverLinks = true;
+            env.conf.templates.monospaceLinks = true;
+            output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a> and <a href="http://github.com">http://github.com</a>');
-            restoreConfTemplates(storage);
+        });
+
+        it('if conf.useShortNamesInLinks is true, it uses the short name in links', function() {
+            var input = 'Link to {@link my.long.namespace}';
+            var output;
+
+            env.conf.templates.useShortNamesInLinks = true;
+            helper.registerLink('my.long.namespace', 'asdf.html');
+            output = helper.resolveLinks(input);
+
+            expect(output).toBe('Link to <a href="asdf.html">namespace</a>');
+
+            delete helper.longnameToUrl['my.long.namespace'];
         });
     });
 
