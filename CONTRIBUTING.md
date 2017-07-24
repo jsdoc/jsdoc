@@ -21,6 +21,7 @@ ones.
    this branch by pulling from the 'base' remote. (as opposed to 'origin')
 
         git branch --track pullpost base/master
+        git fetch --all
         git checkout pullpost
 
    Here 'pullpost' is the name of the branch.  Fell free to use whatever you want.
