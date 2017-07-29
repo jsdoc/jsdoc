@@ -28,7 +28,7 @@
         ?><?js= doc.name ?><?js
          if (doc.variation) { ?>
             <sup class="variation"><?js= doc.variation ?></sup><?js }
-         if (doc.signature) { ?><?js= doc.signature ?><?js } ?></h2>
+         if (doc.signature && !doc.hideconstructor) { ?><?js= doc.signature ?><?js } ?></h2>
         <?js if (doc.classdesc) { ?>
             <div class="class-description"><?js= doc.classdesc ?></div>
         <?js } ?>
