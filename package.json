@@ -33,7 +33,7 @@
     "gulp": "~3.9.1",
     "gulp-eslint": "~4.0.0",
     "gulp-json-editor": "~2.2.1",
-    "nyc": "~11.0.3"
+    "nyc": "~11.1.0"
   },
   "engines": {
     "node": ">=4.2.0"
