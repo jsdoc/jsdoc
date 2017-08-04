@@ -3,6 +3,19 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.5.4 (August 2017)
+
++ When a class uses the `@hideconstructor` tag, the default template no longer displays the names of
+parameters that the constructor accepts. (#1397)
++ When an arrow function expression returns a class, the class's methods and properties are now
+named correctly. (#1409)
++ JSDoc no longer crashes when an anonymous class is passed as a function parameter. (#1416)
++ JSDoc now allows `import` and `export` declarations anywhere where a statement is allowed. (#1411)
++ JSDoc now allows `return` statements outside of functions. (#1411)
++ JSDoc now allows `super()` calls outside of a method definition. (#1411)
++ JSDoc no longer exits before the `STDOUT` pipe has been flushed. (#1408)
+
+
 ## 3.5.3 (July 2017)
 
 + Non-JSDoc comments (comments that do not begin with `/**`) are now ignored. (#1398)
