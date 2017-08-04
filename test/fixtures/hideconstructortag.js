@@ -49,8 +49,8 @@ class WaffleIron {
      * @hideconstructor
      */
     constructor() {
-        if (#instance) {
-            return #instance;
+        if (this.#instance) {
+            return this.#instance;
         }
 
         /**
