@@ -18,7 +18,7 @@
     "catharsis": "~0.8.9",
     "escape-string-regexp": "~1.0.5",
     "js2xmlparser": "~3.0.0",
-    "klaw": "~2.0.0",
+    "klaw": "~2.1.0",
     "markdown-it": "~8.3.1",
     "markdown-it-named-headers": "~0.0.4",
     "marked": "~0.3.6",
