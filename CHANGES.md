@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.5.5 (September 2017)
+
+Fixes a compatibility issue with Node.js 8.5.0. (#1438)
+
+
 ## 3.5.4 (August 2017)
 
 + When a class uses the `@hideconstructor` tag, the default template no longer displays the names of
