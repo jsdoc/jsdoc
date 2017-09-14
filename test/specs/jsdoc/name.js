@@ -122,6 +122,15 @@ describe('jsdoc/name', function() {
             expect(parts.scope).toEqual('#');
         });
 
+        it('should ignore a sliceChar in folder name', function() {
+            var startName = 'lib.Panel/lib/Panel';
+            var parts = jsdoc.name.shorten(startName);
+
+            expect(parts.name).toEqual('lib.Panel/lib/Panel');
+            expect(parts.memberof).toEqual('');
+            expect(parts.scope).toEqual('');
+        });
+
         it('should work on static names', function() {
             var startName = 'elements.selected.getVisible';
             var parts = jsdoc.name.shorten(startName);
