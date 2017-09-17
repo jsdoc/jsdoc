@@ -4,6 +4,7 @@ describe('jsdoc/util/markdown', function() {
     var env = require('jsdoc/env');
     var logger = require('jsdoc/util/logger');
     var markdown = require('jsdoc/util/markdown');
+    var changeCasePlugin = require('../../../fixtures/markdown/plugins/changeCase');
 
     it('should exist', function() {
         expect(markdown).toBeDefined();
@@ -121,6 +122,33 @@ describe('jsdoc/util/markdown', function() {
             parser = markdown.getParser();
 
             expect(parser('# Hello')).toBe('<h1 id="hello">Hello</h1>');
+        });
+
+        it('should apply parserOptions to the MarkdownIt plugin', function() {
+            var parser;
+
+            setMarkdownConf({parserOptions: {linkify: true}});
+            parser = markdown.getParser();
+
+            expect(parser('Hello https://www.google.com/')).toBe('<p>Hello <a href="https://www.google.com/">https://www.google.com/</a></p>');
+        });
+
+        it('should apply parserPlugins to the MarkdownIt plugin', function() {
+            var parser;
+
+            setMarkdownConf({parserPlugins: [changeCasePlugin]});
+            parser = markdown.getParser();
+
+            expect(parser('Hello ^World^')).toBe('<p>Hello WORLD</p>');
+        });
+
+        it('should apply arguments to parserPlugins to the MarkdownIt plugin', function() {
+            var parser;
+
+            setMarkdownConf({parserPlugins: [[changeCasePlugin, 'lower']]});
+            parser = markdown.getParser();
+
+            expect(parser('Hello ^World^')).toBe('<p>Hello world</p>');
         });
 
         it('should not pretty-print code blocks that start with "```plain"', function() {
