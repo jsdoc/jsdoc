@@ -313,6 +313,13 @@ describe('jsdoc/opts/args', function() {
             expect(r.readme).toBe('path/to/readme/file.md');
         });
 
+        it('should accept a "--mainpagetitle" option and return an object with a "mainpagetitle" property', function() {
+            args.parse(['--mainpagetitle', 'Awesome\ Project']); // eslint-disable-line no-useless-escape
+            var r = args.get();
+
+            expect(r.mainpagetitle).toBe('Awesome Project');
+        });
+
         it('should accept a "--readme" option and return an object with a "readme" property', function() {
             args.parse(['--readme', 'path/to/readme/file.md']);
             var r = args.get();

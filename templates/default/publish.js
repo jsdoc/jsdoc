@@ -622,7 +622,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     files = find({kind: 'file'});
     packages = find({kind: 'package'});
 
-    generate('Home',
+    generate(opts.mainpagetitle || 'Home',
         packages.concat(
             [{
                 kind: 'mainpage',
