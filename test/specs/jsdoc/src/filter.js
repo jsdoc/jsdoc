@@ -18,7 +18,7 @@ describe('jsdoc/src/filter', function() {
     describe('Filter', function() {
         var myFilter;
 
-        var defaultIncludePattern = new RegExp('.+\\.js(doc)?$');
+        var defaultIncludePattern = new RegExp('.+\\.(js(doc|x)?|mjs)$');
         var defaultExcludePattern = new RegExp('(^|\\/|\\\\)_');
 
         beforeEach(function() {
@@ -102,6 +102,7 @@ describe('jsdoc/src/filter', function() {
             it('should return the correct source files', function() {
                 var files = [
                     'yes.js',
+                    'yes.mjs',
                     '/yes.jsdoc',
                     '/_nope.js',
                     '.ignore',
@@ -118,8 +119,9 @@ describe('jsdoc/src/filter', function() {
                     return myFilter.isIncluded($);
                 });
 
-                expect(files.length).toEqual(2);
+                expect(files.length).toEqual(3);
                 expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
+                expect( files.indexOf('yes.mjs') ).toBeGreaterThan(-1);
                 expect( files.indexOf('/yes.jsdoc') ).toBeGreaterThan(-1);
             });
 
