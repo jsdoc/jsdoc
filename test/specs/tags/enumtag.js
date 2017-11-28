@@ -17,6 +17,16 @@ describe('@enum tag', function() {
         expect(tristate.properties[1].undocumented).toBeUndefined();
     });
 
+    it('If @ignore is set on the property, it is omitted from the enum.', function() {
+        var someignored = docSet.getByLongname('SomeIgnored')[0];
+        var propertyNames = someignored.properties.map(function(p) { return p.name; });
+        expect(propertyNames.length).toBe(2);
+        expect(propertyNames).toContain('one');
+        expect(propertyNames).not.toContain('two');
+        expect(propertyNames).toContain('three');
+        expect(propertyNames).not.toContain('four');
+    });
+
     it('A property of an enum gets its defaultvalue set.', function() {
         expect(tristate.properties[1].defaultvalue).toBe(-1);
     });
