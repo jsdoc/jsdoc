@@ -19,3 +19,18 @@ var TrueFalseNumeric = {
     0: false,
     1: true
 };
+
+/**
+ * Enum with ignored entries.
+ * @enum
+ */
+var SomeIgnored = {
+    /** One */
+    one: 1,
+    /** Two
+     * @ignore */
+    two: 2,
+    three: 3,
+    /** @ignore */
+    four: 4
+};
