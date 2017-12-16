@@ -446,7 +446,7 @@ the hashbang is now ignored when the file is parsed. (#499)
 + If a module is tagged incorrectly, the module's output file now has a valid filename. (#440, #458)
 + For tags that accept names, such as `@module` and `@param`, if a hyphen is used to separate the
 name and description, the hyphen must appear on the same line as the name. This change prevents a
-Markdown bullet on the followng line from being interpreted as a separator. (#459)
+Markdown bullet on the following line from being interpreted as a separator. (#459)
 + When lenient mode is enabled, a `@param` tag with an invalid type expression no longer causes a
 crash. (#448)
 + The `@requires` tag can now contain an inline tag in its tag text. (#486)
