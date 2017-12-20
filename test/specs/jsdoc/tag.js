@@ -10,6 +10,7 @@ describe('jsdoc/tag', function() {
         type: require('jsdoc/tag/type')
     };
     var logger = require('jsdoc/util/logger');
+    var path = require('jsdoc/path');
 
     it('should exist', function() {
         expect(jsdoc.tag).toBeDefined();
@@ -240,6 +241,16 @@ describe('jsdoc/tag', function() {
                 /* eslint-enable no-unused-vars */
 
                 expect(logger.error).toHaveBeenCalled();
+            });
+        });
+
+        describe('parseType', function() {
+            it('resolves path types to module types when moduleRoot is set', function() {
+                jsdoc.env.opts.moduleRoot = './';
+                var tag = new jsdoc.tag.Tag('type', '{./bar.mytype}', {path: path.resolve(jsdoc.env.pwd, 'foo')});
+
+                delete jsdoc.env.opts.moduleRoot;
+                expect(tag.value.type.names[0]).toBe('module:foo/bar.mytype');
             });
         });
     });
