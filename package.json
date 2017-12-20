@@ -15,7 +15,7 @@
   "dependencies": {
     "babylon": "7.0.0-beta.19",
     "bluebird": "~3.5.0",
-    "catharsis": "~0.8.9",
+    "catharsis": "git://github.com/ahocevar/catharsis.git#path-types",
     "escape-string-regexp": "~1.0.5",
     "js2xmlparser": "~3.0.0",
     "klaw": "~2.0.0",
