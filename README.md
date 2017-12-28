@@ -38,6 +38,10 @@ To generate documentation for the file `yourJavaScriptFile.js`:
 
     ./node_modules/.bin/jsdoc yourJavaScriptFile.js
 
+For npm 5.2.0 and above you can use the `npx` command:
+
+    npx jsdoc yourJavaScriptFile.js
+
 Or if you installed JSDoc globally, simply run the `jsdoc` command:
 
     jsdoc yourJavaScriptFile.js
