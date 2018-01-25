@@ -1,8 +1,8 @@
 /**
- * Test {@tutorial test2} {@tutorial dupa}
+ * Test {@tutorial test2} {@tutorial test3}
  *
  * @class
  * @tutorial test
- * @tutorial jasia
+ * @tutorial test
  */
 function Test() {}
