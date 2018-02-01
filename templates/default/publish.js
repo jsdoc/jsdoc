@@ -646,6 +646,18 @@ exports.publish = (taffyData, opts, tutorials) => {
     members = helper.getMembers(data);
     members.tutorials = tutorials.children;
 
+    if (conf.default.sortTutorialsByConfigOrder) {
+        members.tutorials.sort((a, b) => {
+            if (a.autoindex !== undefined && b.autoindex !== undefined) {
+                return a.autoindex - b.autoindex;
+            } else if (a.autoindex !== undefined) {
+                return -1;
+            } else if (b.autoindex !== undefined) {
+                return 1;
+            }
+        });
+    }
+
     // output pretty-printed source files by default
     outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false;
 
