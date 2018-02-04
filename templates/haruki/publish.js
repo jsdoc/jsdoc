@@ -67,6 +67,8 @@ function graft(parentNode, childNodes, parentLongname) {
                 'access': element.access || '',
                 'virtual': Boolean(element.virtual),
                 'description': element.description || '',
+                'since': element.since || '',
+                'exceptions': element.exceptions || '',
                 'parameters': [],
                 'examples': []
             };
@@ -164,6 +166,7 @@ function graft(parentNode, childNodes, parentLongname) {
                 'description': element.classdesc || '',
                 'extends': element.augments || [],
                 'access': element.access || '',
+                'since': element.since || '',
                 'virtual': Boolean(element.virtual),
                 'fires': element.fires || '',
                 'constructor': {
