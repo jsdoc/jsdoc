@@ -111,7 +111,6 @@ function graft(parentNode, childNodes, parentLongname) {
                 'type': element.type? (element.type.length === 1? element.type[0] : element.type) : ''
             });
         }
-
         else if (element.kind === 'event') {
             if (!parentNode.events) {
                 parentNode.events = [];
@@ -197,7 +196,64 @@ function graft(parentNode, childNodes, parentLongname) {
             }
 
             graft(thisClass, childNodes, element.longname);
-       }
+        }
+        else if (element.kind === 'typedef') {
+            if (!parentNode.typedefs) {
+                parentNode.typedefs = [];
+            }
+
+            thisTypedef = {
+                'name': element.name,
+                'access': element.access || '',
+                'virtual': Boolean(element.virtual),
+                'description': element.description || '',
+            };
+            parentNode.typedefs.push(thisTypedef);
+
+            if (element.returns) {
+                thisEvent.returns = {
+                    'type': element.returns.type ? (element.returns.type.names.length === 1 ? element.returns.type.names[0] : element.returns.type.names) : '',
+                    'description': element.returns.description || ''
+                };
+            }
+
+            if (element.examples) {
+                thisTypedef.examples = [];
+                for (i = 0, len = element.examples.length; i < len; i++) {
+                    thisTypedef.examples.push(element.examples[i]);
+                }
+            }
+
+            if (element.params) {
+                thisTypedef.parameters = [];
+                for (i = 0, len = element.params.length; i < len; i++) {
+                    thisTypedef.parameters.push({
+                        'name': element.params[i].name,
+                        'type': element.params[i].type? (element.params[i].type.names.length === 1? element.params[i].type.names[0] : element.params[i].type.names) : '',
+                        'description': element.params[i].description || '',
+                        'default': hasOwnProp.call(element.params[i], 'defaultvalue') ? element.params[i].defaultvalue : '',
+                        'optional': typeof element.params[i].optional === 'boolean'? element.params[i].optional : '',
+                        'nullable': typeof element.params[i].nullable === 'boolean'? element.params[i].nullable : ''
+                    });
+                }
+            }
+
+            if (element.properties) {
+                thisTypedef.properties = [];
+                for (i = 0, len = element.properties.length; i < len; i++) {
+                    thisTypedef.properties.push({
+                        'name': element.properties[i].name,
+                        'type': element.properties[i].type? (element.properties[i].type.names.length === 1? element.properties[i].type.names[0] : element.properties[i].type.names) : '',
+                        'description': element.properties[i].description || '',
+                        'default': hasOwnProp.call(element.properties[i], 'defaultvalue') ? element.properties[i].defaultvalue : '',
+                        'optional': typeof element.properties[i].optional === 'boolean'? element.properties[i].optional : '',
+                        'nullable': typeof element.properties[i].nullable === 'boolean'? element.properties[i].nullable : ''
+                    });
+                }
+            }
+
+            graft(thisTypedef, childNodes, element.longname);
+        }
     });
 }
 
