@@ -32,7 +32,7 @@
     "ajv": "~5.2.2",
     "gulp": "~3.9.1",
     "gulp-eslint": "~4.0.0",
-    "gulp-json-editor": "~2.2.1",
+    "gulp-json-editor": "~2.3.0",
     "nyc": "~11.1.0"
   },
   "engines": {
