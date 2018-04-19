@@ -26,7 +26,7 @@
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
     "taffydb": "2.6.2",
-    "underscore": "~1.8.3"
+    "underscore": "~1.9.0"
   },
   "devDependencies": {
     "ajv": "~5.2.2",
