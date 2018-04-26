@@ -34,6 +34,7 @@ describe('jsdoc/src/astNode', function() {
     var propertyGet = parse('var foo = { get bar() {} };').declarations[0].init.properties[0];
     var propertyInit = parse('var foo = { bar: {} };').declarations[0].init.properties[0];
     var propertySet = parse('var foo = { set bar(a) {} };').declarations[0].init.properties[0];
+    var objectExpression = parse('var foo = { test: { bar: [1], "bar-a": 12, "barb": /test/ } }').declarations[0].init.properties[0];
     var thisExpression = parse('this;').expression;
     var unaryExpression1 = parse('+1;').expression;
     var unaryExpression2 = parse('+foo;').expression;
@@ -313,6 +314,22 @@ describe('jsdoc/src/astNode', function() {
 
             expect(info.name).toBe('foo.bar');
             expect(info.type).toBe(Syntax.MemberExpression);
+        });
+
+        it('should return the correct info for a ObjectExpression', function() {
+            var info = astNode.getInfo(objectExpression);
+
+            expect(info).toBeDefined();
+
+            expect(info.node).toBeDefined();
+            expect(info.node.type).toBe(Syntax.ObjectExpression);
+
+            expect(info.type).toBe(Syntax.ObjectExpression);
+            expect(info.value).toBe(JSON.stringify({
+                bar: '[1]',
+                'bar-a': 12,
+                'barb': /test/
+            }));
         });
 
         it('should return the correct info for a computed MemberExpression', function() {
