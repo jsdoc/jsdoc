@@ -21,7 +21,7 @@
     "klaw": "~2.0.0",
     "markdown-it": "~8.3.1",
     "markdown-it-named-headers": "~0.0.4",
-    "marked": "~0.3.6",
+    "marked": "~0.4.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
