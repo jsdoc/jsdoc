@@ -37,6 +37,11 @@ describe('jsdoc/src/filter', function() {
             expect(myFilter.includePattern).toBeDefined();
         });
 
+        it('should have an "isExcluded" method', function() {
+            expect(myFilter.isExcluded).toBeDefined();
+            expect(typeof myFilter.isExcluded).toBe('function');
+        });
+
         it('should have an "isIncluded" method', function() {
             expect(myFilter.isIncluded).toBeDefined();
             expect(typeof myFilter.isIncluded).toBe('function');
@@ -97,6 +102,33 @@ describe('jsdoc/src/filter', function() {
         describe( 'excludePattern', testRegExpProperty.bind(jasmine, 'excludePattern') );
 
         describe( 'includePattern', testRegExpProperty.bind(jasmine, 'includePattern') );
+
+        describe('isExcluded', function() {
+            it('should be able to use excludePattern to ignore directories', function() {
+                var files = [
+                    'yes.js',
+                    '/yes.jsdoc',
+                    'node_modules/no.js',
+                    '/dist/no.js',
+                    '.ignore'
+                ];
+
+                myFilter = new filter.Filter({
+                    includePattern: defaultIncludePattern,
+                    excludePattern: 'node_modules|dist',
+                    exclude: ['.ignore']
+                });
+
+                files = files.filter(function($) {
+                    return myFilter.isExcluded($);
+                });
+
+                expect(files.length).toEqual(3);
+                expect( files.indexOf('node_modules/no.js') ).toBeGreaterThan(-1);
+                expect( files.indexOf('/dist/no.js') ).toBeGreaterThan(-1);
+                expect( files.indexOf('.ignore') ).toBeGreaterThan(-1);
+            });
+        });
 
         describe('isIncluded', function() {
             it('should return the correct source files', function() {
