@@ -31,7 +31,7 @@
   "devDependencies": {
     "ajv": "~5.2.2",
     "gulp": "~3.9.1",
-    "gulp-eslint": "~4.0.0",
+    "gulp-eslint": "~5.0.0",
     "gulp-json-editor": "~2.2.1",
     "nyc": "~11.1.0"
   },
