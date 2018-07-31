@@ -102,8 +102,7 @@ section
     font-weight: lighter;
 }
 
-nav
-{
+nav {
     display: block;
     float: right;
     margin-top: 28px;
@@ -111,6 +110,8 @@ nav
     box-sizing: border-box;
     border-left: 1px solid #ccc;
     padding-left: 16px;
+    position: fixed;
+    right: 11px;
 }
 
 nav ul {
