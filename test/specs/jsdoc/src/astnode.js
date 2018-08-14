@@ -3,12 +3,12 @@
 describe('jsdoc/src/astNode', function() {
     var astBuilder = require('jsdoc/src/astbuilder');
     var astNode = require('jsdoc/src/astnode');
-    var babylon = require('babylon');
+    var parser = require('@babel/parser');
     var env = require('jsdoc/env');
     var Syntax = require('jsdoc/src/syntax').Syntax;
 
     function parse(str) {
-        return babylon.parse(str, astBuilder.parserOptions).program.body[0];
+        return parser.parse(str, astBuilder.parserOptions).program.body[0];
     }
 
     // create the AST nodes we'll be testing
