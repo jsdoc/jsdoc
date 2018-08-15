@@ -295,6 +295,36 @@ describe('jsdoc/opts/args', () => {
             expect(args.get()._).toEqual(['myfile1', 'myfile2']);
         });
 
+        it('should accept a "-g" option and return an object with a "plugin" property', function() {
+            args.parse(['-g', 'plugin/test']);
+            var r = args.get();
+
+            expect(r.plugin).toBe('plugin/test');
+        });
+
+        it('should accept multiple "-g" options and return an object with a "plugin" property', function() {
+            args.parse(['-g', 'plugin/test', '-g', 'plugin/test2']);
+            var r = args.get();
+
+            expect(r.plugin[0]).toBe('plugin/test');
+            expect(r.plugin[1]).toBe('plugin/test2');
+        });
+
+        it('should accept a "--plugin" option and return an object with a "plugin" property', function() {
+            args.parse(['--plugin', 'plugin/test']);
+            var r = args.get();
+
+            expect(r.plugin).toBe('plugin/test');
+        });
+
+        it('should accept multiple "--plugin" options and return an object with a "plugin" property', function() {
+            args.parse(['--plugin', 'plugin/test', '--plugin', 'plugin/test2']);
+            var r = args.get();
+
+            expect(r.plugin[0]).toBe('plugin/test');
+            expect(r.plugin[1]).toBe('plugin/test2');
+        });
+
         // TODO: tests for args that must have values
     });
 });

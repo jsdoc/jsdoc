@@ -319,6 +319,11 @@ module.exports = (() => {
             plugins.installPlugins(env.conf.plugins, props.parser);
         }
 
+        if (env.opts.plugins) {
+            env.conf.plugins = resolvePluginPaths(env.opts.plugins);
+            plugins.installPlugins(env.opts.plugins, props.parser);
+        }
+
         handlers.attachTo(props.parser);
 
         return cli;
