@@ -341,12 +341,15 @@ module.exports = (() => {
         const handlers = require('jsdoc/src/handlers');
         const parser = require('jsdoc/src/parser');
         const plugins = require('jsdoc/plugins');
+        let allPlugins = []
+            .concat((env.conf.plugins || []))
+            .concat((env.opts.plugin || []));
 
         app.jsdoc.parser = parser.createParser(env.conf.parser);
 
-        if (env.conf.plugins) {
-            env.conf.plugins = resolvePluginPaths(env.conf.plugins);
-            plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
+        if (allPlugins.length) {
+            allPlugins = resolvePluginPaths(allPlugins);
+            plugins.installPlugins(allPlugins, app.jsdoc.parser);
         }
 
         handlers.attachTo(app.jsdoc.parser);
