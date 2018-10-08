@@ -9,3 +9,6 @@ var S = {
 	/** Member of the namespace S. */
 	Socket: function() {}
 };
+
+/** @namespace exports */
+exports.version = '1.0.0';
