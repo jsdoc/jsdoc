@@ -59,8 +59,8 @@
       "url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
     }
   ],
-  "maintainers": {
+  "maintainers": [{
     "name": "Jeff Williams",
     "email": "jeffrey.l.williams@gmail.com"
-  }
+  }]
 }
