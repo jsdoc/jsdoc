@@ -281,7 +281,7 @@ function buildSourceList() {
 
     // source files named `package.json` or `README.md` get special treatment, unless the user
     // explicitly specified a package and/or README file
-    for (var i = 0, l = sourceFiles.length; i < l; i++) {
+    for (var i = 0; i < sourceFiles.length; i++) {
         sourceFile = sourceFiles[i];
 
         if ( !env.opts.package && /\bpackage\.json$/i.test(sourceFile) ) {
