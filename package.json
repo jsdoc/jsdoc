@@ -20,7 +20,7 @@
     "js2xmlparser": "~3.0.0",
     "klaw": "~3.0.0",
     "markdown-it": "~8.4.2",
-    "markdown-it-named-headers": "~0.0.4",
+    "markdown-it-anchor": "~5.0.2",
     "marked": "~0.6.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
