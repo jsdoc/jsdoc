@@ -32,31 +32,39 @@ var options = {
     nodePath: process.execPath
 };
 
-gulp.task('bump', function() {
+function bump(cb) {
     gulp.src('./package.json')
         .pipe(jsonEditor({
             revision: String( Date.now() )
         }))
         .pipe(gulp.dest('./'));
-});
 
-gulp.task('coverage', function(cb) {
+    cb();
+}
+
+function coverage(cb) {
     var cmd = util.format('./node_modules/.bin/nyc --reporter=html %s -T', options.nodeBin);
 
     exec(cmd, execCb.bind(null, cb));
-});
+}
 
-gulp.task('lint', function() {
-    return gulp.src(options.lintPaths)
+function lint(cb) {
+    gulp.src(options.lintPaths)
         .pipe(eslint())
         .pipe(eslint.formatEach())
         .pipe(eslint.failOnError());
-});
 
-gulp.task('test', function(cb) {
+    cb();
+}
+
+function test(cb) {
     var cmd = util.format('%s "%s" -T', options.nodePath, options.nodeBin);
 
     exec(cmd, execCb.bind(null, cb));
-});
+}
 
-gulp.task('default', ['lint', 'test']);
+exports.bump = bump;
+exports.coverage = coverage;
+exports.default = gulp.series(lint, test);
+exports.lint = lint;
+exports.test = test;
