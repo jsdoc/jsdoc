@@ -29,7 +29,7 @@
     "underscore": "~1.9.1"
   },
   "devDependencies": {
-    "ajv": "~6.6.2",
+    "ajv": "~6.7.0",
     "gulp": "~4.0.0",
     "gulp-eslint": "~5.0.0",
     "gulp-json-editor": "~2.5.0",
