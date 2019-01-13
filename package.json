@@ -1,19 +1,16 @@
 {
   "name": "jsdoc",
   "version": "3.6.0-dev",
-  "revision": "1547331889428",
+  "revision": "1547421638304",
   "description": "An API documentation generator for JavaScript.",
-  "keywords": [
-    "documentation",
-    "javascript"
-  ],
+  "keywords": ["documentation", "javascript"],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsdoc3/jsdoc"
   },
   "dependencies": {
-    "babylon": "~7.0.0-beta.47",
+    "@babel/parser": "~7.2.3",
     "bluebird": "~3.5.0",
     "catharsis": "~0.8.9",
     "escape-string-regexp": "~1.0.5",
@@ -45,24 +42,18 @@
     "jsdoc": "./jsdoc.js"
   },
   "greenkeeper": {
-    "ignore": [
-      "taffydb"
-    ]
+    "ignore": ["taffydb"]
   },
   "bugs": "https://github.com/jsdoc3/jsdoc/issues",
   "author": {
     "name": "Michael Mathews",
     "email": "micmath@gmail.com"
   },
-  "contributors": [
-    {
-      "url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
-    }
-  ],
-  "maintainers": [
-    {
-      "name": "Jeff Williams",
-      "email": "jeffrey.l.williams@gmail.com"
-    }
-  ]
+  "contributors": [{
+    "url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
+  }],
+  "maintainers": [{
+    "name": "Jeff Williams",
+    "email": "jeffrey.l.williams@gmail.com"
+  }]
 }
