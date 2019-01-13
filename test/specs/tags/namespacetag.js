@@ -6,17 +6,21 @@ describe('@namespace tag', function() {
     var Foo = docSet.getByLongname('Foo')[0];
     var Bar = docSet.getByLongname('Bar')[0];
     var Socket = docSet.getByLongname('S.Socket')[0];
+    var exportsNs = docSet.getByLongname('exports')[0];
+    var version = docSet.getByLongname('exports.version')[0];
 
     it("sets the doclet's kind to 'namespace'", function() {
         expect(x.kind).toBe('namespace');
         expect(Foo.kind).toBe('namespace');
         expect(Bar.kind).toBe('namespace');
+        expect(exportsNs.kind).toBe('namespace');
     });
 
     it("sets the doclet's name to the tag value (if provided)", function() {
         expect(x.name).toBe('x');
         expect(Foo.name).toBe('Foo');
         expect(Bar.name).toBe('Bar');
+        expect(exportsNs.name).toBe('exports');
     });
 
     it("sets the doclet's type (if provided in @namespace)", function() {
@@ -30,5 +34,8 @@ describe('@namespace tag', function() {
         function() {
             expect(Socket).toBeDefined();
             expect(Socket.name).toBe('Socket');
+
+            expect(version).toBeDefined();
+            expect(version.name).toBe('version');
         });
 });

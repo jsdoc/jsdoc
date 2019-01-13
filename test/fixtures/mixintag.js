@@ -24,3 +24,6 @@ var FormButton = function() {
  * @constructor MyClass
  * @mixes Eventful
  * @mixes AnotherMixin */
+
+/** @mixin exports */
+exports.aMethod = function() {};
