@@ -422,6 +422,7 @@ cli.generateDocs = function() {
 
     var template;
 
+    env.opts.name = env.conf.name || 'Home';
     env.opts.template = (function() {
         var publish = env.opts.template || 'templates/default';
         var templatePath = path.getResourcePath(publish);
