@@ -1,58 +1,56 @@
-'use strict';
+describe('jsdoc/tag/dictionary/definitions', () => {
+    const env = require('jsdoc/env');
+    const definitions = require('jsdoc/tag/dictionary/definitions');
+    const Dictionary = require('jsdoc/tag/dictionary').Dictionary;
+    const logger = require('jsdoc/util/logger');
 
-describe('jsdoc/tag/dictionary/definitions', function() {
-    var env = require('jsdoc/env');
-    var definitions = require('jsdoc/tag/dictionary/definitions');
-    var Dictionary = require('jsdoc/tag/dictionary').Dictionary;
-    var logger = require('jsdoc/util/logger');
-
-    it('should exist', function() {
+    it('should exist', () => {
         expect(definitions).toBeDefined();
         expect(typeof definitions).toBe('object');
     });
 
-    it('should export a baseTags object', function() {
+    it('should export a baseTags object', () => {
         expect(definitions.baseTags).toBeDefined();
         expect(typeof definitions.baseTags).toBe('object');
     });
 
-    it('should export a closureTags object', function() {
+    it('should export a closureTags object', () => {
         expect(definitions.closureTags).toBeDefined();
         expect(typeof definitions.closureTags).toBe('object');
     });
 
-    it('should export a defineTags method', function() {
+    it('should export a defineTags method', () => {
         expect(definitions.defineTags).toBeDefined();
         expect(typeof definitions.defineTags).toBe('function');
     });
 
-    it('should export a jsdocTags object', function() {
+    it('should export a jsdocTags object', () => {
         expect(definitions.jsdocTags).toBeDefined();
         expect(typeof definitions.jsdocTags).toBe('object');
     });
 
-    describe('baseTags', function() {
+    describe('baseTags', () => {
         // nothing to test except which tags are on the list, which would duplicate the code
     });
 
-    describe('closureTags', function() {
+    describe('closureTags', () => {
         // nothing to test except which tags are on the list, which would duplicate the code
     });
 
-    describe('defineTags', function() {
-        var dictionaryConfig = env.conf.tags.dictionaries.slice(0);
-        var tagDict;
+    describe('defineTags', () => {
+        const dictionaryConfig = env.conf.tags.dictionaries.slice(0);
+        let tagDict;
 
-        beforeEach(function() {
+        beforeEach(() => {
             env.conf.tags.dictionaries = [];
             tagDict = new Dictionary();
         });
 
-        afterEach(function() {
+        afterEach(() => {
             env.conf.tags.dictionaries = dictionaryConfig.slice(0);
         });
 
-        it('should log an error if `env.conf.tags.dictionaries` is undefined', function() {
+        it('should log an error if `env.conf.tags.dictionaries` is undefined', () => {
             env.conf.tags.dictionaries = undefined;
             spyOn(logger, 'error');
             definitions.defineTags(tagDict);
@@ -60,7 +58,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
             expect(logger.error).toHaveBeenCalled();
         });
 
-        it('should log an error if an unknown dictionary is requested', function() {
+        it('should log an error if an unknown dictionary is requested', () => {
             env.conf.tags.dictionaries = ['jsmarmoset'];
             spyOn(logger, 'error');
             definitions.defineTags(tagDict);
@@ -68,7 +66,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
             expect(logger.error).toHaveBeenCalled();
         });
 
-        it('should add both JSDoc and Closure tags by default', function() {
+        it('should add both JSDoc and Closure tags by default', () => {
             env.conf.tags.dictionaries = dictionaryConfig.slice(0);
             definitions.defineTags(tagDict);
 
@@ -78,7 +76,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
             expect(tagDict.lookUp('final')).not.toBe(false);
         });
 
-        it('should add only the JSDoc tags if requested', function() {
+        it('should add only the JSDoc tags if requested', () => {
             env.conf.tags.dictionaries = ['jsdoc'];
             definitions.defineTags(tagDict);
 
@@ -88,7 +86,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
             expect(tagDict.lookUp('final')).toBe(false);
         });
 
-        it('should add only the Closure tags if requested', function() {
+        it('should add only the Closure tags if requested', () => {
             env.conf.tags.dictionaries = ['closure'];
             definitions.defineTags(tagDict);
 
@@ -98,14 +96,14 @@ describe('jsdoc/tag/dictionary/definitions', function() {
             expect(tagDict.lookUp('abstract')).toBe(false);
         });
 
-        it('should prefer tagdefs from the first dictionary on the list', function() {
+        it('should prefer tagdefs from the first dictionary on the list', () => {
             env.conf.tags.dictionaries = ['closure', 'jsdoc'];
             definitions.defineTags(tagDict);
 
             expect(tagDict.lookUp('deprecated').synonyms).not.toBeDefined();
         });
 
-        it('should add tag synonyms', function() {
+        it('should add tag synonyms', () => {
             env.conf.tags.dictionaries = ['jsdoc'];
             definitions.defineTags(tagDict);
 
@@ -113,8 +111,8 @@ describe('jsdoc/tag/dictionary/definitions', function() {
             expect(tagDict.normalise('extends')).toBe('augments');
         });
 
-        it('should ignore the config settings if tagdefs are passed in', function() {
-            var tagDefs = {
+        it('should ignore the config settings if tagdefs are passed in', () => {
+            const tagDefs = {
                 foo: {
                     mustHaveValue: false
                 }
@@ -128,7 +126,7 @@ describe('jsdoc/tag/dictionary/definitions', function() {
         });
     });
 
-    describe('jsdocTags', function() {
+    describe('jsdocTags', () => {
         // nothing to test except which tags are on the list, which would duplicate the code
     });
 });

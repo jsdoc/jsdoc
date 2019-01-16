@@ -3,32 +3,30 @@
  *
  * @module plugins/summarize
  */
-'use strict';
-
 exports.handlers = {
     /**
      * Autogenerate summaries, if missing, from the description, if present.
      */
-    newDoclet: function(e) {
-        var endTag;
-        var tags;
-        var stack;
+    newDoclet({doclet}) {
+        let endTag;
+        let tags;
+        let stack;
 
         // If the summary is missing, grab the first sentence from the description
         // and use that.
-        if (e.doclet && !e.doclet.summary && e.doclet.description) {
+        if (doclet && !doclet.summary && doclet.description) {
             // The summary may end with `.$`, `. `, or `.<` (a period followed by an HTML tag).
-            e.doclet.summary = e.doclet.description.split(/\.$|\.\s|\.</)[0];
+            doclet.summary = doclet.description.split(/\.$|\.\s|\.</)[0];
             // Append `.` as it was removed in both cases, or is possibly missing.
-            e.doclet.summary += '.';
+            doclet.summary += '.';
 
             // This is an excerpt of something that is possibly HTML.
             // Balance it using a stack. Assume it was initially balanced.
-            tags = e.doclet.summary.match(/<[^>]+>/g) || [];
+            tags = doclet.summary.match(/<[^>]+>/g) || [];
             stack = [];
 
-            tags.forEach(function(tag) {
-                var idx = tag.indexOf('/');
+            tags.forEach(tag => {
+                const idx = tag.indexOf('/');
 
                 if (idx === -1) {
                     // start tag -- push onto the stack
@@ -49,12 +47,12 @@ exports.handlers = {
                 // get just the tag name
                 endTag = endTag.substring(1, endTag.search(/[ >]/));
                 // append the end tag
-                e.doclet.summary += '</' + endTag + '>';
+                doclet.summary += `</${endTag}>`;
             }
 
             // and, finally, if the summary starts and ends with a <p> tag, remove it; let the
             // template decide whether to wrap the summary in a <p> tag
-            e.doclet.summary = e.doclet.summary.replace(/^<p>(.*)<\/p>$/i, '$1');
+            doclet.summary = doclet.summary.replace(/^<p>(.*)<\/p>$/i, '$1');
         }
     }
 };

@@ -1,87 +1,85 @@
-'use strict';
+describe('jsdoc/util/dumper', () => {
+    const dumper = require('jsdoc/util/dumper');
 
-describe('jsdoc/util/dumper', function() {
-    var dumper = require('jsdoc/util/dumper');
-
-    it('should exist', function() {
+    it('should exist', () => {
         expect(dumper).toBeDefined();
         expect(typeof dumper).toBe('object');
     });
 
-    it('should export a "dump" function', function() {
+    it('should export a "dump" function', () => {
         expect(dumper.dump).toBeDefined();
         expect(typeof dumper.dump).toBe('function');
     });
 
-    it('can dump string values', function() {
+    it('can dump string values', () => {
         expect(dumper.dump('hello')).toBe('"hello"');
     });
 
-    it('escapes double quotes in string values', function() {
+    it('escapes double quotes in string values', () => {
         expect(dumper.dump('hello "world"')).toBe('"hello \\"world\\""');
     });
 
-    it('escapes newlines in string values', function() {
+    it('escapes newlines in string values', () => {
         expect(dumper.dump('hello\nworld')).toBe('"hello\\nworld"');
     });
 
-    it('can dump number values', function() {
+    it('can dump number values', () => {
         expect(dumper.dump(1)).toBe('1');
         expect(dumper.dump(0.1)).toBe('0.1');
     });
 
-    it('can dump boolean values', function() {
+    it('can dump boolean values', () => {
         expect(dumper.dump(true)).toBe('true');
         expect(dumper.dump(false)).toBe('false');
     });
 
-    it('can dump null values', function() {
+    it('can dump null values', () => {
         expect(dumper.dump(null)).toBe('null');
     });
 
-    it('can dump undefined values', function() {
+    it('can dump undefined values', () => {
         expect(dumper.dump(undefined)).toBe('null');
     });
 
-    it('can dump regex values', function() {
+    it('can dump regex values', () => {
         expect(dumper.dump(/^[Ff]oo$/gi)).toBe('"<RegExp /^[Ff]oo$/gi>"');
     });
 
-    it('can dump date values', function() {
+    it('can dump date values', () => {
         expect(dumper.dump(new Date('January 1, 1901 GMT')))
             .toBe('"<Date Tue, 01 Jan 1901 00:00:00 GMT>"');
     });
 
-    it('can dump function values', function() {
+    it('can dump function values', () => {
         /* eslint-disable no-empty-function */
         expect(dumper.dump(function myFunc() {})).toBe('"<Function myFunc>"');
-        expect(dumper.dump(function() {})).toBe('"<Function>"');
+        expect(dumper.dump(() => {})).toBe('"<Function>"');
         /* eslint-enable no-empty-function */
     });
 
-    it('can dump array values', function() {
-        var actual = dumper.dump(['hello', 'world']);
-        var expected = '[\n    "hello",\n    "world"\n]';
+    it('can dump array values', () => {
+        const actual = dumper.dump(['hello', 'world']);
+        const expected = '[\n    "hello",\n    "world"\n]';
 
         expect(actual).toBe(expected);
     });
 
-    it('can dump simple object values', function() {
-        var actual = dumper.dump({ hello: 'world' });
-        var expected = '{\n    "hello": "world"\n}';
+    it('can dump simple object values', () => {
+        const actual = dumper.dump({ hello: 'world' });
+        const expected = '{\n    "hello": "world"\n}';
 
         expect(actual).toBe(expected);
     });
 
-    it('can dump constructed instance values, not displaying prototype members', function() {
-        var actual;
-        var expected;
+    it('can dump constructed instance values, not displaying prototype members', () => {
+        let actual;
+        let expected;
 
         function Foo(name) {
             this.name = name;
         }
         /* eslint-disable no-empty-function */
-        Foo.prototype.sayHello = function() {};
+        Foo.prototype.sayHello = () => {};
         /* eslint-enable no-empty-function */
 
         actual = dumper.dump(new Foo('hello'));
@@ -90,12 +88,12 @@ describe('jsdoc/util/dumper', function() {
         expect(actual).toBe(expected);
     });
 
-    it('can dump complex mixed values', function() {
+    it('can dump complex mixed values', () => {
         /* eslint-disable no-empty-function */
         function Foo() {}
         /* eslint-enable no-empty-function */
 
-        var actual = dumper.dump([
+        const actual = dumper.dump([
             undefined,
             null,
             new Foo(),
@@ -114,7 +112,7 @@ describe('jsdoc/util/dumper', function() {
                 }
             }
         ]);
-        var expected = '' +
+        const expected = '' +
             '[\n' +
             '    null,\n' +
             '    null,\n' +
@@ -138,11 +136,11 @@ describe('jsdoc/util/dumper', function() {
         expect(actual).toBe(expected);
     });
 
-    describe('circular references', function() {
-        it('should not crash on circular references', function() {
-            var a = {};
-            var actual;
-            var expected;
+    describe('circular references', () => {
+        it('should not crash on circular references', () => {
+            const a = {};
+            let actual;
+            let expected;
 
             a.b = a;
             actual = dumper.dump(a);
@@ -151,16 +149,16 @@ describe('jsdoc/util/dumper', function() {
             expect(actual).toBe(expected);
         });
 
-        it('should not treat references between different objects as circular refs', function() {
-            var a = [
+        it('should not treat references between different objects as circular refs', () => {
+            const a = [
                 {
                     b: {
                         c: 1
                     }
                 }
             ];
-            var actual;
-            var expected;
+            let actual;
+            let expected;
 
             a[1] = { d: a[0].b };
             actual = dumper.dump(a);
@@ -182,12 +180,12 @@ describe('jsdoc/util/dumper', function() {
         });
     });
 
-    describe('multiple arguments', function() {
-        it('should dump all of its arguments, separated by newlines', function() {
-            var a = { b: 1 };
-            var b = 'hello';
-            var actual = dumper.dump(a, b);
-            var expected = '' +
+    describe('multiple arguments', () => {
+        it('should dump all of its arguments, separated by newlines', () => {
+            const a = { b: 1 };
+            const b = 'hello';
+            const actual = dumper.dump(a, b);
+            const expected = '' +
                 '{\n' +
                 '    "b": 1\n' +
                 '}\n' +

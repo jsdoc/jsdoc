@@ -1,20 +1,18 @@
-'use strict';
+describe('async functions', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/asyncfunction.js');
+    const add = docSet.getByLongname('add')[0];
+    const subtract = docSet.getByLongname('subtract')[0];
+    const adderAdd = docSet.getByLongname('Adder#add')[0];
 
-describe('async functions', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/asyncfunction.js');
-    var add = docSet.getByLongname('add')[0];
-    var subtract = docSet.getByLongname('subtract')[0];
-    var adderAdd = docSet.getByLongname('Adder#add')[0];
-
-    it('should automatically document async functions as async', function() {
+    it('should automatically document async functions as async', () => {
         expect(add.async).toBe(true);
     });
 
-    it('should work when the async function is assigned to a variable', function() {
+    it('should work when the async function is assigned to a variable', () => {
         expect(subtract.async).toBe(true);
     });
 
-    it('should work when the async function is a method definition', function() {
+    it('should work when the async function is a method definition', () => {
         expect(adderAdd.async).toBe(true);
     });
 });

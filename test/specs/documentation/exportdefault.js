@@ -1,10 +1,8 @@
-'use strict';
+describe('export default', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/exportdefault.js');
+    const member = docSet.getByLongname('module:test')[1];
 
-describe('export default', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/exportdefault.js');
-    var member = docSet.getByLongname('module:test')[1];
-
-    it('should use the correct kind and description for the default export', function() {
+    it('should use the correct kind and description for the default export', () => {
         expect(member.kind).toBe('member');
         expect(member.description).toBe('Test value');
     });

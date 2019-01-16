@@ -1,15 +1,13 @@
-'use strict';
-
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
-describe('plugins', function() {
-    var app = require('jsdoc/app');
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
+describe('plugins', () => {
+    const app = require('jsdoc/app');
+    const env = require('jsdoc/env');
+    const path = require('jsdoc/path');
 
-    var docSet;
-    var pluginPaths = [
-        path.normalize(env.dirname + '/test/fixtures/testPlugin1'),
-        path.normalize(env.dirname + '/test/fixtures/testPlugin2')
+    let docSet;
+    const pluginPaths = [
+        path.normalize(`${env.dirname}/test/fixtures/testPlugin1`),
+        path.normalize(`${env.dirname}/test/fixtures/testPlugin2`)
     ];
 
     // TODO: decouple this from the global parser
@@ -21,7 +19,7 @@ describe('plugins', function() {
 
     docSet = jasmine.getDocSetFromFile('test/fixtures/plugins.js', app.jsdoc.parser, false);
 
-    it("should fire the plugin's event handlers", function() {
+    it("should fire the plugin's event handlers", () => {
         expect(global.jsdocPluginsTest.plugin1.fileBegin).toBeDefined();
         expect(global.jsdocPluginsTest.plugin1.fileBegin).toBe(true);
         expect(global.jsdocPluginsTest.plugin1.beforeParse).toBeDefined();
@@ -49,8 +47,8 @@ describe('plugins', function() {
         expect(global.jsdocPluginsTest.plugin2.fileComplete).toBe(true);
     });
 
-    it("should add the plugin's tag definitions to the dictionary", function() {
-        var test = docSet.getByLongname('test');
+    it("should add the plugin's tag definitions to the dictionary", () => {
+        const test = docSet.getByLongname('test');
 
         expect(test[0].longname).toBe('test');
         expect(test[0].foo).toBe(true);

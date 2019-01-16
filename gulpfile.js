@@ -1,12 +1,10 @@
 /* eslint max-nested-callbacks: 0 */
-'use strict';
-
-var eslint = require('gulp-eslint');
-var exec = require('child_process').exec;
-var gulp = require('gulp');
-var jsonEditor = require('gulp-json-editor');
-var path = require('path');
-var util = require('util');
+const eslint = require('gulp-eslint');
+const exec = require('child_process').exec;
+const gulp = require('gulp');
+const jsonEditor = require('gulp-json-editor');
+const path = require('path');
+const util = require('util');
 
 function execCb(cb, err, stdout, stderr) {
     console.log(stdout);
@@ -14,7 +12,7 @@ function execCb(cb, err, stdout, stderr) {
     cb(err);
 }
 
-var options = {
+const options = {
     coveragePaths: [
         '*.js',
         'lib/**/*.js',
@@ -43,7 +41,7 @@ function bump(cb) {
 }
 
 function coverage(cb) {
-    var cmd = util.format('./node_modules/.bin/nyc --reporter=html %s -T', options.nodeBin);
+    const cmd = util.format('./node_modules/.bin/nyc --reporter=html %s -T', options.nodeBin);
 
     exec(cmd, execCb.bind(null, cb));
 }
@@ -58,7 +56,7 @@ function lint(cb) {
 }
 
 function test(cb) {
-    var cmd = util.format('%s "%s" -T', options.nodePath, options.nodeBin);
+    const cmd = util.format('%s "%s" -T', options.nodePath, options.nodeBin);
 
     exec(cmd, execCb.bind(null, cb));
 }

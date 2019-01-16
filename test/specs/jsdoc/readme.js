@@ -1,11 +1,9 @@
-'use strict';
+describe('jsdoc/readme', () => {
+    const jsdoc = { readme: require('jsdoc/readme') };
+    const Readme = jsdoc.readme;
+    const html = (new Readme('test/fixtures/markdowntest.md')).html;
 
-describe('jsdoc/readme', function() {
-    var jsdoc = { readme: require('jsdoc/readme') };
-    var Readme = jsdoc.readme;
-    var html = (new Readme('test/fixtures/markdowntest.md')).html;
-
-    it('should convert Markdown files to HTML', function() {
+    it('should convert Markdown files to HTML', () => {
         expect(html).toBeDefined();
         expect(typeof html).toBe('string');
         expect(html).toContain('<code>');

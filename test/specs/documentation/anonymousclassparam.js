@@ -1,7 +1,5 @@
-'use strict';
-
-describe('anonymous class passed as a parameter', function() {
-    it('should not crash JSDoc', function() {
+describe('anonymous class passed as a parameter', () => {
+    it('should not crash JSDoc', () => {
         function loadFile() {
             jasmine.getDocSetFromFile('test/fixtures/anonymousclassparam.js');
         }

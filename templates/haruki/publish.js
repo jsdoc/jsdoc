@@ -4,26 +4,22 @@
     @version 0.0.3
     @example
         ./jsdoc scratch/jsdoc_test.js -t templates/haruki -d console -q format=xml
- */
-'use strict';
+*/
+const xml = require('js2xmlparser');
 
-var xml = require('js2xmlparser');
-
-var hasOwnProp = Object.prototype.hasOwnProperty;
+const hasOwnProp = Object.prototype.hasOwnProperty;
 
 function graft(parentNode, childNodes, parentLongname) {
     childNodes
-    .filter(function(element) {
-        return (element.memberof === parentLongname);
-    })
-    .forEach(function(element) {
-        var i;
-        var len;
-        var thisClass;
-        var thisEvent;
-        var thisFunction;
-        var thisMixin;
-        var thisNamespace;
+    .filter(({memberof}) => memberof === parentLongname)
+    .forEach(element => {
+        let i;
+        let len;
+        let thisClass;
+        let thisEvent;
+        let thisFunction;
+        let thisMixin;
+        let thisNamespace;
 
         if (element.kind === 'namespace') {
             if (!parentNode.namespaces) {
@@ -205,17 +201,17 @@ function graft(parentNode, childNodes, parentLongname) {
     @param {TAFFY} data
     @param {object} opts
  */
-exports.publish = function(data, opts) {
-    var docs;
-    var root = {};
+exports.publish = (data, {destination, query}) => {
+    let docs;
+    const root = {};
 
     data({undocumented: true}).remove();
     docs = data().get(); // <-- an array of Doclet objects
 
     graft(root, docs);
 
-    if (opts.destination === 'console') {
-        if (opts.query && opts.query.format === 'xml') {
+    if (destination === 'console') {
+        if (query && query.format === 'xml') {
             console.log( xml.parse('jsdoc', root) );
         }
         else {

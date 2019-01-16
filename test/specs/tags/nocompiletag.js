@@ -1,39 +1,37 @@
-'use strict';
+describe('@nocompile tag', () => {
+    const env = require('jsdoc/env');
+    const logger = require('jsdoc/util/logger');
 
-describe('@nocompile tag', function() {
-    var env = require('jsdoc/env');
-    var logger = require('jsdoc/util/logger');
+    const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
-    var allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
-
-    beforeEach(function() {
+    beforeEach(() => {
         env.conf.tags.allowUnknownTags = false;
         spyOn(logger, 'error');
     });
 
-    afterEach(function() {
+    afterEach(() => {
         jasmine.restoreTagDictionary();
         env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 
-    describe('JSDoc tags', function() {
-        beforeEach(function() {
+    describe('JSDoc tags', () => {
+        beforeEach(() => {
             jasmine.replaceTagDictionary('jsdoc');
         });
 
-        it('should not recognize the @nocompile tag', function() {
+        it('should not recognize the @nocompile tag', () => {
             jasmine.getDocSetFromFile('test/fixtures/nocompiletag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
     });
 
-    describe('Closure Compiler tags', function() {
-        beforeEach(function() {
+    describe('Closure Compiler tags', () => {
+        beforeEach(() => {
             jasmine.replaceTagDictionary('closure');
         });
 
-        it('should recognize the @nocompile tag', function() {
+        it('should recognize the @nocompile tag', () => {
             jasmine.getDocSetFromFile('test/fixtures/nocompiletag.js');
 
             expect(logger.error).not.toHaveBeenCalled();

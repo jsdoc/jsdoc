@@ -1,5 +1,3 @@
-'use strict';
-
-xdescribe('jsdoc/template', function() {
+xdescribe('jsdoc/template', () => {
     // TODO
 });

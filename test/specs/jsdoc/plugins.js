@@ -1,19 +1,17 @@
-'use strict';
+describe('jsdoc/plugins', () => {
+    const plugins = require('jsdoc/plugins');
 
-describe('jsdoc/plugins', function() {
-    var plugins = require('jsdoc/plugins');
-
-    it('should exist', function() {
+    it('should exist', () => {
         expect(plugins).toBeDefined();
         expect(typeof plugins).toBe('object');
     });
 
-    it('should export an "installPlugins" function', function() {
+    it('should export an "installPlugins" function', () => {
         expect(plugins.installPlugins).toBeDefined();
         expect(typeof plugins.installPlugins).toBe('function');
     });
 
-    xdescribe('installPlugins', function() {
+    xdescribe('installPlugins', () => {
         // TODO
     });
 });

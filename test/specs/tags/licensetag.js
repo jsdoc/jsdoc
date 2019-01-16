@@ -1,10 +1,8 @@
-'use strict';
+describe('@license tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/licensetag.js');
+    const doc = docSet.getByLongname('x')[0];
 
-describe('@license tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/licensetag.js');
-    var doc = docSet.getByLongname('x')[0];
-
-    it("sets the doclet's 'license' property to the tag value", function() {
+    it("sets the doclet's 'license' property to the tag value", () => {
         expect(doc.license).toBe('GPL v2');
     });
 });

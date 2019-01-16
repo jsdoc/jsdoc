@@ -1,8 +1,6 @@
-'use strict';
-
-describe('JSX support', function() {
-    it('should parse JSX files without errors', function() {
-        var logger = require('jsdoc/util/logger');
+describe('JSX support', () => {
+    it('should parse JSX files without errors', () => {
+        const logger = require('jsdoc/util/logger');
 
         function parseJsx() {
             return jasmine.getDocSetFromFile('test/fixtures/jsx.js');

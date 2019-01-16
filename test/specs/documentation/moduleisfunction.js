@@ -1,22 +1,18 @@
-'use strict';
+describe('module that exports a function that is not a constructor', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/moduleisfunction.js');
+    const functions = docSet.doclets.filter(({kind}) => kind === 'function');
 
-describe('module that exports a function that is not a constructor', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/moduleisfunction.js');
-    var functions = docSet.doclets.filter(function(doclet) {
-        return doclet.kind === 'function';
-    });
-
-    it('should include one doclet whose kind is "function"', function() {
+    it('should include one doclet whose kind is "function"', () => {
         expect(functions.length).toBe(1);
         expect(functions[0].kind).toBe('function');
     });
 
-    describe('function doclet', function() {
-        it('should not include a "scope" property', function() {
+    describe('function doclet', () => {
+        it('should not include a "scope" property', () => {
             expect(functions[0].scope).not.toBeDefined();
         });
 
-        it('should not include a "memberof" property', function() {
+        it('should not include a "memberof" property', () => {
             expect(functions[0].memberof).not.toBeDefined();
         });
     });

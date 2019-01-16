@@ -1,50 +1,48 @@
-'use strict';
-
-describe('jsdoc/config', function() {
-    var jsdoc = {
+describe('jsdoc/config', () => {
+    const jsdoc = {
         config: require('jsdoc/config')
     };
-    var Config = jsdoc.config;
+    const Config = jsdoc.config;
 
-    it('should exist', function() {
+    it('should exist', () => {
         expect(jsdoc.config).toBeDefined();
         expect(typeof jsdoc.config).toBe('function');
     });
 
-    it('should provide a "get" instance function', function() {
-        var config = new Config();
+    it('should provide a "get" instance function', () => {
+        const config = new Config();
 
         expect(config.get).toBeDefined();
         expect(typeof config.get).toBe('function');
     });
 
-    describe('constructor with empty', function() {
-        it('should be possible to construct a Config with an empty arguments', function() {
-            var config = new Config().get();
+    describe('constructor with empty', () => {
+        it('should be possible to construct a Config with an empty arguments', () => {
+            const config = new Config().get();
 
             expect( Array.isArray(config.plugins) ).toBe(true);
             expect(config.plugins.length).toBe(0);
         });
     });
 
-    describe('constructor with {}', function() {
-        it('should be possible to construct a Config with JSON of an object literal that is empty', function() {
-            var config = new Config('{}').get();
+    describe('constructor with {}', () => {
+        it('should be possible to construct a Config with JSON of an object literal that is empty', () => {
+            const config = new Config('{}').get();
 
             expect( Array.isArray(config.plugins) ).toBe(true);
             expect(config.plugins.length).toBe(0);
         });
 
-        it('should be possible to construct a Config with an empty JavaScript object', function() {
-            var config = new Config({}).get();
+        it('should be possible to construct a Config with an empty JavaScript object', () => {
+            const config = new Config({}).get();
 
             expect( Array.isArray(config.plugins) ).toBe(true);
             expect(config.plugins.length).toBe(0);
         });
     });
 
-    describe('constructor with leading BOM', function() {
-        it('should be possible to construct a Config with JSON that has a leading BOM', function() {
+    describe('constructor with leading BOM', () => {
+        it('should be possible to construct a Config with JSON that has a leading BOM', () => {
             function getConfig() {
                 return new Config('\uFEFF{}').get();
             }
@@ -53,8 +51,8 @@ describe('jsdoc/config', function() {
         });
     });
 
-    describe('constructor with comments', function() {
-        it('should be possible to construct a Config with JSON that includes comments', function() {
+    describe('constructor with comments', () => {
+        it('should be possible to construct a Config with JSON that includes comments', () => {
             function getConfig() {
                 return new Config('{\n// comment\n}').get();
             }
@@ -63,17 +61,17 @@ describe('jsdoc/config', function() {
         });
     });
 
-    describe('constructor with plugins value', function() {
-        it('should be possible to construct a Config with JSON of an object literal that has a plugin value', function() {
-            var config = new Config('{"plugins":[42]}').get();
+    describe('constructor with plugins value', () => {
+        it('should be possible to construct a Config with JSON of an object literal that has a plugin value', () => {
+            const config = new Config('{"plugins":[42]}').get();
 
             expect( Array.isArray(config.plugins) ).toBe(true);
             expect(config.plugins.length).toBe(1);
             expect(config.plugins[0]).toBe(42);
         });
 
-        it('should be possible to construct a Config with a JavaScript object that has a plugin value', function() {
-            var config = new Config({'plugins': [42]}).get();
+        it('should be possible to construct a Config with a JavaScript object that has a plugin value', () => {
+            const config = new Config({'plugins': [42]}).get();
 
             expect( Array.isArray(config.plugins) ).toBe(true);
             expect(config.plugins.length).toBe(1);
@@ -81,15 +79,15 @@ describe('jsdoc/config', function() {
         });
     });
 
-    describe('constructor with source value', function() {
-        it('should be possible to construct a Config with JSON of an object literal that has a source value', function() {
-            var config = new Config('{"source":{"includePattern":"hello"}}').get();
+    describe('constructor with source value', () => {
+        it('should be possible to construct a Config with JSON of an object literal that has a source value', () => {
+            const config = new Config('{"source":{"includePattern":"hello"}}').get();
 
             expect(config.source.includePattern).toBe('hello');
         });
 
-        it('should be possible to construct a Config with a JavaScript object that has a source value', function() {
-            var config = new Config({'source': {'includePattern': 'hello'}}).get();
+        it('should be possible to construct a Config with a JavaScript object that has a source value', () => {
+            const config = new Config({'source': {'includePattern': 'hello'}}).get();
 
             expect(config.source.includePattern).toBe('hello');
         });

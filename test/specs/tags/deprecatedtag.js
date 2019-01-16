@@ -1,15 +1,13 @@
-'use strict';
+describe('@deprecated tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/deprecatedtag.js');
+    const foo = docSet.getByLongname('foo')[0];
+    const bar = docSet.getByLongname('bar')[0];
 
-describe('@deprecated tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/deprecatedtag.js');
-    var foo = docSet.getByLongname('foo')[0];
-    var bar = docSet.getByLongname('bar')[0];
-
-    it('When a symbol has a @deprecated tag with no value, the doclet has a deprecated property set to true.', function() {
+    it('When a symbol has a @deprecated tag with no value, the doclet has a deprecated property set to true.', () => {
         expect(foo.deprecated).toBe(true);
     });
 
-    it('When a symbol has a @deprecated tag with a value, the doclet has a deprecated property set to that value.', function() {
+    it('When a symbol has a @deprecated tag with a value, the doclet has a deprecated property set to that value.', () => {
         expect(bar.deprecated).toBe('since version 2.0');
     });
 });

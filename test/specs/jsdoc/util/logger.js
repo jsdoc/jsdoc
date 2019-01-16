@@ -1,71 +1,69 @@
-'use strict';
+describe('jsdoc/util/logger', () => {
+    const logger = require('jsdoc/util/logger');
 
-describe('jsdoc/util/logger', function() {
-    var logger = require('jsdoc/util/logger');
+    const loggerArgs = ['foo bar %s', 'hello'];
 
-    var loggerArgs = ['foo bar %s', 'hello'];
-
-    it('should exist', function() {
+    it('should exist', () => {
         expect(logger).toBeDefined();
         expect(typeof logger).toBe('object');
     });
 
-    it('should inherit from EventEmitter', function() {
-        var EventEmitter = require('events').EventEmitter;
+    it('should inherit from EventEmitter', () => {
+        const EventEmitter = require('events').EventEmitter;
 
         expect(logger instanceof EventEmitter).toBe(true);
     });
 
-    it('should export a "debug" method', function() {
+    it('should export a "debug" method', () => {
         expect(logger.debug).toBeDefined();
         expect(typeof logger.debug).toBe('function');
     });
 
-    it('should export an "error" method', function() {
+    it('should export an "error" method', () => {
         expect(logger.error).toBeDefined();
         expect(typeof logger.error).toBe('function');
     });
 
-    it('should export a "fatal" method', function() {
+    it('should export a "fatal" method', () => {
         expect(logger.fatal).toBeDefined();
         expect(typeof logger.fatal).toBe('function');
     });
 
-    it('should export a "getLevel" method', function() {
+    it('should export a "getLevel" method', () => {
         expect(logger.getLevel).toBeDefined();
         expect(typeof logger.getLevel).toBe('function');
     });
 
-    it('should export an "info" method', function() {
+    it('should export an "info" method', () => {
         expect(logger.info).toBeDefined();
         expect(typeof logger.info).toBe('function');
     });
 
-    it('should export a "LEVELS" object', function() {
+    it('should export a "LEVELS" object', () => {
         expect(logger.LEVELS).toBeDefined();
         expect(typeof logger.LEVELS).toBe('object');
     });
 
-    it('should export a "setLevel" method', function() {
+    it('should export a "setLevel" method', () => {
         expect(logger.setLevel).toBeDefined();
         expect(typeof logger.setLevel).toBe('function');
     });
 
-    it('should export a "verbose" method', function() {
+    it('should export a "verbose" method', () => {
         expect(logger.verbose).toBeDefined();
         expect(typeof logger.verbose).toBe('function');
     });
 
-    it('should export a "warn" method', function() {
+    it('should export a "warn" method', () => {
         expect(logger.warn).toBeDefined();
         expect(typeof logger.warn).toBe('function');
     });
 
     // helpers for testing logger methods
     function eventIsEmitted(name) {
-        var called = false;
+        let called = false;
 
-        logger.once('logger:' + name, function() {
+        logger.once(`logger:${name}`, () => {
             called = true;
         });
         logger[name]();
@@ -74,77 +72,77 @@ describe('jsdoc/util/logger', function() {
     }
 
     function eventGetsArguments(name) {
-        var args;
+        let capturedArgs;
 
-        logger.once('logger:' + name, function() {
-            args = Array.prototype.slice.call(arguments, 0);
+        logger.once(`logger:${name}`, (...args) => {
+            capturedArgs = args.slice();
         });
         logger[name](loggerArgs[0], loggerArgs[1]);
 
-        expect(args).toBeDefined();
-        expect( Array.isArray(args) ).toBe(true);
-        expect(args[0]).toBe(loggerArgs[0]);
-        expect(args[1]).toBe(loggerArgs[1]);
+        expect(capturedArgs).toBeDefined();
+        expect( Array.isArray(capturedArgs) ).toBe(true);
+        expect(capturedArgs[0]).toBe(loggerArgs[0]);
+        expect(capturedArgs[1]).toBe(loggerArgs[1]);
     }
 
-    describe('debug', function() {
-        var methodName = 'debug';
+    describe('debug', () => {
+        const methodName = 'debug';
 
-        it('should cause the logger to emit the correct event', function() {
+        it('should cause the logger to emit the correct event', () => {
             eventIsEmitted(methodName);
         });
 
-        it('should pass its arguments to listeners', function() {
+        it('should pass its arguments to listeners', () => {
             eventGetsArguments(methodName);
         });
     });
 
-    describe('error', function() {
-        var methodName = 'error';
+    describe('error', () => {
+        const methodName = 'error';
 
-        it('should cause the logger to emit the correct event', function() {
+        it('should cause the logger to emit the correct event', () => {
             eventIsEmitted(methodName);
         });
 
-        it('should pass its arguments to listeners', function() {
+        it('should pass its arguments to listeners', () => {
             eventGetsArguments(methodName);
         });
     });
 
-    describe('fatal', function() {
-        var methodName = 'fatal';
+    describe('fatal', () => {
+        const methodName = 'fatal';
 
-        it('should cause the logger to emit the correct event', function() {
+        it('should cause the logger to emit the correct event', () => {
             eventIsEmitted(methodName);
         });
 
-        it('should pass its arguments to listeners', function() {
+        it('should pass its arguments to listeners', () => {
             eventGetsArguments(methodName);
         });
     });
 
-    describe('getLevel', function() {
-        it('should return LEVELS.SILENT when we are running tests', function() {
+    describe('getLevel', () => {
+        it('should return LEVELS.SILENT when we are running tests', () => {
             expect( logger.getLevel() ).toBe(logger.LEVELS.SILENT);
         });
     });
 
-    describe('info', function() {
-        var methodName = 'info';
+    describe('info', () => {
+        const methodName = 'info';
 
-        it('should cause the logger to emit the correct event', function() {
+        it('should cause the logger to emit the correct event', () => {
             eventIsEmitted(methodName);
         });
 
-        it('should pass its arguments to listeners', function() {
+        it('should pass its arguments to listeners', () => {
             eventGetsArguments(methodName);
         });
     });
 
-    describe('LEVELS', function() {
-        var LEVELS = logger.LEVELS;
+    describe('LEVELS', () => {
+        const LEVELS = logger.LEVELS;
 
-        it('should include the correct properties', function() {
+        it('should include the correct properties', () => {
             expect(LEVELS.VERBOSE).toBeDefined();
             expect(LEVELS.DEBUG).toBeDefined();
             expect(LEVELS.INFO).toBeDefined();
@@ -153,7 +151,7 @@ describe('jsdoc/util/logger', function() {
             expect(LEVELS.SILENT).toBeDefined();
         });
 
-        it('should weight the logging levels correctly relative to one another', function() {
+        it('should weight the logging levels correctly relative to one another', () => {
             expect(LEVELS.VERBOSE).toBeGreaterThan(LEVELS.DEBUG);
             expect(LEVELS.DEBUG).toBeGreaterThan(LEVELS.INFO);
             expect(LEVELS.INFO).toBeGreaterThan(LEVELS.WARN);
@@ -162,39 +160,39 @@ describe('jsdoc/util/logger', function() {
         });
     });
 
-    describe('setLevel', function() {
-        var oldLevel = logger.getLevel();
+    describe('setLevel', () => {
+        const oldLevel = logger.getLevel();
 
-        afterEach(function() {
+        afterEach(() => {
             logger.setLevel(oldLevel);
         });
 
-        it('should update the log level', function() {
+        it('should update the log level', () => {
             logger.setLevel(logger.LEVELS.VERBOSE);
             expect( logger.getLevel() ).toBe(logger.LEVELS.VERBOSE);
         });
     });
 
-    describe('verbose', function() {
-        var methodName = 'verbose';
+    describe('verbose', () => {
+        const methodName = 'verbose';
 
-        it('should cause the logger to emit the correct event', function() {
+        it('should cause the logger to emit the correct event', () => {
             eventIsEmitted(methodName);
         });
 
-        it('should pass its arguments to listeners', function() {
+        it('should pass its arguments to listeners', () => {
             eventGetsArguments(methodName);
         });
     });
 
-    describe('warn', function() {
-        var methodName = 'warn';
+    describe('warn', () => {
+        const methodName = 'warn';
 
-        it('should cause the logger to emit the correct event', function() {
+        it('should cause the logger to emit the correct event', () => {
             eventIsEmitted(methodName);
         });
 
-        it('should pass its arguments to listeners', function() {
+        it('should pass its arguments to listeners', () => {
             eventGetsArguments(methodName);
         });
     });

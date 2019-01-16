@@ -3,8 +3,6 @@
  *
  * @module plugins/railsTemplate
  */
-'use strict';
-
 exports.handlers = {
     /**
      * Remove rails tags from the source input (e.g. <% foo bar %>)
@@ -13,7 +11,7 @@ exports.handlers = {
      * @param e.filename
      * @param e.source
      */
-    beforeParse: function(e) {
+    beforeParse(e) {
         if (e.filename.match(/\.erb$/)) {
             e.source = e.source.replace(/<%.*%>/g, '');
         }

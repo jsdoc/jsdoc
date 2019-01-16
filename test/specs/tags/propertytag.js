@@ -1,9 +1,7 @@
-'use strict';
-
-describe('@property tag', function() {
-    it('When a symbol has a @property tag, the property appears in the doclet.', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/propertytag.js');
-        var myobject = docSet.getByLongname('myobject')[0];
+describe('@property tag', () => {
+    it('When a symbol has a @property tag, the property appears in the doclet.', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/propertytag.js');
+        const myobject = docSet.getByLongname('myobject')[0];
 
         expect(typeof myobject.properties).toBe('object');
         expect(myobject.properties.length).toBe(4);
@@ -20,9 +18,9 @@ describe('@property tag', function() {
         expect(myobject.properties[1].type.names[0]).toBe('Object');
     });
 
-    it('When a symbol has a @property tag for a numeric property, the property appears in the doclet.', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/numericpropertytag.js');
-        var numericObject = docSet.getByLongname('numericObject')[0];
+    it('When a symbol has a @property tag for a numeric property, the property appears in the doclet.', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/numericpropertytag.js');
+        const numericObject = docSet.getByLongname('numericObject')[0];
 
         expect(typeof numericObject.properties).toBe('object');
         expect(numericObject.properties.length).toBe(3);

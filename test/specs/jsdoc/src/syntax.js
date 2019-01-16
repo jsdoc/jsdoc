@@ -1,9 +1,7 @@
-'use strict';
+describe('jsdoc/src/syntax', () => {
+    const Syntax = require('jsdoc/src/syntax').Syntax;
 
-describe('jsdoc/src/syntax', function() {
-    var Syntax = require('jsdoc/src/syntax').Syntax;
-
-    it('should exist', function() {
+    it('should exist', () => {
         expect(Syntax).toBeDefined();
         expect(typeof Syntax).toBe('object');
     });

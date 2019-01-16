@@ -1,30 +1,28 @@
-'use strict';
+describe('@type tag inline with function parameters', () => {
+    let info;
 
-describe('@type tag inline with function parameters', function() {
-    var info;
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/typetaginline.js');
 
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/typetaginline.js');
+    function checkParams({params}, paramInfo) {
+        expect(params).toBeDefined();
+        expect(params.length).toBe(paramInfo.length);
 
-    function checkParams(doclet, paramInfo) {
-        expect(doclet.params).toBeDefined();
-        expect(doclet.params.length).toBe(paramInfo.length);
-
-        doclet.params.forEach(function(param, i) {
-            expect(param.name).toBe(paramInfo[i].name);
-            expect(param.type.names[0]).toBe(paramInfo[i].typeName);
+        params.forEach(({name, type, description}, i) => {
+            expect(name).toBe(paramInfo[i].name);
+            expect(type.names[0]).toBe(paramInfo[i].typeName);
             if (paramInfo[i].description !== undefined) {
-                expect(param.description).toBe(paramInfo[i].description);
+                expect(description).toBe(paramInfo[i].description);
             }
         });
     }
 
-    beforeEach(function() {
+    beforeEach(() => {
         info = [];
     });
 
     it('When a function parameter has an inline @type tag, the parameter type is documented',
-        function() {
-            var dispense = docSet.getByLongname('dispense')[0];
+        () => {
+            const dispense = docSet.getByLongname('dispense')[0];
 
             info[0] = {
                 name: 'candy',
@@ -35,8 +33,8 @@ describe('@type tag inline with function parameters', function() {
         });
 
     it('When a function parameter has a standard JSDoc comment and an inline @type tag, the docs ' +
-        'reflect the standard JSDoc comment', function() {
-        var Dispenser = docSet.getByLongname('Dispenser')[0];
+        'reflect the standard JSDoc comment', () => {
+        const Dispenser = docSet.getByLongname('Dispenser')[0];
 
         info[0] = {
             name: 'candyId',
@@ -49,8 +47,8 @@ describe('@type tag inline with function parameters', function() {
 
     it('When a function accepts multiple parameters, and only the first parameter is documented ' +
         'with an inline @type tag, the function parameters are documented in the correct order',
-    function() {
-        var restock = docSet.getByLongname('restock')[0];
+    () => {
+        const restock = docSet.getByLongname('restock')[0];
 
         info[0] = {
             name: 'dispenser',
@@ -66,8 +64,8 @@ describe('@type tag inline with function parameters', function() {
 
     it('When a function accepts multiple parameters, and only the last parameter is documented ' +
         'with an inline @type tag, the function parameters are documented in the correct order',
-    function() {
-        var clean = docSet.getByLongname('clean')[0];
+    () => {
+        const clean = docSet.getByLongname('clean')[0];
 
         info[0] = {
             name: 'dispenser',
@@ -83,8 +81,8 @@ describe('@type tag inline with function parameters', function() {
 
     it('When a function accepts multiple parameters, and a parameter in the middle is documented ' +
         'with an inline @type tag, the function parameters are documented in the correct order',
-    function() {
-        var paint = docSet.getByLongname('paint')[0];
+    () => {
+        const paint = docSet.getByLongname('paint')[0];
 
         info[0] = {
             name: 'dispenser',

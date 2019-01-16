@@ -5,6 +5,10 @@
         "node": true
     },
 
+    "parserOptions": {
+        "sourceType": "module"
+    },
+
     "rules": {
         // Possible errors
         "for-direction": "error",
@@ -270,7 +274,7 @@
 
         // ECMAScript 2015
         "arrow-body-style": ["error", "as-needed"],
-        "arrow-parens": ["error", "always"],
+        "arrow-parens": "off",
         "arrow-spacing": ["error", {
             "before": true,
             "after": true

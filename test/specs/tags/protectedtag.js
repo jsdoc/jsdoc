@@ -1,28 +1,26 @@
-'use strict';
+const logger = require('jsdoc/util/logger');
 
-var logger = require('jsdoc/util/logger');
-
-describe('@protected tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/protectedtag.js');
-    var uidCounter = docSet.getByLongname('module:uid~uidCounter')[0];
-    var uidRoot = docSet.getByLongname('module:uid~uidObjects.root')[0];
+describe('@protected tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/protectedtag.js');
+    const uidCounter = docSet.getByLongname('module:uid~uidCounter')[0];
+    const uidRoot = docSet.getByLongname('module:uid~uidObjects.root')[0];
 
     it('When a symbol has a @protected tag, the doclet has an `access` property set to ' +
-        '`protected`.', function() {
+        '`protected`.', () => {
         expect(uidCounter.access).toBe('protected');
     });
 
     it('When a symbol tagged with @protected has members, the members do not inherit the ' +
-        '@protected tag.', function() {
+        '@protected tag.', () => {
         expect(uidRoot.access).not.toBeDefined();
     });
 
-    describe('JSDoc tags', function() {
-        afterEach(function() {
+    describe('JSDoc tags', () => {
+        afterEach(() => {
             jasmine.restoreTagDictionary();
         });
 
-        it('When JSDoc tags are enabled, the @protected tag does not accept a value.', function() {
+        it('When JSDoc tags are enabled, the @protected tag does not accept a value.', () => {
             jasmine.replaceTagDictionary('jsdoc');
             spyOn(logger, 'warn');
 
@@ -32,15 +30,15 @@ describe('@protected tag', function() {
         });
     });
 
-    describe('Closure Compiler tags', function() {
-        afterEach(function() {
+    describe('Closure Compiler tags', () => {
+        afterEach(() => {
             jasmine.restoreTagDictionary();
         });
 
         it('When Closure Compiler tags are enabled, the @private tag accepts a type expression.',
-            function() {
-                var counter;
-                var protectedDocs;
+            () => {
+                let counter;
+                let protectedDocs;
 
                 jasmine.replaceTagDictionary('closure');
                 spyOn(logger, 'warn');

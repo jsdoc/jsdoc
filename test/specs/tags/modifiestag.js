@@ -1,10 +1,8 @@
-'use strict';
+describe('@modifies tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/modifiestag.js');
+    const mutator = docSet.getByLongname('mutator')[0];
 
-describe('@modifies tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/modifiestag.js');
-    var mutator = docSet.getByLongname('mutator')[0];
-
-    it('should add the specified types to the doclet\'s `modifies` property', function() {
+    it('should add the specified types to the doclet\'s `modifies` property', () => {
         expect(mutator.modifies.length).toBe(1);
         expect(mutator.modifies[0].type).toBeDefined();
         expect(mutator.modifies[0].type.names).toBeDefined();

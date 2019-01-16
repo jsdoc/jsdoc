@@ -1,9 +1,7 @@
 /**
  * @module plugins/sourcetag
  */
-'use strict';
-
-var logger = require('jsdoc/util/logger');
+const logger = require('jsdoc/util/logger');
 
 exports.handlers = {
     /**
@@ -19,17 +17,15 @@ exports.handlers = {
      *
      * @source { "filename": "sourcetag.js", "lineno": 9 }
      */
-    newDoclet: function(e) {
-        var tags = e.doclet.tags;
-        var tag;
-        var value;
+    newDoclet({doclet}) {
+        let tags = doclet.tags;
+        let tag;
+        let value;
 
         // any user-defined tags in this doclet?
         if (typeof tags !== 'undefined') {
             // only interested in the @source tags
-            tags = tags.filter(function($) {
-                return $.title === 'source';
-            });
+            tags = tags.filter(({title}) => title === 'source');
 
             if (tags.length) {
                 // take the first one
@@ -44,9 +40,9 @@ exports.handlers = {
                     return;
                 }
 
-                e.doclet.meta = e.doclet.meta || {};
-                e.doclet.meta.filename = value.filename || '';
-                e.doclet.meta.lineno = value.lineno || '';
+                doclet.meta = doclet.meta || {};
+                doclet.meta.filename = value.filename || '';
+                doclet.meta.lineno = value.lineno || '';
             }
         }
     }

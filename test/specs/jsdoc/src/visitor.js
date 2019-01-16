@@ -1,37 +1,35 @@
-'use strict';
-
-describe('jsdoc/src/visitor', function() {
+describe('jsdoc/src/visitor', () => {
     // TODO: more tests
 
-    var jsdoc = {
+    const jsdoc = {
         src: {
             parser: require('jsdoc/src/parser'),
             visitor: require('jsdoc/src/visitor')
         }
     };
-    var parser = new jsdoc.src.parser.Parser();
-    var visitor = new jsdoc.src.visitor.Visitor();
+    const parser = new jsdoc.src.parser.Parser();
+    const visitor = new jsdoc.src.visitor.Visitor();
 
-    describe('visitNodeComments', function() {
+    describe('visitNodeComments', () => {
         // TODO: more tests
 
-        var events = [];
+        let events = [];
 
         function listener(event) {
             events.push(event);
         }
 
-        beforeEach(function() {
+        beforeEach(() => {
             parser.addListener('jsdocCommentFound', listener);
         });
 
-        afterEach(function() {
+        afterEach(() => {
             parser.removeListener('jsdocCommentFound', listener);
             events = [];
         });
 
-        it('should ignore line comments', function() {
-            var node = {
+        it('should ignore line comments', () => {
+            const node = {
                 leadingComments: [
                     {
                         type: 'CommentLine',
@@ -51,8 +49,8 @@ describe('jsdoc/src/visitor', function() {
             expect(events).toEqual([]);
         });
 
-        it('should ignore normal, non-JSDoc block comments', function() {
-            var node = {
+        it('should ignore normal, non-JSDoc block comments', () => {
+            const node = {
                 leadingComments: [
                     {
                         type: 'CommentBlock',
@@ -72,8 +70,8 @@ describe('jsdoc/src/visitor', function() {
             expect(events).toEqual([]);
         });
 
-        it('should ignore comments that begin with three or more asterisks', function() {
-            var node = {
+        it('should ignore comments that begin with three or more asterisks', () => {
+            const node = {
                 leadingComments: [
                     {
                         type: 'CommentBlock',
@@ -93,8 +91,8 @@ describe('jsdoc/src/visitor', function() {
             expect(events).toEqual([]);
         });
 
-        it('should ignore empty block comments', function() {
-            var node = {
+        it('should ignore empty block comments', () => {
+            const node = {
                 leadingComments: [
                     {
                         type: 'CommentBlock',
@@ -114,8 +112,8 @@ describe('jsdoc/src/visitor', function() {
             expect(events).toEqual([]);
         });
 
-        it('should fire an event for JSDoc comments', function() {
-            var node = {
+        it('should fire an event for JSDoc comments', () => {
+            const node = {
                 leadingComments: [
                     {
                         type: 'CommentBlock',
@@ -140,26 +138,26 @@ describe('jsdoc/src/visitor', function() {
     // TODO: these tests aren't working; for some strange reason, Node.js 6.10.2 stops running code
     // for visitor.visitNode() while it's in the middle of the SymbolFound constructor. maybe a
     // version-specific bug?
-    xdescribe('visitNode', function() {
+    xdescribe('visitNode', () => {
         // TODO: more tests
 
-        var events = [];
+        let events = [];
 
         function listener(event) {
             events.push(event);
         }
 
-        beforeEach(function() {
+        beforeEach(() => {
             parser.addListener('symbolFound', listener);
         });
 
-        afterEach(function() {
+        afterEach(() => {
             parser.removeListener('symbolFound', listener);
             events = [];
         });
 
-        it('should ignore non-JSDoc leading comments', function() {
-            var node = {
+        it('should ignore non-JSDoc leading comments', () => {
+            const node = {
                 type: 'Property',
                 key: {
                     type: 'Identifier',
@@ -189,8 +187,8 @@ describe('jsdoc/src/visitor', function() {
             expect(events[0].comment).toBe('');
         });
 
-        it('should include JSDoc leading comments', function() {
-            var node = {
+        it('should include JSDoc leading comments', () => {
+            const node = {
                 type: 'Property',
                 key: {
                     type: 'Identifier',

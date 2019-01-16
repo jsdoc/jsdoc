@@ -1,49 +1,45 @@
-'use strict';
+describe('jsdoc/src/scanner', () => {
+    const env = require('jsdoc/env');
+    const path = require('jsdoc/path');
+    const scanner = require('jsdoc/src/scanner');
 
-describe('jsdoc/src/scanner', function() {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
-    var scanner = require('jsdoc/src/scanner');
-
-    var filter = new (require('jsdoc/src/filter').Filter)({
+    const filter = new (require('jsdoc/src/filter').Filter)({
         includePattern: new RegExp('.+\\.js(doc)?$'),
         excludePattern: new RegExp('(^|\\/|\\\\)_')
     });
-    var sourcePath = path.normalize(env.pwd + '/test/fixtures/src');
+    const sourcePath = path.normalize(`${env.pwd}/test/fixtures/src`);
 
-    it('should exist', function() {
+    it('should exist', () => {
         expect(scanner).toBeDefined();
         expect(typeof scanner).toBe('object');
     });
 
-    it('should export a "Scanner" class', function() {
+    it('should export a "Scanner" class', () => {
         expect(scanner.Scanner).toBeDefined();
         expect(typeof scanner.Scanner).toBe('function');
     });
 
-    describe('Scanner', function() {
-        it('should inherit from EventEmitter', function() {
-            var EventEmitter = require('events').EventEmitter;
-            var testScanner = new scanner.Scanner();
+    describe('Scanner', () => {
+        it('should inherit from EventEmitter', () => {
+            const EventEmitter = require('events').EventEmitter;
+            const testScanner = new scanner.Scanner();
 
             expect(testScanner instanceof EventEmitter).toBe(true);
         });
 
-        it('should have a "scan" method', function() {
-            var testScanner = new scanner.Scanner();
+        it('should have a "scan" method', () => {
+            const testScanner = new scanner.Scanner();
 
             expect(testScanner.scan).toBeDefined();
             expect(typeof testScanner.scan).toBe('function');
         });
 
-        describe('scan', function() {
-            it('should return the correct source files', function() {
-                var testScanner = new scanner.Scanner();
-                var sourceFiles = testScanner.scan([sourcePath], 3, filter);
+        describe('scan', () => {
+            it('should return the correct source files', () => {
+                const testScanner = new scanner.Scanner();
+                let sourceFiles = testScanner.scan([sourcePath], 3, filter);
 
-                sourceFiles = sourceFiles.map(function($) {
-                    return path.relative(env.pwd, $);
-                });
+                sourceFiles = sourceFiles.map($ => path.relative(env.pwd, $));
 
                 expect(sourceFiles.length).toEqual(3);
                 expect( sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'one.js')) )
