@@ -193,7 +193,7 @@ describe('jsdoc/src/parser', () => {
             });
 
             it('should call AST node visitors', () => {
-                const Syntax = require('jsdoc/src/syntax').Syntax;
+                const Syntax = require('@jsdoc/syntax');
 
                 let args;
                 const sourceCode = ['javascript:/** foo */var foo;'];

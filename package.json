@@ -1,9 +1,12 @@
 {
   "name": "jsdoc",
-  "version": "3.6.0-dev",
-  "revision": "1547606083759",
+  "version": "4.0.0-dev",
+  "revision": "1547932905034",
   "description": "An API documentation generator for JavaScript.",
-  "keywords": ["documentation", "javascript"],
+  "keywords": [
+    "documentation",
+    "javascript"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -11,6 +14,7 @@
   },
   "dependencies": {
     "@babel/parser": "~7.2.3",
+    "@jsdoc/syntax": "file:./packages/jsdoc-syntax",
     "bluebird": "~3.5.0",
     "catharsis": "~0.8.9",
     "escape-string-regexp": "~1.0.5",
@@ -30,6 +34,7 @@
     "gulp": "~4.0.0",
     "gulp-eslint": "~5.0.0",
     "gulp-json-editor": "~2.5.0",
+    "lerna": "~3.10.6",
     "nyc": "~13.1.0"
   },
   "engines": {
@@ -42,18 +47,31 @@
     "jsdoc": "./jsdoc.js"
   },
   "greenkeeper": {
-    "ignore": ["taffydb"]
+    "ignore": [
+      "taffydb"
+    ]
   },
   "bugs": "https://github.com/jsdoc3/jsdoc/issues",
   "author": {
     "name": "Michael Mathews",
     "email": "micmath@gmail.com"
   },
-  "contributors": [{
-    "url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
-  }],
-  "maintainers": [{
-    "name": "Jeff Williams",
-    "email": "jeffrey.l.williams@gmail.com"
-  }]
+  "contributors": [
+    {
+      "name": "JSDoc contributors",
+      "url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Jeff Williams",
+      "email": "jeffrey.l.williams@gmail.com"
+    }
+  ],
+  "lerna": {
+    "packages": [
+        "packages/*"
+    ],
+    "version": "independent"
+  }
 }

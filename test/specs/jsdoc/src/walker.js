@@ -17,7 +17,7 @@ describe('jsdoc/src/walker', () => {
     });
 
     describe('walkers', () => {
-        const Syntax = require('jsdoc/src/syntax').Syntax;
+        const Syntax = require('@jsdoc/syntax');
 
         // TODO: tests for default functions
 

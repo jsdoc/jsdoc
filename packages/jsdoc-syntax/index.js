@@ -1,5 +1,5 @@
 // TODO: docs
-exports.Syntax = {
+module.exports = {
     ArrayExpression: 'ArrayExpression',
     ArrayPattern: 'ArrayPattern',
     ArrowFunctionExpression: 'ArrowFunctionExpression',

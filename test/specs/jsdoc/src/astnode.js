@@ -3,7 +3,7 @@ describe('jsdoc/src/astNode', () => {
     const astNode = require('jsdoc/src/astnode');
     const babelParser = require('@babel/parser');
     const env = require('jsdoc/env');
-    const Syntax = require('jsdoc/src/syntax').Syntax;
+    const Syntax = require('@jsdoc/syntax');
 
     function parse(str) {
         return babelParser.parse(str, astBuilder.parserOptions).program.body[0];

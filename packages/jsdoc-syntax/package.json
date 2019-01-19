@@ -1,0 +1,25 @@
+{
+  "name": "@jsdoc/syntax",
+  "version": "1.0.0",
+  "description": "Enumerates the types of AST nodes that JSDoc recognizes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc3/jsdoc.git"
+  },
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": {
+      "name": "Jeff Williams",
+      "email": "jeffrey.l.williams@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jsdoc3/jsdoc/issues"
+  },
+  "homepage": "https://github.com/jsdoc3/jsdoc#readme"
+}

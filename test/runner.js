@@ -31,6 +31,7 @@ opts.matcher = new RegExp("(" + match + ")\\.(" + extensions + ")$", 'i');
 
 var specFolders = [
     path.join(env.dirname, 'test/specs'),
+    path.join(env.dirname, 'packages/jsdoc-syntax/test/specs'),
     path.join(env.dirname, 'plugins/test/specs')
 ];
 
