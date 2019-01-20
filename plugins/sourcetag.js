@@ -1,7 +1,7 @@
 /**
  * @module plugins/sourcetag
  */
-const logger = require('jsdoc/util/logger');
+const logger = require('@jsdoc/logger');
 
 exports.handlers = {
     /**

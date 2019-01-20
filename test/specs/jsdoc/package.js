@@ -3,7 +3,7 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 describe('jsdoc/package', () => {
     let emptyPackage;
     const jsdocPackage = require('jsdoc/package');
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
     const Package = jsdocPackage.Package;
 
     function checkPackageProperty(name, value) {

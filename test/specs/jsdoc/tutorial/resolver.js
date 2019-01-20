@@ -1,6 +1,6 @@
 describe('jsdoc/tutorial/resolver', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
     const resolver = require('jsdoc/tutorial/resolver');
     const tutorial = require('jsdoc/tutorial');
 

@@ -3,7 +3,7 @@
 .tern-port
 .vscode/
 coverage/
-/node_modules/
+**/node_modules/
 
 # User-specific files
 conf.json

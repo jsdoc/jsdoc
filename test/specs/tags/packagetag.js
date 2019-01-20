@@ -1,4 +1,4 @@
-const logger = require('jsdoc/util/logger');
+const logger = require('@jsdoc/logger');
 
 describe('@package tag', () => {
     const docSet = jasmine.getDocSetFromFile('test/fixtures/packagetag.js');

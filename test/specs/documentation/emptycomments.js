@@ -1,4 +1,4 @@
-const logger = require('jsdoc/util/logger');
+const logger = require('@jsdoc/logger');
 
 describe('empty JSDoc comments', () => {
     it('should not report an error when a JSDoc comment contains only whitespace', () => {

@@ -1,6 +1,6 @@
 describe('jsdoc/util/markdown', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
     const markdown = require('jsdoc/util/markdown');
 
     it('should exist', () => {

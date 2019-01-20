@@ -1,5 +1,5 @@
 describe('@define tag', () => {
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
 
     describe('JSDoc tags', () => {
         const env = require('jsdoc/env');

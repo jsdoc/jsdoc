@@ -1,7 +1,7 @@
 describe('jsdoc/util/error', () => {
     const error = require('jsdoc/util/error');
     const handle = error.handle;
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
 
     it('should exist', () => {
         expect(error).toBeDefined();

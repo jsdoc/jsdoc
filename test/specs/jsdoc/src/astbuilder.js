@@ -26,7 +26,7 @@ describe('jsdoc/src/astbuilder', () => {
 
         describe('build', () => {
             // TODO: more tests
-            const logger = require('jsdoc/util/logger');
+            const logger = require('@jsdoc/logger');
 
             beforeEach(() => {
                 spyOn(logger, 'error');

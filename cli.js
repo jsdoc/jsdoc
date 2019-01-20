@@ -12,7 +12,7 @@
 module.exports = (() => {
     const app = require('jsdoc/app');
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
     const stripBom = require('jsdoc/util/stripbom');
     const stripJsonComments = require('strip-json-comments');
     const Promise = require('bluebird');
@@ -117,29 +117,31 @@ module.exports = (() => {
             cli.exit(1);
         }
 
-        if (env.opts.debug) {
-            logger.setLevel(logger.LEVELS.DEBUG);
-        }
-        else if (env.opts.verbose) {
-            logger.setLevel(logger.LEVELS.INFO);
-        }
+        if (!env.opts.test) {
+            if (env.opts.debug) {
+                logger.setLevel(logger.LEVELS.DEBUG);
+            }
+            else if (env.opts.verbose) {
+                logger.setLevel(logger.LEVELS.INFO);
+            }
 
-        if (env.opts.pedantic) {
-            logger.once('logger:warn', recoverableError);
-            logger.once('logger:error', fatalError);
-        }
-        else {
-            logger.once('logger:error', recoverableError);
-        }
+            if (env.opts.pedantic) {
+                logger.once('logger:warn', recoverableError);
+                logger.once('logger:error', fatalError);
+            }
+            else {
+                logger.once('logger:error', recoverableError);
+            }
 
-        logger.once('logger:fatal', fatalError);
+            logger.once('logger:fatal', fatalError);
+        }
 
         return cli;
     };
 
     // TODO: docs
     cli.logStart = () => {
-        logger.debug( cli.getVersion() );
+        logger.debug(cli.getVersion());
 
         logger.debug('Environment info: %j', {
             env: {

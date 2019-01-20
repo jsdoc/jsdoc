@@ -1,7 +1,7 @@
 describe('jsdoc/tag/validator', () => {
     const doop = require('jsdoc/util/doop');
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
     const tag = require('jsdoc/tag');
     const validator = require('jsdoc/tag/validator');
 

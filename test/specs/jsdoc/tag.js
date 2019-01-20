@@ -7,7 +7,7 @@ describe('jsdoc/tag', () => {
         dictionary: require('jsdoc/tag/dictionary'),
         type: require('jsdoc/tag/type')
     };
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
 
     it('should exist', () => {
         expect(jsdoc.tag).toBeDefined();

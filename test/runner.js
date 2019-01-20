@@ -8,7 +8,7 @@
  */
 var env = require('jsdoc/env');
 var fs = require('jsdoc/fs');
-var logger = require('jsdoc/util/logger');
+var logger = require('@jsdoc/logger');
 var path = require('path');
 
 fs.existsSync = fs.existsSync || path.existsSync;
@@ -31,6 +31,7 @@ opts.matcher = new RegExp("(" + match + ")\\.(" + extensions + ")$", 'i');
 
 var specFolders = [
     path.join(env.dirname, 'test/specs'),
+    path.join(env.dirname, 'packages/jsdoc-logger/test/specs'),
     path.join(env.dirname, 'packages/jsdoc-syntax/test/specs'),
     path.join(env.dirname, 'plugins/test/specs')
 ];
@@ -43,9 +44,6 @@ var onComplete;
 
 var runNextFolder = module.exports = function(callback) {
     testsCompleteCallback = testsCompleteCallback || callback;
-
-    // silence the logger while we run the tests
-    logger.setLevel(logger.LEVELS.SILENT);
 
     if (index < specFolders.length) {
         jasmine.executeSpecsInFolder(specFolders[index], onComplete, opts);

@@ -1,6 +1,6 @@
 describe('@preserve tag', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
 
     const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 

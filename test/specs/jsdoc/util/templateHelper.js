@@ -8,7 +8,7 @@ describe("jsdoc/util/templateHelper", () => {
     const doop = require('jsdoc/util/doop');
     const env = require('jsdoc/env');
     const helper = require('jsdoc/util/templateHelper');
-    const logger = require('jsdoc/util/logger');
+    const logger = require('@jsdoc/logger');
     const resolver = require('jsdoc/tutorial/resolver');
     const taffy = require('taffydb').taffy;
 

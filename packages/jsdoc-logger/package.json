@@ -1,7 +1,7 @@
 {
-  "name": "@jsdoc/syntax",
+  "name": "@jsdoc/logger",
   "version": "1.0.0",
-  "description": "Enumerates the types of AST nodes that JSDoc recognizes.",
+  "description": "Logger for all JSDoc packages.",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -11,8 +11,8 @@
     "jsdoc"
   ],
   "author": {
-      "name": "Jeff Williams",
-      "email": "jeffrey.l.williams@gmail.com"
+    "name": "Jeff Williams",
+    "email": "jeffrey.l.williams@gmail.com"
   },
   "license": "Apache-2.0",
   "bugs": {

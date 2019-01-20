@@ -48,7 +48,7 @@ describe('multiple doclets per symbol', () => {
 
     it('When a file contains a JSDoc comment with an @also tag, and the "tags.allowUnknownTags" ' +
         'option is set to false, the file can be parsed without errors.', () => {
-        const logger = require('jsdoc/util/logger');
+        const logger = require('@jsdoc/logger');
 
         const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
         const errors = [];
