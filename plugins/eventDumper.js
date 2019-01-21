@@ -3,7 +3,7 @@
  *
  * @module plugins/eventDumper
  */
-const _ = require('underscore');
+const _ = require('lodash');
 const doop = require('jsdoc/util/doop');
 const dump = require('jsdoc/util/dumper').dump;
 const env = require('jsdoc/env');

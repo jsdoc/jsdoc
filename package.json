@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "version": "4.0.0-dev",
-  "revision": "1547932905034",
+  "revision": "1548096695580",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
     "documentation",
@@ -21,14 +21,14 @@
     "escape-string-regexp": "~1.0.5",
     "js2xmlparser": "~3.0.0",
     "klaw": "~3.0.0",
+    "lodash": "^4.17.11",
     "markdown-it": "~8.4.2",
     "markdown-it-anchor": "~5.0.2",
     "marked": "~0.6.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
-    "taffydb": "2.6.2",
-    "underscore": "~1.9.1"
+    "taffydb": "2.6.2"
   },
   "devDependencies": {
     "ajv": "~6.7.0",

@@ -1,6 +1,6 @@
 describe('jsdoc/doclet', () => {
     // TODO: more tests
-    const _ = require('underscore');
+    const _ = require('lodash');
     const jsdoc = {
         doclet: require('jsdoc/doclet')
     };
