@@ -1,0 +1,32 @@
+<%
+    var data = obj;
+%>
+<% if (data.description && data.type && data.type.names) { %>
+<dl>
+    <dt>
+        <div class="param-desc">
+        <%= data.description %>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                <%= this.partial('type.tmpl', data.type.names) %>
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+<% } else { %>
+    <div class="param-desc">
+    <% if (data.description) { %>
+        <%= data.description %>
+    <% } else if (data.type && data.type.names) { %>
+        <%= this.partial('type.tmpl', data.type.names) %>
+    <% } %>
+    </div>
+<% } %>

@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@babel/parser": "~7.2.3",
-    "@jsdoc/logger": "file:./packages/jsdoc-logger",
-    "@jsdoc/syntax": "file:./packages/jsdoc-syntax",
+    "@jsdoc/logger": "file:packages/jsdoc-logger",
+    "@jsdoc/syntax": "file:packages/jsdoc-syntax",
+    "@jsdoc/template-original": "file:packages/jsdoc-template-original",
+    "@jsdoc/template-silent": "file:packages/jsdoc-template-silent",
     "bluebird": "~3.5.0",
     "catharsis": "~0.8.9",
     "escape-string-regexp": "~1.0.5",
@@ -27,8 +29,7 @@
     "marked": "~0.6.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
-    "strip-json-comments": "~2.0.1",
-    "taffydb": "2.6.2"
+    "strip-json-comments": "~2.0.1"
   },
   "devDependencies": {
     "ajv": "~6.7.0",
@@ -46,11 +47,6 @@
   },
   "bin": {
     "jsdoc": "./jsdoc.js"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "taffydb"
-    ]
   },
   "bugs": "https://github.com/jsdoc3/jsdoc/issues",
   "author": {

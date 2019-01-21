@@ -1,0 +1,131 @@
+<%
+    var params = obj;
+
+    /* sort subparams under their parent params (like opts.classname) */
+    var parentParam = null;
+    params.forEach(function(param, i) {
+        var paramRegExp;
+
+        if (!param) {
+            return;
+        }
+
+        if (parentParam && parentParam.name && param.name) {
+            try {
+                paramRegExp = new RegExp('^(?:' + parentParam.name + '(?:\\[\\])*)\\.(.+)$');
+            }
+            catch (e) {
+                // there's probably a typo in the JSDoc comment that resulted in a weird
+                // parameter name
+                return;
+            }
+
+            if ( paramRegExp.test(param.name) ) {
+                param.name = RegExp.$1;
+                parentParam.subparams = parentParam.subparams || [];
+                parentParam.subparams.push(param);
+                params[i] = null;
+            }
+            else {
+                parentParam = param;
+            }
+        }
+        else {
+            parentParam = param;
+        }
+    });
+
+    /* determine if we need extra columns, "attributes" and "default" */
+    params.hasAttributes = false;
+    params.hasDefault = false;
+    params.hasName = false;
+
+    params.forEach(function(param) {
+        if (!param) { return; }
+
+        if (param.optional || param.nullable || param.variable) {
+            params.hasAttributes = true;
+        }
+
+        if (param.name) {
+            params.hasName = true;
+        }
+
+        if (typeof param.defaultvalue !== 'undefined') {
+            params.hasDefault = true;
+        }
+    });
+%>
+
+<table class="params">
+    <thead>
+    <tr>
+        <% if (params.hasName) {%>
+        <th>Name</th>
+        <% } %>
+
+        <th>Type</th>
+
+        <% if (params.hasAttributes) {%>
+        <th>Attributes</th>
+        <% } %>
+
+        <% if (params.hasDefault) {%>
+        <th>Default</th>
+        <% } %>
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <%
+        var self = this;
+        params.forEach(function(param) {
+            if (!param) { return; }
+    %>
+
+        <tr>
+            <% if (params.hasName) {%>
+                <td class="name"><code><%= param.name %></code></td>
+            <% } %>
+
+            <td class="type">
+            <% if (param.type && param.type.names) {%>
+                <%= self.partial('type.tmpl', param.type.names) %>
+            <% } %>
+            </td>
+
+            <% if (params.hasAttributes) {%>
+                <td class="attributes">
+                <% if (param.optional) { %>
+                    &lt;optional><br>
+                <% } %>
+
+                <% if (param.nullable) { %>
+                    &lt;nullable><br>
+                <% } %>
+
+                <% if (param.variable) { %>
+                    &lt;repeatable><br>
+                <% } %>
+                </td>
+            <% } %>
+
+            <% if (params.hasDefault) {%>
+                <td class="default">
+                <% if (typeof param.defaultvalue !== 'undefined') { %>
+                    <%= self.htmlsafe(param.defaultvalue) %>
+                <% } %>
+                </td>
+            <% } %>
+
+            <td class="description last"><%= param.description %><% if (param.subparams) { %>
+                <h6>Properties</h6>
+                <%= self.partial('params.tmpl', param.subparams) %>
+            <% } %></td>
+        </tr>
+
+    <% }); %>
+    </tbody>
+</table>

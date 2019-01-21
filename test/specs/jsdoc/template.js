@@ -1,3 +1,0 @@
-xdescribe('jsdoc/template', () => {
-    // TODO
-});

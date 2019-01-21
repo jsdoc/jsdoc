@@ -1,0 +1,14 @@
+<%
+var data = obj || {};
+%>
+
+<% if (data.type && data.type.names) {%>
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        <%= this.partial('type.tmpl', data.type.names) %>
+    </dd>
+</dl>
+<% } %>

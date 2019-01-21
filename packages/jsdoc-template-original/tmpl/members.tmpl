@@ -1,0 +1,38 @@
+<%
+var data = obj;
+var self = this;
+%>
+<h4 class="name" id="<%= id %>"><%= data.attribs + name + (data.signature ? data.signature : '') %></h4>
+
+<% if (data.summary) { %>
+<p class="summary"><%= summary %></p>
+<% } %>
+
+<% if (data.description) { %>
+<div class="description">
+    <%= data.description %>
+</div>
+<% } %>
+
+<% if (data.type && data.type.names) {%>
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            <%= self.partial('type.tmpl', data.type.names) %>
+        </li>
+    </ul>
+<% } %>
+
+<%= this.partial('details.tmpl', data) %>
+
+<% if (data.fires && fires.length) { %>
+    <h5>Fires:</h5>
+    <ul><% fires.forEach(function(f) { %>
+        <li><%= self.linkto(f) %></li>
+    <% }); %></ul>
+<% } %>
+
+<% if (data.examples && examples.length) { %>
+    <h5>Example<%= examples.length > 1? 's':'' %></h5>
+    <%= this.partial('examples.tmpl', examples) %>
+<% } %>

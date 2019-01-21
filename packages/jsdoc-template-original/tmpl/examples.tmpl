@@ -1,0 +1,13 @@
+<%
+    var data = obj;
+    var self = this;
+
+    data.forEach(function(example) {
+        if (example.caption) {
+    %>
+        <p class="code-caption"><%= example.caption %></p>
+    <% } %>
+    <pre class="prettyprint"><code><%= self.htmlsafe(example.code) %></code></pre>
+<%
+    });
+%>

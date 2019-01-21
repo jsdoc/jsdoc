@@ -1,0 +1,14 @@
+<%
+var data = obj;
+var self = this;
+%>
+
+<% if (data.kind === 'package') { %>
+    <h3><%= data.name %> <%= data.version %></h3>
+<% } %>
+
+<% if (data.readme) { %>
+    <section>
+        <article><%= data.readme %></article>
+    </section>
+<% } %>

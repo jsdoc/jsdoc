@@ -413,43 +413,37 @@ module.exports = (() => {
     };
 
     cli.generateDocs = () => {
-        const path = require('jsdoc/path');
         const resolver = require('jsdoc/tutorial/resolver');
-        const taffy = require('taffydb').taffy;
+
 
         let template;
 
-        env.opts.template = (() => {
-            const publish = env.opts.template || 'templates/default';
-            const templatePath = path.getResourcePath(publish);
-
-            // if we didn't find the template, keep the user-specified value so the error message is
-            // useful
-            return templatePath || env.opts.template;
-        })();
+        env.opts.template = env.opts.template || '@jsdoc/template-original';
 
         try {
-            template = require(`${env.opts.template}/publish`);
+            template = require(env.opts.template);
         }
         catch (e) {
             logger.fatal(`Unable to load template: ${e.message}` || e);
         }
 
-        // templates should include a publish.js file that exports a "publish" function
+        // templates should export a "publish" function
         if (template.publish && typeof template.publish === 'function') {
             let publishPromise;
 
             logger.info('Generating output files...');
             publishPromise = template.publish(
-                taffy(props.docs),
-                env.opts,
-                resolver.root
+                {
+                    doclets: props.docs,
+                    tutorials: resolver.root
+                },
+                env.opts
             );
 
             return Promise.resolve(publishPromise);
         }
         else {
-            logger.fatal(`${env.opts.template} does not export a "publish" function. Global "publish" functions are no longer supported.`);
+            logger.fatal(`${env.opts.template} does not export a "publish" function.`);
         }
 
         return Promise.resolve();

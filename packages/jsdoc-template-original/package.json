@@ -1,0 +1,34 @@
+{
+  "name": "@jsdoc/template-original",
+  "version": "1.0.0",
+  "description": "An updated version of JSDoc 3's original template.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdoc3/jsdoc"
+  },
+  "keywords": [
+    "jsdoc",
+    "template"
+  ],
+  "author": {
+    "name": "Jeff Williams",
+    "email": "jeffrey.l.williams@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jsdoc3/jsdoc/issues"
+  },
+  "homepage": "https://github.com/jsdoc3/jsdoc#readme",
+  "dependencies": {
+    "code-prettify": "^0.1.0",
+    "color-themes-for-google-code-prettify": "^2.0.4",
+    "open-sans-fonts": "^1.5.0",
+    "taffydb": "2.6.2"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "taffydb"
+    ]
+  }
+}
