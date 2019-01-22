@@ -1,12 +1,12 @@
-/* eslint quotes:0 */
+/* eslint-disable quotes */
 /* global jsdoc */
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", () => {
+    const _ = require('lodash');
     const definitions = require('jsdoc/tag/dictionary/definitions');
     const dictionary = require('jsdoc/tag/dictionary');
     const doclet = require('jsdoc/doclet');
-    const doop = require('jsdoc/util/doop');
     const env = require('jsdoc/env');
     const helper = require('jsdoc/util/templateHelper');
     const logger = require('@jsdoc/logger');
@@ -1112,7 +1112,7 @@ describe("jsdoc/util/templateHelper", () => {
     });
 
     describe("addEventListeners", () => {
-        const doclets = ( taffy(doop(jsdoc.getDocSetFromFile('test/fixtures/listenstag.js').doclets)) );
+        const doclets = (taffy(_.cloneDeep(jsdoc.getDocSetFromFile('test/fixtures/listenstag.js').doclets)));
         const ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0];
         const ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0];
         const ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];
@@ -1435,7 +1435,7 @@ describe("jsdoc/util/templateHelper", () => {
         let conf;
 
         beforeEach(() => {
-            conf = doop(env.conf.templates);
+            conf = _.cloneDeep(env.conf.templates);
         });
 
         afterEach(() => {

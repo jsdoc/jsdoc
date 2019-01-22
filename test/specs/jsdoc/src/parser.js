@@ -1,5 +1,6 @@
-/* eslint no-script-url: 0 */
+/* eslint-disable no-script-url */
 describe('jsdoc/src/parser', () => {
+    const _ = require('lodash');
     const env = require('jsdoc/env');
     const fs = require('jsdoc/fs');
     const handlers = require('jsdoc/src/handlers');
@@ -179,9 +180,7 @@ describe('jsdoc/src/parser', () => {
                 const sourceCode = 'javascript:/** @class */function Foo() {}';
 
                 function handler(e) {
-                    const doop = require('jsdoc/util/doop');
-
-                    e.doclet = doop(e.doclet);
+                    e.doclet = _.cloneDeep(e.doclet);
                     e.doclet.foo = 'bar';
                 }
 

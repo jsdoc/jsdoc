@@ -1,5 +1,5 @@
 describe('jsdoc/tag/validator', () => {
-    const doop = require('jsdoc/util/doop');
+    const _ = require('lodash');
     const env = require('jsdoc/env');
     const logger = require('@jsdoc/logger');
     const tag = require('jsdoc/tag');
@@ -78,7 +78,7 @@ describe('jsdoc/tag/validator', () => {
         });
 
         it('logs an error if the tag has no text but mustHaveValue is true', () => {
-            const missingName = doop(goodTag);
+            const missingName = _.cloneDeep(goodTag);
 
             missingName.text = null;
             validateTag(missingName);
@@ -87,7 +87,7 @@ describe('jsdoc/tag/validator', () => {
         });
 
         it('logs a warning if the tag has text but mustNotHaveValue is true', () => {
-            const missingText = doop(goodTag2);
+            const missingText = _.cloneDeep(goodTag2);
 
             missingText.mustNotHaveValue = true;
             missingText.text = missingText.text || 'asdf';
