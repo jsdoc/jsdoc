@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('anonymous class', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/anonymousclass.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/anonymousclass.js');
     const klass = docSet.getByLongname('module:test').filter(({undocumented}) => !undocumented)[1];
     const foo = docSet.getByLongname('module:test#foo')[0];
     const klassTest = docSet.getByLongname('module:test#test')[0];

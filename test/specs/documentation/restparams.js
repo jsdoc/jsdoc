@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('rest parameters', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/restparams.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/restparams.js');
     const setAdmins = docSet.getByLongname('setAdmins')[0];
     const setManagers = docSet.getByLongname('setManagers')[0];
     const setWidgetAccess = docSet.getByLongname('setWidgetAccess')[0];
@@ -26,7 +27,7 @@ describe('rest parameters', () => {
     });
 
     describe('ES2015 methods', () => {
-        const docSet2 = jasmine.getDocSetFromFile('test/fixtures/restparams2.js');
+        const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/restparams2.js');
 
         const addUsers = docSet2.getByLongname('Widget#addUsers')[0];
 

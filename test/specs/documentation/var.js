@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('var statements', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/var.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/var.js');
     const found = [
         docSet.getByLongname('GREEN'),
         docSet.getByLongname('RED'),

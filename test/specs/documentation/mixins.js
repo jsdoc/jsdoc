@@ -1,9 +1,10 @@
+/* global jsdoc */
 const augment = require('jsdoc/augment');
 const name = require('jsdoc/name');
 
 describe('mixins', () => {
     describe('doclet augmentation', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/mixintag2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/mixintag2.js');
 
         augment.augmentAll(docSet.doclets);
 

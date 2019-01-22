@@ -1,3 +1,4 @@
+/* global jsdoc */
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe('plugins', () => {
     const app = require('jsdoc/app');
@@ -11,13 +12,13 @@ describe('plugins', () => {
     ];
 
     // TODO: decouple this from the global parser
-    app.jsdoc.parser = jasmine.createParser();
+    app.jsdoc.parser = jsdoc.createParser();
 
     global.jsdocPluginsTest = global.jsdocPluginsTest || {};
 
     require('jsdoc/plugins').installPlugins(pluginPaths, app.jsdoc.parser);
 
-    docSet = jasmine.getDocSetFromFile('test/fixtures/plugins.js', app.jsdoc.parser, false);
+    docSet = jsdoc.getDocSetFromFile('test/fixtures/plugins.js', app.jsdoc.parser, false);
 
     it("should fire the plugin's event handlers", () => {
         expect(global.jsdocPluginsTest.plugin1.fileBegin).toBeDefined();

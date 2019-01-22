@@ -1,22 +1,23 @@
+/* global jsdoc */
 describe('@typedef tag', () => {
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('When a comment has a @typedef tag, the doclet has a kind property set to "typedef".', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
             expect(numberlike.kind).toBe('typedef');
         });
 
         it('When a comment has a @typedef tag with a type, the doclet has a type property set to that type.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
             expect(typeof numberlike.type).toBe('object');
@@ -27,7 +28,7 @@ describe('@typedef tag', () => {
         });
 
         it('When a comment has a @typedef tag with a name, the doclet has a name property set to that name.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
             expect(numberlike.name).toBe('NumberLike');
@@ -35,7 +36,7 @@ describe('@typedef tag', () => {
         });
 
         it('When a symbol has a @typedef tag without a name, the doclet has a name property set to the symbol name.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const operator = docSet.getByLongname('calc.Operator')[0];
 
             expect(operator.name).toBe('Operator');
@@ -43,7 +44,7 @@ describe('@typedef tag', () => {
         });
 
         it('When a symbol has a @typedef tag with a name, the name in the tag takes precedence over the symbol name.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const result = docSet.getByLongname('calc.Result')[0];
 
             expect(result.name).toBe('Result');
@@ -51,7 +52,7 @@ describe('@typedef tag', () => {
         });
 
         it('When a symbol has a @typedef tag with a name and no scope, the scope defaults to `global`.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const calculatorBattery = docSet.getByLongname('CalculatorBattery')[0];
 
             expect(calculatorBattery).toBeDefined();
@@ -61,18 +62,18 @@ describe('@typedef tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('When a comment has a @typedef tag, the doclet has a kind property set to "typedef".', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag2.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag2.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
             expect(numberlike.kind).toBe('typedef');
         });
 
         it('When a comment has a @typedef tag with a type, the doclet has a type property set to that type.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag2.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag2.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
             expect(typeof numberlike.type).toBe('object');
@@ -83,7 +84,7 @@ describe('@typedef tag', () => {
         });
 
         it('When a symbol has a @typedef tag, the doclet has a name property set to the symbol name.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/typedeftag2.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag2.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
             expect(numberlike.name).toBe('NumberLike');

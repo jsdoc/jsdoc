@@ -1,9 +1,10 @@
+/* global jsdoc */
 function filter({undocumented}) {
     return !undocumented;
 }
 
 describe('@class tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/classtag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/classtag.js');
     const ticker = docSet.getByLongname('Ticker')[0];
     const news = docSet.getByLongname('NewsSource')[0];
 
@@ -17,7 +18,7 @@ describe('@class tag', () => {
     });
 
     describe('ES 2015 classes', () => {
-        const docSet2 = jasmine.getDocSetFromFile('test/fixtures/classtag2.js');
+        const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/classtag2.js');
         const subscription = docSet2.getByLongname('Subscription').filter(filter)[0];
         const expire = docSet2.getByLongname('Subscription#expire')[0];
         const subscriber = docSet2.getByLongname('Subscriber').filter(filter)[0];

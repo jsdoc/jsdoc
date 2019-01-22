@@ -106,7 +106,7 @@ describe('jsdoc/tag/validator', () => {
             env.conf.tags.allowUnknownTags = false;
             validateTag(badTag);
 
-            expect(logger.error.mostRecentCall.args[0]).toContain(meta.comment);
+            expect(logger.error.calls.mostRecent().args[0]).toContain(meta.comment);
         });
     });
 });

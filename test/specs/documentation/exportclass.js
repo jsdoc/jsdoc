@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('export class', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/exportclass.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportclass.js');
     const bar = docSet.getByLongname('module:foo.Bar')[0];
 
     it('should name exported classes correctly', () => {

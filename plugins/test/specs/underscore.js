@@ -1,35 +1,37 @@
-'use strict';
+/* global jsdoc */
+describe('underscore plugin', () => {
+    const env = require('jsdoc/env');
+    const path = require('jsdoc/path');
 
-describe('underscore plugin', function () {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
-
-    var docSet;
-    var parser = jasmine.createParser();
-    var pluginPath = 'plugins/underscore';
-    var fixturePath = 'plugins/test/fixtures/underscore';
-    var pluginPathResolved = path.join(env.dirname, pluginPath);
-    var plugin = require(pluginPathResolved);
+    let docSet;
+    const parser = jsdoc.createParser();
+    const pluginPath = 'plugins/underscore';
+    const fixturePath = 'plugins/test/fixtures/underscore';
+    const pluginPathResolved = path.join(env.dirname, pluginPath);
 
     require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
-    docSet = jasmine.getDocSetFromFile(fixturePath + '.js', parser);
+    docSet = jsdoc.getDocSetFromFile(`${fixturePath}.js`, parser);
 
-    it('should not mark normal, public properties as private', function() {
+    it('should not mark normal, public properties as private', () => {
         // Base line tests
-        var normal = docSet.getByLongname('normal');
+        const normal = docSet.getByLongname('normal');
+
         expect(normal[0].access).toBeUndefined();
 
-        var realPrivate = docSet.getByLongname('Klass#privateProp');
+        const realPrivate = docSet.getByLongname('Klass#privateProp');
+
         expect(realPrivate[0].access).toEqual('private');
     });
 
-    it('should hide doclet for symbols beginning with an underscore under normal circumstances', function () {
-        var hidden = docSet.getByLongname('_hidden');
+    it('should hide doclet for symbols beginning with an underscore under normal circumstances', () => {
+        const hidden = docSet.getByLongname('_hidden');
+
         expect(hidden[0].access).toEqual('private');
     });
 
-    it('picks up "this"', function() {
-        var privateUnderscore = docSet.getByLongname('Klass#_privateProp');
+    it('picks up "this"', () => {
+        const privateUnderscore = docSet.getByLongname('Klass#_privateProp');
+
         expect(privateUnderscore[0].access).toEqual('private');
     });
 });

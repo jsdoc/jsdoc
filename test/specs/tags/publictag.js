@@ -1,15 +1,16 @@
+/* global jsdoc */
 describe('@public tag', () => {
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('should set the doclet\'s `access` property to `public`', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/publictag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/publictag.js');
             const foo = docSet.getByLongname('Foo')[0];
 
             expect(foo.access).toBe('public');
@@ -18,18 +19,18 @@ describe('@public tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should set the doclet\'s `access` property to `public`', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/publictag2.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/publictag2.js');
             const bar = docSet.getByLongname('bar')[0];
 
             expect(bar.access).toBe('public');
         });
 
         it('should include the type if one is provided', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/publictag2.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/publictag2.js');
             const bar = docSet.getByLongname('bar')[0];
 
             expect(bar.type).toBeDefined();

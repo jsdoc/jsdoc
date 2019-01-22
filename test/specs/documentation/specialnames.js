@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('documenting symbols with special names', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/specialnames.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/specialnames.js');
     const construct = docSet.getByLongname('constructor')[0];
     const constructToString = docSet.getByLongname('constructor.toString')[0];
     const hasOwnProp = docSet.getByLongname('hasOwnProperty')[0];

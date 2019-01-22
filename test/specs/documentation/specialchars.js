@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('longnames with special characters', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/specialchars.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/specialchars.js');
     const portNumber = docSet.getByLongname('Socket#\'port#number\'')[0];
     const open = docSet.getByLongname('Socket#\'open~a.connection#now\'')[0];
 

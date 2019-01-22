@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@see tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/seetag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/seetag.js');
     const foo = docSet.getByLongname('foo')[0];
     const bar = docSet.getByLongname('bar')[0];
 

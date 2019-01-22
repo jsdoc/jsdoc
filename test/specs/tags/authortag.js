@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@author tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/authortag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/authortag.js');
     const Thingy = docSet.getByLongname('Thingy')[0];
     const Thingy2 = docSet.getByLongname('Thingy2')[0];
 

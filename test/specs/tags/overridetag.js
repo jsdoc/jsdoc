@@ -1,6 +1,7 @@
+/* global jsdoc */
 describe('@override tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/overridetag.js');
-    const docSet2 = jasmine.getDocSetFromFile('test/fixtures/overridetag2.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/overridetag.js');
+    const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/overridetag2.js');
 
     function ignored({ignore}) {
         return ignore !== true;

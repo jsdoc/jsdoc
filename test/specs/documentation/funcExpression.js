@@ -1,3 +1,4 @@
+/* global jsdoc */
 describe('function expressions', () => {
     function checkLongnames(docSet, namespace) {
         const memberName = `${namespace || ''}Foo#member1`;
@@ -15,14 +16,14 @@ describe('function expressions', () => {
     }
 
     describe('standard', () => {
-        checkLongnames( jasmine.getDocSetFromFile('test/fixtures/funcExpression.js') );
+        checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcExpression.js'));
     });
 
     describe('global', () => {
-        checkLongnames( jasmine.getDocSetFromFile('test/fixtures/funcExpression2.js') );
+        checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcExpression2.js'));
     });
 
     describe('as object literal property', () => {
-        checkLongnames( jasmine.getDocSetFromFile('test/fixtures/funcExpression3.js'), 'ns.' );
+        checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcExpression3.js'), 'ns.');
     });
 });

@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @see [Nowhere](http://nowhere.com)
  */

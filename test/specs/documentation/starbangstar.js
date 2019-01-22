@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('starbangstar', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/starbangstar.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/starbangstar.js');
     const mod = docSet.getByLongname('module:myscript/core')[0];
     const x = docSet.getByLongname('module:myscript/core.x')[0];
 

@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('class without a name', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/classwithoutname.js').doclets
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/classwithoutname.js').doclets
         .filter(({name}) => name === '');
 
     it('When the doclet for a class has an empty name, it should also have an empty longname', () => {

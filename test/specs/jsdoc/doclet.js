@@ -1,12 +1,11 @@
+/* global jsdoc */
 describe('jsdoc/doclet', () => {
     // TODO: more tests
     const _ = require('lodash');
-    const jsdoc = {
-        doclet: require('jsdoc/doclet')
-    };
-    const Doclet = jsdoc.doclet.Doclet;
+    const docletModule = require('jsdoc/doclet');
+    const Doclet = docletModule.Doclet;
 
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/doclet.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/doclet.js');
     const test1 = docSet.getByLongname('test1')[0];
     const test2 = docSet.getByLongname('test2')[0];
 
@@ -52,7 +51,7 @@ describe('jsdoc/doclet', () => {
         it('should override most properties of the secondary doclet', () => {
             const primaryDoclet = new Doclet('/** New and improved!\n@version 2.0.0 */');
             const secondaryDoclet = new Doclet('/** Hello!\n@version 1.0.0 */');
-            const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+            const newDoclet = docletModule.combine(primaryDoclet, secondaryDoclet);
 
             Object.getOwnPropertyNames(newDoclet).forEach(property => {
                 expect(newDoclet[property]).toEqual(primaryDoclet[property]);
@@ -62,7 +61,7 @@ describe('jsdoc/doclet', () => {
         it('should add properties that are missing from the secondary doclet', () => {
             const primaryDoclet = new Doclet('/** Hello!\n@version 2.0.0 */');
             const secondaryDoclet = new Doclet('/** Hello! */');
-            const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+            const newDoclet = docletModule.combine(primaryDoclet, secondaryDoclet);
 
             expect(newDoclet.version).toBe('2.0.0');
         });
@@ -83,7 +82,7 @@ describe('jsdoc/doclet', () => {
                     ' */'
                 ].join('\n');
                 const secondaryDoclet = new Doclet(secondaryComment);
-                const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+                const newDoclet = docletModule.combine(primaryDoclet, secondaryDoclet);
 
                 properties.forEach(property => {
                     expect(newDoclet[property]).toEqual(secondaryDoclet[property]);
@@ -106,7 +105,7 @@ describe('jsdoc/doclet', () => {
                     ' */'
                 ].join('\n');
                 const secondaryDoclet = new Doclet(secondaryComment);
-                const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+                const newDoclet = docletModule.combine(primaryDoclet, secondaryDoclet);
 
                 properties.forEach(property => {
                     expect(newDoclet[property]).toEqual(primaryDoclet[property]);

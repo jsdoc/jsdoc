@@ -1,7 +1,8 @@
+/* global jsdoc */
 const logger = require('@jsdoc/logger');
 
 describe('@type tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/typetag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/typetag.js');
 
     it('When a symbol has a @type tag, the doclet has a type property set to that value\'s type.', () => {
         const foo = docSet.getByLongname('foo')[0];
@@ -25,14 +26,14 @@ describe('@type tag', () => {
 
     describe('JSDoc tags', () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('When JSDoc tags are enabled, the @type tag does not accept a description.', () => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
             spyOn(logger, 'warn');
 
-            jasmine.getDocSetFromFile('test/fixtures/typetag2.js');
+            jsdoc.getDocSetFromFile('test/fixtures/typetag2.js');
 
             expect(logger.warn).toHaveBeenCalled();
         });
@@ -40,17 +41,17 @@ describe('@type tag', () => {
 
     describe('Closure tags', () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('When Closure tags are enabled, the @type tag accepts a description.', () => {
             let stringOrNumber;
             let typeDocs;
 
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
             spyOn(logger, 'warn');
 
-            typeDocs = jasmine.getDocSetFromFile('test/fixtures/typetag2.js');
+            typeDocs = jsdoc.getDocSetFromFile('test/fixtures/typetag2.js');
             stringOrNumber = typeDocs.getByLongname('stringOrNumber')[0];
 
             expect(logger.warn).not.toHaveBeenCalled();

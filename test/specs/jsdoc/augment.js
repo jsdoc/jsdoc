@@ -1,3 +1,4 @@
+/* global jsdoc */
 describe('jsdoc/augment', () => {
     // TODO: more tests
 
@@ -37,7 +38,7 @@ describe('jsdoc/augment', () => {
 
     describe('augmentAll', () => {
         it('should call all other methods that the module exports', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/mixintag2.js', null, null, false);
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/mixintag2.js', null, null, false);
             const methodNames = Object.keys(augment).filter(name => name !== 'augmentAll');
 
             methodNames.forEach(name => {
@@ -52,7 +53,7 @@ describe('jsdoc/augment', () => {
         });
 
         it('should work when a class extends another class that implements an interface', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/augmentall.js', null, null, false);
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/augmentall.js', null, null, false);
             let open;
 
             augment.augmentAll(docSet.doclets);
@@ -64,7 +65,7 @@ describe('jsdoc/augment', () => {
         });
 
         it('should work when a class implements an interface that extends another interface', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/augmentall2.js', null, null, false);
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/augmentall2.js', null, null, false);
             let open;
 
             augment.augmentAll(docSet.doclets);

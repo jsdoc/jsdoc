@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@variation tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/variationtag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/variationtag.js');
     const someObject2 = docSet.getByLongname('someObject(2)')[0];
     const someObject2Method = docSet.getByLongname('someObject(2).someMethod')[0];
     const someObject3 = docSet.getByLongname('someObject(3)')[0];

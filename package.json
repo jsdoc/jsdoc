@@ -22,22 +22,29 @@
     "catharsis": "~0.8.9",
     "escape-string-regexp": "~1.0.5",
     "js2xmlparser": "~3.0.0",
-    "klaw": "~3.0.0",
     "lodash": "^4.17.11",
     "markdown-it": "~8.4.2",
     "markdown-it-anchor": "~5.0.2",
     "marked": "~0.6.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
-    "strip-json-comments": "~2.0.1"
+    "strip-json-comments": "~2.0.1",
+    "taffydb": "2.6.2"
   },
   "devDependencies": {
     "ajv": "~6.7.0",
     "gulp": "~4.0.0",
     "gulp-eslint": "~5.0.0",
     "gulp-json-editor": "~2.5.0",
-    "lerna": "~3.10.6",
+    "jasmine": "^3.3.1",
+    "klaw-sync": "^6.0.0",
+    "lerna": "^3.10.6",
     "nyc": "~13.1.0"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "taffydb"
+    ]
   },
   "engines": {
     "node": ">=8.15.0"

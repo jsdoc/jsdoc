@@ -1,6 +1,7 @@
+/* global jsdoc */
 describe('module that exports a constructor', () => {
     describe('pre-ES2015 module', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/moduleisconstructor.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduleisconstructor.js');
         const modules = docSet.doclets.filter(({kind}) => kind === 'module');
         const classes = docSet.doclets.filter(({kind}) => kind === 'class');
         const getId = docSet.getByLongname('module:mymodule/config#getId')[0];
@@ -44,7 +45,7 @@ describe('module that exports a constructor', () => {
     });
 
     describe('ES2015 module', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/moduleisconstructor2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduleisconstructor2.js');
         const modules = docSet.doclets.filter(({kind}) => kind === 'module');
         const classes = docSet.doclets.filter(({kind, classdesc, description}) => kind === 'class' && classdesc && description);
         const getId = docSet.getByLongname('module:mymodule/config#getId')[0];

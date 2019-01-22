@@ -1,3 +1,4 @@
+/* global jsdoc */
 describe('jsdoc/schema', () => {
     const schema = require('jsdoc/schema');
 
@@ -72,7 +73,7 @@ describe('jsdoc/schema', () => {
         });
 
         it('should not find any validation errors in the JSDoc parse results', () => {
-            jasmine.getParseResults().forEach(doclets => {
+            jsdoc.getParseResults().forEach(doclets => {
                 const isValid = validate(doclets.doclets);
 
                 // hack to get the filename/errors in the test results

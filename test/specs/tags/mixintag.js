@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@mixin tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/mixintag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/mixintag.js');
     const Eventful = docSet.getByLongname('Eventful')[0];
     const Mixin = docSet.getByLongname('AnotherMixin')[0];
 

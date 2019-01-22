@@ -1,7 +1,8 @@
+/* global jsdoc */
 const logger = require('@jsdoc/logger');
 
 describe('@private tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/privatetag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/privatetag.js');
     const foo = docSet.getByLongname('Foo')[0];
     const bar = docSet.getByLongname('Foo#bar')[0];
 
@@ -17,14 +18,14 @@ describe('@private tag', () => {
 
     describe('JSDoc tags', () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('When JSDoc tags are enabled, the @private tag does not accept a value.', () => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
             spyOn(logger, 'warn');
 
-            jasmine.getDocSetFromFile('test/fixtures/privatetag2.js');
+            jsdoc.getDocSetFromFile('test/fixtures/privatetag2.js');
 
             expect(logger.warn).toHaveBeenCalled();
         });
@@ -32,7 +33,7 @@ describe('@private tag', () => {
 
     describe('Closure Compiler tags', () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('When Closure Compiler tags are enabled, the @private tag accepts a type expression.',
@@ -40,10 +41,10 @@ describe('@private tag', () => {
                 let connectionPorts;
                 let privateDocs;
 
-                jasmine.replaceTagDictionary('closure');
+                jsdoc.replaceTagDictionary('closure');
                 spyOn(logger, 'warn');
 
-                privateDocs = jasmine.getDocSetFromFile('test/fixtures/privatetag2.js');
+                privateDocs = jsdoc.getDocSetFromFile('test/fixtures/privatetag2.js');
                 connectionPorts = privateDocs.getByLongname('connectionPorts')[0];
 
                 expect(logger.warn).not.toHaveBeenCalled();

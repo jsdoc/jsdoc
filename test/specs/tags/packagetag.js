@@ -1,7 +1,8 @@
+/* global jsdoc */
 const logger = require('@jsdoc/logger');
 
 describe('@package tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/packagetag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/packagetag.js');
     const foo = docSet.getByLongname('foo')[0];
 
     it('When a symbol has a @package tag, the doclet has an `access` property set to `package`.',
@@ -11,14 +12,14 @@ describe('@package tag', () => {
 
     describe('JSDoc tags', () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('When JSDoc tags are enabled, the @package tag does not accept a value.', () => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
             spyOn(logger, 'warn');
 
-            jasmine.getDocSetFromFile('test/fixtures/packagetag2.js');
+            jsdoc.getDocSetFromFile('test/fixtures/packagetag2.js');
 
             expect(logger.warn).toHaveBeenCalled();
         });
@@ -26,7 +27,7 @@ describe('@package tag', () => {
 
     describe('Closure Compiler tags', () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('When Closure Compiler tags are enabled, the @package tag accepts a type expression.',
@@ -34,10 +35,10 @@ describe('@package tag', () => {
                 let connectionPorts;
                 let privateDocs;
 
-                jasmine.replaceTagDictionary('closure');
+                jsdoc.replaceTagDictionary('closure');
                 spyOn(logger, 'warn');
 
-                privateDocs = jasmine.getDocSetFromFile('test/fixtures/packagetag2.js');
+                privateDocs = jsdoc.getDocSetFromFile('test/fixtures/packagetag2.js');
                 connectionPorts = privateDocs.getByLongname('connectionPorts')[0];
 
                 expect(logger.warn).not.toHaveBeenCalled();

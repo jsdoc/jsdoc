@@ -1,5 +1,3 @@
-'use strict';
-
 /** This doclet will be shown by default, just like normal. */
 function normal() {}
 

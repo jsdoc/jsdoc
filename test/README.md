@@ -1,39 +1,20 @@
-Testing JSDoc 3
-===============
+# Testing JSDoc
 
-Running Tests
--------------
+JSDoc uses [Jasmine](https://github.com/jasmine/jasmine) as its testing framework. See the
+[Jasmine documentation](https://jasmine.github.io/pages/docs_home.html) for details.
 
-Running tests is easy.  Just change your working directory to the jsdoc folder
-and run the following command on Windows:
+## Running tests
 
-    jsdoc -T
+Clone the GitHub repository; change to its directory; and run the following commands:
 
-Or on OS X, Linux, and other POSIX-compliant platforms:
+    npm install
+    node jsdoc.js -T
 
-    ./jsdoc -T
+## Writing tests
 
-Writing Tests
--------------
+You can write tests for all of the following:
 
-Adding tests is pretty easy, too.  You can write tests for JSDoc itself (to
-make sure tags and the parser, etc. are working properly), tests for plugins, and/or
-tests for templates.
-
-JSDoc 3 uses Jasmine (https://github.com/pivotal/jasmine) as its testing framework.
-Take a look at that project's wiki for documentation on writing tests in general.
-
-### Tests for JSDoc
-
-Take a look at the files in the ```test``` directory for many examples of
-writing tests for JSDoc itself. The ```test\fixtures``` directory hold fixtures
-for use in the tests, and the ```test\specs``` directory holds the tests themselves.
-
-### Tests for plugins
-
-Tests for plugins are found in the ```plugins\test``` directory. Plugins containing
-tests that were installed with the Jakefile install task will be run automatically.
-
-### Tests for templates
-
-TODO
++ **JSDoc itself**. See the `test` directory. Test specs are in `test/specs`, and fixtures used by
+the tests are in `test/fixtures`.
++ **Plugins**. See the `plugins/test` directory.
++ **Packages**. See the `packages/**/test` directories.

@@ -1,4 +1,5 @@
 /* eslint quotes:0 */
+/* global jsdoc */
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", () => {
@@ -191,7 +192,7 @@ describe("jsdoc/util/templateHelper", () => {
 
     describe("getUniqueFilename", () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         // TODO: needs more tests for unusual values and things that get special treatment (such as
@@ -1111,7 +1112,7 @@ describe("jsdoc/util/templateHelper", () => {
     });
 
     describe("addEventListeners", () => {
-        const doclets = ( taffy(doop(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets)) );
+        const doclets = ( taffy(doop(jsdoc.getDocSetFromFile('test/fixtures/listenstag.js').doclets)) );
         const ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0];
         const ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0];
         const ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];

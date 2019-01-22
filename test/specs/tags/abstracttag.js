@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@abstract tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/abstracttag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/abstracttag.js');
     const thingy = docSet.getByLongname('Thingy')[0];
     const thingyPez = docSet.getByLongname('Thingy#pez')[0];
     const otherThingyPez = docSet.getByLongname('OtherThingy#pez')[0];

@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@example tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/exampletag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/exampletag.js');
     const doc = docSet.getByLongname('x')[0];
     const doc2 = docSet.getByLongname('y')[0];
     const txtRegExp = new RegExp('console\\.log\\("foo"\\);[\\r\\n]{1,2}console\\.log\\("bar"\\);');

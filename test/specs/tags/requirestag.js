@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@requires tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/requirestag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/requirestag.js');
     const foo = docSet.getByLongname('foo')[0];
     const bar = docSet.getByLongname('bar')[0];
     const baz = docSet.getByLongname('baz')[0];

@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('generator functions', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/generators.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/generators.js');
     const startsAt0 = docSet.getByLongname('startsAt0')[0];
     const startsAt1 = docSet.getByLongname('startsAt1')[0];
     const startsAt2 = docSet.getByLongname('Generator#startsAt2')[0];

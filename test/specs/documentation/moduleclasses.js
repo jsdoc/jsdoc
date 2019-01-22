@@ -1,9 +1,10 @@
+/* global jsdoc */
 function filter({undocumented}) {
     return !undocumented;
 }
 
 describe('module classes', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/moduleclasses.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduleclasses.js');
     const bar = docSet.getByLongname('module:foo~Bar').filter(filter)[0];
     const barBar = docSet.getByLongname('module:foo~Bar#bar')[0];
     const baz = docSet.getByLongname('module:foo.Baz').filter(filter)[0];

@@ -1,10 +1,11 @@
+/* global jsdoc */
 describe('@augments tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/augmentstag.js');
-    const docSet2 = jasmine.getDocSetFromFile('test/fixtures/augmentstag2.js');
-    const docSet3 = jasmine.getDocSetFromFile('test/fixtures/augmentstag3.js');
-    const docSet4 = jasmine.getDocSetFromFile('test/fixtures/augmentstag4.js');
-    const docSet5 = jasmine.getDocSetFromFile('test/fixtures/augmentstag5.js');
-    const docSet6 = jasmine.getDocSetFromFile('test/fixtures/augmentstag6.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/augmentstag.js');
+    const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/augmentstag2.js');
+    const docSet3 = jsdoc.getDocSetFromFile('test/fixtures/augmentstag3.js');
+    const docSet4 = jsdoc.getDocSetFromFile('test/fixtures/augmentstag4.js');
+    const docSet5 = jsdoc.getDocSetFromFile('test/fixtures/augmentstag5.js');
+    const docSet6 = jsdoc.getDocSetFromFile('test/fixtures/augmentstag6.js');
 
     it('When a symbol has an @augments tag, the doclet has a augments property that includes that value.', () => {
         const bar = docSet.getByLongname('Bar')[0];

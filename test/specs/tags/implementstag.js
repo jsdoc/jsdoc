@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@implements tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/interface-implements.js');
 
     const myTester = docSet.getByLongname('MyTester')[0];
     const beforeEachMethod = docSet.getByLongname('MyTester#beforeEach')[0];

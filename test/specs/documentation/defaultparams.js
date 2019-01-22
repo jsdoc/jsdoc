@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('default parameters', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/defaultparams.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/defaultparams.js');
 
     const setActive = docSet.getByLongname('setActive')[0];
     const setBirthYear = docSet.getByLongname('setBirthYear')[0];
@@ -53,7 +54,7 @@ describe('default parameters', () => {
     });
 
     describe('ES2015 methods', () => {
-        const docSet2 = jasmine.getDocSetFromFile('test/fixtures/defaultparams2.js');
+        const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/defaultparams2.js');
 
         const setSardines = docSet2.getByLongname('PizzaToppings#setSardines')[0];
 

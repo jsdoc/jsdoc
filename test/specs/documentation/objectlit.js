@@ -1,6 +1,7 @@
+/* global jsdoc */
 describe('object literals', () => {
     describe('When a child of an objlit has no @name or @memberof tags', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit.js');
         const found = docSet.getByLongname('tools.serialiser.value');
 
         it('should have a doclet with the correct longname', () => {
@@ -21,7 +22,7 @@ describe('object literals', () => {
     });
 
     describe('When a parent of an objlit has no documentation', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit2.js');
         const found = docSet.getByLongname('position.axis.x');
 
         it('should have a doclet with the correct longname', () => {
@@ -42,12 +43,10 @@ describe('object literals', () => {
     });
 
     describe('When an object literal\'s property names must be escaped in a regexp', () => {
-        let docSet;
-        let found;
-
         function loadDocSet() {
-            docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit3.js');
-            found = docSet.getByLongname('tokens."(".before');
+            /* eslint-disable no-unused-vars */
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit3.js');
+            /* eslint-enable no-unused-vars */
         }
 
         it('should not throw an error when creating a doclet', () => {
@@ -55,10 +54,16 @@ describe('object literals', () => {
         });
 
         it('should have a doclet with the correct name', () => {
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit3.js');
+            const found = docSet.getByLongname('tokens."(".before');
+
             expect(found[0].name).toBe('before');
         });
 
         it('should have a doclet with the correct memberof', () => {
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit3.js');
+            const found = docSet.getByLongname('tokens."(".before');
+
             expect(found[0].memberof).toBe('tokens."("');
         });
     });

@@ -1,6 +1,7 @@
+/* global jsdoc */
 describe('quoted names', () => {
     describe('when found in square brackets', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/quotename.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/quotename.js');
         const found1 = docSet.getByLongname('chat."#channel".open')[0];
 
         it('should have correct name and memberof', () => {
@@ -10,7 +11,7 @@ describe('quoted names', () => {
     });
 
     describe('when found in an object literal', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/quotename2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/quotename2.js');
         const found1 = docSet.getByLongname('contacts."say-\\"hello\\"@example.com".username')[0];
 
         it('should have correct name and memberof', () => {

@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@kind tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/kindtag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/kindtag.js');
     const doc = docSet.getByLongname('x')[0];
 
     it("sets the doclet's 'kind' property to the tag value", () => {

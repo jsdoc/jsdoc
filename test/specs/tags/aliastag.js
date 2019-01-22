@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@alias tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/alias.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/alias.js');
     // there are two doclets with longname myObject, we want the second one
     const myObject = docSet.getByLongname('myObject')[1];
 

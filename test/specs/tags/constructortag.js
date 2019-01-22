@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@constructor tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/constructortag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/constructortag.js');
     const feed = docSet.getByLongname('Feed')[0];
 
     it('When a symbol has an @constructor tag, it is documented as a class.', () => {

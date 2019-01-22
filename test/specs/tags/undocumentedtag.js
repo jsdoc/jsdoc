@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@undocumented tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/undocumentedtag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/undocumentedtag.js');
     const doc = docSet.getByLongname('x')[0];
 
     it("sets the doclet's 'undocumented' property to true", () => {

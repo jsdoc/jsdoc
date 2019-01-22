@@ -1,8 +1,9 @@
+/* global jsdoc */
 describe('@external tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/externaltag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/externaltag.js');
     // TODO: why don't we test anything from docSet2?
-    // var docSet2 = jasmine.getDocSetFromFile('test/fixtures/externaltag2.js');
-    const docSet3 = jasmine.getDocSetFromFile('test/fixtures/externaltag3.js');
+    // const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/externaltag2.js');
+    const docSet3 = jsdoc.getDocSetFromFile('test/fixtures/externaltag3.js');
 
     const fooBarBazExternal = docSet3.getByLongname('external:"foo.bar.baz"')[0];
     const jQueryExternal = docSet.getByLongname('external:"jQuery.fn"')[0];

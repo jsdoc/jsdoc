@@ -1,19 +1,18 @@
-'use strict';
+/* global jsdoc */
+describe('sourcetag plugin', () => {
+    const env = require('jsdoc/env');
+    const path = require('jsdoc/path');
 
-describe('sourcetag plugin', function() {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
-
-    var docSet;
-    var parser = jasmine.createParser();
-    var pluginPath = 'plugins/sourcetag';
-    var pluginPathResolved = path.join(env.dirname, pluginPath);
+    let docSet;
+    const parser = jsdoc.createParser();
+    const pluginPath = 'plugins/sourcetag';
+    const pluginPathResolved = path.join(env.dirname, pluginPath);
 
     require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
-    docSet = jasmine.getDocSetFromFile(pluginPath + '.js', parser);
+    docSet = jsdoc.getDocSetFromFile(`${pluginPath}.js`, parser);
 
-    it("should set the lineno and filename of the doclet's meta property", function() {
-        var doclet = docSet.getByLongname('module:plugins/sourcetag.handlers.newDoclet');
+    it("should set the lineno and filename of the doclet's meta property", () => {
+        const doclet = docSet.getByLongname('module:plugins/sourcetag.handlers.newDoclet');
 
         expect(doclet[0].meta).toBeDefined();
         expect(doclet[0].meta.filename).toEqual('sourcetag.js');

@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@constant tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/constanttag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/constanttag.js');
     const FOO = docSet.getByLongname('FOO')[0];
     const BAR = docSet.getByLongname('BAR')[0];
     const BAZ = docSet.getByLongname('BAZ')[0];

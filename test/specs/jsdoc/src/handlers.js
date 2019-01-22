@@ -1,7 +1,8 @@
+/* global jsdoc */
 describe('jsdoc/src/handlers', () => {
     const handlers = require('jsdoc/src/handlers');
 
-    const testParser = jasmine.createParser();
+    const testParser = jsdoc.createParser();
 
     handlers.attachTo(testParser);
 

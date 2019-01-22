@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('method definition inside a class declaration', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/methoddefinition.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/methoddefinition.js');
     const runMethod = docSet.getByLongname('Test#run')[0];
     const staticRunMethod = docSet.getByLongname('Test.run')[0];
 

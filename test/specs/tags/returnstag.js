@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@returns tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/returnstag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/returnstag.js');
 
     it('When a symbol has a @returns tag with a type and description, the doclet has a "returns" property that includes that info.', () => {
         const find = docSet.getByLongname('find')[0];

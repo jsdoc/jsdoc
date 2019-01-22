@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@name tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/nametag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/nametag.js');
     const view = docSet.getByLongname('View')[0];
     const controller = docSet.getByLongname('Controller')[0];
     const addToParent = docSet.getByLongname('MvcHelpers~addToParent')[0];

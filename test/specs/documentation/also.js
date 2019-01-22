@@ -1,3 +1,4 @@
+/* global jsdoc */
 const env = require('jsdoc/env');
 
 describe('multiple doclets per symbol', () => {
@@ -13,7 +14,7 @@ describe('multiple doclets per symbol', () => {
         }
     }
 
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/also.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/also.js');
     const name = docSet.getByLongname('Asset#name').filter(undocumented);
     const shape = docSet.getByLongname('Asset#shape').filter(undocumented);
 
@@ -60,7 +61,7 @@ describe('multiple doclets per symbol', () => {
         logger.addListener('logger:error', errorListener);
         env.conf.tags.allowUnknownTags = false;
 
-        jasmine.getDocSetFromFile('test/fixtures/also2.js');
+        jsdoc.getDocSetFromFile('test/fixtures/also2.js');
         expect(errors[0]).not.toBeDefined();
 
         logger.removeListener('logger:error', errorListener);

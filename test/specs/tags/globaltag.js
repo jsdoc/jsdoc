@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@global tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/globaltag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/globaltag.js');
 
     it('When an inner symbol has a @global tag it is documented as if it were global.', () => {
         const found = docSet.getByLongname('foo').filter(({undocumented}) => !(undocumented));

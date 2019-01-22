@@ -1,3 +1,4 @@
+/* global jsdoc */
 describe('@nocollapse tag', () => {
     const env = require('jsdoc/env');
     const logger = require('@jsdoc/logger');
@@ -10,17 +11,17 @@ describe('@nocollapse tag', () => {
     });
 
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
         env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('should not recognize the @nocollapse tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/nocollapsetag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/nocollapsetag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
@@ -28,11 +29,11 @@ describe('@nocollapse tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should recognize the @nocollapse tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/nocollapsetag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/nocollapsetag.js');
 
             expect(logger.error).not.toHaveBeenCalled();
         });

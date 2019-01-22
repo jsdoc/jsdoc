@@ -1,3 +1,4 @@
+/* global jsdoc */
 describe('module names', () => {
     const env = require('jsdoc/env');
     const path = require('jsdoc/path');
@@ -13,7 +14,7 @@ describe('module names', () => {
         env.opts._ = [path.normalize(`${env.pwd}/test/fixtures/modules/data/`)];
         env.pwd = env.dirname;
         env.sourceFiles = [];
-        srcParser = jasmine.createParser();
+        srcParser = jsdoc.createParser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 

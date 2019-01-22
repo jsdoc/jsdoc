@@ -1,6 +1,7 @@
+/* global jsdoc */
 describe('@memberof tag', () => {
     it('When a symbol has a @member tag, the doclet has a long name that includes the parent.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftag.js');
         const Data = docSet.getByLongname('mathlib.Data')[0];
         const point = docSet.getByLongname('mathlib.Data#point')[0];
 
@@ -12,7 +13,7 @@ describe('@memberof tag', () => {
     });
 
     it('A symbol within a namespace for which no scope is specified.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag4.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftag4.js');
         const doOtherStuff = docSet.getByLongname('doStuff.doOtherStuff')[0];
 
         expect(doOtherStuff).toBeDefined();
@@ -20,7 +21,7 @@ describe('@memberof tag', () => {
     });
 
     it('A symbol in which name === memberof.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag4.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftag4.js');
         const doStuff = docSet.getByLongname('doStuff.doStuff')[0];
 
         expect(doStuff).toBeDefined();
@@ -28,7 +29,7 @@ describe('@memberof tag', () => {
     });
 
     describe('static', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftag2.js');
         const publish = docSet.getByLongname('Observable#publish')[0];
         const cache = docSet.getByLongname('Observable.cache')[0];
 
@@ -52,7 +53,7 @@ describe('@memberof tag', () => {
     });
 
     describe('forced', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftagforced.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftagforced.js');
         const maproutes = docSet.getByLongname('map.routes')[0];
         const datapointy = docSet.getByLongname('Data#point.y')[0];
 
@@ -66,21 +67,21 @@ describe('@memberof tag', () => {
     });
 
     it('A symbol that is a nested class with a @memberof tag.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag3.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftag3.js');
         const tree = docSet.getByLongname('module:terrain.Forest#Tree')[0];
 
         expect(tree.longname, 'module:terrain.Forest#Tree');
     });
 
     it('A symbol that is an instance member of a nested class with a @memberof tag.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag3.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftag3.js');
         const leaf = docSet.getByLongname('module:terrain.Forest#Tree#leaf')[0];
 
         expect(leaf.longname, 'module:terrain.Forest#Tree#leaf');
     });
 
     it('Properties of a symbol with a @memberof tag inherit the @memberof info.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/memberoftag5.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/memberoftag5.js');
         const open = docSet.getByLongname('module:network.Socket#open')[0];
         const uid = docSet.getByLongname('module:network.Socket.uid')[0];
 

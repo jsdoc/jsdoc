@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@summary tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/summarytag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/summarytag.js');
     const doc = docSet.getByLongname('Sam')[0];
 
     it("sets the doclet's 'summary' property to the tag value", () => {

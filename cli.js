@@ -204,13 +204,9 @@ module.exports = (() => {
 
     // TODO: docs
     cli.runTests = () => {
-        const path = require('jsdoc/path');
-
-        const runner = Promise.promisify(require( path.join(env.dirname, 'test/runner') ));
-
         console.log('Running tests...');
 
-        return runner();
+        return require('./test')();
     };
 
     // TODO: docs

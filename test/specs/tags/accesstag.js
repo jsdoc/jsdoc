@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@access tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/accesstag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/accesstag.js');
     const foo = docSet.getByLongname('Thingy~foo')[0];
     const _bar = docSet.getByLongname('Thingy#_bar')[0];
     const _gnu = docSet.getByLongname('Thingy#_gnu')[0];

@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('@event and @fires/@emits tags', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/eventfirestag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/eventfirestag.js');
     const snowballMethod = docSet.getByLongname('Hurl#snowball')[0];
     const snowballEvent = docSet.getByLongname('Hurl#event:snowball')[0];
     const footballMatchMethod = docSet.getByLongname('Hurl#footballMatch')[0];

@@ -1,3 +1,4 @@
+/* global jsdoc */
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe('jsdoc/package', () => {
@@ -14,7 +15,7 @@ describe('jsdoc/package', () => {
         myPackage = new Package( JSON.stringify(obj) );
         // add the package object to the cached parse results, so we can validate it against the
         // doclet schema
-        jasmine.addParseResults(`package-property-${name}.js`, [myPackage]);
+        jsdoc.addParseResults(`package-property-${name}.js`, [myPackage]);
 
         // use toEqual so we can test array/object values
         expect(myPackage[name]).toEqual(value);

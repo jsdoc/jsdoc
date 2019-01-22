@@ -1,5 +1,6 @@
+/* global jsdoc */
 describe('inner scope for modules', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/moduleinner.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduleinner.js');
     const fooIn = docSet.getByLongname('module:my/module~fooIn')[0];
     const fooOut = docSet.getByLongname('module:my/module~fooOut')[0];
 
