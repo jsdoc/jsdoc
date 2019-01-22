@@ -1,5 +1,5 @@
-JSDoc 3
-=======
+JSDoc
+=====
 
 [![Build Status](https://travis-ci.org/jsdoc3/jsdoc.svg?branch=master)](http://travis-ci.org/jsdoc3/jsdoc)
 
@@ -88,8 +88,8 @@ Overflow](http://stackoverflow.com/questions/tagged/jsdoc).
 License
 -------
 
-JSDoc 3 is copyright (c) 2011-present Michael Mathews <micmath@gmail.com> and the [contributors to
+JSDoc is copyright (c) 2011-present Michael Mathews <micmath@gmail.com> and the [contributors to
 JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).
 
-JSDoc 3 is free software, licensed under the Apache License, Version 2.0. See the file `LICENSE.md`
-in this distribution for more details.
+JSDoc is free software, licensed under the Apache License, Version 2.0. See the `LICENSE` file for
+more details.
