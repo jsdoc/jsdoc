@@ -1,7 +1,6 @@
 /* global jsdoc */
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe('plugins', () => {
-    const app = require('jsdoc/app');
     const env = require('jsdoc/env');
     const path = require('jsdoc/path');
 
@@ -10,15 +9,13 @@ describe('plugins', () => {
         path.normalize(`${env.dirname}/test/fixtures/testPlugin1`),
         path.normalize(`${env.dirname}/test/fixtures/testPlugin2`)
     ];
-
-    // TODO: decouple this from the global parser
-    app.jsdoc.parser = jsdoc.createParser();
+    const parser = jsdoc.createParser();
 
     global.jsdocPluginsTest = global.jsdocPluginsTest || {};
 
-    require('jsdoc/plugins').installPlugins(pluginPaths, app.jsdoc.parser);
+    require('jsdoc/plugins').installPlugins(pluginPaths, parser);
 
-    docSet = jsdoc.getDocSetFromFile('test/fixtures/plugins.js', app.jsdoc.parser, false);
+    docSet = jsdoc.getDocSetFromFile('test/fixtures/plugins.js', parser, false);
 
     it("should fire the plugin's event handlers", () => {
         expect(global.jsdocPluginsTest.plugin1.fileBegin).toBeDefined();

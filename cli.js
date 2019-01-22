@@ -10,7 +10,6 @@
  * @private
  */
 module.exports = (() => {
-    const app = require('jsdoc/app');
     const env = require('jsdoc/env');
     const logger = require('@jsdoc/logger');
     const stripBom = require('jsdoc/util/stripbom');
@@ -297,16 +296,19 @@ module.exports = (() => {
     // TODO: docs
     cli.scanFiles = () => {
         const Filter = require('jsdoc/src/filter').Filter;
+        const Scanner = require('jsdoc/src/scanner').Scanner;
 
         let filter;
+        let scanner;
 
         env.opts._ = buildSourceList();
 
         // are there any files to scan and parse?
         if (env.conf.source && env.opts._.length) {
             filter = new Filter(env.conf.source);
+            scanner = new Scanner();
 
-            env.sourceFiles = app.jsdoc.scanner.scan(env.opts._,
+            env.sourceFiles = scanner.scan(env.opts._,
                 (env.opts.recurse ? env.conf.recurseDepth : undefined), filter);
         }
 
@@ -340,14 +342,14 @@ module.exports = (() => {
         const parser = require('jsdoc/src/parser');
         const plugins = require('jsdoc/plugins');
 
-        app.jsdoc.parser = parser.createParser(env.conf.parser);
+        props.parser = parser.createParser(env.conf.parser);
 
         if (env.conf.plugins) {
             env.conf.plugins = resolvePluginPaths(env.conf.plugins);
-            plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
+            plugins.installPlugins(env.conf.plugins, props.parser);
         }
 
-        handlers.attachTo(app.jsdoc.parser);
+        handlers.attachTo(props.parser);
 
         return cli;
     };
@@ -360,7 +362,7 @@ module.exports = (() => {
         let docs;
         let packageDocs;
 
-        props.docs = docs = app.jsdoc.parser.parse(env.sourceFiles, env.opts.encoding);
+        props.docs = docs = props.parser.parse(env.sourceFiles, env.opts.encoding);
 
         // If there is no package.json, just create an empty package
         packageDocs = new Package(props.packageJson);
@@ -373,7 +375,7 @@ module.exports = (() => {
         borrow.resolveBorrows(docs);
         logger.debug('Post-processing complete.');
 
-        app.jsdoc.parser.fireProcessingComplete(docs);
+        props.parser.fireProcessingComplete(docs);
 
         return cli;
     };

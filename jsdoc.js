@@ -44,16 +44,6 @@
  */
 global.env = (() => require('./lib/jsdoc/env'))();
 
-/**
- * Data that must be shared across the entire application.
- *
- * @deprecated As of JSDoc 3.4.0. Avoid using the `app` object. The global `app` object and the
- * `jsdoc/app` module will be removed in a future release.
- * @namespace
- * @name app
- */
-global.app = (() => require('./lib/jsdoc/app'))();
-
 (() => {
     const env = global.env;
     const cli = require('./cli');
