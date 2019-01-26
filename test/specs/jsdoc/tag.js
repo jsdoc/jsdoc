@@ -1,5 +1,3 @@
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 describe('jsdoc/tag', () => {
     const jsdoc = {
         env: require('jsdoc/env'),
@@ -8,6 +6,8 @@ describe('jsdoc/tag', () => {
         type: require('jsdoc/tag/type')
     };
     const logger = require('@jsdoc/logger');
+
+    const hasOwnProp = Object.prototype.hasOwnProperty;
 
     it('should exist', () => {
         expect(jsdoc.tag).toBeDefined();
@@ -82,9 +82,9 @@ describe('jsdoc/tag', () => {
             expect(typeof tagArg.title).toBe('string');
         });
 
-        it("'title' property should be the normalised tag title", () => {
-            expect(tagArg.title).toBe(jsdoc.dictionary.normalise(tagArg.originalTitle));
-            expect(tagExample.title).toBe(jsdoc.dictionary.normalise(tagExample.originalTitle));
+        it("'title' property should be the normalized tag title", () => {
+            expect(tagArg.title).toBe(jsdoc.dictionary.normalize(tagArg.originalTitle));
+            expect(tagExample.title).toBe(jsdoc.dictionary.normalize(tagExample.originalTitle));
         });
 
         it("should have a 'text' property, a string", () => {
@@ -213,7 +213,7 @@ describe('jsdoc/tag', () => {
 
             it('if the tag has a type without modifiers, tag.value should not include properties for the modifiers', () => {
                 ['optional', 'nullable', 'variable', 'defaultvalue'].forEach(modifier => {
-                    expect( hasOwnProp.call(tagParamWithType.value, modifier) ).toBe(false);
+                    expect(hasOwnProp.call(tagParamWithType.value, modifier)).toBe(false);
                 });
             });
         });

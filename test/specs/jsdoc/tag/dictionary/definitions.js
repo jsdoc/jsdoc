@@ -108,7 +108,7 @@ describe('jsdoc/tag/dictionary/definitions', () => {
             definitions.defineTags(tagDict);
 
             expect(tagDict.lookUp('extends')).not.toBe(false);
-            expect(tagDict.normalise('extends')).toBe('augments');
+            expect(tagDict.normalize('extends')).toBe('augments');
         });
 
         it('should ignore the config settings if tagdefs are passed in', () => {

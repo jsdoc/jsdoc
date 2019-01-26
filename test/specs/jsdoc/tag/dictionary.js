@@ -39,12 +39,8 @@ describe('jsdoc/tag/dictionary', () => {
         expect(typeof dictionary.isNamespace).toBe('function');
     });
 
-    it('should export a normalise method', () => {
-        expect(dictionary.normalise).toBeDefined();
-        expect(typeof dictionary.normalise).toBe('function');
-    });
-
     it('should export a normalize method', () => {
+        expect(dictionary.normalize).toBeDefined();
         expect(typeof dictionary.normalize).toBe('function');
     });
 
@@ -58,7 +54,7 @@ describe('jsdoc/tag/dictionary', () => {
             dictionary.defineTag('foo', {});
             dictionary.defineSynonym('foo', 'bar');
 
-            expect(dictionary.normalise('bar')).toBe('foo');
+            expect(dictionary.normalize('bar')).toBe('foo');
         });
     });
 
@@ -67,7 +63,7 @@ describe('jsdoc/tag/dictionary', () => {
             expect(typeof tagDef).toBe('object');
             expect(tagDef.title).toBeDefined();
             expect(typeof tagDef.title).toBe('string');
-            expect(tagDef.title).toBe(testDictionary.normalise(tagTitle));
+            expect(tagDef.title).toBe(testDictionary.normalize(tagTitle));
         });
 
         it('returns an object that contains all of the tag properties', () => {
@@ -84,7 +80,7 @@ describe('jsdoc/tag/dictionary', () => {
             }
 
             expect(makeTag).not.toThrow();
-            expect(makeTag().title).toBe(testDictionary.normalise(title));
+            expect(makeTag().title).toBe(testDictionary.normalize(title));
         });
     });
 
@@ -120,19 +116,15 @@ describe('jsdoc/tag/dictionary', () => {
         });
     });
 
-    describe('normalise', () => {
-        it("should return the tag's title if it is not a synonym", () => {
-            expect(testDictionary.normalise('FooBar')).toBe('foobar');
-            expect(testDictionary.normalise(tagTitle)).toBe(tagDef.title);
-        });
-
-        it('should return the canonical name of a tag if the synonym is normalised', () => {
-            expect(testDictionary.normalise(tagSynonym)).toBe(tagDef.title);
-        });
-    });
-
     describe('normalize', () => {
-        // covered by tests for `normalise`
+        it("should return the tag's title if it is not a synonym", () => {
+            expect(testDictionary.normalize('FooBar')).toBe('foobar');
+            expect(testDictionary.normalize(tagTitle)).toBe(tagDef.title);
+        });
+
+        it('should return the canonical name of a tag if the synonym is normalized', () => {
+            expect(testDictionary.normalize(tagSynonym)).toBe(tagDef.title);
+        });
     });
 
     describe('Dictionary', () => {

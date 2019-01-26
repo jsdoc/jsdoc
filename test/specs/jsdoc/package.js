@@ -1,18 +1,18 @@
 /* global jsdoc */
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 describe('jsdoc/package', () => {
-    let emptyPackage;
     const jsdocPackage = require('jsdoc/package');
     const logger = require('@jsdoc/logger');
     const Package = jsdocPackage.Package;
+
+    let emptyPackage;
+    const hasOwnProp = Object.prototype.hasOwnProperty;
 
     function checkPackageProperty(name, value) {
         let myPackage;
         const obj = {};
 
         obj[name] = value;
-        myPackage = new Package( JSON.stringify(obj) );
+        myPackage = new Package(JSON.stringify(obj));
         // add the package object to the cached parse results, so we can validate it against the
         // doclet schema
         jsdoc.addParseResults(`package-property-${name}.js`, [myPackage]);
@@ -73,7 +73,7 @@ describe('jsdoc/package', () => {
 
         describe('author', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'author') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'author')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -86,7 +86,7 @@ describe('jsdoc/package', () => {
 
         describe('bugs', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'bugs') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'bugs')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -96,7 +96,7 @@ describe('jsdoc/package', () => {
 
         describe('contributors', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'contributors') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'contributors')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -109,7 +109,7 @@ describe('jsdoc/package', () => {
 
         describe('dependencies', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'dependencies') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'dependencies')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -119,7 +119,7 @@ describe('jsdoc/package', () => {
 
         describe('description', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'description') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'description')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -129,7 +129,7 @@ describe('jsdoc/package', () => {
 
         describe('devDependencies', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'devDependencies') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'devDependencies')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -139,7 +139,7 @@ describe('jsdoc/package', () => {
 
         describe('engines', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'engines') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'engines')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -162,7 +162,7 @@ describe('jsdoc/package', () => {
 
         describe('homepage', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'homepage') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'homepage')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -172,7 +172,7 @@ describe('jsdoc/package', () => {
 
         describe('keywords', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'keywords') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'keywords')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -182,7 +182,7 @@ describe('jsdoc/package', () => {
 
         describe('licenses', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'licenses') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'licenses')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -229,7 +229,7 @@ describe('jsdoc/package', () => {
 
         describe('main', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'main') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'main')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -239,7 +239,7 @@ describe('jsdoc/package', () => {
 
         describe('name', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'name') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'name')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -249,7 +249,7 @@ describe('jsdoc/package', () => {
 
         describe('repository', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'repository') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'repository')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {
@@ -262,7 +262,7 @@ describe('jsdoc/package', () => {
 
         describe('version', () => {
             it('should not exist by default', () => {
-                expect( hasOwnProp.call(emptyPackage, 'version') ).toBe(false);
+                expect(hasOwnProp.call(emptyPackage, 'version')).toBe(false);
             });
 
             it('should contain the value from the package file', () => {

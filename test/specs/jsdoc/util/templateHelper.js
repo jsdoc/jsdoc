@@ -1,7 +1,5 @@
 /* eslint-disable quotes */
 /* global jsdoc */
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 describe("jsdoc/util/templateHelper", () => {
     const _ = require('lodash');
     const definitions = require('jsdoc/tag/dictionary/definitions');
@@ -12,6 +10,8 @@ describe("jsdoc/util/templateHelper", () => {
     const logger = require('@jsdoc/logger');
     const resolver = require('jsdoc/tutorial/resolver');
     const taffy = require('taffydb').taffy;
+
+    const hasOwnProp = Object.prototype.hasOwnProperty;
 
     helper.registerLink('test', 'path/to/test.html');
 
@@ -555,7 +555,7 @@ describe("jsdoc/util/templateHelper", () => {
         };
 
         it('should find the requested items', () => {
-            expect( helper.find(taffy(array), spec) ).toEqual(matches);
+            expect(helper.find(taffy(array), spec)).toEqual(matches);
         });
     });
 
@@ -568,7 +568,7 @@ describe("jsdoc/util/templateHelper", () => {
 
         for (let i = 0, l = a.length; i < l; i++) {
             for (const prop in a[i]) {
-                if ( hasOwnProp.call(a[i], prop) ) {
+                if (hasOwnProp.call(a[i], prop)) {
                     expect(b[i][prop]).toBeDefined();
                     expect(a[i][prop]).toEqual(b[i][prop]);
                 }
@@ -723,7 +723,7 @@ describe("jsdoc/util/templateHelper", () => {
         // or be empty (if whatNotToContain was not provided).
         function doTests(tests, whatNotToContain) {
             for (const src in tests) {
-                if ( hasOwnProp.call(tests, src) ) {
+                if (hasOwnProp.call(tests, src)) {
                     doc = new doclet.Doclet(`/** ${src} */`, {});
                     attribs = helper.getAttribs(doc);
 
