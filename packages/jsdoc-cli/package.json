@@ -1,0 +1,27 @@
+{
+  "name": "@jsdoc/cli",
+  "version": "1.0.0",
+  "description": "The code that powers JSDoc's command-line interface.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdoc3/jsdoc"
+  },
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": {
+    "name": "Jeff Williams",
+    "email": "jeffrey.l.williams@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jsdoc3/jsdoc/issues"
+  },
+  "homepage": "https://github.com/jsdoc3/jsdoc#readme",
+  "dependencies": {
+    "@jsdoc/util": "file:../jsdoc-util",
+    "lodash": "^4.17.11",
+    "yargs-parser": "^11.1.1"
+  }
+}

@@ -4,7 +4,7 @@
 
 const _ = require('lodash');
 const cosmiconfig = require('cosmiconfig');
-const defaults = require('./defaults');
+const defaults = require('./lib/defaults');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 
@@ -43,6 +43,8 @@ const explorer = cosmiconfig(MODULE_NAME, {
         `${MODULE_NAME}.config.js`
     ]
 });
+
+exports.defaults = defaults;
 
 exports.loadSync = (filepath) => {
     let loaded;

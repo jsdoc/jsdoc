@@ -1,7 +1,7 @@
 describe('@jsdoc/config', () => {
     const mockFs = require('mock-fs');
     const config = require('../../index');
-    const defaults = require('../../defaults');
+    const defaults = require('../../lib/defaults');
 
     afterEach(() => mockFs.restore());
 
@@ -9,8 +9,18 @@ describe('@jsdoc/config', () => {
         expect(config).toBeObject();
     });
 
+    it('has a defaults object', () => {
+        expect(config.defaults).toBeObject();
+    });
+
     it('has a loadSync method', () => {
         expect(config.loadSync).toBeFunction();
+    });
+
+    describe('defaults', () => {
+        it('is ./lib/defaults', () => {
+            expect(config.defaults).toBe(defaults);
+        });
     });
 
     describe('loadSync', () => {

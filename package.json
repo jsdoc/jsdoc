@@ -14,11 +14,13 @@
   },
   "dependencies": {
     "@babel/parser": "~7.2.3",
+    "@jsdoc/cli": "file:packages/jsdoc-cli",
     "@jsdoc/config": "file:packages/jsdoc-config",
     "@jsdoc/logger": "file:packages/jsdoc-logger",
     "@jsdoc/syntax": "file:packages/jsdoc-syntax",
     "@jsdoc/template-original": "file:packages/jsdoc-template-original",
     "@jsdoc/template-silent": "file:packages/jsdoc-template-silent",
+    "@jsdoc/util": "file:packages/jsdoc-util",
     "bluebird": "~3.5.0",
     "catharsis": "~0.8.9",
     "escape-string-regexp": "~1.0.5",

@@ -1,6 +1,6 @@
-const defaults = require('../../defaults');
+const defaults = require('../../../lib/defaults');
 
-describe('@jsdoc/config/defaults', () => {
+describe('@jsdoc/config/lib/defaults', () => {
     it('exists', () => {
         expect(defaults).toBeObject();
     });

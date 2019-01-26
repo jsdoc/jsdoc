@@ -47,7 +47,7 @@ module.exports = (() => {
     // TODO: docs
     cli.loadConfig = () => {
         const _ = require('lodash');
-        const args = require('jsdoc/opts/args');
+        const args = require('@jsdoc/cli').args;
         let conf;
         const config = require('@jsdoc/config');
 
@@ -166,7 +166,7 @@ module.exports = (() => {
     // TODO: docs
     cli.printHelp = () => {
         cli.printVersion();
-        console.log( `\n${require('jsdoc/opts/args').help()}\n` );
+        console.log( `\n${require('@jsdoc/cli').help}\n` );
         console.log('Visit http://usejsdoc.org for more information.');
 
         return Promise.resolve(0);

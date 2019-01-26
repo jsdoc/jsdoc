@@ -1,12 +1,13 @@
 /**
  * The default configuration settings for JSDoc.
  *
- * @module @jsdoc/config/defaults
+ * @module @jsdoc/config/lib/defaults
  */
 
 module.exports = {
     // TODO(hegemonic): integrate CLI options with other options
     opts: {
+        access: ['package', 'protected', 'public', 'undefined'],
         destination: './out',
         encoding: 'utf8'
     },

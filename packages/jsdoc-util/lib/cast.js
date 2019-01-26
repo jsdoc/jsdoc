@@ -1,7 +1,7 @@
 /**
  * Module to convert values between various JavaScript types.
- * @module
- * @private
+ *
+ * @module @jsdoc/util/lib/cast
  */
 
 /**
@@ -46,7 +46,7 @@ function castString(str) {
                     number = parseInt(str, 10);
                 }
 
-                if ( String(number) === str && !isNaN(number) ) {
+                if (String(number) === str && !isNaN(number)) {
                     result = number;
                 }
                 else {
@@ -65,14 +65,13 @@ function castString(str) {
  * If an object or array is passed to this method, the object or array's values will be recursively
  * converted to the appropriate types. The original object or array is not modified.
  *
- * @private
  * @param {(string|Object|Array)} item - The item whose type will be converted.
  * @return {(string|number|boolean|Object|Array)} The converted value.
  */
-exports.cast = function cast(item) {
+const cast = module.exports = (item => {
     let result;
 
-    if ( Array.isArray(item) ) {
+    if (Array.isArray(item)) {
         result = [];
         for (let i = 0, l = item.length; i < l; i++) {
             result[i] = cast(item[i]);
@@ -92,4 +91,4 @@ exports.cast = function cast(item) {
     }
 
     return result;
-};
+});
