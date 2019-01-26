@@ -4,7 +4,6 @@
  * @module plugins/eventDumper
  */
 const _ = require('lodash');
-const dump = require('jsdoc/util/dumper').dump;
 const env = require('jsdoc/env');
 const util = require('util');
 
@@ -89,9 +88,9 @@ exports.handlers = {};
 
 events.forEach(eventType => {
     exports.handlers[eventType] = e => {
-        console.log( dump({
+        console.log(JSON.stringify({
             type: eventType,
             content: cleanse(e)
-        }) );
+        }, null, 4));
     };
 });
