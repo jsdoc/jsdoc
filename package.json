@@ -31,6 +31,7 @@
     "marked": "~0.6.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
+    "strip-bom": "^3.0.0",
     "taffydb": "2.6.2"
   },
   "devDependencies": {
