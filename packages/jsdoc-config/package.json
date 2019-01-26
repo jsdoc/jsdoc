@@ -1,0 +1,29 @@
+{
+  "name": "@jsdoc/config",
+  "version": "1.0.0",
+  "description": "Loads configuration settings for JSDoc.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdoc3/jsdoc"
+  },
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": {
+    "name": "Jeff Williams",
+    "email": "jeffrey.l.williams@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jsdoc3/jsdoc/issues"
+  },
+  "homepage": "https://github.com/jsdoc3/jsdoc#readme",
+  "dependencies": {
+    "cosmiconfig": "^5.0.7",
+    "lodash": "^4.17.11",
+    "strip-bom": "^3.0.0",
+    "strip-json-comments": "^2.0.1"
+  },
+  "devDependencies": {}
+}

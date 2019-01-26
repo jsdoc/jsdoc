@@ -23,10 +23,13 @@ const SPEC_FILES = (() => {
 module.exports = () => {
     const jasmine = new Jasmine();
     const matcher = env.opts.matcher;
+    /* eslint-disable no-empty-function */
     const promise = new Promise(() => {});
+    /* eslint-enable no-empty-function */
 
     jasmine.loadConfig({
         helpers: [
+            'node_modules/jasmine-expect/index.js',
             'test/helpers/**/*.js'
         ],
         random: false

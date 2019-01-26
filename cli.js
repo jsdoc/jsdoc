@@ -48,18 +48,8 @@ module.exports = (() => {
     cli.loadConfig = () => {
         const _ = require('lodash');
         const args = require('jsdoc/opts/args');
-        const Config = require('jsdoc/config');
-        let config;
-        const fs = require('jsdoc/fs');
-        const path = require('jsdoc/path');
-
-        let confPath;
-        let isFile;
-
-        const defaultOpts = {
-            destination: './out/',
-            encoding: 'utf8'
-        };
+        let conf;
+        const config = require('@jsdoc/config');
 
         try {
             env.opts = args.parse(env.args);
@@ -71,37 +61,18 @@ module.exports = (() => {
             });
         }
 
-        confPath = env.opts.configure || path.join(env.dirname, 'conf.json');
         try {
-            isFile = fs.statSync(confPath).isFile();
-        }
-        catch (e) {
-            isFile = false;
-        }
-
-        if ( !isFile && !env.opts.configure ) {
-            confPath = path.join(env.dirname, 'conf.json.EXAMPLE');
-        }
-
-        try {
-            switch ( path.extname(confPath) ) {
-                case '.js':
-                    config = require( path.resolve(confPath) ) || {};
-                    break;
-                case '.json':
-                case '.EXAMPLE':
-                default:
-                    config = fs.readFileSync(confPath, 'utf8');
-                    break;
-            }
-            env.conf = new Config(config).get();
-        }
-        catch (e) {
-            cli.exit(1, `Cannot parse the config file ${confPath}: ${e}\n${FATAL_ERROR_MESSAGE}`);
+            conf = config.loadSync(env.opts.configure);
+            env.conf = conf.config;
+        } catch (e) {
+            cli.exit(
+                1,
+                `Cannot parse the config file ${conf.filepath}: ${e}\n${FATAL_ERROR_MESSAGE}`
+            );
         }
 
-        // look for options on the command line, in the config file, and in the defaults, in that order
-        env.opts = _.defaults(env.opts, env.conf.opts, defaultOpts);
+        // look for options on the command line, then in the config
+        env.opts = _.defaults(env.opts, env.conf.opts);
 
         return cli;
     };

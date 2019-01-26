@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@babel/parser": "~7.2.3",
+    "@jsdoc/config": "file:packages/jsdoc-config",
     "@jsdoc/logger": "file:packages/jsdoc-logger",
     "@jsdoc/syntax": "file:packages/jsdoc-syntax",
     "@jsdoc/template-original": "file:packages/jsdoc-template-original",
@@ -28,7 +29,6 @@
     "marked": "~0.6.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
-    "strip-json-comments": "~2.0.1",
     "taffydb": "2.6.2"
   },
   "devDependencies": {
@@ -37,8 +37,10 @@
     "gulp-eslint": "~5.0.0",
     "gulp-json-editor": "~2.5.0",
     "jasmine": "^3.3.1",
+    "jasmine-expect": "^4.0.1",
     "klaw-sync": "^6.0.0",
     "lerna": "^3.10.6",
+    "mock-fs": "^4.7.0",
     "nyc": "~13.1.0"
   },
   "greenkeeper": {
