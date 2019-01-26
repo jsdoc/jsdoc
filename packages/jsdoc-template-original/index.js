@@ -547,7 +547,13 @@ exports.publish = ({doclets, tutorials}, opts) => {
 
         fs.copyFileSync(
             path.join(
-                templatePath, 'node_modules/color-themes-for-google-code-prettify/dist/themes',
+                // Hacky workaround to get the path to the prettify themes.
+                require.resolve('lodash'),
+                '..',
+                '..',
+                'color-themes-for-google-code-prettify',
+                'dist',
+                'themes',
                 fileName
             ),
             toDir
