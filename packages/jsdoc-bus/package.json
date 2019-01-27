@@ -1,0 +1,22 @@
+{
+    "name": "@jsdoc/bus",
+    "version": "1.0.0",
+    "description": "An event bus with no dependencies.",
+    "main": "index.js",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/jsdoc3/jsdoc"
+    },
+    "keywords": [
+      "jsdoc"
+    ],
+    "author": {
+      "name": "Jeff Williams",
+      "email": "jeffrey.l.williams@gmail.com"
+    },
+    "license": "Apache-2.0",
+    "bugs": {
+      "url": "https://github.com/jsdoc3/jsdoc/issues"
+    },
+    "homepage": "https://github.com/jsdoc3/jsdoc#readme"
+  }

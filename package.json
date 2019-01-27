@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@babel/parser": "~7.2.3",
+    "@jsdoc/bus": "file:packages/jsdoc-bus",
     "@jsdoc/cli": "file:packages/jsdoc-cli",
     "@jsdoc/config": "file:packages/jsdoc-config",
     "@jsdoc/logger": "file:packages/jsdoc-logger",
