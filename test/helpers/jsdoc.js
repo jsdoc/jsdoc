@@ -1,4 +1,4 @@
-const fs = require('jsdoc/fs');
+const fs = require('fs');
 const jsdoc = {
     augment: require('jsdoc/augment'),
     doclet: require('jsdoc/doclet'),

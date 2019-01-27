@@ -210,7 +210,7 @@ module.exports = (() => {
     };
 
     function readPackageJson(filepath) {
-        const fs = require('jsdoc/fs');
+        const fs = require('fs');
 
         try {
             return stripJsonComments( fs.readFileSync(filepath, 'utf8') );
@@ -280,7 +280,7 @@ module.exports = (() => {
             scanner = new Scanner();
 
             env.sourceFiles = scanner.scan(env.opts._,
-                (env.opts.recurse ? env.conf.recurseDepth : undefined), filter);
+                (env.opts.recurse ? env.conf.source.maxDepth : undefined), filter);
         }
 
         return cli;

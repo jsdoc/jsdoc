@@ -2,7 +2,7 @@
 describe('jsdoc/src/parser', () => {
     const _ = require('lodash');
     const env = require('jsdoc/env');
-    const fs = require('jsdoc/fs');
+    const fs = require('fs');
     const handlers = require('jsdoc/src/handlers');
     const logger = require('@jsdoc/logger');
     const parser = require('jsdoc/src/parser');

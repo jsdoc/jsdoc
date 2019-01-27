@@ -15,9 +15,6 @@ module.exports = {
      * The JSDoc plugins to load.
      */
     plugins: [],
-    // TODO(hegemonic): move to `source` or remove
-    recurseDepth: 10,
-    // TODO(hegemonic): switch to glob patterns
     /**
      * Settings for loading and parsing source files.
      */
@@ -36,6 +33,11 @@ module.exports = {
          * processed.
          */
         includePattern: '.+\\.js(doc|x)?$',
+        /**
+         * The maximum number of levels to recursively search for source files, or `-1` to recurse
+         * as many levels as possible.
+         */
+        maxDepth: -1,
         /**
          * The type of source file. In general, you should use the value `module`. If none of your
          * source files use ECMAScript >=2015 syntax, you can use the value `script`.

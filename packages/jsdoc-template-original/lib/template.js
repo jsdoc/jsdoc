@@ -2,7 +2,7 @@
  * Wrapper for `_.template` to load templates from files.
  */
 const _ = require('lodash');
-const fs = require('jsdoc/fs');
+const fs = require('fs');
 const path = require('path');
 
 /**

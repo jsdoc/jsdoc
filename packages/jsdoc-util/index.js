@@ -3,5 +3,9 @@
  */
 
 const cast = require('./lib/cast');
+const fs = require('./lib/fs');
 
-exports.cast = cast;
+module.exports = {
+    cast: cast,
+    fs: fs
+};

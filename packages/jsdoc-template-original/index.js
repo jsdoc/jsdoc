@@ -1,8 +1,10 @@
 const _ = require('lodash');
 const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
+const fs = require('fs');
 const helper = require('jsdoc/util/templateHelper');
 const logger = require('@jsdoc/logger');
+const ls = require('@jsdoc/util').fs.ls;
+const mkdirpSync = require('mkdirp').sync;
 const path = require('jsdoc/path');
 const taffy = require('taffydb').taffy;
 const Template = require('./lib/template');
@@ -404,6 +406,12 @@ function buildNav(members) {
     return nav;
 }
 
+function sourceToDestination(parentDir, sourcePath, destDir) {
+    const relativeSource = path.relative(parentDir, sourcePath);
+
+    return path.resolve(path.join(destDir, relativeSource));
+}
+
 /**
     @param {object} data
     @param {object} opts
@@ -506,44 +514,44 @@ exports.publish = ({doclets, tutorials}, opts) => {
     if (packageInfo && packageInfo.name) {
         outdir = path.join( outdir, packageInfo.name, (packageInfo.version || '') );
     }
-    fs.mkPath(outdir);
+    mkdirpSync(outdir);
 
     // copy the template's built-in static files to outdir
     fromDir = path.join(templatePath, 'static');
-    staticFiles = fs.ls(fromDir, 3);
+    staticFiles = ls(fromDir);
 
     staticFiles.forEach(fileName => {
-        const toDir = fs.toDir(fileName.replace(fromDir, outdir));
+        const toPath = sourceToDestination(fromDir, fileName, outdir);
 
-        fs.mkPath(toDir);
-        fs.copyFileSync(fileName, toDir);
+        mkdirpSync(path.dirname(toPath));
+        fs.copyFileSync(fileName, toPath);
     });
 
     // copy the fonts used by the template to outdir
-    staticFiles = fs.ls(path.join(templatePath, 'node_modules/open-sans-fonts/open-sans'), 3);
+    staticFiles = ls(path.join(templatePath, 'node_modules/open-sans-fonts/open-sans'));
 
     staticFiles.forEach(fileName => {
-        const toDir = path.join(outdir, 'fonts');
+        const toPath = path.join(outdir, 'fonts', path.basename(fileName));
 
         if (FONT_NAMES.includes(path.parse(fileName).name)) {
-            fs.mkPath(toDir);
-            fs.copyFileSync(fileName, toDir);
+            mkdirpSync(path.dirname(toPath));
+            fs.copyFileSync(fileName, toPath);
         }
     });
 
     // copy the prettify script to outdir
     PRETTIFIER_SCRIPT_FILES.forEach(fileName => {
-        const toDir = path.join(outdir, 'scripts');
+        const toPath = path.join(outdir, 'scripts', path.basename(fileName));
 
         fs.copyFileSync(
             path.join(templatePath, 'node_modules/code-prettify/loader', fileName),
-            toDir
+            toPath
         );
     });
 
     // copy the prettify CSS to outdir
     PRETTIFIER_CSS_FILES.forEach(fileName => {
-        const toDir = path.join(outdir, 'styles');
+        const toPath = path.join(outdir, 'styles', path.basename(fileName));
 
         fs.copyFileSync(
             path.join(
@@ -556,7 +564,7 @@ exports.publish = ({doclets, tutorials}, opts) => {
                 'themes',
                 fileName
             ),
-            toDir
+            toPath
         );
     });
 
@@ -577,11 +585,10 @@ exports.publish = ({doclets, tutorials}, opts) => {
             extraStaticFiles = staticFileScanner.scan([filePath], 10, staticFileFilter);
 
             extraStaticFiles.forEach(fileName => {
-                const sourcePath = fs.toDir(filePath);
-                const toDir = fs.toDir( fileName.replace(sourcePath, outdir) );
+                const toPath = sourceToDestination(fromDir, fileName, outdir);
 
-                fs.mkPath(toDir);
-                fs.copyFileSync(fileName, toDir);
+                mkdirpSync(path.dirname(toPath));
+                fs.copyFileSync(fileName, toPath);
             });
         });
     }

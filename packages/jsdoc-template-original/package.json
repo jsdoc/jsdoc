@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/jsdoc3/jsdoc#readme",
   "dependencies": {
+    "@jsdoc/util": "file:../jsdoc-util",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
+    "mkdirp": "^0.5.1",
     "open-sans-fonts": "^1.5.0",
     "taffydb": "2.6.2"
   },

@@ -18,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/jsdoc3/jsdoc/issues"
   },
-  "homepage": "https://github.com/jsdoc3/jsdoc#readme"
+  "homepage": "https://github.com/jsdoc3/jsdoc#readme",
+  "dependencies": {
+    "klaw-sync": "^6.0.0",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "mock-fs": "^4.7.0"
+  }
 }
