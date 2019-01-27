@@ -13,7 +13,7 @@ const jsdoc = {
         definitions: require('jsdoc/tag/dictionary/definitions')
     }
 };
-const path = require('jsdoc/path');
+const path = require('path');
 
 const originalDictionary = jsdoc.tag.dictionary;
 const parseResults = [];

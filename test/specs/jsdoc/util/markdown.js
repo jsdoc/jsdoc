@@ -2,6 +2,7 @@ describe('jsdoc/util/markdown', () => {
     const env = require('jsdoc/env');
     const logger = require('@jsdoc/logger');
     const markdown = require('jsdoc/util/markdown');
+    const path = require('path');
 
     it('should exist', () => {
         expect(markdown).toBeDefined();
@@ -149,7 +150,9 @@ describe('jsdoc/util/markdown', () => {
             it('should support `highlight` as the path to a highlighter module', () => {
                 let parser;
 
-                setMarkdownConf({ highlight: 'test/fixtures/markdown/highlighter' });
+                setMarkdownConf({
+                    highlight: path.join(env.dirname, 'test/fixtures/markdown/highlighter')
+                });
                 parser = markdown.getParser();
 
                 expect(parser('```js\nhello\n```')).toBe(
@@ -170,7 +173,9 @@ describe('jsdoc/util/markdown', () => {
                 '`exports.highlight`', () => {
                 spyOn(logger, 'error');
 
-                setMarkdownConf({ highlight: 'test/fixtures/markdown/badhighlighter' });
+                setMarkdownConf({
+                    highlight: path.join(env.dirname, 'test/fixtures/markdown/badhighlighter')
+                });
                 markdown.getParser();
 
                 expect(logger.error).toHaveBeenCalled();

@@ -1,6 +1,6 @@
 describe('jsdoc/src/scanner', () => {
     const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const path = require('path');
     const scanner = require('jsdoc/src/scanner');
 
     const filter = new (require('jsdoc/src/filter').Filter)({

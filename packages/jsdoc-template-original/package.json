@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/jsdoc3/jsdoc#readme",
   "dependencies": {
+    "@jsdoc/logger": "file:../jsdoc-logger",
     "@jsdoc/util": "file:../jsdoc-util",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",

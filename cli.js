@@ -286,28 +286,6 @@ module.exports = (() => {
         return cli;
     };
 
-    function resolvePluginPaths(paths) {
-        const path = require('jsdoc/path');
-
-        const pluginPaths = [];
-
-        paths.forEach(plugin => {
-            const basename = path.basename(plugin);
-            const dirname = path.dirname(plugin);
-            const pluginPath = path.getResourcePath(dirname, basename);
-
-            if (!pluginPath) {
-                logger.error('Unable to find the plugin "%s"', plugin);
-
-                return;
-            }
-
-            pluginPaths.push( pluginPath );
-        });
-
-        return pluginPaths;
-    }
-
     cli.createParser = () => {
         const handlers = require('jsdoc/src/handlers');
         const parser = require('jsdoc/src/parser');
@@ -316,7 +294,6 @@ module.exports = (() => {
         props.parser = parser.createParser(env.conf.parser);
 
         if (env.conf.plugins) {
-            env.conf.plugins = resolvePluginPaths(env.conf.plugins);
             plugins.installPlugins(env.conf.plugins, props.parser);
         }
 

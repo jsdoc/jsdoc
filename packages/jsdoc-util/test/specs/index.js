@@ -1,6 +1,6 @@
-const util = require('../../index');
-
 describe('@jsdoc/util', () => {
+    const util = require('../..');
+
     it('is an object', () => {
         expect(util).toBeObject();
     });
@@ -11,6 +11,10 @@ describe('@jsdoc/util', () => {
 
     it('has an fs object', () => {
         expect(util.fs).toBeObject();
+    });
+
+    it('has a path object', () => {
+        expect(util.path).toBeObject();
     });
 
     describe('cast', () => {
@@ -26,6 +30,14 @@ describe('@jsdoc/util', () => {
             const fs = require('../../lib/fs');
 
             expect(util.fs).toBe(fs);
+        });
+    });
+
+    describe('path', () => {
+        it('is ./lib/path', () => {
+            const path = require('../../lib/path');
+
+            expect(util.path).toBe(path);
         });
     });
 });

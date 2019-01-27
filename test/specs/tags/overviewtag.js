@@ -1,7 +1,7 @@
 /* global jsdoc */
 describe('@overview tag', () => {
     const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     let doclets;
 

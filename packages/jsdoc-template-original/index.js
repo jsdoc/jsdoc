@@ -1,11 +1,12 @@
 const _ = require('lodash');
+const commonPrefix = require('@jsdoc/util').path.commonPrefix;
 const env = require('jsdoc/env');
 const fs = require('fs');
 const helper = require('jsdoc/util/templateHelper');
 const logger = require('@jsdoc/logger');
 const ls = require('@jsdoc/util').fs.ls;
 const mkdirpSync = require('mkdirp').sync;
-const path = require('jsdoc/path');
+const path = require('path');
 const taffy = require('taffydb').taffy;
 const Template = require('./lib/template');
 
@@ -210,9 +211,13 @@ function addAttribs(f) {
     f.attribs = `<span class="type-signature">${attribsString}</span>`;
 }
 
-function shortenPaths(files, commonPrefix) {
+function shortenPaths(files, prefix) {
+    if (prefix) {
+        prefix += path.sep;
+    }
+
     Object.keys(files).forEach(file => {
-        files[file].shortened = files[file].resolved.replace(commonPrefix, '')
+        files[file].shortened = files[file].resolved.replace(prefix, '')
             // always use forward slashes
             .replace(/\\/g, '/');
     });
@@ -458,8 +463,7 @@ exports.publish = ({doclets, tutorials}, opts) => {
 
     // set up templating
     view.layout = conf.default.layoutFile ?
-        path.getResourcePath(path.dirname(conf.default.layoutFile),
-            path.basename(conf.default.layoutFile) ) :
+        path.resolve(conf.default.layoutFile) :
         'layout.tmpl';
 
     // set up tutorials for helper
@@ -594,7 +598,7 @@ exports.publish = ({doclets, tutorials}, opts) => {
     }
 
     if (sourceFilePaths.length) {
-        sourceFiles = shortenPaths( sourceFiles, path.commonPrefix(sourceFilePaths) );
+        sourceFiles = shortenPaths(sourceFiles, commonPrefix(sourceFilePaths));
     }
     data().each(doclet => {
         let docletPath;
