@@ -3,7 +3,7 @@
  */
 
 const _ = require('lodash');
-const cast = require('@jsdoc/util').cast;
+const cast = require('@jsdoc/util/lib/cast');
 const querystring = require('querystring');
 const yargs = require('yargs-parser');
 

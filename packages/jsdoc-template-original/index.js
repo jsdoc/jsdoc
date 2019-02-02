@@ -1,10 +1,10 @@
 const _ = require('lodash');
-const commonPrefix = require('@jsdoc/util').path.commonPrefix;
+const commonPrefix = require('@jsdoc/util/lib/path').commonPrefix;
 const env = require('jsdoc/env');
 const fs = require('fs');
 const helper = require('jsdoc/util/templateHelper');
 const logger = require('@jsdoc/logger');
-const ls = require('@jsdoc/util').fs.ls;
+const lsSync = require('@jsdoc/util/lib/fs').lsSync;
 const mkdirpSync = require('mkdirp').sync;
 const path = require('path');
 const taffy = require('taffydb').taffy;
@@ -522,7 +522,7 @@ exports.publish = ({doclets, tutorials}, opts) => {
 
     // copy the template's built-in static files to outdir
     fromDir = path.join(templatePath, 'static');
-    staticFiles = ls(fromDir);
+    staticFiles = lsSync(fromDir);
 
     staticFiles.forEach(fileName => {
         const toPath = sourceToDestination(fromDir, fileName, outdir);
@@ -532,7 +532,7 @@ exports.publish = ({doclets, tutorials}, opts) => {
     });
 
     // copy the fonts used by the template to outdir
-    staticFiles = ls(path.join(templatePath, 'node_modules/open-sans-fonts/open-sans'));
+    staticFiles = lsSync(path.join(templatePath, 'node_modules/open-sans-fonts/open-sans'));
 
     staticFiles.forEach(fileName => {
         const toPath = path.join(outdir, 'fonts', path.basename(fileName));

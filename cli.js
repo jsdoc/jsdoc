@@ -266,21 +266,21 @@ module.exports = (() => {
 
     // TODO: docs
     cli.scanFiles = () => {
-        const Filter = require('jsdoc/src/filter').Filter;
-        const Scanner = require('jsdoc/src/scanner').Scanner;
+        const makeFilter = require('@jsdoc/util/lib/path').makeFilter;
+        const walkSync = require('@jsdoc/util/lib/fs').walkSync;
 
         let filter;
-        let scanner;
 
         env.opts._ = buildSourceList();
 
         // are there any files to scan and parse?
         if (env.conf.source && env.opts._.length) {
-            filter = new Filter(env.conf.source);
-            scanner = new Scanner();
+            filter = makeFilter(env.conf.source);
 
-            env.sourceFiles = scanner.scan(env.opts._,
-                (env.opts.recurse ? env.conf.source.maxDepth : undefined), filter);
+            env.sourceFiles = walkSync(env.opts._, {
+                depth: env.opts.recurse ? env.conf.source.maxDepth : undefined,
+                filter: filter
+            });
         }
 
         return cli;

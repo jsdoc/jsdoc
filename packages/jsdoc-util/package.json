@@ -2,7 +2,6 @@
   "name": "@jsdoc/util",
   "version": "1.0.0",
   "description": "Utility modules for JSDoc.",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsdoc3/jsdoc"

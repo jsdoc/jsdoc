@@ -1,6 +1,6 @@
-const cast = require('../../../lib/cast');
-
 describe('@jsdoc/util/lib/cast', () => {
+    const cast = require('../../../lib/cast');
+
     it('exists', () => {
         expect(cast).toBeFunction();
     });

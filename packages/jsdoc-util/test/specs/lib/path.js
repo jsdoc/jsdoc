@@ -4,18 +4,21 @@ describe('@jsdoc/util/lib/path', () => {
     const libPath = require('../../../lib/path');
 
     const isWindows = /^win/.test(os.platform());
+    const fakeCwd = isWindows ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
+
+    beforeEach(() => {
+        spyOn(process, 'cwd').and.returnValue(fakeCwd);
+    });
 
     it('has a commonPrefix method', () => {
         expect(libPath.commonPrefix).toBeFunction();
     });
 
+    it('has a makeFilter method', () => {
+        expect(libPath.makeFilter).toBeFunction();
+    });
+
     describe('commonPrefix', () => {
-        const fakeCwd = isWindows ? 'C:\\Users\\jsdoc' : '/Users/jsdoc';
-
-        beforeEach(() => {
-            spyOn(process, 'cwd').and.returnValue(fakeCwd);
-        });
-
         it('finds the correct prefix for a single relative path', () => {
             const paths = [path.join('foo', 'bar', 'baz', 'qux.js')];
             const expected = path.join(fakeCwd, 'foo', 'bar', 'baz');
@@ -91,5 +94,129 @@ describe('@jsdoc/util/lib/path', () => {
                 expect(libPath.commonPrefix(paths)).toBe(prefix);
             });
         }
+    });
+
+    describe('makeFilter', () => {
+        it('returns a function', () => {
+            expect(typeof libPath.makeFilter({})).toBe('function');
+        });
+
+        it('throws on bad input', () => {
+            expect(() => libPath.makeFilter()).toThrow();
+        });
+
+        describe('exclude', () => {
+            it('accepts a string', () => {
+                expect(() => libPath.makeFilter({ exclude: 'foo' })).not.toThrow();
+            });
+
+            it('accepts an array of strings', () => {
+                expect(() => libPath.makeFilter({ exclude: ['foo', 'bar'] })).not.toThrow();
+            });
+
+            it('throws on invalid types', () => {
+                expect(() => libPath.makeFilter({ exclude: 7 })).toThrow();
+            });
+
+            it('filters out filepaths that end with excluded values', () => {
+                const filter = libPath.makeFilter({ exclude: ['nope/nuh-uh.md', 'neverever'] });
+                const filteredFiles = [
+                    'path/to/some/file.js',
+                    'another/path/nope/nuh-uh.md',
+                    'neverever'
+                ].filter(filter);
+
+                expect(filteredFiles).toEqual(['path/to/some/file.js']);
+            });
+
+            it('does not filter out filepaths that contain excluded values in the middle', () => {
+                const filter = libPath.makeFilter({ exclude: 'to/some' });
+                const filteredFiles = [
+                    'path/to/some/file.js'
+                ].filter(filter);
+
+                expect(filteredFiles).toEqual(['path/to/some/file.js']);
+            });
+
+            it('takes precedence over includePattern', () => {
+                const filter = libPath.makeFilter({
+                    exclude: ['nope/nuh-uh.md', 'neverever'],
+                    includePattern: '(?:\\.js|\\.md)$'
+                });
+                const filteredFiles = [
+                    'path/to/some/file.js',
+                    'another/path/nope/nuh-uh.md',
+                    'neverever'
+                ].filter(filter);
+
+                expect(filteredFiles).toEqual(['path/to/some/file.js']);
+            });
+        });
+
+        describe('excludePattern', () => {
+            it('accepts a string', () => {
+                expect(() => libPath.makeFilter({ excludePattern: 'foo' })).not.toThrow();
+            });
+
+            it('accepts a RegExp', () => {
+                expect(() => libPath.makeFilter({ excludePattern: new RegExp('z') })).not.toThrow();
+            });
+
+            it('throws on invalid types', () => {
+                expect(() => libPath.makeFilter({ excludePattern: 7 })).toThrow();
+            });
+
+            it('filters out filepaths that match excludePattern', () => {
+                const filter = libPath.makeFilter({
+                    excludePattern: '(?:nuh.+?\\.md|neverever)$'
+                });
+                const filteredFiles = [
+                    'path/to/some/file.js',
+                    'another/path/nope/nuh-uh.md',
+                    'neverever'
+                ].filter(filter);
+
+                expect(filteredFiles).toEqual(['path/to/some/file.js']);
+            });
+
+            it('takes precedence over includePattern', () => {
+                const filter = libPath.makeFilter({
+                    excludePattern: '(?:nuh.+?\\.md|neverever)$',
+                    includePattern: '(?:\\.js|\\.md)$'
+                });
+                const filteredFiles = [
+                    'path/to/some/file.js',
+                    'another/path/nope/nuh-uh.md',
+                    'neverever'
+                ].filter(filter);
+
+                expect(filteredFiles).toEqual(['path/to/some/file.js']);
+            });
+        });
+
+        describe('includePattern', () => {
+            it('accepts a string', () => {
+                expect(() => libPath.makeFilter({ includePattern: 'foo' })).not.toThrow();
+            });
+
+            it('accepts a RegExp', () => {
+                expect(() => libPath.makeFilter({ includePattern: new RegExp('z') })).not.toThrow();
+            });
+
+            it('throws on invalid types', () => {
+                expect(() => libPath.makeFilter({ includePattern: 7 })).toThrow();
+            });
+
+            it('includes only filepaths that match includePattern', () => {
+                const filter = libPath.makeFilter({ includePattern: '\\.js$' });
+                const filteredFiles = [
+                    'path/to/some/file.js',
+                    'another/path/nope/nuh-uh.md',
+                    'neverever'
+                ].filter(filter);
+
+                expect(filteredFiles).toEqual(['path/to/some/file.js']);
+            });
+        });
     });
 });

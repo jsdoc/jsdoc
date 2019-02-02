@@ -1,4 +1,6 @@
 /**
+ * Utility methods for working with filepaths.
+ *
  * @module @jsdoc/util/lib/path
  */
 
@@ -7,7 +9,7 @@ const path = require('path');
 function prefixReducer({cwd, previousPath}, current) {
     let currentPath;
 
-    // if previousPath is a zero-length array, there's no common prefix; move along
+    // If previousPath is a zero-length array, there's no common prefix.
     if (Array.isArray(previousPath) && !previousPath.length) {
         return previousPath;
     }
@@ -15,10 +17,10 @@ function prefixReducer({cwd, previousPath}, current) {
     currentPath = path.resolve(cwd, current).split(path.sep) || [];
 
     if (previousPath && currentPath.length) {
-        // remove chunks that exceed the previous path's length
+        // Remove chunks that exceed the previous path's length.
         currentPath = currentPath.slice(0, previousPath.length);
 
-        // if a chunk doesn't match the previous path, remove everything from that chunk on
+        // If a chunk doesn't match the previous path, remove that chunk and the following chunks.
         for (let i = 0, l = currentPath.length; i < l; i++) {
             if (currentPath[i] !== previousPath[i]) {
                 currentPath.splice(i, currentPath.length - i);
@@ -70,3 +72,86 @@ exports.commonPrefix = (paths = []) => {
 
     return segments.join(path.sep);
 };
+
+/**
+ * A filter function that is compatible with `Array#map` and similar functions.
+ *
+ * @typedef module:@jsdoc/util/lib/path~filter
+ * @type {function}
+ * @param {string} filepath - The filepath to test. The filter function resolves the filepath,
+ * relative to the current working directory, before testing it.
+ * @returns {boolean} `true` if the filepath meets the conditions of the filter, or `false` if the
+ * filepath does not meet the conditions.
+ */
+
+function makeRegExp(value) {
+    let regExp = null;
+
+    if (typeof value === 'string') {
+        regExp = new RegExp(value);
+    } else if (value instanceof RegExp) {
+        regExp = value;
+    } else if (value !== undefined) {
+        throw new TypeError(`Expected string or RegExp, got ${typeof value}`);
+    }
+
+    return regExp;
+}
+
+/**
+ * Create a function that filters filepaths and is suitable for use with methods such as
+ * {@link Array#filter}. The filter is based on the following inputs:
+ *
+ * + An include pattern (a regular expression that matches filepaths that should pass the filter)
+ * + An exclude pattern (a regular expression that matches filepaths that should not pass the
+ * filter)
+ * + An exclude list (an array of values that, if present at the end of a filepath, will always
+ * cause that filepath to be excluded)
+ *
+ * The filter function resolves the filepath, relative to the current working directory, before
+ * testing it.
+ *
+ * @param {Object} opts - Options for the filter function.
+ * @param {(Array<string>|string)} [opts.exclude] - An array of values (or a single value) that, if
+ * present at the end of a filepath, will always cause that filepath to be excluded.
+ * @param {(string|RegExp)} [opts.excludePattern] - A regular expression that matches filepaths to
+ * exclude, or a string that represents a valid regular expression.
+ * @param {(string|RegExp)} [opts.includePattern] - A regular expression that matches filepaths to
+ * include, or a string that represents a valid regular expression.
+ * @returns {module:@jsdoc/util/lib/path~filter} The filter function.
+ */
+exports.makeFilter = (({exclude, excludePattern, includePattern}) => {
+    const cwd = process.cwd();
+    const excludeRegExp = makeRegExp(excludePattern);
+    const includeRegExp = makeRegExp(includePattern);
+
+    if (typeof exclude === 'string') {
+        exclude = [exclude];
+    } else if (exclude !== undefined && exclude !== null && !Array.isArray(exclude)) {
+        throw new TypeError(`Expected array or string for opts.exclude, got ${typeof exclude}`);
+    }
+
+    return (filepath => {
+        let included = true;
+
+        filepath = path.resolve(cwd, filepath);
+
+        if (includeRegExp && !includeRegExp.test(filepath)) {
+            included = false;
+        }
+
+        if (excludeRegExp && excludeRegExp.test(filepath)) {
+            included = false;
+        }
+
+        if (exclude && included) {
+            exclude.forEach(value => {
+                if (included && filepath.endsWith(value)) {
+                    included = false;
+                }
+            });
+        }
+
+        return included;
+    });
+});
