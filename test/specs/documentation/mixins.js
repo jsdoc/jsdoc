@@ -1,6 +1,6 @@
 /* global jsdoc */
 const augment = require('jsdoc/augment');
-const name = require('jsdoc/name');
+const SCOPE = require('@jsdoc/name').SCOPE;
 
 describe('mixins', () => {
     describe('doclet augmentation', () => {
@@ -44,7 +44,7 @@ describe('mixins', () => {
                 const classAMethod = docSet.getByLongname('module:mixy.ClassA#method')[0];
 
                 expect(classAMethod).toBeDefined();
-                expect(classAMethod.scope).toBe(name.SCOPE.NAMES.INSTANCE);
+                expect(classAMethod.scope).toBe(SCOPE.NAMES.INSTANCE);
                 expect(classAMethod.memberof).toBe('module:mixy.ClassA');
             });
         });

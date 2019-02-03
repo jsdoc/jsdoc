@@ -18,6 +18,7 @@
     "@jsdoc/cli": "file:packages/jsdoc-cli",
     "@jsdoc/config": "file:packages/jsdoc-config",
     "@jsdoc/logger": "file:packages/jsdoc-logger",
+    "@jsdoc/name": "file:packages/jsdoc-name",
     "@jsdoc/syntax": "file:packages/jsdoc-syntax",
     "@jsdoc/template-original": "file:packages/jsdoc-template-original",
     "@jsdoc/template-silent": "file:packages/jsdoc-template-silent",
