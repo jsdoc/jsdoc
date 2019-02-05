@@ -10,7 +10,7 @@
     "url": "https://github.com/jsdoc3/jsdoc"
   },
   "dependencies": {
-    "@babel/parser": "~7.2.3",
+    "@babel/parser": "~7.3.2",
     "bluebird": "~3.5.0",
     "catharsis": "~0.8.9",
     "escape-string-regexp": "~1.0.5",
