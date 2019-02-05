@@ -30,7 +30,7 @@
     "gulp": "~4.0.0",
     "gulp-eslint": "~5.0.0",
     "gulp-json-editor": "~2.5.0",
-    "nyc": "~13.1.0"
+    "nyc": "~13.2.0"
   },
   "engines": {
     "node": ">=8.15.0"
