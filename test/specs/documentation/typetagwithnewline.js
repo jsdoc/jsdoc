@@ -1,12 +1,10 @@
-'use strict';
-
-describe('@type tag containing a newline character', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/typetagwithnewline.js');
-    var mini = docSet.getByLongname('Matryoshka.mini')[0];
-    var mega = docSet.getByLongname('Matryoshka.mega')[0];
+describe('@type tag containing a newline character', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/typetagwithnewline.js');
+    const mini = docSet.getByLongname('Matryoshka.mini')[0];
+    const mega = docSet.getByLongname('Matryoshka.mega')[0];
 
     it('When the type expression for a @type tag contains a newline character and is not ' +
-        'enclosed in braces, the type expression is parsed correctly.', function() {
+        'enclosed in braces, the type expression is parsed correctly.', () => {
         expect(mini).toBeDefined();
         expect(mini.type).toBeDefined();
         expect(mini.type.names).toBeDefined();
@@ -16,7 +14,7 @@ describe('@type tag containing a newline character', function() {
     });
 
     it('When the type expression for a @type tag contains a newline character and is enclosed ' +
-        'in braces, the type expression is parsed correctly.', function() {
+        'in braces, the type expression is parsed correctly.', () => {
         expect(mega).toBeDefined();
         expect(mega.type).toBeDefined();
         expect(mega.type.names).toBeDefined();

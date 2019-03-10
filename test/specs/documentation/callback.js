@@ -1,7 +1,5 @@
-'use strict';
-
-describe('callback tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/callbacktag.js');
+describe('callback tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/callbacktag.js');
 
     function callbackTests(callback) {
         expect(callback).toBeDefined();
@@ -16,14 +14,14 @@ describe('callback tag', function() {
         expect(callback.type.names[0]).toEqual('function');
     }
 
-    it('correctly handles callbacks that do not define a {type}', function() {
-        var callback = docSet.getByLongname('requestResponseCallback')[0];
+    it('correctly handles callbacks that do not define a {type}', () => {
+        const callback = docSet.getByLongname('requestResponseCallback')[0];
 
         callbackTests(callback);
     });
 
-    it('correctly handles callbacks that define an incorrect {type}', function() {
-        var callback = docSet.getByLongname('wrongTypeCallback')[0];
+    it('correctly handles callbacks that define an incorrect {type}', () => {
+        const callback = docSet.getByLongname('wrongTypeCallback')[0];
 
         callbackTests(callback);
     });

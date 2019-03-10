@@ -1,30 +1,28 @@
-'use strict';
+describe('jsdoc/util/stripbom', () => {
+    const stripBom = require('jsdoc/util/stripbom');
 
-describe('jsdoc/util/stripbom', function() {
-    var stripBom = require('jsdoc/util/stripbom');
-
-    it('should exist', function() {
+    it('should exist', () => {
         expect(typeof stripBom).toBe('object');
     });
 
-    it('should export a "strip" method', function() {
+    it('should export a "strip" method', () => {
         expect(typeof stripBom.strip).toBe('function');
     });
 
-    describe('strip', function() {
-        it('should strip the leading BOM when present', function() {
-            var result = stripBom.strip('\uFEFFHello there!');
+    describe('strip', () => {
+        it('should strip the leading BOM when present', () => {
+            const result = stripBom.strip('\uFEFFHello there!');
 
             expect(result).toBe('Hello there!');
         });
 
-        it('should not change the text when no leading BOM is present', function() {
-            var result = stripBom.strip('Hello there!');
+        it('should not change the text when no leading BOM is present', () => {
+            const result = stripBom.strip('Hello there!');
 
             expect(result).toBe('Hello there!');
         });
 
-        it('should return an empty string when the text is null or undefined', function() {
+        it('should return an empty string when the text is null or undefined', () => {
             expect(stripBom.strip()).toBe('');
         });
     });

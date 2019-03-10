@@ -3,11 +3,9 @@
  *
  * @module plugins/partial
  */
-'use strict';
-
-var env = require('jsdoc/env');
-var fs = require('jsdoc/fs');
-var path = require('path');
+const env = require('jsdoc/env');
+const fs = require('jsdoc/fs');
+const path = require('path');
 
 exports.handlers = {
     /**
@@ -19,12 +17,12 @@ exports.handlers = {
      * @example
      *     @partial "partial_doc.jsdoc"
      */
-    beforeParse: function(e) {
-        e.source = e.source.replace(/(@partial ".*")+/g, function($) {
-            var pathArg = $.match(/".*"/)[0].replace(/"/g, '');
-            var fullPath = path.join(e.filename, '..', pathArg);
+    beforeParse(e) {
+        e.source = e.source.replace(/(@partial ".*")+/g, $ => {
+            const pathArg = $.match(/".*"/)[0].replace(/"/g, '');
+            const fullPath = path.join(e.filename, '..', pathArg);
 
-            var partialData = fs.readFileSync(fullPath, env.opts.encoding);
+            const partialData = fs.readFileSync(fullPath, env.opts.encoding);
 
             return partialData;
         });

@@ -1,15 +1,13 @@
-'use strict';
+describe('@constant tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/constanttag.js');
+    const FOO = docSet.getByLongname('FOO')[0];
+    const BAR = docSet.getByLongname('BAR')[0];
+    const BAZ = docSet.getByLongname('BAZ')[0];
+    const QUX = docSet.getByLongname('QUX')[0];
+    const SOCKET = docSet.getByLongname('SOCKET')[0];
+    const ROCKET = docSet.getByLongname('ROCKET')[0];
 
-describe('@constant tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/constanttag.js');
-    var FOO = docSet.getByLongname('FOO')[0];
-    var BAR = docSet.getByLongname('BAR')[0];
-    var BAZ = docSet.getByLongname('BAZ')[0];
-    var QUX = docSet.getByLongname('QUX')[0];
-    var SOCKET = docSet.getByLongname('SOCKET')[0];
-    var ROCKET = docSet.getByLongname('ROCKET')[0];
-
-    it("sets the doclet's 'kind' property to 'constant'", function() {
+    it("sets the doclet's 'kind' property to 'constant'", () => {
         expect(FOO).toBeDefined();
         expect(FOO.kind).toBe('constant');
 
@@ -29,15 +27,15 @@ describe('@constant tag', function() {
         expect(ROCKET.kind).toBe('constant');
     });
 
-    it('If used as a standalone, takes the name from the code', function() {
+    it('If used as a standalone, takes the name from the code', () => {
         expect(FOO.name).toBe('FOO');
     });
 
-    it('If used with just a name, sets the doclet\'s name to that', function() {
+    it('If used with just a name, sets the doclet\'s name to that', () => {
         expect(BAR.name).toBe('BAR');
     });
 
-    it('If used with a name and a type, sets the doclet\'s name and type appropriately', function() {
+    it('If used with a name and a type, sets the doclet\'s name and type appropriately', () => {
         expect(BAZ.name).toBe('BAZ');
         expect(typeof BAZ.type).toBe('object');
         expect(BAZ.type.names).toBeDefined();
@@ -45,7 +43,7 @@ describe('@constant tag', function() {
         expect(BAZ.type.names[0]).toBe('string');
     });
 
-    it('If used with just a type, adds the type and takes the name from the code', function() {
+    it('If used with just a type, adds the type and takes the name from the code', () => {
         expect(QUX.name).toBe('QUX');
         expect(typeof QUX.type).toBe('object');
         expect(QUX.type.names).toBeDefined();
@@ -53,7 +51,7 @@ describe('@constant tag', function() {
         expect(QUX.type.names[0]).toBe('number');
     });
 
-    it('If used with a name and type, ignores the name in the code', function() {
+    it('If used with a name and type, ignores the name in the code', () => {
         expect(SOCKET.name).toBe('SOCKET');
         expect(typeof SOCKET.type).toBe('object');
         expect(SOCKET.type.names).toBeDefined();
@@ -61,7 +59,7 @@ describe('@constant tag', function() {
         expect(SOCKET.type.names[0]).toBe('Object');
     });
 
-    it('If used with just a name, ignores the name in the code', function() {
+    it('If used with just a name, ignores the name in the code', () => {
         expect(ROCKET.name).toBe('ROCKET');
     });
 });

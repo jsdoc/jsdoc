@@ -1,32 +1,30 @@
-'use strict';
+describe('module names', () => {
+    const env = require('jsdoc/env');
+    const path = require('jsdoc/path');
 
-describe('module names', function() {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
+    let doclets;
 
-    var doclets;
+    const pwd = env.pwd;
+    let srcParser = null;
+    const sourceFiles = env.sourceFiles.slice(0);
+    const sourcePaths = env.opts._.slice(0);
 
-    var pwd = env.pwd;
-    var srcParser = null;
-    var sourceFiles = env.sourceFiles.slice(0);
-    var sourcePaths = env.opts._.slice(0);
-
-    beforeEach(function() {
-        env.opts._ = [path.normalize(env.pwd + '/test/fixtures/modules/data/')];
+    beforeEach(() => {
+        env.opts._ = [path.normalize(`${env.pwd}/test/fixtures/modules/data/`)];
         env.pwd = env.dirname;
         env.sourceFiles = [];
         srcParser = jasmine.createParser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 
-    afterEach(function() {
+    afterEach(() => {
         env.opts._ = sourcePaths;
         env.pwd = pwd;
         env.sourceFiles = sourceFiles;
     });
 
-    it('should create a name from the file path when no documented module name exists', function() {
-        var filename = 'test/fixtures/modules/data/mod-1.js';
+    it('should create a name from the file path when no documented module name exists', () => {
+        const filename = 'test/fixtures/modules/data/mod-1.js';
 
         env.sourceFiles.push(filename);
         doclets = srcParser.parse(
@@ -38,9 +36,9 @@ describe('module names', function() {
 
     // Windows-specific test
     if ( /^win/.test(require('os').platform()) ) {
-        it('should always use forward slashes when creating a name from the file path', function() {
-            var Doclet = require('jsdoc/doclet').Doclet;
-            var doclet;
+        it('should always use forward slashes when creating a name from the file path', () => {
+            const Doclet = require('jsdoc/doclet').Doclet;
+            let doclet;
 
             env.sourceFiles = [
                 'C:\\Users\\Jane Smith\\myproject\\index.js',
@@ -57,8 +55,8 @@ describe('module names', function() {
         });
     }
 
-    it('should use the documented module name if available', function() {
-        var filename = 'test/fixtures/modules/data/mod-2.js';
+    it('should use the documented module name if available', () => {
+        const filename = 'test/fixtures/modules/data/mod-2.js';
 
         env.sourceFiles.push(filename);
         doclets = srcParser.parse(

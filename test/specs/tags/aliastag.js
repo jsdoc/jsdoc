@@ -1,11 +1,9 @@
-'use strict';
-
-describe('@alias tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/alias.js');
+describe('@alias tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/alias.js');
     // there are two doclets with longname myObject, we want the second one
-    var myObject = docSet.getByLongname('myObject')[1];
+    const myObject = docSet.getByLongname('myObject')[1];
 
-    it('adds an "alias" property to the doclet with the tag\'s value', function() {
+    it('adds an "alias" property to the doclet with the tag\'s value', () => {
         expect(myObject.alias).toBeDefined();
         expect(myObject.alias).toBe('myObject');
     });

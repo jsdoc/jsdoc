@@ -1,27 +1,23 @@
-'use strict';
+describe('anonymous class', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/anonymousclass.js');
+    const klass = docSet.getByLongname('module:test').filter(({undocumented}) => !undocumented)[1];
+    const foo = docSet.getByLongname('module:test#foo')[0];
+    const klassTest = docSet.getByLongname('module:test#test')[0];
+    const klassStaticTest = docSet.getByLongname('module:test.staticTest')[0];
 
-describe('anonymous class', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/anonymousclass.js');
-    var klass = docSet.getByLongname('module:test').filter(function($) {
-        return !$.undocumented;
-    })[1];
-    var foo = docSet.getByLongname('module:test#foo')[0];
-    var klassTest = docSet.getByLongname('module:test#test')[0];
-    var klassStaticTest = docSet.getByLongname('module:test.staticTest')[0];
-
-    it('should merge the constructor docs with the class docs', function() {
+    it('should merge the constructor docs with the class docs', () => {
         expect(klass.description).toBe('Test constructor');
     });
 
-    it('should use the correct longname for instance properties', function() {
+    it('should use the correct longname for instance properties', () => {
         expect(foo.description).toBe('Test member');
     });
 
-    it('should use the correct longname for instance methods', function() {
+    it('should use the correct longname for instance methods', () => {
         expect(klassTest.description).toBe('Test method');
     });
 
-    it('should use the correct longname for static methods', function() {
+    it('should use the correct longname for static methods', () => {
         expect(klassStaticTest.description).toBe('Test static method');
     });
 });

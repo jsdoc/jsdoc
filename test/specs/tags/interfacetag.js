@@ -1,32 +1,30 @@
-'use strict';
+describe('@interface tag', () => {
+    const logger = require('jsdoc/util/logger');
 
-describe('@interface tag', function() {
-    var logger = require('jsdoc/util/logger');
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
+    const testerInterface = docSet.getByLongname('ITester')[0];
+    const testerImplementation = docSet.getByLongname('MyTester')[0];
 
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
-    var testerInterface = docSet.getByLongname('ITester')[0];
-    var testerImplementation = docSet.getByLongname('MyTester')[0];
-
-    it('ITester has its kind set to "interface"', function() {
+    it('ITester has its kind set to "interface"', () => {
         expect(testerInterface.kind).toBe('interface');
     });
 
-    it('MyTester class has its kind set to "class" (not "interface")', function() {
+    it('MyTester class has its kind set to "class" (not "interface")', () => {
         expect(testerImplementation.kind).toBe('class');
     });
 
-    describe('virtual doclets', function() {
-        beforeEach(function() {
+    describe('virtual doclets', () => {
+        beforeEach(() => {
             spyOn(logger, 'warn');
         });
 
-        afterEach(function() {
+        afterEach(() => {
             jasmine.restoreTagDictionary();
         });
 
-        it('should support virtual doclets with the JSDoc tag dictionary', function() {
-            var docSet2;
-            var virtualInterface;
+        it('should support virtual doclets with the JSDoc tag dictionary', () => {
+            let docSet2;
+            let virtualInterface;
 
             jasmine.replaceTagDictionary('jsdoc');
 
@@ -38,9 +36,9 @@ describe('@interface tag', function() {
             expect(virtualInterface.longname).toBe('VirtualInterface');
         });
 
-        it('should not support virtual doclets with the Closure tag dictionary', function() {
-            var docSet2;
-            var virtualInterface;
+        it('should not support virtual doclets with the Closure tag dictionary', () => {
+            let docSet2;
+            let virtualInterface;
 
             jasmine.replaceTagDictionary('closure');
 
@@ -52,14 +50,14 @@ describe('@interface tag', function() {
         });
     });
 
-    describe('Closure Compiler tags', function() {
-        afterEach(function() {
+    describe('Closure Compiler tags', () => {
+        afterEach(() => {
             jasmine.restoreTagDictionary();
         });
 
-        it('should support @record as a synonym for @interface', function() {
-            var docSet2;
-            var myStructuralInterface;
+        it('should support @record as a synonym for @interface', () => {
+            let docSet2;
+            let myStructuralInterface;
 
             jasmine.replaceTagDictionary('closure');
 

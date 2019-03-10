@@ -1,18 +1,16 @@
-'use strict';
+describe('jsdoc/tutorial/resolver', () => {
+    const env = require('jsdoc/env');
+    const logger = require('jsdoc/util/logger');
+    const resolver = require('jsdoc/tutorial/resolver');
+    const tutorial = require('jsdoc/tutorial');
 
-describe('jsdoc/tutorial/resolver', function() {
-    var env = require('jsdoc/env');
-    var logger = require('jsdoc/util/logger');
-    var resolver = require('jsdoc/tutorial/resolver');
-    var tutorial = require('jsdoc/tutorial');
-
-    var childNames;
-    var constr;
-    var test;
-    var test2;
-    var test3;
-    var test4;
-    var test6;
+    let childNames;
+    let constr;
+    let test;
+    let test2;
+    let test3;
+    let test4;
+    let test6;
 
     function resetRootTutorial() {
         resolver.root = new tutorial.RootTutorial();
@@ -21,9 +19,9 @@ describe('jsdoc/tutorial/resolver', function() {
     function loadTutorials() {
         resetRootTutorial();
 
-        resolver.load(env.dirname + '/test/tutorials/tutorials');
+        resolver.load(`${env.dirname}/test/tutorials/tutorials`);
 
-        childNames = resolver.root.children.map(function(t) { return t.name; });
+        childNames = resolver.root.children.map(({name}) => name);
         test = resolver.root.getByName('test');
         test2 = resolver.root.getByName('test2');
         test3 = resolver.root.getByName('test3');
@@ -32,42 +30,42 @@ describe('jsdoc/tutorial/resolver', function() {
         constr = resolver.root.getByName('constructor');
     }
 
-    it('should exist', function() {
+    it('should exist', () => {
         expect(resolver).toBeDefined();
         expect(typeof resolver).toBe('object');
     });
 
-    it('should export an "addTutorial" function', function() {
+    it('should export an "addTutorial" function', () => {
         expect(resolver.addTutorial).toBeDefined();
         expect(typeof resolver.addTutorial).toBe('function');
     });
 
-    it('should export a "load" function', function() {
+    it('should export a "load" function', () => {
         expect(resolver.load).toBeDefined();
         expect(typeof resolver.load).toBe('function');
     });
 
-    it('should export a "resolve" function', function() {
+    it('should export a "resolve" function', () => {
         expect(resolver.resolve).toBeDefined();
         expect(typeof resolver.resolve).toBe('function');
     });
 
-    it('should export a "root" tutorial', function() {
+    it('should export a "root" tutorial', () => {
         expect(resolver.root).toBeDefined();
         expect(resolver.root instanceof tutorial.RootTutorial).toBe(true);
     });
 
-    it('exported "root" tutorial should export a "getByName" function', function() {
+    it('exported "root" tutorial should export a "getByName" function', () => {
         expect(resolver.root.getByName).toBeDefined();
         expect(typeof resolver.root.getByName).toBe('function');
     });
 
     // note: every time we addTutorial or run the resolver, we are *adding*
     // to the root tutorial.
-    describe('addTutorial', function() {
-        var tute;
+    describe('addTutorial', () => {
+        let tute;
 
-        beforeEach(function() {
+        beforeEach(() => {
             resetRootTutorial();
 
             tute = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
@@ -76,27 +74,27 @@ describe('jsdoc/tutorial/resolver', function() {
 
         afterEach(resetRootTutorial);
 
-        it('should add a default parent of the root tutorial', function() {
+        it('should add a default parent of the root tutorial', () => {
             expect(tute.parent).toBe(resolver.root);
         });
 
-        it('should be added to the root tutorial as a child', function() {
+        it('should be added to the root tutorial as a child', () => {
             expect(resolver.root.children).toContain(tute);
         });
     });
 
-    describe('load', function() {
+    describe('load', () => {
         beforeEach(loadTutorials);
 
         afterEach(resetRootTutorial);
 
-        it('does not, by default, recurse into subdirectories', function() {
+        it('does not, by default, recurse into subdirectories', () => {
             expect(resolver.root.getByName('test_recursive')).toBeFalsy();
         });
 
-        it('recurses into subdirectories when the --recurse flag is used', function() {
-            var recurse = env.opts.recurse;
-            var recursiveTute;
+        it('recurses into subdirectories when the --recurse flag is used', () => {
+            const recurse = env.opts.recurse;
+            let recursiveTute;
 
             env.opts.recurse = true;
             loadTutorials();
@@ -108,7 +106,7 @@ describe('jsdoc/tutorial/resolver', function() {
             env.opts.recurse = recurse;
         });
 
-        it('all tutorials are added, initially as top-level tutorials', function() {
+        it('all tutorials are added, initially as top-level tutorials', () => {
             // check they were added
             expect(test).toBeDefined();
             expect(test2).toBeDefined();
@@ -124,16 +122,16 @@ describe('jsdoc/tutorial/resolver', function() {
             expect(childNames).toContain('test6');
         });
 
-        it('tutorials with names equal to reserved keywords in JS still function as expected', function() {
+        it('tutorials with names equal to reserved keywords in JS still function as expected', () => {
             expect(constr instanceof tutorial.Tutorial).toBe(true);
         });
 
-        it('non-tutorials are skipped', function() {
+        it('non-tutorials are skipped', () => {
             expect(resolver.root.getByName('multiple')).toBeFalsy();
             expect(resolver.root.getByName('test5')).toBeFalsy();
         });
 
-        it('tutorial types are determined correctly', function() {
+        it('tutorial types are determined correctly', () => {
             // test.html, test2.markdown, test3.html, test4.md, test6.xml
             expect(test.type).toBe(tutorial.TYPES.HTML);
             expect(test2.type).toBe(tutorial.TYPES.MARKDOWN);
@@ -143,11 +141,11 @@ describe('jsdoc/tutorial/resolver', function() {
             expect(constr.type).toBe(tutorial.TYPES.MARKDOWN);
         });
 
-        it('JSON files with a leading BOM are handled correctly', function() {
+        it('JSON files with a leading BOM are handled correctly', () => {
             resetRootTutorial();
 
             function loadBomTutorials() {
-                resolver.load(env.dirname + '/test/tutorials/bom');
+                resolver.load(`${env.dirname}/test/tutorials/bom`);
             }
 
             expect(loadBomTutorials).not.toThrow();
@@ -162,8 +160,8 @@ describe('jsdoc/tutorial/resolver', function() {
     //    |- test6
     //    |- test3
     //       |- test4
-    describe('resolve', function() {
-        beforeEach(function() {
+    describe('resolve', () => {
+        beforeEach(() => {
             spyOn(logger, 'error');
             spyOn(logger, 'warn');
             loadTutorials();
@@ -172,7 +170,7 @@ describe('jsdoc/tutorial/resolver', function() {
 
         afterEach(resetRootTutorial);
 
-        it('hierarchy is resolved properly no matter how the children property is defined', function() {
+        it('hierarchy is resolved properly no matter how the children property is defined', () => {
             // root has child 'test'
             expect(resolver.root.children.length).toBe(2);
             expect(resolver.root.children).toContain(test);
@@ -198,31 +196,31 @@ describe('jsdoc/tutorial/resolver', function() {
             expect(test4.parent).toBe(test3);
         });
 
-        it('tutorials without configuration files have titles matching filenames', function() {
+        it('tutorials without configuration files have titles matching filenames', () => {
             // test6.xml didn't have a metadata
             expect(test6.title).toBe('test6');
         });
 
-        it('tutorials with configuration files have titles as specified in configuration', function() {
+        it('tutorials with configuration files have titles as specified in configuration', () => {
             // test.json had info for just test.json
             expect(test.title).toBe('Test tutorial');
         });
 
-        it('multiple tutorials can appear in a configuration file', function() {
+        it('multiple tutorials can appear in a configuration file', () => {
             expect(test2.title).toBe('Test 2');
             expect(test3.title).toBe('Test 3');
             expect(test4.title).toBe('Test 4');
         });
 
-        it('logs an error for missing tutorials', function() {
-            resolver.load(env.dirname + '/test/tutorials/incomplete');
+        it('logs an error for missing tutorials', () => {
+            resolver.load(`${env.dirname}/test/tutorials/incomplete`);
             resolver.resolve();
 
             expect(logger.error).toHaveBeenCalled();
         });
 
-        it('logs a warning for duplicate-named tutorials (e.g. test.md, test.html)', function() {
-            var tute = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
+        it('logs a warning for duplicate-named tutorials (e.g. test.md, test.html)', () => {
+            const tute = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
 
             resolver.addTutorial(tute);
             resolver.addTutorial(tute);
@@ -230,8 +228,8 @@ describe('jsdoc/tutorial/resolver', function() {
             expect(logger.warn).toHaveBeenCalled();
         });
 
-        it('allows tutorials to be defined in one .json file and redefined in another', function() {
-            resolver.load(env.dirname + '/test/tutorials/duplicateDefined');
+        it('allows tutorials to be defined in one .json file and redefined in another', () => {
+            resolver.load(`${env.dirname}/test/tutorials/duplicateDefined`);
             resolver.resolve();
 
             expect(logger.error).not.toHaveBeenCalled();

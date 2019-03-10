@@ -1,23 +1,21 @@
-'use strict';
+describe('jsdoc/util/doop', () => {
+    const doop = require('jsdoc/util/doop');
 
-describe('jsdoc/util/doop', function() {
-    var doop = require('jsdoc/util/doop');
-
-    it('should exist', function() {
+    it('should exist', () => {
         expect(doop).toBeDefined();
         expect(typeof doop).toBe('function');
     });
 
-    it('should export a doop function for backwards compatibility', function() {
+    it('should export a doop function for backwards compatibility', () => {
         expect(doop.doop).toBeDefined();
         expect(typeof doop.doop).toBe('function');
     });
 
     // deep-clones a simple object.
-    describe('doop', function() {
-        it("should return the input object if it's a value type or a function", function() {
+    describe('doop', () => {
+        it("should return the input object if it's a value type or a function", () => {
             /* eslint-disable no-empty-function */
-            var f = function() {};
+            const f = () => {};
             /* eslint-enable no-empty-function */
 
             // test a number...
@@ -30,33 +28,33 @@ describe('jsdoc/util/doop', function() {
             expect(doop.doop(f)).toBe(f);
         });
 
-        it('should return a clone of an array', function() {
-            var inp = [1, 2, 3];
-            var out = doop.doop(inp);
+        it('should return a clone of an array', () => {
+            const inp = [1, 2, 3];
+            const out = doop.doop(inp);
 
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
         });
 
-        it('should return a clone of an object', function() {
-            var inp = {
+        it('should return a clone of an object', () => {
+            const inp = {
                 a: 1,
                 b: 2,
                 'asdf-fdsa': 3
             };
-            var out = doop.doop(inp);
+            const out = doop.doop(inp);
 
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
         });
 
-        it('should return an object with the same prototype as the original object', function() {
+        it('should return an object with the same prototype as the original object', () => {
             /* eslint-disable no-empty-function */
             function Foo() {}
             /* eslint-enable no-empty-function */
 
-            var foo = new Foo();
-            var bar = doop(foo);
+            const foo = new Foo();
+            const bar = doop(foo);
 
             expect( Object.getPrototypeOf(foo) ).toBe( Object.getPrototypeOf(bar) );
         });
@@ -66,12 +64,12 @@ describe('jsdoc/util/doop', function() {
         function compareForEquality(a, b) {
             if (a instanceof Object && a.constructor !== Function) {
                 // if it's an object and not a function, it should clone.
-                var keysA = Object.keys(a).sort();
-                var keysB = Object.keys(b).sort();
+                const keysA = Object.keys(a).sort();
+                const keysB = Object.keys(b).sort();
 
                 expect(keysA).toEqual(keysB);
 
-                for (var i = 0; i < keysA.length; ++i) {
+                for (let i = 0; i < keysA.length; ++i) {
                     compareForEquality(a[keysA[i]], b[keysB[i]]);
                 }
             } else {
@@ -80,8 +78,8 @@ describe('jsdoc/util/doop', function() {
             }
         }
 
-        it('should clone recursively', function() {
-            var inp = {
+        it('should clone recursively', () => {
+            const inp = {
                 a: 1,
                 b: 2,
                 'asdf-fdsa': {
@@ -89,7 +87,7 @@ describe('jsdoc/util/doop', function() {
                     b: [1, 2, 3]
                 }
             };
-            var out = doop.doop(inp);
+            const out = doop.doop(inp);
 
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
@@ -97,9 +95,9 @@ describe('jsdoc/util/doop', function() {
             compareForEquality(inp, out);
         });
 
-        it('should not clone non-enumerable properties', function() {
-            var clone;
-            var obj = {
+        it('should not clone non-enumerable properties', () => {
+            let clone;
+            const obj = {
                 a: 1
             };
 
@@ -112,11 +110,11 @@ describe('jsdoc/util/doop', function() {
             expect(clone.foo).not.toBeDefined();
         });
 
-        it('should not create a circular reference if an object is seen more than once', function() {
-            var input = {
+        it('should not create a circular reference if an object is seen more than once', () => {
+            const input = {
                 a: {}
             };
-            var output;
+            let output;
 
             function stringify() {
                 return JSON.stringify(output);

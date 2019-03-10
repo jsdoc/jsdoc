@@ -1,5 +1,3 @@
-'use strict';
-
-xdescribe('@file tag', function() {
+xdescribe('@file tag', () => {
     // TODO: add tests
 });

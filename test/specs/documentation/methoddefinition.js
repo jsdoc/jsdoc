@@ -1,11 +1,9 @@
-'use strict';
+describe('method definition inside a class declaration', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/methoddefinition.js');
+    const runMethod = docSet.getByLongname('Test#run')[0];
+    const staticRunMethod = docSet.getByLongname('Test.run')[0];
 
-describe('method definition inside a class declaration', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/methoddefinition.js');
-    var runMethod = docSet.getByLongname('Test#run')[0];
-    var staticRunMethod = docSet.getByLongname('Test.run')[0];
-
-    it('methods should have documentation comments', function() {
+    it('methods should have documentation comments', () => {
         expect(runMethod).toBeDefined();
         expect(runMethod.description).toBe('Document me.');
         expect(runMethod.kind).toBe('function');

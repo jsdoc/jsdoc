@@ -1,16 +1,14 @@
-'use strict';
+describe('@description tag', () => {
+    const docSet = jasmine.getDocSetFromFile('test/fixtures/descriptiontag.js');
+    const doc = docSet.getByLongname('x')[0];
+    const doc2 = docSet.getByLongname('y')[0];
 
-describe('@description tag', function() {
-    var docSet = jasmine.getDocSetFromFile('test/fixtures/descriptiontag.js');
-    var doc = docSet.getByLongname('x')[0];
-    var doc2 = docSet.getByLongname('y')[0];
-
-    it('sets the doclet\'s "description" property to the description', function() {
+    it('sets the doclet\'s "description" property to the description', () => {
         expect(doc2.description).toBeDefined();
         expect(doc2.description).toBe('lkjasdf');
     });
 
-    it('overrides the default description', function() {
+    it('overrides the default description', () => {
         expect(doc.description).toBeDefined();
         expect(doc.description).toBe('halb halb halb');
     });

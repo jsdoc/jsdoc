@@ -1,166 +1,164 @@
 /* eslint quotes:0 */
-'use strict';
+const hasOwnProp = Object.prototype.hasOwnProperty;
 
-var hasOwnProp = Object.prototype.hasOwnProperty;
-
-describe("jsdoc/util/templateHelper", function() {
-    var definitions = require('jsdoc/tag/dictionary/definitions');
-    var dictionary = require('jsdoc/tag/dictionary');
-    var doclet = require('jsdoc/doclet');
-    var doop = require('jsdoc/util/doop');
-    var env = require('jsdoc/env');
-    var helper = require('jsdoc/util/templateHelper');
-    var logger = require('jsdoc/util/logger');
-    var resolver = require('jsdoc/tutorial/resolver');
-    var taffy = require('taffydb').taffy;
+describe("jsdoc/util/templateHelper", () => {
+    const definitions = require('jsdoc/tag/dictionary/definitions');
+    const dictionary = require('jsdoc/tag/dictionary');
+    const doclet = require('jsdoc/doclet');
+    const doop = require('jsdoc/util/doop');
+    const env = require('jsdoc/env');
+    const helper = require('jsdoc/util/templateHelper');
+    const logger = require('jsdoc/util/logger');
+    const resolver = require('jsdoc/tutorial/resolver');
+    const taffy = require('taffydb').taffy;
 
     helper.registerLink('test', 'path/to/test.html');
 
-    it("should exist", function() {
+    it("should exist", () => {
         expect(helper).toBeDefined();
         expect(typeof helper).toBe('object');
     });
 
-    it("should export a 'setTutorials' function", function() {
+    it("should export a 'setTutorials' function", () => {
         expect(helper.setTutorials).toBeDefined();
         expect(typeof helper.setTutorials).toBe("function");
     });
 
-    it("should export a 'globalName' property", function() {
+    it("should export a 'globalName' property", () => {
         expect(helper.globalName).toBeDefined();
         expect(typeof helper.globalName).toBe("string");
     });
 
-    it("should export a 'fileExtension' property", function() {
+    it("should export a 'fileExtension' property", () => {
         expect(helper.fileExtension).toBeDefined();
         expect(typeof helper.fileExtension).toBe("string");
     });
 
-    it("should export a 'scopeToPunc' property", function() {
+    it("should export a 'scopeToPunc' property", () => {
         expect(helper.scopeToPunc).toBeDefined();
         expect(typeof helper.scopeToPunc).toBe("object");
     });
 
-    it("should export a 'getUniqueFilename' function", function() {
+    it("should export a 'getUniqueFilename' function", () => {
         expect(helper.getUniqueFilename).toBeDefined();
         expect(typeof helper.getUniqueFilename).toBe("function");
     });
 
-    it("should export a 'getUniqueId' function", function() {
+    it("should export a 'getUniqueId' function", () => {
         expect(helper.getUniqueId).toBeDefined();
         expect(typeof helper.getUniqueId).toBe('function');
     });
 
-    it("should export a 'longnameToUrl' property", function() {
+    it("should export a 'longnameToUrl' property", () => {
         expect(helper.longnameToUrl).toBeDefined();
         expect(typeof helper.longnameToUrl).toBe("object");
     });
 
-    it("should export a 'linkto' function", function() {
+    it("should export a 'linkto' function", () => {
         expect(helper.linkto).toBeDefined();
         expect(typeof helper.linkto).toBe("function");
     });
 
-    it("should export an 'htmlsafe' function", function() {
+    it("should export an 'htmlsafe' function", () => {
         expect(helper.htmlsafe).toBeDefined();
         expect(typeof helper.htmlsafe).toBe("function");
     });
 
-    it("should export a 'find' function", function() {
+    it("should export a 'find' function", () => {
         expect(helper.find).toBeDefined();
         expect(typeof helper.find).toBe("function");
     });
 
-    it("should export a 'getMembers' function", function() {
+    it("should export a 'getMembers' function", () => {
         expect(helper.getMembers).toBeDefined();
         expect(typeof helper.getMembers).toBe("function");
     });
 
-    it("should export a 'getAttribs' function", function() {
+    it("should export a 'getAttribs' function", () => {
         expect(helper.getAttribs).toBeDefined();
         expect(typeof helper.getAttribs).toBe("function");
     });
 
-    it("should export a 'getSignatureTypes' function", function() {
+    it("should export a 'getSignatureTypes' function", () => {
         expect(helper.getSignatureTypes).toBeDefined();
         expect(typeof helper.getSignatureTypes).toBe("function");
     });
 
-    it("should export a 'getSignatureParams' function", function() {
+    it("should export a 'getSignatureParams' function", () => {
         expect(helper.getSignatureParams).toBeDefined();
         expect(typeof helper.getSignatureParams).toBe("function");
     });
 
-    it("should export a 'getSignatureReturns' function", function() {
+    it("should export a 'getSignatureReturns' function", () => {
         expect(helper.getSignatureReturns).toBeDefined();
         expect(typeof helper.getSignatureReturns).toBe("function");
     });
 
-    it("should export a 'getAncestors' function", function() {
+    it("should export a 'getAncestors' function", () => {
         expect(helper.getAncestors).toBeDefined();
         expect(typeof helper.getAncestors).toBe('function');
     });
 
-    it("should export a 'getAncestorLinks' function", function() {
+    it("should export a 'getAncestorLinks' function", () => {
         expect(helper.getAncestorLinks).toBeDefined();
         expect(typeof helper.getAncestorLinks).toBe("function");
     });
 
-    it("should export a 'addEventListeners' function", function() {
+    it("should export a 'addEventListeners' function", () => {
         expect(helper.addEventListeners).toBeDefined();
         expect(typeof helper.addEventListeners).toBe("function");
     });
 
-    it("should export a 'prune' function", function() {
+    it("should export a 'prune' function", () => {
         expect(helper.prune).toBeDefined();
         expect(typeof helper.prune).toBe("function");
     });
 
-    it("should export a 'registerLink' function", function() {
+    it("should export a 'registerLink' function", () => {
         expect(helper.registerLink).toBeDefined();
         expect(typeof helper.registerLink).toBe("function");
     });
 
-    it("should export a 'tutorialToUrl' function", function() {
+    it("should export a 'tutorialToUrl' function", () => {
         expect(helper.tutorialToUrl).toBeDefined();
         expect(typeof helper.tutorialToUrl).toBe("function");
     });
 
-    it("should export a 'toTutorial' function", function() {
+    it("should export a 'toTutorial' function", () => {
         expect(helper.toTutorial).toBeDefined();
         expect(typeof helper.toTutorial).toBe("function");
     });
 
-    it("should export a 'resolveLinks' function", function() {
+    it("should export a 'resolveLinks' function", () => {
         expect(helper.resolveLinks).toBeDefined();
         expect(typeof helper.resolveLinks).toBe("function");
     });
 
-    it("should export a 'resolveAuthorLinks' function", function() {
+    it("should export a 'resolveAuthorLinks' function", () => {
         expect(helper.resolveAuthorLinks).toBeDefined();
         expect(typeof helper.resolveAuthorLinks).toBe("function");
     });
 
-    it("should export a 'createLink' function", function() {
+    it("should export a 'createLink' function", () => {
         expect(helper.createLink).toBeDefined();
         expect(typeof helper.createLink).toBe("function");
     });
 
-    it('should export a "longnamesToTree" function', function() {
+    it('should export a "longnamesToTree" function', () => {
         expect(helper.longnamesToTree).toBeDefined();
         expect(typeof helper.longnamesToTree).toBe('function');
     });
 
-    describe("setTutorials", function() {
+    describe("setTutorials", () => {
         // used in tutorialToUrl, toTutorial.
-        it("setting tutorials to null causes all tutorial lookups to fail", function() {
+        it("setting tutorials to null causes all tutorial lookups to fail", () => {
             // bit of a dodgy test but the best I can manage. setTutorials doesn't do much.
             helper.setTutorials(null);
             // should throw error: no 'getByName' in tutorials.
-            expect(function() { return helper.tutorialToUrl('asdf'); }).toThrow();
+            expect(() => helper.tutorialToUrl('asdf')).toThrow();
         });
 
-        it("setting tutorials to the root tutorial object lets lookups work", function() {
+        it("setting tutorials to the root tutorial object lets lookups work", () => {
             helper.setTutorials(resolver.root);
             spyOn(resolver.root, 'getByName');
             helper.tutorialToUrl('asdf');
@@ -169,20 +167,20 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("globalName", function() {
-        it("should equal 'global'", function() {
+    describe("globalName", () => {
+        it("should equal 'global'", () => {
             expect(helper.globalName).toBe('global');
         });
     });
 
-    describe("fileExtension", function() {
-        it("should equal '.html'", function() {
+    describe("fileExtension", () => {
+        it("should equal '.html'", () => {
             expect(helper.fileExtension).toBe('.html');
         });
     });
 
-    describe("scopeToPunc", function() {
-        it("should map 'static' to '.', 'inner', to '~', 'instance' to '#'", function() {
+    describe("scopeToPunc", () => {
+        it("should map 'static' to '.', 'inner', to '~', 'instance' to '#'", () => {
             expect(helper.scopeToPunc).toEqual({
                 static: '.',
                 inner: '~',
@@ -191,63 +189,63 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("getUniqueFilename", function() {
-        afterEach(function() {
+    describe("getUniqueFilename", () => {
+        afterEach(() => {
             jasmine.restoreTagDictionary();
         });
 
         // TODO: needs more tests for unusual values and things that get special treatment (such as
         // inner members)
-        it('should convert a simple string into the string plus the default extension', function() {
-            var filename = helper.getUniqueFilename('BackusNaur');
+        it('should convert a simple string into the string plus the default extension', () => {
+            const filename = helper.getUniqueFilename('BackusNaur');
 
             expect(filename).toBe('BackusNaur.html');
         });
 
-        it('should replace slashes with underscores', function() {
-            var filename = helper.getUniqueFilename('tick/tock');
+        it('should replace slashes with underscores', () => {
+            const filename = helper.getUniqueFilename('tick/tock');
 
             expect(filename).toBe('tick_tock.html');
         });
 
-        it('should replace other problematic characters with underscores', function() {
-            var filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename');
+        it('should replace other problematic characters with underscores', () => {
+            const filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename');
 
             expect(filename).toBe('a very strange __________ filename.html');
         });
 
-        it('should not allow a filename to start with an underscore', function() {
+        it('should not allow a filename to start with an underscore', () => {
             expect( helper.getUniqueFilename('') ).toBe('-_.html');
         });
 
-        it('should not return the same filename twice', function() {
-            var name = 'polymorphic';
-            var filename1 = helper.getUniqueFilename(name);
-            var filename2 = helper.getUniqueFilename(name);
+        it('should not return the same filename twice', () => {
+            const name = 'polymorphic';
+            const filename1 = helper.getUniqueFilename(name);
+            const filename2 = helper.getUniqueFilename(name);
 
             expect(filename1).not.toBe(filename2);
         });
 
-        it('should not consider the same name with different letter case to be unique', function() {
-            var camel = 'myJavaScriptIdentifier';
-            var pascal = 'MyJavaScriptIdentifier';
-            var filename1 = helper.getUniqueFilename(camel);
-            var filename2 = helper.getUniqueFilename(pascal);
+        it('should not consider the same name with different letter case to be unique', () => {
+            const camel = 'myJavaScriptIdentifier';
+            const pascal = 'MyJavaScriptIdentifier';
+            const filename1 = helper.getUniqueFilename(camel);
+            const filename2 = helper.getUniqueFilename(pascal);
 
             expect( filename1.toLowerCase() ).not.toBe( filename2.toLowerCase() );
         });
 
-        it('should remove variations from the longname before generating the filename', function() {
-            var filename = helper.getUniqueFilename('MyClass(foo, bar)');
+        it('should remove variations from the longname before generating the filename', () => {
+            const filename = helper.getUniqueFilename('MyClass(foo, bar)');
 
             expect(filename).toBe('MyClass.html');
         });
 
-        it('should generate the correct filename for built-in namespaces', function() {
-            var filenameEvent = helper.getUniqueFilename('event:userDidSomething');
-            var filenameExternal = helper.getUniqueFilename('external:NotInThisPackage');
-            var filenameModule = helper.getUniqueFilename('module:some/sort/of/module');
-            var filenamePackage = helper.getUniqueFilename('package:node-solve-all-your-problems');
+        it('should generate the correct filename for built-in namespaces', () => {
+            const filenameEvent = helper.getUniqueFilename('event:userDidSomething');
+            const filenameExternal = helper.getUniqueFilename('external:NotInThisPackage');
+            const filenameModule = helper.getUniqueFilename('module:some/sort/of/module');
+            const filenamePackage = helper.getUniqueFilename('package:node-solve-all-your-problems');
 
             expect(filenameEvent).toBe('event-userDidSomething.html');
             expect(filenameExternal).toBe('external-NotInThisPackage.html');
@@ -255,9 +253,9 @@ describe("jsdoc/util/templateHelper", function() {
             expect(filenamePackage).toBe('package-node-solve-all-your-problems.html');
         });
 
-        it('should generate the correct filename for user-specified namespaces', function() {
-            var filename;
-            var dict = new dictionary.Dictionary();
+        it('should generate the correct filename for user-specified namespaces', () => {
+            let filename;
+            const dict = new dictionary.Dictionary();
 
             dict.defineTag('anaphylaxis', {
                 isNamespace: true
@@ -271,59 +269,59 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe('getUniqueId', function() {
-        it('should return the provided string in normal cases', function() {
-            var id = helper.getUniqueId('futon.html', 'backrest');
+    describe('getUniqueId', () => {
+        it('should return the provided string in normal cases', () => {
+            const id = helper.getUniqueId('futon.html', 'backrest');
 
             expect(id).toBe('backrest');
         });
 
-        it('should return an empty string if no base ID is provided', function() {
-            var id = helper.getUniqueId('futon.html', '');
+        it('should return an empty string if no base ID is provided', () => {
+            const id = helper.getUniqueId('futon.html', '');
 
             expect(id).toBe('');
         });
 
-        it('should remove whitespace characters', function() {
-            var id = helper.getUniqueId('futon.html', 'a very long identifier');
+        it('should remove whitespace characters', () => {
+            const id = helper.getUniqueId('futon.html', 'a very long identifier');
 
             expect(id).toBe('averylongidentifier');
         });
 
-        it('should not return the same ID twice for a given file', function() {
-            var filename = 'futon.html';
-            var name = 'polymorphic';
-            var id1 = helper.getUniqueId(filename, name);
-            var id2 = helper.getUniqueId(filename, name);
+        it('should not return the same ID twice for a given file', () => {
+            const filename = 'futon.html';
+            const name = 'polymorphic';
+            const id1 = helper.getUniqueId(filename, name);
+            const id2 = helper.getUniqueId(filename, name);
 
             expect(id1).not.toBe(id2);
         });
 
-        it('should allow duplicate IDs if they are in different files', function() {
-            var name = 'magnificence';
-            var id1 = helper.getUniqueId('supersensational.html', name);
-            var id2 = helper.getUniqueId('razzledazzle.html', name);
+        it('should allow duplicate IDs if they are in different files', () => {
+            const name = 'magnificence';
+            const id1 = helper.getUniqueId('supersensational.html', name);
+            const id2 = helper.getUniqueId('razzledazzle.html', name);
 
             expect(id1).toBe(id2);
         });
 
-        it('should not consider the same name with different letter case to be unique', function() {
-            var camel = 'myJavaScriptIdentifier';
-            var pascal = 'MyJavaScriptIdentifier';
-            var filename = 'mercutio.html';
-            var id1 = helper.getUniqueId(filename, camel);
-            var id2 = helper.getUniqueId(filename, pascal);
+        it('should not consider the same name with different letter case to be unique', () => {
+            const camel = 'myJavaScriptIdentifier';
+            const pascal = 'MyJavaScriptIdentifier';
+            const filename = 'mercutio.html';
+            const id1 = helper.getUniqueId(filename, camel);
+            const id2 = helper.getUniqueId(filename, pascal);
 
             expect( id1.toLowerCase() ).not.toBe( id2.toLowerCase() );
         });
     });
 
-    describe("longnameToUrl", function() {
-        it("is an object", function() {
+    describe("longnameToUrl", () => {
+        it("is an object", () => {
             expect(typeof helper.longnameToUrl).toBe('object');
         });
 
-        it("has an entry added into it by calling registerLink", function() {
+        it("has an entry added into it by calling registerLink", () => {
             helper.registerLink('MySymbol', 'asdf.html');
             expect(helper.longnameToUrl.MySymbol).toBeDefined();
             expect(helper.longnameToUrl.MySymbol).toBe('asdf.html');
@@ -331,152 +329,152 @@ describe("jsdoc/util/templateHelper", function() {
             delete helper.longnameToUrl.MySymbol;
         });
 
-        it("adding an entry to it allows me to link with linkto", function() {
+        it("adding an entry to it allows me to link with linkto", () => {
             helper.longnameToUrl.foo2 = 'bar.html';
             expect(helper.linkto('foo2')).toBe('<a href="bar.html">foo2</a>');
             delete helper.longnameToUrl.foo2;
         });
     });
 
-    describe("linkto", function() {
-        beforeEach(function() {
+    describe("linkto", () => {
+        beforeEach(() => {
             helper.longnameToUrl.linktoTest = 'test.html';
             helper.longnameToUrl.LinktoFakeClass = 'fakeclass.html';
             helper.longnameToUrl['Foo#bar(baz)'] = 'foo-bar-baz.html';
         });
 
-        afterEach(function() {
+        afterEach(() => {
             delete helper.longnameToUrl.linktoTest;
             delete helper.longnameToUrl.LinktoFakeClass;
             delete helper.longnameToUrl['Foo#bar(baz)'];
         });
 
-        it('returns the longname if only the longname is specified and has no URL', function() {
-            var link = helper.linkto('example');
+        it('returns the longname if only the longname is specified and has no URL', () => {
+            const link = helper.linkto('example');
 
             expect(link).toBe('example');
         });
 
-        it('returns the link text if only the link text is specified', function() {
-            var link = helper.linkto(null, 'link text');
+        it('returns the link text if only the link text is specified', () => {
+            const link = helper.linkto(null, 'link text');
 
             expect(link).toBe('link text');
         });
 
         it('returns the link text if the longname does not have a URL, and both the longname and ' +
-            'link text are specified', function() {
-            var link = helper.linkto('example', 'link text');
+            'link text are specified', () => {
+            const link = helper.linkto('example', 'link text');
 
             expect(link).toBe('link text');
         });
 
-        it('uses the longname as the link text if no link text is provided', function() {
-            var link = helper.linkto('linktoTest');
+        it('uses the longname as the link text if no link text is provided', () => {
+            const link = helper.linkto('linktoTest');
 
             expect(link).toBe('<a href="test.html">linktoTest</a>');
         });
 
-        it('uses the link text if it is specified', function() {
-            var link = helper.linkto('linktoTest', 'link text');
+        it('uses the link text if it is specified', () => {
+            const link = helper.linkto('linktoTest', 'link text');
 
             expect(link).toBe('<a href="test.html">link text</a>');
         });
 
-        it('includes a "class" attribute in the link if a class is specified', function() {
-            var link = helper.linkto('linktoTest', 'link text', 'myclass');
+        it('includes a "class" attribute in the link if a class is specified', () => {
+            const link = helper.linkto('linktoTest', 'link text', 'myclass');
 
             expect(link).toBe('<a href="test.html" class="myclass">link text</a>');
         });
 
-        it('is careful with longnames that are reserved words in JS', function() {
+        it('is careful with longnames that are reserved words in JS', () => {
             // we don't have a registered link for 'constructor' so it should return the text 'link text'.
-            var link = helper.linkto('constructor', 'link text');
+            const link = helper.linkto('constructor', 'link text');
 
             expect(typeof link).toBe('string');
             expect(link).toBe('link text');
         });
 
-        it('works correctly with type applications if only the longname is specified', function() {
-            var link = helper.linkto('Array.<LinktoFakeClass>');
+        it('works correctly with type applications if only the longname is specified', () => {
+            const link = helper.linkto('Array.<LinktoFakeClass>');
 
             expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
         });
 
-        it('works correctly with type applications if a class is not specified', function() {
-            var link = helper.linkto('Array.<LinktoFakeClass>', 'link text');
+        it('works correctly with type applications if a class is not specified', () => {
+            const link = helper.linkto('Array.<LinktoFakeClass>', 'link text');
 
             expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
         });
 
-        it('works correctly with type applications if a class is specified', function() {
-            var link = helper.linkto('Array.<LinktoFakeClass>', 'link text', 'myclass');
+        it('works correctly with type applications if a class is specified', () => {
+            const link = helper.linkto('Array.<LinktoFakeClass>', 'link text', 'myclass');
 
             expect(link).toBe('Array.&lt;<a href="fakeclass.html" class="myclass">LinktoFakeClass' +
                 '</a>>');
         });
 
-        it('works correctly with type applications that include a type union', function() {
-            var link = helper.linkto('Array.<(linktoTest|LinktoFakeClass)>', 'link text');
+        it('works correctly with type applications that include a type union', () => {
+            const link = helper.linkto('Array.<(linktoTest|LinktoFakeClass)>', 'link text');
 
             expect(link).toBe('Array.&lt;(<a href="test.html">linktoTest</a>|' +
                 '<a href="fakeclass.html">LinktoFakeClass</a>)>');
         });
 
-        it('works correctly with type unions that are not enclosed in parentheses', function() {
-            var link = helper.linkto('linktoTest|LinktoFakeClass', 'link text');
+        it('works correctly with type unions that are not enclosed in parentheses', () => {
+            const link = helper.linkto('linktoTest|LinktoFakeClass', 'link text');
 
             expect(link).toBe('(<a href="test.html">linktoTest</a>|' +
                 '<a href="fakeclass.html">LinktoFakeClass</a>)');
         });
 
         it('does not try to parse a longname starting with <anonymous> as a type application',
-            function() {
+            () => {
                 spyOn(logger, 'error');
 
                 helper.linkto('<anonymous>~foo');
                 expect(logger.error).not.toHaveBeenCalled();
             });
 
-        it('does not treat a longname with a variation as a type application', function() {
-            var link = helper.linkto('Foo#bar(baz)', 'link text');
+        it('does not treat a longname with a variation as a type application', () => {
+            const link = helper.linkto('Foo#bar(baz)', 'link text');
 
             expect(link).toBe('<a href="foo-bar-baz.html">link text</a>');
         });
 
-        it('returns a link when a URL is specified', function() {
-            var link = helper.linkto('http://example.com');
+        it('returns a link when a URL is specified', () => {
+            const link = helper.linkto('http://example.com');
 
             expect(link).toBe('<a href="http://example.com">http://example.com</a>');
         });
 
-        it('returns a link if a URL wrapped in angle brackets is specified', function() {
-            var link = helper.linkto('<http://example.com>');
+        it('returns a link if a URL wrapped in angle brackets is specified', () => {
+            const link = helper.linkto('<http://example.com>');
 
             expect(link).toBe('<a href="http://example.com">http://example.com</a>');
         });
 
-        it('returns a link with link text if a URL and link text are specified', function() {
-            var link = helper.linkto('http://example.com', 'text');
+        it('returns a link with link text if a URL and link text are specified', () => {
+            const link = helper.linkto('http://example.com', 'text');
 
             expect(link).toBe('<a href="http://example.com">text</a>');
         });
 
-        it('returns a link with a fragment ID if a URL and fragment ID are specified', function() {
-            var link = helper.linkto('LinktoFakeClass', null, null, 'fragment');
+        it('returns a link with a fragment ID if a URL and fragment ID are specified', () => {
+            const link = helper.linkto('LinktoFakeClass', null, null, 'fragment');
 
             expect(link).toBe('<a href="fakeclass.html#fragment">LinktoFakeClass</a>');
         });
 
-        it('returns the original text if an HTML <a> tag is specified', function() {
-            var text = '<a href="http://example.com">text</a>';
-            var link = helper.linkto(text);
+        it('returns the original text if an HTML <a> tag is specified', () => {
+            const text = '<a href="http://example.com">text</a>';
+            const link = helper.linkto(text);
 
             expect(link).toBe(text);
         });
 
-        it('returns the original text if an inline {@link} tag is specified', function() {
-            var link;
-            var text = '{@link Foo}';
+        it('returns the original text if an inline {@link} tag is specified', () => {
+            let link;
+            const text = '{@link Foo}';
 
             function getLink() {
                 link = helper.linkto(text);
@@ -489,27 +487,27 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("htmlsafe", function() {
-        it('should convert all occurences of < to &lt;', function() {
-            var inp = '<h1>Potentially dangerous.</h1>';
-            var out = helper.htmlsafe(inp);
+    describe("htmlsafe", () => {
+        it('should convert all occurences of < to &lt;', () => {
+            const inp = '<h1>Potentially dangerous.</h1>';
+            const out = helper.htmlsafe(inp);
 
             expect(out).toBe('&lt;h1>Potentially dangerous.&lt;/h1>');
         });
 
-        it('should convert all occurrences of & to &amp;', function() {
-            var input = 'foo && bar & baz;';
+        it('should convert all occurrences of & to &amp;', () => {
+            const input = 'foo && bar & baz;';
 
             expect( helper.htmlsafe(input) ).toBe('foo &amp;&amp; bar &amp; baz;');
         });
 
-        it('should not double-convert ampersands', function() {
-            var input = '<h1>Foo & Friends</h1>';
+        it('should not double-convert ampersands', () => {
+            const input = '<h1>Foo & Friends</h1>';
 
             expect( helper.htmlsafe(input) ).toBe('&lt;h1>Foo &amp; Friends&lt;/h1>');
         });
 
-        it('should convert non-strings to strings', function() {
+        it('should convert non-strings to strings', () => {
             function htmlsafe() {
                 return helper.htmlsafe(false);
             }
@@ -519,8 +517,8 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("find", function() {
-        var array = [
+    describe("find", () => {
+        const array = [
             // match
             {
                 number: 2,
@@ -549,13 +547,13 @@ describe("jsdoc/util/templateHelper", function() {
                 A: true
             }
         ];
-        var matches = array.slice(0, 3);
-        var spec = {
+        const matches = array.slice(0, 3);
+        const spec = {
             number: [1, 2, 3],
             A: [true, 'maybe']
         };
 
-        it('should find the requested items', function() {
+        it('should find the requested items', () => {
             expect( helper.find(taffy(array), spec) ).toEqual(matches);
         });
     });
@@ -567,8 +565,8 @@ describe("jsdoc/util/templateHelper", function() {
     function compareObjectArrays(a, b) {
         expect(a.length).toEqual(b.length);
 
-        for (var i = 0, l = a.length; i < l; i++) {
-            for (var prop in a[i]) {
+        for (let i = 0, l = a.length; i < l; i++) {
+            for (const prop in a[i]) {
                 if ( hasOwnProp.call(a[i], prop) ) {
                     expect(b[i][prop]).toBeDefined();
                     expect(a[i][prop]).toEqual(b[i][prop]);
@@ -576,9 +574,9 @@ describe("jsdoc/util/templateHelper", function() {
             }
         }
     }
-    describe("getMembers", function() {
+    describe("getMembers", () => {
         // instead parse a file from fixtures and verify it?
-        var classes = [
+        const classes = [
             // global
             {
                 kind: 'class'
@@ -589,33 +587,33 @@ describe("jsdoc/util/templateHelper", function() {
                 memberof: 'SomeNamespace'
             }
         ];
-        var externals = [
+        const externals = [
             {
                 kind: 'external',
                 name: 'foo'
             }
         ];
-        var events = [
+        const events = [
             {
                 kind: 'event'
             }
         ];
-        var mixins = [
+        const mixins = [
             {
                 kind: 'mixin'
             }
         ];
-        var modules = [
+        const modules = [
             {
                 kind: 'module'
             }
         ];
-        var namespaces = [
+        const namespaces = [
             {
                 kind: 'namespace'
             }
         ];
-        var miscGlobal = [
+        const miscGlobal = [
             {
                 kind: 'function'
             },
@@ -629,7 +627,7 @@ describe("jsdoc/util/templateHelper", function() {
                 kind: 'typedef'
             }
         ];
-        var miscNonGlobal = [
+        const miscNonGlobal = [
             {
                 kind: 'constant',
                 memberof: 'module:one/two'
@@ -645,75 +643,75 @@ describe("jsdoc/util/templateHelper", function() {
                 longname: 'module:bar'
             }
         ];
-        var misc = miscGlobal.concat(miscNonGlobal);
-        var array = classes.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc))))));
-        var data = taffy(array);
-        var members = helper.getMembers(data);
+        const misc = miscGlobal.concat(miscNonGlobal);
+        const array = classes.concat(externals.concat(events.concat(mixins.concat(modules.concat(namespaces.concat(misc))))));
+        const data = taffy(array);
+        const members = helper.getMembers(data);
 
         // check the output object has properties as expected.
-        it("should have a 'classes' property", function() {
+        it("should have a 'classes' property", () => {
             expect(members.classes).toBeDefined();
         });
 
-        it("should have a 'externals' property", function() {
+        it("should have a 'externals' property", () => {
             expect(members.externals).toBeDefined();
         });
 
-        it("should have a 'events' property", function() {
+        it("should have a 'events' property", () => {
             expect(members.events).toBeDefined();
         });
 
-        it("should have a 'globals' property", function() {
+        it("should have a 'globals' property", () => {
             expect(members.globals).toBeDefined();
         });
 
-        it("should have a 'mixins' property", function() {
+        it("should have a 'mixins' property", () => {
             expect(members.mixins).toBeDefined();
         });
 
-        it("should have a 'modules' property", function() {
+        it("should have a 'modules' property", () => {
             expect(members.modules).toBeDefined();
         });
 
-        it("should have a 'namespaces' property", function() {
+        it("should have a 'namespaces' property", () => {
             expect(members.namespaces).toBeDefined();
         });
 
         // check that things were found properly.
-        it("classes are detected", function() {
+        it("classes are detected", () => {
             compareObjectArrays(classes, members.classes);
         });
 
-        it("externals are detected", function() {
+        it("externals are detected", () => {
             compareObjectArrays(externals, members.externals);
         });
 
-        it("events are detected", function() {
+        it("events are detected", () => {
             compareObjectArrays(events, members.events);
         });
 
-        it("mixins are detected", function() {
+        it("mixins are detected", () => {
             compareObjectArrays(mixins, members.mixins);
         });
 
-        it("modules are detected", function() {
+        it("modules are detected", () => {
             compareObjectArrays(modules, members.modules);
         });
 
-        it("namespaces are detected", function() {
+        it("namespaces are detected", () => {
             compareObjectArrays(namespaces, members.namespaces);
         });
 
-        it("globals are detected", function() {
+        it("globals are detected", () => {
             compareObjectArrays(miscGlobal, members.globals);
         });
     });
 
-    describe("getAttribs", function() {
-        var doc;
-        var attribs;
+    describe("getAttribs", () => {
+        let doc;
+        let attribs;
 
-        it('should return an array of strings', function() {
+        it('should return an array of strings', () => {
             doc = new doclet.Doclet('/** ljklajsdf */', {});
             attribs = helper.getAttribs(doc);
             expect(Array.isArray(attribs)).toBe(true);
@@ -723,15 +721,15 @@ describe("jsdoc/util/templateHelper", function() {
         // if false, we expect attribs to either not contain anything in whatNotToContain,
         // or be empty (if whatNotToContain was not provided).
         function doTests(tests, whatNotToContain) {
-            for (var src in tests) {
+            for (const src in tests) {
                 if ( hasOwnProp.call(tests, src) ) {
-                    doc = new doclet.Doclet('/** ' + src + ' */', {});
+                    doc = new doclet.Doclet(`/** ${src} */`, {});
                     attribs = helper.getAttribs(doc);
 
                     if (tests[src]) {
                         expect(attribs).toContain(tests[src]);
                     } else if (Array.isArray(whatNotToContain)) {
-                        for (var i = 0; i < whatNotToContain.length; ++i) {
+                        for (let i = 0; i < whatNotToContain.length; ++i) {
                             expect(attribs).not.toContain(whatNotToContain[i]);
                         }
                     } else {
@@ -741,8 +739,8 @@ describe("jsdoc/util/templateHelper", function() {
             }
         }
 
-        it('should detect if a doclet is virtual', function() {
-            var tests = {
+        it('should detect if a doclet is virtual', () => {
+            const tests = {
                 'My constant. \n @virtual': 'abstract',
                 'asdf': false
             };
@@ -750,8 +748,8 @@ describe("jsdoc/util/templateHelper", function() {
             doTests(tests);
         });
 
-        it("should detect if a doclet's access is not public", function() {
-            var tests = {'@private': 'private',
+        it("should detect if a doclet's access is not public", () => {
+            const tests = {'@private': 'private',
                 '@access private': 'private',
                 '@protected': 'protected',
                 '@access protected': 'protected',
@@ -763,8 +761,8 @@ describe("jsdoc/util/templateHelper", function() {
             doTests(tests);
         });
 
-        it("should detect if a doclet's scope is inner or static AND it is a function or member or constant", function() {
-            var tests = {
+        it("should detect if a doclet's scope is inner or static AND it is a function or member or constant", () => {
+            const tests = {
                 // by default these are members
                 '@inner': 'inner',
                 '@instance': false,
@@ -788,8 +786,8 @@ describe("jsdoc/util/templateHelper", function() {
             doTests(tests, ['inner', 'static', 'global', 'instance']);
         });
 
-        it("should detect if a doclet is readonly (and its kind is 'member')", function() {
-            var tests = {
+        it("should detect if a doclet is readonly (and its kind is 'member')", () => {
+            const tests = {
                 'asdf\n @readonly': 'readonly',
                 'asdf': false,
                 '@name Fdsa#foo\n@readonly': 'readonly',
@@ -802,8 +800,8 @@ describe("jsdoc/util/templateHelper", function() {
             doTests(tests, 'readonly');
         });
 
-        it("should detect if the doclet is a for constant", function() {
-            var tests = {
+        it("should detect if the doclet is a for constant", () => {
+            const tests = {
                 'Enum. @enum\n@constant': 'constant',
                 '@function Foo#BAR\n@const': 'constant',
                 '@const Asdf': 'constant'
@@ -812,20 +810,20 @@ describe("jsdoc/util/templateHelper", function() {
             doTests(tests, 'constant');
         });
 
-        it('should detect if a doclet is async', function() {
-            var tests = { '@async': 'async' };
+        it('should detect if a doclet is async', () => {
+            const tests = { '@async': 'async' };
 
             doTests(tests, 'async');
         });
 
-        it('should detect if a doclet is a generator function', function() {
-            var tests = { '@generator': 'generator' };
+        it('should detect if a doclet is a generator function', () => {
+            const tests = { '@generator': 'generator' };
 
             doTests(tests, 'generator');
         });
 
-        it("should detect multiple attributes", function() {
-            var fdsaFoo = new doclet.Doclet('/** @const module:fdsa~FOO\n@readonly\n@private */', {});
+        it("should detect multiple attributes", () => {
+            const fdsaFoo = new doclet.Doclet('/** @const module:fdsa~FOO\n@readonly\n@private */', {});
 
             attribs = helper.getAttribs(fdsaFoo);
 
@@ -835,8 +833,8 @@ describe("jsdoc/util/templateHelper", function() {
             expect(attribs).toContain('inner');
         });
 
-        it('should return an empty array for null values', function() {
-            var emptyAttribs;
+        it('should return an empty array for null values', () => {
+            let emptyAttribs;
 
             function getAttribs() {
                 return helper.getAttribs();
@@ -850,28 +848,28 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("getSignatureTypes", function() {
+    describe("getSignatureTypes", () => {
         // returns links to allowed types for a doclet.
-        it("returns an empty array if the doclet has no specified type", function() {
-            var doc = new doclet.Doclet('/** @const ASDF */', {});
-            var types = helper.getSignatureTypes(doc);
+        it("returns an empty array if the doclet has no specified type", () => {
+            const doc = new doclet.Doclet('/** @const ASDF */', {});
+            const types = helper.getSignatureTypes(doc);
 
             expect(Array.isArray(types)).toBe(true);
             expect(types.length).toBe(0);
         });
 
-        it("returns a string array of the doclet's types", function() {
-            var doc = new doclet.Doclet('/** @const {number|Array.<boolean>} ASDF */', {});
-            var types = helper.getSignatureTypes(doc);
+        it("returns a string array of the doclet's types", () => {
+            const doc = new doclet.Doclet('/** @const {number|Array.<boolean>} ASDF */', {});
+            const types = helper.getSignatureTypes(doc);
 
             expect(types.length).toBe(2);
             expect(types).toContain('number');
             expect(types).toContain(helper.htmlsafe('Array.<boolean>')); // should be HTML safe
         });
 
-        it("creates links for types if relevant", function() {
-            var doc;
-            var types;
+        it("creates links for types if relevant", () => {
+            let doc;
+            let types;
 
             // make some links.
             helper.longnameToUrl.MyClass = 'MyClass.html';
@@ -885,9 +883,9 @@ describe("jsdoc/util/templateHelper", function() {
             delete helper.longnameToUrl.MyClass;
         });
 
-        it("uses the cssClass parameter for links if it is provided", function() {
-            var doc;
-            var types;
+        it("uses the cssClass parameter for links if it is provided", () => {
+            let doc;
+            let types;
 
             // make some links.
             helper.longnameToUrl.MyClass = 'MyClass.html';
@@ -902,33 +900,33 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("getSignatureParams", function() {
+    describe("getSignatureParams", () => {
         // retrieves parameter names.
         // if css class is provided, optional parameters are wrapped in a <span> with that class.
-        it("returns an empty array if the doclet has no specified type", function() {
-            var doc = new doclet.Doclet('/** @function myFunction */', {});
-            var params = helper.getSignatureParams(doc);
+        it("returns an empty array if the doclet has no specified type", () => {
+            const doc = new doclet.Doclet('/** @function myFunction */', {});
+            const params = helper.getSignatureParams(doc);
 
             expect(Array.isArray(params)).toBe(true);
             expect(params.length).toBe(0);
         });
 
-        it("returns a string array of the doclet's parameter names", function() {
-            var doc = new doclet.Doclet('/** @function myFunction\n @param {string} foo - asdf. */', {});
-            var params = helper.getSignatureParams(doc);
+        it("returns a string array of the doclet's parameter names", () => {
+            const doc = new doclet.Doclet('/** @function myFunction\n @param {string} foo - asdf. */', {});
+            const params = helper.getSignatureParams(doc);
 
             expect(params.length).toBe(1);
             expect(params).toContain('foo');
         });
 
-        it("wraps optional parameters in <span class=..> if optClass is provided", function() {
-            var doc = new doclet.Doclet(
+        it("wraps optional parameters in <span class=..> if optClass is provided", () => {
+            const doc = new doclet.Doclet(
                 '/** @function myFunction\n' +
                 ' * @param {boolean} foo - explanation.\n' +
                 ' * @param {number} [bar=1] - another explanation.\n' +
                 ' * @param {string} [baz] - another explanation.\n' +
                 ' */', {});
-            var params = helper.getSignatureParams(doc, 'cssClass');
+            const params = helper.getSignatureParams(doc, 'cssClass');
 
             expect(params.length).toBe(3);
             expect(params).toContain('foo');
@@ -936,14 +934,14 @@ describe("jsdoc/util/templateHelper", function() {
             expect(params).toContain('<span class="cssClass">baz</span>');
         });
 
-        it("doesn't wrap optional parameters in <span class=..> if optClass is not provided", function() {
-            var doc = new doclet.Doclet(
+        it("doesn't wrap optional parameters in <span class=..> if optClass is not provided", () => {
+            const doc = new doclet.Doclet(
                 '/** @function myFunction\n' +
                 ' * @param {boolean} foo - explanation.\n' +
                 ' * @param {number} [bar=1] - another explanation.\n' +
                 ' * @param {string} [baz] - another explanation.\n' +
                 ' */', {});
-            var params = helper.getSignatureParams(doc);
+            const params = helper.getSignatureParams(doc);
 
             expect(params.length).toBe(3);
             expect(params).toContain('foo');
@@ -952,9 +950,9 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("getSignatureReturns", function() {
-        it("returns a value with correctly escaped HTML", function() {
-            var mockDoclet = {
+    describe("getSignatureReturns", () => {
+        it("returns a value with correctly escaped HTML", () => {
+            const mockDoclet = {
                 returns: [
                     {
                         type: {
@@ -965,46 +963,46 @@ describe("jsdoc/util/templateHelper", function() {
                     }
                 ]
             };
-            var html = helper.getSignatureReturns(mockDoclet);
+            const html = helper.getSignatureReturns(mockDoclet);
 
             expect(html).not.toContain('Array.<string>');
             expect(html).toContain('Array.&lt;string>');
         });
 
-        it("returns an empty array if the doclet has no returns", function() {
-            var doc = new doclet.Doclet('/** @function myFunction */', {});
-            var returns = helper.getSignatureReturns(doc);
+        it("returns an empty array if the doclet has no returns", () => {
+            const doc = new doclet.Doclet('/** @function myFunction */', {});
+            const returns = helper.getSignatureReturns(doc);
 
             expect(Array.isArray(returns)).toBe(true);
             expect(returns.length).toBe(0);
         });
 
-        it("returns an empty array if the doclet has @returns but with no type", function() {
-            var doc = new doclet.Doclet('/** @function myFunction\n@returns an interesting result.*/', {});
-            var returns = helper.getSignatureReturns(doc);
+        it("returns an empty array if the doclet has @returns but with no type", () => {
+            const doc = new doclet.Doclet('/** @function myFunction\n@returns an interesting result.*/', {});
+            const returns = helper.getSignatureReturns(doc);
 
             expect(Array.isArray(returns)).toBe(true);
             expect(returns.length).toBe(0);
         });
 
-        it('uses the value of the `yields` property', function() {
-            var doc = new doclet.Doclet('/** @yields {string} A string. */', {});
-            var html = helper.getSignatureReturns(doc);
+        it('uses the value of the `yields` property', () => {
+            const doc = new doclet.Doclet('/** @yields {string} A string. */', {});
+            const html = helper.getSignatureReturns(doc);
 
             expect(html).toContain('string');
         });
 
-        it('prefers `yields` over `returns`', function() {
-            var doc = new doclet.Doclet('/** @yields {string}\n@returns {number} */', {});
-            var html = helper.getSignatureReturns(doc);
+        it('prefers `yields` over `returns`', () => {
+            const doc = new doclet.Doclet('/** @yields {string}\n@returns {number} */', {});
+            const html = helper.getSignatureReturns(doc);
 
             expect(html).toContain('string');
             expect(html).not.toContain('number');
         });
 
-        it("creates links for return types if relevant", function() {
-            var doc;
-            var returns;
+        it("creates links for return types if relevant", () => {
+            let doc;
+            let returns;
 
             // make some links.
             helper.longnameToUrl.MyClass = 'MyClass.html';
@@ -1019,9 +1017,9 @@ describe("jsdoc/util/templateHelper", function() {
             delete helper.longnameToUrl.MyClass;
         });
 
-        it("uses the cssClass parameter for links if it is provided", function() {
-            var doc;
-            var returns;
+        it("uses the cssClass parameter for links if it is provided", () => {
+            let doc;
+            let returns;
 
             // make some links.
             helper.longnameToUrl.MyClass = 'MyClass.html';
@@ -1037,28 +1035,28 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    xdescribe('getAncestors', function() {
+    xdescribe('getAncestors', () => {
         // TODO
     });
 
-    describe("getAncestorLinks", function() {
+    describe("getAncestorLinks", () => {
         // make a hierarchy.
-        var lackeys = new doclet.Doclet('/** @member lackeys\n@memberof module:mafia/gangs.Sharks~Henchman\n@instance*/', {});
-        var henchman = new doclet.Doclet('/** @class Henchman\n@memberof module:mafia/gangs.Sharks\n@inner */', {});
-        var gang = new doclet.Doclet('/** @namespace module:mafia/gangs.Sharks */', {});
-        var mafia = new doclet.Doclet('/** @module mafia/gangs */', {});
-        var data = taffy([lackeys, henchman, gang, mafia]);
+        const lackeys = new doclet.Doclet('/** @member lackeys\n@memberof module:mafia/gangs.Sharks~Henchman\n@instance*/', {});
+        const henchman = new doclet.Doclet('/** @class Henchman\n@memberof module:mafia/gangs.Sharks\n@inner */', {});
+        const gang = new doclet.Doclet('/** @namespace module:mafia/gangs.Sharks */', {});
+        const mafia = new doclet.Doclet('/** @module mafia/gangs */', {});
+        const data = taffy([lackeys, henchman, gang, mafia]);
 
         // register some links
-        it("returns an empty array if there are no ancestors", function() {
-            var links = helper.getAncestorLinks(data, mafia);
+        it("returns an empty array if there are no ancestors", () => {
+            const links = helper.getAncestorLinks(data, mafia);
 
             expect(Array.isArray(links)).toBe(true);
             expect(links.length).toBe(0);
         });
 
-        it("returns an array of ancestor names (with preceding punctuation) if there are ancestors, the direct ancestor with following punctuation too", function() {
-            var links = helper.getAncestorLinks(data, lackeys);
+        it("returns an array of ancestor names (with preceding punctuation) if there are ancestors, the direct ancestor with following punctuation too", () => {
+            let links = helper.getAncestorLinks(data, lackeys);
 
             expect(links.length).toBe(3);
             expect(links).toContain('~Henchman#');
@@ -1075,8 +1073,8 @@ describe("jsdoc/util/templateHelper", function() {
             expect(links).toContain('mafia/gangs.');
         });
 
-        it("adds links if they exist", function() {
-            var links;
+        it("adds links if they exist", () => {
+            let links;
 
             // register some links
             helper.longnameToUrl['module:mafia/gangs'] = 'mafia_gangs.html';
@@ -1093,8 +1091,8 @@ describe("jsdoc/util/templateHelper", function() {
             delete helper.longnameToUrl['module:mafia/gangs.Sharks~Henchman'];
         });
 
-        it("adds cssClass to any link", function() {
-            var links;
+        it("adds cssClass to any link", () => {
+            let links;
 
             // register some links
             helper.longnameToUrl['module:mafia/gangs'] = 'mafia_gangs.html';
@@ -1112,15 +1110,15 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("addEventListeners", function() {
-        var doclets = ( taffy(doop(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets)) );
-        var ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0];
-        var ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0];
-        var ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];
+    describe("addEventListeners", () => {
+        const doclets = ( taffy(doop(jasmine.getDocSetFromFile('test/fixtures/listenstag.js').doclets)) );
+        const ev = helper.find(doclets, {longname: 'module:myModule.event:MyEvent'})[0];
+        const ev2 = helper.find(doclets, {longname: 'module:myModule~Events.event:Event2'})[0];
+        const ev3 = helper.find(doclets, {longname: 'module:myModule#event:Event3'})[0];
 
         helper.addEventListeners(doclets);
 
-        it("adds a 'listeners' array to events with the longnames of the listeners", function() {
+        it("adds a 'listeners' array to events with the longnames of the listeners", () => {
             expect(Array.isArray(ev.listeners)).toBe(true);
             expect(Array.isArray(ev2.listeners)).toBe(true);
 
@@ -1132,25 +1130,25 @@ describe("jsdoc/util/templateHelper", function() {
             expect(ev2.listeners).toContain('module:myModule~MyHandler');
         });
 
-        it("does not add listeners for events with no listeners", function() {
+        it("does not add listeners for events with no listeners", () => {
             expect(ev3.listeners).not.toBeDefined();
         });
 
-        it("does not make spurious doclets if something @listens to a non-existent symbol", function() {
+        it("does not make spurious doclets if something @listens to a non-existent symbol", () => {
             expect(helper.find(doclets, {longname: 'event:fakeEvent'}).length).toBe(0);
         });
     });
 
-    describe("prune", function() {
-        var access = env.opts.access;
-        var priv = Boolean(env.opts.private);
+    describe("prune", () => {
+        const access = env.opts.access;
+        const priv = Boolean(env.opts.private);
 
-        afterEach(function() {
+        afterEach(() => {
             env.opts.access = access;
             env.opts.private = priv;
         });
 
-        var array = [
+        const array = [
             // keep
             {undocumented: false},
             // keep
@@ -1164,7 +1162,7 @@ describe("jsdoc/util/templateHelper", function() {
             // prune
             {memberof: '<anonymous>'}
         ];
-        var keep = [
+        const keep = [
             // keep
             {undocumented: false},
             // keep
@@ -1172,11 +1170,11 @@ describe("jsdoc/util/templateHelper", function() {
             // keep
             {memberof: 'SomeClass'}
         ];
-        var arrayPrivate = [
+        const arrayPrivate = [
             // prune (unless env.opts.private is truthy)
             {access: 'private'}
         ];
-        var arrayMixed = [
+        const arrayMixed = [
             {access: 'package'},
             {access: 'public'},
             {asdf: true},
@@ -1184,68 +1182,68 @@ describe("jsdoc/util/templateHelper", function() {
             {access: 'private'}
         ];
 
-        it('should prune the correct members', function() {
-            var pruned = helper.prune( taffy(array) )().get();
+        it('should prune the correct members', () => {
+            const pruned = helper.prune( taffy(array) )().get();
 
             compareObjectArrays(keep, pruned);
         });
 
-        it('should prune private members if env.opts.private is falsy', function() {
-            var pruned;
+        it('should prune private members if env.opts.private is falsy', () => {
+            let pruned;
 
             env.opts.private = false;
             pruned = helper.prune( taffy(arrayPrivate) )().get();
             compareObjectArrays([], pruned);
         });
 
-        it('should only keep package-private members if env.opts.access only contains "package"', function() {
-            var pruned;
-            var keepPackage = [{access: 'package'}];
+        it('should only keep package-private members if env.opts.access only contains "package"', () => {
+            let pruned;
+            const keepPackage = [{access: 'package'}];
 
             env.opts.access = 'package';
             pruned = helper.prune( taffy(arrayMixed) )().get();
             compareObjectArrays(keepPackage, pruned);
         });
 
-        it('should only keep public members if env.opts.access only contains "public"', function() {
-            var pruned;
-            var keepPublic = [{access: 'public'}];
+        it('should only keep public members if env.opts.access only contains "public"', () => {
+            let pruned;
+            const keepPublic = [{access: 'public'}];
 
             env.opts.access = 'public';
             pruned = helper.prune( taffy(arrayMixed) )().get();
             compareObjectArrays(keepPublic, pruned);
         });
 
-        it('should only keep undefined members if env.opts.access only contains "undefined"', function() {
-            var pruned;
-            var keepUndefined = [{asdf: true}];
+        it('should only keep undefined members if env.opts.access only contains "undefined"', () => {
+            let pruned;
+            const keepUndefined = [{asdf: true}];
 
             env.opts.access = 'undefined';
             pruned = helper.prune( taffy(arrayMixed) )().get();
             compareObjectArrays(keepUndefined, pruned);
         });
 
-        it('should only keep protected members if env.opts.access only contains "protected"', function() {
-            var pruned;
-            var keepProtected = [{access: 'protected'}];
+        it('should only keep protected members if env.opts.access only contains "protected"', () => {
+            let pruned;
+            const keepProtected = [{access: 'protected'}];
 
             env.opts.access = 'protected';
             pruned = helper.prune( taffy(arrayMixed) )().get();
             compareObjectArrays(keepProtected, pruned);
         });
 
-        it('should only keep private members if env.opts.access only contains "private"', function() {
-            var pruned;
-            var keepPrivate = [{access: 'private'}];
+        it('should only keep private members if env.opts.access only contains "private"', () => {
+            let pruned;
+            const keepPrivate = [{access: 'private'}];
 
             env.opts.access = 'private';
             pruned = helper.prune( taffy(arrayMixed) )().get();
             compareObjectArrays(keepPrivate, pruned);
         });
 
-        it('should keep public and protected members if env.opts.access contains "public" and "protected"', function() {
-            var pruned;
-            var keepPublicProtected = [{
+        it('should keep public and protected members if env.opts.access contains "public" and "protected"', () => {
+            let pruned;
+            const keepPublicProtected = [{
                 access: 'public'
             }, {
                 access: 'protected'
@@ -1256,8 +1254,8 @@ describe("jsdoc/util/templateHelper", function() {
             compareObjectArrays(keepPublicProtected, pruned);
         });
 
-        it('should keep everything if env.opts.access contains "all"', function() {
-            var pruned;
+        it('should keep everything if env.opts.access contains "all"', () => {
+            let pruned;
 
             env.opts.access = 'all';
             pruned = helper.prune( taffy(arrayMixed) )().get();
@@ -1265,8 +1263,8 @@ describe("jsdoc/util/templateHelper", function() {
             compareObjectArrays(arrayMixed, pruned);
         });
 
-        it('should not prune private members if env.opts.private is truthy', function() {
-            var pruned;
+        it('should not prune private members if env.opts.private is truthy', () => {
+            let pruned;
 
             env.opts.private = true;
             pruned = helper.prune( taffy(arrayPrivate) )().get();
@@ -1274,8 +1272,8 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("registerLink", function() {
-        it("adds an entry to exports.longnameToUrl", function() {
+    describe("registerLink", () => {
+        it("adds an entry to exports.longnameToUrl", () => {
             helper.longnameToUrl.MySymbol = 'asdf.html';
 
             expect(helper.longnameToUrl.MySymbol).toBeDefined();
@@ -1284,7 +1282,7 @@ describe("jsdoc/util/templateHelper", function() {
             delete helper.longnameToUrl.MySymbol;
         });
 
-        it("allows linkto to work", function() {
+        it("allows linkto to work", () => {
             helper.registerLink('MySymbol', 'asdf.html');
 
             expect(helper.linkto('MySymbol')).toBe('<a href="asdf.html">MySymbol</a>');
@@ -1293,33 +1291,33 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("tutorialToUrl", function() {
-        beforeEach(function() {
+    describe("tutorialToUrl", () => {
+        beforeEach(() => {
             spyOn(logger, 'error');
             helper.setTutorials(resolver.root);
         });
 
-        afterEach(function() {
+        afterEach(() => {
             helper.setTutorials(null);
         });
 
-        it('logs an error if the tutorial is missing', function() {
+        it('logs an error if the tutorial is missing', () => {
             helper.tutorialToUrl('be-a-perfect-person-in-just-three-days');
 
             expect(logger.error).toHaveBeenCalled();
         });
 
-        it("logs an error if the tutorial's name is a reserved JS keyword and it doesn't exist", function() {
+        it("logs an error if the tutorial's name is a reserved JS keyword and it doesn't exist", () => {
             helper.tutorialToUrl('prototype');
 
             expect(logger.error).toHaveBeenCalled();
         });
 
-        it("creates links to tutorials if they exist", function() {
-            var url;
+        it("creates links to tutorials if they exist", () => {
+            let url;
 
             // load the tutorials we already have for the tutorials tests
-            resolver.load(env.dirname + "/test/tutorials/tutorials");
+            resolver.load(`${env.dirname}/test/tutorials/tutorials`);
             resolver.resolve();
 
             url = helper.tutorialToUrl('test');
@@ -1328,37 +1326,37 @@ describe("jsdoc/util/templateHelper", function() {
             expect(url).toBe('tutorial-test.html');
         });
 
-        it("creates links for tutorials where the name is a reserved JS keyword", function() {
-            var url = helper.tutorialToUrl('constructor');
+        it("creates links for tutorials where the name is a reserved JS keyword", () => {
+            const url = helper.tutorialToUrl('constructor');
 
             expect(typeof url).toBe('string');
             expect(url).toBe('tutorial-constructor.html');
         });
 
-        it("returns the same link if called multiple times on the same tutorial", function() {
+        it("returns the same link if called multiple times on the same tutorial", () => {
             expect(helper.tutorialToUrl('test2')).toBe(helper.tutorialToUrl('test2'));
         });
     });
 
-    describe("toTutorial", function() {
-        beforeEach(function() {
+    describe("toTutorial", () => {
+        beforeEach(() => {
             spyOn(logger, 'error');
             helper.setTutorials(resolver.root);
         });
 
-        afterEach(function() {
+        afterEach(() => {
             helper.setTutorials(null);
         });
 
-        it('logs an error if the first param is missing', function() {
+        it('logs an error if the first param is missing', () => {
             helper.toTutorial();
 
             expect(logger.error).toHaveBeenCalled();
         });
 
         // missing tutorials
-        it("returns the tutorial name if it's missing and no missingOpts is provided", function() {
-            var link;
+        it("returns the tutorial name if it's missing and no missingOpts is provided", () => {
+            let link;
 
             helper.setTutorials(resolver.root);
             link = helper.toTutorial('qwerty');
@@ -1366,14 +1364,14 @@ describe("jsdoc/util/templateHelper", function() {
             expect(link).toBe('qwerty');
         });
 
-        it("returns the tutorial name wrapped in missingOpts.tag if provided and the tutorial is missing", function() {
-            var link = helper.toTutorial('qwerty', 'lkjklqwerty', {tag: 'span'});
+        it("returns the tutorial name wrapped in missingOpts.tag if provided and the tutorial is missing", () => {
+            const link = helper.toTutorial('qwerty', 'lkjklqwerty', {tag: 'span'});
 
             expect(link).toBe('<span>qwerty</span>');
         });
 
-        it("returns the tutorial name wrapped in missingOpts.tag with class missingOpts.classname if provided and the tutorial is missing", function() {
-            var link = helper.toTutorial('qwerty', 'lkjklqwerty', {classname: 'missing'});
+        it("returns the tutorial name wrapped in missingOpts.tag with class missingOpts.classname if provided and the tutorial is missing", () => {
+            let link = helper.toTutorial('qwerty', 'lkjklqwerty', {classname: 'missing'});
 
             expect(link).toBe('qwerty');
 
@@ -1384,8 +1382,8 @@ describe("jsdoc/util/templateHelper", function() {
             expect(link).toBe('<span class="missing">qwerty</span>');
         });
 
-        it("prefixes the tutorial name with missingOpts.prefix if provided and the tutorial is missing", function() {
-            var link = helper.toTutorial('qwerty', 'lkjklqwerty', {
+        it("prefixes the tutorial name with missingOpts.prefix if provided and the tutorial is missing", () => {
+            let link = helper.toTutorial('qwerty', 'lkjklqwerty', {
                 tag: 'span',
                 classname: 'missing',
                 prefix: 'TODO-'
@@ -1404,197 +1402,197 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         // now we do non-missing tutorials.
-        it("returns a link to the tutorial if not missing", function() {
-            var link;
+        it("returns a link to the tutorial if not missing", () => {
+            let link;
 
             // load the tutorials we already have for the tutorials tests
-            resolver.load(env.dirname + "/test/tutorials/tutorials");
+            resolver.load(`${env.dirname}/test/tutorials/tutorials`);
             resolver.resolve();
 
             link = helper.toTutorial('constructor', 'The Constructor tutorial');
-            expect(link).toBe('<a href="' + helper.tutorialToUrl('constructor') + '">The Constructor tutorial</a>');
+            expect(link).toBe(`<a href="${helper.tutorialToUrl('constructor')}">The Constructor tutorial</a>`);
         });
 
-        it("uses the tutorial's title for the link text if no content parameter is provided", function() {
-            var link = helper.toTutorial('test');
+        it("uses the tutorial's title for the link text if no content parameter is provided", () => {
+            const link = helper.toTutorial('test');
 
-            expect(link).toBe('<a href="' + helper.tutorialToUrl('test') + '">Test tutorial</a>');
+            expect(link).toBe(`<a href="${helper.tutorialToUrl('test')}">Test tutorial</a>`);
         });
 
-        it("does not apply any of missingOpts if the tutorial was found", function() {
-            var link = helper.toTutorial('test', '', {
+        it("does not apply any of missingOpts if the tutorial was found", () => {
+            const link = helper.toTutorial('test', '', {
                 tag: 'span',
                 classname: 'missing',
                 prefix: 'TODO-'
             });
 
-            expect(link).toBe('<a href="' + helper.tutorialToUrl('test') + '">Test tutorial</a>');
+            expect(link).toBe(`<a href="${helper.tutorialToUrl('test')}">Test tutorial</a>`);
         });
     });
 
-    describe("resolveLinks", function() {
-        var conf;
+    describe("resolveLinks", () => {
+        let conf;
 
-        beforeEach(function() {
+        beforeEach(() => {
             conf = doop(env.conf.templates);
         });
 
-        afterEach(function() {
+        afterEach(() => {
             env.conf.templates = conf;
         });
 
-        it('should translate {@link test} into a HTML link.', function() {
-            var input = 'This is a {@link test}.';
-            var output = helper.resolveLinks(input);
+        it('should translate {@link test} into a HTML link.', () => {
+            const input = 'This is a {@link test}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
-        it('should translate {@link unknown} into a simple text.', function() {
-            var input = 'This is a {@link unknown}.';
-            var output = helper.resolveLinks(input);
+        it('should translate {@link unknown} into a simple text.', () => {
+            const input = 'This is a {@link unknown}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a unknown.');
         });
 
-        it('should translate {@link test} into a HTML links multiple times.', function() {
-            var input = 'This is a {@link test} and {@link test}.';
-            var output = helper.resolveLinks(input);
+        it('should translate {@link test} into a HTML links multiple times.', () => {
+            const input = 'This is a {@link test} and {@link test}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">test</a> and <a href="path/to/test.html">test</a>.');
         });
 
-        it('should translate [hello there]{@link test} into a HTML link with the custom content.', function() {
-            var input = 'This is a [hello there]{@link test}.';
-            var output = helper.resolveLinks(input);
+        it('should translate [hello there]{@link test} into a HTML link with the custom content.', () => {
+            const input = 'This is a [hello there]{@link test}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">hello there</a>.');
         });
 
-        it('should translate [dummy text] and [hello there]{@link test} into an HTML link with the custom content.', function() {
-            var input = 'This is [dummy text] and [hello there]{@link test}.';
-            var output = helper.resolveLinks(input);
+        it('should translate [dummy text] and [hello there]{@link test} into an HTML link with the custom content.', () => {
+            const input = 'This is [dummy text] and [hello there]{@link test}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is [dummy text] and <a href="path/to/test.html">hello there</a>.');
         });
 
-        it('should translate [dummy text] and [more] and [hello there]{@link test} into an HTML link with the custom content.', function() {
-            var input = 'This is [dummy text] and [more] and [hello there]{@link test}.';
-            var output = helper.resolveLinks(input);
+        it('should translate [dummy text] and [more] and [hello there]{@link test} into an HTML link with the custom content.', () => {
+            const input = 'This is [dummy text] and [more] and [hello there]{@link test}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is [dummy text] and [more] and <a href="path/to/test.html">hello there</a>.');
         });
 
-        it('should ignore [hello there].', function() {
-            var input = 'This is a [hello there].';
-            var output = helper.resolveLinks(input);
+        it('should ignore [hello there].', () => {
+            const input = 'This is a [hello there].';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe(input);
         });
 
-        it('should translate http links in the tag', function() {
-            var input = 'Link to {@link http://github.com}';
-            var output = helper.resolveLinks(input);
+        it('should translate http links in the tag', () => {
+            const input = 'Link to {@link http://github.com}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
         });
 
-        it('should translate ftp links in the tag', function() {
-            var input = 'Link to {@link ftp://foo.bar}';
-            var output = helper.resolveLinks(input);
+        it('should translate ftp links in the tag', () => {
+            const input = 'Link to {@link ftp://foo.bar}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="ftp://foo.bar">ftp://foo.bar</a>');
         });
 
-        it('should allow pipe to be used as delimiter between href and text (external link)', function() {
-            var input = 'Link to {@link http://github.com|Github}';
-            var output = helper.resolveLinks(input);
+        it('should allow pipe to be used as delimiter between href and text (external link)', () => {
+            const input = 'Link to {@link http://github.com|Github}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="http://github.com">Github</a>');
         });
 
-        it('should allow pipe to be used as delimiter between href and text (symbol link)', function() {
-            var input = 'Link to {@link test|Test}';
-            var output = helper.resolveLinks(input);
+        it('should allow pipe to be used as delimiter between href and text (symbol link)', () => {
+            const input = 'Link to {@link test|Test}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html">Test</a>');
         });
 
-        it('should allow first space to be used as delimiter between href and text (external link)', function() {
-            var input = 'Link to {@link http://github.com Github}';
-            var output = helper.resolveLinks(input);
+        it('should allow first space to be used as delimiter between href and text (external link)', () => {
+            const input = 'Link to {@link http://github.com Github}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="http://github.com">Github</a>');
         });
 
-        it('should allow first space to be used as delimiter between href and text (symbol link)', function() {
-            var input = 'Link to {@link test My Caption}';
-            var output = helper.resolveLinks(input);
+        it('should allow first space to be used as delimiter between href and text (symbol link)', () => {
+            const input = 'Link to {@link test My Caption}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
         });
 
-        it('if pipe and space are present in link tag, use pipe as the delimiter', function() {
-            var input = 'Link to {@link test|My Caption}';
-            var output = helper.resolveLinks(input);
+        it('if pipe and space are present in link tag, use pipe as the delimiter', () => {
+            const input = 'Link to {@link test|My Caption}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
         });
 
-        it('Test of {@linkcode } which should be in monospace', function() {
-            var input = 'Link to {@linkcode test}';
-            var output = helper.resolveLinks(input);
+        it('Test of {@linkcode } which should be in monospace', () => {
+            const input = 'Link to {@linkcode test}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
         });
 
-        it('Test of {@linkplain } which should be in normal font', function() {
-            var input = 'Link to {@linkplain test}';
-            var output = helper.resolveLinks(input);
+        it('Test of {@linkplain } which should be in normal font', () => {
+            const input = 'Link to {@linkplain test}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
         });
 
-        it('should be careful with linking to links whose names are reserved JS keywords', function() {
-            var input = 'Link to {@link constructor}';
-            var output = helper.resolveLinks(input);
+        it('should be careful with linking to links whose names are reserved JS keywords', () => {
+            const input = 'Link to {@link constructor}';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('Link to constructor');
         });
 
-        it('should allow linebreaks between link tag and content', function() {
-            var input = 'This is a {@link\ntest}.';
-            var output = helper.resolveLinks(input);
+        it('should allow linebreaks between link tag and content', () => {
+            const input = 'This is a {@link\ntest}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
-        it('should allow linebreaks to separate url from link text', function() {
-            var input = 'This is a {@link\ntest\ntest}.';
-            var output = helper.resolveLinks(input);
+        it('should allow linebreaks to separate url from link text', () => {
+            const input = 'This is a {@link\ntest\ntest}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
-        it('should normalize additional newlines to spaces', function() {
-            var input = 'This is a {@link\ntest\ntest\n\ntest}.';
-            var output = helper.resolveLinks(input);
+        it('should normalize additional newlines to spaces', () => {
+            const input = 'This is a {@link\ntest\ntest\n\ntest}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">test test</a>.');
         });
 
-        it('should allow tabs between link tag and content', function() {
-            var input = 'This is a {@link\ttest}.';
-            var output = helper.resolveLinks(input);
+        it('should allow tabs between link tag and content', () => {
+            const input = 'This is a {@link\ttest}.';
+            const output = helper.resolveLinks(input);
 
             expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
         });
 
         // conf.monospaceLinks. check that
         // a) it works
-        it('if conf.monospaceLinks is true, all {@link} should be monospace', function() {
-            var input = 'Link to {@link test}';
-            var output;
+        it('if conf.monospaceLinks is true, all {@link} should be monospace', () => {
+            const input = 'Link to {@link test}';
+            let output;
 
             env.conf.templates.monospaceLinks = true;
             output = helper.resolveLinks(input);
@@ -1603,9 +1601,9 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         // b) linkcode and linkplain are still respected
-        it('if conf.monospaceLinks is true, all {@linkcode} should still be monospace', function() {
-            var input = 'Link to {@linkcode test}';
-            var output;
+        it('if conf.monospaceLinks is true, all {@linkcode} should still be monospace', () => {
+            const input = 'Link to {@linkcode test}';
+            let output;
 
             env.conf.templates.monospaceLinks = true;
             output = helper.resolveLinks(input);
@@ -1613,9 +1611,9 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
         });
 
-        it('if conf.monospaceLinks is true, all {@linkplain} should still be plain', function() {
-            var input = 'Link to {@linkplain test}';
-            var output;
+        it('if conf.monospaceLinks is true, all {@linkplain} should still be plain', () => {
+            const input = 'Link to {@linkplain test}';
+            let output;
 
             env.conf.templates.monospaceLinks = true;
             output = helper.resolveLinks(input);
@@ -1625,9 +1623,9 @@ describe("jsdoc/util/templateHelper", function() {
 
         // conf.cleverLinks. check that
         // a) it works
-        it('if conf.cleverLinks is true, {@link symbol} should be in monospace', function() {
-            var input = 'Link to {@link test}';
-            var output;
+        it('if conf.cleverLinks is true, {@link symbol} should be in monospace', () => {
+            const input = 'Link to {@link test}';
+            let output;
 
             env.conf.templates.cleverLinks = true;
             output = helper.resolveLinks(input);
@@ -1635,9 +1633,9 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
         });
 
-        it('if conf.cleverLinks is true, {@link URL} should be in plain text', function() {
-            var input = 'Link to {@link http://github.com}';
-            var output;
+        it('if conf.cleverLinks is true, {@link URL} should be in plain text', () => {
+            const input = 'Link to {@link http://github.com}';
+            let output;
 
             env.conf.templates.cleverLinks = true;
             output = helper.resolveLinks(input);
@@ -1646,9 +1644,9 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         // b) linkcode and linkplain are still respected
-        it('if conf.cleverLinks is true, all {@linkcode} should still be clever', function() {
-            var input = 'Link to {@linkcode test}';
-            var output;
+        it('if conf.cleverLinks is true, all {@linkcode} should still be clever', () => {
+            const input = 'Link to {@linkcode test}';
+            let output;
 
             env.conf.templates.cleverLinks = true;
             output = helper.resolveLinks(input);
@@ -1656,9 +1654,9 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
         });
 
-        it('if conf.cleverLinks is true, all {@linkplain} should still be plain', function() {
-            var input = 'Link to {@linkplain test}';
-            var output;
+        it('if conf.cleverLinks is true, all {@linkplain} should still be plain', () => {
+            const input = 'Link to {@linkplain test}';
+            let output;
 
             env.conf.templates.cleverLinks = true;
             output = helper.resolveLinks(input);
@@ -1668,9 +1666,9 @@ describe("jsdoc/util/templateHelper", function() {
 
         // c) if monospaceLinks is additionally `true` it is ignored in favour
         //    of cleverLinks
-        it('if conf.cleverLinks is true and so is conf.monospaceLinks, cleverLinks overrides', function() {
-            var input = 'Link to {@link test} and {@link http://github.com}';
-            var output;
+        it('if conf.cleverLinks is true and so is conf.monospaceLinks, cleverLinks overrides', () => {
+            const input = 'Link to {@link test} and {@link http://github.com}';
+            let output;
 
             env.conf.templates.cleverLinks = true;
             env.conf.templates.monospaceLinks = true;
@@ -1679,9 +1677,9 @@ describe("jsdoc/util/templateHelper", function() {
             expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a> and <a href="http://github.com">http://github.com</a>');
         });
 
-        it('if conf.useShortNamesInLinks is true, it uses the short name in links', function() {
-            var input = 'Link to {@link my.long.namespace}';
-            var output;
+        it('if conf.useShortNamesInLinks is true, it uses the short name in links', () => {
+            const input = 'Link to {@link my.long.namespace}';
+            let output;
 
             env.conf.templates.useShortNamesInLinks = true;
             helper.registerLink('my.long.namespace', 'asdf.html');
@@ -1693,165 +1691,165 @@ describe("jsdoc/util/templateHelper", function() {
         });
     });
 
-    describe("createLink", function() {
-        it('should create a url for a simple global.', function() {
-            var mockDoclet = {
+    describe("createLink", () => {
+        it('should create a url for a simple global.', () => {
+            const mockDoclet = {
                 kind: 'function',
                 longname: 'foo',
                 name: 'foo',
                 scope: 'global'
             };
-            var url = helper.createLink(mockDoclet);
+            const url = helper.createLink(mockDoclet);
 
             expect(url).toBe('global.html#foo');
         });
 
-        it('should create a url for a namespace.', function() {
-            var mockDoclet = {
+        it('should create a url for a namespace.', () => {
+            const mockDoclet = {
                 kind: 'namespace',
                 longname: 'foo',
                 name: 'foo'
             };
-            var url = helper.createLink(mockDoclet);
+            const url = helper.createLink(mockDoclet);
 
             expect(url).toBe('foo.html');
         });
 
-        it('should create a url for a member of a namespace.', function() {
-            var mockDoclet = {
+        it('should create a url for a member of a namespace.', () => {
+            const mockDoclet = {
                 kind: 'function',
                 longname: 'ns.foo',
                 name: 'foo',
                 memberof: 'ns'
             };
-            var url = helper.createLink(mockDoclet);
+            const url = helper.createLink(mockDoclet);
 
             expect(url).toBe('ns.html#foo');
         });
 
-        var nestedNamespaceDoclet = {
+        const nestedNamespaceDoclet = {
             kind: 'function',
             longname: 'ns1.ns2.foo',
             name: 'foo',
             memberof: 'ns1.ns2'
         };
-        var nestedNamespaceUrl;
+        let nestedNamespaceUrl;
 
-        it('should create a url for a member of a nested namespace.', function() {
+        it('should create a url for a member of a nested namespace.', () => {
             nestedNamespaceUrl = helper.createLink(nestedNamespaceDoclet);
 
             expect(nestedNamespaceUrl).toBe('ns1.ns2.html#foo');
         });
 
-        it('should return the same value when called twice with the same doclet.', function() {
-            var newUrl = helper.createLink(nestedNamespaceDoclet);
+        it('should return the same value when called twice with the same doclet.', () => {
+            const newUrl = helper.createLink(nestedNamespaceDoclet);
 
             expect(newUrl).toBe(nestedNamespaceUrl);
         });
 
-        it('should create a url for a name with invalid characters.', function() {
-            var mockDoclet = {
+        it('should create a url for a name with invalid characters.', () => {
+            const mockDoclet = {
                 kind: 'function',
                 longname: 'ns1."!"."*foo"',
                 name: '"*foo"',
                 memberof: 'ns1."!"'
             };
-            var url = helper.createLink(mockDoclet);
+            const url = helper.createLink(mockDoclet);
 
             expect(url).toEqual('ns1._!_.html#%22*foo%22');
         });
 
         it('should create a url for a function that is the only symbol exported by a module.',
-            function() {
-                var mockDoclet = {
+            () => {
+                const mockDoclet = {
                     kind: 'function',
                     longname: 'module:bar',
                     name: 'module:bar'
                 };
-                var url = helper.createLink(mockDoclet);
+                const url = helper.createLink(mockDoclet);
 
                 expect(url).toEqual('module-bar.html');
             });
 
-        it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', function() {
-            var moduleDoclet = {
+        it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', () => {
+            const moduleDoclet = {
                 kind: 'module',
                 longname: 'module:baz',
                 name: 'module:baz'
             };
-            var badDoclet = {
+            const badDoclet = {
                 kind: 'member',
                 longname: 'module:baz',
                 name: 'module:baz'
             };
-            var moduleDocletUrl = helper.createLink(moduleDoclet);
-            var badDocletUrl = helper.createLink(badDoclet);
+            const moduleDocletUrl = helper.createLink(moduleDoclet);
+            const badDocletUrl = helper.createLink(badDoclet);
 
             expect(moduleDocletUrl).toBe('module-baz.html');
             expect(badDocletUrl).toBe('module-baz.html');
         });
 
-        it('should create a url for a function that is a member of a doclet with the wrong kind', function() {
-            var badModuleDoclet = {
+        it('should create a url for a function that is a member of a doclet with the wrong kind', () => {
+            const badModuleDoclet = {
                 kind: 'member',
                 longname: 'module:qux',
                 name: 'module:qux'
             };
-            var memberDoclet = {
+            const memberDoclet = {
                 kind: 'function',
                 name: 'frozzle',
                 memberof: 'module:qux',
                 scope: 'instance',
                 longname: 'module:qux#frozzle'
             };
-            var badModuleDocletUrl = helper.createLink(badModuleDoclet);
-            var memberDocletUrl = helper.createLink(memberDoclet);
+            const badModuleDocletUrl = helper.createLink(badModuleDoclet);
+            const memberDocletUrl = helper.createLink(memberDoclet);
 
             expect(badModuleDocletUrl).toBe('module-qux.html');
             expect(memberDocletUrl).toBe('module-qux.html#frozzle');
         });
 
-        it('should include the scope punctuation in the fragment ID for static members', function() {
-            var functionDoclet = {
+        it('should include the scope punctuation in the fragment ID for static members', () => {
+            const functionDoclet = {
                 kind: 'function',
                 longname: 'Milk.pasteurize',
                 name: 'pasteurize',
                 memberof: 'Milk',
                 scope: 'static'
             };
-            var docletUrl = helper.createLink(functionDoclet);
+            const docletUrl = helper.createLink(functionDoclet);
 
             expect(docletUrl).toBe('Milk.html#.pasteurize');
         });
 
-        it('should include the scope punctuation in the fragment ID for inner members', function() {
-            var functionDoclet = {
+        it('should include the scope punctuation in the fragment ID for inner members', () => {
+            const functionDoclet = {
                 kind: 'function',
                 longname: 'Milk~removeSticksAndLeaves',
                 name: 'removeSticksAndLeaves',
                 memberof: 'Milk',
                 scope: 'inner'
             };
-            var docletUrl = helper.createLink(functionDoclet);
+            const docletUrl = helper.createLink(functionDoclet);
 
             expect(docletUrl).toBe('Milk.html#~removeSticksAndLeaves');
         });
 
-        it('should omit the scope punctuation from the fragment ID for instance members', function() {
-            var propertyDoclet = {
+        it('should omit the scope punctuation from the fragment ID for instance members', () => {
+            const propertyDoclet = {
                 kind: 'member',
                 longname: 'Milk#calcium',
                 name: 'calcium',
                 memberof: 'Milk',
                 scope: 'instance'
             };
-            var docletUrl = helper.createLink(propertyDoclet);
+            const docletUrl = helper.createLink(propertyDoclet);
 
             expect(docletUrl).toBe('Milk.html#calcium');
         });
 
-        it('should include the variation, if present, in the fragment ID', function() {
-            var variationDoclet = {
+        it('should include the variation, if present, in the fragment ID', () => {
+            const variationDoclet = {
                 kind: 'function',
                 longname: 'Milk#fat(percent)',
                 name: 'fat',
@@ -1859,14 +1857,14 @@ describe("jsdoc/util/templateHelper", function() {
                 scope: 'instance',
                 variation: '(percent)'
             };
-            var docletUrl = helper.createLink(variationDoclet);
+            const docletUrl = helper.createLink(variationDoclet);
 
             expect(docletUrl).toBe('Milk.html#fat(percent)');
         });
     });
 
-    describe("resolveAuthorLinks", function() {
-        it('should not crash JSDoc if no text is specified', function() {
+    describe("resolveAuthorLinks", () => {
+        it('should not crash JSDoc if no text is specified', () => {
             function resolve() {
                 helper.resolveAuthorLinks();
             }
@@ -1875,29 +1873,29 @@ describe("jsdoc/util/templateHelper", function() {
         });
 
         // convert Jane Doe <jdoe@example.org> to a mailto link.
-        it('should convert email addresses in angle brackets *after* a name to mailto links', function() {
-            var str = ' John Doe  <asdf.fdsa-2@gmail.com> ';
-            var out = helper.resolveAuthorLinks(str);
+        it('should convert email addresses in angle brackets *after* a name to mailto links', () => {
+            const str = ' John Doe  <asdf.fdsa-2@gmail.com> ';
+            const out = helper.resolveAuthorLinks(str);
 
             expect(out).toBe('<a href="mailto:asdf.fdsa-2@gmail.com">John Doe</a>');
         });
 
-        it('should HTML-safe author names', function() {
-            var str = ' John<Doe  <asdf.fdsa-2@gmail.com> ';
-            var out = helper.resolveAuthorLinks(str);
+        it('should HTML-safe author names', () => {
+            const str = ' John<Doe  <asdf.fdsa-2@gmail.com> ';
+            const out = helper.resolveAuthorLinks(str);
 
-            expect(out).toBe('<a href="mailto:asdf.fdsa-2@gmail.com">' + helper.htmlsafe('John<Doe') + '</a>');
+            expect(out).toBe(`<a href="mailto:asdf.fdsa-2@gmail.com">${helper.htmlsafe('John<Doe')}</a>`);
         });
 
-        it('should simply return the input string, HTML-safe, if no email is detected', function() {
-            var str = 'John Doe <dummy>';
-            var out = helper.resolveAuthorLinks(str);
+        it('should simply return the input string, HTML-safe, if no email is detected', () => {
+            const str = 'John Doe <dummy>';
+            const out = helper.resolveAuthorLinks(str);
 
             expect(out).toBe(helper.htmlsafe(str));
         });
     });
 
-    xdescribe('longnamesToTree', function() {
+    xdescribe('longnamesToTree', () => {
         // TODO
     });
 });

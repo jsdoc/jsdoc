@@ -1,17 +1,14 @@
 #!/usr/bin/env node
 /* global require: true */
-/* eslint strict: ["error", "function"] */
 
 // initialize the environment for Node.js
-(function() {
-    'use strict';
+(() => {
+    const fs = require('fs');
+    const path = require('path');
 
-    var fs = require('fs');
-    var path = require('path');
-
-    var env;
-    var jsdocPath = __dirname;
-    var pwd = process.cwd();
+    let env;
+    let jsdocPath = __dirname;
+    const pwd = process.cwd();
 
     // Create a custom require method that adds `lib/jsdoc` and `node_modules` to the module
     // lookup path. This makes it possible to `require('jsdoc/foo')` from external templates and
@@ -45,11 +42,7 @@
  * @namespace
  * @name env
  */
-global.env = (function() {
-    'use strict';
-
-    return require('./lib/jsdoc/env');
-})();
+global.env = (() => require('./lib/jsdoc/env'))();
 
 /**
  * Data that must be shared across the entire application.
@@ -59,17 +52,11 @@ global.env = (function() {
  * @namespace
  * @name app
  */
-global.app = (function() {
-    'use strict';
+global.app = (() => require('./lib/jsdoc/app'))();
 
-    return require('./lib/jsdoc/app');
-})();
-
-(function() {
-    'use strict';
-
-    var env = global.env;
-    var cli = require('./cli');
+(() => {
+    const env = global.env;
+    const cli = require('./cli');
 
     function cb(errorCode) {
         cli.logFinish();
@@ -97,8 +84,8 @@ global.app = (function() {
          * @private
          * @param {...*} obj - Object(s) to print to stdout.
          */
-        global.dump = function() {
-            console.log(require('./lib/jsdoc/util/dumper').dump(arguments));
+        global.dump = (...args) => {
+            console.log(require('./lib/jsdoc/util/dumper').dump(args));
         };
     }
 

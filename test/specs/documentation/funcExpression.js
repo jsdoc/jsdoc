@@ -1,30 +1,28 @@
-'use strict';
-
-describe('function expressions', function() {
+describe('function expressions', () => {
     function checkLongnames(docSet, namespace) {
-        var memberName = (namespace || '') + 'Foo#member1';
-        var variableName = (namespace || '') + 'Foo~var1';
-        var fooMember = docSet.getByLongname(memberName)[0];
-        var fooVariable = docSet.getByLongname(variableName)[0];
+        const memberName = `${namespace || ''}Foo#member1`;
+        const variableName = `${namespace || ''}Foo~var1`;
+        const fooMember = docSet.getByLongname(memberName)[0];
+        const fooVariable = docSet.getByLongname(variableName)[0];
 
-        it('should assign the correct longname to members of a function expression', function() {
+        it('should assign the correct longname to members of a function expression', () => {
             expect(fooMember.longname).toBe(memberName);
         });
 
-        it('should assign the correct longname to variables in a function expression', function() {
+        it('should assign the correct longname to variables in a function expression', () => {
             expect(fooVariable.longname).toBe(variableName);
         });
     }
 
-    describe('standard', function() {
+    describe('standard', () => {
         checkLongnames( jasmine.getDocSetFromFile('test/fixtures/funcExpression.js') );
     });
 
-    describe('global', function() {
+    describe('global', () => {
         checkLongnames( jasmine.getDocSetFromFile('test/fixtures/funcExpression2.js') );
     });
 
-    describe('as object literal property', function() {
+    describe('as object literal property', () => {
         checkLongnames( jasmine.getDocSetFromFile('test/fixtures/funcExpression3.js'), 'ns.' );
     });
 });

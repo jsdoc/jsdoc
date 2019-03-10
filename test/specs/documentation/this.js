@@ -1,148 +1,146 @@
-'use strict';
+describe('this', () => {
+    describe('attaching members to "this"', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/this.js');
+        const found1 = docSet.getByLongname('Singer#tralala');
+        const found2 = docSet.getByLongname('Singer#isSinging');
 
-describe('this', function() {
-    describe('attaching members to "this"', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/this.js');
-        var found1 = docSet.getByLongname('Singer#tralala');
-        var found2 = docSet.getByLongname('Singer#isSinging');
-
-        describe('in a contructor', function() {
-            it('should have a longname like Constructor#member', function() {
+        describe('in a contructor', () => {
+            it('should have a longname like Constructor#member', () => {
                 expect(found1.length).toBe(1);
             });
 
-            it('should have a correct short name', function() {
+            it('should have a correct short name', () => {
                 expect(found1[0].name).toBe('tralala');
             });
 
-            it('should have a correct memberof', function() {
+            it('should have a correct memberof', () => {
                 expect(found1[0].memberof).toBe('Singer');
             });
 
-            it('should default to an "instance" scope', function() {
+            it('should default to an "instance" scope', () => {
                 expect(found1[0].scope).toBe('instance');
             });
         });
 
-        describe('in a method of a constructor', function() {
-            it('should have a longname like Constructor#member', function() {
+        describe('in a method of a constructor', () => {
+            it('should have a longname like Constructor#member', () => {
                 expect(found2.length).toBe(1);
             });
 
-            it('should have a correct short name', function() {
+            it('should have a correct short name', () => {
                 expect(found2[0].name).toBe('isSinging');
             });
 
-            it('should have a correct memberof', function() {
+            it('should have a correct memberof', () => {
                 expect(found2[0].memberof).toBe('Singer');
             });
 
-            it('should default to an "instance" scope', function() {
+            it('should default to an "instance" scope', () => {
                 expect(found2[0].scope).toBe('instance');
             });
         });
     });
 
-    describe('when a contructor is nested inside another constructor', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/this2.js');
-        var found = docSet.getByLongname('TemplateBuilder#Template#rendered');
+    describe('when a contructor is nested inside another constructor', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/this2.js');
+        const found = docSet.getByLongname('TemplateBuilder#Template#rendered');
 
-        it('should have a longname like Constructor#Constructor#member', function() {
+        it('should have a longname like Constructor#Constructor#member', () => {
             expect(found.length).toBe(1);
         });
 
-        it('should have a correct short name', function() {
+        it('should have a correct short name', () => {
             expect(found[0].name).toBe('rendered');
         });
 
-        it('should have a correct memberof', function() {
+        it('should have a correct memberof', () => {
             expect(found[0].memberof).toBe('TemplateBuilder#Template');
         });
 
-        it('should default to an "instance" scope', function() {
+        it('should default to an "instance" scope', () => {
             expect(found[0].scope).toBe('instance');
         });
     });
 
-    describe('When a this is assigned to inside a non-constructor function', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/this3.js');
-        var found = docSet.getByLongname('position');
+    describe('When a this is assigned to inside a non-constructor function', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/this3.js');
+        const found = docSet.getByLongname('position');
 
-        it('should have a global member name like "member"', function() {
+        it('should have a global member name like "member"', () => {
             expect(found.length).toBe(1);
         });
 
-        it('should have a correct short name', function() {
+        it('should have a correct short name', () => {
             expect(found[0].name).toBe('position');
         });
 
-        it('should have a correct memberof', function() {
+        it('should have a correct memberof', () => {
             expect(found[0].memberof).toBeUndefined();
         });
     });
 
-    describe('When "this" is assigned inside an explicit definition of the class constructor', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/this4.js');
-        var found = docSet.getByLongname('Template#render');
+    describe('When "this" is assigned inside an explicit definition of the class constructor', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/this4.js');
+        const found = docSet.getByLongname('Template#render');
 
-        it('should have a longname like Constructor#member', function() {
+        it('should have a longname like Constructor#member', () => {
             expect(found.length).toBe(1);
         });
 
-        it('should have the correct name', function() {
+        it('should have the correct name', () => {
             expect(found[0].name).toBe('render');
         });
 
-        it('should have the correct memberof', function() {
+        it('should have the correct memberof', () => {
             expect(found[0].memberof).toBe('Template');
         });
     });
 
-    describe('When "this" is assigned in a chained declaration in a module', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/this5.js');
-        var found = docSet.getByLongname('module:template.Template#view');
+    describe('When "this" is assigned in a chained declaration in a module', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/this5.js');
+        const found = docSet.getByLongname('module:template.Template#view');
 
-        it('should have a longname like Constructor#member', function() {
+        it('should have a longname like Constructor#member', () => {
             expect(found.length).toBe(1);
         });
 
-        it('should have the correct name', function() {
+        it('should have the correct name', () => {
             expect(found[0].name).toBe('view');
         });
 
-        it('should have the correct memberof', function() {
+        it('should have the correct memberof', () => {
             expect(found[0].memberof).toBe('module:template.Template');
         });
     });
 
-    describe('When `this` is within the constructor in a class that has an `@alias` tag within a module', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/this6.js');
-        var someProperty = docSet.getByLongname('module:example#_someProperty')[0];
+    describe('When `this` is within the constructor in a class that has an `@alias` tag within a module', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/this6.js');
+        const someProperty = docSet.getByLongname('module:example#_someProperty')[0];
 
-        it('should have the correct longname, name, and scope', function() {
+        it('should have the correct longname, name, and scope', () => {
             expect(someProperty).toBeDefined();
             expect(someProperty.name).toBe('_someProperty');
             expect(someProperty.scope).toBe('instance');
         });
     });
 
-    describe('When a member is nested inside an objectlit "this" property inside a constructor', function() {
-        var docSet = jasmine.getDocSetFromFile('test/fixtures/this-and-objectlit.js');
-        var found = docSet.getByLongname('Page#parts.body.heading');
+    describe('When a member is nested inside an objectlit "this" property inside a constructor', () => {
+        const docSet = jasmine.getDocSetFromFile('test/fixtures/this-and-objectlit.js');
+        const found = docSet.getByLongname('Page#parts.body.heading');
 
-        it('should have a longname like Constructor#objlit.member', function() {
+        it('should have a longname like Constructor#objlit.member', () => {
             expect(found.length).toBe(1);
         });
 
-        it('should have a correct short name', function() {
+        it('should have a correct short name', () => {
             expect(found[0].name).toBe('heading');
         });
 
-        it('should have a correct memberof', function() {
+        it('should have a correct memberof', () => {
             expect(found[0].memberof).toBe('Page#parts.body');
         });
 
-        it('should default to a "static" scope', function() {
+        it('should default to a "static" scope', () => {
             expect(found[0].scope).toBe('static');
         });
     });
