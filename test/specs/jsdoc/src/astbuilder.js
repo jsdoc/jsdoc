@@ -34,7 +34,7 @@ describe('jsdoc/src/astbuilder', () => {
 
             it('should log (not throw) an error when a file cannot be parsed', () => {
                 function parse() {
-                    builder.build('qwerty!!!!!', 'bad.js');
+                    builder.build('qw~erty!!!!!', 'bad.js');
                 }
 
                 expect(parse).not.toThrow();
