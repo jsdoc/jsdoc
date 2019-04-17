@@ -13,7 +13,7 @@
     "@babel/parser": "~7.2.3",
     "bluebird": "~3.5.0",
     "catharsis": "~0.8.9",
-    "escape-string-regexp": "~1.0.5",
+    "escape-string-regexp": "~2.0.0",
     "js2xmlparser": "~3.0.0",
     "klaw": "~3.0.0",
     "markdown-it": "~8.4.2",
