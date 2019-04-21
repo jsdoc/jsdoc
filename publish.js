@@ -13,26 +13,23 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-'use strict';
+const config = require('./lib/config');
+let DocletHelper;
+const env = require('jsdoc/env');
+let finders;
+const helper = require('jsdoc/util/templateHelper');
+const logger = require('jsdoc/util/logger');
+let PublishJob;
+const semver = require('semver');
+let Template;
 
-var config = require('./lib/config');
-var DocletHelper;
-var env = require('jsdoc/env');
-var finders;
-var helper = require('jsdoc/util/templateHelper');
-var logger = require('jsdoc/util/logger');
-var PublishJob;
-var semver = require('semver');
-var Template;
-var util = require('util');
-
-var REQUIRED_JSDOC_VERSION = '>=3.4.3';
+const REQUIRED_JSDOC_VERSION = '>=3.4.3';
 
 function checkJsdocVersion() {
-    var version = env.version.number;
+    const version = env.version.number;
     // strip prerelease identifiers, because, for example, '3.6.0-pre' does not satisfy '>=3.4.3'
-    var strippedVersion = util.format('%s.%s.%s', semver.major(version), semver.minor(version),
-        semver.patch(version));
+    const strippedVersion = `${semver.major(version)}.${semver.minor(version)}.` +
+        `${semver.patch(version)}`;
 
     if (!semver.satisfies(strippedVersion, REQUIRED_JSDOC_VERSION)) {
         logger.fatal('The Baseline template requires JSDoc %s, but you are running JSDoc %s.',
@@ -50,11 +47,11 @@ function init(filepaths) {
     Template = finders.modules.require('./template');
 }
 
-exports.publish = function(data, opts, tutorials) {
-    var conf = config.loadSync().get();
-    var docletHelper;
-    var job;
-    var template;
+exports.publish = (data, opts, tutorials) => {
+    const conf = config.loadSync().get();
+    let docletHelper;
+    let job;
+    let template;
 
     checkJsdocVersion();
     // load the core modules using the file finder
@@ -86,7 +83,7 @@ exports.publish = function(data, opts, tutorials) {
         .generateIndex(opts.readme);
 
     // generate the rest of the output files (excluding tutorials)
-    docletHelper.getOutputLongnames().forEach(function(longname) {
+    docletHelper.getOutputLongnames().forEach(longname => {
         job.generateByLongname(longname, docletHelper.getLongname(longname),
             docletHelper.getMemberof(longname));
     });

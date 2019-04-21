@@ -1,18 +1,15 @@
 /* global document, window */
-/* eslint strict: [2, "function"]*/
 // Function to prevent the top navbar from obscuring the page content.
 (function() {
-    'use strict';
-
     // timeout for scrolling the window
-    var TIMEOUT = 5;
+    const TIMEOUT = 5;
     // top navbar height
-    var TOP_OFFSET = 50;
+    const TOP_OFFSET = 50;
 
     function scrollTo(hash) {
-        var element = document.getElementById(hash.replace(/^#/, ''));
-        var elementOffset;
-        var rect;
+        const element = document.getElementById(hash.replace(/^#/, ''));
+        let elementOffset;
+        let rect;
 
         if (element) {
             rect = element.getBoundingClientRect();
@@ -25,7 +22,7 @@
     }
 
     window.addEventListener('load', function() {
-        var currentHash = window.location.hash;
+        const currentHash = window.location.hash;
 
         // if we're loading a URL with an anchor, scroll appropriately
         if (currentHash && currentHash !== '#') {

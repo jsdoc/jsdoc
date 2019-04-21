@@ -14,14 +14,12 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-'use strict';
-
-var csso = require('gulp-csso');
-var eslint = require('gulp-eslint');
-var gulp = require('gulp');
-var less = require('gulp-less');
-var path = require('path');
-var uglify = require('gulp-uglify');
+const csso = require('gulp-csso');
+const eslint = require('gulp-eslint');
+const gulp = require('gulp');
+const less = require('gulp-less');
+const path = require('path');
+const uglify = require('gulp-uglify');
 
 // Patch the `require` function so it can locate JSDoc modules and dependencies.
 // Must be called before any Gulp task that uses JSDoc modules.
@@ -37,9 +35,9 @@ function patchRequire() {
     });
 }
 
-var bowerPath = './bower_components';
+const bowerPath = './bower_components';
 // TODO: make this configurable
-var source = {
+const source = {
     code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
     js: {
         copy: [
@@ -58,16 +56,13 @@ var source = {
     views: ['./views/**/*.hbs']
 };
 
-var target = {
+const target = {
     css: './static/css',
     js: './static/scripts'
 };
 
-gulp.task('build', ['css-minify', 'js']);
-gulp.task('dev', ['css', 'js']);
-
-gulp.task('coverage', function(cb) {
-    var istanbul;
+function coverage(cb) {
+    let istanbul;
 
     patchRequire();
     istanbul = require('gulp-istanbul');
@@ -75,63 +70,78 @@ gulp.task('coverage', function(cb) {
     gulp.src(source.code)
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
-        .on('finish', function() {
+        .on('finish', () => {
             gulp.src(source.tests)
                 .pipe(require('gulp-mocha')())
                 .pipe(istanbul.writeReports())
                 .on('end', cb);
         });
-});
+}
 
-gulp.task('css', function() {
+function css(cb) {
     gulp.src(source.less)
         .pipe(less())
         .pipe(gulp.dest(target.css));
-});
 
-gulp.task('css-minify', function() {
+    cb();
+}
+
+function cssMinify(cb) {
     gulp.src(source.less)
         .pipe(less())
         .pipe(csso())
         .pipe(gulp.dest(target.css));
-});
 
-gulp.task('js', ['js-copy', 'js-minify']);
+    cb();
+}
 
-gulp.task('js-copy', function() {
-    source.js.copy.forEach(function(item) {
+function jsCopy(cb) {
+    source.js.copy.forEach(item => {
         gulp.src(item)
             .pipe(gulp.dest(target.js));
     });
-});
 
-gulp.task('js-minify', function() {
-    source.js.minify.forEach(function(item) {
+    cb();
+}
+
+function jsMinify(cb) {
+    source.js.minify.forEach(item => {
         gulp.src(item)
             .pipe(uglify())
             .pipe(gulp.dest(target.js));
     });
-});
 
-gulp.task('lint', function() {
-    return gulp.src(source.code.concat(source.tests))
+    cb();
+}
+
+function lint(cb) {
+    gulp.src(source.code.concat(source.tests))
         .pipe(eslint())
         .pipe(eslint.formatEach())
         .pipe(eslint.failOnError());
-});
 
-gulp.task('mocha', function() {
+    cb();
+}
+
+function mocha(cb) {
     patchRequire();
 
-    return gulp.src(source.tests, { read: false })
+    gulp.src(source.tests, { read: false })
         .pipe(require('gulp-mocha')());
-});
 
-gulp.task('test', ['lint', 'mocha']);
+    cb();
+}
 
-gulp.task('watch-dev', ['dev'], function() {
-    gulp.watch(['scripts/**/*.js', 'styles/**/*', 'views/**/*.hbs', path.join(bowerPath, '**/*')],
-        ['dev']);
-});
+exports.coverage = coverage;
+exports.css = css;
+exports['css-minify'] = cssMinify;
+exports['js-copy'] = jsCopy;
+exports['js-minify'] = jsMinify;
+exports.lint = lint;
+exports.mocha = mocha;
 
-gulp.task('default', ['test']);
+exports.js = gulp.series(exports['js-copy'], exports['js-minify']);
+exports.build = gulp.parallel(exports['css-minify'], exports.js);
+exports.default = gulp.series(exports.lint, exports.mocha);
+exports.dev = gulp.parallel(exports.css, exports.js);
+exports.test = exports.default;
