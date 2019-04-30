@@ -21,7 +21,7 @@
     "marked": "~0.6.0",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
-    "strip-json-comments": "~2.0.1",
+    "strip-json-comments": "~3.0.0",
     "taffydb": "2.6.2",
     "underscore": "~1.9.1"
   },
