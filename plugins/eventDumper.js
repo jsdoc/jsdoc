@@ -4,9 +4,9 @@
  * @module plugins/eventDumper
  */
 const _ = require('underscore');
-const doop = require('jsdoc/util/doop');
-const dump = require('jsdoc/util/dumper').dump;
-const env = require('jsdoc/env');
+const doop = require('../lib/jsdoc/util/doop');
+const dump = require('../lib/jsdoc/util/dumper').dump;
+const env = require('../lib/jsdoc/env');
 const util = require('util');
 
 const conf = env.conf.eventDumper || {};

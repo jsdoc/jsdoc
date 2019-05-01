@@ -2,14 +2,14 @@
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", () => {
-    const definitions = require('jsdoc/tag/dictionary/definitions');
-    const dictionary = require('jsdoc/tag/dictionary');
-    const doclet = require('jsdoc/doclet');
-    const doop = require('jsdoc/util/doop');
-    const env = require('jsdoc/env');
-    const helper = require('jsdoc/util/templateHelper');
-    const logger = require('jsdoc/util/logger');
-    const resolver = require('jsdoc/tutorial/resolver');
+    const definitions = require('../../../lib/jsdoc/tag/dictionary/definitions');
+    const dictionary = require('../../../lib/jsdoc/tag/dictionary');
+    const doclet = require('../../../lib/jsdoc/doclet');
+    const doop = require('../../../lib/jsdoc/util/doop');
+    const env = require('../../../lib/jsdoc/env');
+    const helper = require('../../../lib/jsdoc/util/templateHelper');
+    const logger = require('../../../lib/jsdoc/util/logger');
+    const resolver = require('../../../lib/jsdoc/tutorial/resolver');
     const taffy = require('taffydb').taffy;
 
     helper.registerLink('test', 'path/to/test.html');

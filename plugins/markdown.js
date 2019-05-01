@@ -3,7 +3,7 @@
  *
  * @module plugins/markdown
  */
-const env = require('jsdoc/env');
+const env = require('../lib/jsdoc/env');
 
 const config = env.conf.markdown || {};
 const defaultTags = [
@@ -18,7 +18,7 @@ const defaultTags = [
     'summary'
 ];
 const hasOwnProp = Object.prototype.hasOwnProperty;
-const parse = require('jsdoc/util/markdown').getParser();
+const parse = require('../lib/jsdoc/util/markdown').getParser();
 let tags = [];
 let excludeTags = [];
 

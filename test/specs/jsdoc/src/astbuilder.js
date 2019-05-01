@@ -1,5 +1,5 @@
 describe('jsdoc/src/astbuilder', () => {
-    const astbuilder = require('jsdoc/src/astbuilder');
+    const astbuilder = require('./astbuilder');
 
     it('should exist', () => {
         expect(astbuilder).toBeDefined();
@@ -26,7 +26,7 @@ describe('jsdoc/src/astbuilder', () => {
 
         describe('build', () => {
             // TODO: more tests
-            const logger = require('jsdoc/util/logger');
+            const logger = require('../util/logger');
 
             beforeEach(() => {
                 spyOn(logger, 'error');

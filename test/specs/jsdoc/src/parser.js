@@ -1,17 +1,17 @@
 /* eslint no-script-url: 0 */
 describe('jsdoc/src/parser', () => {
-    const fs = require('jsdoc/fs');
+    const fs = require('../fs');
     const jsdoc = {
-        env: require('jsdoc/env'),
+        env: require('../env'),
         src: {
-            handlers: require('jsdoc/src/handlers'),
-            parser: require('jsdoc/src/parser')
+            handlers: require('./handlers'),
+            parser: require('./parser')
         },
         util: {
-            logger: require('jsdoc/util/logger')
+            logger: require('../util/logger')
         }
     };
-    const path = require('jsdoc/path');
+    const path = require('../path');
 
     it('should exist', () => {
         expect(jsdoc.src.parser).toBeDefined();
@@ -104,19 +104,19 @@ describe('jsdoc/src/parser', () => {
 
         describe('astBuilder', () => {
             it('should contain an appropriate astBuilder by default', () => {
-                expect(parser.astBuilder instanceof (require('jsdoc/src/astbuilder')).AstBuilder).toBe(true);
+                expect(parser.astBuilder instanceof (require('./astbuilder')).AstBuilder).toBe(true);
             });
         });
 
         describe('visitor', () => {
             it('should contain an appropriate visitor by default', () => {
-                expect(parser.visitor instanceof (require('jsdoc/src/visitor')).Visitor).toBe(true);
+                expect(parser.visitor instanceof (require('./visitor')).Visitor).toBe(true);
             });
         });
 
         describe('walker', () => {
             it('should contain an appropriate walker by default', () => {
-                expect(parser.walker instanceof (require('jsdoc/src/walker')).Walker).toBe(true);
+                expect(parser.walker instanceof (require('./walker')).Walker).toBe(true);
             });
         });
 
@@ -179,7 +179,7 @@ describe('jsdoc/src/parser', () => {
                 const sourceCode = 'javascript:/** @class */function Foo() {}';
 
                 function handler(e) {
-                    const doop = require('jsdoc/util/doop');
+                    const doop = require('../util/doop');
 
                     e.doclet = doop(e.doclet);
                     e.doclet.foo = 'bar';
@@ -193,7 +193,7 @@ describe('jsdoc/src/parser', () => {
             });
 
             it('should call AST node visitors', () => {
-                const Syntax = require('jsdoc/src/syntax').Syntax;
+                const Syntax = require('./syntax').Syntax;
 
                 let args;
                 const sourceCode = ['javascript:/** foo */var foo;'];
@@ -290,7 +290,7 @@ describe('jsdoc/src/parser', () => {
             it('should not throw errors when parsing files with ES6 syntax', () => {
                 function parse() {
                     const parserSrc = `javascript:${fs.readFileSync(
-    path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8')}`;
+                        path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8')}`;
 
                     parser.parse(parserSrc);
                 }
@@ -300,7 +300,7 @@ describe('jsdoc/src/parser', () => {
 
             it('should be able to parse its own source file', () => {
                 const parserSrc = `javascript:${fs.readFileSync(path.join(jsdoc.env.dirname,
-    'lib/jsdoc/src/parser.js'), 'utf8')}`;
+                    'lib/jsdoc/src/parser.js'), 'utf8')}`;
 
                 function parse() {
                     parser.parse(parserSrc);

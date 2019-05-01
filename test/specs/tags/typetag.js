@@ -1,4 +1,4 @@
-const logger = require('jsdoc/util/logger');
+const logger = require('../../../lib/jsdoc/util/logger');
 
 describe('@type tag', () => {
     const docSet = jasmine.getDocSetFromFile('test/fixtures/typetag.js');

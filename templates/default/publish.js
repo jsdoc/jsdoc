@@ -1,11 +1,11 @@
-const doop = require('jsdoc/util/doop');
-const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
-const helper = require('jsdoc/util/templateHelper');
-const logger = require('jsdoc/util/logger');
-const path = require('jsdoc/path');
+const doop = require('../../lib/jsdoc/util/doop');
+const env = require('../../lib/jsdoc/env');
+const fs = require('../../lib/jsdoc/fs');
+const helper = require('../../lib/jsdoc/util/templateHelper');
+const logger = require('../../lib/jsdoc/util/logger');
+const path = require('../../lib/jsdoc/path');
 const taffy = require('taffydb').taffy;
-const template = require('jsdoc/template');
+const template = require('../../lib/jsdoc/template');
 const util = require('util');
 
 const htmlsafe = helper.htmlsafe;
@@ -513,8 +513,8 @@ exports.publish = (taffyData, opts, tutorials) => {
         staticFilePaths = conf.default.staticFiles.include ||
             conf.default.staticFiles.paths ||
             [];
-        staticFileFilter = new (require('jsdoc/src/filter').Filter)(conf.default.staticFiles);
-        staticFileScanner = new (require('jsdoc/src/scanner').Scanner)();
+        staticFileFilter = new (require('../../lib/jsdoc/src/filter').Filter)(conf.default.staticFiles);
+        staticFileScanner = new (require('../../lib/jsdoc/src/scanner').Scanner)();
 
         staticFilePaths.forEach(filePath => {
             let extraStaticFiles;

@@ -1,9 +1,9 @@
 describe('jsdoc/src/scanner', () => {
-    const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
-    const scanner = require('jsdoc/src/scanner');
+    const env = require('../env');
+    const path = require('../path');
+    const scanner = require('./scanner');
 
-    const filter = new (require('jsdoc/src/filter').Filter)({
+    const filter = new (require('./filter').Filter)({
         includePattern: new RegExp('.+\\.js(doc)?$'),
         excludePattern: new RegExp('(^|\\/|\\\\)_')
     });

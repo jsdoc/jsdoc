@@ -1,8 +1,8 @@
 'use strict';
 
 describe('underscore plugin', function () {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
+    var env = require('../../../lib/jsdoc/env');
+    var path = require('../../../lib/jsdoc/path');
 
     var docSet;
     var parser = jasmine.createParser();
@@ -11,7 +11,7 @@ describe('underscore plugin', function () {
     var pluginPathResolved = path.join(env.dirname, pluginPath);
     var plugin = require(pluginPathResolved);
 
-    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
+    require('../../../lib/jsdoc/plugins').installPlugins([pluginPathResolved], parser);
     docSet = jasmine.getDocSetFromFile(fixturePath + '.js', parser);
 
     it('should not mark normal, public properties as private', function() {

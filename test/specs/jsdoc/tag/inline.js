@@ -1,7 +1,7 @@
 describe('jsdoc/tag/inline', () => {
     const jsdoc = {
         tag: {
-            inline: require('jsdoc/tag/inline')
+            inline: require('../../../lib/jsdoc/tag/inline')
         }
     };
 

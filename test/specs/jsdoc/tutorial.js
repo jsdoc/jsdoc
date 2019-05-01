@@ -1,6 +1,6 @@
 describe('jsdoc/tutorial', () => {
-    const env = require('jsdoc/env');
-    const tutorial = require('jsdoc/tutorial');
+    const env = require('../../../lib/jsdoc/env');
+    const tutorial = require('../../../lib/jsdoc/tutorial');
 
     const name = 'tuteID';
     const content = 'Tutorial content blah blah blah & <';

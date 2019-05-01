@@ -1,4 +1,4 @@
-const logger = require('jsdoc/util/logger');
+const logger = require('../../../lib/jsdoc/util/logger');
 
 describe('@private tag', () => {
     const docSet = jasmine.getDocSetFromFile('test/fixtures/privatetag.js');

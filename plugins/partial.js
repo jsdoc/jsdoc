@@ -3,8 +3,8 @@
  *
  * @module plugins/partial
  */
-const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
+const env = require('../lib/jsdoc/env');
+const fs = require('../lib/jsdoc/fs');
 const path = require('path');
 
 exports.handlers = {

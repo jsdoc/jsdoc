@@ -1,6 +1,6 @@
 describe('@lends tag', () => {
     // see also specs/documentation/lends.js for tests on @lends behaviour.
-    const doclet = require('jsdoc/doclet');
+    const doclet = require('../../../lib/jsdoc/doclet');
 
     const doc = new doclet.Doclet('/** @lends */', {});
     const doc2 = new doclet.Doclet('/** @lends MyClass# */', {});

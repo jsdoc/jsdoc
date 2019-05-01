@@ -1,7 +1,7 @@
 describe('jsdoc/path', () => {
-    const env = require('jsdoc/env');
+    const env = require('../../../lib/jsdoc/env');
     const os = require('os');
-    const path = require('jsdoc/path');
+    const path = require('../../../lib/jsdoc/path');
     const standardPath = require('path');
 
     const isWindows = /^win/.test( os.platform() );

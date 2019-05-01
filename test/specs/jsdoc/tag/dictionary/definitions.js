@@ -1,8 +1,8 @@
 describe('jsdoc/tag/dictionary/definitions', () => {
-    const env = require('jsdoc/env');
-    const definitions = require('jsdoc/tag/dictionary/definitions');
-    const Dictionary = require('jsdoc/tag/dictionary').Dictionary;
-    const logger = require('jsdoc/util/logger');
+    const env = require('../../../lib/jsdoc/env');
+    const definitions = require('../../../lib/jsdoc/tag/dictionary/definitions');
+    const Dictionary = require('../../../lib/jsdoc/tag/dictionary').Dictionary;
+    const logger = require('../../../lib/jsdoc/util/logger');
 
     it('should exist', () => {
         expect(definitions).toBeDefined();

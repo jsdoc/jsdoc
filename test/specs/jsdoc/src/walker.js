@@ -1,5 +1,5 @@
 describe('jsdoc/src/walker', () => {
-    const walker = require('jsdoc/src/walker');
+    const walker = require('./walker');
 
     it('should exist', () => {
         expect(walker).toBeDefined();
@@ -17,7 +17,7 @@ describe('jsdoc/src/walker', () => {
     });
 
     describe('walkers', () => {
-        const Syntax = require('jsdoc/src/syntax').Syntax;
+        const Syntax = require('./syntax').Syntax;
 
         // TODO: tests for default functions
 

@@ -1,5 +1,5 @@
 describe('jsdoc/schema', () => {
-    const schema = require('jsdoc/schema');
+    const schema = require('../../../lib/jsdoc/schema');
 
     it('should exist', () => {
         expect(schema).toBeDefined();

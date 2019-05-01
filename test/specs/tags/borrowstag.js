@@ -13,7 +13,7 @@ describe('@borrows tag', () => {
     });
 
     it('When a symbol has a @borrows tag, the borrowed symbol is added to the symbol.', () => {
-        const borrow = require('jsdoc/borrow');
+        const borrow = require('../../../lib/jsdoc/borrow');
         const docSet = jasmine.getDocSetFromFile('test/fixtures/borrowstag2.js');
 
         borrow.resolveBorrows(docSet.doclets);

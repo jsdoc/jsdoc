@@ -1,9 +1,9 @@
 describe('jsdoc/src/astNode', () => {
-    const astBuilder = require('jsdoc/src/astbuilder');
-    const astNode = require('jsdoc/src/astnode');
+    const astBuilder = require('./astbuilder');
+    const astNode = require('./astnode');
     const babelParser = require('@babel/parser');
-    const env = require('jsdoc/env');
-    const Syntax = require('jsdoc/src/syntax').Syntax;
+    const env = require('../env');
+    const Syntax = require('./syntax').Syntax;
 
     function parse(str) {
         return babelParser.parse(str, astBuilder.parserOptions).program.body[0];

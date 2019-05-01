@@ -1,5 +1,5 @@
 describe('jsdoc/util/logger', () => {
-    const logger = require('jsdoc/util/logger');
+    const logger = require('../../../lib/jsdoc/util/logger');
 
     const loggerArgs = ['foo bar %s', 'hello'];
 

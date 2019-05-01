@@ -1,8 +1,8 @@
 describe('jsdoc/tutorial/resolver', () => {
-    const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
-    const resolver = require('jsdoc/tutorial/resolver');
-    const tutorial = require('jsdoc/tutorial');
+    const env = require('../../../lib/jsdoc/env');
+    const logger = require('../../../lib/jsdoc/util/logger');
+    const resolver = require('../../../lib/jsdoc/tutorial/resolver');
+    const tutorial = require('../../../lib/jsdoc/tutorial');
 
     let childNames;
     let constr;

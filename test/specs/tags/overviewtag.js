@@ -1,6 +1,6 @@
 describe('@overview tag', () => {
-    const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const env = require('../../../lib/jsdoc/env');
+    const path = require('../../../lib/jsdoc/path');
 
     let doclets;
 
@@ -14,7 +14,7 @@ describe('@overview tag', () => {
         env.pwd = env.dirname;
         env.sourceFiles = [];
         srcParser = jasmine.createParser();
-        require('jsdoc/src/handlers').attachTo(srcParser);
+        require('../../../lib/jsdoc/src/handlers').attachTo(srcParser);
     });
 
     afterEach(() => {
@@ -45,7 +45,7 @@ describe('@overview tag', () => {
 
     it('The name should not include the entire filepath when the source file is outside the ' +
         'JSDoc directory', () => {
-        const Doclet = require('jsdoc/doclet').Doclet;
+        const Doclet = require('../../../lib/jsdoc/doclet').Doclet;
         const os = require('os');
 
         let doclet;

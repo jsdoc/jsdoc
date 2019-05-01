@@ -1,7 +1,7 @@
 describe('jsdoc/name', () => {
     const jsdoc = {
-        doclet: require('jsdoc/doclet'),
-        name: require('jsdoc/name')
+        doclet: require('../../../lib/jsdoc/doclet'),
+        name: require('../../../lib/jsdoc/name')
     };
 
     it('should exist', () => {

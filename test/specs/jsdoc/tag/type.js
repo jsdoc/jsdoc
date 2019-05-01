@@ -25,7 +25,7 @@ function buildText(type, name, desc) {
 describe('jsdoc/tag/type', () => {
     const jsdoc = {
         tag: {
-            type: require('jsdoc/tag/type')
+            type: require('../../../lib/jsdoc/tag/type')
         }
     };
 

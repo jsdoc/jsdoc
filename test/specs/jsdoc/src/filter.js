@@ -1,7 +1,7 @@
 describe('jsdoc/src/filter', () => {
-    const env = require('jsdoc/env');
-    const filter = require('jsdoc/src/filter');
-    const path = require('jsdoc/path');
+    const env = require('../env');
+    const filter = require('./filter');
+    const path = require('../path');
 
     it('should exist', () => {
         expect(filter).toBeDefined();

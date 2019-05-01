@@ -1,6 +1,6 @@
 describe('module names', () => {
-    const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const env = require('../../../lib/jsdoc/env');
+    const path = require('../../../lib/jsdoc/path');
 
     let doclets;
 
@@ -14,7 +14,7 @@ describe('module names', () => {
         env.pwd = env.dirname;
         env.sourceFiles = [];
         srcParser = jasmine.createParser();
-        require('jsdoc/src/handlers').attachTo(srcParser);
+        require('../../../lib/jsdoc/src/handlers').attachTo(srcParser);
     });
 
     afterEach(() => {
@@ -37,7 +37,7 @@ describe('module names', () => {
     // Windows-specific test
     if ( /^win/.test(require('os').platform()) ) {
         it('should always use forward slashes when creating a name from the file path', () => {
-            const Doclet = require('jsdoc/doclet').Doclet;
+            const Doclet = require('../../../lib/jsdoc/doclet').Doclet;
             let doclet;
 
             env.sourceFiles = [

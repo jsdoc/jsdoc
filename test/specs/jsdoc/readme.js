@@ -1,5 +1,5 @@
 describe('jsdoc/readme', () => {
-    const jsdoc = { readme: require('jsdoc/readme') };
+    const jsdoc = { readme: require('../../../lib/jsdoc/readme') };
     const Readme = jsdoc.readme;
     const html = (new Readme('test/fixtures/markdowntest.md')).html;
 

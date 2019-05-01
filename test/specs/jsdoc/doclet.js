@@ -2,7 +2,7 @@ describe('jsdoc/doclet', () => {
     // TODO: more tests
     const _ = require('underscore');
     const jsdoc = {
-        doclet: require('jsdoc/doclet')
+        doclet: require('../../../lib/jsdoc/doclet')
     };
     const Doclet = jsdoc.doclet.Doclet;
 
@@ -32,7 +32,7 @@ describe('jsdoc/doclet', () => {
                 doclet.setScope(scopeName);
             }
 
-            _.values(require('jsdoc/name').SCOPE.NAMES).forEach(scopeName => {
+            _.values(require('../../../lib/jsdoc/name').SCOPE.NAMES).forEach(scopeName => {
                 expect( setScope.bind(null, scopeName) ).not.toThrow();
             });
         });

@@ -1,8 +1,8 @@
 'use strict';
 
 describe('plugins/overloadHelper', function() {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
+    var env = require('../../../lib/jsdoc/env');
+    var path = require('../../../lib/jsdoc/path');
 
     var docSet;
     var parser = jasmine.createParser();
@@ -10,7 +10,7 @@ describe('plugins/overloadHelper', function() {
     var pluginPathResolved = path.resolve(env.dirname, pluginPath);
     var plugin = require(pluginPathResolved);
 
-    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
+    require('../../../lib/jsdoc/plugins').installPlugins([pluginPathResolved], parser);
     docSet = jasmine.getDocSetFromFile('plugins/test/fixtures/overloadHelper.js', parser);
 
     it('should exist', function() {

@@ -1,5 +1,5 @@
 describe('jsdoc/util/stripbom', () => {
-    const stripBom = require('jsdoc/util/stripbom');
+    const stripBom = require('../../../lib/jsdoc/util/stripbom');
 
     it('should exist', () => {
         expect(typeof stripBom).toBe('object');

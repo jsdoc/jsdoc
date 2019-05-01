@@ -1,21 +1,21 @@
 /* global jasmine: true */
 'use strict';
 
-var fs = require('jsdoc/fs');
-var path = require('jsdoc/path');
+var fs = require('../lib/jsdoc/fs');
+var path = require('../lib/jsdoc/path');
 
 var jsdoc = {
-    augment: require('jsdoc/augment'),
-    doclet: require('jsdoc/doclet'),
-    env: require('jsdoc/env'),
-    schema: require('jsdoc/schema'),
+    augment: require('../lib/jsdoc/augment'),
+    doclet: require('../lib/jsdoc/doclet'),
+    env: require('../lib/jsdoc/env'),
+    schema: require('../lib/jsdoc/schema'),
     src: {
-        handlers: require('jsdoc/src/handlers'),
-        parser: require('jsdoc/src/parser')
+        handlers: require('../lib/jsdoc/src/handlers'),
+        parser: require('../lib/jsdoc/src/parser')
     },
     tag: {
-        dictionary: require('jsdoc/tag/dictionary'),
-        definitions: require('jsdoc/tag/dictionary/definitions')
+        dictionary: require('../lib/jsdoc/tag/dictionary'),
+        definitions: require('../lib/jsdoc/tag/dictionary/definitions')
     }
 };
 
@@ -160,7 +160,7 @@ jasmine.getDocSetFromFile = function(filename, parser, validate, augment) {
     }
 
     // test assume borrows have not yet been resolved
-    // require('jsdoc/borrow').resolveBorrows(doclets);
+    // require('../lib/jsdoc/borrow').resolveBorrows(doclets);
 
     // store the parse results for later validation
     if (validate !== false) {

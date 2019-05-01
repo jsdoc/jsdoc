@@ -3,8 +3,8 @@ describe('jsdoc/src/visitor', () => {
 
     const jsdoc = {
         src: {
-            parser: require('jsdoc/src/parser'),
-            visitor: require('jsdoc/src/visitor')
+            parser: require('./parser'),
+            visitor: require('./visitor')
         }
     };
     const parser = new jsdoc.src.parser.Parser();

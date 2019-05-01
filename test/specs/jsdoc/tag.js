@@ -2,12 +2,12 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe('jsdoc/tag', () => {
     const jsdoc = {
-        env: require('jsdoc/env'),
-        tag: require('jsdoc/tag'),
-        dictionary: require('jsdoc/tag/dictionary'),
-        type: require('jsdoc/tag/type')
+        env: require('../../../lib/jsdoc/env'),
+        tag: require('../../../lib/jsdoc/tag'),
+        dictionary: require('../../../lib/jsdoc/tag/dictionary'),
+        type: require('../../../lib/jsdoc/tag/type')
     };
-    const logger = require('jsdoc/util/logger');
+    const logger = require('../../../lib/jsdoc/util/logger');
 
     it('should exist', () => {
         expect(jsdoc.tag).toBeDefined();

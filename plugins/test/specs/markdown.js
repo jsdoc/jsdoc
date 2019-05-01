@@ -1,7 +1,7 @@
 'use strict';
 
-var env = require('jsdoc/env');
-var path = require('jsdoc/path');
+var env = require('../../../lib/jsdoc/env');
+var path = require('../../../lib/jsdoc/path');
 
 describe('markdown plugin', function() {
     var pluginPath = 'plugins/markdown';

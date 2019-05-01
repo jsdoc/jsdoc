@@ -1,5 +1,5 @@
 describe('@interface tag', () => {
-    const logger = require('jsdoc/util/logger');
+    const logger = require('../../../lib/jsdoc/util/logger');
 
     const docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
     const testerInterface = docSet.getByLongname('ITester')[0];

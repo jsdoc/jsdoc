@@ -1,5 +1,5 @@
 describe('jsdoc/src/syntax', () => {
-    const Syntax = require('jsdoc/src/syntax').Syntax;
+    const Syntax = require('./syntax').Syntax;
 
     it('should exist', () => {
         expect(Syntax).toBeDefined();

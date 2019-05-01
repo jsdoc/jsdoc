@@ -1,5 +1,5 @@
-const augment = require('jsdoc/augment');
-const name = require('jsdoc/name');
+const augment = require('../../../lib/jsdoc/augment');
+const name = require('../../../lib/jsdoc/name');
 
 describe('mixins', () => {
     describe('doclet augmentation', () => {

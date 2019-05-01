@@ -1,8 +1,8 @@
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe('plugins', () => {
-    const app = require('jsdoc/app');
-    const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const app = require('../../../lib/jsdoc/app');
+    const env = require('../../../lib/jsdoc/env');
+    const path = require('../../../lib/jsdoc/path');
 
     let docSet;
     const pluginPaths = [
@@ -15,7 +15,7 @@ describe('plugins', () => {
 
     global.jsdocPluginsTest = global.jsdocPluginsTest || {};
 
-    require('jsdoc/plugins').installPlugins(pluginPaths, app.jsdoc.parser);
+    require('../../../lib/jsdoc/plugins').installPlugins(pluginPaths, app.jsdoc.parser);
 
     docSet = jasmine.getDocSetFromFile('test/fixtures/plugins.js', app.jsdoc.parser, false);
 

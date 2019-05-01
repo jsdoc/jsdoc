@@ -1,5 +1,5 @@
 describe('jsdoc/opts/args', () => {
-    const args = require('jsdoc/opts/args');
+    const args = require('../../../lib/jsdoc/opts/args');
     const querystring = require('querystring');
 
     it('should exist', () => {

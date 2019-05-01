@@ -1,5 +1,5 @@
 describe('jsdoc/src/handlers', () => {
-    const handlers = require('jsdoc/src/handlers');
+    const handlers = require('./handlers');
 
     const testParser = jasmine.createParser();
 

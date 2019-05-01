@@ -1,5 +1,5 @@
 describe('jsdoc/util/dumper', () => {
-    const dumper = require('jsdoc/util/dumper');
+    const dumper = require('../../../lib/jsdoc/util/dumper');
 
     it('should exist', () => {
         expect(dumper).toBeDefined();

@@ -1,6 +1,6 @@
 describe('jsdoc/config', () => {
     const jsdoc = {
-        config: require('jsdoc/config')
+        config: require('../../../lib/jsdoc/config')
     };
     const Config = jsdoc.config;
 

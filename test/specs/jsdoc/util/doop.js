@@ -1,5 +1,5 @@
 describe('jsdoc/util/doop', () => {
-    const doop = require('jsdoc/util/doop');
+    const doop = require('../../../lib/jsdoc/util/doop');
 
     it('should exist', () => {
         expect(doop).toBeDefined();

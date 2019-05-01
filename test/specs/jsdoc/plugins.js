@@ -1,5 +1,5 @@
 describe('jsdoc/plugins', () => {
-    const plugins = require('jsdoc/plugins');
+    const plugins = require('../../../lib/jsdoc/plugins');
 
     it('should exist', () => {
         expect(plugins).toBeDefined();

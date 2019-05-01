@@ -1,5 +1,5 @@
 describe('jsdoc/util/cast', () => {
-    const cast = require('jsdoc/util/cast');
+    const cast = require('../../../lib/jsdoc/util/cast');
 
     it('should exist', () => {
         expect(typeof cast).toBe('object');

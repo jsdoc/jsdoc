@@ -10,10 +10,9 @@
  * @private
  */
 module.exports = (() => {
-    const app = require('jsdoc/app');
-    const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
-    const stripBom = require('jsdoc/util/stripbom');
+    const app = require('./lib/jsdoc/app');
+    const env = require('./lib/jsdoc/env');
+    const logger = require('./lib/jsdoc/util/logger');
     const stripJsonComments = require('strip-json-comments');
     const Promise = require('bluebird');
 
@@ -30,12 +29,7 @@ module.exports = (() => {
 
     // TODO: docs
     cli.setVersionInfo = () => {
-        const fs = require('fs');
-        const path = require('path');
-
-        // allow this to throw--something is really wrong if we can't read our own package file
-        const info = JSON.parse( stripBom.strip(fs.readFileSync(path.join(env.dirname, 'package.json'),
-            'utf8')) );
+        const info = require('./package.json');
 
         env.version = {
             number: info.version,
@@ -48,11 +42,11 @@ module.exports = (() => {
     // TODO: docs
     cli.loadConfig = () => {
         const _ = require('underscore');
-        const args = require('jsdoc/opts/args');
-        const Config = require('jsdoc/config');
+        const args = require('./lib/jsdoc/opts/args');
+        const Config = require('./lib/jsdoc/config');
         let config;
-        const fs = require('jsdoc/fs');
-        const path = require('jsdoc/path');
+        const fs = require('./lib/jsdoc/fs');
+        const path = require('./lib/jsdoc/path');
 
         let confPath;
         let isFile;
@@ -194,7 +188,7 @@ module.exports = (() => {
     // TODO: docs
     cli.printHelp = () => {
         cli.printVersion();
-        console.log( `\n${require('jsdoc/opts/args').help()}\n` );
+        console.log( `\n${require('./lib/jsdoc/opts/args').help()}\n` );
         console.log('Visit http://usejsdoc.org for more information.');
 
         return Promise.resolve(0);
@@ -202,7 +196,7 @@ module.exports = (() => {
 
     // TODO: docs
     cli.runTests = () => {
-        const path = require('jsdoc/path');
+        const path = require('./lib/jsdoc/path');
 
         const runner = Promise.promisify(require( path.join(env.dirname, 'test/runner') ));
 
@@ -242,7 +236,7 @@ module.exports = (() => {
     };
 
     function readPackageJson(filepath) {
-        const fs = require('jsdoc/fs');
+        const fs = require('./lib/jsdoc/fs');
 
         try {
             return stripJsonComments( fs.readFileSync(filepath, 'utf8') );
@@ -255,7 +249,7 @@ module.exports = (() => {
     }
 
     function buildSourceList() {
-        const Readme = require('jsdoc/readme');
+        const Readme = require('./lib/jsdoc/readme');
 
         let packageJson;
         let readmeHtml;
@@ -298,7 +292,7 @@ module.exports = (() => {
 
     // TODO: docs
     cli.scanFiles = () => {
-        const Filter = require('jsdoc/src/filter').Filter;
+        const Filter = require('./lib/jsdoc/src/filter').Filter;
 
         let filter;
 
@@ -316,7 +310,7 @@ module.exports = (() => {
     };
 
     function resolvePluginPaths(paths) {
-        const path = require('jsdoc/path');
+        const path = require('./lib/jsdoc/path');
 
         const pluginPaths = [];
 
@@ -338,9 +332,9 @@ module.exports = (() => {
     }
 
     cli.createParser = () => {
-        const handlers = require('jsdoc/src/handlers');
-        const parser = require('jsdoc/src/parser');
-        const plugins = require('jsdoc/plugins');
+        const handlers = require('./lib/jsdoc/src/handlers');
+        const parser = require('./lib/jsdoc/src/parser');
+        const plugins = require('./lib/jsdoc/plugins');
 
         app.jsdoc.parser = parser.createParser(env.conf.parser);
 
@@ -355,9 +349,9 @@ module.exports = (() => {
     };
 
     cli.parseFiles = () => {
-        const augment = require('jsdoc/augment');
-        const borrow = require('jsdoc/borrow');
-        const Package = require('jsdoc/package').Package;
+        const augment = require('./lib/jsdoc/augment');
+        const borrow = require('./lib/jsdoc/borrow');
+        const Package = require('./lib/jsdoc/package').Package;
 
         let docs;
         let packageDocs;
@@ -394,13 +388,13 @@ module.exports = (() => {
     };
 
     cli.dumpParseResults = () => {
-        console.log(require('jsdoc/util/dumper').dump(props.docs));
+        console.log(require('./lib/jsdoc/util/dumper').dump(props.docs));
 
         return cli;
     };
 
     cli.resolveTutorials = () => {
-        const resolver = require('jsdoc/tutorial/resolver');
+        const resolver = require('./lib/jsdoc/tutorial/resolver');
 
         if (env.opts.tutorials) {
             resolver.load(env.opts.tutorials);
@@ -411,8 +405,8 @@ module.exports = (() => {
     };
 
     cli.generateDocs = () => {
-        const path = require('jsdoc/path');
-        const resolver = require('jsdoc/tutorial/resolver');
+        const path = require('./lib/jsdoc/path');
+        const resolver = require('./lib/jsdoc/tutorial/resolver');
         const taffy = require('taffydb').taffy;
 
         let template;

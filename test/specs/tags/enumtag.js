@@ -24,7 +24,7 @@ describe('@enum tag', () => {
     });
 
     it('An enum does not contain any circular references.', () => {
-        const dump = require('jsdoc/util/dumper').dump;
+        const dump = require('../../../lib/jsdoc/util/dumper').dump;
 
         expect( dump(tristate) ).not.toMatch('<CircularRef>');
     });

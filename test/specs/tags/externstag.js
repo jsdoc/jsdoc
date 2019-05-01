@@ -1,6 +1,6 @@
 describe('@externs tag', () => {
-    const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
+    const env = require('../../../lib/jsdoc/env');
+    const logger = require('../../../lib/jsdoc/util/logger');
 
     const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 

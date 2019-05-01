@@ -1,5 +1,5 @@
 describe('jsdoc/opts/argparser', () => {
-    const ArgParser = require('jsdoc/opts/argparser');
+    const ArgParser = require('../../../lib/jsdoc/opts/argparser');
     let argParser;
     let ourOptions;
 

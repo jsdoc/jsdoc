@@ -215,7 +215,7 @@ exports.publish = (data, {destination, query}) => {
             console.log( xml.parse('jsdoc', root) );
         }
         else {
-            console.log( require('jsdoc/util/dumper').dump(root) );
+            console.log( require('../../lib/jsdoc/util/dumper').dump(root) );
         }
     }
     else {

@@ -1,8 +1,8 @@
 describe('@define tag', () => {
-    const logger = require('jsdoc/util/logger');
+    const logger = require('../../../lib/jsdoc/util/logger');
 
     describe('JSDoc tags', () => {
-        const env = require('jsdoc/env');
+        const env = require('../../../lib/jsdoc/env');
 
         const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 

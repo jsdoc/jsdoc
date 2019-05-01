@@ -1,7 +1,7 @@
 describe('jsdoc/util/markdown', () => {
-    const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
-    const markdown = require('jsdoc/util/markdown');
+    const env = require('../../../lib/jsdoc/env');
+    const logger = require('../../../lib/jsdoc/util/logger');
+    const markdown = require('../../../lib/jsdoc/util/markdown');
 
     it('should exist', () => {
         expect(markdown).toBeDefined();

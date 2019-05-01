@@ -1,9 +1,9 @@
 describe('jsdoc/tag/validator', () => {
-    const doop = require('jsdoc/util/doop');
-    const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
-    const tag = require('jsdoc/tag');
-    const validator = require('jsdoc/tag/validator');
+    const doop = require('../../../lib/jsdoc/util/doop');
+    const env = require('../../../lib/jsdoc/env');
+    const logger = require('../../../lib/jsdoc/util/logger');
+    const tag = require('../../../lib/jsdoc/tag');
+    const validator = require('../../../lib/jsdoc/tag/validator');
 
     it('should exist', () => {
         expect(validator).toBeDefined();
@@ -16,7 +16,7 @@ describe('jsdoc/tag/validator', () => {
     });
 
     describe('validate', () => {
-        const dictionary = require('jsdoc/tag/dictionary');
+        const dictionary = require('../../../lib/jsdoc/tag/dictionary');
 
         const allowUnknown = Boolean(env.conf.tags.allowUnknownTags);
         const badTag = { title: 'lkjasdlkjfb' };

@@ -1,7 +1,7 @@
 describe('jsdoc/augment', () => {
     // TODO: more tests
 
-    const augment = require('jsdoc/augment');
+    const augment = require('../../../lib/jsdoc/augment');
 
     it('should exist', () => {
         expect(augment).toBeDefined();

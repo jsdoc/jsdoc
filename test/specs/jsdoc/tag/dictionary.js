@@ -1,5 +1,5 @@
 describe('jsdoc/tag/dictionary', () => {
-    const dictionary = require('jsdoc/tag/dictionary');
+    const dictionary = require('../../../lib/jsdoc/tag/dictionary');
     const testDictionary = new dictionary.Dictionary();
 
     const tagOptions = {

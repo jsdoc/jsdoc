@@ -1,7 +1,7 @@
 'use strict';
 
-var fs = require('jsdoc/fs');
-var path = require('jsdoc/path');
+var fs = require('../lib/jsdoc/fs');
+var path = require('../lib/jsdoc/path');
 var klaw = require('klaw');
 
 var specs = [];

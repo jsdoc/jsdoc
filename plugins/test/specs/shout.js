@@ -1,8 +1,8 @@
 'use strict';
 
 describe('shout plugin', function() {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
+    var env = require('../../../lib/jsdoc/env');
+    var path = require('../../../lib/jsdoc/path');
 
     var docSet;
     var parser = jasmine.createParser();
@@ -10,7 +10,7 @@ describe('shout plugin', function() {
     var pluginPathResolved = path.join(env.dirname, pluginPath);
     var plugin = require(pluginPathResolved);
 
-    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
+    require('../../../lib/jsdoc/plugins').installPlugins([pluginPathResolved], parser);
     docSet = jasmine.getDocSetFromFile(pluginPath + '.js', parser);
 
     it('should make the description uppercase', function() {
