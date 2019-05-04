@@ -3,6 +3,31 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.0 (May 2019)
+
+### Major changes
+
++ JSDoc is now compatible with Node.js 12.
++ JSDoc now recognizes all documented Closure Compiler tags. ([#605][605])
+
+### Enhancements
+
++ You can now use the `templates.useShortNamesInLinks` configuration setting to show the short name
+of each symbol in link text (for example, `baz`), rather than the full longname (for example,
+`foo.bar.baz`). ([#738][738])
++ When you enable the Markdown plugin, you can now specify a function that performs syntax
+highlighting in code blocks. ([#1412][1412])
++ The default template now places namespaces near the top of the TOC. ([#1410][1410])
+
+### Bug fixes
+
++ When you add a JSDoc comment to an ES2015 constructor, JSDoc now preserves all of the JSDoc tags,
+not only the description and parameters. ([#1129][1129])
++ The `@exports` tag now works correctly when it is combined with the `@enum` tag. ([#970][970])
++ When you enable the Markdown plugin, and you use a code fence with the language set to `plain`,
+JSDoc no longer pretty-prints the code block in the generated documentation. ([#1361][1361])
+
+
 ## 3.5.5 (September 2017)
 
 Fixes a compatibility issue with Node.js 8.5.0. (#1438)
@@ -765,3 +790,11 @@ modules. (4ce17195)
 ## 3.0.0 (May 2012)
 
 Initial release.
+
+[605]: https://github.com/jsdoc/jsdoc/issues/605
+[738]: https://github.com/jsdoc/jsdoc/issues/738
+[970]: https://github.com/jsdoc/jsdoc/issues/970
+[1129]: https://github.com/jsdoc/jsdoc/issues/1129
+[1361]: https://github.com/jsdoc/jsdoc/issues/1361
+[1410]: https://github.com/jsdoc/jsdoc/issues/1410
+[1412]: https://github.com/jsdoc/jsdoc/issues/1412
