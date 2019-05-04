@@ -8,11 +8,11 @@ fastest way to get your pull request merged in.**  Some things, particularly how
 you set up your branches and work with git, are just suggestions, but pretty good
 ones.
 
-1. **Create a remote to track the base jsdoc3/jsdoc repository**
+1. **Create a remote to track the base jsdoc/jsdoc repository**
    This is just a convenience to make it easier to update your ```<tracking branch>```
    (more on that shortly).  You would execute something like:
 
-        git remote add base git://github.com/jsdoc3/jsdoc.git
+        git remote add base git://github.com/jsdoc/jsdoc.git
 
    Here 'base' is the name of the remote.  Feel free to use whatever you want.
 

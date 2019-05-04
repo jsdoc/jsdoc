@@ -195,7 +195,7 @@ module.exports = (() => {
     cli.printHelp = () => {
         cli.printVersion();
         console.log( `\n${require('jsdoc/opts/args').help()}\n` );
-        console.log('Visit http://usejsdoc.org for more information.');
+        console.log('Visit https://jsdoc.app/ for more information.');
 
         return Promise.resolve(0);
     };

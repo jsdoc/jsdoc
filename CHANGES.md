@@ -73,7 +73,7 @@ language features:
 
 + You can now use a JavaScript file to configure JSDoc. The JavaScript file must be a CommonJS
 module that exports a single configuration object. See the
-[documentation](http://usejsdoc.org/about-configuring-jsdoc.html) for details and examples.
+[documentation](https://jsdoc.app/about-configuring-jsdoc.html) for details and examples.
 + Fixed multiple issues with documenting ES2015 classes and modules. See "Bug fixes" for details.
 + JSDoc now requires Node.js 4.2.0 or later.
 
@@ -81,18 +81,18 @@ module that exports a single configuration object. See the
 
 **Note**: Third-party templates may not support these new tags.
 
-+ You can now use the new [`@async` tag](http://usejsdoc.org/tags-async.html) to indicate that a
++ You can now use the new [`@async` tag](https://jsdoc.app/tags-async.html) to indicate that a
 function is asynchronous (that is, that it was declared with the syntax `async function foo() {}`).
 In general, you do not need to use this tag, because JSDoc autodetects asynchronous functions.
 (#1188)
-+ You can now use the new [`@generator` tag](http://usejsdoc.org/tags-generator.html) to indicate
++ You can now use the new [`@generator` tag](https://jsdoc.app/tags-generator.html) to indicate
 that a function is a generator function. In general, you do not need to use this tag, because JSDoc
 autodetects generator functions. (#1158)
-+ You can now use the new [`@hideconstructor` tag](http://usejsdoc.org/tags-hideconstructor.html) to
++ You can now use the new [`@hideconstructor` tag](https://jsdoc.app/tags-hideconstructor.html) to
 tell JSDoc to hide a class's constructor from the documentation. (#952)
-+ You can now use the new [`@package` tag](http://usejsdoc.org/tags-package.html) to indicate that a
++ You can now use the new [`@package` tag](https://jsdoc.app/tags-package.html) to indicate that a
 symbol is package-private. (#962)
-+ You can now use the new [`@yields` tag](http://usejsdoc.org/tags-yields.html) to document the
++ You can now use the new [`@yields` tag](https://jsdoc.app/tags-yields.html) to document the
 value that is yielded by a generator function. (#1388)
 
 ### Enhancements
