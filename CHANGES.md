@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.1 (May 2019)
+
+Prevents a crash when using type applications in Node.js 12. ([#1643][1643])
+
+
 ## 3.6.0 (May 2019)
 
 ### Major changes
@@ -798,3 +803,4 @@ Initial release.
 [1361]: https://github.com/jsdoc/jsdoc/issues/1361
 [1410]: https://github.com/jsdoc/jsdoc/issues/1410
 [1412]: https://github.com/jsdoc/jsdoc/issues/1412
+[1643]: https://github.com/jsdoc/jsdoc/issues/1643
