@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /* global require: true */
+'use strict';
 
 // initialize the environment for Node.js
 (() => {
