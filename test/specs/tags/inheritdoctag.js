@@ -1,5 +1,5 @@
 describe('@inheritdoc tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/inheritdoctag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/inheritdoctag.js');
 
     function ignored({ignore}) {
         return ignore !== true;

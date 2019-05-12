@@ -1,5 +1,5 @@
 describe('callback tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/callbacktag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/callbacktag.js');
 
     function callbackTests(callback) {
         expect(callback).toBeDefined();

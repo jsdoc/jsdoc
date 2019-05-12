@@ -1,5 +1,5 @@
 describe('@license tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/licensetag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/licensetag.js');
     const doc = docSet.getByLongname('x')[0];
 
     it("sets the doclet's 'license' property to the tag value", () => {

@@ -1,5 +1,5 @@
 describe('@deprecated tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/deprecatedtag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/deprecatedtag.js');
     const foo = docSet.getByLongname('foo')[0];
     const bar = docSet.getByLongname('bar')[0];
 

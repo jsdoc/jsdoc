@@ -1,20 +1,20 @@
-'use strict';
+/* global jsdoc */
 
-describe('commentConvert plugin', function() {
-    var env = require('jsdoc/env');
-    var path = require('jsdoc/path');
+describe('commentConvert plugin', () => {
+    const env = require('jsdoc/env');
+    const path = require('jsdoc/path');
 
-    var docSet;
-    var parser = jasmine.createParser();
-    var pluginPath = 'plugins/commentConvert';
-    var pluginPathResolved = path.join(env.dirname, pluginPath);
-    var plugin = require(pluginPathResolved);
+    let docSet;
+    const parser = jsdoc.createParser();
+    const pluginPath = 'plugins/commentConvert';
+    const pluginPathResolved = path.join(env.dirname, pluginPath);
 
     require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
-    docSet = jasmine.getDocSetFromFile(pluginPath + '.js', parser);
+    docSet = jsdoc.getDocSetFromFile(`${pluginPath}.js`, parser);
 
-    it('should convert ///-style comments into jsdoc comments', function() {
-        var doclet = docSet.getByLongname('module:plugins/commentConvert.handlers.beforeParse');
+    it('should convert ///-style comments into jsdoc comments', () => {
+        const doclet = docSet.getByLongname('module:plugins/commentConvert.handlers.beforeParse');
+
         expect(doclet.length).toEqual(1);
     });
 });

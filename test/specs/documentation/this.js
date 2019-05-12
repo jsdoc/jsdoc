@@ -1,6 +1,6 @@
 describe('this', () => {
     describe('attaching members to "this"', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/this.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/this.js');
         const found1 = docSet.getByLongname('Singer#tralala');
         const found2 = docSet.getByLongname('Singer#isSinging');
 
@@ -42,7 +42,7 @@ describe('this', () => {
     });
 
     describe('when a contructor is nested inside another constructor', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/this2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/this2.js');
         const found = docSet.getByLongname('TemplateBuilder#Template#rendered');
 
         it('should have a longname like Constructor#Constructor#member', () => {
@@ -63,7 +63,7 @@ describe('this', () => {
     });
 
     describe('When a this is assigned to inside a non-constructor function', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/this3.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/this3.js');
         const found = docSet.getByLongname('position');
 
         it('should have a global member name like "member"', () => {
@@ -80,7 +80,7 @@ describe('this', () => {
     });
 
     describe('When "this" is assigned inside an explicit definition of the class constructor', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/this4.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/this4.js');
         const found = docSet.getByLongname('Template#render');
 
         it('should have a longname like Constructor#member', () => {
@@ -97,7 +97,7 @@ describe('this', () => {
     });
 
     describe('When "this" is assigned in a chained declaration in a module', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/this5.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/this5.js');
         const found = docSet.getByLongname('module:template.Template#view');
 
         it('should have a longname like Constructor#member', () => {
@@ -114,7 +114,7 @@ describe('this', () => {
     });
 
     describe('When `this` is within the constructor in a class that has an `@alias` tag within a module', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/this6.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/this6.js');
         const someProperty = docSet.getByLongname('module:example#_someProperty')[0];
 
         it('should have the correct longname, name, and scope', () => {
@@ -125,7 +125,7 @@ describe('this', () => {
     });
 
     describe('When a member is nested inside an objectlit "this" property inside a constructor', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/this-and-objectlit.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/this-and-objectlit.js');
         const found = docSet.getByLongname('Page#parts.body.heading');
 
         it('should have a longname like Constructor#objlit.member', () => {

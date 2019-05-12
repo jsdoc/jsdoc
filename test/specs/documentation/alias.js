@@ -1,6 +1,6 @@
 describe('aliases', () => {
     describe('standard', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/alias.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/alias.js');
         const found = docSet.getByLongname('myObject').filter(({undocumented}) => !(undocumented));
         const foundMember = docSet.getByLongname('myObject.myProperty');
 
@@ -15,7 +15,7 @@ describe('aliases', () => {
     });
 
     it('When a symbol is a member of an alias of a nested name it is documented as if the memberof is the nested alias value.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/alias2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/alias2.js');
         const foundMember = docSet.getByLongname('ns.Myclass#myProperty');
 
         expect(foundMember[0].longname).toEqual('ns.Myclass#myProperty');
@@ -25,14 +25,14 @@ describe('aliases', () => {
     });
 
     it('When a symbol is a member of an aliased class, a this-variable is documented as if it were a member that class.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/alias3.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/alias3.js');
         const tcmValue = docSet.getByLongname('trackr.CookieManager#value')[0];
 
         expect(tcmValue.memberof).toEqual('trackr.CookieManager');
     });
 
     it('When a symbol is a function expression that has an alias, the symbol should get the correct longname', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/alias4.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/alias4.js');
         const jacketClass = docSet.getByLongname('module:jacket').filter(({kind}) => kind === 'class');
 
         expect(jacketClass.length).toBe(1);
@@ -40,7 +40,7 @@ describe('aliases', () => {
     });
 
     describe('formats', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/alias5.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/alias5.js');
         const toast = docSet.getByLongname('Toaster#toast')[0];
         const getInstance = docSet.getByLongname('Toaster.getInstance')[0];
         const clean = docSet.getByLongname('Toaster#clean')[0];
@@ -68,7 +68,7 @@ describe('aliases', () => {
     });
 
     it('When a symbol is a constructor of a class with an alias, the constructor should get the correct longname', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/alias6.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/alias6.js');
         const constructor = docSet.getByLongname('module:example')[2];
 
         expect(constructor.undocumented).toBe(true);
@@ -77,14 +77,14 @@ describe('aliases', () => {
     });
 
     it('When a symbol is documented as a static member of <global>, its scope is "global" and not "static".', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/aliasglobal.js');
         const log = docSet.getByLongname('log')[0];
 
         expect(log.scope).toEqual('global');
     });
 
     it('When a symbol is documented as an instance member of <global>, its scope is "instance" and not "static".', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/aliasglobal2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/aliasglobal2.js');
         const run = docSet.getByLongname('Test#run')[0];
 
         expect(run.scope).toEqual('instance');
@@ -93,14 +93,14 @@ describe('aliases', () => {
 
     describe('resolving', () => {
         it('When a local reference has alias, put all members into aliased definition. Local modifications should be visible to outside.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/aliasresolve.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/aliasresolve.js');
             const method = docSet.getByLongname('A.F.method');
 
             expect(method.length).toEqual(1);
         });
 
         it('When a reference in an outer scope has alias, put all members into aliased definition. Local modifications are visible to outside.', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/aliasresolve2.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/aliasresolve2.js');
             const method = docSet.getByLongname('A.F.method');
 
             expect(method.length).toEqual(1);

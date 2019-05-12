@@ -1,5 +1,5 @@
 describe('when a documented var memeber is inside a named function', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/inner.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/inner.js');
     const found1 = docSet.getByLongname('sendMessage~encoding');
     const found2 = docSet.getByLongname('sendMessage~encrypt');
 

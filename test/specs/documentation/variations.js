@@ -1,5 +1,5 @@
 describe('variations by name', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/variations.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/variations.js');
     const fadein1 = docSet.getByLongname('anim.fadein(1)')[0];
     const fadein2 = docSet.getByLongname('anim.fadein(2)')[0];
 

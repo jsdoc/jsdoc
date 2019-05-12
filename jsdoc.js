@@ -64,13 +64,9 @@ global.app = (() => require('./lib/jsdoc/app'))();
     }
 
     cli.setVersionInfo()
-        .loadConfig();
-
-    if (!env.opts.test) {
-        cli.configureLogger();
-    }
-
-    cli.logStart();
+        .loadConfig()
+        .configureLogger()
+        .logStart();
 
     if (env.opts.debug) {
         /**

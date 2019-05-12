@@ -1,5 +1,5 @@
 describe('@classdesc tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/classdesctag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/classdesctag.js');
     const foo = docSet.getByLongname('Foo')[0];
     const bar = docSet.getByLongname('Bar')[0];
     const baz = docSet.getByLongname('Baz')[0];

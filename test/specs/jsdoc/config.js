@@ -1,12 +1,9 @@
 describe('jsdoc/config', () => {
-    const jsdoc = {
-        config: require('jsdoc/config')
-    };
-    const Config = jsdoc.config;
+    const Config = require('jsdoc/config');
 
     it('should exist', () => {
-        expect(jsdoc.config).toBeDefined();
-        expect(typeof jsdoc.config).toBe('function');
+        expect(Config).toBeDefined();
+        expect(typeof Config).toBe('function');
     });
 
     it('should provide a "get" instance function', () => {

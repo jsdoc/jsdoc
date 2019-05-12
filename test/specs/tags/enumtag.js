@@ -1,5 +1,5 @@
 describe('@enum tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/enumtag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/enumtag.js');
     const tristate = docSet.getByLongname('TriState')[0];
 
     it('When a symbol has an @enum tag, it has a properties array.', () => {
@@ -39,7 +39,7 @@ describe('@enum tag', () => {
     });
 
     describe('chained assignments', () => {
-        const docSet2 = jasmine.getDocSetFromFile('test/fixtures/enumtag2.js');
+        const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/enumtag2.js');
         const pentaState = docSet2.getByLongname('module:my/enums.PentaState')[0];
         const PENTASTATE = docSet2.getByLongname('module:my/enums.PENTASTATE')[0];
         const quadState = docSet2.getByLongname('module:my/enums.QuadState')[0];
@@ -59,7 +59,7 @@ describe('@enum tag', () => {
     });
 
     describe('combined with @exports tag', () => {
-        const docSet3 = jasmine.getDocSetFromFile('test/fixtures/enumtag3.js');
+        const docSet3 = jsdoc.getDocSetFromFile('test/fixtures/enumtag3.js');
         const mymodule = docSet3.getByLongname('module:mymodule')[0];
 
         it('When a symbol has both an @exports tag and an @enum tag, its kind is set to `module`', () => {

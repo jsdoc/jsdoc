@@ -1,7 +1,7 @@
 describe('@interface tag', () => {
     const logger = require('jsdoc/util/logger');
 
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/interface-implements.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/interface-implements.js');
     const testerInterface = docSet.getByLongname('ITester')[0];
     const testerImplementation = docSet.getByLongname('MyTester')[0];
 
@@ -19,16 +19,16 @@ describe('@interface tag', () => {
         });
 
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('should support virtual doclets with the JSDoc tag dictionary', () => {
             let docSet2;
             let virtualInterface;
 
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
 
-            docSet2 = jasmine.getDocSetFromFile('test/fixtures/interfacetag2.js');
+            docSet2 = jsdoc.getDocSetFromFile('test/fixtures/interfacetag2.js');
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];
 
             expect(logger.warn).not.toHaveBeenCalled();
@@ -40,9 +40,9 @@ describe('@interface tag', () => {
             let docSet2;
             let virtualInterface;
 
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
 
-            docSet2 = jasmine.getDocSetFromFile('test/fixtures/interfacetag2.js');
+            docSet2 = jsdoc.getDocSetFromFile('test/fixtures/interfacetag2.js');
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];
 
             expect(logger.warn).toHaveBeenCalled();
@@ -52,16 +52,16 @@ describe('@interface tag', () => {
 
     describe('Closure Compiler tags', () => {
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('should support @record as a synonym for @interface', () => {
             let docSet2;
             let myStructuralInterface;
 
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
 
-            docSet2 = jasmine.getDocSetFromFile('test/fixtures/interfacetag3.js');
+            docSet2 = jsdoc.getDocSetFromFile('test/fixtures/interfacetag3.js');
             myStructuralInterface = docSet2.getByLongname('MyStructuralInterface')[0];
 
             expect(myStructuralInterface.kind).toBe('interface');

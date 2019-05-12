@@ -13,7 +13,7 @@ describe('@overview tag', () => {
         env.opts._ = [path.normalize(`${env.pwd}/test/fixtures/`)];
         env.pwd = env.dirname;
         env.sourceFiles = [];
-        srcParser = jasmine.createParser();
+        srcParser = jsdoc.createParser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 

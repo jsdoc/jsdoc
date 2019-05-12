@@ -1,7 +1,7 @@
 describe('@type tag inline with function parameters', () => {
     let info;
 
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/typetaginline.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/typetaginline.js');
 
     function checkParams({params}, paramInfo) {
         expect(params).toBeDefined();

@@ -1,5 +1,5 @@
 describe('arrow functions', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/arrowfunction.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/arrowfunction.js');
     const increment = docSet.getByLongname('increment')[0];
     const print = docSet.getByLongname('print')[0];
     const name = docSet.getByLongname('<anonymous>#name');

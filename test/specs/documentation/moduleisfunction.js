@@ -1,5 +1,5 @@
 describe('module that exports a function that is not a constructor', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/moduleisfunction.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduleisfunction.js');
     const functions = docSet.doclets.filter(({kind}) => kind === 'function');
 
     it('should include one doclet whose kind is "function"', () => {

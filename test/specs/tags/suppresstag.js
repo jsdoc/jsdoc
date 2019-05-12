@@ -10,17 +10,17 @@ describe('@suppress tag', () => {
     });
 
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
         env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('should not recognize the @suppress tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/suppresstag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/suppresstag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
@@ -28,11 +28,11 @@ describe('@suppress tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should recognize the @suppress tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/suppresstag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/suppresstag.js');
 
             expect(logger.error).not.toHaveBeenCalled();
         });

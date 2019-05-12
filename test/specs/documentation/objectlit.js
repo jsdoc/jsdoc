@@ -1,6 +1,6 @@
 describe('object literals', () => {
     describe('When a child of an objlit has no @name or @memberof tags', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit.js');
         const found = docSet.getByLongname('tools.serialiser.value');
 
         it('should have a doclet with the correct longname', () => {
@@ -21,7 +21,7 @@ describe('object literals', () => {
     });
 
     describe('When a parent of an objlit has no documentation', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit2.js');
         const found = docSet.getByLongname('position.axis.x');
 
         it('should have a doclet with the correct longname', () => {
@@ -46,7 +46,7 @@ describe('object literals', () => {
         let found;
 
         function loadDocSet() {
-            docSet = jasmine.getDocSetFromFile('test/fixtures/objectlit3.js');
+            docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit3.js');
             found = docSet.getByLongname('tokens."(".before');
         }
 

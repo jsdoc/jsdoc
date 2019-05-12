@@ -4,7 +4,7 @@ function filter({undocumented}) {
 
 describe('@module tag', () => {
     describe("using 'this'", () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag.js');
         const book = docSet.getByLongname('module:bookshelf.Book')[0];
         const title = docSet.getByLongname('module:bookshelf.Book#title')[0];
 
@@ -20,7 +20,7 @@ describe('@module tag', () => {
     });
 
     describe('misc', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag2.js');
         const mixer = docSet.getByLongname('module:color/mixer').filter(filter)[0];
         const blend = docSet.getByLongname('module:color/mixer.blend')[0];
         const darken = docSet.getByLongname('module:color/mixer.darken')[0];
@@ -46,7 +46,7 @@ describe('@module tag', () => {
     });
 
     describe('virtual comments', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag4.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag4.js');
         const clickProperties = docSet.getByLongname('module:M1~ClickProperties')[0];
         const virtFunc = docSet.getByLongname('module:M1.VirtualComment')[0];
         const virtFunc2 = docSet.getByLongname('module:M1#VirtualComment2')[0];
@@ -75,7 +75,7 @@ describe('@module tag', () => {
     });
 
     describe('"module:" namespace included in the name', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag5.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag5.js');
         const bookshelf = docSet.getByLongname('module:bookshelf')[0];
 
         it('When the name for a @module tag begins with the "module:" namespace, we remove the namespace', () => {
@@ -87,7 +87,7 @@ describe('@module tag', () => {
     describe('ES 2015 modules', () => {
         describe('that export a default', () => {
             describe('value type', () => {
-                const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag6.js');
+                const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag6.js');
                 const exports = docSet.getByLongname('module:appname').filter(({kind}) => kind === 'member')[0];
 
                 it('When a value type is exported, it has the same name as the module longname', () => {
@@ -96,7 +96,7 @@ describe('@module tag', () => {
             });
 
             describe('object', () => {
-                const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag7.js');
+                const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag7.js');
                 const blend = docSet.getByLongname('module:color/mixer.blend')[0];
 
                 it('When an object is exported, its members have the correct name, memberof, and kind', () => {
@@ -108,7 +108,7 @@ describe('@module tag', () => {
         });
 
         describe('that export named values', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag8.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag8.js');
             const blend = docSet.getByLongname('module:color/mixer.blend')[0];
             const lastColor = docSet.getByLongname('module:color/mixer.lastColor')[0];
             const name = docSet.getByLongname('module:color/mixer.name')[0];
@@ -142,7 +142,7 @@ describe('@module tag', () => {
         describe('that export another module in its entirety', () => {
             it('should not crash JSDoc', () => {
                 function getDocSet() {
-                    jasmine.getDocSetFromFile('test/fixtures/moduletag9.js');
+                    jsdoc.getDocSetFromFile('test/fixtures/moduletag9.js');
                 }
 
                 expect(getDocSet).not.toThrow();
@@ -152,7 +152,7 @@ describe('@module tag', () => {
         describe('that export an unnamed default function', () => {
             it('should not crash JSDoc', () => {
                 function getDocSet() {
-                    jasmine.getDocSetFromFile('test/fixtures/moduletag10.js');
+                    jsdoc.getDocSetFromFile('test/fixtures/moduletag10.js');
                 }
 
                 expect(getDocSet).not.toThrow();
@@ -160,7 +160,7 @@ describe('@module tag', () => {
         });
 
         describe('that export a class', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/moduletag11.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/moduletag11.js');
             const foo = docSet.getByLongname('module:foo.Foo').filter(filter)[0];
             const testMethod = docSet.getByLongname('module:foo.Foo#testMethod')[0];
 

@@ -2,14 +2,14 @@ describe('inline comments on function parameters', () => {
     it('should not crash when multiple parameters have inline comments that do not contain any' +
         'JSDoc tags', () => {
         function loadDocSet() {
-            jasmine.getDocSetFromFile('test/fixtures/inlineparamcomment.js');
+            jsdoc.getDocSetFromFile('test/fixtures/inlineparamcomment.js');
         }
 
         expect(loadDocSet).not.toThrow();
     });
 
     describe('ES 2015 only', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/inlineparamcomment2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/inlineparamcomment2.js');
         const foo = docSet.getByLongname('ns.foo')[0];
 
         it('should attach inline comments to default parameters', () => {

@@ -1,6 +1,6 @@
 describe('virtual symbols', () => {
     describe('simple cases', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/virtual.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/virtual.js');
         const dimensions = docSet.getByLongname('dimensions');
         const width = docSet.getByLongname('width');
 
@@ -14,7 +14,7 @@ describe('virtual symbols', () => {
     });
 
     describe('complex cases', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/virtual2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/virtual2.js');
         const say = docSet.getByLongname('Person#say')[0];
         const sayCallback = docSet.getByLongname('Person~sayCallback')[0];
 
@@ -30,7 +30,7 @@ describe('virtual symbols', () => {
     });
 
     describe('overloaded virtual symbols', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/virtual3.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/virtual3.js');
         const constructors = docSet.getByLongname('module:connection');
 
         it('should create multiple doclets for overloaded virtual symbols', () => {

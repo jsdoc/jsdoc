@@ -1,6 +1,5 @@
 describe('jsdoc/readme', () => {
-    const jsdoc = { readme: require('jsdoc/readme') };
-    const Readme = jsdoc.readme;
+    const Readme = require('jsdoc/readme');
     const html = (new Readme('test/fixtures/markdowntest.md')).html;
 
     it('should convert Markdown files to HTML', () => {

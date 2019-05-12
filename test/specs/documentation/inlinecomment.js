@@ -1,5 +1,5 @@
 describe('inline comments', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/inlinecomment.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/inlinecomment.js');
     const t = docSet.getByLongname('test');
     const t2 = docSet.getByLongname('test2');
 

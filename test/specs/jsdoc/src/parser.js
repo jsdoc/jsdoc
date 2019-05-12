@@ -1,47 +1,41 @@
-/* eslint no-script-url: 0 */
+/* eslint-disable no-script-url */
 describe('jsdoc/src/parser', () => {
+    const { attachTo } = require('jsdoc/src/handlers');
+    const { dirname } = require('jsdoc/env');
     const fs = require('jsdoc/fs');
-    const jsdoc = {
-        env: require('jsdoc/env'),
-        src: {
-            handlers: require('jsdoc/src/handlers'),
-            parser: require('jsdoc/src/parser')
-        },
-        util: {
-            logger: require('jsdoc/util/logger')
-        }
-    };
+    const jsdocParser = require('jsdoc/src/parser');
+    const logger = require('jsdoc/util/logger');
     const path = require('jsdoc/path');
 
     it('should exist', () => {
-        expect(jsdoc.src.parser).toBeDefined();
-        expect(typeof jsdoc.src.parser).toBe('object');
+        expect(jsdocParser).toBeDefined();
+        expect(typeof jsdocParser).toBe('object');
     });
 
     it('should export a "createParser" method', () => {
-        expect(typeof jsdoc.src.parser.createParser).toBe('function');
+        expect(typeof jsdocParser.createParser).toBe('function');
     });
 
     it('should export a "Parser" constructor', () => {
-        expect(typeof jsdoc.src.parser.Parser).toBe('function');
+        expect(typeof jsdocParser.Parser).toBe('function');
     });
 
     describe('createParser', () => {
         it('should return a Parser when called without arguments', () => {
-            expect(typeof jsdoc.src.parser.createParser()).toBe('object');
+            expect(typeof jsdocParser.createParser()).toBe('object');
         });
 
         it('should create a jsdoc/src/parser.Parser instance with the argument "js"', () => {
-            const parser = jsdoc.src.parser.createParser('js');
+            const parser = jsdocParser.createParser('js');
 
-            expect(parser instanceof jsdoc.src.parser.Parser).toBe(true);
+            expect(parser instanceof jsdocParser.Parser).toBe(true);
         });
 
         it('should log a fatal error on bad input', () => {
-            spyOn(jsdoc.util.logger, 'fatal');
-            jsdoc.src.parser.createParser('not-a-real-parser-ever');
+            spyOn(logger, 'fatal');
+            jsdocParser.createParser('not-a-real-parser-ever');
 
-            expect(jsdoc.util.logger.fatal).toHaveBeenCalled();
+            expect(logger.fatal).toHaveBeenCalled();
         });
     });
 
@@ -49,7 +43,7 @@ describe('jsdoc/src/parser', () => {
         let parser;
 
         function newParser() {
-            parser = new jsdoc.src.parser.Parser();
+            parser = new jsdocParser.Parser();
         }
 
         newParser();
@@ -75,7 +69,7 @@ describe('jsdoc/src/parser', () => {
             };
             const walker = {};
 
-            const myParser = new jsdoc.src.parser.Parser(astBuilder, visitor, walker);
+            const myParser = new jsdocParser.Parser(astBuilder, visitor, walker);
 
             expect(myParser.astBuilder).toBe(astBuilder);
             expect(myParser.visitor).toBe(visitor);
@@ -129,7 +123,7 @@ describe('jsdoc/src/parser', () => {
 
                 parser.on('parseBegin', spy).parse(sourceFiles);
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mostRecentCall.args[0].sourcefiles).toBe(sourceFiles);
+                expect(spy.calls.mostRecent().args[0].sourcefiles).toBe(sourceFiles);
             });
 
             it("should allow 'parseBegin' handlers to modify the list of source files", () => {
@@ -153,7 +147,7 @@ describe('jsdoc/src/parser', () => {
                 parser.on('jsdocCommentFound', spy).parse(sourceCode);
 
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mostRecentCall.args[0].comment).toBe('/** @name bar */');
+                expect(spy.calls.mostRecent().args[0].comment).toBe('/** @name bar */');
             });
 
             it('should fire "symbolFound" events when a source file contains named symbols', () => {
@@ -185,7 +179,7 @@ describe('jsdoc/src/parser', () => {
                     e.doclet.foo = 'bar';
                 }
 
-                jsdoc.src.handlers.attachTo(parser);
+                attachTo(parser);
                 parser.on('newDoclet', handler).parse(sourceCode);
                 results = parser.results();
 
@@ -205,7 +199,7 @@ describe('jsdoc/src/parser', () => {
                     }
                 };
 
-                jsdoc.src.handlers.attachTo(parser);
+                attachTo(parser);
                 parser.addAstNodeVisitor(visitor);
                 parser.parse(sourceCode);
 
@@ -225,7 +219,7 @@ describe('jsdoc/src/parser', () => {
 
                 // args[2]: parser
                 expect(typeof args[2]).toBe('object');
-                expect(args[2] instanceof jsdoc.src.parser.Parser).toBe(true);
+                expect(args[2] instanceof jsdocParser.Parser).toBe(true);
 
                 // args[3]: current source name
                 expect( String(args[3]) ).toBe('[[string0]]');
@@ -242,7 +236,7 @@ describe('jsdoc/src/parser', () => {
                     }
                 };
 
-                jsdoc.src.handlers.attachTo(parser);
+                attachTo(parser);
                 parser.addAstNodeVisitor(visitor);
                 parser.parse(sourceCode);
 
@@ -259,12 +253,12 @@ describe('jsdoc/src/parser', () => {
                 const spy = jasmine.createSpy();
                 const sourceCode = ['javascript:/** @class */function Foo() {}'];
 
-                jsdoc.src.handlers.attachTo(parser);
+                attachTo(parser);
                 parser.on('parseComplete', spy).parse(sourceCode);
 
                 expect(spy).toHaveBeenCalled();
 
-                eventObject = spy.mostRecentCall.args[0];
+                eventObject = spy.calls.mostRecent().args[0];
                 expect(eventObject).toBeDefined();
                 expect( Array.isArray(eventObject.sourcefiles) ).toBe(true);
                 expect(eventObject.sourcefiles.length).toBe(1);
@@ -282,15 +276,15 @@ describe('jsdoc/src/parser', () => {
                 parser.on('processingComplete', spy).fireProcessingComplete(doclets);
 
                 expect(spy).toHaveBeenCalled();
-                expect(typeof spy.mostRecentCall.args[0]).toBe('object');
-                expect(spy.mostRecentCall.args[0].doclets).toBeDefined();
-                expect(spy.mostRecentCall.args[0].doclets).toBe(doclets);
+                expect(typeof spy.calls.mostRecent().args[0]).toBe('object');
+                expect(spy.calls.mostRecent().args[0].doclets).toBeDefined();
+                expect(spy.calls.mostRecent().args[0].doclets).toBe(doclets);
             });
 
             it('should not throw errors when parsing files with ES6 syntax', () => {
                 function parse() {
                     const parserSrc = `javascript:${fs.readFileSync(
-    path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8')}`;
+                        path.join(dirname, 'test/fixtures/es6.js'), 'utf8')}`;
 
                     parser.parse(parserSrc);
                 }
@@ -299,8 +293,8 @@ describe('jsdoc/src/parser', () => {
             });
 
             it('should be able to parse its own source file', () => {
-                const parserSrc = `javascript:${fs.readFileSync(path.join(jsdoc.env.dirname,
-    'lib/jsdoc/src/parser.js'), 'utf8')}`;
+                const parserSrc = `javascript:${fs.readFileSync(path.join(dirname,
+                    'lib/jsdoc/src/parser.js'), 'utf8')}`;
 
                 function parse() {
                     parser.parse(parserSrc);
@@ -335,7 +329,7 @@ describe('jsdoc/src/parser', () => {
                 const source = 'javascript:var foo;';
                 let results;
 
-                jsdoc.src.handlers.attachTo(parser);
+                attachTo(parser);
 
                 parser.parse(source);
                 results = parser.results();
@@ -355,7 +349,7 @@ describe('jsdoc/src/parser', () => {
                 parser.on('jsdocCommentFound', e => {
                     e.comment = e.comment.replace('replaceme', 'REPLACED!');
                 });
-                jsdoc.src.handlers.attachTo(parser);
+                attachTo(parser);
 
                 parser.parse(source);
                 parser.results().forEach(({comment}) => {
@@ -371,7 +365,7 @@ describe('jsdoc/src/parser', () => {
                     jsdocCommentFound: [],
                     symbolFound: []
                 };
-                const source = fs.readFileSync(path.join(jsdoc.env.dirname,
+                const source = fs.readFileSync(path.join(dirname,
                     'test/fixtures/eventorder.js'), 'utf8');
 
                 /*
@@ -395,7 +389,7 @@ describe('jsdoc/src/parser', () => {
 
                 it('should fire interleaved jsdocCommentFound and symbolFound events, ' +
                     'in source order', () => {
-                    jsdoc.src.handlers.attachTo(parser);
+                    attachTo(parser);
                     parser.parse(source);
                     events.all.slice(0).sort(sourceOrderSort).forEach((e, i) => {
                         expect(e).toBe(events.all[i]);

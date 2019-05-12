@@ -1,5 +1,5 @@
 describe('export default class', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/exportdefaultclass.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportdefaultclass.js');
     const klass = docSet.getByLongname('module:test').filter(({undocumented}) => !undocumented)[1];
 
     it('should combine the classdesc and constructor description into a single doclet', () => {

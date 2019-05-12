@@ -1,5 +1,5 @@
 describe("'exports' symbol in modules", () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/exports.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/exports.js');
     const sayHello = docSet.getByLongname('module:hello/world.sayHello')[0];
     const sayGoodbye = docSet.getByLongname('module:hello/world.sayGoodbye')[0];
 

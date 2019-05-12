@@ -3,7 +3,7 @@ describe('JSX support', () => {
         const logger = require('jsdoc/util/logger');
 
         function parseJsx() {
-            return jasmine.getDocSetFromFile('test/fixtures/jsx.js');
+            return jsdoc.getDocSetFromFile('test/fixtures/jsx.js');
         }
 
         spyOn(logger, 'error');

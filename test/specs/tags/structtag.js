@@ -10,17 +10,17 @@ describe('@struct tag', () => {
     });
 
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
         env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('should not recognize the @struct tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/structtag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/structtag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
@@ -28,11 +28,11 @@ describe('@struct tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should recognize the @struct tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/structtag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/structtag.js');
 
             expect(logger.error).not.toHaveBeenCalled();
         });

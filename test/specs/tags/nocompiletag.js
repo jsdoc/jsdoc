@@ -10,17 +10,17 @@ describe('@nocompile tag', () => {
     });
 
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
         env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('should not recognize the @nocompile tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/nocompiletag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/nocompiletag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
@@ -28,11 +28,11 @@ describe('@nocompile tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should recognize the @nocompile tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/nocompiletag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/nocompiletag.js');
 
             expect(logger.error).not.toHaveBeenCalled();
         });

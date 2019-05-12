@@ -1,5 +1,5 @@
 describe('When a getter or setter is part of a class', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/getset.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/getset.js');
 
     describe('in an object literal', () => {
         const name = docSet.getByLongname('Person#name');
@@ -30,7 +30,7 @@ describe('When a getter or setter is part of a class', () => {
     });
 
     describe('in an ES 2015 class', () => {
-        const docSet2 = jasmine.getDocSetFromFile('test/fixtures/getset2.js');
+        const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/getset2.js');
         const location = docSet2.getByLongname('Employee#location');
 
         it('should have a doclet with the correct longname', () => {

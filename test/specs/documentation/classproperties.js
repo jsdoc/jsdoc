@@ -1,5 +1,5 @@
 describe('class properties', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/classproperties.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/classproperties.js');
     const b = docSet.getByLongname('A#b')[0];
     const c = docSet.getByLongname('A#c')[0];
     const d = docSet.getByLongname('A#d')[0];

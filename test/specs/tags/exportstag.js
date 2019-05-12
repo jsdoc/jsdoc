@@ -1,6 +1,6 @@
 describe('@exports tag', () => {
     describe('object literals', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag.js');
         const shirt = docSet.getByLongname('module:my/shirt')[0];
         const color = docSet.getByLongname('module:my/shirt.color')[0];
         const tneck = docSet.getByLongname('module:my/shirt.Turtleneck')[0];
@@ -37,7 +37,7 @@ describe('@exports tag', () => {
     });
 
     describe('functions', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag2.js');
         const coat = docSet.getByLongname('module:my/coat')[0];
         const wool = docSet.getByLongname('module:my/coat#wool')[0];
 
@@ -65,7 +65,7 @@ describe('@exports tag', () => {
     });
 
     describe("functions and 'exports' object", () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag3.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag3.js');
         const html = docSet.getByLongname('module:html/utils')[0];
         const getstyle = docSet.getByLongname('module:html/utils.getStyleProperty')[0];
         const inhead = docSet.getByLongname('module:html/utils.isInHead')[0];
@@ -86,7 +86,7 @@ describe('@exports tag', () => {
     });
 
     describe('inner classes', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag4.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag4.js');
         const module = docSet.getByLongname('module:some/module')[0];
         const innerClass = docSet.getByLongname('module:some/module~myClass')[0];
         const method = docSet.getByLongname('module:some/module~myClass#myMethod')[0];
@@ -105,7 +105,7 @@ describe('@exports tag', () => {
     });
 
     describe('variable shadowing', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag5.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag5.js');
         const foo = docSet.getByLongname('module:Foo')[0];
         const method = docSet.getByLongname('module:Foo#bar')[0];
 
@@ -119,7 +119,7 @@ describe('@exports tag', () => {
     });
 
     describe("'exports' object as a parameter to 'define'", () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag6.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag6.js');
         const shirt = docSet.getByLongname('module:my/shirt')[0];
         const color = docSet.getByLongname('module:my/shirt.color')[0];
         const tneck = docSet.getByLongname('module:my/shirt.Turtleneck')[0];
@@ -156,7 +156,7 @@ describe('@exports tag', () => {
     });
 
     describe("alias to the 'exports' object", () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag7.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag7.js');
         const shirt = docSet.getByLongname('module:my/shirt')[0];
         const color = docSet.getByLongname('module:my/shirt.color')[0];
         const tneck = docSet.getByLongname('module:my/shirt.Turtleneck')[0];
@@ -199,7 +199,7 @@ describe('@exports tag', () => {
     });
 
     describe('"module:" namespace included in the name', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/exportstag8.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/exportstag8.js');
         const shirt = docSet.getByLongname('module:my/shirt')[0];
 
         it('When the name for an @exports tag begins with the "module:" namespace, we remove the namespace', () => {

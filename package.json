@@ -19,8 +19,6 @@
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
     "escape-string-regexp": "^2.0.0",
-    "js2xmlparser": "^4.0.0",
-    "klaw": "^3.0.0",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
     "markdown-it-anchor": "^5.0.2",
@@ -36,6 +34,9 @@
     "gulp": "^4.0.1",
     "gulp-eslint": "^5.0.0",
     "gulp-json-editor": "^2.5.2",
+    "jasmine": "^3.3.1",
+    "jasmine-console-reporter": "^3.1.0",
+    "klaw-sync": "^6.0.0",
     "nyc": "^14.1.0"
   },
   "engines": {

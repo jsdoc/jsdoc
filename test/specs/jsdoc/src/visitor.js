@@ -1,14 +1,10 @@
 describe('jsdoc/src/visitor', () => {
     // TODO: more tests
 
-    const jsdoc = {
-        src: {
-            parser: require('jsdoc/src/parser'),
-            visitor: require('jsdoc/src/visitor')
-        }
-    };
-    const parser = new jsdoc.src.parser.Parser();
-    const visitor = new jsdoc.src.visitor.Visitor();
+    const { Parser } = require('jsdoc/src/parser');
+    const { Visitor } = require('jsdoc/src/visitor');
+    const parser = new Parser();
+    const visitor = new Visitor();
 
     describe('visitNodeComments', () => {
         // TODO: more tests

@@ -1,5 +1,5 @@
 describe('scope tags', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/scopetags.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/scopetags.js');
 
     // @inner, @instance, @static (@global has its own file)
     describe('@inner tag', () => {

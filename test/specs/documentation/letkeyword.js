@@ -4,7 +4,7 @@ describe('let keyword', () => {
     let exampleMethod;
 
     function getDocSet() {
-        docSet = jasmine.getDocSetFromFile('test/fixtures/letkeyword.js');
+        docSet = jsdoc.getDocSetFromFile('test/fixtures/letkeyword.js');
         exampleModule = docSet.getByLongname('module:exampleModule');
         exampleMethod = docSet.getByLongname('module:exampleModule.exampleMethod');
     }

@@ -1,19 +1,18 @@
-'use strict';
+/* global jsdoc */
+const env = require('jsdoc/env');
+const path = require('jsdoc/path');
 
-var env = require('jsdoc/env');
-var path = require('jsdoc/path');
+describe('markdown plugin', () => {
+    const pluginPath = 'plugins/markdown';
+    const pluginPathResolved = path.join(env.dirname, pluginPath);
+    const plugin = require(pluginPathResolved);
 
-describe('markdown plugin', function() {
-    var pluginPath = 'plugins/markdown';
-    var pluginPathResolved = path.join(env.dirname, pluginPath);
-    var plugin = require(pluginPathResolved);
-
-    var docSet = jasmine.getDocSetFromFile('plugins/test/fixtures/markdown.js');
+    const docSet = jsdoc.getDocSetFromFile('plugins/test/fixtures/markdown.js');
 
     // TODO: more tests; refactor the plugin so multiple settings can be tested
 
-    it('should process the correct tags by default', function() {
-        var myClass = docSet.getByLongname('MyClass')[0];
+    it('should process the correct tags by default', () => {
+        const myClass = docSet.getByLongname('MyClass')[0];
 
         plugin.handlers.newDoclet({ doclet: myClass });
         [
@@ -26,14 +25,14 @@ describe('markdown plugin', function() {
             myClass.returns[0].description,
             myClass.see,
             myClass.summary
-        ].forEach(function(value) {
+        ].forEach(value => {
             // if we processed the value, it should be wrapped in a <p> tag
             expect( /^<p>(?:.+)<\/p>$/.test(value) ).toBe(true);
         });
     });
 
-    it('should unescape &quot; entities in inline tags, but not elsewhere', function() {
-        var myOtherClass = docSet.getByLongname('MyOtherClass')[0];
+    it('should unescape &quot; entities in inline tags, but not elsewhere', () => {
+        const myOtherClass = docSet.getByLongname('MyOtherClass')[0];
 
         plugin.handlers.newDoclet({ doclet: myOtherClass });
 
@@ -41,17 +40,17 @@ describe('markdown plugin', function() {
         expect(myOtherClass.description).toContain('&quot;See&quot;');
     });
 
-    describe('@see tag support', function() {
-        var foo = docSet.getByLongname('foo')[0];
-        var bar = docSet.getByLongname('bar')[0];
+    describe('@see tag support', () => {
+        const foo = docSet.getByLongname('foo')[0];
+        const bar = docSet.getByLongname('bar')[0];
 
-        it('should parse @see tags containing links', function() {
+        it('should parse @see tags containing links', () => {
             plugin.handlers.newDoclet({ doclet: foo });
             expect(typeof foo).toEqual('object');
             expect(foo.see[0]).toEqual('<p><a href="http://nowhere.com">Nowhere</a></p>');
         });
 
-        it('should not parse @see tags that do not contain links', function() {
+        it('should not parse @see tags that do not contain links', () => {
             plugin.handlers.newDoclet({ doclet: bar });
             expect(typeof bar).toEqual('object');
             expect(bar.see[0]).toEqual('AnObject#myProperty');

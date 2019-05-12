@@ -1,5 +1,5 @@
 describe('@hideconstructor tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/hideconstructortag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/hideconstructortag.js');
     const toaster = docSet.getByLongname('Toaster')[0];
     const waffleIron = docSet.getByLongname('WaffleIron').filter(({undocumented}) => !undocumented)[0];
 

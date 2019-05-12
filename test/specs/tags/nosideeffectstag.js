@@ -1,15 +1,15 @@
 describe('@nosideeffects tag', () => {
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
     });
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should set the doclet\'s `modifies` property to an empty array', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/nosideeffectstag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/nosideeffectstag.js');
             const doNothing = docSet.getByLongname('doNothing')[0];
 
             expect(Array.isArray(doNothing.modifies)).toBe(true);

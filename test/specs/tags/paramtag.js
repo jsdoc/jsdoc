@@ -1,6 +1,6 @@
 describe('@param tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/paramtag.js');
-    const docSet2 = jasmine.getDocSetFromFile('test/fixtures/paramtag2.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/paramtag.js');
+    const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/paramtag2.js');
 
     it('When a symbol has an @param tag with a type before the name, the doclet has a params property that includes that param.', () => {
         const find = docSet.getByLongname('find')[0];
@@ -100,7 +100,7 @@ describe('@param tag', () => {
     });
 
     it('When a symbol has a @param tag with an invalid type expression, the JSDoc comment is ignored.', () => {
-        const badDocSet = jasmine.getDocSetFromFile('test/fixtures/paramtaginvalidtype.js');
+        const badDocSet = jsdoc.getDocSetFromFile('test/fixtures/paramtaginvalidtype.js');
         const test = badDocSet.getByLongname('Test#test')[0];
 
         expect(test).toBeDefined();

@@ -117,22 +117,26 @@ module.exports = (() => {
             cli.exit(1);
         }
 
-        if (env.opts.debug) {
-            logger.setLevel(logger.LEVELS.DEBUG);
-        }
-        else if (env.opts.verbose) {
-            logger.setLevel(logger.LEVELS.INFO);
-        }
+        if (env.opts.test) {
+            logger.setLevel(logger.LEVELS.SILENT);
+        } else {
+            if (env.opts.debug) {
+                logger.setLevel(logger.LEVELS.DEBUG);
+            }
+            else if (env.opts.verbose) {
+                logger.setLevel(logger.LEVELS.INFO);
+            }
 
-        if (env.opts.pedantic) {
-            logger.once('logger:warn', recoverableError);
-            logger.once('logger:error', fatalError);
-        }
-        else {
-            logger.once('logger:error', recoverableError);
-        }
+            if (env.opts.pedantic) {
+                logger.once('logger:warn', recoverableError);
+                logger.once('logger:error', fatalError);
+            }
+            else {
+                logger.once('logger:error', recoverableError);
+            }
 
-        logger.once('logger:fatal', fatalError);
+            logger.once('logger:fatal', fatalError);
+        }
 
         return cli;
     };
@@ -201,15 +205,7 @@ module.exports = (() => {
     };
 
     // TODO: docs
-    cli.runTests = () => {
-        const path = require('jsdoc/path');
-
-        const runner = Promise.promisify(require( path.join(env.dirname, 'test/runner') ));
-
-        console.log('Running tests...');
-
-        return runner();
-    };
+    cli.runTests = () => require('./test')();
 
     // TODO: docs
     cli.getVersion = () => `JSDoc ${env.version.number} (${env.version.revision})`;

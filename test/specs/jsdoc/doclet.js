@@ -1,12 +1,10 @@
 describe('jsdoc/doclet', () => {
     // TODO: more tests
     const _ = require('lodash');
-    const jsdoc = {
-        doclet: require('jsdoc/doclet')
-    };
-    const Doclet = jsdoc.doclet.Doclet;
+    const doclet = require('jsdoc/doclet');
+    const Doclet = doclet.Doclet;
 
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/doclet.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/doclet.js');
     const test1 = docSet.getByLongname('test1')[0];
     const test2 = docSet.getByLongname('test2')[0];
 
@@ -27,9 +25,9 @@ describe('jsdoc/doclet', () => {
     describe('setScope', () => {
         it('should accept the correct scope names', () => {
             function setScope(scopeName) {
-                const doclet = new Doclet('/** Huzzah, a doclet! */');
+                const newDoclet = new Doclet('/** Huzzah, a doclet! */');
 
-                doclet.setScope(scopeName);
+                newDoclet.setScope(scopeName);
             }
 
             _.values(require('jsdoc/name').SCOPE.NAMES).forEach(scopeName => {
@@ -39,9 +37,9 @@ describe('jsdoc/doclet', () => {
 
         it('should throw an error for invalid scope names', () => {
             function setScope() {
-                const doclet = new Doclet('/** Woe betide this doclet. */');
+                const newDoclet = new Doclet('/** Woe betide this doclet. */');
 
-                doclet.setScope('fiddlesticks');
+                newDoclet.setScope('fiddlesticks');
             }
 
             expect(setScope).toThrow();
@@ -61,7 +59,7 @@ describe('jsdoc/doclet', () => {
                  * Hello!
                  * @version 1.0.0
                  */`);
-            const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+            const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
             Object.getOwnPropertyNames(newDoclet).forEach(property => {
                 expect(newDoclet[property]).toEqual(primaryDoclet[property]);
@@ -78,7 +76,7 @@ describe('jsdoc/doclet', () => {
                 /**
                  * Hello!
                  */`);
-            const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+            const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
             expect(newDoclet.version).toBe('2.0.0');
         });
@@ -91,7 +89,7 @@ describe('jsdoc/doclet', () => {
             primaryDoclet.undocumented = true;
             secondaryDoclet.undocumented = true;
 
-            newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+            newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
             expect(newDoclet.undocumented).not.toBeDefined();
         });
@@ -113,7 +111,7 @@ describe('jsdoc/doclet', () => {
                      * @param {string} foo - The foo.
                      * @property {number} bar - The bar.
                      */`);
-                const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+                const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
                 properties.forEach(property => {
                     expect(newDoclet[property]).toEqual(primaryDoclet[property]);
@@ -128,7 +126,7 @@ describe('jsdoc/doclet', () => {
                      * @property {number} bar - The bar.
                      */`;
                 const secondaryDoclet = new Doclet(secondaryComment);
-                const newDoclet = jsdoc.doclet.combine(primaryDoclet, secondaryDoclet);
+                const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
                 properties.forEach(property => {
                     expect(newDoclet[property]).toEqual(secondaryDoclet[property]);

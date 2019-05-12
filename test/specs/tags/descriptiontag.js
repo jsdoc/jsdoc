@@ -1,5 +1,5 @@
 describe('@description tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/descriptiontag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/descriptiontag.js');
     const doc = docSet.getByLongname('x')[0];
     const doc2 = docSet.getByLongname('y')[0];
 

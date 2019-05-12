@@ -1,6 +1,6 @@
 describe('@tutorial tag', () => {
     // these are tests for the block usage, not the inline usage. see util/templateHelper for that.
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/tutorialtag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/tutorialtag.js');
     const doc = docSet.getByLongname('x')[0];
 
     it("adds the listed tutorials to a 'tutorials' array on the doclet", () => {

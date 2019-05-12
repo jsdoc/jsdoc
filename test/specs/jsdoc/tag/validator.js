@@ -21,6 +21,7 @@ describe('jsdoc/tag/validator', () => {
         const allowUnknown = Boolean(env.conf.tags.allowUnknownTags);
         const badTag = { title: 'lkjasdlkjfb' };
         const badTag2 = new tag.Tag('type', '{string} I am a string!');
+        let errorSpy;
         const meta = {
             filename: 'asdf.js',
             lineno: 1,
@@ -34,7 +35,7 @@ describe('jsdoc/tag/validator', () => {
         }
 
         beforeEach(() => {
-            spyOn(logger, 'error');
+            errorSpy = spyOn(logger, 'error');
             spyOn(logger, 'warn');
         });
 
@@ -106,7 +107,7 @@ describe('jsdoc/tag/validator', () => {
             env.conf.tags.allowUnknownTags = false;
             validateTag(badTag);
 
-            expect(logger.error.mostRecentCall.args[0]).toContain(meta.comment);
+            expect(errorSpy.calls.mostRecent().args[0]).toContain(meta.comment);
         });
     });
 });

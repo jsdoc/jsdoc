@@ -1,5 +1,5 @@
 describe('@yields tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/yieldstag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/yieldstag.js');
     const fibonacci = docSet.getByLongname('fibonacci')[0];
     const fibonacci2 = docSet.getByLongname('fibonacci2')[0];
     const fibonacci3 = docSet.getByLongname('fibonacci3')[0];

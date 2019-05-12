@@ -7,16 +7,16 @@ describe('@define tag', () => {
         const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
             env.conf.tags.allowUnknownTags = allowUnknownTags;
         });
 
         it('should not recognize the @define tag', () => {
             env.conf.tags.allowUnknownTags = false;
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
             spyOn(logger, 'error');
 
-            jasmine.getDocSetFromFile('test/fixtures/definetag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
@@ -24,15 +24,15 @@ describe('@define tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         afterEach(() => {
-            jasmine.restoreTagDictionary();
+            jsdoc.restoreTagDictionary();
         });
 
         it('should recognize the @define tag', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/definetag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
             const enableDebug = docSet.getByLongname('ENABLE_DEBUG')[0];
 
             expect(enableDebug.kind).toBe('constant');

@@ -1,5 +1,5 @@
 describe('@namespace tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/namespacetag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/namespacetag.js');
     const x = docSet.getByLongname('x')[0];
     const Foo = docSet.getByLongname('Foo')[0];
     const Bar = docSet.getByLongname('Bar')[0];

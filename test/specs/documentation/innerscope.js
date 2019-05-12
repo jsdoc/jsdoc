@@ -1,6 +1,6 @@
 describe('inner scope', () => {
     describe('Outer~inner.member cases', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/innerscope.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/innerscope.js');
         const to = docSet.getByLongname('Message~headers.to');
         const from = docSet.getByLongname('Message~headers.from');
         const response = docSet.getByLongname('Message~response.code');
@@ -19,7 +19,7 @@ describe('inner scope', () => {
     });
 
     describe('other cases', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/innerscope2.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/innerscope2.js');
         const from = docSet.getByLongname('<anonymous>~headers.from');
         const cache = docSet.getByLongname('<anonymous>~headers.cache');
 

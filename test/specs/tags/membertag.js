@@ -1,5 +1,5 @@
 describe('@member tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/membertag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/membertag.js');
     const doc = docSet.getByLongname('x')[0];
     const doc2 = docSet.getByLongname('foobar')[0];
     const doc3 = docSet.getByLongname('baz')[0];

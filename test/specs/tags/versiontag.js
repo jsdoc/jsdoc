@@ -1,5 +1,5 @@
 describe('@version tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/versiontag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/versiontag.js');
     const foo = docSet.getByLongname('foo')[0];
 
     it('When a symbol has a @version tag, the doclet has a version property set to that value.', () => {

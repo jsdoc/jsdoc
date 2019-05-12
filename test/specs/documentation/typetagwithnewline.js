@@ -1,5 +1,5 @@
 describe('@type tag containing a newline character', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/typetagwithnewline.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/typetagwithnewline.js');
     const mini = docSet.getByLongname('Matryoshka.mini')[0];
     const mega = docSet.getByLongname('Matryoshka.mega')[0];
 

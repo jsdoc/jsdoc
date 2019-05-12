@@ -1,5 +1,5 @@
 describe('@mixes tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/mixintag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/mixintag.js');
     const FormButton = docSet.getByLongname('FormButton')[0];
     const MyClass = docSet.getByLongname('MyClass')[0];
 

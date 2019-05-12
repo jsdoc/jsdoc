@@ -1,5 +1,5 @@
 describe('@todo tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/todotag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/todotag.js');
     const doc = docSet.getByLongname('x')[0];
 
     it("adds the entries into a 'todo' array on the doclet", () => {

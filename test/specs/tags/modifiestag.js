@@ -1,5 +1,5 @@
 describe('@modifies tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/modifiestag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/modifiestag.js');
     const mutator = docSet.getByLongname('mutator')[0];
 
     it('should add the specified types to the doclet\'s `modifies` property', () => {

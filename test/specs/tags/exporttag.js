@@ -10,17 +10,17 @@ describe('@export tag', () => {
     });
 
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
         env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('should not recognize the @export tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/exporttag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/exporttag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
@@ -28,11 +28,11 @@ describe('@export tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should recognize the @export tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/exporttag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/exporttag.js');
 
             expect(logger.error).not.toHaveBeenCalled();
         });

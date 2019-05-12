@@ -1,32 +1,28 @@
 describe('jsdoc/tag/inline', () => {
-    const jsdoc = {
-        tag: {
-            inline: require('jsdoc/tag/inline')
-        }
-    };
+    const inline = require('jsdoc/tag/inline');
 
     it('should exist', () => {
-        expect(jsdoc.tag.inline).toBeDefined();
-        expect(typeof jsdoc.tag.inline).toBe('object');
+        expect(inline).toBeDefined();
+        expect(typeof inline).toBe('object');
     });
 
     it('should export an isInlineTag function', () => {
-        expect(jsdoc.tag.inline.isInlineTag).toBeDefined();
-        expect(typeof jsdoc.tag.inline.isInlineTag).toBe('function');
+        expect(inline.isInlineTag).toBeDefined();
+        expect(typeof inline.isInlineTag).toBe('function');
     });
 
     it('should export a replaceInlineTag function', () => {
-        expect(jsdoc.tag.inline.replaceInlineTag).toBeDefined();
-        expect(typeof jsdoc.tag.inline.replaceInlineTag).toBe('function');
+        expect(inline.replaceInlineTag).toBeDefined();
+        expect(typeof inline.replaceInlineTag).toBe('function');
     });
 
     it('should export an extractInlineTag function', () => {
-        expect(jsdoc.tag.inline.extractInlineTag).toBeDefined();
-        expect(typeof jsdoc.tag.inline.replaceInlineTag).toBe('function');
+        expect(inline.extractInlineTag).toBeDefined();
+        expect(typeof inline.replaceInlineTag).toBe('function');
     });
 
     describe('isInlineTag', () => {
-        const isInlineTag = jsdoc.tag.inline.isInlineTag;
+        const isInlineTag = inline.isInlineTag;
 
         it('should correctly identify an inline tag', () => {
             expect( isInlineTag('{@mytag hooray}', 'mytag') ).toBe(true);
@@ -65,11 +61,11 @@ describe('jsdoc/tag/inline', () => {
     describe('replaceInlineTag', () => {
         it('should throw if the tag is matched and the replacer is invalid', () => {
             function badReplacerUndefined() {
-                jsdoc.tag.inline.replaceInlineTag('{@foo tag}', 'foo');
+                inline.replaceInlineTag('{@foo tag}', 'foo');
             }
 
             function badReplacerString() {
-                jsdoc.tag.inline.replaceInlineTag('{@foo tag}', 'foo', 'hello');
+                inline.replaceInlineTag('{@foo tag}', 'foo', 'hello');
             }
 
             expect(badReplacerUndefined).toThrow();
@@ -79,7 +75,7 @@ describe('jsdoc/tag/inline', () => {
         it('should not find anything if there is no text in braces', () => {
             const replacer = jasmine.createSpy('replacer');
 
-            jsdoc.tag.inline.replaceInlineTag('braceless text', 'foo', replacer);
+            inline.replaceInlineTag('braceless text', 'foo', replacer);
 
             expect(replacer).not.toHaveBeenCalled();
         });
@@ -87,7 +83,7 @@ describe('jsdoc/tag/inline', () => {
         it('should cope with bad escapement at the end of the string', () => {
             const replacer = jasmine.createSpy('replacer');
 
-            jsdoc.tag.inline.replaceInlineTag('bad {@foo escapement \\', 'foo', replacer);
+            inline.replaceInlineTag('bad {@foo escapement \\', 'foo', replacer);
 
             expect(replacer).not.toHaveBeenCalled();
         });
@@ -101,7 +97,7 @@ describe('jsdoc/tag/inline', () => {
                 return completeTag;
             }
 
-            const result = jsdoc.tag.inline.replaceInlineTag('{@foo text in braces}', 'foo',
+            const result = inline.replaceInlineTag('{@foo text in braces}', 'foo',
                 replacer);
 
             expect(result.tags[0]).toBeDefined();
@@ -120,7 +116,7 @@ describe('jsdoc/tag/inline', () => {
                 return string;
             }
 
-            const result = jsdoc.tag.inline.replaceInlineTag('{@foo test string} ahoy', 'foo',
+            const result = inline.replaceInlineTag('{@foo test string} ahoy', 'foo',
                 replacer);
 
             expect(result.tags[0]).toBeDefined();
@@ -139,7 +135,7 @@ describe('jsdoc/tag/inline', () => {
                 return string;
             }
 
-            const result = jsdoc.tag.inline.replaceInlineTag('a {@foo test string} yay', 'foo',
+            const result = inline.replaceInlineTag('a {@foo test string} yay', 'foo',
                 replacer);
 
             expect(result.tags[0]).toBeDefined();
@@ -158,7 +154,7 @@ describe('jsdoc/tag/inline', () => {
                 return string;
             }
 
-            const result = jsdoc.tag.inline.replaceInlineTag('a {@foo test string}', 'foo', replacer);
+            const result = inline.replaceInlineTag('a {@foo test string}', 'foo', replacer);
 
             expect(result.tags[0]).toBeDefined();
             expect(typeof result.tags[0]).toBe('object');
@@ -172,7 +168,7 @@ describe('jsdoc/tag/inline', () => {
                 return 'REPLACED!';
             }
 
-            const result = jsdoc.tag.inline.replaceInlineTag('a {@foo test string}', 'foo', replacer);
+            const result = inline.replaceInlineTag('a {@foo test string}', 'foo', replacer);
 
             expect(result.newString).toBe('REPLACED!');
         });
@@ -182,7 +178,7 @@ describe('jsdoc/tag/inline', () => {
                 return string.replace(completeTag, 'stuff');
             }
 
-            const result = jsdoc.tag.inline.replaceInlineTag('some {@foo text} with multiple ' +
+            const result = inline.replaceInlineTag('some {@foo text} with multiple ' +
                 '{@foo tags}, {@foo like} {@foo this}', 'foo', replacer);
 
             expect(result.tags.length).toBe(4);
@@ -216,7 +212,7 @@ describe('jsdoc/tag/inline', () => {
         it('should work with an empty replacer object', () => {
             const replacers = {};
             const text = 'some {@foo text} to parse';
-            const result = jsdoc.tag.inline.replaceInlineTags(text, replacers);
+            const result = inline.replaceInlineTags(text, replacers);
 
             expect(result.newString).toBe(text);
         });
@@ -231,7 +227,7 @@ describe('jsdoc/tag/inline', () => {
                     return string.replace(tagInfo.completeTag, 'stuff');
                 }
             };
-            const result = jsdoc.tag.inline.replaceInlineTags(text, replacers);
+            const result = inline.replaceInlineTags(text, replacers);
 
             expect(result.newString).toBe('some stuff with {@bar multiple} tags');
         });
@@ -252,7 +248,7 @@ describe('jsdoc/tag/inline', () => {
                     return string.replace(tagInfo.completeTag, 'awesome');
                 }
             };
-            const result = jsdoc.tag.inline.replaceInlineTags(text, replacers);
+            const result = inline.replaceInlineTags(text, replacers);
 
             expect(result.newString).toBe('some stuff with awesome tags');
         });
@@ -261,7 +257,7 @@ describe('jsdoc/tag/inline', () => {
     // largely covered by the replaceInlineTag tests
     describe('extractInlineTag', () => {
         it('should work when a tag is specified', () => {
-            const result = jsdoc.tag.inline.extractInlineTag('some {@tagged text}', 'tagged');
+            const result = inline.extractInlineTag('some {@tagged text}', 'tagged');
 
             expect(result.tags[0]).toBeDefined();
             expect(typeof result.tags[0]).toBe('object');

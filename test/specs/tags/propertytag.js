@@ -1,6 +1,6 @@
 describe('@property tag', () => {
     it('When a symbol has a @property tag, the property appears in the doclet.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/propertytag.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/propertytag.js');
         const myobject = docSet.getByLongname('myobject')[0];
 
         expect(typeof myobject.properties).toBe('object');
@@ -19,7 +19,7 @@ describe('@property tag', () => {
     });
 
     it('When a symbol has a @property tag for a numeric property, the property appears in the doclet.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/numericpropertytag.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/numericpropertytag.js');
         const numericObject = docSet.getByLongname('numericObject')[0];
 
         expect(typeof numericObject.properties).toBe('object');

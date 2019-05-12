@@ -10,17 +10,17 @@ describe('@preserve tag', () => {
     });
 
     afterEach(() => {
-        jasmine.restoreTagDictionary();
+        jsdoc.restoreTagDictionary();
         env.conf.tags.allowUnknownTags = allowUnknownTags;
     });
 
     describe('JSDoc tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('jsdoc');
+            jsdoc.replaceTagDictionary('jsdoc');
         });
 
         it('should not recognize the @preserve tag', () => {
-            jasmine.getDocSetFromFile('test/fixtures/preservetag.js');
+            jsdoc.getDocSetFromFile('test/fixtures/preservetag.js');
 
             expect(logger.error).toHaveBeenCalled();
         });
@@ -28,11 +28,11 @@ describe('@preserve tag', () => {
 
     describe('Closure Compiler tags', () => {
         beforeEach(() => {
-            jasmine.replaceTagDictionary('closure');
+            jsdoc.replaceTagDictionary('closure');
         });
 
         it('should set the doclet\'s `license` property to the tag value', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/preservetag.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/preservetag.js');
             const x = docSet.getByLongname('x')[0];
 
             expect(x.license).toBe('My cool license goes here.');

@@ -5,7 +5,7 @@ describe('lends', () => {
         }
 
         describe('standard case', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/lends.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/lends.js');
             const init = docSet.getByLongname('Person#initialize');
             const name = docSet.getByLongname('Person#name');
 
@@ -19,7 +19,7 @@ describe('lends', () => {
         });
 
         describe('case containing constructor', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/lends2.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/lends2.js');
             const person = docSet.getByLongname('Person').filter(removeUndocumented)[0];
             const name = docSet.getByLongname('Person#name');
 
@@ -37,7 +37,7 @@ describe('lends', () => {
         });
 
         describe('case that uses @lends in a multiline doclet', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/lends3.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/lends3.js');
             const init = docSet.getByLongname('Person#initialize');
             const name = docSet.getByLongname('Person#name');
 
@@ -51,7 +51,7 @@ describe('lends', () => {
         });
 
         describe('case that uses @lends within a closure', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/lends4.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/lends4.js');
             const person = docSet.getByLongname('Person');
             const say = docSet.getByLongname('Person#say');
 
@@ -67,7 +67,7 @@ describe('lends', () => {
         });
 
         describe('case that uses @lends within nested function calls', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/lends5.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/lends5.js');
             const person = docSet.getByLongname('Person').filter(removeUndocumented)[0];
             const say = docSet.getByLongname('Person#say').filter(removeUndocumented)[0];
 
@@ -83,7 +83,7 @@ describe('lends', () => {
         });
 
         describe('case that uses @lends twice within a closure', () => {
-            const docSet = jasmine.getDocSetFromFile('test/fixtures/lends6.js');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/lends6.js');
 
             it('The first class with a @lends tag should appear in the parse results', () => {
                 const person = docSet.getByLongname('Person').filter(removeUndocumented)[0];
@@ -114,7 +114,7 @@ describe('lends', () => {
     });
 
     describe('when a documented member is inside an objlit associated with a @lends tag that has no value.', () => {
-        const docSet = jasmine.getDocSetFromFile('test/fixtures/lendsglobal.js');
+        const docSet = jsdoc.getDocSetFromFile('test/fixtures/lendsglobal.js');
         const testf = docSet.getByLongname('test')[0];
         const test12 = docSet.getByLongname('test1.test2')[0];
 

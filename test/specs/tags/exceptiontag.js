@@ -1,5 +1,5 @@
 describe('@exception tag', () => {
-    const docSet = jasmine.getDocSetFromFile('test/fixtures/exceptiontag.js');
+    const docSet = jsdoc.getDocSetFromFile('test/fixtures/exceptiontag.js');
     const foo = docSet.getByLongname('foo')[0];
     const bar = docSet.getByLongname('bar')[0];
     const pez = docSet.getByLongname('pez')[0];
