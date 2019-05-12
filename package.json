@@ -16,6 +16,8 @@
     "@babel/parser": "^7.4.4",
     "bluebird": "^3.5.4",
     "catharsis": "^0.8.10",
+    "code-prettify": "^0.1.0",
+    "color-themes-for-google-code-prettify": "^2.0.4",
     "escape-string-regexp": "^2.0.0",
     "js2xmlparser": "^4.0.0",
     "klaw": "^3.0.0",
@@ -24,6 +26,7 @@
     "markdown-it-anchor": "^5.0.2",
     "marked": "^0.6.2",
     "mkdirp": "^0.5.1",
+    "open-sans-fonts": "^1.5.0",
     "requizzle": "^0.2.2",
     "strip-json-comments": "^3.0.1",
     "taffydb": "2.6.2"

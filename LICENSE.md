@@ -53,16 +53,6 @@ license, which is reproduced below:
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
 
-## Google Code Prettify
-
-Google Code Prettify is distributed under the Apache License 2.0, which is
-included with this package.
-
-Copyright (c) 2006 Google Inc.
-
-The source code for Google Code Prettify is available at:
-https://code.google.com/p/google-code-prettify/
-
 ## Jasmine
 
 Jasmine is distributed under the MIT license, which is reproduced above.
@@ -80,23 +70,3 @@ Copyright (c) 2010 Adam Abrons and Misko Hevery (http://getangular.com).
 
 The source code for jasmine-node is available at:
 https://github.com/mhevery/jasmine-node
-
-## Open Sans
-
-Open Sans is distributed under the Apache License 2.0, which is
-included with this package.
-
-Copyright (c) 2010-2011, Google Inc.
-
-This typeface, including the complete set of variations, are available at:
-https://fonts.google.com/specimen/Open+Sans
-
-## Tomorrow theme for Google Code Prettify
-
-The Tomorrow theme for Google Code Prettify is distributed under the MIT
-license, which is reproduced above.
-
-Copyright (c) 2016 Yoshihide Jimbo.
-
-The source code for the Tomorrow theme is available at:
-https://github.com/jmblog/color-themes-for-google-code-prettify

@@ -12,6 +12,22 @@ const linkto = helper.linkto;
 const resolveAuthorLinks = helper.resolveAuthorLinks;
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
+const FONT_NAMES = [
+    'OpenSans-Bold',
+    'OpenSans-BoldItalic',
+    'OpenSans-Italic',
+    'OpenSans-Light',
+    'OpenSans-LightItalic',
+    'OpenSans-Regular'
+];
+const PRETTIFIER_CSS_FILES = [
+    'tomorrow.min.css'
+];
+const PRETTIFIER_SCRIPT_FILES = [
+    'lang-css.js',
+    'prettify.js'
+];
+
 let data;
 let view;
 
@@ -504,6 +520,49 @@ exports.publish = (taffyData, opts, tutorials) => {
 
         fs.mkPath(toDir);
         fs.copyFileSync(fileName, toDir);
+    });
+
+    // copy the fonts used by the template to outdir
+    staticFiles = fs.ls(path.join(require.resolve('open-sans-fonts'), '..', 'open-sans'), 3);
+
+    staticFiles.forEach(fileName => {
+        const toDir = path.join(outdir, 'fonts');
+
+        if (FONT_NAMES.includes(path.parse(fileName).name)) {
+            fs.mkPath(toDir);
+            fs.copyFileSync(fileName, toDir);
+        }
+    });
+
+    // copy the prettify script to outdir
+    PRETTIFIER_SCRIPT_FILES.forEach(fileName => {
+        const toDir = path.join(outdir, 'scripts');
+
+        fs.copyFileSync(
+            path.join(require.resolve('code-prettify'), '..', fileName),
+            toDir
+        );
+    });
+
+    // copy the prettify CSS to outdir
+    PRETTIFIER_CSS_FILES.forEach(fileName => {
+        const toDir = path.join(outdir, 'styles');
+
+        fs.copyFileSync(
+            // `require.resolve()` has trouble with this package, so we use an extra-hacky way to
+            // get the filepath.
+            path.join(
+                templatePath,
+                '..',
+                '..',
+                'node_modules',
+                'color-themes-for-google-code-prettify',
+                'dist',
+                'themes',
+                fileName
+            ),
+            toDir
+        );
     });
 
     // copy user-specified static files to outdir
