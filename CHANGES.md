@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.2 (May 2019)
+
+Fixes an issue that prevented ES 2015 classes from appearing in generated docs. ([#1644][1644])
+
+
 ## 3.6.1 (May 2019)
 
 Prevents a crash when using type applications in Node.js 12. ([#1643][1643])
@@ -12,7 +17,7 @@ Prevents a crash when using type applications in Node.js 12. ([#1643][1643])
 
 ### Major changes
 
-+ JSDoc is now compatible with Node.js 12.
++ JSDoc is now compatible with Node.js 12, and it requires Node.js 8.15.0 or later.
 + JSDoc now recognizes all documented Closure Compiler tags. ([#605][605])
 
 ### Enhancements
@@ -804,3 +809,4 @@ Initial release.
 [1410]: https://github.com/jsdoc/jsdoc/issues/1410
 [1412]: https://github.com/jsdoc/jsdoc/issues/1412
 [1643]: https://github.com/jsdoc/jsdoc/issues/1643
+[1644]: https://github.com/jsdoc/jsdoc/issues/1644
