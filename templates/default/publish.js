@@ -6,7 +6,6 @@ const logger = require('jsdoc/util/logger');
 const path = require('jsdoc/path');
 const taffy = require('taffydb').taffy;
 const template = require('jsdoc/template');
-const util = require('util');
 
 const htmlsafe = helper.htmlsafe;
 const linkto = helper.linkto;
@@ -100,8 +99,7 @@ function updateItemName(item) {
     }
 
     if (attributes && attributes.length) {
-        itemName = util.format( '%s<span class="signature-attributes">%s</span>', itemName,
-            attributes.join(', ') );
+        itemName = `${itemName}<span class="signature-attributes">${attributes.join(', ')}</span>`;
     }
 
     return itemName;
@@ -127,7 +125,7 @@ function buildAttribsString(attribs) {
     let attribsString = '';
 
     if (attribs && attribs.length) {
-        attribsString = htmlsafe( util.format('(%s) ', attribs.join(', ')) );
+        htmlsafe(`(${attribs.join(', ')}) `);
     }
 
     return attribsString;
@@ -146,7 +144,7 @@ function addNonParamAttributes(items) {
 function addSignatureParams(f) {
     const params = f.params ? addParamAttributes(f.params) : [];
 
-    f.signature = util.format( '%s(%s)', (f.signature || ''), params.join(', ') );
+    f.signature = `${f.signature || ''}(${params.join(', ')})`;
 }
 
 function addSignatureReturns(f) {
@@ -175,23 +173,25 @@ function addSignatureReturns(f) {
         returnTypes = addNonParamAttributes(source);
     }
     if (returnTypes.length) {
-        returnTypesString = util.format( ' &rarr; %s{%s}', attribsString, returnTypes.join('|') );
+        returnTypesString = ` &rarr; ${attribsString}{${returnTypes.join('|')}}`;
     }
 
-    f.signature = `<span class="signature">${f.signature || ''}</span><span class="type-signature">${returnTypesString}</span>`;
+    f.signature = `<span class="signature">${f.signature || ''}</span>` +
+        `<span class="type-signature">${returnTypesString}</span>`;
 }
 
 function addSignatureTypes(f) {
     const types = f.type ? buildItemTypeStrings(f) : [];
 
-    f.signature = `${f.signature || ''}<span class="type-signature">${types.length ? ` :${types.join('|')}` : ''}</span>`;
+    f.signature = `${f.signature || ''}<span class="type-signature">` +
+        `${types.length ? ` :${types.join('|')}` : ''}</span>`;
 }
 
 function addAttribs(f) {
     const attribs = helper.getAttribs(f);
     const attribsString = buildAttribsString(attribs);
 
-    f.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
+    f.attribs = `<span class="type-signature">${attribsString}</span>`;
 }
 
 function shortenPaths(files, commonPrefix) {

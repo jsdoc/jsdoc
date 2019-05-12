@@ -4,7 +4,6 @@ const exec = require('child_process').exec;
 const gulp = require('gulp');
 const jsonEditor = require('gulp-json-editor');
 const path = require('path');
-const util = require('util');
 
 function execCb(cb, err, stdout, stderr) {
     console.log(stdout);
@@ -41,7 +40,7 @@ function bump(cb) {
 }
 
 function coverage(cb) {
-    const cmd = util.format('./node_modules/.bin/nyc --reporter=html %s -T', options.nodeBin);
+    const cmd = `./node_modules/.bin/nyc --reporter=html ${options.nodeBin} -T`;
 
     exec(cmd, execCb.bind(null, cb));
 }
@@ -56,7 +55,7 @@ function lint(cb) {
 }
 
 function test(cb) {
-    const cmd = util.format('%s "%s" -T', options.nodePath, options.nodeBin);
+    const cmd = `${options.nodePath} "${options.nodeBin}" -T`;
 
     exec(cmd, execCb.bind(null, cb));
 }
