@@ -47,7 +47,7 @@ module.exports = (() => {
 
     // TODO: docs
     cli.loadConfig = () => {
-        const _ = require('underscore');
+        const _ = require('lodash');
         const args = require('jsdoc/opts/args');
         const Config = require('jsdoc/config');
         let config;
