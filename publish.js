@@ -15,30 +15,13 @@
 */
 const config = require('./lib/config');
 let DocletHelper;
-const env = require('jsdoc/env');
 let finders;
 const helper = require('jsdoc/util/templateHelper');
-const logger = require('jsdoc/util/logger');
 let PublishJob;
-const semver = require('semver');
 let Template;
-
-const REQUIRED_JSDOC_VERSION = '>=3.4.3';
 
 // Intl.PluralRules polyfill
 require('intl-pluralrules');
-
-function checkJsdocVersion() {
-    const version = env.version.number;
-    // strip prerelease identifiers, because, for example, '3.6.0-pre' does not satisfy '>=3.4.3'
-    const strippedVersion = `${semver.major(version)}.${semver.minor(version)}.` +
-        `${semver.patch(version)}`;
-
-    if (!semver.satisfies(strippedVersion, REQUIRED_JSDOC_VERSION)) {
-        logger.fatal('The Baseline template requires JSDoc %s, but you are running JSDoc %s.',
-            REQUIRED_JSDOC_VERSION, version);
-    }
-}
 
 function init(filepaths) {
     finders = {
@@ -56,7 +39,6 @@ exports.publish = (data, opts, tutorials) => {
     let job;
     let template;
 
-    checkJsdocVersion();
     // load the core modules using the file finder
     init(conf.modules);
 
