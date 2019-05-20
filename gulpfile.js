@@ -14,6 +14,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
+const ConsoleReporter = require('jasmine-console-reporter');
 const csso = require('gulp-csso');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp');
@@ -36,9 +37,12 @@ function patchRequire() {
 }
 
 const bowerPath = './bower_components';
-// TODO: make this configurable
 const source = {
     code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
+    helpers: [
+        './test/helpers/**/*.js',
+        './node_modules/jasmine-expect'
+    ],
     js: {
         copy: [
             path.join(bowerPath, 'jquery/dist/jquery.min.js')
@@ -60,23 +64,6 @@ const target = {
     css: './static/css',
     js: './static/scripts'
 };
-
-function coverage(cb) {
-    let istanbul;
-
-    patchRequire();
-    istanbul = require('gulp-istanbul');
-
-    gulp.src(source.code)
-        .pipe(istanbul())
-        .pipe(istanbul.hookRequire())
-        .on('finish', () => {
-            gulp.src(source.tests)
-                .pipe(require('gulp-mocha')())
-                .pipe(istanbul.writeReports())
-                .on('end', cb);
-        });
-}
 
 function css() {
     return gulp.src(source.less)
@@ -113,20 +100,58 @@ function lint() {
         .pipe(eslint.failOnError());
 }
 
-function mocha() {
-    patchRequire();
+function jasmine() {
+    let gulpJasmine;
+    const reporter = new ConsoleReporter({
+        beep: false,
+        verbosity: {
+            disabled: false,
+            pending: false,
+            specs: false,
+            summary: true
+        }
+    });
 
-    return gulp.src(source.tests, { read: false })
-        .pipe(require('gulp-mocha')());
+    patchRequire();
+    gulpJasmine = require('gulp-jasmine')({
+        config: {
+            helpers: source.helpers,
+            random: false
+        },
+        reporter
+    });
+
+    require('add-matchers').addMatchers({
+        toBeInstanceOf: (klass, obj) => {
+            const actualClassName = obj && obj.constructor ? obj.constructor.name : undefined;
+            let expectedClassName;
+
+            if (typeof klass === 'string') {
+                expectedClassName = klass;
+            } else {
+                expectedClassName = klass.name;
+            }
+
+            if (actualClassName !== expectedClassName) {
+                return false;
+            }
+
+            return true;
+        }
+    });
+
+    return gulp.src(source.tests)
+        .pipe(gulpJasmine);
 }
 
-exports.coverage = coverage;
 exports.css = css;
 exports['css-minify'] = cssMinify;
+exports.jasmine = jasmine;
 exports['js-copy'] = jsCopy;
 exports['js-minify'] = jsMinify;
 exports.lint = lint;
-exports.mocha = mocha;
+// For backwards compatibility.
+exports.mocha = jasmine;
 
 exports.js = gulp.series(exports['js-copy'], exports['js-minify']);
 exports.build = gulp.parallel(exports['css-minify'], exports.js);
