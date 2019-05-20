@@ -25,6 +25,9 @@ let Template;
 
 const REQUIRED_JSDOC_VERSION = '>=3.4.3';
 
+// Intl.PluralRules polyfill
+require('intl-pluralrules');
+
 function checkJsdocVersion() {
     const version = env.version.number;
     // strip prerelease identifiers, because, for example, '3.6.0-pre' does not satisfy '>=3.4.3'

@@ -78,58 +78,46 @@ function coverage(cb) {
         });
 }
 
-function css(cb) {
-    gulp.src(source.less)
+function css() {
+    return gulp.src(source.less)
         .pipe(less())
         .pipe(gulp.dest(target.css));
-
-    cb();
 }
 
-function cssMinify(cb) {
-    gulp.src(source.less)
+function cssMinify() {
+    return gulp.src(source.less)
         .pipe(less())
         .pipe(csso())
         .pipe(gulp.dest(target.css));
-
-    cb();
 }
 
-function jsCopy(cb) {
+function jsCopy() {
     source.js.copy.forEach(item => {
         gulp.src(item)
             .pipe(gulp.dest(target.js));
     });
-
-    cb();
 }
 
-function jsMinify(cb) {
+function jsMinify() {
     source.js.minify.forEach(item => {
         gulp.src(item)
             .pipe(uglify())
             .pipe(gulp.dest(target.js));
     });
-
-    cb();
 }
 
-function lint(cb) {
-    gulp.src(source.code.concat(source.tests))
+function lint() {
+    return gulp.src(source.code.concat(source.tests))
         .pipe(eslint())
         .pipe(eslint.formatEach())
         .pipe(eslint.failOnError());
-
-    cb();
 }
 
-function mocha(cb) {
+function mocha() {
     patchRequire();
 
-    gulp.src(source.tests, { read: false })
+    return gulp.src(source.tests, { read: false })
         .pipe(require('gulp-mocha')());
-
-    cb();
 }
 
 exports.coverage = coverage;
