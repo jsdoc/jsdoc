@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.3 (July 2019)
+
+Updates dependencies.
+
+
 ## 3.6.2 (May 2019)
 
 Fixes an issue that prevented ES 2015 classes from appearing in generated docs. ([#1644][1644])
