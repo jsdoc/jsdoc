@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "version": "4.0.0-dev",
-  "revision": "1557679849716",
+  "revision": "1563126982480",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
     "documentation",
@@ -13,31 +13,31 @@
     "url": "https://github.com/jsdoc/jsdoc"
   },
   "dependencies": {
-    "@babel/parser": "^7.4.4",
-    "bluebird": "^3.5.4",
+    "@babel/parser": "^7.5.0",
+    "bluebird": "^3.5.5",
     "catharsis": "^0.8.11",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
     "escape-string-regexp": "^2.0.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.14",
     "markdown-it": "^8.4.2",
     "markdown-it-anchor": "^5.0.2",
     "marked": "^0.7.0",
     "mkdirp": "^0.5.1",
-    "open-sans-fonts": "^1.5.0",
+    "open-sans-fonts": "^1.5.1",
     "requizzle": "^0.2.3",
     "strip-json-comments": "^3.0.1",
     "taffydb": "2.6.2"
   },
   "devDependencies": {
-    "ajv": "^6.10.0",
-    "gulp": "^4.0.1",
+    "ajv": "^6.10.2",
+    "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-json-editor": "^2.5.2",
-    "jasmine": "^3.3.1",
+    "jasmine": "^3.4.0",
     "jasmine-console-reporter": "^3.1.0",
     "klaw-sync": "^6.0.0",
-    "nyc": "^14.1.0"
+    "nyc": "^14.1.1"
   },
   "engines": {
     "node": ">=8.15.0"
