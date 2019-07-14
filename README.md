@@ -23,8 +23,8 @@ To install the latest version on npm locally and save it in your package's
     npm install --save-dev jsdoc
 
 **Note**: By default, npm adds your package using the caret operator in front of
-the version number (for example, `^3.5.2`). We recommend using the tilde
-operator instead (for example, `~3.5.2`), which limits updates to the most
+the version number (for example, `^3.6.3`). We recommend using the tilde
+operator instead (for example, `~3.6.3`), which limits updates to the most
 recent patch-level version. See
 [this Stack Overflow answer](https://stackoverflow.com/questions/22343224) for
 more information about the caret and tilde operators.
