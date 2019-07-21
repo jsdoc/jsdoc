@@ -1,6 +1,6 @@
 # JSDoc
 
-[![Build Status](https://travis-ci.org/jsdoc/jsdoc.svg?branch=master)](http://travis-ci.org/jsdoc/jsdoc)
+[![Build Status](https://travis-ci.org/jsdoc/jsdoc.svg?branch=master)](http://travis-ci.org/jsdoc/jsdoc) [![Greenkeeper badge](https://badges.greenkeeper.io/jsdoc/jsdoc.svg)](https://greenkeeper.io/)
 
 An API documentation generator for JavaScript.
 
