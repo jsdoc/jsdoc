@@ -3,6 +3,7 @@
 .eslintrc.js
 .gitignore
 .github/
+.renovaterc.json
 .travis.yml
 CHANGES.md
 CODE_OF_CONDUCT.md

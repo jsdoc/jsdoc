@@ -50,11 +50,6 @@
   "bin": {
     "jsdoc": "./jsdoc.js"
   },
-  "greenkeeper": {
-    "ignore": [
-      "taffydb"
-    ]
-  },
   "bugs": "https://github.com/jsdoc/jsdoc/issues",
   "author": {
     "name": "Michael Mathews",
