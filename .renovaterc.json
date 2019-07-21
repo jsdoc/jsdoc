@@ -6,6 +6,5 @@
     "ignoreDeps": [
         "taffydb"
     ],
-    "rangeStrategy": "bump",
-    "updateTypes": "patch"
+    "rangeStrategy": "bump"
 }
