@@ -1,6 +1,6 @@
 .editorconfig
 .eslintignore
-.eslintrc.json
+.eslintrc.js
 .gitignore
 .github/
 .travis.yml
