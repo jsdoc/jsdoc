@@ -8,4 +8,6 @@ CHANGES.md
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 gulpfile.js
+lerna.json
+packages/
 test/

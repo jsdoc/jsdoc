@@ -1,0 +1,29 @@
+{
+  "name": "@jsdoc/eslint-config",
+  "version": "1.0.0",
+  "description": "Default ESLint configuration for JSDoc packages.",
+  "keywords": [
+    "eslint",
+    "jsdoc"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://github.com/jsdoc/jsdoc#readme",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "peerDependencies": {
+    "eslint": ">= 6"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  }
+}
