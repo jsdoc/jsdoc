@@ -38,7 +38,7 @@
     "jasmine": "^3.4.0",
     "jasmine-console-reporter": "^3.1.0",
     "klaw-sync": "^6.0.0",
-    "lerna": "^3.16.2",
+    "lerna": "^3.16.3",
     "nyc": "^14.1.1"
   },
   "engines": {
