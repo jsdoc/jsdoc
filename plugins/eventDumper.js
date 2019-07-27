@@ -5,7 +5,7 @@
  */
 const _ = require('lodash');
 const doop = require('jsdoc/util/doop');
-const dump = require('jsdoc/util/dumper').dump;
+const { dump } = require('jsdoc/util/dumper');
 const env = require('jsdoc/env');
 
 const conf = env.conf.eventDumper || {};

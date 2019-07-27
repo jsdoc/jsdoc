@@ -1,6 +1,6 @@
 /* eslint max-nested-callbacks: 0 */
 const eslint = require('gulp-eslint');
-const exec = require('child_process').exec;
+const { exec } = require('child_process');
 const gulp = require('gulp');
 const jsonEditor = require('gulp-json-editor');
 const path = require('path');
