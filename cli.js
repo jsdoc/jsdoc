@@ -364,7 +364,7 @@ module.exports = (() => {
     };
 
     cli.dumpParseResults = () => {
-        console.log(require('jsdoc/util/dumper').dump(props.docs));
+        console.log(JSON.stringify(props.docs, null, 4));
 
         return cli;
     };

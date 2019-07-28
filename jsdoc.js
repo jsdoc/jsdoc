@@ -46,7 +46,6 @@
 global.env = (() => require('./lib/jsdoc/env'))();
 
 (() => {
-    const env = global.env;
     const cli = require('./cli');
 
     function cb(errorCode) {
@@ -58,23 +57,6 @@ global.env = (() => require('./lib/jsdoc/env'))();
         .loadConfig()
         .configureLogger()
         .logStart();
-
-    if (env.opts.debug) {
-        /**
-         * Recursively print an object's properties to stdout. This method is safe to use with
-         * objects that contain circular references.
-         *
-         * This method is available only when JSDoc is run with the `--debug` option.
-         *
-         * @global
-         * @name dump
-         * @private
-         * @param {...*} obj - Object(s) to print to stdout.
-         */
-        global.dump = (...args) => {
-            console.log(require('./lib/jsdoc/util/dumper').dump(args));
-        };
-    }
 
     cli.runCommand(cb);
 })();
