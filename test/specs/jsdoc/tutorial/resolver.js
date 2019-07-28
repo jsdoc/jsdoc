@@ -19,7 +19,7 @@ describe('jsdoc/tutorial/resolver', () => {
     function loadTutorials() {
         resetRootTutorial();
 
-        resolver.load(`${env.dirname}/test/tutorials/tutorials`);
+        resolver.load(`${env.dirname}/test/fixtures/tutorials/tutorials`);
 
         childNames = resolver.root.children.map(({name}) => name);
         test = resolver.root.getByName('test');
@@ -143,7 +143,7 @@ describe('jsdoc/tutorial/resolver', () => {
             resetRootTutorial();
 
             function loadBomTutorials() {
-                resolver.load(`${env.dirname}/test/tutorials/bom`);
+                resolver.load(`${env.dirname}/test/fixtures/tutorials/bom`);
             }
 
             expect(loadBomTutorials).not.toThrow();
@@ -211,7 +211,7 @@ describe('jsdoc/tutorial/resolver', () => {
         });
 
         it('logs an error for missing tutorials', () => {
-            resolver.load(`${env.dirname}/test/tutorials/incomplete`);
+            resolver.load(`${env.dirname}/test/fixtures/tutorials/incomplete`);
             resolver.resolve();
 
             expect(logger.error).toHaveBeenCalled();
@@ -227,7 +227,7 @@ describe('jsdoc/tutorial/resolver', () => {
         });
 
         it('allows tutorials to be defined in one .json file and redefined in another', () => {
-            resolver.load(`${env.dirname}/test/tutorials/duplicateDefined`);
+            resolver.load(`${env.dirname}/test/fixtures/tutorials/duplicateDefined`);
             resolver.resolve();
 
             expect(logger.error).not.toHaveBeenCalled();

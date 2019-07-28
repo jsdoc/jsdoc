@@ -1304,7 +1304,7 @@ describe("jsdoc/util/templateHelper", () => {
             let url;
 
             // load the tutorials we already have for the tutorials tests
-            resolver.load(`${env.dirname}/test/tutorials/tutorials`);
+            resolver.load(`${env.dirname}/test/fixtures/tutorials/tutorials`);
             resolver.resolve();
 
             url = helper.tutorialToUrl('test');
@@ -1393,7 +1393,7 @@ describe("jsdoc/util/templateHelper", () => {
             let link;
 
             // load the tutorials we already have for the tutorials tests
-            resolver.load(`${env.dirname}/test/tutorials/tutorials`);
+            resolver.load(`${env.dirname}/test/fixtures/tutorials/tutorials`);
             resolver.resolve();
 
             link = helper.toTutorial('constructor', 'The Constructor tutorial');
