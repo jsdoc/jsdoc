@@ -4,7 +4,6 @@
  * @module plugins/eventDumper
  */
 const _ = require('lodash');
-const doop = require('jsdoc/util/doop');
 const { dump } = require('jsdoc/util/dumper');
 const env = require('jsdoc/env');
 
@@ -39,13 +38,13 @@ function replaceNodeObjects(o) {
 
     if (o.code && o.code.node) {
         // don't break the original object!
-        o.code = doop(o.code);
+        o.code = _.cloneDeep(o.code);
         o.code.node = OBJECT_PLACEHOLDER;
     }
 
     if (o.doclet && o.doclet.meta && o.doclet.meta.code && o.doclet.meta.code.node) {
         // don't break the original object!
-        o.doclet.meta.code = doop(o.doclet.meta.code);
+        o.doclet.meta.code = _.cloneDeep(o.doclet.meta.code);
         o.doclet.meta.code.node = OBJECT_PLACEHOLDER;
     }
 

@@ -1,4 +1,4 @@
-const doop = require('jsdoc/util/doop');
+const _ = require('lodash');
 const env = require('jsdoc/env');
 const fs = require('jsdoc/fs');
 const helper = require('jsdoc/util/templateHelper');
@@ -303,7 +303,7 @@ function attachModuleSymbols(doclets, modules) {
                 // we want to show the constructor-signature heading no matter what.
                 .filter(({description, kind}) => description || kind === 'class')
                 .map(symbol => {
-                    symbol = doop(symbol);
+                    symbol = _.cloneDeep(symbol);
 
                     if (symbol.kind === 'class' || symbol.kind === 'function') {
                         symbol.name = `${symbol.name.replace('module:', '(require("')}"))`;
