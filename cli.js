@@ -12,7 +12,7 @@
 module.exports = (() => {
     const env = require('jsdoc/env');
     const logger = require('jsdoc/util/logger');
-    const stripBom = require('jsdoc/util/stripbom');
+    const stripBom = require('strip-bom');
     const stripJsonComments = require('strip-json-comments');
     const Promise = require('bluebird');
 
@@ -33,8 +33,8 @@ module.exports = (() => {
         const path = require('path');
 
         // allow this to throw--something is really wrong if we can't read our own package file
-        const info = JSON.parse( stripBom.strip(fs.readFileSync(path.join(env.dirname, 'package.json'),
-            'utf8')) );
+        const info = JSON.parse(stripBom(fs.readFileSync(path.join(env.dirname, 'package.json'),
+            'utf8')));
 
         env.version = {
             number: info.version,

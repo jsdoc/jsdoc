@@ -27,6 +27,7 @@
     "mkdirp": "^0.5.1",
     "open-sans-fonts": "^1.5.1",
     "requizzle": "^0.2.3",
+    "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.0.1",
     "taffydb": "2.6.2"
   },
