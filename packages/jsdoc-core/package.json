@@ -1,0 +1,30 @@
+{
+  "name": "@jsdoc/core",
+  "version": "0.1.0",
+  "description": "Core functionality for JSDoc.",
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://jsdoc.app/",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  },
+  "dependencies": {
+    "cosmiconfig": "^5.2.1",
+    "lodash": "^4.17.15",
+    "strip-bom": "^4.0.0",
+    "strip-json-comments": "^3.0.1"
+  },
+  "devDependencies": {
+    "mock-fs": "^4.10.1"
+  }
+}
