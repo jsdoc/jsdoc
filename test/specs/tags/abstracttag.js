@@ -9,7 +9,7 @@ describe('@abstract tag', () => {
     });
 
     it('should set the doclet\'s "virtual" property to true when "@abstract" tag is present', () => {
-        expect(thingyPez.virtual).toBe(true);
-        expect(otherThingyPez.virtual).toBe(true);
+        expect(thingyPez.virtual).toBeTrue();
+        expect(otherThingyPez.virtual).toBeTrue();
     });
 });

@@ -5,11 +5,11 @@ describe('longnames with special characters', () => {
 
     it('should use the correct longname for instance members of "this" whose names contain ' +
         'scope punctuation', () => {
-        expect(portNumber).toBeDefined();
+        expect(portNumber).toBeObject();
     });
 
     it('should use the correct longname for instance members of the prototype whose names ' +
         'contain scope punctuation', () => {
-        expect(open).toBeDefined();
+        expect(open).toBeObject();
     });
 });

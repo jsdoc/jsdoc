@@ -4,8 +4,8 @@ describe('quoted names', () => {
         const found1 = docSet.getByLongname('chat."#channel".open')[0];
 
         it('should have correct name and memberof', () => {
-            expect(found1.name).toEqual('open');
-            expect(found1.memberof).toEqual('chat."#channel"');
+            expect(found1.name).toBe('open');
+            expect(found1.memberof).toBe('chat."#channel"');
         });
     });
 
@@ -14,8 +14,8 @@ describe('quoted names', () => {
         const found1 = docSet.getByLongname('contacts."say-\\"hello\\"@example.com".username')[0];
 
         it('should have correct name and memberof', () => {
-            expect(found1.name).toEqual('username');
-            expect(found1.memberof).toEqual('contacts."say-\\"hello\\"@example.com"');
+            expect(found1.name).toBe('username');
+            expect(found1.memberof).toBe('contacts."say-\\"hello\\"@example.com"');
         });
     });
 });

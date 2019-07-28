@@ -7,12 +7,12 @@ describe('module that exports a constructor', () => {
         const id = docSet.getByLongname('module:mymodule/config#id')[0];
 
         it('should include one doclet whose kind is "module"', () => {
-            expect(modules.length).toBe(1);
+            expect(modules).toBeArrayOfSize(1);
             expect(modules[0].kind).toBe('module');
         });
 
         it('should include one doclet whose kind is "class"', () => {
-            expect(classes.length).toBe(1);
+            expect(classes).toBeArrayOfSize(1);
             expect(classes[0].kind).toBe('class');
         });
 
@@ -51,12 +51,12 @@ describe('module that exports a constructor', () => {
         const id = docSet.getByLongname('module:mymodule/config#id')[0];
 
         it('should include one doclet whose kind is "module"', () => {
-            expect(modules.length).toBe(1);
+            expect(modules).toBeArrayOfSize(1);
             expect(modules[0].kind).toBe('module');
         });
 
         it('should include one complete class doclet', () => {
-            expect(classes.length).toBe(1);
+            expect(classes).toBeArrayOfSize(1);
             expect(classes[0].kind).toBe('class');
         });
 

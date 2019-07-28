@@ -19,9 +19,7 @@ describe('@member tag', () => {
     });
 
     it("If specified with a type and name, sets the doclet's type appropriately", () => {
-        expect(doc3.type).toBeDefined();
-        expect(Array.isArray(doc3.type.names)).toBeTruthy();
-        expect(doc3.type.names.length).toBe(1);
+        expect(doc3.type.names).toBeArrayOfSize(1);
         expect(doc3.type.names[0]).toBe('string');
     });
 
@@ -30,9 +28,7 @@ describe('@member tag', () => {
     });
 
     it("If specified with a type but no name, sets the doclet's type appropriately", () => {
-        expect(doc4.type).toBeDefined();
-        expect(Array.isArray(doc4.type.names)).toBeTruthy();
-        expect(doc4.type.names.length).toBe(1);
+        expect(doc4.type.names).toBeArrayOfSize(1);
         expect(doc4.type.names[0]).toBe('Object');
     });
 });

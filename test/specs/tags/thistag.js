@@ -19,7 +19,7 @@ describe('@this tag', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/thistag.js');
             const fooName = docSet.getByLongname('Foo#name')[0];
 
-            expect(typeof fooName).toBe('object');
+            expect(fooName).toBeObject();
             expect(fooName.name).toBe('name');
             expect(fooName.memberof).toBe('Foo');
             expect(fooName.scope).toBe('instance');
@@ -42,7 +42,7 @@ describe('@this tag', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/thistag2.js');
             const fooName = docSet.getByLongname('Foo#name')[0];
 
-            expect(typeof fooName).toBe('object');
+            expect(fooName).toBeObject();
             expect(fooName.name).toBe('name');
             expect(fooName.memberof).toBe('Foo');
             expect(fooName.scope).toBe('instance');

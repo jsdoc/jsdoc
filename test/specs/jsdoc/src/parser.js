@@ -8,27 +8,26 @@ describe('jsdoc/src/parser', () => {
     const path = require('jsdoc/path');
 
     it('should exist', () => {
-        expect(jsdocParser).toBeDefined();
-        expect(typeof jsdocParser).toBe('object');
+        expect(jsdocParser).toBeObject();
     });
 
     it('should export a "createParser" method', () => {
-        expect(typeof jsdocParser.createParser).toBe('function');
+        expect(jsdocParser.createParser).toBeFunction();
     });
 
     it('should export a "Parser" constructor', () => {
-        expect(typeof jsdocParser.Parser).toBe('function');
+        expect(jsdocParser.Parser).toBeFunction();
     });
 
     describe('createParser', () => {
         it('should return a Parser when called without arguments', () => {
-            expect(typeof jsdocParser.createParser()).toBe('object');
+            expect(jsdocParser.createParser()).toBeObject();
         });
 
         it('should create a jsdoc/src/parser.Parser instance with the argument "js"', () => {
             const parser = jsdocParser.createParser('js');
 
-            expect(parser instanceof jsdocParser.Parser).toBe(true);
+            expect(parser instanceof jsdocParser.Parser).toBeTrue();
         });
 
         it('should log a fatal error on bad input', () => {
@@ -49,15 +48,15 @@ describe('jsdoc/src/parser', () => {
         newParser();
 
         it('should have an "astBuilder" property', () => {
-            expect(parser.astBuilder).toBeDefined();
+            expect(parser.astBuilder).toBeObject();
         });
 
         it('should have a "visitor" property', () => {
-            expect(parser.visitor).toBeDefined();
+            expect(parser.visitor).toBeObject();
         });
 
         it('should have a "walker" property', () => {
-            expect(parser.walker).toBeDefined();
+            expect(parser.walker).toBeObject();
         });
 
         it('should accept an astBuilder, visitor, and walker as arguments', () => {
@@ -77,40 +76,42 @@ describe('jsdoc/src/parser', () => {
         });
 
         it('should have a "parse" method', () => {
-            expect(parser.parse).toBeDefined();
-            expect(typeof parser.parse).toBe('function');
+            expect(parser.parse).toBeFunction();
         });
 
         it('should have a "results" method', () => {
-            expect(parser.results).toBeDefined();
-            expect(typeof parser.results).toBe('function');
+            expect(parser.results).toBeFunction();
         });
 
         it('should have an "addAstNodeVisitor" method', () => {
-            expect(parser.addAstNodeVisitor).toBeDefined();
-            expect(typeof parser.addAstNodeVisitor).toBe('function');
+            expect(parser.addAstNodeVisitor).toBeFunction();
         });
 
         it('should have a "getAstNodeVisitors" method', () => {
-            expect(parser.getAstNodeVisitors).toBeDefined();
-            expect(typeof parser.getAstNodeVisitors).toBe('function');
+            expect(parser.getAstNodeVisitors).toBeFunction();
         });
 
         describe('astBuilder', () => {
             it('should contain an appropriate astBuilder by default', () => {
-                expect(parser.astBuilder instanceof (require('jsdoc/src/astbuilder')).AstBuilder).toBe(true);
+                const { AstBuilder } = require('jsdoc/src/astbuilder');
+
+                expect(parser.astBuilder instanceof AstBuilder).toBeTrue();
             });
         });
 
         describe('visitor', () => {
             it('should contain an appropriate visitor by default', () => {
-                expect(parser.visitor instanceof (require('jsdoc/src/visitor')).Visitor).toBe(true);
+                const { Visitor } = require('jsdoc/src/visitor');
+
+                expect(parser.visitor instanceof Visitor).toBeTrue();
             });
         });
 
         describe('walker', () => {
             it('should contain an appropriate walker by default', () => {
-                expect(parser.walker instanceof (require('jsdoc/src/walker')).Walker).toBe(true);
+                const { Walker } = require('jsdoc/src/walker');
+
+                expect(parser.walker instanceof Walker).toBeTrue();
             });
         });
 
@@ -203,23 +204,19 @@ describe('jsdoc/src/parser', () => {
                 parser.addAstNodeVisitor(visitor);
                 parser.parse(sourceCode);
 
-                expect(args).toBeDefined();
-                expect( Array.isArray(args) ).toBe(true);
-                expect(args.length).toBe(4);
+                expect(args).toBeArrayOfSize(4);
 
                 // args[0]: AST node
-                expect(args[0].type).toBeDefined();
                 expect(args[0].type).toBe(Syntax.VariableDeclarator);
 
                 // args[1]: JSDoc event
-                expect(typeof args[1]).toBe('object');
-                expect(args[1].code).toBeDefined();
-                expect(args[1].code.name).toBeDefined();
+                expect(args[1]).toBeObject();
+                expect(args[1].code).toBeObject();
                 expect(args[1].code.name).toBe('foo');
 
                 // args[2]: parser
-                expect(typeof args[2]).toBe('object');
-                expect(args[2] instanceof jsdocParser.Parser).toBe(true);
+                expect(args[2]).toBeObject();
+                expect(args[2] instanceof jsdocParser.Parser).toBeTrue();
 
                 // args[3]: current source name
                 expect( String(args[3]) ).toBe('[[string0]]');
@@ -242,9 +239,7 @@ describe('jsdoc/src/parser', () => {
 
                 doclet = parser.results()[0];
 
-                expect(doclet).toBeDefined();
-                expect(typeof doclet).toBe('object');
-                expect(doclet.name).toBeDefined();
+                expect(doclet).toBeObject();
                 expect(doclet.name).toBe('bar');
             });
 
@@ -259,12 +254,11 @@ describe('jsdoc/src/parser', () => {
                 expect(spy).toHaveBeenCalled();
 
                 eventObject = spy.calls.mostRecent().args[0];
+
                 expect(eventObject).toBeDefined();
-                expect( Array.isArray(eventObject.sourcefiles) ).toBe(true);
-                expect(eventObject.sourcefiles.length).toBe(1);
-                expect(eventObject.sourcefiles[0]).toBe('[[string0]]');
-                expect( Array.isArray(eventObject.doclets) ).toBe(true);
-                expect(eventObject.doclets.length).toBe(1);
+                expect(eventObject.sourcefiles).toEqual(['[[string0]]']);
+
+                expect(eventObject.doclets).toBeArrayOfSize(1);
                 expect(eventObject.doclets[0].kind).toBe('class');
                 expect(eventObject.doclets[0].longname).toBe('Foo');
             });
@@ -272,13 +266,15 @@ describe('jsdoc/src/parser', () => {
             it('should fire a "processingComplete" event when fireProcessingComplete is called', () => {
                 const spy = jasmine.createSpy();
                 const doclets = ['a', 'b'];
+                let mostRecentArg0;
 
                 parser.on('processingComplete', spy).fireProcessingComplete(doclets);
 
                 expect(spy).toHaveBeenCalled();
-                expect(typeof spy.calls.mostRecent().args[0]).toBe('object');
-                expect(spy.calls.mostRecent().args[0].doclets).toBeDefined();
-                expect(spy.calls.mostRecent().args[0].doclets).toBe(doclets);
+
+                mostRecentArg0 = spy.calls.mostRecent().args[0];
+                expect(mostRecentArg0).toBeObject();
+                expect(mostRecentArg0.doclets).toBe(doclets);
             });
 
             it('should not throw errors when parsing files with ES6 syntax', () => {
@@ -320,9 +316,7 @@ describe('jsdoc/src/parser', () => {
             it('returns an empty array before files are parsed', () => {
                 const results = parser.results();
 
-                expect(results).toBeDefined();
-                expect( Array.isArray(results) ).toBe(true);
-                expect(results.length).toBe(0);
+                expect(results).toBeEmptyArray();
             });
 
             it('returns an array of doclets after files are parsed', () => {
@@ -334,10 +328,8 @@ describe('jsdoc/src/parser', () => {
                 parser.parse(source);
                 results = parser.results();
 
-                expect(results).toBeDefined();
-                expect(results[0]).toBeDefined();
-                expect(typeof results[0]).toBe('object');
-                expect(results[0].name).toBeDefined();
+                expect(results).toBeArrayOfSize(1);
+                expect(results[0]).toBeObject();
                 expect(results[0].name).toBe('foo');
             });
 
@@ -413,8 +405,7 @@ describe('jsdoc/src/parser', () => {
 
                 visitors = parser.getAstNodeVisitors();
 
-                expect(visitors.length).toBe(1);
-                expect(visitors[0]).toBe(visitorA);
+                expect(visitors).toEqual([visitorA]);
             });
 
             it('should work with multiple node visitors', () => {
@@ -423,9 +414,10 @@ describe('jsdoc/src/parser', () => {
 
                 visitors = parser.getAstNodeVisitors();
 
-                expect(visitors.length).toBe(2);
-                expect(visitors[0]).toBe(visitorA);
-                expect(visitors[1]).toBe(visitorB);
+                expect(visitors).toEqual([
+                    visitorA,
+                    visitorB
+                ]);
             });
         });
 
@@ -435,8 +427,7 @@ describe('jsdoc/src/parser', () => {
             it('should return an empty array by default', () => {
                 const visitors = parser.getAstNodeVisitors();
 
-                expect( Array.isArray(visitors) ).toBe(true);
-                expect(visitors.length).toBe(0);
+                expect(visitors).toBeEmptyArray();
             });
 
             // other functionality is covered by the addNodeVisitors tests

@@ -5,14 +5,14 @@ describe('async functions', () => {
     const adderAdd = docSet.getByLongname('Adder#add')[0];
 
     it('should automatically document async functions as async', () => {
-        expect(add.async).toBe(true);
+        expect(add.async).toBeTrue();
     });
 
     it('should work when the async function is assigned to a variable', () => {
-        expect(subtract.async).toBe(true);
+        expect(subtract.async).toBeTrue();
     });
 
     it('should work when the async function is a method definition', () => {
-        expect(adderAdd.async).toBe(true);
+        expect(adderAdd.async).toBeTrue();
     });
 });

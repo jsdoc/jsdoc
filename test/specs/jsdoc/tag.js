@@ -8,13 +8,11 @@ describe('jsdoc/tag', () => {
     const parseType = require('jsdoc/tag/type').parse;
 
     it('should exist', () => {
-        expect(jsdocTag).toBeDefined();
-        expect(typeof jsdocTag).toBe('object');
+        expect(jsdocTag).toBeObject();
     });
 
     it('should export a Tag function', () => {
-        expect(jsdocTag.Tag).toBeDefined();
-        expect(typeof jsdocTag.Tag).toBe('function');
+        expect(jsdocTag.Tag).toBeFunction();
     });
 
     describe('Tag', () => {
@@ -66,8 +64,7 @@ describe('jsdoc/tag', () => {
         });
 
         it("should have a 'originalTitle' property, a string", () => {
-            expect(tagArg.originalTitle).toBeDefined();
-            expect(typeof tagArg.originalTitle).toBe('string');
+            expect(tagArg.originalTitle).toBeString();
         });
 
         it("'originalTitle' property should be the initial tag title, trimmed of whitespace", () => {
@@ -76,8 +73,7 @@ describe('jsdoc/tag', () => {
         });
 
         it("should have a 'title' property, a string", () => {
-            expect(tagArg.title).toBeDefined();
-            expect(typeof tagArg.title).toBe('string');
+            expect(tagArg.title).toBeString();
         });
 
         it("'title' property should be the normalized tag title", () => {
@@ -86,8 +82,7 @@ describe('jsdoc/tag', () => {
         });
 
         it("should have a 'text' property, a string", () => {
-            expect(tagArg.text).toBeDefined();
-            expect(typeof tagArg.text).toBe('string');
+            expect(tagArg.text).toBeString();
         });
 
         it("should have a 'value' property", () => {
@@ -108,11 +103,9 @@ describe('jsdoc/tag', () => {
             it("'text' property should have onTagText run on it if it has it.", () => {
                 const def = jsdocDictionary.lookUp('type');
 
-                expect(def.onTagText).toBeDefined();
-                expect(typeof def.onTagText).toBe('function');
+                expect(def.onTagText).toBeFunction();
 
                 // @type adds {} around the type if necessary.
-                expect(tagType.text).toBeDefined();
                 expect(tagType.text).toBe(def.onTagText('MyType'));
             });
 
@@ -138,6 +131,12 @@ describe('jsdoc/tag', () => {
         });
 
         describe("'value' property", () => {
+            const debug = Boolean(env.opts.debug);
+
+            afterEach(() => {
+                env.opts.debug = debug;
+            });
+
             it("'value' property should equal tag text if tagDef.canHaveType and canHaveName are both false", () => {
                 // @example can't have type or name
                 expect(typeof tagExample.value).toBe('string');
@@ -155,7 +154,8 @@ describe('jsdoc/tag', () => {
                 let info;
 
                 def = jsdocDictionary.lookUp(tag.title);
-                expect(def).not.toBe(false);
+
+                expect(def).toBeObject();
 
                 info = parseType(tag.text, def.canHaveName, def.canHaveType);
 
@@ -166,13 +166,10 @@ describe('jsdoc/tag', () => {
                 });
 
                 if (info.type && info.type.length) {
-                    expect(tag.value.type).toBeDefined();
-                    expect(typeof tag.value.type).toBe('object');
-                    expect(tag.value.type.names).toBeDefined();
+                    expect(tag.value.type).toBeObject();
                     expect(tag.value.type.names).toEqual(info.type);
 
-                    expect(tag.value.type.parsedType).toBeDefined();
-                    expect(typeof tag.value.type.parsedType).toBe('object');
+                    expect(tag.value.type.parsedType).toBeObject();
 
                     descriptor = Object.getOwnPropertyDescriptor(tag.value.type, 'parsedType');
                     expect(descriptor.enumerable).toBe( Boolean(env.opts.debug) );
@@ -180,9 +177,7 @@ describe('jsdoc/tag', () => {
             }
 
             it('if the tag has a type, tag.value should contain the type information', () => {
-                // we assume jsdoc/tag/type.parse works (it has its own tests to verify this);
-                const debug = Boolean(env.opts.debug);
-
+                // we assume jsdoc/tag/type.parse works (it has its own tests to verify this)
                 [true, false].forEach(bool => {
                     env.opts.debug = bool;
                     createTags();
@@ -191,27 +186,21 @@ describe('jsdoc/tag', () => {
                     verifyTagType(tagArg);
                     verifyTagType(tagParam);
                 });
-
-                env.opts.debug = debug;
             });
 
             it('if the tag has a description beyond the name/type, this should be in tag.value.description', () => {
-                expect(tagType.value.description).not.toBeDefined();
-
-                expect(tagArg.value.description).toBeDefined();
+                expect(tagType.value.description).toBeUndefined();
                 expect(tagArg.value.description).toBe(desc);
             });
 
             it('if the tag can have a name, it should be stored in tag.value.name', () => {
-                expect(tagArg.value.name).toBeDefined();
                 expect(tagArg.value.name).toBe('foo');
-
-                expect(tagType.value.name).not.toBeDefined();
+                expect(tagType.value.name).toBeUndefined();
             });
 
             it('if the tag has a type without modifiers, tag.value should not include properties for the modifiers', () => {
                 ['optional', 'nullable', 'variable', 'defaultvalue'].forEach(modifier => {
-                    expect( hasOwnProp.call(tagParamWithType.value, modifier) ).toBe(false);
+                    expect( hasOwnProp.call(tagParamWithType.value, modifier) ).toBeFalse();
                 });
             });
         });

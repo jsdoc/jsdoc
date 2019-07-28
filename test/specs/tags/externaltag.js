@@ -10,8 +10,7 @@ describe('@external tag', () => {
 
 
     it('An @external should have its own doclet', () => {
-        expect(stringExternal).toBeDefined();
-        expect(typeof stringExternal).toBe('object');
+        expect(stringExternal).toBeObject();
     });
 
     it("An @external's name should be the same as its longname, minus 'external:'", () => {
@@ -23,13 +22,13 @@ describe('@external tag', () => {
     });
 
     it('An @external with a quoted name should get the correct name', () => {
-        expect(jQueryExternal).toBeDefined();
+        expect(jQueryExternal).toBeObject();
         expect(jQueryExternal.name).toBe('"jQuery.fn"');
     });
 
     // TODO: enable after jsdoc3/jsdoc#652 is fixed
     xit('An @external should work correctly when the type is in curly braces', () => {
-        expect(fooBarBazExternal).toBeDefined();
+        expect(fooBarBazExternal).toBeObject();
         expect(fooBarBazExternal.name).toBe('"foo.bar.baz"');
     });
 });

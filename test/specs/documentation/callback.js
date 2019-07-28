@@ -2,16 +2,13 @@ describe('callback tag', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/callbacktag.js');
 
     function callbackTests(callback) {
-        expect(callback).toBeDefined();
+        expect(callback).toBeObject();
 
-        expect(callback.type).toBeDefined();
-        expect(typeof callback.type).toEqual('object');
+        expect(callback.type).toBeObject();
 
-        expect(callback.type.names).toBeDefined();
-        expect(callback.type.names instanceof Array).toEqual(true);
-        expect(callback.type.names.length).toEqual(1);
+        expect(callback.type.names).toBeArrayOfSize(1);
 
-        expect(callback.type.names[0]).toEqual('function');
+        expect(callback.type.names[0]).toBe('function');
     }
 
     it('correctly handles callbacks that do not define a {type}', () => {

@@ -8,6 +8,6 @@ describe('@mixin tag', () => {
     });
 
     it("When a symbol has a @mixin tag, its name is set to the tag's value (if present)", () => {
-        expect(Mixin).toBeDefined();
+        expect(Mixin).toBeObject();
     });
 });

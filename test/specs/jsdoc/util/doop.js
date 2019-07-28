@@ -2,13 +2,11 @@ describe('jsdoc/util/doop', () => {
     const doop = require('jsdoc/util/doop');
 
     it('should exist', () => {
-        expect(doop).toBeDefined();
-        expect(typeof doop).toBe('function');
+        expect(doop).toBeFunction();
     });
 
     it('should export a doop function for backwards compatibility', () => {
-        expect(doop.doop).toBeDefined();
-        expect(typeof doop.doop).toBe('function');
+        expect(doop.doop).toBeFunction();
     });
 
     // deep-clones a simple object.
@@ -19,18 +17,18 @@ describe('jsdoc/util/doop', () => {
             /* eslint-enable no-empty-function */
 
             // test a number...
-            expect(doop.doop(3)).toBe(3);
+            expect(doop(3)).toBe(3);
             // test a string...
-            expect(doop.doop('asdf')).toBe('asdf');
+            expect(doop('asdf')).toBe('asdf');
             // test a boolean...
-            expect(doop.doop(true)).toBe(true);
+            expect(doop(true)).toBeTrue();
             // test a function...
-            expect(doop.doop(f)).toBe(f);
+            expect(doop(f)).toBe(f);
         });
 
         it('should return a clone of an array', () => {
             const inp = [1, 2, 3];
-            const out = doop.doop(inp);
+            const out = doop(inp);
 
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
@@ -42,7 +40,7 @@ describe('jsdoc/util/doop', () => {
                 b: 2,
                 'asdf-fdsa': 3
             };
-            const out = doop.doop(inp);
+            const out = doop(inp);
 
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
@@ -87,7 +85,7 @@ describe('jsdoc/util/doop', () => {
                     b: [1, 2, 3]
                 }
             };
-            const out = doop.doop(inp);
+            const out = doop(inp);
 
             expect(inp).toEqual(out);
             expect(inp).not.toBe(out);
@@ -107,7 +105,7 @@ describe('jsdoc/util/doop', () => {
 
             clone = doop(obj);
 
-            expect(clone.foo).not.toBeDefined();
+            expect(clone.foo).toBeUndefined();
         });
 
         it('should not create a circular reference if an object is seen more than once', () => {

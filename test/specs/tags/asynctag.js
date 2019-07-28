@@ -3,6 +3,6 @@ describe('@async tag', () => {
     const foo = docSet.getByLongname('foo')[0];
 
     it('should add an `async` property to the doclet', () => {
-        expect(foo.async).toBe(true);
+        expect(foo.async).toBeTrue();
     });
 });

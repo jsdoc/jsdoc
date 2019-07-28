@@ -2,29 +2,25 @@ describe('jsdoc/src/walker', () => {
     const walker = require('jsdoc/src/walker');
 
     it('should exist', () => {
-        expect(walker).toBeDefined();
-        expect(typeof walker).toBe('object');
+        expect(walker).toBeObject();
     });
 
     it('should export a "walkers" object', () => {
-        expect(walker.walkers).toBeDefined();
-        expect(typeof walker.walkers).toBe('object');
+        expect(walker.walkers).toBeObject();
     });
 
     it('should export a "Walker" class', () => {
-        expect(walker.Walker).toBeDefined();
-        expect(typeof walker.Walker).toBe('function');
+        expect(walker.Walker).toBeFunction();
     });
 
     describe('walkers', () => {
-        const Syntax = require('jsdoc/src/syntax').Syntax;
+        const { Syntax } = require('jsdoc/src/syntax');
 
         // TODO: tests for default functions
 
         it('should contain a function for each known node type', () => {
             Object.keys(Syntax).forEach(nodeType => {
-                expect(walker.walkers[nodeType]).toBeDefined();
-                expect(typeof walker.walkers[nodeType]).toBe('function');
+                expect(walker.walkers[nodeType]).toBeFunction();
             });
         });
     });

@@ -18,15 +18,13 @@ describe('@namespace tag', () => {
     });
 
     it("sets the doclet's type (if provided in @namespace)", () => {
-        expect(Bar.type).toBeDefined();
-        expect(Array.isArray(Bar.type.names)).toBeTruthy();
-        expect(Bar.type.names.length).toBe(1);
+        expect(Bar.type.names).toBeArrayOfSize(1);
         expect(Bar.type.names[0]).toBe('function');
     });
 
     it("sets the doclet's longname correctly when the namespace is a substring of the name",
         () => {
-            expect(Socket).toBeDefined();
+            expect(Socket).toBeObject();
             expect(Socket.name).toBe('Socket');
         });
 });

@@ -12,7 +12,7 @@ describe('@private tag', () => {
 
     it('When a symbol tagged with @private has members, the members do not inherit the @private ' +
         'tag.', () => {
-        expect(bar.access).not.toBeDefined();
+        expect(bar.access).toBeUndefined();
     });
 
     describe('JSDoc tags', () => {
@@ -48,12 +48,11 @@ describe('@private tag', () => {
 
                 expect(logger.warn).not.toHaveBeenCalled();
 
-                expect(connectionPorts).toBeDefined();
+                expect(connectionPorts).toBeObject();
                 expect(connectionPorts.access).toBe('private');
 
-                expect(connectionPorts.type).toBeDefined();
-                expect(connectionPorts.type.names).toBeDefined();
-                expect(connectionPorts.type.names.length).toBe(1);
+                expect(connectionPorts.type).toBeObject();
+                expect(connectionPorts.type.names).toBeArrayOfSize(1);
                 expect(connectionPorts.type.names[0]).toBe('Object.<string, number>');
             });
     });

@@ -32,8 +32,8 @@ describe('@public tag', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/publictag2.js');
             const bar = docSet.getByLongname('bar')[0];
 
-            expect(bar.type).toBeDefined();
-            expect(bar.type.names.length).toBe(1);
+            expect(bar.type).toBeObject();
+            expect(bar.type.names).toBeArrayOfSize(1);
             expect(bar.type.names[0]).toBe('string');
         });
     });

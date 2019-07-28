@@ -34,9 +34,9 @@ describe('@class tag', () => {
 
         it('When a symbol is a class declaration, the constructor info is merged into the doclet for the symbol', () => {
             expect(subscription.description).toBe('Describe the constructor here.');
-            expect(subscription.params.length).toBe(1);
+            expect(subscription.params).toBeArrayOfSize(1);
             expect(subscription.params[0].name).toBe('name');
-            expect(subscription.examples.length).toBe(1);
+            expect(subscription.examples).toBeArrayOfSize(1);
             expect(subscription.examples[0]).toBe('var subscription = new Subscription();');
         });
 
@@ -54,7 +54,7 @@ describe('@class tag', () => {
 
         it('When a symbol is a class expression, the constructor info is merged into the doclet for the symbol', () => {
             expect(subscriber.description).toBe('Describe the constructor here.');
-            expect(subscriber.params.length).toBe(1);
+            expect(subscriber.params).toBeArrayOfSize(1);
             expect(subscriber.params[0].name).toBe('name');
         });
 

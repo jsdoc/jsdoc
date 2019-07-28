@@ -4,13 +4,11 @@ describe('jsdoc/util/markdown', () => {
     const markdown = require('jsdoc/util/markdown');
 
     it('should exist', () => {
-        expect(markdown).toBeDefined();
-        expect(typeof markdown).toBe('object');
+        expect(markdown).toBeObject();
     });
 
     it('should export a "getParser" function', () => {
-        expect(markdown.getParser).toBeDefined();
-        expect(typeof markdown.getParser).toBe('function');
+        expect(markdown.getParser).toBeFunction();
     });
 
     describe('getParser', () => {
@@ -29,7 +27,8 @@ describe('jsdoc/util/markdown', () => {
 
             setMarkdownConf({});
             parser = markdown.getParser();
-            expect(typeof parser).toBe('function');
+
+            expect(parser).toBeFunction();
         });
 
         it('should use the markdown-it parser by default', () => {
@@ -37,6 +36,7 @@ describe('jsdoc/util/markdown', () => {
 
             setMarkdownConf({});
             parser = markdown.getParser();
+
             expect(parser._parser).toBe('markdownit');
         });
 
@@ -45,6 +45,7 @@ describe('jsdoc/util/markdown', () => {
 
             setMarkdownConf({parser: 'evilstreak'});
             parser = markdown.getParser();
+
             expect(parser._parser).toBe('markdownit');
         });
 
@@ -53,6 +54,7 @@ describe('jsdoc/util/markdown', () => {
 
             setMarkdownConf({parser: 'marked'});
             parser = markdown.getParser();
+
             expect(parser._parser).toBe('marked');
         });
 
@@ -61,6 +63,7 @@ describe('jsdoc/util/markdown', () => {
 
             setMarkdownConf({parser: 'gfm'});
             parser = markdown.getParser();
+
             expect(parser._parser).toBe('markdownit');
         });
 

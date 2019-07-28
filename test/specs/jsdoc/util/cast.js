@@ -2,11 +2,11 @@ describe('jsdoc/util/cast', () => {
     const cast = require('jsdoc/util/cast');
 
     it('should exist', () => {
-        expect(typeof cast).toBe('object');
+        expect(cast).toBeObject();
     });
 
     it('should export a "cast" method', () => {
-        expect(typeof cast.cast).toBe('function');
+        expect(cast.cast).toBeFunction();
     });
 
     describe('cast', () => {
@@ -26,14 +26,14 @@ describe('jsdoc/util/cast', () => {
             const truthish = cast.cast('true');
             const falsish = cast.cast('false');
 
-            expect(truthish).toBe(true);
-            expect(falsish).toBe(false);
+            expect(truthish).toBeTrue();
+            expect(falsish).toBeFalse();
         });
 
         it('should cast null-ish values to null', () => {
             const nullish = cast.cast('null');
 
-            expect(nullish).toBe(null);
+            expect(nullish).toBeNull();
         });
 
         it('should cast undefined-ish values to undefined', () => {
@@ -57,8 +57,7 @@ describe('jsdoc/util/cast', () => {
         it('should cast NaN-ish values to NaN', () => {
             const nan = cast.cast('NaN');
 
-            expect(typeof nan).toBe('number');
-            expect(isNaN(nan)).toBe(true);
+            expect(nan).toBeNaN();
         });
 
         it('should convert values in an object', () => {

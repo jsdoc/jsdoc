@@ -4,7 +4,7 @@ describe('object literals', () => {
         const found = docSet.getByLongname('tools.serialiser.value');
 
         it('should have a doclet with the correct longname', () => {
-            expect(found.length).toBe(1);
+            expect(found).toBeArrayOfSize(1);
         });
 
         it('should have a doclet with the correct name', () => {
@@ -25,7 +25,7 @@ describe('object literals', () => {
         const found = docSet.getByLongname('position.axis.x');
 
         it('should have a doclet with the correct longname', () => {
-            expect(found.length).toBe(1);
+            expect(found).toBeArrayOfSize(1);
         });
 
         it('should have a doclet with the correct name', () => {
@@ -42,12 +42,10 @@ describe('object literals', () => {
     });
 
     describe('When an object literal\'s property names must be escaped in a regexp', () => {
-        let docSet;
-        let found;
-
         function loadDocSet() {
-            docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit3.js');
-            found = docSet.getByLongname('tokens."(".before');
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/objectlit3.js');
+
+            return docSet.getByLongname('tokens."(".before');
         }
 
         it('should not throw an error when creating a doclet', () => {
@@ -55,10 +53,14 @@ describe('object literals', () => {
         });
 
         it('should have a doclet with the correct name', () => {
+            const found = loadDocSet();
+
             expect(found[0].name).toBe('before');
         });
 
         it('should have a doclet with the correct memberof', () => {
+            const found = loadDocSet();
+
             expect(found[0].memberof).toBe('tokens."("');
         });
     });

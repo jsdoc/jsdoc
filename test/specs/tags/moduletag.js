@@ -9,12 +9,12 @@ describe('@module tag', () => {
         const title = docSet.getByLongname('module:bookshelf.Book#title')[0];
 
         it('When a global symbol starts with "this" and is in a file with a @module tag, the symbol is documented as a member of that module.', () => {
-            expect(typeof book).toBe('object');
+            expect(book).toBeObject();
             expect(book.memberof).toBe('module:bookshelf');
         });
 
         it('When an inner symbol starts with "this" and is in a file with a @module tag, the symbol is documented as a member of its enclosing constructor.', () => {
-            expect(typeof title).toBe('object');
+            expect(title).toBeObject();
             expect(title.memberof).toBe('module:bookshelf.Book');
         });
     });
@@ -26,21 +26,21 @@ describe('@module tag', () => {
         const darken = docSet.getByLongname('module:color/mixer.darken')[0];
 
         it('When a @module tag defines a module, a symbol of kind "module" is documented', () => {
-            expect(typeof mixer).toBe('object');
+            expect(mixer).toBeObject();
             expect(mixer.kind).toBe('module');
         });
 
         it('When a @module tag defines a module, the module doclet does not have a "scope" property', () => {
-            expect(mixer.scope).not.toBeDefined();
+            expect(mixer.scope).toBeUndefined();
         });
 
         it('When an object literal is lent to a module with a @lends tag, a member of that object literal is documented as a member of the module', () => {
-            expect(typeof blend).toBe('object');
+            expect(blend).toBeObject();
             expect(blend.kind).toBe('function');
         });
 
         it('When a documented symbol is a member of a namespace "exports", it is documented as a member of the module', () => {
-            expect(typeof darken).toBe('object');
+            expect(darken).toBeObject();
             expect(darken.kind).toBe('function');
         });
     });
@@ -79,7 +79,7 @@ describe('@module tag', () => {
         const bookshelf = docSet.getByLongname('module:bookshelf')[0];
 
         it('When the name for a @module tag begins with the "module:" namespace, we remove the namespace', () => {
-            expect(typeof bookshelf).toBe('object');
+            expect(bookshelf).toBeObject();
             expect(bookshelf.name).toBe('bookshelf');
         });
     });
@@ -165,7 +165,7 @@ describe('@module tag', () => {
             const testMethod = docSet.getByLongname('module:foo.Foo#testMethod')[0];
 
             it('should identify the correct scope for the exported class', () => {
-                expect(foo).toBeDefined();
+                expect(foo).toBeObject();
             });
 
             it('should merge the doclet for the constructor with the doclet for the ' +
@@ -174,7 +174,7 @@ describe('@module tag', () => {
             });
 
             it('should identify the correct scope for the exported class\'s methods', () => {
-                expect(testMethod).toBeDefined();
+                expect(testMethod).toBeObject();
             });
         });
     });

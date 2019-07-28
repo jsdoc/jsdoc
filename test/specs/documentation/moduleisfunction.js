@@ -3,7 +3,7 @@ describe('module that exports a function that is not a constructor', () => {
     const functions = docSet.doclets.filter(({kind}) => kind === 'function');
 
     it('should include one doclet whose kind is "function"', () => {
-        expect(functions.length).toBe(1);
+        expect(functions).toBeArrayOfSize(1);
         expect(functions[0].kind).toBe('function');
     });
 

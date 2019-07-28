@@ -3,7 +3,7 @@ describe('@undocumented tag', () => {
     const doc = docSet.getByLongname('x')[0];
 
     it("sets the doclet's 'undocumented' property to true", () => {
-        expect(doc.undocumented).toBeTruthy();
+        expect(doc.undocumented).toBeTrue();
     });
 
     it("clears the doclet's 'comment' property", () => {

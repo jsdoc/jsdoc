@@ -5,14 +5,14 @@ describe('generator functions', () => {
     const startsAt2 = docSet.getByLongname('Generator#startsAt2')[0];
 
     it('should flag generator functions', () => {
-        expect(startsAt0.generator).toBe(true);
+        expect(startsAt0.generator).toBeTrue();
     });
 
     it('should flag generator functions assigned to variables', () => {
-        expect(startsAt1.generator).toBe(true);
+        expect(startsAt1.generator).toBeTrue();
     });
 
     it('should flag generator functions that are method definitions', () => {
-        expect(startsAt2.generator).toBe(true);
+        expect(startsAt2.generator).toBeTrue();
     });
 });

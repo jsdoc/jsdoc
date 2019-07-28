@@ -19,9 +19,8 @@ describe('@typedef tag', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
-            expect(typeof numberlike.type).toBe('object');
-            expect(Array.isArray(numberlike.type.names)).toBe(true);
-            expect(numberlike.type.names.length).toBe(2);
+            expect(numberlike.type).toBeObject();
+            expect(numberlike.type.names).toBeArrayOfSize(2);
             expect(numberlike.type.names[0]).toBe('string');
             expect(numberlike.type.names[1]).toBe('number');
         });
@@ -54,7 +53,7 @@ describe('@typedef tag', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag.js');
             const calculatorBattery = docSet.getByLongname('CalculatorBattery')[0];
 
-            expect(calculatorBattery).toBeDefined();
+            expect(calculatorBattery).toBeObject();
             expect(calculatorBattery.scope).toBe('global');
         });
     });
@@ -75,9 +74,8 @@ describe('@typedef tag', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag2.js');
             const numberlike = docSet.getByLongname('calc.NumberLike')[0];
 
-            expect(typeof numberlike.type).toBe('object');
-            expect(Array.isArray(numberlike.type.names)).toBe(true);
-            expect(numberlike.type.names.length).toBe(2);
+            expect(numberlike.type).toBeObject();
+            expect(numberlike.type.names).toBeArrayOfSize(2);
             expect(numberlike.type.names[0]).toBe('string');
             expect(numberlike.type.names[1]).toBe('number');
         });

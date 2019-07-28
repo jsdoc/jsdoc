@@ -5,17 +5,17 @@ describe('arrow functions', () => {
     const name = docSet.getByLongname('<anonymous>#name');
 
     it('should use the correct name and longname', () => {
-        expect(increment).toBeDefined();
+        expect(increment).toBeObject();
         expect(increment.name).toBe('increment');
     });
 
     it('should allow function parameters to be documented', () => {
-        expect(increment.params.length).toBe(1);
+        expect(increment.params).toBeArrayOfSize(1);
         expect(increment.params[0].name).toBe('n');
     });
 
     it('should support inline comments on parameters', () => {
-        expect(print.params.length).toBe(1);
+        expect(print.params).toBeArrayOfSize(1);
         expect(print.params[0].type.names[0]).toBe('*');
     });
 
@@ -24,6 +24,6 @@ describe('arrow functions', () => {
     // details
     xit('should use the correct longname for members of a class returned by an arrow function',
         () => {
-            expect(name.length).toBe(2);
+            expect(name).toBeArrayOfSize(2);
         });
 });

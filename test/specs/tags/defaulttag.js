@@ -4,7 +4,7 @@ describe('@default tag', () => {
     it('When symbol set to null has a @default tag with no text, the doclet\'s defaultValue property should be: null', () => {
         const request = docSet.getByLongname('request')[0];
 
-        expect(request.defaultvalue).toBe(null);
+        expect(request.defaultvalue).toBeNull();
     });
 
     it('When symbol set to a string has a @default tag with no text, the doclet\'s defaultValue property should be that string', () => {
@@ -28,13 +28,13 @@ describe('@default tag', () => {
     it('When symbol has a @default tag with true.', () => {
         const rvalid = docSet.getByLongname('rvalid')[0];
 
-        expect(rvalid.defaultvalue).toBe(true);
+        expect(rvalid.defaultvalue).toBeTrue();
     });
 
     it('When symbol has a @default tag with false.', () => {
         const rerrored = docSet.getByLongname('rerrored')[0];
 
-        expect(rerrored.defaultvalue, false);
+        expect(rerrored.defaultvalue).toBeFalse();
     });
 
     it('When symbol has a @default tag with a function call.', () => {

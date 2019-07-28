@@ -42,7 +42,7 @@ describe('jsdoc/src/visitor', () => {
 
             visitor.visitNodeComments(node, parser, 'fake');
 
-            expect(events).toEqual([]);
+            expect(events).toBeEmptyArray();
         });
 
         it('should ignore normal, non-JSDoc block comments', () => {
@@ -63,7 +63,7 @@ describe('jsdoc/src/visitor', () => {
 
             visitor.visitNodeComments(node, parser, 'fake');
 
-            expect(events).toEqual([]);
+            expect(events).toBeEmptyArray();
         });
 
         it('should ignore comments that begin with three or more asterisks', () => {
@@ -84,7 +84,7 @@ describe('jsdoc/src/visitor', () => {
 
             visitor.visitNodeComments(node, parser, 'fake');
 
-            expect(events).toEqual([]);
+            expect(events).toBeEmptyArray();
         });
 
         it('should ignore empty block comments', () => {
@@ -105,7 +105,7 @@ describe('jsdoc/src/visitor', () => {
 
             visitor.visitNodeComments(node, parser, 'fake');
 
-            expect(events).toEqual([]);
+            expect(events).toBeEmptyArray();
         });
 
         it('should fire an event for JSDoc comments', () => {
@@ -126,14 +126,13 @@ describe('jsdoc/src/visitor', () => {
 
             visitor.visitNodeComments(node, parser, 'fake');
 
-            expect(events.length).toBe(1);
+            expect(events).toBeArrayOfSize(1);
             expect(events[0].comment).toBe('/** block comment */');
         });
     });
 
-    // TODO: these tests aren't working; for some strange reason, Node.js 6.10.2 stops running code
-    // for visitor.visitNode() while it's in the middle of the SymbolFound constructor. maybe a
-    // version-specific bug?
+    // TODO: these tests aren't working; the code for visitor.visitNode() stops running in the
+    // middle of the SymbolFound constructor. maybe an async issue?
     xdescribe('visitNode', () => {
         // TODO: more tests
 

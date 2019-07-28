@@ -4,7 +4,7 @@ describe('object keys', () => {
     it('should assign the correct longname and memberof to object keys after the first key', () => {
         const bar = docSet.getByLongname('myObject.bar')[0];
 
-        expect(bar).toBeDefined();
+        expect(bar).toBeObject();
         expect(bar.memberof).toBe('myObject');
     });
 });

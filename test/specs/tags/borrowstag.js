@@ -7,7 +7,7 @@ describe('@borrows tag', () => {
         const docSet = jsdoc.getDocSetFromFile('test/fixtures/borrowstag.js');
         const util = docSet.getByLongname('util').filter(filterUndocumented)[0];
 
-        expect(util.borrowed.length).toBe(1);
+        expect(util.borrowed).toBeArrayOfSize(1);
         expect(util.borrowed[0].from).toBe('trstr');
         expect(util.borrowed[0].as).toBe('trim');
     });
@@ -20,14 +20,14 @@ describe('@borrows tag', () => {
 
         const strRtrim = docSet.getByLongname('str.rtrim').filter(({undocumented}) => !(undocumented))[0];
 
-        expect(typeof strRtrim).toBe('object');
+        expect(strRtrim).toBeObject();
     });
 
     it('When a symbol has a `@borrows X as Y` tag, X and Y may contain whitespace.', () => {
         const docSet = jsdoc.getDocSetFromFile('test/fixtures/borrowstag3.js');
         const util = docSet.getByLongname('util').filter(filterUndocumented)[0];
 
-        expect(util.borrowed.length).toBe(2);
+        expect(util.borrowed).toBeArrayOfSize(2);
         expect(util.borrowed[0].from).toBe('trstr');
         expect(util.borrowed[0].as).toBe('trim string');
         expect(util.borrowed[1].from).toBe('util.hidden util');

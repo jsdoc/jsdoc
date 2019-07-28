@@ -39,9 +39,11 @@ module.exports = () => {
 
     jasmine.loadConfig({
         helpers: [
+            'node_modules/jasmine-expect/index.js',
             'test/helpers/**/*.js'
         ],
-        random: false
+        random: false,
+        stopSpecOnExpectationFailure: false
     });
     jasmine.env.clearReporters();
     jasmine.addReporter(reporter);

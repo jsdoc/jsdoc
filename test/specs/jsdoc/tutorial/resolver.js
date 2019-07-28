@@ -31,33 +31,28 @@ describe('jsdoc/tutorial/resolver', () => {
     }
 
     it('should exist', () => {
-        expect(resolver).toBeDefined();
-        expect(typeof resolver).toBe('object');
+        expect(resolver).toBeObject();
     });
 
     it('should export an "addTutorial" function', () => {
-        expect(resolver.addTutorial).toBeDefined();
-        expect(typeof resolver.addTutorial).toBe('function');
+        expect(resolver.addTutorial).toBeFunction();
     });
 
     it('should export a "load" function', () => {
-        expect(resolver.load).toBeDefined();
-        expect(typeof resolver.load).toBe('function');
+        expect(resolver.load).toBeFunction();
     });
 
     it('should export a "resolve" function', () => {
-        expect(resolver.resolve).toBeDefined();
-        expect(typeof resolver.resolve).toBe('function');
+        expect(resolver.resolve).toBeFunction();
     });
 
     it('should export a "root" tutorial', () => {
-        expect(resolver.root).toBeDefined();
+        expect(resolver.root).toBeObject();
         expect(resolver.root instanceof tutorial.RootTutorial).toBe(true);
     });
 
     it('exported "root" tutorial should export a "getByName" function', () => {
-        expect(resolver.root.getByName).toBeDefined();
-        expect(typeof resolver.root.getByName).toBe('function');
+        expect(resolver.root.getByName).toBeFunction();
     });
 
     // note: every time we addTutorial or run the resolver, we are *adding*
@@ -84,36 +79,39 @@ describe('jsdoc/tutorial/resolver', () => {
     });
 
     describe('load', () => {
+        const recurse = env.opts.recurse;
+
         beforeEach(loadTutorials);
 
-        afterEach(resetRootTutorial);
+        afterEach(() => {
+            resetRootTutorial();
+
+            env.opts.recurse = recurse;
+        });
 
         it('does not, by default, recurse into subdirectories', () => {
             expect(resolver.root.getByName('test_recursive')).toBeFalsy();
         });
 
         it('recurses into subdirectories when the --recurse flag is used', () => {
-            const recurse = env.opts.recurse;
             let recursiveTute;
 
             env.opts.recurse = true;
             loadTutorials();
             recursiveTute = resolver.root.getByName('test_recursive');
 
-            expect(recursiveTute).toBeDefined();
+            expect(recursiveTute).toBeObject();
             expect(recursiveTute instanceof tutorial.Tutorial).toBe(true);
-
-            env.opts.recurse = recurse;
         });
 
         it('all tutorials are added, initially as top-level tutorials', () => {
             // check they were added
-            expect(test).toBeDefined();
-            expect(test2).toBeDefined();
-            expect(test3).toBeDefined();
-            expect(test4).toBeDefined();
-            expect(test6).toBeDefined();
-            expect(constr).toBeDefined();
+            expect(test).toBeObject();
+            expect(test2).toBeObject();
+            expect(test3).toBeObject();
+            expect(test4).toBeObject();
+            expect(test6).toBeObject();
+            expect(constr).toBeObject();
             // check they are top-level in resolver.root
             expect(childNames).toContain('test');
             expect(childNames).toContain('test2');
@@ -127,8 +125,8 @@ describe('jsdoc/tutorial/resolver', () => {
         });
 
         it('non-tutorials are skipped', () => {
-            expect(resolver.root.getByName('multiple')).toBeFalsy();
-            expect(resolver.root.getByName('test5')).toBeFalsy();
+            expect(resolver.root.getByName('multiple')).toBeFalse();
+            expect(resolver.root.getByName('test5')).toBeFalse();
         });
 
         it('tutorial types are determined correctly', () => {
@@ -172,26 +170,26 @@ describe('jsdoc/tutorial/resolver', () => {
 
         it('hierarchy is resolved properly no matter how the children property is defined', () => {
             // root has child 'test'
-            expect(resolver.root.children.length).toBe(2);
+            expect(resolver.root.children).toBeArrayOfSize(2);
             expect(resolver.root.children).toContain(test);
             expect(resolver.root.children).toContain(constr);
             expect(test.parent).toBe(resolver.root);
             expect(constr.parent).toBe(resolver.root);
 
             // test has child 'test2'
-            expect(test.children.length).toBe(1);
+            expect(test.children).toBeArrayOfSize(1);
             expect(test.children).toContain(test2);
             expect(test2.parent).toBe(test);
 
             // test2 has children test3, test6
-            expect(test2.children.length).toBe(2);
+            expect(test2.children).toBeArrayOfSize(2);
             expect(test2.children).toContain(test3);
             expect(test2.children).toContain(test6);
             expect(test3.parent).toBe(test2);
             expect(test6.parent).toBe(test2);
 
             // test3 has child test4
-            expect(test3.children.length).toBe(1);
+            expect(test3.children).toBeArrayOfSize(1);
             expect(test3.children).toContain(test4);
             expect(test4.parent).toBe(test3);
         });
@@ -236,7 +234,7 @@ describe('jsdoc/tutorial/resolver', () => {
             expect(logger.warn).toHaveBeenCalled();
             // we don't check to see which one wins; it depends on the order in which the JS engine
             // iterates over object keys
-            expect(resolver.root.getByName('asdf')).toBeDefined();
+            expect(resolver.root.getByName('asdf')).toBeObject();
         });
     });
 });

@@ -37,7 +37,7 @@ describe('default parameters', () => {
     });
 
     it('should work with boolean literals', () => {
-        expect(setActive.params[0].defaultvalue).toBe(true);
+        expect(setActive.params[0].defaultvalue).toBeTrue();
     });
 
     it('should work with numeric literals', () => {
@@ -49,7 +49,7 @@ describe('default parameters', () => {
     });
 
     it('should work when the function is assigned to a variable', () => {
-        expect(setIsNinja.params[0].defaultvalue).toBe(true);
+        expect(setIsNinja.params[0].defaultvalue).toBeTrue();
     });
 
     describe('ES2015 methods', () => {
@@ -58,7 +58,7 @@ describe('default parameters', () => {
         const setSardines = docSet2.getByLongname('PizzaToppings#setSardines')[0];
 
         it('should autodetect default parameters', () => {
-            expect(setSardines.params[0].defaultvalue).toBe(true);
+            expect(setSardines.params[0].defaultvalue).toBeTrue();
         });
     });
 });

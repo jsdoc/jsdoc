@@ -10,29 +10,29 @@ describe('lends', () => {
             const name = docSet.getByLongname('Person#name');
 
             it('The member should be documented as a member of the lendee', () => {
-                expect(init.length, 1);
+                expect(init).toBeArrayOfSize(1);
             });
 
             it('The this member should be documented as a member of the lendee', () => {
-                expect(name.length, 1);
+                expect(name).toBeArrayOfSize(1);
             });
         });
 
         describe('case containing constructor', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/lends2.js');
-            const person = docSet.getByLongname('Person').filter(removeUndocumented)[0];
+            const person = docSet.getByLongname('Person').filter(removeUndocumented);
             const name = docSet.getByLongname('Person#name');
 
             it('A tag with a @constructs tag is documented as a constructor.', () => {
-                expect(person.description).toBe('Construct a Person.');
+                expect(person[0].description).toBe('Construct a Person.');
             });
 
             it('The member should be documented as a member of the lendee', () => {
-                expect(person.length, 1);
+                expect(person).toBeArrayOfSize(1);
             });
 
             it('The this member should be documented as a member of the lendee', () => {
-                expect(name.length, 1);
+                expect(name).toBeArrayOfSize(1);
             });
         });
 
@@ -42,11 +42,11 @@ describe('lends', () => {
             const name = docSet.getByLongname('Person#name');
 
             it('The member should be documented as a member of the lendee', () => {
-                expect(init.length, 1);
+                expect(init).toBeArrayOfSize(1);
             });
 
             it('The this member should be documented as a member of the lendee', () => {
-                expect(name.length, 1);
+                expect(name).toBeArrayOfSize(1);
             });
         });
 
@@ -56,13 +56,13 @@ describe('lends', () => {
             const say = docSet.getByLongname('Person#say');
 
             it('The class constructor should be documented with the name of the lendee', () => {
-                expect(person.length).toBe(1);
+                expect(person).toBeArrayOfSize(1);
                 expect(person[0].name).toBe('Person');
                 expect(person[0].kind).toBe('class');
             });
 
             it('A class\' instance method should be documented as a member of the lendee', () => {
-                expect(say.length).toBe(1);
+                expect(say).toBeArrayOfSize(1);
             });
         });
 
@@ -72,13 +72,13 @@ describe('lends', () => {
             const say = docSet.getByLongname('Person#say').filter(removeUndocumented)[0];
 
             it('The class constructor should be documented with the name of the lendee', () => {
-                expect(person).toBeDefined();
+                expect(person).toBeObject();
                 expect(person.name).toBe('Person');
                 expect(person.kind).toBe('class');
             });
 
             it('A class\' instance method should be documented as a member of the lendee', () => {
-                expect(say).toBeDefined();
+                expect(say).toBeObject();
             });
         });
 
@@ -89,11 +89,11 @@ describe('lends', () => {
                 const person = docSet.getByLongname('Person').filter(removeUndocumented)[0];
                 const say = docSet.getByLongname('Person#say').filter(removeUndocumented)[0];
 
-                expect(person).toBeDefined();
+                expect(person).toBeObject();
                 expect(person.name).toBe('Person');
                 expect(person.kind).toBe('class');
 
-                expect(say).toBeDefined();
+                expect(say).toBeObject();
                 expect(say.name).toBe('say');
                 expect(say.kind).toBe('function');
             });
@@ -102,11 +102,11 @@ describe('lends', () => {
                 const robot = docSet.getByLongname('Robot').filter(removeUndocumented)[0];
                 const emote = docSet.getByLongname('Robot#emote').filter(removeUndocumented)[0];
 
-                expect(robot).toBeDefined();
+                expect(robot).toBeObject();
                 expect(robot.name).toBe('Robot');
                 expect(robot.kind).toBe('class');
 
-                expect(emote).toBeDefined();
+                expect(emote).toBeObject();
                 expect(emote.name).toBe('emote');
                 expect(emote.kind).toBe('function');
             });
@@ -119,7 +119,7 @@ describe('lends', () => {
         const test12 = docSet.getByLongname('test1.test2')[0];
 
         it('The members of the objlit are not members of any symbol', () => {
-            expect(typeof testf.memberof).toBe('undefined');
+            expect(testf.memberof).toBeUndefined();
         });
 
         it('The members of the objlit are documented as global.', () => {

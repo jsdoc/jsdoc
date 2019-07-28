@@ -8,22 +8,22 @@ describe('@constant tag', () => {
     const ROCKET = docSet.getByLongname('ROCKET')[0];
 
     it("sets the doclet's 'kind' property to 'constant'", () => {
-        expect(FOO).toBeDefined();
+        expect(FOO).toBeObject();
         expect(FOO.kind).toBe('constant');
 
-        expect(BAR).toBeDefined();
+        expect(BAR).toBeObject();
         expect(BAR.kind).toBe('constant');
 
-        expect(BAZ).toBeDefined();
+        expect(BAZ).toBeObject();
         expect(BAZ.kind).toBe('constant');
 
-        expect(QUX).toBeDefined();
+        expect(QUX).toBeObject();
         expect(QUX.kind).toBe('constant');
 
-        expect(SOCKET).toBeDefined();
+        expect(SOCKET).toBeObject();
         expect(SOCKET.kind).toBe('constant');
 
-        expect(ROCKET).toBeDefined();
+        expect(ROCKET).toBeObject();
         expect(ROCKET.kind).toBe('constant');
     });
 
@@ -37,25 +37,22 @@ describe('@constant tag', () => {
 
     it('If used with a name and a type, sets the doclet\'s name and type appropriately', () => {
         expect(BAZ.name).toBe('BAZ');
-        expect(typeof BAZ.type).toBe('object');
-        expect(BAZ.type.names).toBeDefined();
-        expect(BAZ.type.names.length).toBe(1);
+        expect(BAZ.type).toBeObject();
+        expect(BAZ.type.names).toBeArrayOfSize(1);
         expect(BAZ.type.names[0]).toBe('string');
     });
 
     it('If used with just a type, adds the type and takes the name from the code', () => {
         expect(QUX.name).toBe('QUX');
-        expect(typeof QUX.type).toBe('object');
-        expect(QUX.type.names).toBeDefined();
-        expect(QUX.type.names.length).toBe(1);
+        expect(QUX.type).toBeObject();
+        expect(QUX.type.names).toBeArrayOfSize(1);
         expect(QUX.type.names[0]).toBe('number');
     });
 
     it('If used with a name and type, ignores the name in the code', () => {
         expect(SOCKET.name).toBe('SOCKET');
-        expect(typeof SOCKET.type).toBe('object');
-        expect(SOCKET.type.names).toBeDefined();
-        expect(SOCKET.type.names.length).toBe(1);
+        expect(SOCKET.type).toBeObject();
+        expect(SOCKET.type.names).toBeArrayOfSize(1);
         expect(SOCKET.type.names[0]).toBe('Object');
     });
 

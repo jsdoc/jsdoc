@@ -39,43 +39,43 @@ describe('jsdoc/src/astNode', () => {
     const variableDeclarator2 = parse('var foo;').declarations[0];
 
     it('should exist', () => {
-        expect(typeof astNode).toBe('object');
+        expect(astNode).toBeObject();
     });
 
     it('should export an addNodeProperties method', () => {
-        expect(typeof astNode.addNodeProperties).toBe('function');
+        expect(astNode.addNodeProperties).toBeFunction();
     });
 
     it('should export a getInfo method', () => {
-        expect(typeof astNode.getInfo).toBe('function');
+        expect(astNode.getInfo).toBeFunction();
     });
 
     it('should export a getParamNames method', () => {
-        expect(typeof astNode.getParamNames).toBe('function');
+        expect(astNode.getParamNames).toBeFunction();
     });
 
     it('should export an isAccessor method', () => {
-        expect(typeof astNode.isAccessor).toBe('function');
+        expect(astNode.isAccessor).toBeFunction();
     });
 
     it('should export an isAssignment method', () => {
-        expect(typeof astNode.isAssignment).toBe('function');
+        expect(astNode.isAssignment).toBeFunction();
     });
 
     it('should export an isFunction method', () => {
-        expect(typeof astNode.isFunction).toBe('function');
+        expect(astNode.isFunction).toBeFunction();
     });
 
     it('should export an isScope method', () => {
-        expect(typeof astNode.isScope).toBe('function');
+        expect(astNode.isScope).toBeFunction();
     });
 
     it('should export a nodeToString method', () => {
-        expect(typeof astNode.nodeToString).toBe('function');
+        expect(astNode.nodeToString).toBeFunction();
     });
 
     it('should export a nodeToValue method', () => {
-        expect(typeof astNode.nodeToValue).toBe('function');
+        expect(astNode.nodeToValue).toBeFunction();
     });
 
     describe('addNodeProperties', () => {
@@ -100,7 +100,7 @@ describe('jsdoc/src/astNode', () => {
         it('should preserve existing properties that are not "node properties"', () => {
             const node = astNode.addNodeProperties({foo: 1});
 
-            expect(typeof node).toBe('object');
+            expect(node).toBeObject();
             expect(node.foo).toBe(1);
         });
 
@@ -108,9 +108,9 @@ describe('jsdoc/src/astNode', () => {
             const node = astNode.addNodeProperties({});
             const descriptor = Object.getOwnPropertyDescriptor(node, 'nodeId');
 
-            expect(descriptor).toBeDefined();
-            expect(typeof descriptor.value).toBe('string');
-            expect(descriptor.enumerable).toBe(false);
+            expect(descriptor).toBeObject();
+            expect(descriptor.value).toBeString();
+            expect(descriptor.enumerable).toBeFalse();
         });
 
         it('should not overwrite an existing nodeId', () => {
@@ -128,7 +128,7 @@ describe('jsdoc/src/astNode', () => {
             node = astNode.addNodeProperties({});
             descriptor = Object.getOwnPropertyDescriptor(node, 'nodeId');
 
-            expect(descriptor.enumerable).toBe(true);
+            expect(descriptor.enumerable).toBeTrue();
         });
 
         it('should add a non-enumerable, writable parent if necessary', () => {
@@ -136,9 +136,9 @@ describe('jsdoc/src/astNode', () => {
             const descriptor = Object.getOwnPropertyDescriptor(node, 'parent');
 
             expect(descriptor).toBeDefined();
-            expect(descriptor.value).toBe(undefined);
-            expect(descriptor.enumerable).toBe(false);
-            expect(descriptor.writable).toBe(true);
+            expect(descriptor.value).toBeUndefined();
+            expect(descriptor.enumerable).toBeFalse();
+            expect(descriptor.writable).toBeTrue();
         });
 
         it('should not overwrite an existing parent', () => {
@@ -151,7 +151,7 @@ describe('jsdoc/src/astNode', () => {
         it('should not overwrite a null parent', () => {
             const node = astNode.addNodeProperties({parent: null});
 
-            expect(node.parent).toBe(null);
+            expect(node.parent).toBeNull();
         });
 
         it('should add an enumerable parentId in debug mode', () => {
@@ -162,8 +162,8 @@ describe('jsdoc/src/astNode', () => {
             node = astNode.addNodeProperties({});
             descriptor = Object.getOwnPropertyDescriptor(node, 'parentId');
 
-            expect(descriptor).toBeDefined();
-            expect(descriptor.enumerable).toBe(true);
+            expect(descriptor).toBeObject();
+            expect(descriptor.enumerable).toBeTrue();
         });
 
         it('should provide a null parentId in debug mode for nodes with no parent', () => {
@@ -172,7 +172,7 @@ describe('jsdoc/src/astNode', () => {
             env.opts.debug = true;
             node = astNode.addNodeProperties({});
 
-            expect(node.parentId).toBe(null);
+            expect(node.parentId).toBeNull();
         });
 
         it('should provide a non-null parentId in debug mode for nodes with a parent', () => {
@@ -191,10 +191,10 @@ describe('jsdoc/src/astNode', () => {
             const node = astNode.addNodeProperties({});
             const descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScope');
 
-            expect(descriptor).toBeDefined();
-            expect(descriptor.value).toBe(undefined);
-            expect(descriptor.enumerable).toBe(false);
-            expect(descriptor.writable).toBe(true);
+            expect(descriptor).toBeObject();
+            expect(descriptor.value).toBeUndefined();
+            expect(descriptor.enumerable).toBeFalse();
+            expect(descriptor.writable).toBeTrue();
         });
 
         it('should not overwrite an existing enclosingScope', () => {
@@ -207,7 +207,7 @@ describe('jsdoc/src/astNode', () => {
         it('should not overwrite a null enclosingScope', () => {
             const node = astNode.addNodeProperties({enclosingScope: null});
 
-            expect(node.enclosingScope).toBe(null);
+            expect(node.enclosingScope).toBeNull();
         });
 
         it('should add an enumerable enclosingScopeId in debug mode', () => {
@@ -218,8 +218,8 @@ describe('jsdoc/src/astNode', () => {
             node = astNode.addNodeProperties({});
             descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScopeId');
 
-            expect(descriptor).toBeDefined();
-            expect(descriptor.enumerable).toBe(true);
+            expect(descriptor).toBeObject();
+            expect(descriptor.enumerable).toBeTrue();
         });
 
         it('should provide a null enclosingScopeId in debug mode for nodes with no enclosing scope',
@@ -229,7 +229,7 @@ describe('jsdoc/src/astNode', () => {
                 env.opts.debug = true;
                 node = astNode.addNodeProperties({});
 
-                expect(node.enclosingScopeId).toBe(null);
+                expect(node.enclosingScopeId).toBeNull();
             });
 
         it('should provide a non-null enclosingScopeId in debug mode for nodes with an enclosing ' +
@@ -258,9 +258,9 @@ describe('jsdoc/src/astNode', () => {
         it('should return the correct info for an AssignmentExpression', () => {
             const info = astNode.getInfo(assignmentExpression);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.Literal);
             expect(info.node.value).toBe(1);
 
@@ -272,41 +272,41 @@ describe('jsdoc/src/astNode', () => {
         it('should return the correct info for a FunctionDeclaration', () => {
             const info = astNode.getInfo(functionDeclaration2);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.FunctionDeclaration);
 
             expect(info.name).toBe('foo');
             expect(info.type).toBe(Syntax.FunctionDeclaration);
-            expect(info.value).not.toBeDefined();
-            expect( Array.isArray(info.paramnames) ).toBe(true);
-            expect(info.paramnames.length).toBe(1);
+            expect(info.value).toBeUndefined();
+
+            expect(info.paramnames).toBeArrayOfSize(1);
             expect(info.paramnames[0]).toBe('bar');
         });
 
         it('should return the correct info for a FunctionExpression', () => {
             const info = astNode.getInfo(functionExpression2);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.FunctionExpression);
 
             expect(info.name).toBe('');
             expect(info.type).toBe(Syntax.FunctionExpression);
-            expect(info.value).not.toBeDefined();
-            expect( Array.isArray(info.paramnames) ).toBe(true);
-            expect(info.paramnames.length).toBe(1);
+            expect(info.value).toBeUndefined();
+
+            expect(info.paramnames).toBeArrayOfSize(1);
             expect(info.paramnames[0]).toBe('bar');
         });
 
         it('should return the correct info for a MemberExpression', () => {
             const info = astNode.getInfo(memberExpression);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.MemberExpression);
 
             expect(info.name).toBe('foo.bar');
@@ -316,9 +316,9 @@ describe('jsdoc/src/astNode', () => {
         it('should return the correct info for a computed MemberExpression', () => {
             const info = astNode.getInfo(memberExpressionComputed1);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.MemberExpression);
 
             expect(info.name).toBe('foo["bar"]');
@@ -328,9 +328,9 @@ describe('jsdoc/src/astNode', () => {
         it('should return the correct info for a Property initializer', () => {
             const info = astNode.getInfo(propertyInit);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.ObjectExpression);
 
             expect(info.name).toBe('bar');
@@ -340,25 +340,25 @@ describe('jsdoc/src/astNode', () => {
         it('should return the correct info for a Property setter', () => {
             const info = astNode.getInfo(propertySet);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.FunctionExpression);
 
             expect(info.name).toBe('bar');
             expect(info.type).toBeUndefined();
             expect(info.value).toBeUndefined();
-            expect( Array.isArray(info.paramnames) ).toBe(true);
-            expect(info.paramnames.length).toBe(1);
+
+            expect(info.paramnames).toBeArrayOfSize(1);
             expect(info.paramnames[0]).toBe('a');
         });
 
         it('should return the correct info for a VariableDeclarator with a value', () => {
             const info = astNode.getInfo(variableDeclarator1);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.Literal);
 
             expect(info.name).toBe('foo');
@@ -369,20 +369,20 @@ describe('jsdoc/src/astNode', () => {
         it('should return the correct info for a VariableDeclarator with no value', () => {
             const info = astNode.getInfo(variableDeclarator2);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
-            expect(info.node).toBeDefined();
+            expect(info.node).toBeObject();
             expect(info.node.type).toBe(Syntax.Identifier);
 
             expect(info.name).toBe('foo');
-            expect(info.type).not.toBeDefined();
-            expect(info.value).not.toBeDefined();
+            expect(info.type).toBeUndefined();
+            expect(info.value).toBeUndefined();
         });
 
         it('should return the correct info for other node types', () => {
             const info = astNode.getInfo(binaryExpression);
 
-            expect(info).toBeDefined();
+            expect(info).toBeObject();
 
             expect(info.node).toBe(binaryExpression);
             expect(info.type).toBe(Syntax.BinaryExpression);
@@ -393,144 +393,137 @@ describe('jsdoc/src/astNode', () => {
         it('should return an empty array for undefined input', () => {
             const params = astNode.getParamNames();
 
-            expect( Array.isArray(params) ).toBe(true);
-            expect(params.length).toBe(0);
+            expect(params).toBeEmptyArray();
         });
 
         it('should return an empty array if the input has no params property', () => {
             const params = astNode.getParamNames({});
 
-            expect( Array.isArray(params) ).toBe(true);
-            expect(params.length).toBe(0);
+            expect(params).toBeEmptyArray();
         });
 
         it('should return an empty array if the input has no params', () => {
             const params = astNode.getParamNames(functionDeclaration1);
 
-            expect( Array.isArray(params) ).toBe(true);
-            expect(params.length).toBe(0);
+            expect(params).toBeEmptyArray();
         });
 
         it('should return a single-item array if the input has a single param', () => {
             const params = astNode.getParamNames(functionDeclaration2);
 
-            expect( Array.isArray(params) ).toBe(true);
-            expect(params.length).toBe(1);
-            expect(params[0]).toBe('bar');
+            expect(params).toEqual(['bar']);
         });
 
         it('should return a multi-item array if the input has multiple params', () => {
             const params = astNode.getParamNames(functionDeclaration3);
 
-            expect( Array.isArray(params) ).toBe(true);
-            expect(params.length).toBe(3);
-            expect(params[0]).toBe('bar');
-            expect(params[1]).toBe('baz');
-            expect(params[2]).toBe('qux');
+            expect(params).toEqual([
+                'bar',
+                'baz',
+                'qux'
+            ]);
         });
 
         it('should include rest parameters', () => {
             const params = astNode.getParamNames(functionDeclaration4);
 
-            expect( Array.isArray(params) ).toBe(true);
-            expect(params.length).toBe(1);
-            expect(params[0]).toBe('bar');
+            expect(params).toEqual(['bar']);
         });
     });
 
     describe('isAccessor', () => {
         it('should return false for undefined values', () => {
-            expect( astNode.isAccessor() ).toBe(false);
+            expect( astNode.isAccessor() ).toBeFalse();
         });
 
         it('should return false if the parameter is not an object', () => {
-            expect( astNode.isAccessor('foo') ).toBe(false);
+            expect( astNode.isAccessor('foo') ).toBeFalse();
         });
 
         it('should return false for non-Property nodes', () => {
-            expect( astNode.isAccessor(binaryExpression) ).toBe(false);
+            expect( astNode.isAccessor(binaryExpression) ).toBeFalse();
         });
 
         it('should return false for Property nodes whose kind is "init"', () => {
-            expect( astNode.isAccessor(propertyInit) ).toBe(false);
+            expect( astNode.isAccessor(propertyInit) ).toBeFalse();
         });
 
         it('should return true for Property nodes whose kind is "get"', () => {
-            expect( astNode.isAccessor(propertyGet) ).toBe(true);
+            expect( astNode.isAccessor(propertyGet) ).toBeTrue();
         });
 
         it('should return true for Property nodes whose kind is "set"', () => {
-            expect( astNode.isAccessor(propertySet) ).toBe(true);
+            expect( astNode.isAccessor(propertySet) ).toBeTrue();
         });
     });
 
     describe('isAssignment', () => {
         it('should return false for undefined values', () => {
-            expect( astNode.isAssignment() ).toBe(false);
+            expect( astNode.isAssignment() ).toBeFalse();
         });
 
         it('should return false if the parameter is not an object', () => {
-            expect( astNode.isAssignment('foo') ).toBe(false);
+            expect( astNode.isAssignment('foo') ).toBeFalse();
         });
 
         it('should return false for nodes that are not assignments', () => {
-            expect( astNode.isAssignment(binaryExpression) ).toBe(false);
+            expect( astNode.isAssignment(binaryExpression) ).toBeFalse();
         });
 
         it('should return true for AssignmentExpression nodes', () => {
-            expect( astNode.isAssignment(assignmentExpression) ).toBe(true);
+            expect( astNode.isAssignment(assignmentExpression) ).toBeTrue();
         });
 
         it('should return true for VariableDeclarator nodes', () => {
-            expect( astNode.isAssignment(variableDeclarator1) ).toBe(true);
+            expect( astNode.isAssignment(variableDeclarator1) ).toBeTrue();
         });
     });
 
     describe('isFunction', () => {
         it('should recognize function declarations as functions', () => {
-            expect( astNode.isFunction(functionDeclaration1) ).toBe(true);
+            expect( astNode.isFunction(functionDeclaration1) ).toBeTrue();
         });
 
         it('should recognize function expressions as functions', () => {
-            expect( astNode.isFunction(functionExpression1) ).toBe(true);
+            expect( astNode.isFunction(functionExpression1) ).toBeTrue();
         });
 
         it('should recognize method definitions as functions', () => {
-            expect( astNode.isFunction(methodDefinition1) ).toBe(true);
+            expect( astNode.isFunction(methodDefinition1) ).toBeTrue();
         });
 
         it('should recognize arrow function expressions as functions', () => {
-            expect( astNode.isFunction(arrowFunctionExpression) ).toBe(true);
+            expect( astNode.isFunction(arrowFunctionExpression) ).toBeTrue();
         });
 
         it('should recognize non-functions', () => {
-            expect( astNode.isFunction(arrayExpression) ).toBe(false);
+            expect( astNode.isFunction(arrayExpression) ).toBeFalse();
         });
     });
 
     describe('isScope', () => {
         it('should return false for undefined values', () => {
-            expect( astNode.isScope() ).toBe(false);
+            expect( astNode.isScope() ).toBeFalse();
         });
 
         it('should return false if the parameter is not an object', () => {
-            expect( astNode.isScope('foo') ).toBe(false);
+            expect( astNode.isScope('foo') ).toBeFalse();
         });
 
         it('should return true for CatchClause nodes', () => {
-            expect( astNode.isScope({type: Syntax.CatchClause}) ).toBe(true);
+            expect( astNode.isScope({type: Syntax.CatchClause}) ).toBeTrue();
         });
 
         it('should return true for FunctionDeclaration nodes', () => {
-            expect( astNode.isScope({type: Syntax.FunctionDeclaration}) ).toBe(true);
+            expect( astNode.isScope({type: Syntax.FunctionDeclaration}) ).toBeTrue();
         });
 
         it('should return true for FunctionExpression nodes', () => {
-            expect( astNode.isScope({type: Syntax.FunctionExpression}) ).toBe(true);
+            expect( astNode.isScope({type: Syntax.FunctionExpression}) ).toBeTrue();
         });
 
         it('should return false for other nodes', () => {
-            expect( astNode.isScope({type: Syntax.NameExpression}) ).toBe(false);
+            expect( astNode.isScope({type: Syntax.NameExpression}) ).toBeFalse();
         });
     });
 

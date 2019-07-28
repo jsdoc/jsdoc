@@ -7,14 +7,12 @@ describe('@implements tag', () => {
     const processMethod = docSet.getByLongname('MyWorker#process')[0];
 
     it('MyTester has an "implements" array', () => {
-        expect(Array.isArray(myTester.implements)).toBe(true);
-        expect(myTester.implements.length).toBe(1);
+        expect(myTester.implements).toBeArrayOfSize(1);
         expect(myTester.implements[0]).toBe('ITester');
     });
 
     it('beforeEach has an "implements" array', () => {
-        expect(Array.isArray(beforeEachMethod.implements)).toBe(true);
-        expect(beforeEachMethod.implements.length).toBe(1);
+        expect(beforeEachMethod.implements).toBeArrayOfSize(1);
         expect(beforeEachMethod.implements[0]).toBe('ITester#beforeEach');
     });
 
@@ -27,6 +25,6 @@ describe('@implements tag', () => {
     });
 
     it('MyIncompleteWorker does not have any methods', () => {
-        expect(docSet.getByLongname('MyIncompleteWorker#work').length).toBe(0);
+        expect(docSet.getByLongname('MyIncompleteWorker#work')).toBeEmptyArray();
     });
 });

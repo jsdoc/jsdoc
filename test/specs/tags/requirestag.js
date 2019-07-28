@@ -5,16 +5,16 @@ describe('@requires tag', () => {
     const baz = docSet.getByLongname('baz')[0];
 
     it('When a symbol has a @requires tag, the doclet has a requires property that includes that value, with the "module:" namespace added.', () => {
-        expect( Array.isArray(foo.requires) ).toBe(true);
+        expect(foo.requires).toBeArrayOfSize(1);
         expect(foo.requires[0]).toBe('module:foo/helper');
 
-        expect( Array.isArray(bar.requires) ).toBe(true);
+        expect(bar.requires).toBeArrayOfSize(2);
         expect(bar.requires[0]).toBe('module:foo');
         expect(bar.requires[1]).toBe('module:Pez#blat');
     });
 
     it('When a symbol has a @requires tag whose value is an inline {@link} tag, the doclet has a requires property that includes that tag without modification.', () => {
-        expect( Array.isArray(baz.requires) ).toBe(true);
+        expect(baz.requires).toBeArrayOfSize(3);
         expect(baz.requires[0]).toBe('{@link module:zest}');
         expect(baz.requires[1]).toBe('{@linkplain module:zing}');
         // by design, we don't validate the tag name, as long as it starts with @link

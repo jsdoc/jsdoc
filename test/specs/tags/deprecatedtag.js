@@ -4,7 +4,7 @@ describe('@deprecated tag', () => {
     const bar = docSet.getByLongname('bar')[0];
 
     it('When a symbol has a @deprecated tag with no value, the doclet has a deprecated property set to true.', () => {
-        expect(foo.deprecated).toBe(true);
+        expect(foo.deprecated).toBeTrue();
     });
 
     it('When a symbol has a @deprecated tag with a value, the doclet has a deprecated property set to that value.', () => {

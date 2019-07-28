@@ -23,34 +23,26 @@ describe('jsdoc/opts/argparser', () => {
         ourOptions = argParser.parse(['-s', 'true', '-n', 'true']);
     });
 
-    it('should exist', () => {
-        expect(ArgParser).toBeDefined();
-    });
-
     it('should be a constructor', () => {
-        expect(typeof ArgParser).toBe('function');
+        expect(ArgParser).toBeFunction();
         expect(new ArgParser() instanceof ArgParser).toBe(true);
     });
 
     describe('ArgParser', () => {
         it('should provide an "addIgnoredOption" method', () => {
-            expect(argParser.addIgnoredOption).toBeDefined();
-            expect(typeof argParser.addIgnoredOption).toBe('function');
+            expect(argParser.addIgnoredOption).toBeFunction();
         });
 
         it('should provide an "addOption" method', () => {
-            expect(argParser.addOption).toBeDefined();
-            expect(typeof argParser.addOption).toBe('function');
+            expect(argParser.addOption).toBeFunction();
         });
 
         it('should provide a "help" method', () => {
-            expect(argParser.help).toBeDefined();
-            expect(typeof argParser.help).toBe('function');
+            expect(argParser.help).toBeFunction();
         });
 
         it('should provide a "parse" method', () => {
-            expect(argParser.parse).toBeDefined();
-            expect(typeof argParser.parse).toBe('function');
+            expect(argParser.parse).toBeFunction();
         });
 
         describe('addIgnoredOption', () => {
@@ -99,8 +91,8 @@ describe('jsdoc/opts/argparser', () => {
 
         describe('parse', () => {
             it('should return an object with information about the options', () => {
-                expect(typeof ourOptions).toBe('object');
-                expect(ourOptions.strict).toBe(true);
+                expect(ourOptions).toBeObject();
+                expect(ourOptions.strict).toBeTrue();
                 expect(ourOptions.name).toBe('true');
             });
 
@@ -112,7 +104,7 @@ describe('jsdoc/opts/argparser', () => {
 
                 ourOptions = argParser.parse(['-s', true], defaults);
 
-                expect(ourOptions.strict).toBe(true);
+                expect(ourOptions.strict).toBeTrue();
                 expect(ourOptions.name).toBe(defaults.name);
             });
 
@@ -121,11 +113,11 @@ describe('jsdoc/opts/argparser', () => {
 
                 ourOptions = argParser.parse(['--multi', 'value1', '--multi', 'value2',
                     '--multi', 'value3']);
-                expect(Array.isArray(ourOptions.multi)).toBe(true);
-                expect(ourOptions.multi.length).toBe(3);
-                expect(ourOptions.multi[0]).toBe('value1');
-                expect(ourOptions.multi[1]).toBe('value2');
-                expect(ourOptions.multi[2]).toBe('value3');
+                expect(ourOptions.multi).toEqual([
+                    'value1',
+                    'value2',
+                    'value3'
+                ]);
             });
 
             it('should throw an error if an unrecognized short option is used', () => {
@@ -155,12 +147,10 @@ describe('jsdoc/opts/argparser', () => {
             });
 
             it('should coerce a true value if a coercer is provided', () => {
-                expect(ourOptions.strict).toBeDefined();
-                expect(ourOptions.strict).toBe(true);
+                expect(ourOptions.strict).toBeTrue();
             });
 
             it('should coerce a string value if no coercer is provided', () => {
-                expect(ourOptions.name).toBeDefined();
                 expect(ourOptions.name).toBe('true');
             });
         });

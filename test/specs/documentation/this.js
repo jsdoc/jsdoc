@@ -6,7 +6,7 @@ describe('this', () => {
 
         describe('in a contructor', () => {
             it('should have a longname like Constructor#member', () => {
-                expect(found1.length).toBe(1);
+                expect(found1).toBeArrayOfSize(1);
             });
 
             it('should have a correct short name', () => {
@@ -24,7 +24,7 @@ describe('this', () => {
 
         describe('in a method of a constructor', () => {
             it('should have a longname like Constructor#member', () => {
-                expect(found2.length).toBe(1);
+                expect(found2).toBeArrayOfSize(1);
             });
 
             it('should have a correct short name', () => {
@@ -46,7 +46,7 @@ describe('this', () => {
         const found = docSet.getByLongname('TemplateBuilder#Template#rendered');
 
         it('should have a longname like Constructor#Constructor#member', () => {
-            expect(found.length).toBe(1);
+            expect(found).toBeArrayOfSize(1);
         });
 
         it('should have a correct short name', () => {
@@ -67,7 +67,7 @@ describe('this', () => {
         const found = docSet.getByLongname('position');
 
         it('should have a global member name like "member"', () => {
-            expect(found.length).toBe(1);
+            expect(found).toBeArrayOfSize(1);
         });
 
         it('should have a correct short name', () => {
@@ -84,7 +84,7 @@ describe('this', () => {
         const found = docSet.getByLongname('Template#render');
 
         it('should have a longname like Constructor#member', () => {
-            expect(found.length).toBe(1);
+            expect(found).toBeArrayOfSize(1);
         });
 
         it('should have the correct name', () => {
@@ -101,7 +101,7 @@ describe('this', () => {
         const found = docSet.getByLongname('module:template.Template#view');
 
         it('should have a longname like Constructor#member', () => {
-            expect(found.length).toBe(1);
+            expect(found).toBeArrayOfSize(1);
         });
 
         it('should have the correct name', () => {
@@ -118,7 +118,7 @@ describe('this', () => {
         const someProperty = docSet.getByLongname('module:example#_someProperty')[0];
 
         it('should have the correct longname, name, and scope', () => {
-            expect(someProperty).toBeDefined();
+            expect(someProperty).toBeObject();
             expect(someProperty.name).toBe('_someProperty');
             expect(someProperty.scope).toBe('instance');
         });
@@ -129,7 +129,7 @@ describe('this', () => {
         const found = docSet.getByLongname('Page#parts.body.heading');
 
         it('should have a longname like Constructor#objlit.member', () => {
-            expect(found.length).toBe(1);
+            expect(found).toBeArrayOfSize(1);
         });
 
         it('should have a correct short name', () => {

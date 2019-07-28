@@ -4,11 +4,11 @@ describe('method definition inside a class declaration', () => {
     const staticRunMethod = docSet.getByLongname('Test.run')[0];
 
     it('methods should have documentation comments', () => {
-        expect(runMethod).toBeDefined();
+        expect(runMethod).toBeObject();
         expect(runMethod.description).toBe('Document me.');
         expect(runMethod.kind).toBe('function');
 
-        expect(staticRunMethod).toBeDefined();
+        expect(staticRunMethod).toBeObject();
         expect(staticRunMethod.description).toBe('Static document me.');
         expect(staticRunMethod.kind).toBe('function');
     });

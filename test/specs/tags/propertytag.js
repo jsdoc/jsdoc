@@ -3,8 +3,7 @@ describe('@property tag', () => {
         const docSet = jsdoc.getDocSetFromFile('test/fixtures/propertytag.js');
         const myobject = docSet.getByLongname('myobject')[0];
 
-        expect(typeof myobject.properties).toBe('object');
-        expect(myobject.properties.length).toBe(4);
+        expect(myobject.properties).toBeArrayOfSize(4);
 
         expect(myobject.properties[0].name).toBe('id');
         expect(myobject.properties[1].name).toBe('defaults');
@@ -22,8 +21,7 @@ describe('@property tag', () => {
         const docSet = jsdoc.getDocSetFromFile('test/fixtures/numericpropertytag.js');
         const numericObject = docSet.getByLongname('numericObject')[0];
 
-        expect(typeof numericObject.properties).toBe('object');
-        expect(numericObject.properties.length).toBe(3);
+        expect(numericObject.properties).toBeArrayOfSize(3);
 
         expect(numericObject.properties[0].name).toBe('1');
         expect(numericObject.properties[1].name).toBe('2');

@@ -26,29 +26,27 @@ describe('jsdoc/tag/type', () => {
     const type = require('jsdoc/tag/type');
 
     it('should exist', () => {
-        expect(type).toBeDefined();
-        expect(typeof type).toBe('object');
+        expect(type).toBeObject();
     });
 
     it('should export a parse function', () => {
-        expect(type.parse).toBeDefined();
-        expect(typeof type.parse).toBe('function');
+        expect(type.parse).toBeFunction();
     });
 
     describe('parse', () => {
         it('should return an object with name, type, and text properties', () => {
             const info = type.parse('');
 
-            expect(info.name).toBeDefined();
-            expect(info.type).toBeDefined();
-            expect(info.text).toBeDefined();
+            expect(info.name).toBeString();
+            expect(info.type).toBeArray();
+            expect(info.text).toBeString();
         });
 
         it('should not extract a name or type if canHaveName and canHaveType are not set', () => {
             const desc = '{number} foo The foo parameter.';
             const info = type.parse(desc);
 
-            expect(info.type).toEqual([]);
+            expect(info.type).toBeEmptyArray();
             expect(info.name).toBe('');
             expect(info.text).toBe(desc);
         });
@@ -58,7 +56,7 @@ describe('jsdoc/tag/type', () => {
             const desc = 'The bar parameter.';
             const info = type.parse( buildText(null, name, desc), true, false );
 
-            expect(info.type).toEqual([]);
+            expect(info.type).toBeEmptyArray();
             expect(info.name).toBe(name);
             expect(info.text).toBe(desc);
         });
@@ -88,15 +86,15 @@ describe('jsdoc/tag/type', () => {
             let desc = '{string} [foo]';
             let info = type.parse(desc, true, true);
 
-            expect(info.optional).toBe(true);
+            expect(info.optional).toBeTrue();
 
             desc = '{string=} [foo]';
             info = type.parse(desc, true, true);
-            expect(info.optional).toBe(true);
+            expect(info.optional).toBeTrue();
 
             desc = '[foo]';
             info = type.parse(desc, true, true);
-            expect(info.optional).toBe(true);
+            expect(info.optional).toBeTrue();
         });
 
         it('should return the types as an array', () => {
@@ -129,14 +127,14 @@ describe('jsdoc/tag/type', () => {
             const desc = 'braceless text';
             const info = type.parse(desc, false, true);
 
-            expect(info.type).toEqual([]);
+            expect(info.type).toBeEmptyArray();
         });
 
         it('should cope with bad escapement at the end of the string', () => {
             const desc = 'bad {escapement \\';
             const info = type.parse(desc, false, true);
 
-            expect(info.type).toEqual([]);
+            expect(info.type).toBeEmptyArray();
             expect(info.text).toBe(desc);
         });
 
@@ -223,26 +221,26 @@ describe('jsdoc/tag/type', () => {
 
                 expect(info.name).toBe('qux');
                 expect(info.text).toBe(desc);
-                expect(info.optional).toBe(true);
+                expect(info.optional).toBeTrue();
 
                 name = '[ qux ]';
                 info = type.parse( buildText(null, name, desc), true, false );
                 expect(info.name).toBe('qux');
                 expect(info.text).toBe(desc);
-                expect(info.optional).toBe(true);
+                expect(info.optional).toBeTrue();
 
                 name = '[qux=hooray]';
                 info = type.parse( buildText(null, name, desc), true, false );
                 expect(info.name).toBe('qux');
                 expect(info.text).toBe(desc);
-                expect(info.optional).toBe(true);
+                expect(info.optional).toBeTrue();
                 expect(info.defaultvalue).toBe('hooray');
 
                 name = '[  qux   =  hooray ]';
                 info = type.parse( buildText(null, name, desc), true, false );
                 expect(info.name).toBe('qux');
                 expect(info.text).toBe(desc);
-                expect(info.optional).toBe(true);
+                expect(info.optional).toBeTrue();
                 expect(info.defaultvalue).toBe('hooray');
             });
         });
@@ -254,7 +252,7 @@ describe('jsdoc/tag/type', () => {
                 const info = type.parse(desc, true, true);
 
                 expect(info.type).toEqual( ['string'] );
-                expect(info.variable).toBe(true);
+                expect(info.variable).toBeTrue();
             });
 
             it('should set the type correctly for type applications that contain type unions',

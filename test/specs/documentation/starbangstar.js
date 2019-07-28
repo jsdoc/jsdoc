@@ -4,7 +4,7 @@ describe('starbangstar', () => {
     const x = docSet.getByLongname('module:myscript/core.x')[0];
 
     it('should not treat a doclet starting with /*!* as a JSDoc comment.', () => {
-        expect(mod.description).toEqual('Script that does something awesome');
+        expect(mod.description).toBe('Script that does something awesome');
     });
 
     it('should not treat a doclet starting with /*!** as a JSDoc comment.', () => {

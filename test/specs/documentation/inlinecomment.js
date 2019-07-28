@@ -6,8 +6,8 @@ describe('inline comments', () => {
     it('When there is an inline comment on a line ending with no semicolon, ' +
         'that comment and the next comment are still captured', () => {
         // Inline comment on line without semicolon is captured
-        expect(t.length).toEqual(1);
+        expect(t).toBeArrayOfSize(1);
         // Inline comment on line after line without semicolon is captured
-        expect(t2.length).toEqual(1);
+        expect(t2).toBeArrayOfSize(1);
     });
 });

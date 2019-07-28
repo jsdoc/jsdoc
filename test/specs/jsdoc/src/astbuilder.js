@@ -2,13 +2,11 @@ describe('jsdoc/src/astbuilder', () => {
     const astbuilder = require('jsdoc/src/astbuilder');
 
     it('should exist', () => {
-        expect(astbuilder).toBeDefined();
-        expect(typeof astbuilder).toBe('object');
+        expect(astbuilder).toBeObject();
     });
 
     it('should export an AstBuilder class', () => {
-        expect(astbuilder.AstBuilder).toBeDefined();
-        expect(typeof astbuilder.AstBuilder).toBe('function');
+        expect(astbuilder.AstBuilder).toBeFunction();
     });
 
     describe('AstBuilder', () => {
@@ -20,8 +18,7 @@ describe('jsdoc/src/astbuilder', () => {
         });
 
         it('should provide a "build" method', () => {
-            expect(builder.build).toBeDefined();
-            expect(typeof builder.build).toBe('function');
+            expect(builder.build).toBeFunction();
         });
 
         describe('build', () => {

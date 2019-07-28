@@ -4,7 +4,6 @@ describe('@alias tag', () => {
     const myObject = docSet.getByLongname('myObject')[1];
 
     it('adds an "alias" property to the doclet with the tag\'s value', () => {
-        expect(myObject.alias).toBeDefined();
         expect(myObject.alias).toBe('myObject');
     });
 

@@ -3,7 +3,7 @@ describe('export class', () => {
     const bar = docSet.getByLongname('module:foo.Bar')[0];
 
     it('should name exported classes correctly', () => {
-        expect(bar).toBeDefined();
+        expect(bar).toBeObject();
         expect(bar.name).toBe('Bar');
     });
 

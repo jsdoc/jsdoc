@@ -42,12 +42,11 @@ describe('@package tag', () => {
 
                 expect(logger.warn).not.toHaveBeenCalled();
 
-                expect(connectionPorts).toBeDefined();
+                expect(connectionPorts).toBeObject();
                 expect(connectionPorts.access).toBe('package');
 
-                expect(connectionPorts.type).toBeDefined();
-                expect(connectionPorts.type.names).toBeDefined();
-                expect(connectionPorts.type.names.length).toBe(1);
+                expect(connectionPorts.type).toBeObject();
+                expect(connectionPorts.type.names).toBeArrayOfSize(1);
                 expect(connectionPorts.type.names[0]).toBe('Object.<string, number>');
             });
     });

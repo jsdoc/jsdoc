@@ -4,8 +4,8 @@ describe('when a documented var memeber is inside a named function', () => {
     const found2 = docSet.getByLongname('sendMessage~encrypt');
 
     it('A doclet with the correct longname should be found', () => {
-        expect(found1.length).toBe(1);
-        expect(found2.length).toBe(1);
+        expect(found1).toBeArrayOfSize(1);
+        expect(found2).toBeArrayOfSize(1);
     });
 
     it('The short name should be correct', () => {

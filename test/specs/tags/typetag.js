@@ -6,8 +6,8 @@ describe('@type tag', () => {
     it('When a symbol has a @type tag, the doclet has a type property set to that value\'s type.', () => {
         const foo = docSet.getByLongname('foo')[0];
 
-        expect(typeof foo.type).toBe('object');
-        expect(typeof foo.type.names).toBe('object');
+        expect(foo.type).toBeObject();
+        expect(foo.type.names).toBeArrayOfStrings();
         expect(foo.type.names.join(', ')).toBe('string, Array.<string>');
     });
 
@@ -20,7 +20,7 @@ describe('@type tag', () => {
     it('When a symbol has a @type tag for a non-nullable type, the doclet indicates that the type is non-nullable', () => {
         const baz = docSet.getByLongname('baz')[0];
 
-        expect(baz.nullable).toBe(false);
+        expect(baz.nullable).toBeFalse();
     });
 
     describe('JSDoc tags', () => {
@@ -55,7 +55,7 @@ describe('@type tag', () => {
 
             expect(logger.warn).not.toHaveBeenCalled();
 
-            expect(stringOrNumber).toBeDefined();
+            expect(stringOrNumber).toBeObject();
             expect(stringOrNumber.description).toBe('A string or a number.');
         });
     });

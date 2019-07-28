@@ -1,58 +1,54 @@
 describe('var statements', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/var.js');
-    const found = [
-        docSet.getByLongname('GREEN'),
-        docSet.getByLongname('RED'),
-        docSet.getByLongname('validate'),
-        docSet.getByLongname('i'),
-        docSet.getByLongname('results')
-    ];
+    const GREEN = docSet.getByLongname('GREEN')[0];
+    const RED = docSet.getByLongname('RED')[0];
+    const results = docSet.getByLongname('results')[0];
 
     describe('when a series of constants is documented', () => {
         it('should find the first constant', () => {
-            expect(found[0].length).toBe(1);
+            expect(GREEN).toBeObject();
         });
 
         it('should attach the docs to the first constant', () => {
-            expect(found[0][0].comment).toBe('/** document me */');
+            expect(GREEN.comment).toBe('/** document me */');
         });
 
         it('should have the correct name', () => {
-            expect(found[0][0].name).toBe('GREEN');
+            expect(GREEN.name).toBe('GREEN');
         });
 
         it('should have the correct memberof', () => {
-            expect(found[0][0].memberof).toBeUndefined();
+            expect(GREEN.memberof).toBeUndefined();
         });
 
         it('should give the constant a global scope', () => {
-            expect(found[0][0].scope).toBe('global');
+            expect(GREEN.scope).toBe('global');
         });
 
         it('should find the second constant', () => {
-            expect(found[1].length).toBe(1);
+            expect(RED).toBeObject();
         });
 
         it('should not attach the docs to the second constant', () => {
-            expect(found[1][0].undocumented).toBe(true);
+            expect(RED.undocumented).toBeTrue();
         });
     });
 
     describe('when a member of a series of vars is documented', () => {
         it('should attach the docs to the correct var', () => {
-            expect(found[4][0].comment).toBe('/** document me */');
+            expect(results.comment).toBe('/** document me */');
         });
 
         it('should have the correct name', () => {
-            expect(found[4][0].name).toBe('results');
+            expect(results.name).toBe('results');
         });
 
         it('should leave memberof undefined', () => {
-            expect(found[4][0].memberof).toBeUndefined();
+            expect(results.memberof).toBeUndefined();
         });
 
         it('should give the var a global scope', () => {
-            expect(found[4][0].scope).toBe('global');
+            expect(results.scope).toBe('global');
         });
     });
 });

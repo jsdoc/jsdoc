@@ -4,59 +4,49 @@ describe('jsdoc/util/logger', () => {
     const loggerArgs = ['foo bar %s', 'hello'];
 
     it('should exist', () => {
-        expect(logger).toBeDefined();
-        expect(typeof logger).toBe('object');
+        expect(logger).toBeObject();
     });
 
     it('should inherit from EventEmitter', () => {
-        const EventEmitter = require('events').EventEmitter;
+        const { EventEmitter } = require('events');
 
         expect(logger instanceof EventEmitter).toBe(true);
     });
 
     it('should export a "debug" method', () => {
-        expect(logger.debug).toBeDefined();
-        expect(typeof logger.debug).toBe('function');
+        expect(logger.debug).toBeFunction();
     });
 
     it('should export an "error" method', () => {
-        expect(logger.error).toBeDefined();
-        expect(typeof logger.error).toBe('function');
+        expect(logger.error).toBeFunction();
     });
 
     it('should export a "fatal" method', () => {
-        expect(logger.fatal).toBeDefined();
-        expect(typeof logger.fatal).toBe('function');
+        expect(logger.fatal).toBeFunction();
     });
 
     it('should export a "getLevel" method', () => {
-        expect(logger.getLevel).toBeDefined();
-        expect(typeof logger.getLevel).toBe('function');
+        expect(logger.getLevel).toBeFunction();
     });
 
     it('should export an "info" method', () => {
-        expect(logger.info).toBeDefined();
-        expect(typeof logger.info).toBe('function');
+        expect(logger.info).toBeFunction();
     });
 
     it('should export a "LEVELS" object', () => {
-        expect(logger.LEVELS).toBeDefined();
-        expect(typeof logger.LEVELS).toBe('object');
+        expect(logger.LEVELS).toBeObject();
     });
 
     it('should export a "setLevel" method', () => {
-        expect(logger.setLevel).toBeDefined();
-        expect(typeof logger.setLevel).toBe('function');
+        expect(logger.setLevel).toBeFunction();
     });
 
     it('should export a "verbose" method', () => {
-        expect(logger.verbose).toBeDefined();
-        expect(typeof logger.verbose).toBe('function');
+        expect(logger.verbose).toBeFunction();
     });
 
     it('should export a "warn" method', () => {
-        expect(logger.warn).toBeDefined();
-        expect(typeof logger.warn).toBe('function');
+        expect(logger.warn).toBeFunction();
     });
 
     // helpers for testing logger methods
@@ -79,8 +69,7 @@ describe('jsdoc/util/logger', () => {
         });
         logger[name](loggerArgs[0], loggerArgs[1]);
 
-        expect(capturedArgs).toBeDefined();
-        expect( Array.isArray(capturedArgs) ).toBe(true);
+        expect(capturedArgs).toBeArrayOfSize(2);
         expect(capturedArgs[0]).toBe(loggerArgs[0]);
         expect(capturedArgs[1]).toBe(loggerArgs[1]);
     }
@@ -143,12 +132,12 @@ describe('jsdoc/util/logger', () => {
         const LEVELS = logger.LEVELS;
 
         it('should include the correct properties', () => {
-            expect(LEVELS.VERBOSE).toBeDefined();
-            expect(LEVELS.DEBUG).toBeDefined();
-            expect(LEVELS.INFO).toBeDefined();
-            expect(LEVELS.WARN).toBeDefined();
-            expect(LEVELS.ERROR).toBeDefined();
-            expect(LEVELS.SILENT).toBeDefined();
+            expect(LEVELS.VERBOSE).toBeNumber();
+            expect(LEVELS.DEBUG).toBeNumber();
+            expect(LEVELS.INFO).toBeNumber();
+            expect(LEVELS.WARN).toBeNumber();
+            expect(LEVELS.ERROR).toBeNumber();
+            expect(LEVELS.SILENT).toBeNumber();
         });
 
         it('should weight the logging levels correctly relative to one another', () => {

@@ -32,7 +32,7 @@ describe('@interface tag', () => {
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];
 
             expect(logger.warn).not.toHaveBeenCalled();
-            expect(virtualInterface).toBeDefined();
+            expect(virtualInterface).toBeObject();
             expect(virtualInterface.longname).toBe('VirtualInterface');
         });
 
@@ -46,7 +46,7 @@ describe('@interface tag', () => {
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];
 
             expect(logger.warn).toHaveBeenCalled();
-            expect(virtualInterface).not.toBeDefined();
+            expect(virtualInterface).toBeUndefined();
         });
     });
 

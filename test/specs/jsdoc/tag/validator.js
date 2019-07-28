@@ -6,13 +6,11 @@ describe('jsdoc/tag/validator', () => {
     const validator = require('jsdoc/tag/validator');
 
     it('should exist', () => {
-        expect(validator).toBeDefined();
-        expect(typeof validator).toBe('object');
+        expect(validator).toBeObject();
     });
 
     it('should export a validate function', () => {
-        expect(validator.validate).toBeDefined();
-        expect(typeof validator.validate).toBe('function');
+        expect(validator.validate).toBeFunction();
     });
 
     describe('validate', () => {

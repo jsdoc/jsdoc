@@ -11,11 +11,11 @@ describe('@event and @fires/@emits tags', () => {
 
     // @fires/@emits tag
     it('When a symbol has a @fires tag, the doclet has an array named "fires".', () => {
-        expect(typeof snowballMethod.fires).toBe('object');
+        expect(snowballMethod.fires).toBeArray();
     });
 
     it('When a symbol has an @emits tag, the doclet has an array named "fires".', () => {
-        expect(typeof footballMatchMethod.fires).toBe('object');
+        expect(footballMatchMethod.fires).toBeArray();
     });
 
     it('When a symbol has a "fires" array, the members have the "event:" namespace.', () => {

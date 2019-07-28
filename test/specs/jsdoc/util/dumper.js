@@ -2,13 +2,11 @@ describe('jsdoc/util/dumper', () => {
     const dumper = require('jsdoc/util/dumper');
 
     it('should exist', () => {
-        expect(dumper).toBeDefined();
-        expect(typeof dumper).toBe('object');
+        expect(dumper).toBeObject();
     });
 
     it('should export a "dump" function', () => {
-        expect(dumper.dump).toBeDefined();
-        expect(typeof dumper.dump).toBe('function');
+        expect(dumper.dump).toBeFunction();
     });
 
     it('can dump string values', () => {
@@ -58,22 +56,19 @@ describe('jsdoc/util/dumper', () => {
     });
 
     it('can dump array values', () => {
-        const actual = dumper.dump(['hello', 'world']);
-        const expected = '[\n    "hello",\n    "world"\n]';
+        const dumped = dumper.dump(['hello', 'world']);
 
-        expect(actual).toBe(expected);
+        expect(dumped).toBe('[\n    "hello",\n    "world"\n]');
     });
 
     it('can dump simple object values', () => {
-        const actual = dumper.dump({ hello: 'world' });
-        const expected = '{\n    "hello": "world"\n}';
+        const dumped = dumper.dump({ hello: 'world' });
 
-        expect(actual).toBe(expected);
+        expect(dumped).toBe('{\n    "hello": "world"\n}');
     });
 
     it('can dump constructed instance values, not displaying prototype members', () => {
-        let actual;
-        let expected;
+        let dumped;
 
         function Foo(name) {
             this.name = name;
@@ -82,10 +77,9 @@ describe('jsdoc/util/dumper', () => {
         Foo.prototype.sayHello = () => {};
         /* eslint-enable no-empty-function */
 
-        actual = dumper.dump(new Foo('hello'));
-        expected = '{\n    "name": "hello"\n}';
+        dumped = dumper.dump(new Foo('hello'));
 
-        expect(actual).toBe(expected);
+        expect(dumped).toBe('{\n    "name": "hello"\n}');
     });
 
     it('can dump complex mixed values', () => {
@@ -93,7 +87,7 @@ describe('jsdoc/util/dumper', () => {
         function Foo() {}
         /* eslint-enable no-empty-function */
 
-        const actual = dumper.dump([
+        const dumped = dumper.dump([
             undefined,
             null,
             new Foo(),
@@ -133,20 +127,18 @@ describe('jsdoc/util/dumper', () => {
             '    }\n' +
             ']';
 
-        expect(actual).toBe(expected);
+        expect(dumped).toBe(expected);
     });
 
     describe('circular references', () => {
         it('should not crash on circular references', () => {
             const a = {};
-            let actual;
-            let expected;
+            let dumped;
 
             a.b = a;
-            actual = dumper.dump(a);
-            expected = '{\n    "b": "<CircularRef>"\n}';
+            dumped = dumper.dump(a);
 
-            expect(actual).toBe(expected);
+            expect(dumped).toBe('{\n    "b": "<CircularRef>"\n}');
         });
 
         it('should not treat references between different objects as circular refs', () => {
@@ -157,11 +149,11 @@ describe('jsdoc/util/dumper', () => {
                     }
                 }
             ];
-            let actual;
+            let dumped;
             let expected;
 
             a[1] = { d: a[0].b };
-            actual = dumper.dump(a);
+            dumped = dumper.dump(a);
             expected = '' +
                 '[\n' +
                 '    {\n' +
@@ -176,7 +168,7 @@ describe('jsdoc/util/dumper', () => {
                 '    }\n' +
                 ']';
 
-            expect(actual).toBe(expected);
+            expect(dumped).toBe(expected);
         });
     });
 
@@ -184,14 +176,14 @@ describe('jsdoc/util/dumper', () => {
         it('should dump all of its arguments, separated by newlines', () => {
             const a = { b: 1 };
             const b = 'hello';
-            const actual = dumper.dump(a, b);
+            const dumped = dumper.dump(a, b);
             const expected = '' +
                 '{\n' +
                 '    "b": 1\n' +
                 '}\n' +
                 '"hello"';
 
-            expect(actual).toBe(expected);
+            expect(dumped).toBe(expected);
         });
     });
 });

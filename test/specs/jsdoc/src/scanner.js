@@ -10,28 +10,25 @@ describe('jsdoc/src/scanner', () => {
     const sourcePath = path.normalize(`${env.pwd}/test/fixtures/src`);
 
     it('should exist', () => {
-        expect(scanner).toBeDefined();
-        expect(typeof scanner).toBe('object');
+        expect(scanner).toBeObject();
     });
 
     it('should export a "Scanner" class', () => {
-        expect(scanner.Scanner).toBeDefined();
-        expect(typeof scanner.Scanner).toBe('function');
+        expect(scanner.Scanner).toBeFunction();
     });
 
     describe('Scanner', () => {
         it('should inherit from EventEmitter', () => {
-            const EventEmitter = require('events').EventEmitter;
+            const { EventEmitter } = require('events');
             const testScanner = new scanner.Scanner();
 
-            expect(testScanner instanceof EventEmitter).toBe(true);
+            expect(testScanner instanceof EventEmitter).toBeTrue();
         });
 
         it('should have a "scan" method', () => {
             const testScanner = new scanner.Scanner();
 
-            expect(testScanner.scan).toBeDefined();
-            expect(typeof testScanner.scan).toBe('function');
+            expect(testScanner.scan).toBeFunction();
         });
 
         describe('scan', () => {
@@ -41,13 +38,13 @@ describe('jsdoc/src/scanner', () => {
 
                 sourceFiles = sourceFiles.map($ => path.relative(env.pwd, $));
 
-                expect(sourceFiles.length).toEqual(3);
-                expect( sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'one.js')) )
-                    .toBeGreaterThan(-1);
-                expect( sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'two.js')) )
-                    .toBeGreaterThan(-1);
-                expect( sourceFiles.indexOf(path.join('test', 'fixtures', 'src', 'dir1', 'three.js')) )
-                    .toBeGreaterThan(-1);
+                expect(sourceFiles).toBeArrayOfSize(3);
+                expect( sourceFiles.includes(path.join('test', 'fixtures', 'src', 'one.js')) )
+                    .toBeTrue();
+                expect( sourceFiles.includes(path.join('test', 'fixtures', 'src', 'two.js')) )
+                    .toBeTrue();
+                expect( sourceFiles.includes(path.join('test', 'fixtures', 'src', 'dir1', 'three.js')) )
+                    .toBeTrue();
             });
         });
     });

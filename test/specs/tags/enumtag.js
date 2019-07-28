@@ -3,7 +3,7 @@ describe('@enum tag', () => {
     const tristate = docSet.getByLongname('TriState')[0];
 
     it('When a symbol has an @enum tag, it has a properties array.', () => {
-        expect(typeof tristate.properties).toBe('object');
+        expect(tristate.properties).toBeArray();
     });
 
     it('If no @type is given for the property, it is inherited from the enum.', () => {
@@ -33,7 +33,7 @@ describe('@enum tag', () => {
         it('When an enum is defined with numeric object properties, the enum is parsed correctly.', () => {
             const zero = docSet.getByLongname('TrueFalseNumeric.0')[0];
 
-            expect(zero).toBeDefined();
+            expect(zero).toBeObject();
             expect(zero.description).toBe('false');
         });
     });
@@ -45,16 +45,12 @@ describe('@enum tag', () => {
         const quadState = docSet2.getByLongname('module:my/enums.QuadState')[0];
 
         it('When a symbol at the start of an assignment chain has an @enum tag, that symbol has a properties array.', () => {
-            expect( Array.isArray(quadState.properties) ).toBe(true);
-            expect(quadState.properties.length).toBe(4);
+            expect(quadState.properties).toBeArrayOfSize(4);
         });
 
         it('When multiple symbols in an assignment chain have @enum tags, each symbol has a properties array.', () => {
-            expect( Array.isArray(pentaState.properties) ).toBe(true);
-            expect(pentaState.properties.length).toBe(5);
-
-            expect( Array.isArray(PENTASTATE.properties) ).toBe(true);
-            expect(pentaState.properties.length).toBe(5);
+            expect(pentaState.properties).toBeArrayOfSize(5);
+            expect(PENTASTATE.properties).toBeArrayOfSize(5);
         });
     });
 

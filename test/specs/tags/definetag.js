@@ -36,7 +36,7 @@ describe('@define tag', () => {
             const enableDebug = docSet.getByLongname('ENABLE_DEBUG')[0];
 
             expect(enableDebug.kind).toBe('constant');
-            expect(enableDebug.type).toBeDefined();
+            expect(enableDebug.type).toBeObject();
             expect(enableDebug.type.names[0]).toBe('boolean');
         });
     });

@@ -12,8 +12,7 @@ describe('@nosideeffects tag', () => {
             const docSet = jsdoc.getDocSetFromFile('test/fixtures/nosideeffectstag.js');
             const doNothing = docSet.getByLongname('doNothing')[0];
 
-            expect(Array.isArray(doNothing.modifies)).toBe(true);
-            expect(doNothing.modifies.length).toBe(0);
+            expect(doNothing.modifies).toBeEmptyArray();
         });
     });
 });

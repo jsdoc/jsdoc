@@ -10,23 +10,21 @@ describe('mixins', () => {
         it('should create doclets for mixed-in symbols', () => {
             const objectBMethod = docSet.getByLongname('module:mixy.ObjectB.method')[0];
 
-            expect(objectBMethod).toBeDefined();
+            expect(objectBMethod).toBeObject();
             expect(objectBMethod.memberof).toBe('module:mixy.ObjectB');
         });
 
         it('should set the "mixes" property correctly on first-generation mixers', () => {
             const objectBMethod = docSet.getByLongname('module:mixy.ObjectB.method')[0];
 
-            expect(Array.isArray(objectBMethod.mixes)).toBe(true);
-            expect(objectBMethod.mixes.length).toBe(1);
+            expect(objectBMethod.mixes).toBeArrayOfSize(1);
             expect(objectBMethod.mixes[0]).toBe('module:mixy.ObjectA.method');
         });
 
         it('should set the "mixes" property correctly on second-generation mixers', () => {
             const objectCMethod = docSet.getByLongname('module:mixy.ObjectC.method')[0];
 
-            expect(Array.isArray(objectCMethod.mixes)).toBe(true);
-            expect(objectCMethod.mixes.length).toBe(1);
+            expect(objectCMethod.mixes).toBeArrayOfSize(1);
             expect(objectCMethod.mixes[0]).toBe('module:mixy.ObjectB.method');
         });
 
@@ -34,7 +32,7 @@ describe('mixins', () => {
             const superSweetStatic = docSet.getByLongname('module:mixy.ObjectC.superSweet')[0];
             const superSweetInstance = docSet.getByLongname('module:mixy.ClassB#superSweet')[0];
 
-            expect(superSweetInstance).toBeDefined();
+            expect(superSweetInstance).toBeObject();
             expect(superSweetInstance.comment).toBe(superSweetStatic.comment);
         });
 
@@ -42,7 +40,7 @@ describe('mixins', () => {
             it('should define symbols mixed into a class as instance members', () => {
                 const classAMethod = docSet.getByLongname('module:mixy.ClassA#method')[0];
 
-                expect(classAMethod).toBeDefined();
+                expect(classAMethod).toBeObject();
                 expect(classAMethod.scope).toBe(name.SCOPE.NAMES.INSTANCE);
                 expect(classAMethod.memberof).toBe('module:mixy.ClassA');
             });

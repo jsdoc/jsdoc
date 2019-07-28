@@ -6,38 +6,33 @@ describe('jsdoc/src/handlers', () => {
     handlers.attachTo(testParser);
 
     it('should exist', () => {
-        expect(handlers).toBeDefined();
-        expect(typeof handlers).toEqual('object');
+        expect(handlers).toBeObject();
     });
 
     it('should export an "attachTo" function', () => {
-        expect(handlers.attachTo).toBeDefined();
-        expect(typeof handlers.attachTo).toEqual('function');
+        expect(handlers.attachTo).toBeFunction();
     });
 
     describe('attachTo', () => {
         it('should attach a "jsdocCommentFound" handler to the parser', () => {
             const callbacks = testParser.listeners('jsdocCommentFound');
 
-            expect(callbacks).toBeDefined();
-            expect(callbacks.length).toEqual(1);
-            expect(typeof callbacks[0]).toEqual('function');
+            expect(callbacks).toBeArrayOfSize(1);
+            expect(callbacks[0]).toBeFunction();
         });
 
         it('should attach a "symbolFound" handler to the parser', () => {
             const callbacks = testParser.listeners('symbolFound');
 
-            expect(callbacks).toBeDefined();
-            expect(callbacks.length).toEqual(1);
-            expect(typeof callbacks[0]).toEqual('function');
+            expect(callbacks).toBeArrayOfSize(1);
+            expect(callbacks[0]).toBeFunction();
         });
 
         it('should attach a "fileComplete" handler to the parser', () => {
             const callbacks = testParser.listeners('fileComplete');
 
-            expect(callbacks).toBeDefined();
-            expect(callbacks.length).toEqual(1);
-            expect(typeof callbacks[0]).toEqual('function');
+            expect(callbacks).toBeArrayOfSize(1);
+            expect(callbacks[0]).toBeFunction();
         });
     });
 
@@ -48,8 +43,8 @@ describe('jsdoc/src/handlers', () => {
         const result = testParser.parse(sourceCode);
 
         it('should create a doclet for comments with "@name" tags', () => {
-            expect(result.length).toEqual(1);
-            expect(result[0].name).toEqual('bar');
+            expect(result).toBeArrayOfSize(1);
+            expect(result[0].name).toBe('bar');
         });
     });
 

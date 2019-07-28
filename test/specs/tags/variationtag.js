@@ -13,8 +13,7 @@ describe('@variation tag', () => {
     });
 
     it('When the variation tag\'s value is enclosed in parentheses, the parentheses are removed', () => {
-        expect(someObject3).toBeDefined();
-
+        expect(someObject3).toBeObject();
         expect(someObject3.variation).toBe('3');
     });
 });

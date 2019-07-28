@@ -2,50 +2,46 @@ describe('jsdoc/tag/inline', () => {
     const inline = require('jsdoc/tag/inline');
 
     it('should exist', () => {
-        expect(inline).toBeDefined();
-        expect(typeof inline).toBe('object');
+        expect(inline).toBeObject();
     });
 
     it('should export an isInlineTag function', () => {
-        expect(inline.isInlineTag).toBeDefined();
-        expect(typeof inline.isInlineTag).toBe('function');
+        expect(inline.isInlineTag).toBeFunction();
     });
 
     it('should export a replaceInlineTag function', () => {
-        expect(inline.replaceInlineTag).toBeDefined();
-        expect(typeof inline.replaceInlineTag).toBe('function');
+        expect(inline.replaceInlineTag).toBeFunction();
     });
 
     it('should export an extractInlineTag function', () => {
-        expect(inline.extractInlineTag).toBeDefined();
-        expect(typeof inline.replaceInlineTag).toBe('function');
+        expect(inline.extractInlineTag).toBeFunction();
     });
 
     describe('isInlineTag', () => {
         const isInlineTag = inline.isInlineTag;
 
         it('should correctly identify an inline tag', () => {
-            expect( isInlineTag('{@mytag hooray}', 'mytag') ).toBe(true);
+            expect( isInlineTag('{@mytag hooray}', 'mytag') ).toBeTrue();
         });
 
         it('should correctly identify a non-inline tag', () => {
-            expect( isInlineTag('mytag hooray', 'mytag') ).toBe(false);
+            expect( isInlineTag('mytag hooray', 'mytag') ).toBeFalse();
         });
 
         it('should report that a string containing an inline tag is not an inline tag', () => {
-            expect( isInlineTag('this is {@mytag hooray}', 'mytag') ).toBe(false);
+            expect( isInlineTag('this is {@mytag hooray}', 'mytag') ).toBeFalse();
         });
 
         it('should default to allowing any inline tag', () => {
-            expect( isInlineTag('{@anyoldtag will do}') ).toBe(true);
+            expect( isInlineTag('{@anyoldtag will do}') ).toBeTrue();
         });
 
         it('should still identify non-inline tags when a tag name is not provided', () => {
-            expect( isInlineTag('mytag hooray') ).toBe(false);
+            expect( isInlineTag('mytag hooray') ).toBeFalse();
         });
 
         it('should allow regexp characters in the tag name', () => {
-            expect( isInlineTag('{@mytags hooray}', 'mytag\\S') ).toBe(true);
+            expect( isInlineTag('{@mytags hooray}', 'mytag\\S') ).toBeTrue();
         });
 
         it('should return false (rather than throwing) with invalid input', () => {
@@ -54,7 +50,7 @@ describe('jsdoc/tag/inline', () => {
             }
 
             expect(badInput).not.toThrow();
-            expect( badInput() ).toBe(false);
+            expect( badInput() ).toBeFalse();
         });
     });
 
@@ -100,8 +96,7 @@ describe('jsdoc/tag/inline', () => {
             const result = inline.replaceInlineTag('{@foo text in braces}', 'foo',
                 replacer);
 
-            expect(result.tags[0]).toBeDefined();
-            expect(typeof result.tags[0]).toBe('object');
+            expect(result.tags[0]).toBeObject();
             expect(result.tags[0].tag).toBe('foo');
             expect(result.tags[0].text).toBe('text in braces');
             expect(result.newString).toBe('{@foo text in braces}');
@@ -119,8 +114,7 @@ describe('jsdoc/tag/inline', () => {
             const result = inline.replaceInlineTag('{@foo test string} ahoy', 'foo',
                 replacer);
 
-            expect(result.tags[0]).toBeDefined();
-            expect(typeof result.tags[0]).toBe('object');
+            expect(result.tags[0]).toBeObject();
             expect(result.tags[0].tag).toBe('foo');
             expect(result.tags[0].text).toBe('test string');
             expect(result.newString).toBe('{@foo test string} ahoy');
@@ -138,8 +132,7 @@ describe('jsdoc/tag/inline', () => {
             const result = inline.replaceInlineTag('a {@foo test string} yay', 'foo',
                 replacer);
 
-            expect(result.tags[0]).toBeDefined();
-            expect(typeof result.tags[0]).toBe('object');
+            expect(result.tags[0]).toBeObject();
             expect(result.tags[0].tag).toBe('foo');
             expect(result.tags[0].text).toBe('test string');
             expect(result.newString).toBe('a {@foo test string} yay');
@@ -156,8 +149,7 @@ describe('jsdoc/tag/inline', () => {
 
             const result = inline.replaceInlineTag('a {@foo test string}', 'foo', replacer);
 
-            expect(result.tags[0]).toBeDefined();
-            expect(typeof result.tags[0]).toBe('object');
+            expect(result.tags[0]).toBeObject();
             expect(result.tags[0].tag).toBe('foo');
             expect(result.tags[0].text).toBe('test string');
             expect(result.newString).toBe('a {@foo test string}');
@@ -183,23 +175,19 @@ describe('jsdoc/tag/inline', () => {
 
             expect(result.tags.length).toBe(4);
 
-            expect(result.tags[0]).toBeDefined();
-            expect(typeof result.tags[0]).toBe('object');
+            expect(result.tags[0]).toBeObject();
             expect(result.tags[0].tag).toBe('foo');
             expect(result.tags[0].text).toBe('text');
 
-            expect(result.tags[1]).toBeDefined();
-            expect(typeof result.tags[1]).toBe('object');
+            expect(result.tags[1]).toBeObject();
             expect(result.tags[1].tag).toBe('foo');
             expect(result.tags[1].text).toBe('tags');
 
-            expect(result.tags[2]).toBeDefined();
-            expect(typeof result.tags[2]).toBe('object');
+            expect(result.tags[2]).toBeObject();
             expect(result.tags[2].tag).toBe('foo');
             expect(result.tags[2].text).toBe('like');
 
-            expect(result.tags[3]).toBeDefined();
-            expect(typeof result.tags[3]).toBe('object');
+            expect(result.tags[3]).toBeObject();
             expect(result.tags[3].tag).toBe('foo');
             expect(result.tags[3].text).toBe('this');
 
@@ -259,8 +247,7 @@ describe('jsdoc/tag/inline', () => {
         it('should work when a tag is specified', () => {
             const result = inline.extractInlineTag('some {@tagged text}', 'tagged');
 
-            expect(result.tags[0]).toBeDefined();
-            expect(typeof result.tags[0]).toBe('object');
+            expect(result.tags[0]).toBeObject();
             expect(result.tags[0].tag).toBe('tagged');
             expect(result.tags[0].text).toBe('text');
             expect(result.newString).toBe('some');

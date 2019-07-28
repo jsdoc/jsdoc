@@ -5,7 +5,7 @@ describe('@overview tag', () => {
     let doclets;
 
     const pwd = env.pwd;
-    let srcParser = null;
+    let srcParser;
     const sourceFiles = env.sourceFiles.slice(0);
     const sourcePaths = env.opts._.slice(0);
 
@@ -30,6 +30,7 @@ describe('@overview tag', () => {
         doclets = srcParser.parse(
             path.normalize( path.join(env.pwd, filename) )
         );
+
         expect(doclets[0].name).toMatch(/^file\.js$/);
     });
 
@@ -40,6 +41,7 @@ describe('@overview tag', () => {
         doclets = srcParser.parse(
             path.normalize( path.join(env.pwd, filename) )
         );
+
         expect(doclets[0].name).toBe(doclets[0].longname);
     });
 

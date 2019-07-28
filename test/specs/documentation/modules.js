@@ -30,6 +30,7 @@ describe('module names', () => {
         doclets = srcParser.parse(
             path.normalize( path.join(env.pwd, filename) )
         );
+
         expect(doclets.length).toBeGreaterThan(1);
         expect(doclets[0].longname).toBe('module:mod-1');
     });
@@ -37,7 +38,7 @@ describe('module names', () => {
     // Windows-specific test
     if ( /^win/.test(require('os').platform()) ) {
         it('should always use forward slashes when creating a name from the file path', () => {
-            const Doclet = require('jsdoc/doclet').Doclet;
+            const { Doclet } = require('jsdoc/doclet');
             let doclet;
 
             env.sourceFiles = [

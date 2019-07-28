@@ -4,23 +4,23 @@ describe('jsdoc/augment', () => {
     const augment = require('jsdoc/augment');
 
     it('should exist', () => {
-        expect(augment).toBeDefined();
+        expect(augment).toBeObject();
     });
 
     it('should have an "addImplemented" method', () => {
-        expect(typeof augment.addImplemented).toBe('function');
+        expect(augment.addImplemented).toBeFunction();
     });
 
     it('should have an "addInherited" method', () => {
-        expect(typeof augment.addInherited).toBe('function');
+        expect(augment.addInherited).toBeFunction();
     });
 
     it('should have an "addMixedIn" method', () => {
-        expect(typeof augment.addMixedIn).toBe('function');
+        expect(augment.addMixedIn).toBeFunction();
     });
 
     it('should have an "augmentAll" method', () => {
-        expect(typeof augment.augmentAll).toBe('function');
+        expect(augment.augmentAll).toBeFunction();
     });
 
     xdescribe('addImplemented', () => {
@@ -59,7 +59,7 @@ describe('jsdoc/augment', () => {
 
             open = docSet.getByLongname('EncryptedSocket#open').filter(({ignore}) => !ignore);
 
-            expect(open.length).toBe(1);
+            expect(open).toBeArrayOfSize(1);
             expect(open[0].description).toBe('Open the connection.');
         });
 
@@ -71,7 +71,7 @@ describe('jsdoc/augment', () => {
 
             open = docSet.getByLongname('EncryptedSocket#open').filter(({ignore}) => !ignore);
 
-            expect(open.length).toBe(1);
+            expect(open).toBeArrayOfSize(1);
             expect(open[0].description).toBe('Open the connection.');
         });
     });

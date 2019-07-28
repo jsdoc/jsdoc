@@ -6,8 +6,8 @@ describe('When a getter or setter is part of a class', () => {
         const age = docSet.getByLongname('Person#age');
 
         it('should have a doclet with the correct longname', () => {
-            expect(name.length).toBe(2);
-            expect(age.length).toBe(1);
+            expect(name).toBeArrayOfSize(2);
+            expect(age).toBeArrayOfSize(1);
         });
 
         it('should have a doclet with the correct name', () => {
@@ -34,7 +34,7 @@ describe('When a getter or setter is part of a class', () => {
         const location = docSet2.getByLongname('Employee#location');
 
         it('should have a doclet with the correct longname', () => {
-            expect(location.length).toBe(2);
+            expect(location).toBeArrayOfSize(2);
         });
 
         it('should have a doclet with the correct name', () => {

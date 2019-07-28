@@ -2,11 +2,11 @@ describe('jsdoc/util/stripbom', () => {
     const stripBom = require('jsdoc/util/stripbom');
 
     it('should exist', () => {
-        expect(typeof stripBom).toBe('object');
+        expect(stripBom).toBeObject();
     });
 
     it('should export a "strip" method', () => {
-        expect(typeof stripBom.strip).toBe('function');
+        expect(stripBom.strip).toBeFunction();
     });
 
     describe('strip', () => {

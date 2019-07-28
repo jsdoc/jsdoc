@@ -4,13 +4,11 @@ describe('jsdoc/src/filter', () => {
     const path = require('jsdoc/path');
 
     it('should exist', () => {
-        expect(filter).toBeDefined();
-        expect(typeof filter).toBe('object');
+        expect(filter).toBeObject();
     });
 
     it('should export a "Filter" class', () => {
-        expect(filter.Filter).toBeDefined();
-        expect(typeof filter.Filter).toBe('function');
+        expect(filter.Filter).toBeFunction();
     });
 
     describe('Filter', () => {
@@ -36,13 +34,12 @@ describe('jsdoc/src/filter', () => {
         });
 
         it('should have an "isIncluded" method', () => {
-            expect(myFilter.isIncluded).toBeDefined();
-            expect(typeof myFilter.isIncluded).toBe('function');
+            expect(myFilter.isIncluded).toBeFunction();
         });
 
         describe('exclude', () => {
             it('should default to null', () => {
-                expect(myFilter.exclude).toBe(null);
+                expect(myFilter.exclude).toBeNull();
             });
 
             it('should be null if the value passed to the constructor was not an array',
@@ -51,7 +48,7 @@ describe('jsdoc/src/filter', () => {
                         exclude: 'foo'
                     });
 
-                    expect(myFilter.exclude).toBe(null);
+                    expect(myFilter.exclude).toBeNull();
                 });
 
             it('should resolve paths relative to the user\'s working directory', () => {
@@ -67,7 +64,7 @@ describe('jsdoc/src/filter', () => {
 
         function testRegExpProperty(name) {
             it('should default to null', () => {
-                expect(myFilter[name]).toBe(null);
+                expect(myFilter[name]).toBeNull();
             });
 
             it('should contain the regexp passed to the constructor', () => {
@@ -87,7 +84,7 @@ describe('jsdoc/src/filter', () => {
                 options[name] = regExpString;
                 myFilter = new filter.Filter(options);
 
-                expect(myFilter[name] instanceof RegExp).toBe(true);
+                expect(myFilter[name]).toBeRegExp();
                 expect(myFilter[name].source).toBe(regExpString);
             });
         }
@@ -114,9 +111,9 @@ describe('jsdoc/src/filter', () => {
 
                 files = files.filter($ => myFilter.isIncluded($));
 
-                expect(files.length).toEqual(2);
-                expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
-                expect( files.indexOf('/yes.jsdoc') ).toBeGreaterThan(-1);
+                expect(files).toBeArrayOfSize(2);
+                expect( files.includes('yes.js') ).toBeTrue();
+                expect( files.includes('/yes.jsdoc') ).toBeTrue();
             });
 
             it('should be able to exclude specific subdirectories', () => {
@@ -135,9 +132,9 @@ describe('jsdoc/src/filter', () => {
 
                 files = files.filter($ => myFilter.isIncluded($));
 
-                expect(files.length).toBe(2);
-                expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
-                expect( files.indexOf('module/yes.js') ).toBeGreaterThan(-1);
+                expect(files).toBeArrayOfSize(2);
+                expect( files.includes('yes.js') ).toBeTrue();
+                expect( files.includes('module/yes.js') ).toBeTrue();
             });
 
             it('should be able to exclude descendants of excluded subdirectories', () => {
@@ -156,11 +153,11 @@ describe('jsdoc/src/filter', () => {
 
                 files = files.filter($ => myFilter.isIncluded($));
 
-                expect(files.length).toBe(2);
-                expect( files.indexOf('yes.js') ).toBeGreaterThan(-1);
-                expect( files.indexOf('module/yes.js') ).toBeGreaterThan(-1);
-                expect( files.indexOf('topsecret/nested/nope.js') ).toBe(-1);
-                expect( files.indexOf('module/topsecret/nested/nope.js') ).toBe(-1);
+                expect(files).toBeArrayOfSize(2);
+                expect( files.includes('yes.js') ).toBeTrue();
+                expect( files.includes('module/yes.js') ).toBeTrue();
+                expect( files.includes('topsecret/nested/nope.js') ).toBeFalse();
+                expect( files.includes('module/topsecret/nested/nope.js') ).toBeFalse();
             });
         });
     });

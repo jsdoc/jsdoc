@@ -7,27 +7,23 @@ describe('jsdoc/path', () => {
     const isWindows = /^win/.test( os.platform() );
 
     it('should exist', () => {
-        expect(path).toBeDefined();
-        expect(typeof path).toEqual('object');
+        expect(path).toBeObject();
     });
 
     it('should export all functions in the "path" module', () => {
         Object.keys(standardPath).forEach(item => {
             if (typeof standardPath[item] === 'function') {
-                expect(path[item]).toBeDefined();
-                expect(typeof path[item]).toEqual('function');
+                expect(path[item]).toBeFunction();
             }
         });
     });
 
     it('should export a "commonPrefix" function', () => {
-        expect(path.commonPrefix).toBeDefined();
-        expect(typeof path.commonPrefix).toEqual('function');
+        expect(path.commonPrefix).toBeFunction();
     });
 
     it('should export a "getResourcePath" function', () => {
-        expect(path.getResourcePath).toBeDefined();
-        expect(typeof path.getResourcePath).toEqual('function');
+        expect(path.getResourcePath).toBeFunction();
     });
 
     describe('commonPrefix', () => {
@@ -61,7 +57,7 @@ describe('jsdoc/path', () => {
             // we expect a trailing slash
             const expected = cwd.concat('foo', 'bar', '').join(path.sep);
 
-            expect( path.commonPrefix(paths) ).toEqual(expected);
+            expect( path.commonPrefix(paths) ).toBe(expected);
         });
 
         it('finds the correct prefix for a single absolute path', () => {
@@ -81,7 +77,7 @@ describe('jsdoc/path', () => {
             // we expect a trailing slash
             const expected = cwd.concat('foo', 'bar', '').join(path.sep);
 
-            expect( path.commonPrefix(paths) ).toEqual(expected);
+            expect( path.commonPrefix(paths) ).toBe(expected);
         });
 
         it('finds the correct prefix for a group of absolute paths and dotted relative paths',
@@ -94,7 +90,7 @@ describe('jsdoc/path', () => {
                 // we expect a trailing slash
                 const expected = cwd.concat('foo', 'bar', '').join(path.sep);
 
-                expect( path.commonPrefix(paths) ).toEqual(expected);
+                expect( path.commonPrefix(paths) ).toBe(expected);
             });
 
         it('returns an empty string when the paths array is empty', () => {
@@ -111,7 +107,7 @@ describe('jsdoc/path', () => {
                     path.join('..', '..', 'Library', 'foo', 'bar', 'baz.js')
                 ];
 
-                expect( path.commonPrefix(paths) ).toEqual('');
+                expect( path.commonPrefix(paths) ).toBe('');
             });
         }
 

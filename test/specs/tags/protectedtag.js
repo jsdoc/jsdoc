@@ -12,7 +12,7 @@ describe('@protected tag', () => {
 
     it('When a symbol tagged with @protected has members, the members do not inherit the ' +
         '@protected tag.', () => {
-        expect(uidRoot.access).not.toBeDefined();
+        expect(uidRoot.access).toBeUndefined();
     });
 
     describe('JSDoc tags', () => {
@@ -48,12 +48,11 @@ describe('@protected tag', () => {
 
                 expect(logger.warn).not.toHaveBeenCalled();
 
-                expect(counter).toBeDefined();
+                expect(counter).toBeObject();
                 expect(counter.access).toBe('protected');
 
-                expect(counter.type).toBeDefined();
-                expect(counter.type.names).toBeDefined();
-                expect(counter.type.names.length).toBe(1);
+                expect(counter.type).toBeObject();
+                expect(counter.type.names).toBeArrayOfSize(1);
                 expect(counter.type.names[0]).toBe('number');
             });
     });

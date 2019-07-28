@@ -12,14 +12,14 @@ describe('jsdoc/doclet', () => {
     const expectStrong = '**Strong** is strong';
 
     it('does not mangle Markdown in a description that uses leading asterisks', () => {
-        expect(test2.description.indexOf(expectList)).toBeGreaterThan(-1);
-        expect(test2.description.indexOf(expectStrong)).toBeGreaterThan(-1);
+        expect(test2.description).toContain(expectList);
+        expect(test2.description).toContain(expectStrong);
     });
 
     it('adds the AST node as a non-enumerable property', () => {
         const descriptor = Object.getOwnPropertyDescriptor(test1.meta.code, 'node');
 
-        expect(descriptor.enumerable).toBe(false);
+        expect(descriptor.enumerable).toBeFalse();
     });
 
     describe('setScope', () => {
@@ -91,7 +91,7 @@ describe('jsdoc/doclet', () => {
 
             newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
-            expect(newDoclet.undocumented).not.toBeDefined();
+            expect(newDoclet.undocumented).toBeUndefined();
         });
 
         describe('params and properties', () => {

@@ -4,8 +4,7 @@ describe('@tutorial tag', () => {
     const doc = docSet.getByLongname('x')[0];
 
     it("adds the listed tutorials to a 'tutorials' array on the doclet", () => {
-        expect(Array.isArray(doc.tutorials)).toBeTruthy();
-        expect(doc.tutorials.length).toBe(2);
+        expect(doc.tutorials).toBeArrayOfSize(2);
         expect(doc.tutorials).toContain('tute1');
         expect(doc.tutorials).toContain('tute2');
     });

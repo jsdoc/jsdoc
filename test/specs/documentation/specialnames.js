@@ -7,22 +7,22 @@ describe('documenting symbols with special names', () => {
     const protoValueOf = docSet.getByLongname('prototype.valueOf')[0];
 
     it('When a symbol is named "constructor", the symbol should appear in the docs.', () => {
-        expect(construct).toBeDefined();
+        expect(construct).toBeObject();
     });
 
     it('When a symbol is named "constructor", its members are resolved correctly.', () => {
-        expect(constructToString).toBeDefined();
+        expect(constructToString).toBeObject();
     });
 
     it('When a symbol is named "hasOwnProperty," the symbol should appear in the docs.', () => {
-        expect(hasOwnProp).toBeDefined();
+        expect(hasOwnProp).toBeObject();
     });
 
     it('When a symbol is named "prototype", the symbol should appear in the docs.', () => {
-        expect(proto).toBeDefined();
+        expect(proto).toBeObject();
     });
 
     it('When a symbol is named "prototype", its members are resolved correctly.', () => {
-        expect(protoValueOf).toBeDefined();
+        expect(protoValueOf).toBeObject();
     });
 });
