@@ -48,7 +48,7 @@
     "node": ">=8.15.0"
   },
   "scripts": {
-    "test": "gulp lint; gulp test"
+    "test": "gulp"
   },
   "bin": {
     "jsdoc": "./jsdoc.js"

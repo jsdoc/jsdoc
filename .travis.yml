@@ -5,4 +5,4 @@ node_js:
   - "10"
   - "12"
 
-install: npm install -g gulp; npm install
+install: npm install -g gulp lerna && npm install && lerna bootstrap
