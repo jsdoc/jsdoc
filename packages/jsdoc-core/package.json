@@ -8,6 +8,9 @@
   "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
   "homepage": "https://jsdoc.app/",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jsdoc/jsdoc.git"
