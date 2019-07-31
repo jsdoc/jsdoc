@@ -27,5 +27,6 @@
                 lines[i].className += ' selected';
             }
         }
+        document.getElementById("line" + from).scrollIntoView();
     }
 })();
