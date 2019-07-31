@@ -7,7 +7,7 @@
     let lines;
     let totalLines;
     let anchorHash;
-    let from;
+    let from = -1;
     let to;
 
     if (source && source[0]) {
@@ -27,6 +27,7 @@
                 lines[i].className += ' selected';
             }
         }
-        document.getElementById("line" + from).scrollIntoView();
+        if (from != -1)
+            document.getElementById("line" + from).scrollIntoView();
     }
 })();
