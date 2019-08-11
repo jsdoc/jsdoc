@@ -21,7 +21,7 @@
     "color-themes-for-google-code-prettify": "^2.0.4",
     "escape-string-regexp": "^2.0.0",
     "lodash": "^4.17.15",
-    "markdown-it": "^9.0.1",
+    "markdown-it": "^9.1.0",
     "markdown-it-anchor": "^5.2.4",
     "marked": "^0.7.0",
     "mkdirp": "^0.5.1",
