@@ -64,4 +64,32 @@ describe('@enum tag', () => {
             expect(mymodule.kind).toBe('module');
         });
     });
+
+    describe('with items around it', () => {
+        const docSet4 = jsdoc.getDocSetFromFile('test/fixtures/enumtag4.js');
+
+        it('does not set memberof to item before', () => {
+            const elementBefore = docSet4.getByLongname('ElementBefore');
+
+            expect(elementBefore.memberOf).not.toBe('ElementEnum');
+        });
+
+        it('does not set make item after enum a member of the enum', () => {
+            const elementAfter = docSet4.getByLongname('module:ElementEnum~ElementAfter')[0];
+
+            expect(elementAfter).toBeUndefined();
+        });
+
+        it('does not set memberof to item after', () => {
+            const elementAfter = docSet4.getByLongname('ElementAfter')[0];
+
+            expect(elementAfter.memberOf).toBeUndefined();
+        });
+
+        it('sets scope to global for element after', () => {
+            const elementAfter = docSet4.getByLongname('ElementAfter')[0];
+
+            expect(elementAfter.scope).toBe('global');
+        });
+    });
 });
