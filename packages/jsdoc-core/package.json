@@ -24,10 +24,9 @@
   "dependencies": {
     "cosmiconfig": "^5.2.1",
     "lodash": "^4.17.15",
+    "ow": "^0.13.2",
     "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.0.1"
-  },
-  "devDependencies": {
-    "mock-fs": "^4.10.1"
+    "strip-json-comments": "^3.0.1",
+    "yargs-parser": "^14.0.0"
   }
 }

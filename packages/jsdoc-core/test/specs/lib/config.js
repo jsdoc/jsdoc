@@ -1,15 +1,15 @@
-const { config } = require('@jsdoc/core');
+const config = require('../../../lib/config');
 const mockFs = require('mock-fs');
 
-describe('@jsdoc/config', () => {
+describe('@jsdoc/core/lib/config', () => {
     afterEach(() => mockFs.restore());
 
-    it('exists', () => {
+    it('is an object', () => {
         expect(config).toBeObject();
     });
 
     describe('loadSync', () => {
-        it('exists', () => {
+        it('is a function', () => {
             expect(config.loadSync).toBeFunction();
         });
 
@@ -105,7 +105,7 @@ describe('@jsdoc/config', () => {
     describe('defaults', () => {
         const { defaults } = config;
 
-        it('exists', () => {
+        it('is an object', () => {
             expect(defaults).toBeObject();
         });
 

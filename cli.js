@@ -1,31 +1,30 @@
 /* eslint-disable indent, no-process-exit */
+
+const { config, Engine } = require('@jsdoc/core');
+const env = require('jsdoc/env');
+const logger = require('jsdoc/util/logger');
+const stripBom = require('strip-bom');
+const stripJsonComments = require('strip-json-comments');
+const Promise = require('bluebird');
+
 /**
  * Helper methods for running JSDoc on the command line.
- *
- * A few critical notes for anyone who works on this module:
- *
- * + The module should really export an instance of `cli`, and `props` should be properties of a
- * `cli` instance.
  *
  * @private
  */
 module.exports = (() => {
-    const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
-    const stripBom = require('strip-bom');
-    const stripJsonComments = require('strip-json-comments');
-    const Promise = require('bluebird');
-
     const props = {
         docs: [],
         packageJson: null,
         shouldExitWithError: false,
+        shouldPrintHelp: false,
         tmpdir: null
     };
 
     const FATAL_ERROR_MESSAGE = 'Exiting JSDoc because an error occurred. See the previous log ' +
         'messages for details.';
     const cli = {};
+    const engine = new Engine();
 
     // TODO: docs
     cli.setVersionInfo = () => {
@@ -35,11 +34,15 @@ module.exports = (() => {
         // allow this to throw--something is really wrong if we can't read our own package file
         const info = JSON.parse(stripBom(fs.readFileSync(path.join(env.dirname, 'package.json'),
             'utf8')));
+        const revision = new Date(parseInt(info.revision, 10));
 
         env.version = {
             number: info.version,
-            revision: new Date( parseInt(info.revision, 10) ).toUTCString()
+            revision: revision.toUTCString()
         };
+
+        engine.version = env.version.number;
+        engine.revision = revision;
 
         return cli;
     };
@@ -47,18 +50,19 @@ module.exports = (() => {
     // TODO: docs
     cli.loadConfig = () => {
         const _ = require('lodash');
-        const args = require('jsdoc/opts/args');
         let conf;
-        const { config } = require('@jsdoc/core');
 
         try {
-            env.opts = args.parse(env.args);
+            env.opts = engine.parseFlags(env.args);
         }
         catch (e) {
-            console.error(`${e.message}\n`);
-            cli.printHelp().then(() => {
-                cli.exit(1);
-            });
+            props.shouldPrintHelp = true;
+            cli.exit(
+                1,
+                `${e.message}\n`
+            );
+
+            return cli;
         }
 
         try {
@@ -70,6 +74,8 @@ module.exports = (() => {
                 1,
                 `Cannot parse the config file ${conf.filepath}: ${e}\n${FATAL_ERROR_MESSAGE}`
             );
+
+            return cli;
         }
 
         // look for options on the command line, then in the config
@@ -114,8 +120,7 @@ module.exports = (() => {
 
     // TODO: docs
     cli.logStart = () => {
-        logger.debug( cli.getVersion() );
-
+        logger.debug(engine.versionDetails);
         logger.debug('Environment info: %j', {
             env: {
                 conf: env.conf,
@@ -135,17 +140,20 @@ module.exports = (() => {
 
         if (delta !== undefined) {
             deltaSeconds = (delta / 1000).toFixed(2);
-            logger.info('Finished running in %s seconds.', deltaSeconds);
+            logger.info(`Finished running in ${deltaSeconds} seconds.`);
         }
     };
 
     // TODO: docs
     cli.runCommand = cb => {
         let cmd;
-
         const opts = env.opts;
 
-        if (opts.help) {
+        // If we already need to exit with an error, don't do any more work.
+        if (props.shouldExitWithError) {
+            cmd = () => Promise.resolve(0);
+        }
+        else if (opts.help) {
             cmd = cli.printHelp;
         }
         else if (opts.test) {
@@ -169,8 +177,7 @@ module.exports = (() => {
     // TODO: docs
     cli.printHelp = () => {
         cli.printVersion();
-        console.log( `\n${require('jsdoc/opts/args').help()}\n` );
-        console.log('Visit https://jsdoc.app/ for more information.');
+        console.log(engine.help({ maxLength: process.stdout.columns }));
 
         return Promise.resolve(0);
     };
@@ -179,11 +186,8 @@ module.exports = (() => {
     cli.runTests = () => require('./test')();
 
     // TODO: docs
-    cli.getVersion = () => `JSDoc ${env.version.number} (${env.version.revision})`;
-
-    // TODO: docs
     cli.printVersion = () => {
-        console.log( cli.getVersion() );
+        console.log(engine.versionDetails);
 
         return Promise.resolve(0);
     };
@@ -215,7 +219,7 @@ module.exports = (() => {
             return stripJsonComments( fs.readFileSync(filepath, 'utf8') );
         }
         catch (e) {
-            logger.error('Unable to read the package file "%s"', filepath);
+            logger.error(`Unable to read the package file ${filepath}`);
 
             return null;
         }
@@ -417,7 +421,10 @@ module.exports = (() => {
             return Promise.resolve(publishPromise);
         }
         else {
-            logger.fatal(`${env.opts.template} does not export a "publish" function. Global "publish" functions are no longer supported.`);
+            logger.fatal(
+                `${env.opts.template} does not export a "publish" function. ` +
+                'Global "publish" functions are no longer supported.'
+            );
         }
 
         return Promise.resolve();
@@ -425,10 +432,21 @@ module.exports = (() => {
 
     // TODO: docs
     cli.exit = (exitCode, message) => {
-        if (exitCode > 0 && message) {
-            console.error(message);
+        if (exitCode > 0) {
+            props.shouldExitWithError = true;
+
+            if (message) {
+                console.error(message);
+            }
         }
-        process.on('exit', () => { process.exit(exitCode); });
+
+        process.on('exit', () => {
+            if (props.shouldPrintHelp) {
+                cli.printHelp();
+            }
+
+            process.exit(exitCode);
+        });
     };
 
     return cli;

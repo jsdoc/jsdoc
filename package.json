@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "version": "4.0.0-dev",
-  "revision": "1563126982480",
+  "revision": "1567996328943",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
     "documentation",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.5.5",
-    "@jsdoc/core": "^0.1.1",
+    "@jsdoc/core": "file:packages/jsdoc-core",
     "bluebird": "^3.5.5",
     "catharsis": "^0.8.11",
     "code-prettify": "^0.1.0",
@@ -32,8 +32,9 @@
     "taffydb": "2.6.2"
   },
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.0.1",
+    "@jsdoc/eslint-config": "^1.0.4",
     "ajv": "^6.10.2",
+    "eslint": "^6.3.0",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-json-editor": "^2.5.3",
@@ -42,6 +43,7 @@
     "jasmine-expect": "^4.0.3",
     "klaw-sync": "^6.0.0",
     "lerna": "^3.16.4",
+    "mock-fs": "^4.10.1",
     "nyc": "^14.1.1"
   },
   "engines": {
