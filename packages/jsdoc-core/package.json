@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Core functionality for JSDoc.",
   "keywords": [
     "jsdoc"
@@ -28,5 +28,6 @@
     "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.0.1",
     "yargs-parser": "^14.0.0"
-  }
+  },
+  "gitHead": "81a824eb0968851f836fc6069376d0337775f9ba"
 }

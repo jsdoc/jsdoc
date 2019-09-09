@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/eslint-config",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Default ESLint configuration for JSDoc packages.",
   "keywords": [
     "eslint",
@@ -25,5 +25,6 @@
   },
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
-  }
+  },
+  "gitHead": "81a824eb0968851f836fc6069376d0337775f9ba"
 }
