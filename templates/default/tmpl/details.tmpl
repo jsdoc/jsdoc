@@ -46,6 +46,11 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     </li></ul></dd>
     <?js } ?>
 
+    <?js if (data.timecomplexity) {?>
+    <dt class="tag-timecomplexity">Time complexity:</dt>
+    <dd class="tag-timecomplexity"><ul class="dummy"><li><?js= timecomplexity ?></li></ul></dd>
+    <?js } ?>
+
     <?js if (data.implementations && data.implementations.length) { ?>
     <dt class="implementations">Implementations:</dt>
     <dd class="implementations"><ul>
