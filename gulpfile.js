@@ -13,7 +13,6 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-/* global require: true */
 const ConsoleReporter = require('jasmine-console-reporter');
 const csso = require('gulp-csso');
 const eslint = require('gulp-eslint');
@@ -22,11 +21,14 @@ const less = require('gulp-less');
 const path = require('path');
 const uglify = require('gulp-uglify');
 
+const NODE_MODULES_PATH = path.join(__dirname, 'node_modules');
+
 // Patch the `require` function so it can locate JSDoc modules and dependencies.
 // Must be called before any Gulp task that uses JSDoc modules.
 function patchRequire() {
-    var jsdocPath = path.join(__dirname, 'node_modules/jsdoc');
+    const jsdocPath = path.join(NODE_MODULES_PATH, 'jsdoc');
 
+    /* eslint-disable no-global-assign, no-redeclare */
     require = require('requizzle')({
         requirePaths: {
             before: [path.join(jsdocPath, 'lib')],
@@ -34,9 +36,9 @@ function patchRequire() {
         },
         infect: true
     });
+    /* eslint-enable no-global-assign, no-redeclare */
 }
 
-const bowerPath = './bower_components';
 const source = {
     code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
     helpers: [
@@ -45,14 +47,13 @@ const source = {
     ],
     js: {
         copy: [
-            path.join(bowerPath, 'jquery/dist/jquery.min.js')
+            path.join(NODE_MODULES_PATH, 'jquery/dist/jquery.min.js')
         ],
         minify: [
             './scripts/*.js',
-            path.join(bowerPath, 'google-code-prettify/src/prettify.js'),
-            path.join(bowerPath, 'google-code-prettify/src/lang-css.js'),
-            path.join(bowerPath, 'jquery.cookie/jquery.cookie.js'),
-            path.join(bowerPath, 'jqtree/tree.jquery.js')
+            path.join(NODE_MODULES_PATH, 'code-prettify/src/prettify.js'),
+            path.join(NODE_MODULES_PATH, 'code-prettify/src/lang-css.js'),
+            path.join(NODE_MODULES_PATH, 'jqtree/tree.jquery.js')
         ]
     },
     less: './styles/bootstrap/baseline.less',
