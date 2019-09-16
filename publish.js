@@ -20,9 +20,6 @@ const helper = require('jsdoc/util/templateHelper');
 let PublishJob;
 let Template;
 
-// Intl.PluralRules polyfill
-require('intl-pluralrules');
-
 function init(filepaths) {
     finders = {
         modules: require('./lib/filefinder').get('modules', filepaths)
