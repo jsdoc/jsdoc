@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "peerDependencies": {
-    "eslint": ">= 6.3.0"
+    "eslint": ">= 6.4.0"
   },
   "publishConfig": {
     "access": "public"
