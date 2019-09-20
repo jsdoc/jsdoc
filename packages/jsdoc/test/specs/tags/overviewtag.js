@@ -10,7 +10,7 @@ describe('@overview tag', () => {
     const sourcePaths = env.opts._.slice(0);
 
     beforeEach(() => {
-        env.opts._ = [path.normalize(`${env.pwd}/test/fixtures/`)];
+        env.opts._ = [path.normalize(`${__dirname}/../../fixtures`)];
         env.pwd = env.dirname;
         env.sourceFiles = [];
         srcParser = jsdoc.createParser();

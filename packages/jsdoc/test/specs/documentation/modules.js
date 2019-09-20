@@ -10,7 +10,7 @@ describe('module names', () => {
     const sourcePaths = env.opts._.slice(0);
 
     beforeEach(() => {
-        env.opts._ = [path.normalize(`${env.pwd}/test/fixtures/modules/data/`)];
+        env.opts._ = [path.normalize(`${__dirname}/../../fixtures/modules/data`)];
         env.pwd = env.dirname;
         env.sourceFiles = [];
         srcParser = jsdoc.createParser();

@@ -14,18 +14,17 @@ function execCb(cb, err, stdout, stderr) {
 const options = {
     coveragePaths: [
         '*.js',
-        'lib/**/*.js',
-        'plugins/*.js'
+        'packages/**/*.js',
+        '!packages/**/test/*.js',
+        '!packages/**/test/**/*.js',
+        '!packages/**/static/*.js'
     ],
     lintPaths: [
         '*.js',
-        'lib/**/*.js',
-        'plugins/*.js',
-        'templates/default/*.js',
-        'templates/haruki/*.js',
-        'test/specs/**/*.js'
+        'packages/**/*.js',
+        '!packages/**/static/*.js'
     ],
-    nodeBin: path.resolve(__dirname, './jsdoc.js'),
+    nodeBin: path.resolve(__dirname, './packages/jsdoc/jsdoc.js'),
     nodePath: process.execPath
 };
 

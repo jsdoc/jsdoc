@@ -1,25 +1,14 @@
 const ConsoleReporter = require('jasmine-console-reporter');
 const env = require('jsdoc/env');
 const Jasmine = require('jasmine');
-const klawSync = require('klaw-sync');
-const path = require('path');
 
-const SCHEMA_SPEC = path.resolve('test/specs/jsdoc/schema.js');
-const SPEC_FILES = (() => {
-    // Normal specs are specs that don't need filtering.
-    const normalSpecs = [
-        'packages/**/test/specs/**/*.js',
-        'plugins/test/specs/**/*.js'
-    ];
-    // Klawed specs are specs we've filtered to avoid the schema spec, which must run last.
-    const klawedSpecs = klawSync('test/specs', {
-        filter: (item) => (item.path !== SCHEMA_SPEC),
-        nodir: true
-    }).map((item) => item.path);
-
-    // We want an array of spec files with the schema spec at the end.
-    return normalSpecs.concat(klawedSpecs).concat([SCHEMA_SPEC]);
-})();
+const SCHEMA_SPEC = 'packages/jsdoc/test/specs/jsdoc/schema.js';
+const SPEC_FILES = [
+    `!${SCHEMA_SPEC}`,
+    '!node_modules',
+    'packages/**/test/specs/**/*.js',
+    SCHEMA_SPEC
+];
 
 module.exports = () => {
     const jasmine = new Jasmine();
@@ -40,7 +29,7 @@ module.exports = () => {
     jasmine.loadConfig({
         helpers: [
             'node_modules/jasmine-expect/index.js',
-            'test/helpers/**/*.js'
+            'packages/jsdoc/test/helpers/**/*.js'
         ],
         random: false,
         stopSpecOnExpectationFailure: false

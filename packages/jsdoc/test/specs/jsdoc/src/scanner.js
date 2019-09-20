@@ -1,5 +1,4 @@
 describe('jsdoc/src/scanner', () => {
-    const env = require('jsdoc/env');
     const path = require('jsdoc/path');
     const scanner = require('jsdoc/src/scanner');
 
@@ -7,7 +6,7 @@ describe('jsdoc/src/scanner', () => {
         includePattern: new RegExp('.+\\.js(doc)?$'),
         excludePattern: new RegExp('(^|\\/|\\\\)_')
     });
-    const sourcePath = path.normalize(`${env.pwd}/test/fixtures/src`);
+    const sourcePath = path.normalize(`${__dirname}/../../../fixtures/src`);
 
     it('should exist', () => {
         expect(scanner).toBeObject();
@@ -34,9 +33,10 @@ describe('jsdoc/src/scanner', () => {
         describe('scan', () => {
             it('should return the correct source files', () => {
                 const testScanner = new scanner.Scanner();
+                const parentPath = path.normalize(`${__dirname}/../../../..`);
                 let sourceFiles = testScanner.scan([sourcePath], 3, filter);
 
-                sourceFiles = sourceFiles.map($ => path.relative(env.pwd, $));
+                sourceFiles = sourceFiles.map($ => path.relative(parentPath, $));
 
                 expect(sourceFiles).toBeArrayOfSize(3);
                 expect( sourceFiles.includes(path.join('test', 'fixtures', 'src', 'one.js')) )
