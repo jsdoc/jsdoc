@@ -3,9 +3,9 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.0.4",
+    "@jsdoc/eslint-config": "^1.0.5",
     "ajv": "^6.10.2",
-    "eslint": "^6.3.0",
+    "eslint": "^6.4.0",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-json-editor": "^2.5.3",
