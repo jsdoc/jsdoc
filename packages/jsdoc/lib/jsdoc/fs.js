@@ -91,7 +91,8 @@ exports.mkPath = _path => {
     mkdirp.sync(_path);
 };
 
-exports.copyFileSync = (inFile, outDir = '', fileName) => {
+exports.copyFileSync = (inFile, outDir, fileName) => {
+    outDir = outDir || '';
     fileName = fileName || path.basename(inFile);
 
     fs.copyFileSync(inFile, path.join(outDir, fileName));
