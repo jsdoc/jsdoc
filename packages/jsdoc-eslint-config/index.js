@@ -118,7 +118,7 @@ module.exports = {
         'no-warning-comments': 'off',
         'no-with': 'error',
         'prefer-promise-reject-errors': 'error',
-        'prefer-regex-literals': 'error',
+        'prefer-regex-literals': 'off',
         radix: 'error',
         'require-await': 'error',
         'require-unicode-regexp': 'off',
