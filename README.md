@@ -65,7 +65,7 @@ and customize your documentation. Here are a few of them:
 + [docdash](https://github.com/clenemt/docdash)
 ([example](http://clenemt.github.io/docdash/))
 + [tui-jsdoc-template](https://github.com/nhnent/tui.jsdoc-template)
-([example](https://nhnent.github.io/tui.jsdoc-template/latest/))
+([example](https://nhn.github.io/tui.jsdoc-template/latest/))
 + [better-docs](https://github.com/SoftwareBrothers/better-docs)
 ([example](https://softwarebrothers.github.io/admin-bro-dev/index.html))
 
