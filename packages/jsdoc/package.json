@@ -16,7 +16,7 @@
   "dependencies": {
     "@babel/parser": "^7.6.2",
     "@jsdoc/core": "^0.1.6",
-    "bluebird": "^3.5.5",
+    "bluebird": "^3.7.0",
     "catharsis": "^0.8.11",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
