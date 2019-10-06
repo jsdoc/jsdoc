@@ -13,11 +13,14 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
+const _ = require('lodash');
 const config = require('./lib/config');
+const defaultTasks = require('./lib/default-tasks');
 let DocletHelper;
 let finders;
 const helper = require('jsdoc/util/templateHelper');
 let PublishJob;
+const { TaskRunner } = require('@jsdoc/task-runner');
 let Template;
 
 function init(filepaths) {
@@ -30,17 +33,24 @@ function init(filepaths) {
     Template = finders.modules.require('./template');
 }
 
-exports.publish = (data, opts, tutorials) => {
-    const conf = config.loadSync().get();
+exports.publish = async (data, opts, tutorials) => {
+    const templateConfig = config.loadSync().get();
+    const allConfig = _.defaults({}, {
+        templates: {
+            baseline: templateConfig
+        }
+    }, opts);
     let docletHelper;
     let job;
+    const runner = new TaskRunner({ config: allConfig });
+    const tasks = defaultTasks(allConfig);
     let template;
 
     // load the core modules using the file finder
-    init(conf.modules);
+    init(templateConfig.modules);
 
     docletHelper = new DocletHelper();
-    template = new Template(conf);
+    template = new Template(templateConfig);
     job = new PublishJob(template, opts);
 
     // set up tutorials
@@ -52,10 +62,15 @@ exports.publish = (data, opts, tutorials) => {
         .setNavTree(docletHelper.navTree)
         .setAllLongnamesTree(docletHelper.allLongnamesTree);
 
-    // create the output directory so we can start generating files
-    job.createOutputDirectory()
-        // then generate the source files so we can link to them
-        .generateSourceFiles(docletHelper.shortPaths);
+    runner.addTasks(tasks);
+    try {
+        await runner.run();
+    } catch (e) {
+        // TODO: Send to message bus
+        throw e;
+    }
+
+    job.generateSourceFiles(docletHelper.shortPaths);
 
     // generate globals page if necessary
     job.generateGlobals(docletHelper.globals);

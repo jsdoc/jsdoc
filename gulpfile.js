@@ -43,7 +43,7 @@ const source = {
     code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
     helpers: [
         './test/helpers/**/*.js',
-        './node_modules/jasmine-expect'
+        './node_modules/@jsdoc/test-matchers'
     ],
     js: {
         copy: [
