@@ -42,7 +42,10 @@ exports.publish = async (data, opts, tutorials) => {
     }, opts);
     let docletHelper;
     let job;
-    const runner = new TaskRunner({ config: allConfig });
+    const runner = new TaskRunner({
+        config: allConfig,
+        templateConfig
+    });
     const tasks = defaultTasks(allConfig);
     let template;
 
