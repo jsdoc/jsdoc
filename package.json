@@ -4,6 +4,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.0.8",
+    "@jsdoc/test-matchers": "^0.1.0",
     "ajv": "^6.10.2",
     "eslint": "^6.5.1",
     "gulp": "^4.0.2",
@@ -11,7 +12,6 @@
     "gulp-json-editor": "^2.5.3",
     "jasmine": "^3.5.0",
     "jasmine-console-reporter": "^3.1.0",
-    "jasmine-expect": "^4.0.3",
     "klaw-sync": "^6.0.0",
     "lerna": "^3.16.4",
     "mock-fs": "^4.10.1",

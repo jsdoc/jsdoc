@@ -28,7 +28,7 @@ module.exports = () => {
 
     jasmine.loadConfig({
         helpers: [
-            'node_modules/jasmine-expect/index.js',
+            'node_modules/@jsdoc/test-matchers',
             'packages/jsdoc/test/helpers/**/*.js'
         ],
         random: false,
