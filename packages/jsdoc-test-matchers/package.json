@@ -1,0 +1,31 @@
+{
+  "name": "@jsdoc/test-matchers",
+  "version": "0.0.1",
+  "description": "Jasmine matchers that JSDoc uses in its tests.",
+  "keywords": [
+    "jasmine",
+    "jsdoc",
+    "task",
+    "test"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://jsdoc.app/",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  },
+  "dependencies": {
+    "add-matchers": "^0.6.2",
+    "jasmine-expect": "^4.0.3"
+  }
+}
