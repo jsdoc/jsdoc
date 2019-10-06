@@ -107,8 +107,8 @@ module.exports = class TaskRunner extends Emittery {
         this.context = context || {};
     }
 
-    _newCyclicalDependencyError(cyclePath) {
-        return new v.CyclicalDependencyError(
+    _newDependencyCycleError(cyclePath) {
+        return new v.DependencyCycleError(
             `Tasks have circular dependencies: ${cyclePath.join(' > ')}`,
             cyclePath
         );
@@ -166,7 +166,7 @@ module.exports = class TaskRunner extends Emittery {
                 // Get tasks with dependencies, in a correctly ordered list.
                 sequential = graph.overallOrder().filter(task => !parallel.includes(task));
             } catch (e) {
-                error = this._newCyclicalDependencyError(e.cyclePath);
+                error = this._newDependencyCycleError(e.cyclePath);
             }
         }
 

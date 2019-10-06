@@ -10,14 +10,14 @@ function checkTask(t) {
 
 module.exports = {
     checkTaskOrString: ow.any(ow.object.validate(checkTask), ow.string),
-    CyclicalDependencyError: class CyclicalDependencyError extends Error {
+    DependencyCycleError: class DependencyCycleError extends Error {
         constructor(message, cyclePath) {
             ow(message, ow.string);
             ow(cyclePath, ow.array.ofType(ow.string));
             super(message);
 
             this.cyclePath = cyclePath;
-            this.name = 'CyclicalDependencyError';
+            this.name = 'DependencyCycleError';
         }
     },
     StateError: class StateError extends Error {

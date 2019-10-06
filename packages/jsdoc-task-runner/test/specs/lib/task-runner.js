@@ -3,7 +3,7 @@ const Task = require('../../../lib/task');
 const TaskRunner = require('../../../lib/task-runner');
 
 const ARGUMENT_ERROR = 'ArgumentError';
-const CYCLICAL_DEPENDENCY_ERROR = 'CyclicalDependencyError';
+const DEPENDENCY_CYCLE_ERROR = 'DependencyCycleError';
 const STATE_ERROR = 'StateError';
 const UNKNOWN_DEPENDENCY_ERROR = 'UnknownDependencyError';
 const UNKNOWN_TASK_ERROR = 'UnknownTaskError';
@@ -682,7 +682,7 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
                     error = e;
                 }
 
-                expect(rethrower(error)).toThrowErrorOfType(CYCLICAL_DEPENDENCY_ERROR);
+                expect(rethrower(error)).toThrowErrorOfType(DEPENDENCY_CYCLE_ERROR);
             });
         });
 
