@@ -16,22 +16,11 @@
 const _ = require('lodash');
 const config = require('./lib/config');
 const defaultTasks = require('./lib/default-tasks');
-let DocletHelper;
-let finders;
+const DocletHelper = require('./lib/doclethelper');
 const helper = require('jsdoc/util/templateHelper');
-let PublishJob;
+const PublishJob = require('./lib/publishjob');
 const { TaskRunner } = require('@jsdoc/task-runner');
-let Template;
-
-function init(filepaths) {
-    finders = {
-        modules: require('./lib/filefinder').get('modules', filepaths)
-    };
-
-    DocletHelper = finders.modules.require('./doclethelper');
-    PublishJob = finders.modules.require('./publishjob');
-    Template = finders.modules.require('./template');
-}
+const Template = require('./lib/template');
 
 exports.publish = async (data, opts, tutorials) => {
     const templateConfig = config.loadSync().get();
@@ -40,34 +29,40 @@ exports.publish = async (data, opts, tutorials) => {
             baseline: templateConfig
         }
     }, opts);
-    let docletHelper;
-    let job;
+    const context = {};
+    const docletHelper = new DocletHelper();
+    const template = new Template(templateConfig);
+    const job = new PublishJob(template, opts);
     const runner = new TaskRunner({
         config: allConfig,
         templateConfig
     });
     const tasks = defaultTasks(allConfig);
-    let template;
-
-    // load the core modules using the file finder
-    init(templateConfig.modules);
-
-    docletHelper = new DocletHelper();
-    template = new Template(templateConfig);
-    job = new PublishJob(template, opts);
 
     // set up tutorials
     helper.setTutorials(tutorials);
 
     docletHelper.addDoclets(data);
 
-    job.setPackage(docletHelper.getPackage())
-        .setNavTree(docletHelper.navTree)
-        .setAllLongnamesTree(docletHelper.allLongnamesTree);
+    job.setPackage(docletHelper.getPackage());
+    // TODO: Create a task that sets the package and page title prefix.
+    context.package = docletHelper.getPackage();
+    context.pageTitlePrefix = docletHelper.pageTitlePrefix;
+
+    job.setNavTree(docletHelper.navTree);
+    // TODO: Create a task that sets the nav tree.
+    context.navTree = docletHelper.navTree;
+
+    // TODO: Get rid of `allLongnamesTree`.
+    job.setAllLongnamesTree(docletHelper.allLongnamesTree);
+    context.allLongnamesTree = docletHelper.allLongnamesTree;
+
+    // TODO: Create a task that extracts and sets the short paths.
+    context.shortPaths = docletHelper.shortPaths;
 
     runner.addTasks(tasks);
     try {
-        await runner.run();
+        await runner.run(context);
     } catch (e) {
         // TODO: Send to message bus
         throw e;
@@ -89,6 +84,7 @@ exports.publish = async (data, opts, tutorials) => {
     });
 
     // finally, generate the tutorials, and copy static files to the output directory
-    job.generateTutorials(tutorials)
-        .copyStaticFiles();
+    job.generateTutorials(tutorials);
+
+    return Promise.resolve();
 };

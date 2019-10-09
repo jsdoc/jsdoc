@@ -118,25 +118,6 @@ function jasmine() {
         reporter
     });
 
-    require('add-matchers').addMatchers({
-        toBeInstanceOf: (klass, obj) => {
-            const actualClassName = obj && obj.constructor ? obj.constructor.name : undefined;
-            let expectedClassName;
-
-            if (typeof klass === 'string') {
-                expectedClassName = klass;
-            } else {
-                expectedClassName = klass.name;
-            }
-
-            if (actualClassName !== expectedClassName) {
-                return false;
-            }
-
-            return true;
-        }
-    });
-
     return gulp.src(source.tests)
         .pipe(gulpJasmine);
 }
