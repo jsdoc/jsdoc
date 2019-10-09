@@ -145,7 +145,7 @@ module.exports = (() => {
     };
 
     // TODO: docs
-    cli.runCommand = cb => {
+    cli.runCommand = () => {
         let cmd;
         const opts = env.opts;
 
@@ -166,11 +166,13 @@ module.exports = (() => {
             cmd = cli.main;
         }
 
-        cmd().then(errorCode => {
+        return cmd().then(errorCode => {
             if (!errorCode && props.shouldExitWithError) {
                 errorCode = 1;
             }
-            cb(errorCode);
+
+            cli.logFinish();
+            cli.exit(errorCode || 0);
         });
     };
 
@@ -385,6 +387,7 @@ module.exports = (() => {
     };
 
     cli.generateDocs = () => {
+        let message;
         const path = require('jsdoc/path');
         const resolver = require('jsdoc/tutorial/resolver');
         const taffy = require('taffydb').taffy;
@@ -421,13 +424,12 @@ module.exports = (() => {
             return Promise.resolve(publishPromise);
         }
         else {
-            logger.fatal(
-                `${env.opts.template} does not export a "publish" function. ` +
-                'Global "publish" functions are no longer supported.'
-            );
-        }
+            message = `${env.opts.template} does not export a "publish" function. ` +
+                'Global "publish" functions are no longer supported.';
+            logger.fatal(message);
 
-        return Promise.resolve();
+            return Promise.reject(new Error(message));
+        }
     };
 
     // TODO: docs

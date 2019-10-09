@@ -45,18 +45,13 @@
  */
 global.env = (() => require('./lib/jsdoc/env'))();
 
-(() => {
+(async () => {
     const cli = require('./cli');
-
-    function cb(errorCode) {
-        cli.logFinish();
-        cli.exit(errorCode || 0);
-    }
 
     cli.setVersionInfo()
         .loadConfig()
         .configureLogger()
         .logStart();
 
-    cli.runCommand(cb);
+    await cli.runCommand();
 })();
