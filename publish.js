@@ -68,8 +68,6 @@ exports.publish = async (data, opts, tutorials) => {
         throw e;
     }
 
-    job.generateSourceFiles(docletHelper.shortPaths);
-
     // generate globals page if necessary
     job.generateGlobals(docletHelper.globals);
 
