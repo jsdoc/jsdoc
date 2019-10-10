@@ -17,26 +17,27 @@ const _ = require('lodash');
 const config = require('./lib/config');
 const defaultTasks = require('./lib/default-tasks');
 const DocletHelper = require('./lib/doclethelper');
+const env = require('jsdoc/env');
 const helper = require('jsdoc/util/templateHelper');
 const PublishJob = require('./lib/publishjob');
 const { TaskRunner } = require('@jsdoc/task-runner');
 const Template = require('./lib/template');
 
-exports.publish = async (data, opts, tutorials) => {
+exports.publish = async (data, options, tutorials) => {
     const templateConfig = config.loadSync().get();
     const allConfig = _.defaults({}, {
         templates: {
             baseline: templateConfig
         }
-    }, opts);
-    const context = {};
-    const docletHelper = new DocletHelper();
-    const template = new Template(templateConfig);
-    const job = new PublishJob(template, opts);
-    const runner = new TaskRunner({
+    }, options, { opts: env.opts });
+    const context = {
         config: allConfig,
         templateConfig
-    });
+    };
+    const docletHelper = new DocletHelper();
+    const template = new Template(templateConfig);
+    const job = new PublishJob(template, options);
+    const runner = new TaskRunner(context);
     const tasks = defaultTasks(allConfig);
 
     // set up tutorials
@@ -57,8 +58,10 @@ exports.publish = async (data, opts, tutorials) => {
     job.setAllLongnamesTree(docletHelper.allLongnamesTree);
     context.allLongnamesTree = docletHelper.allLongnamesTree;
 
+    // TODO: Create a task that sets the destination.
+    context.destination = context.config.opts.destination;
     // TODO: Create a task that extracts and sets the short paths.
-    context.shortPaths = docletHelper.shortPaths;
+    context.sourceFiles = docletHelper.shortPaths;
 
     runner.addTasks(tasks);
     try {
@@ -73,7 +76,7 @@ exports.publish = async (data, opts, tutorials) => {
 
     // generate TOC data and index page
     job.generateTocData({ hasGlobals: docletHelper.hasGlobals() })
-        .generateIndex(opts.readme);
+        .generateIndex(options.readme);
 
     // generate the rest of the output files (excluding tutorials)
     docletHelper.getOutputLongnames().forEach(longname => {
