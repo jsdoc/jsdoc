@@ -15,6 +15,7 @@
 */
 const _ = require('lodash');
 const config = require('./lib/config');
+const db = require('./lib/db');
 const defaultTasks = require('./lib/default-tasks');
 const DocletHelper = require('./lib/doclethelper');
 const env = require('jsdoc/env');
@@ -23,15 +24,17 @@ const PublishJob = require('./lib/publishjob');
 const { TaskRunner } = require('@jsdoc/task-runner');
 const Template = require('./lib/template');
 
-exports.publish = async (data, options, tutorials) => {
+exports.publish = async (taffyData, options, tutorials) => {
     const templateConfig = config.loadSync().get();
     const allConfig = _.defaults({}, {
         templates: {
             baseline: templateConfig
         }
     }, options, { opts: env.opts });
+    // TODO: Create a task that sets up context.
     const context = {
         config: allConfig,
+        destination: allConfig.opts.destination,
         templateConfig
     };
     const docletHelper = new DocletHelper();
@@ -39,29 +42,40 @@ exports.publish = async (data, options, tutorials) => {
     const job = new PublishJob(template, options);
     const runner = new TaskRunner(context);
     const tasks = defaultTasks(allConfig);
+    let indexUrl;
+
+    // Claim some special filenames in advance.
+    // TODO: Do this in a task. Remove duplicated logic in tests.
+    indexUrl = job.indexUrl = helper.getUniqueFilename('index');
+    helper.registerLink('index', indexUrl);
+    helper.registerLink('global', helper.getUniqueFilename('global'));
 
     // set up tutorials
     helper.setTutorials(tutorials);
 
-    docletHelper.addDoclets(data);
+    docletHelper.addDoclets(taffyData);
+    // TODO: Replicate this logic when `DocletHelper` goes away:
+    // helper.prune(taffyData);
+    // taffyData.sort('longname, version, since');
+    context.doclets = db({
+        config: allConfig,
+        values: docletHelper.allDoclets
+    });
+    // TODO: Create a task that sets up context.
+    context.sourceFiles = docletHelper.shortPaths;
 
     job.setPackage(docletHelper.getPackage());
-    // TODO: Create a task that sets the package and page title prefix.
+    // TODO: Create a task that sets up context.
     context.package = docletHelper.getPackage();
     context.pageTitlePrefix = docletHelper.pageTitlePrefix;
 
     job.setNavTree(docletHelper.navTree);
-    // TODO: Create a task that sets the nav tree.
+    // TODO: Create a task that sets up context.
     context.navTree = docletHelper.navTree;
 
     // TODO: Get rid of `allLongnamesTree`.
     job.setAllLongnamesTree(docletHelper.allLongnamesTree);
     context.allLongnamesTree = docletHelper.allLongnamesTree;
-
-    // TODO: Create a task that sets the destination.
-    context.destination = context.config.opts.destination;
-    // TODO: Create a task that extracts and sets the short paths.
-    context.sourceFiles = docletHelper.shortPaths;
 
     runner.addTasks(tasks);
     try {
@@ -70,9 +84,6 @@ exports.publish = async (data, options, tutorials) => {
         // TODO: Send to message bus
         throw e;
     }
-
-    // generate globals page if necessary
-    job.generateGlobals(docletHelper.globals);
 
     // generate TOC data and index page
     job.generateTocData({ hasGlobals: docletHelper.hasGlobals() })
@@ -84,7 +95,7 @@ exports.publish = async (data, options, tutorials) => {
             docletHelper.getMemberof(longname));
     });
 
-    // finally, generate the tutorials, and copy static files to the output directory
+    // finally, generate the tutorials
     job.generateTutorials(tutorials);
 
     return Promise.resolve();
