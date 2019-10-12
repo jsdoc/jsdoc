@@ -26,6 +26,6 @@
     "dependency-graph": "^0.8.0",
     "emittery": "^0.5.1",
     "ow": "^0.13.2",
-    "p-queue": "^6.1.1"
+    "p-queue": "^6.2.0"
   }
 }
