@@ -60,16 +60,19 @@ module.exports = class TaskRunner extends Emittery {
         this._unsubscribers.set(task.name, u);
     }
 
-    _addTaskSequenceToQueue(tasks) {
+    _bindTaskFunc(task) {
+        return _.bind(task.run, task, this.context);
+    }
+
+    _createTaskSequence(tasks) {
         let firstTask;
         let promise;
 
         if (!tasks.length) {
-            return;
+            return null;
         }
 
         firstTask = this._nameToTask.get(tasks[0]);
-        // We don't want to run the first task yet, so we wrap it in another promise.
         promise = new Promise((resolve, reject) => {
             this._bindTaskFunc(firstTask)().then(resolve, reject);
         });
@@ -84,15 +87,7 @@ module.exports = class TaskRunner extends Emittery {
             }
         }, promise);
 
-        this._queue.add(() => promise);
-    }
-
-    _addTaskToQueue(task) {
-        this._queue.add(this._bindTaskFunc(task));
-    }
-
-    _bindTaskFunc(task) {
-        return _.bind(task.run, task, this.context);
+        return () => promise;
     }
 
     _init(context) {
@@ -271,6 +266,8 @@ module.exports = class TaskRunner extends Emittery {
         let endPromise;
         let { error, parallel, sequential } = this._orderTasks();
         let runningPromise;
+        let taskFuncs = [];
+        let taskSequence;
 
         // First, fail based on the runner's state.
         runningPromise = this._rejectIfRunning();
@@ -286,21 +283,28 @@ module.exports = class TaskRunner extends Emittery {
         this._queue.pause();
 
         for (const taskName of parallel) {
-            this._addTaskToQueue(this._nameToTask.get(taskName));
+            taskFuncs.push(this._bindTaskFunc(this._nameToTask.get(taskName)));
         }
-        this._addTaskSequenceToQueue(sequential);
 
-        endPromise = this._queue.onIdle().then(() => {
-            let p;
+        taskSequence = this._createTaskSequence(sequential);
+        if (taskSequence) {
+            taskFuncs.push(taskSequence);
+        }
 
-            if (this._error) {
-                p = Promise.reject(this._error);
-            } else {
-                p = Promise.resolve();
-            }
+        endPromise = this._queue.addAll(taskFuncs).then(() => {
+            const err = this._error;
+
             this.end();
 
-            return p;
+            if (err) {
+                return Promise.reject(this._error);
+            } else {
+                return Promise.resolve();
+            }
+        }, e => {
+            this.end();
+
+            return Promise.reject(e);
         });
 
         this.emit('start');

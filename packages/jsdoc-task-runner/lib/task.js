@@ -35,6 +35,8 @@ module.exports = class Task extends Emittery {
         return this.func(context).then(
             () => {
                 this.emit('end', this);
+
+                return Promise.resolve();
             },
             error => {
                 this.emit('error', {
@@ -42,6 +44,8 @@ module.exports = class Task extends Emittery {
                     error
                 });
                 this.emit('end', this);
+
+                return Promise.reject(error);
             }
         );
     }
