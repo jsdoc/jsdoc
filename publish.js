@@ -31,10 +31,8 @@ exports.publish = async (taffyData, options, tutorials) => {
             baseline: templateConfig
         }
     }, options, { opts: env.opts });
-    // TODO: Create a task that sets up context.
     const context = {
         config: allConfig,
-        destination: allConfig.opts.destination,
         templateConfig
     };
     const docletHelper = new DocletHelper();
@@ -69,25 +67,20 @@ exports.publish = async (taffyData, options, tutorials) => {
     context.package = docletHelper.getPackage();
     context.pageTitlePrefix = docletHelper.pageTitlePrefix;
 
-    job.setNavTree(docletHelper.navTree);
-    // TODO: Create a task that sets up context.
-    context.navTree = docletHelper.navTree;
-
     // TODO: Get rid of `allLongnamesTree`.
     job.setAllLongnamesTree(docletHelper.allLongnamesTree);
     context.allLongnamesTree = docletHelper.allLongnamesTree;
 
     runner.addTasks(tasks);
     try {
-        await runner.run(context);
+        await runner.run();
     } catch (e) {
         // TODO: Send to message bus
         throw e;
     }
 
-    // generate TOC data and index page
-    job.generateTocData({ hasGlobals: docletHelper.hasGlobals() })
-        .generateIndex(options.readme);
+    // generate index page
+    job.generateIndex(options.readme);
 
     // generate the rest of the output files (excluding tutorials)
     docletHelper.getOutputLongnames().forEach(longname => {
