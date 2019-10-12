@@ -79,9 +79,6 @@ exports.publish = async (taffyData, options, tutorials) => {
         throw e;
     }
 
-    // generate index page
-    job.generateIndex(options.readme);
-
     // generate the rest of the output files (excluding tutorials)
     docletHelper.getOutputLongnames().forEach(longname => {
         job.generateByLongname(longname, docletHelper.getLongname(longname),
