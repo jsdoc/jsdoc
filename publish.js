@@ -20,9 +20,7 @@ const defaultTasks = require('./lib/default-tasks');
 const DocletHelper = require('./lib/doclethelper');
 const env = require('jsdoc/env');
 const helper = require('jsdoc/util/templateHelper');
-const PublishJob = require('./lib/publishjob');
 const { TaskRunner } = require('@jsdoc/task-runner');
-const Template = require('./lib/template');
 
 exports.publish = async (taffyData, options, tutorials) => {
     const templateConfig = config.loadSync().get();
@@ -36,8 +34,6 @@ exports.publish = async (taffyData, options, tutorials) => {
         templateConfig
     };
     const docletHelper = new DocletHelper();
-    const template = new Template(templateConfig);
-    const job = new PublishJob(template, options);
     const runner = new TaskRunner(context);
     const tasks = defaultTasks(allConfig);
 
@@ -48,20 +44,14 @@ exports.publish = async (taffyData, options, tutorials) => {
     // TODO: Replicate this logic when `DocletHelper` goes away:
     // helper.prune(taffyData);
     // taffyData.sort('longname, version, since');
+    // TODO: Do all of this in the `setContext` task.
     context.doclets = db({
         config: allConfig,
         values: docletHelper.allDoclets
     });
-    // TODO: Create a task that sets up context.
     context.sourceFiles = docletHelper.shortPaths;
-
-    job.setPackage(docletHelper.getPackage());
-    // TODO: Create a task that sets up context.
     context.package = docletHelper.getPackage();
     context.pageTitlePrefix = docletHelper.pageTitlePrefix;
-
-    // TODO: Get rid of `allLongnamesTree`.
-    job.setAllLongnamesTree(docletHelper.allLongnamesTree);
     context.allLongnamesTree = docletHelper.allLongnamesTree;
 
     runner.addTasks(tasks);
@@ -71,9 +61,6 @@ exports.publish = async (taffyData, options, tutorials) => {
         // TODO: Send to message bus
         return Promise.reject(e);
     }
-
-    // finally, generate the tutorials
-    job.generateTutorials(tutorials);
 
     return Promise.resolve();
 };
