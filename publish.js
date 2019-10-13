@@ -15,7 +15,7 @@
 */
 const _ = require('lodash');
 const config = require('./lib/config');
-const db = require('./lib/db');
+const { db } = require('./lib/db');
 const defaultTasks = require('./lib/default-tasks');
 const DocletHelper = require('./lib/doclethelper');
 const env = require('jsdoc/env');
@@ -40,13 +40,6 @@ exports.publish = async (taffyData, options, tutorials) => {
     const job = new PublishJob(template, options);
     const runner = new TaskRunner(context);
     const tasks = defaultTasks(allConfig);
-    let indexUrl;
-
-    // Claim some special filenames in advance.
-    // TODO: Do this in a task. Remove duplicated logic in tests.
-    indexUrl = job.indexUrl = helper.getUniqueFilename('index');
-    helper.registerLink('index', indexUrl);
-    helper.registerLink('global', helper.getUniqueFilename('global'));
 
     // set up tutorials
     helper.setTutorials(tutorials);
@@ -76,14 +69,8 @@ exports.publish = async (taffyData, options, tutorials) => {
         await runner.run();
     } catch (e) {
         // TODO: Send to message bus
-        throw e;
+        return Promise.reject(e);
     }
-
-    // generate the rest of the output files (excluding tutorials)
-    docletHelper.getOutputLongnames().forEach(longname => {
-        job.generateByLongname(longname, docletHelper.getLongname(longname),
-            docletHelper.getMemberof(longname));
-    });
 
     // finally, generate the tutorials
     job.generateTutorials(tutorials);
