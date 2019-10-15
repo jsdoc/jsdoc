@@ -1,5 +1,6 @@
 /**
  * Provides access to Markdown-related functions.
+ *
  * @module jsdoc/util/markdown
  */
 const env = require('jsdoc/env');
@@ -11,7 +12,8 @@ const path = require('jsdoc/path');
 
 /**
  * Enumeration of Markdown parsers that are available.
- * @enum {String}
+ *
+ * @enum {string}
  */
 const parserNames = {
     /**
@@ -43,7 +45,7 @@ const parserNames = {
  * parser.
  *
  * @param {string} source - The source text to sanitize.
- * @return {string} The source text, where underscores within inline tags have been protected with a
+ * @returns {string} The source text, where underscores within inline tags have been protected with a
  * preceding backslash (e.g., `\_`). The `marked` parser will strip the backslash and protect the
  * underscore.
  */
@@ -55,7 +57,7 @@ function escapeUnderscores(source) {
  * Escape HTTP/HTTPS URLs so that they are not automatically converted to HTML links.
  *
  * @param {string} source - The source text to escape.
- * @return {string} The source text with escape characters added to HTTP/HTTPS URLs.
+ * @returns {string} The source text with escape characters added to HTTP/HTTPS URLs.
  */
 function escapeUrls(source) {
     return source.replace(/(https?):\/\//g, '$1:\\/\\/');
@@ -65,7 +67,7 @@ function escapeUrls(source) {
  * Unescape HTTP/HTTPS URLs after Markdown parsing is complete.
  *
  * @param {string} source - The source text to unescape.
- * @return {string} The source text with escape characters removed from HTTP/HTTPS URLs.
+ * @returns {string} The source text with escape characters removed from HTTP/HTTPS URLs.
  */
 function unescapeUrls(source) {
     return source.replace(/(https?):\\\/\\\//g, '$1://');
@@ -75,7 +77,7 @@ function unescapeUrls(source) {
  * Escape backslashes within inline tags so that they are not stripped.
  *
  * @param {string} source - The source text to escape.
- * @return {string} The source text with backslashes escaped within inline tags.
+ * @returns {string} The source text with backslashes escaped within inline tags.
  */
 function escapeInlineTagBackslashes(source) {
     return source.replace(/\{@[^}\r\n]+\}/g, wholeMatch => wholeMatch.replace(/\\/g, '\\\\'));
@@ -85,7 +87,7 @@ function escapeInlineTagBackslashes(source) {
  * Escape characters in text within a code block.
  *
  * @param {string} source - The source text to escape.
- * @return {string} The escaped source text.
+ * @returns {string} The escaped source text.
  */
 function escapeCode(source) {
     return source.replace(/</g, '&lt;')
@@ -98,7 +100,7 @@ function escapeCode(source) {
  *
  * @param {string} code - The code snippet.
  * @param {string?} language - The language of the code snippet.
- * @return {string} The wrapped code snippet.
+ * @returns {string} The wrapped code snippet.
  */
 function highlight(code, language) {
     let classString;
@@ -123,7 +125,7 @@ function highlight(code, language) {
  * entities.
  *
  * @param {string} source - The source text to unencode.
- * @return {string} The source text with HTML entity `&quot;` converted back to standard quotes.
+ * @returns {string} The source text with HTML entity `&quot;` converted back to standard quotes.
  */
 function unencodeQuotes(source) {
     return source.replace(/\{@[^}\r\n]+\}/g, wholeMatch => wholeMatch.replace(/&quot;/g, '"'));
@@ -133,8 +135,8 @@ function unencodeQuotes(source) {
  * Get the appropriate function for applying syntax highlighting to text, based on the user's
  * Markdown configuration settings.
  *
- * @param {Object} conf - The user's Markdown configuration settings.
- * @return {function} The highlighter function.
+ * @param {object} conf - The user's Markdown configuration settings.
+ * @returns {Function} The highlighter function.
  */
 function getHighlighter(conf) {
     let highlighter;
@@ -179,8 +181,8 @@ function getHighlighter(conf) {
  * the specified parser to transform the Markdown source to HTML, then returns the HTML as a string.
  *
  * @private
- * @param {String} parserName The name of the selected parser.
- * @param {Object} [conf] Configuration for the selected parser, if any.
+ * @param {string} parserName The name of the selected parser.
+ * @param {object} [conf] Configuration for the selected parser, if any.
  * @returns {Function} A function that accepts Markdown source, feeds it to the selected parser, and
  * returns the resulting HTML.
  */
@@ -270,7 +272,7 @@ function getParseFunction(parserName, conf) {
  * source. The function uses the parser specified in `conf.json` to transform the Markdown source to
  * HTML, then returns the HTML as a string.
  *
- * @returns {function} A function that accepts Markdown source, feeds it to the selected parser, and
+ * @returns {Function} A function that accepts Markdown source, feeds it to the selected parser, and
  * returns the resulting HTML.
  */
 exports.getParser = () => {

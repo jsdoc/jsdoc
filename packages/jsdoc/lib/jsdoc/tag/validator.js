@@ -5,6 +5,11 @@
 const env = require('jsdoc/env');
 const logger = require('jsdoc/util/logger');
 
+/**
+ * @param {object} tagName - FIXME
+ * @param {object} desc - FIXME
+ * @returns {string} The constructed message.
+ */
 function buildMessage(tagName, {filename, lineno, comment}, desc) {
     let result = `The @${tagName} tag ${desc}. File: ${filename}, line: ${lineno}`;
 
@@ -17,6 +22,10 @@ function buildMessage(tagName, {filename, lineno, comment}, desc) {
 
 /**
  * Validate the given tag.
+ *
+ * @param {object} fixMyName - FIXME
+ * @param {object} tagDef - FIXME
+ * @param {object} meta - FIXME
  */
 exports.validate = ({title, text, value}, tagDef, meta) => {
     const allowUnknownTags = env.conf.tags.allowUnknownTags;

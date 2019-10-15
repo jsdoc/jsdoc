@@ -4,6 +4,10 @@
 const env = require('jsdoc/env');
 const path = require('jsdoc/path');
 
+/**
+ * @param {object} config - FIXME
+ * @returns {RegExp} A regular expression built from `config`.
+ */
 function makeRegExp(config) {
     let regExp = null;
 
@@ -19,10 +23,10 @@ function makeRegExp(config) {
  */
 class Filter {
     /**
-     * @param {Object} opts
+     * @param {object} opts - Options for the `Filter`.
      * @param {string[]} opts.exclude - Specific files to exclude.
-     * @param {(string|RegExp)} opts.includePattern
-     * @param {(string|RegExp)} opts.excludePattern
+     * @param {(string|RegExp)} opts.includePattern - Which files to include.
+     * @param {(string|RegExp)} opts.excludePattern - Which files to exclude.
      */
     constructor({exclude, includePattern, excludePattern}) {
         this.exclude = exclude && Array.isArray(exclude) ?

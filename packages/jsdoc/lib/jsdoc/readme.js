@@ -1,5 +1,6 @@
 /**
  * Make the contents of a README file available to include in the output.
+ *
  * @module jsdoc/readme
  */
 const env = require('jsdoc/env');

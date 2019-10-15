@@ -1,5 +1,6 @@
 /**
  * Define tags that are known in JSDoc.
+ *
  * @module jsdoc/tag/dictionary/definitions
  */
 const _ = require('lodash');
@@ -20,7 +21,13 @@ const DEFINITIONS = {
 };
 const MODULE_NAMESPACE = 'module:';
 
-// Clone a tag definition, excluding synonyms.
+/**
+ * Clone a tag definition, excluding synonyms.
+ *
+ * @param {object} tagDef - FIXME
+ * @param {object} extras - FIXME
+ * @returns {object} A new tag definition (possibly extended with `extras`).
+ */
 function cloneTagDef(tagDef, extras) {
     const newTagDef = _.cloneDeep(tagDef);
 
@@ -29,6 +36,9 @@ function cloneTagDef(tagDef, extras) {
     return (extras ? _.extend(newTagDef, extras) : newTagDef);
 }
 
+/**
+ * @returns {Array.<string>} A list of source paths.
+ */
 function getSourcePaths() {
     const sourcePaths = env.sourceFiles.slice(0) || [];
 
@@ -45,6 +55,10 @@ function getSourcePaths() {
     return sourcePaths;
 }
 
+/**
+ * @param {string} filepath - The filepath to strip of its prefix.
+ * @returns {string} The stripped `filepath`.
+ */
 function filepathMinusPrefix(filepath) {
     const sourcePaths = getSourcePaths();
     const commonPrefix = path.commonPrefix(sourcePaths);
@@ -64,11 +78,19 @@ function filepathMinusPrefix(filepath) {
     return result;
 }
 
-/** @private */
+/**
+ * @private
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `kind` property to update.
+ * @param {object} fixMyName - FIXME
+ * @param {string} fixMyName.title - The new value for the `doclet.kind` property.
+ */
 function setDocletKindToTitle(doclet, {title}) {
     doclet.addTag( 'kind', title );
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `scope` to update.
+ */
 function setDocletScopeToTitle(doclet, {title}) {
     try {
         doclet.setScope(title);
@@ -78,6 +100,9 @@ function setDocletScopeToTitle(doclet, {title}) {
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `name` to update.
+ */
 function setDocletNameToValue(doclet, {value, text}) {
     if (value && value.description) { // as in a long tag
         doclet.addTag('name', value.description);
@@ -87,18 +112,27 @@ function setDocletNameToValue(doclet, {value, text}) {
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to whose `name` to update.
+ */
 function setDocletNameToValueName(doclet, {value}) {
     if (value && value.name) {
         doclet.addTag('name', value.name);
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `description` to update.
+ */
 function setDocletDescriptionToValue(doclet, {value}) {
     if (value) {
         doclet.addTag('description', value);
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `type` to update.
+ */
 function setDocletTypeToValueType(doclet, {value}) {
     if (value && value.type) {
         // Add the type names and other type properties (such as `optional`).
@@ -111,6 +145,9 @@ function setDocletTypeToValueType(doclet, {value}) {
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `name` to update.
+ */
 function setNameToFile(doclet) {
     let docletName;
 
@@ -120,12 +157,19 @@ function setNameToFile(doclet) {
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `memberof` to update.
+ */
 function setDocletMemberof(doclet, {value}) {
     if (value && value !== '<global>') {
         doclet.setMemberof(value);
     }
 }
 
+/**
+ * @param {(module:jsdoc/doclet.Doclet|string)} docletOrNs - The doclet or namespace to update.
+ * @param {object} tag - FIXME
+ */
 function applyNamespace(docletOrNs, tag) {
     if (typeof docletOrNs === 'string') { // ns
         tag.value = name.applyNamespace(tag.value, docletOrNs);
@@ -139,6 +183,9 @@ function applyNamespace(docletOrNs, tag) {
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose `name` to set.
+ */
 function setDocletNameToFilename(doclet) {
     let docletName = '';
 
@@ -150,12 +197,20 @@ function setDocletNameToFilename(doclet) {
     doclet.name = docletName;
 }
 
+/**
+ * @param {string} text - The tag type to parse.
+ * @returns {string} A type expression, or `text`.
+ */
 function parseTypeText(text) {
     const tagType = parseTagType(text, false, true);
 
     return tagType.typeExpression || text;
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to parse.
+ * @returns {object} An object containing borrows (or an empty object, if none are found).
+ */
 function parseBorrows(doclet, {text}) {
     const m = /^([\s\S]+?)(?:\s+as\s+([\s\S]+))?$/.exec(text);
 
@@ -178,10 +233,19 @@ function parseBorrows(doclet, {text}) {
     }
 }
 
+/**
+ * @param {string} docletName - The doclet name to strip of its namespace.
+ * @returns {string} The namespace-free doclet name.
+ */
 function stripModuleNamespace(docletName) {
     return docletName.replace(/^module:/, '');
 }
 
+/**
+ * @param {string} string - The string to fetch the first word of.
+ * @returns {string} The first word of `string` (or an empty string, if the first word could
+ * not be found).
+ */
 function firstWordOf(string) {
     const m = /^(\S+)/.exec(string);
 
@@ -193,6 +257,11 @@ function firstWordOf(string) {
     }
 }
 
+/**
+ * @param {object} fixMyName - FIXME
+ * @param {object} fixMyName.value - FIXME
+ * @returns {string} The combined type names.
+ */
 function combineTypes({value}) {
     let combined;
 
@@ -848,6 +917,9 @@ baseTags = _.extend(baseTags, internalTags);
 // Tag dictionary for JSDoc.
 exports.jsdocTags = baseTags;
 
+/**
+ *
+ */
 function ignore() {
     // do nothing
 }
@@ -1016,6 +1088,10 @@ exports.closureTags = {
     }
 };
 
+/**
+ * @param {module:jsdoc/tag/dictionary} dictionary - FIXME
+ * @param {object} tagDefs - Tag definitions to add to `dictionary`.
+ */
 function addTagDefinitions(dictionary, tagDefs) {
     Object.keys(tagDefs).forEach(tagName => {
         let tagDef;
@@ -1040,8 +1116,8 @@ function addTagDefinitions(dictionary, tagDefs) {
  * If the `tagDefinitions` parameter is included, JSDoc adds only the tag definitions from the
  * `tagDefinitions` object. The configuration settings are ignored.
  *
- * @param {module:jsdoc/tag/dictionary} dictionary
- * @param {Object} [tagDefinitions] - A dictionary whose values define the rules for a JSDoc tag.
+ * @param {module:jsdoc/tag/dictionary} dictionary - FIXME
+ * @param {object} [tagDefinitions] - A dictionary whose values define the rules for a JSDoc tag.
  */
 exports.defineTags = (dictionary, tagDefinitions) => {
     let dictionaries;

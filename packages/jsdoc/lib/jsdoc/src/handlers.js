@@ -16,6 +16,11 @@ class CurrentModule {
         this.originalName = doclet.meta.code.name || '';
     }
 }
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to filter by its `longname`.
+ * @param {string} doclet.longname - The `longname` to filter by.
+ * @returns {boolean} Whether the doclet passes the filter.
+ */
 function filterByLongname({longname}) {
     // you can't document prototypes
     if ( /#$/.test(longname) ) {
@@ -25,6 +30,11 @@ function filterByLongname({longname}) {
     return false;
 }
 
+/**
+ * @param {string} comment - FIXME
+ * @param {*} e - FIXME
+ * @returns {module:jsdoc/doclet.Doclet} The newly created doclet.
+ */
 function createDoclet(comment, e) {
     let doclet;
     let flatComment;
@@ -61,6 +71,9 @@ function createDoclet(comment, e) {
  * ignores the attached JSDoc comment and only looks at the code.
  *
  * @private
+ * @param {*} comment - A comment.
+ * @param {*} e - The `symbolFound` event.
+ * @returns {module:jsdoc/doclet.Doclet} e - A doclet created from `comment`.
  */
 function createSymbolDoclet(comment, e) {
     let doclet = createDoclet(comment, e);
@@ -74,12 +87,19 @@ function createSymbolDoclet(comment, e) {
     return doclet;
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ */
 function setCurrentModule(doclet) {
     if (doclet.kind === 'module') {
         currentModule = new CurrentModule(doclet);
     }
 }
 
+/**
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ */
 function setModuleScopeMemberOf(parser, doclet) {
     let parentDoclet;
     let skipMemberof;
@@ -132,6 +152,9 @@ function setModuleScopeMemberOf(parser, doclet) {
     }
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ */
 function setDefaultScope(doclet) {
     // module doclets don't get a default scope
     if (!doclet.scope && doclet.kind !== 'module') {
@@ -139,6 +162,10 @@ function setDefaultScope(doclet) {
     }
 }
 
+/**
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {module:jsdoc/doclet.Doclet} newDoclet - FIXME
+ */
 function addDoclet(parser, newDoclet) {
     let e;
 
@@ -153,6 +180,11 @@ function addDoclet(parser, newDoclet) {
     }
 }
 
+/**
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ * @param {object} astNode - FIXME
+ */
 function processAlias(parser, doclet, astNode) {
     let memberofName;
 
@@ -170,7 +202,17 @@ function processAlias(parser, doclet, astNode) {
     doclet.postProcess();
 }
 
-// TODO: separate code that resolves `this` from code that resolves the module object
+/**
+ *
+ * @todo Separate code that resolves `this` from code that resolves the module object
+ *
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ * @param {object} astNode - FIXME
+ * @param {string} nameStartsWith - FIXME
+ * @param {*} trailingPunc - FIXME
+ * @returns {object} (FIXME) Contains `memberof`, `scopePunc`.
+ */
 function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPunc) {
     let memberof = '';
     let nameAndPunc;
@@ -223,6 +265,11 @@ function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPun
     };
 }
 
+/**
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ * @param {object} astNode - FIXME
+ */
 function addSymbolMemberof(parser, doclet, astNode) {
     let basename;
     let memberof;
@@ -275,6 +322,12 @@ function addSymbolMemberof(parser, doclet, astNode) {
     }
 }
 
+/**
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {string} docletSrc - FIXME
+ * @param {*} e - FIXME
+ * @returns {boolean} FIXME
+ */
 function newSymbolDoclet(parser, docletSrc, e) {
     const newDoclet = createSymbolDoclet(docletSrc, e);
 
@@ -317,7 +370,8 @@ function newSymbolDoclet(parser, docletSrc, e) {
 
 /**
  * Attach these event handlers to a particular instance of a parser.
- * @param parser
+ *
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
  */
 exports.attachTo = parser => {
     // Handle JSDoc "virtual comments" that include one of the following:

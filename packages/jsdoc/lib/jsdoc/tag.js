@@ -1,5 +1,6 @@
 /**
  * Functionality related to JSDoc tags.
+ *
  * @module jsdoc/tag
  * @requires module:jsdoc/env
  * @requires module:jsdoc/path
@@ -18,12 +19,24 @@ const tag = {
     type: require('jsdoc/tag/type')
 };
 
-// Check whether the text is the same as a symbol name with leading or trailing whitespace. If so,
-// the whitespace must be preserved, and the text cannot be trimmed.
+/**
+ * Check whether the text is the same as a symbol name with leading or trailing whitespace.
+ * If so, the whitespace must be preserved, and the text cannot be trimmed.
+ *
+ * @param {string} text - FIXME
+ * @param {object} meta - FIXME
+ * @returns {boolean} Can `text` be trimmed?
+ */
 function mustPreserveWhitespace(text, meta) {
     return meta && meta.code && meta.code.name === text && text.match(/(?:^\s+)|(?:\s+$)/);
 }
 
+/**
+ * @param {string} text - FIXME
+ * @param {object} opts - FIXME
+ * @param {object} meta - FIXME
+ * @returns {string} Trimmed `text`.
+ */
 function trim(text, opts, meta) {
     let indentMatcher;
     let match;
@@ -51,6 +64,11 @@ function trim(text, opts, meta) {
     return text;
 }
 
+/**
+ * @param {object} obj - FIXME
+ * @param {string} propName - FIXME
+ * @param {string} propValue - FIXME
+ */
 function addHiddenProperty(obj, propName, propValue) {
     Object.defineProperty(obj, propName, {
         value: propValue,
@@ -60,6 +78,12 @@ function addHiddenProperty(obj, propName, propValue) {
     });
 }
 
+/**
+ * @param {object} fixMyName - FIXME
+ * @param {object} fixMyNameToo - FIXME
+ * @param {object} meta - FIXME
+ * @returns {object} The parsed type.
+ */
 function parseType({text, originalTitle}, {canHaveName, canHaveType}, meta) {
     try {
         return tag.type.parse(text, canHaveName, canHaveType);
@@ -77,6 +101,11 @@ function parseType({text, originalTitle}, {canHaveName, canHaveType}, meta) {
     }
 }
 
+/**
+ * @param {object} tagInstance - FIXME
+ * @param {object} tagDef - FIXME
+ * @param {object} meta - FIXME
+ */
 function processTagText(tagInstance, tagDef, meta) {
     let tagType;
 
@@ -144,9 +173,9 @@ class Tag {
     /**
      * Constructs a new tag object. Calls the tag validator.
      *
-     * @param {string} tagTitle
-     * @param {string=} tagBody
-     * @param {object=} meta
+     * @param {string} tagTitle  - FIXME
+     * @param {string} [tagBody] - FIXME
+     * @param {object} [meta]    - FIXME
      */
     constructor(tagTitle, tagBody, meta) {
         let tagDef;

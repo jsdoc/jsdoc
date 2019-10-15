@@ -1,5 +1,5 @@
 /**
- * Adds support for reusable partial jsdoc files.
+ * Adds support for reusable partial JSDoc files.
  *
  * @module plugins/partial
  */
@@ -9,13 +9,15 @@ const path = require('path');
 
 exports.handlers = {
     /**
-     * Include a partial jsdoc
+     * Include a partial JSDoc.
      *
-     * @param e
-     * @param e.filename
-     * @param e.source
+     * @param {*} e - The event fired before parsing.
+     * @param {string} e.filename - The name of the file about to be parsed.
+     * @param {string} e.source - The contents of `e.filename`.
      * @example
-     *     @partial "partial_doc.jsdoc"
+     *  ```
+     *  @partial "partial_doc.jsdoc"
+     *  ```
      */
     beforeParse(e) {
         e.source = e.source.replace(/(@partial ".*")+/g, $ => {

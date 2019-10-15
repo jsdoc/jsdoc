@@ -33,10 +33,18 @@ let view;
 
 let outdir = path.normalize(env.opts.destination);
 
+/**
+ * @param {*} spec - FIXME
+ * @returns {*} FIXME
+ */
 function find(spec) {
     return helper.find(data, spec);
 }
 
+/**
+ * @param {module:jsdoc/tutorial.Tutorial} tutorial - FIXME
+ * @returns {*} FIXME
+ */
 function tutoriallink(tutorial) {
     return helper.toTutorial(tutorial, null, {
         tag: 'em',
@@ -45,10 +53,19 @@ function tutoriallink(tutorial) {
     });
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to get ancestor links for.
+ * @returns {*} FIXME
+ */
 function getAncestorLinks(doclet) {
     return helper.getAncestorLinks(data, doclet);
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ * @param {object} hash - FIXME
+ * @returns {string} An HTML string for a link.
+ */
 function hashToLink(doclet, hash) {
     let url;
 
@@ -62,6 +79,13 @@ function hashToLink(doclet, hash) {
     return `<a href="${url}">${hash}</a>`;
 }
 
+/**
+ * @param {object} hash - FIXME
+ * @param {string} hash.kind - FIXME
+ * @param {object} hash.type - FIXME
+ * @param {object} hash.meta - FIXME
+ * @returns {boolean} Whether `hash` needs a signature.
+ */
 function needsSignature({kind, type, meta}) {
     let needsSig = false;
 
@@ -89,6 +113,12 @@ function needsSignature({kind, type, meta}) {
     return needsSig;
 }
 
+/**
+ * @param {object} hash - FIXME
+ * @param {boolean} hash.optional - FIXME
+ * @param {boolean} hash.nullable - FIXME
+ * @returns {Array} A list of signature attributes.
+ */
 function getSignatureAttributes({optional, nullable}) {
     const attributes = [];
 
@@ -106,6 +136,10 @@ function getSignatureAttributes({optional, nullable}) {
     return attributes;
 }
 
+/**
+ * @param {object} item - FIXME
+ * @returns {string} An HTML string.
+ */
 function updateItemName(item) {
     const attributes = getSignatureAttributes(item);
     let itemName = item.name || '';
@@ -121,10 +155,18 @@ function updateItemName(item) {
     return itemName;
 }
 
+/**
+ * @param {Array} params - A list of params to update.
+ * @returns {Array.<string>} An array of HTML strings.
+ */
 function addParamAttributes(params) {
     return params.filter(({name}) => name && !name.includes('.')).map(updateItemName);
 }
 
+/**
+ * @param {object} item - FIXME
+ * @returns {Array} FIXME
+ */
 function buildItemTypeStrings(item) {
     const types = [];
 
@@ -137,6 +179,11 @@ function buildItemTypeStrings(item) {
     return types;
 }
 
+/**
+ * @param {*} attribs - FIXME
+ * @returns {string} An `htmlsafe()` filtered string of the joined attributes (or an empty
+ * string if `attribs` was an empty array).
+ */
 function buildAttribsString(attribs) {
     let attribsString = '';
 
@@ -147,6 +194,10 @@ function buildAttribsString(attribs) {
     return attribsString;
 }
 
+/**
+ * @param {Array} items - FIXME
+ * @returns {Array} FIXME
+ */
 function addNonParamAttributes(items) {
     let types = [];
 
@@ -157,12 +208,18 @@ function addNonParamAttributes(items) {
     return types;
 }
 
+/**
+ * @param {object} f - FIXME
+ */
 function addSignatureParams(f) {
     const params = f.params ? addParamAttributes(f.params) : [];
 
     f.signature = `${f.signature || ''}(${params.join(', ')})`;
 }
 
+/**
+ * @param {object} f - FIXME
+ */
 function addSignatureReturns(f) {
     const attribs = [];
     let attribsString = '';
@@ -196,6 +253,9 @@ function addSignatureReturns(f) {
         `<span class="type-signature">${returnTypesString}</span>`;
 }
 
+/**
+ * @param {object} f - FIXME
+ */
 function addSignatureTypes(f) {
     const types = f.type ? buildItemTypeStrings(f) : [];
 
@@ -203,6 +263,9 @@ function addSignatureTypes(f) {
         `${types.length ? ` :${types.join('|')}` : ''}</span>`;
 }
 
+/**
+ * @param {object} f - FIXME
+ */
 function addAttribs(f) {
     const attribs = helper.getAttribs(f);
     const attribsString = buildAttribsString(attribs);
@@ -210,6 +273,11 @@ function addAttribs(f) {
     f.attribs = `<span class="type-signature">${attribsString}</span>`;
 }
 
+/**
+ * @param {object.<string, object>} files - A hash filenames and their properties.
+ * @param {string} commonPrefix - A string to remove from all `files[file].resolved` values.
+ * @returns {object} A modified `files` object with shorter `resolved` path values.
+ */
 function shortenPaths(files, commonPrefix) {
     Object.keys(files).forEach(file => {
         files[file].shortened = files[file].resolved.replace(commonPrefix, '')
@@ -220,6 +288,11 @@ function shortenPaths(files, commonPrefix) {
     return files;
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to extract the `meta` path from.
+ * @param {*} doclet.meta - The object to resolve from a path and filename into a string.
+ * @returns {?string} The resolved filename, or `null` if the doclet had no `meta` property.
+ */
 function getPathFromDoclet({meta}) {
     if (!meta) {
         return null;
@@ -230,6 +303,12 @@ function getPathFromDoclet({meta}) {
         meta.filename;
 }
 
+/**
+ * @param {string} title - The title to generate.
+ * @param {*} docs - FIXME
+ * @param {string} filename - The filename to write to.
+ * @param {boolean} resolveLinks - Whether to turn `{@link …}` tags into HTML links.
+ */
 function generate(title, docs, filename, resolveLinks) {
     let docData;
     let html;
@@ -253,6 +332,10 @@ function generate(title, docs, filename, resolveLinks) {
     fs.writeFileSync(outpath, html, 'utf8');
 }
 
+/**
+ * @param {object.<string, object>} sourceFiles - A hash of (source) files and their properties.
+ * @param {string} [encoding=utf8] - The encoding to use for the genreated files.
+ */
 function generateSourceFiles(sourceFiles, encoding = 'utf8') {
     Object.keys(sourceFiles).forEach(file => {
         let source;
@@ -315,6 +398,13 @@ function attachModuleSymbols(doclets, modules) {
     });
 }
 
+/**
+ * @param {Array} items - FIXME
+ * @param {string} itemHeading - The text to use for the HTML heading element.
+ * @param {object.<string, boolean>} itemsSeen - A hash of items already visited.
+ * @param {Function} linktoFn - The function to generate an HTML link element.
+ * @returns {string} An HTML string for navigation.
+ */
 function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     let nav = '';
 
@@ -347,27 +437,38 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     return nav;
 }
 
+/**
+ * @param {string} longName - FIXME
+ * @param {string} name - FIXME
+ * @returns {string} An HTML link.
+ */
 function linktoTutorial(longName, name) {
     return tutoriallink(name);
 }
 
+/**
+ * @param {string} longName - FIXME
+ * @param {string} name - FIXME
+ * @returns {string} An HTML link.
+ */
 function linktoExternal(longName, name) {
     return linkto(longName, name.replace(/(^"|"$)/g, ''));
 }
 
 /**
  * Create the navigation sidebar.
+ *
  * @param {object} members The members that will be used to create the sidebar.
- * @param {array<object>} members.classes
- * @param {array<object>} members.externals
- * @param {array<object>} members.globals
- * @param {array<object>} members.mixins
- * @param {array<object>} members.modules
- * @param {array<object>} members.namespaces
- * @param {array<object>} members.tutorials
- * @param {array<object>} members.events
- * @param {array<object>} members.interfaces
- * @return {string} The HTML for the navigation sidebar.
+ * @param {Array<object>} members.classes    - FIXME
+ * @param {Array<object>} members.externals  - FIXME
+ * @param {Array<object>} members.globals    - FIXME
+ * @param {Array<object>} members.mixins     - FIXME
+ * @param {Array<object>} members.modules    - FIXME
+ * @param {Array<object>} members.namespaces - FIXME
+ * @param {Array<object>} members.tutorials  - FIXME
+ * @param {Array<object>} members.events     - FIXME
+ * @param {Array<object>} members.interfaces - FIXME
+ * @returns {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
     let globalNav;
@@ -407,9 +508,9 @@ function buildNav(members) {
 }
 
 /**
-    @param {TAFFY} taffyData See <http://taffydb.com/>.
-    @param {object} opts
-    @param {Tutorial} tutorials
+    @param {module:taffydb.taffy} taffyData See <http://taffydb.com>.
+    @param {object} opts - FIXME
+    @param {Array.<module:jsdoc/tutorial.Tutorial>} tutorials - FIXME
  */
 exports.publish = (taffyData, opts, tutorials) => {
     let classes;
@@ -627,7 +728,7 @@ exports.publish = (taffyData, opts, tutorials) => {
         }
     });
 
-    // do this after the urls have all been generated
+    // do this after the URLs have all been generated
     data().each(doclet => {
         doclet.ancestors = getAncestorLinks(doclet);
 
@@ -722,7 +823,13 @@ exports.publish = (taffyData, opts, tutorials) => {
         }
     });
 
-    // TODO: move the tutorial functions to templateHelper.js
+    /**
+     * @todo Move the tutorial functions to templateHelper.js
+     *
+     * @param {object} title - FIXME
+     * @param {object} tutorial - FIXME
+     * @param {string} filename - FIXME
+     */
     function generateTutorial(title, tutorial, filename) {
         const tutorialData = {
             title: title,
@@ -740,6 +847,9 @@ exports.publish = (taffyData, opts, tutorials) => {
     }
 
     // tutorials can have only one parent so there is no risk for loops
+    /**
+     * @param  {object} fixMyName - FIXME
+     */
     function saveChildren({children}) {
         children.forEach(child => {
             generateTutorial(`Tutorial: ${child.title}`, child, helper.tutorialToUrl(child.name));

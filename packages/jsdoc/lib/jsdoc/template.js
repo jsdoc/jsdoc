@@ -1,5 +1,6 @@
 /**
  * Wrapper for Lodash's template utility to allow loading templates from files.
+ *
  * @module jsdoc/template
  */
 const _ = require('lodash');
@@ -27,8 +28,9 @@ class Template {
 
     /**
      * Loads template from given file.
+     *
      * @param {string} file - Template filename.
-     * @return {function} Returns template closure.
+     * @returns {Function} Returns template closure.
      */
     load(file) {
         return _.template(fs.readFileSync(file, 'utf8'), this.settings);
@@ -41,7 +43,7 @@ class Template {
      *
      * @param {string} file - Template filename.
      * @param {object} data - Template variables (doesn't have to be object, but passing variables dictionary is best way and most common use).
-     * @return {string} Rendered template.
+     * @returns {string} Rendered template.
      */
     partial(file, data) {
         file = path.resolve(this.path, file);
@@ -62,7 +64,7 @@ class Template {
      *
      * @param {string} file - Template filename.
      * @param {object} data - Template variables (doesn't have to be object, but passing variables dictionary is best way and most common use).
-     * @return {string} Rendered template.
+     * @returns {string} Rendered template.
      */
     render(file, data) {
         // main content

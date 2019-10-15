@@ -1,6 +1,7 @@
 /**
  * Remove everything in a file except JSDoc-style comments. By enabling this plugin, you can
  * document source files that are not valid JavaScript (including source files for other languages).
+ *
  * @module plugins/commentsOnly
  */
 exports.handlers = {

@@ -1,7 +1,9 @@
 /**
  * @module jsdoc/src/visitor
+ *
+ * @todo Consider exporting more stuff so users can override it.
  */
-// TODO: consider exporting more stuff so users can override it
+
 const astNode = require('jsdoc/src/astnode');
 const combineDoclets = require('jsdoc/doclet').combine;
 const { getBasename, LONGNAMES } = require('jsdoc/name');
@@ -11,7 +13,8 @@ const { Syntax } = require('jsdoc/src/syntax');
  * Get the raw comment string for a block comment node.
  *
  * @private
- * @param {!Object} comment - A comment node with `type` and `value` properties.
+ * @param {!object} comment - A comment node with `type` and `value` properties.
+ * @returns {string} The raw comment.
  */
 function getRawComment({value}) {
     return `/*${value}*/`;
@@ -20,26 +23,37 @@ function getRawComment({value}) {
 /**
  * Check whether a comment node represents a block comment.
  *
- * @param {!Object} comment - A comment node with `type` and `value` properties.
- * @return {boolean} `true` if the comment is a block comment, `false` otherwise.
+ * @param {!object} comment - A comment node with `type` and `value` properties.
+ * @returns {boolean} Is the comment a block comment?
  */
 function isBlockComment({type}) {
     return type === 'CommentBlock';
 }
 
 /**
- * Verify that a block comment exists; that it is a JSDoc comment; and that its leading delimiter
- * does not contain three or more asterisks.
+ * Verify that a block comment...
+ *
+ * + exists;
+ * + is a JSDoc comment; and
+ * + that its leading delimiter does not contain three or more asterisks.
  *
  * @private
  * @memberof module:jsdoc/src/parser.Parser
+ * @param {string} commentSrc - The comment to validate.
+ * @returns {boolean} Is `commentSrc` valid JSDoc?
  */
 function isValidJsdoc(commentSrc) {
     return commentSrc && commentSrc.length > 4 && commentSrc.indexOf('/**') === 0 &&
         commentSrc.indexOf('/***') !== 0;
 }
 
-// TODO: docs
+
+/**
+ * @todo Docs
+ *
+ * @param {object} node - FIXME
+ * @returns {string} A JSDoc comment.
+ */
 function getLeadingJsdocComment(node) {
     let comment = null;
     let leadingComments = node.leadingComments;
@@ -61,7 +75,13 @@ function getLeadingJsdocComment(node) {
     return comment;
 }
 
-// TODO: docs
+
+/**
+ * @todo Docs
+ *
+ * @param {module:jsdoc/doclet.Doclet} scopeDoclet - FIXME
+ * @returns {*} FIXME
+ */
 function makeVarsFinisher(scopeDoclet) {
     return ({doclet, code}) => {
         // no need to evaluate all things related to scopeDoclet again, just use it
@@ -71,7 +91,13 @@ function makeVarsFinisher(scopeDoclet) {
     };
 }
 
-// Given an event, get the parent node's doclet.
+/**
+ * Given an event, get the parent node's doclet.
+ *
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {object} fixMyName - FIXME
+ * @returns {?module:jsdoc/doclet.Doclet} A doclet (or `null`, if one could not be found).
+ */
 function getParentDocletFromEvent(parser, {doclet}) {
     if (doclet && doclet.meta && doclet.meta.code && doclet.meta.code.node &&
         doclet.meta.code.node.parent) {
@@ -88,7 +114,7 @@ function getParentDocletFromEvent(parser, {doclet}) {
  *
  * @private
  * @param {module:jsdoc/src/parser.Parser} parser - The JSDoc parser.
- * @return {function} A function that merges a parameter's inline documentation into the function's
+ * @returns {Function} A function that merges a parameter's inline documentation into the function's
  * doclet.
  */
 function makeInlineParamsFinisher(parser) {
@@ -145,12 +171,12 @@ function makeInlineParamsFinisher(parser) {
 }
 
 /**
- * Given an array of nodes that represent function parameters, find the node for the rest parameter,
- * if any.
+ * Given an array of nodes that represent function parameters, find the node for the
+ * rest parameter, if any.
  *
  * @private
- * @param {Array.<Object>} params - An array of nodes that represent function parameters.
- * @return {Object?} The node for the rest parameter.
+ * @param {Array.<object>} params - An array of nodes that represent function parameters.
+ * @returns {?object} The node for the rest parameter.
  */
 function findRestParam(params) {
     let restParam = null;
@@ -174,7 +200,7 @@ function findRestParam(params) {
  * is not documented, the function's doclet will remain unchanged.
  *
  * @private
- * @return {function} A function that updates the rest parameter's documentation to indicate that
+ * @returns {Function} A function that updates the rest parameter's documentation to indicate that
  * the parameter is repeatable.
  */
 function makeRestParamFinisher() {
@@ -209,8 +235,8 @@ function makeRestParamFinisher() {
  * parameters, if any.
  *
  * @private
- * @param {Array.<Object>} params - An array of nodes that represent function parameters.
- * @return {Array.<Object>} The nodes for the default parameters.
+ * @param {Array.<object>} params - An array of nodes that represent function parameters.
+ * @returns {Array.<object>} The nodes for the default parameters.
  */
 function findDefaultParams(params) {
     const defaultParams = [];
@@ -238,7 +264,7 @@ function findDefaultParams(params) {
  * documentation.
  *
  * @private
- * @return {function} A function that updates the function doclet to include the default values of
+ * @returns {Function} A function that updates the function doclet to include the default values of
  * parameters.
  */
 function makeDefaultParamFinisher() {
@@ -296,7 +322,7 @@ function makeDefaultParamFinisher() {
  *
  * @private
  * @param {module:jsdoc/src/parser.Parser} parser - The JSDoc parser.
- * @return {function} A function that merges the constructor's doclet into the class's doclet.
+ * @returns {Function} A function that merges the constructor's doclet into the class's doclet.
  */
 function makeConstructorFinisher(parser) {
     return e => {
@@ -335,7 +361,7 @@ function makeConstructorFinisher(parser) {
  * Create a function that will add an `async` property to the doclet for async functions.
  *
  * @private
- * @return {function} A function that adds an `async` property to the doclet of async functions.
+ * @returns {Function} A function that adds an `async` property to the doclet of async functions.
  */
 function makeAsyncFunctionFinisher() {
     return e => {
@@ -356,7 +382,7 @@ function makeAsyncFunctionFinisher() {
  * Create a function that will mark a doclet as private.
  *
  * @private
- * @return {function} A function that marks a doclet as private.
+ * @returns {Function} A function that marks a doclet as private.
  */
 function makePrivatePropertyFinisher() {
     return ({doclet}) => {
@@ -368,7 +394,7 @@ function makePrivatePropertyFinisher() {
  * Create a function that will mark a doclet as a generator function.
  *
  * @private
- * @return {function} A function that marks a doclet as a generator function.
+ * @returns {Function} A function that marks a doclet as a generator function.
  */
 function makeGeneratorFinisher() {
     return e => {
@@ -385,7 +411,9 @@ function makeGeneratorFinisher() {
     };
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ */
 class SymbolFound {
     // TODO: docs
     constructor(node, filename, extras = {}) {
@@ -407,7 +435,9 @@ class SymbolFound {
     }
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ */
 class JsdocCommentFound {
     // TODO: docs
     constructor({loc, range}, rawComment, filename) {
@@ -423,25 +453,44 @@ class JsdocCommentFound {
     }
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ *
+ * @param {object} node - The node to check for contained comments.
+ * @returns {boolean} Does the node contain comments?
+ */
 function hasComments(node) {
     return (node && node.leadingComments && node.leadingComments.length) ||
         (node && node.trailingComments && node.trailingComments.length) ||
         (node && node.innerComments && node.innerComments.length);
 }
 
-// TODO: docs
+/**
+ * Strip delimiters from `comment`.
+ *
+ * @param {string} comment - The comment to strip delimiters from.
+ * @returns {string} The `comment`, sans-delimiters.
+ */
 function removeCommentDelimiters(comment) {
     return comment.substring(2, comment.length - 2);
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ *
+ * @param {object} commentNode - FIXME
+ * @param {string} comment - FIXME
+ */
 function updateCommentNode(commentNode, comment) {
     commentNode.value = removeCommentDelimiters(comment);
 }
 
-// TODO: docs
-// TODO: note that it's essential to call this function before you try to resolve names!
+/**
+ * @todo Docs
+ * @todo Note that it's essential to call this function before you try to resolve names!
+ *
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ */
 function trackVars(parser, {enclosingScope}, {code, finishers}) {
     let doclet;
     const enclosingScopeId = enclosingScope ? enclosingScope.nodeId : null;
@@ -460,7 +509,15 @@ function trackVars(parser, {enclosingScope}, {code, finishers}) {
     }
 }
 
-// TODO: docs
+
+/**
+ * @todo Docs
+ *
+ * @param {object} node - FIXME
+ * @param {module:jsdoc/src/parser.Parser} parser - FIXME
+ * @param {string} filename  - FIXME
+ * @returns {object} A `symbolFound` event.
+ */
 function makeSymbolFoundEvent(node, parser, filename) {
     let e;
     let basename;
@@ -700,7 +757,9 @@ function makeSymbolFoundEvent(node, parser, filename) {
     return e;
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ */
 class Visitor {
     // TODO: docs
     constructor() {
@@ -724,12 +783,16 @@ class Visitor {
         this._parser = parser;
     }
 
-    // TODO: docs
+    /**
+     * @param {object} visitor - Added to `this._nodeVisitors`.
+     */
     addAstNodeVisitor(visitor) {
         this._nodeVisitors.push(visitor);
     }
 
-    // TODO: docs
+    /**
+     * @param {object} visitor - Removed from `this._nodeVisitors`.
+     */
     removeAstNodeVisitor(visitor) {
         const idx = this._nodeVisitors.indexOf(visitor);
 
@@ -738,12 +801,21 @@ class Visitor {
         }
     }
 
-    // TODO: docs
+    /**
+     * @returns {Array} The list of node visitors.
+     */
     getAstNodeVisitors() {
         return this._nodeVisitors;
     }
 
-    // TODO: docs; visitor signature is (node, parser, filename)
+    /**
+     * @todo Docs.
+     * @todo visitor signature is (node, parser, filename)
+     *
+     * @param {object} node - The node to visit.
+     * @param {string} filename - The filename being visited.
+     * @returns {boolean} Returns `true` when done.
+     */
     visit(node, filename) {
         for (let visitor of this._visitors) {
             visitor.call(this, node, this._parser, filename);
@@ -753,7 +825,14 @@ class Visitor {
     }
 
     /* eslint-disable class-methods-use-this */
-    // TODO: docs
+    /**
+     * @todo Docs
+     *
+     * @param {object} node - The node to visit for comments.
+     * @param {module:jsdoc/src/parser.Parser} parser - The parser to use.
+     * @param {string} filename - The filename being visited.
+     * @returns {boolean} Returns `true` when done.
+     */
     visitNodeComments(node, parser, filename) {
         let comments;
         let e;
@@ -763,6 +842,9 @@ class Visitor {
         let nextProgramNodeIndex;
         let rawComment;
 
+        /**
+         * @param {string} source - Source to add comments to.
+         */
         function addComments(source) {
             comments = comments.concat( source.slice(0) );
         }
@@ -822,7 +904,14 @@ class Visitor {
     }
     /* eslint-enable class-methods-use-this */
 
-    // TODO: docs
+    /**
+     * @todo Docs
+     *
+     * @param {object} node - The node to visit.
+     * @param {module:jsdoc/src/parser.Parser} parser - The parser to use.
+     * @param {string} filename - The filename being visited.
+     * @returns {boolean} Returns `true` when done.
+     */
     visitNode(node, parser, filename) {
         const e = makeSymbolFoundEvent(node, parser, filename);
 

@@ -8,7 +8,12 @@ const stripBom = require('strip-bom');
  * @see https://www.npmjs.org/doc/files/package.json.html
  */
 
-// Collect all of the license information from a `package.json` file.
+/**
+ * Collect all of the license information from a `package.json` file.
+ *
+ * @param {object} packageInfo - FIXME
+ * @returns {Array} A list of licenses.
+ */
 function getLicenses(packageInfo) {
     const licenses = packageInfo.licenses ? packageInfo.licenses.slice(0) : [];
 
@@ -22,7 +27,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about where to report bugs in the package.
  *
- * @typedef {Object} module:jsdoc/package.Package~BugInfo
+ * @typedef {object} module:jsdoc/package.Package~BugInfo
  * @property {string} email - The email address for reporting bugs.
  * @property {string} url - The URL for reporting bugs.
  */
@@ -30,7 +35,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package's software license.
  *
- * @typedef {Object} module:jsdoc/package.Package~LicenseInfo
+ * @typedef {object} module:jsdoc/package.Package~LicenseInfo
  * @property {string} type - An identifier for the type of license.
  * @property {string} url - The URL for the complete text of the license.
  */
@@ -38,7 +43,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package author or contributor.
  *
- * @typedef {Object} module:jsdoc/package.Package~PersonInfo
+ * @typedef {object} module:jsdoc/package.Package~PersonInfo
  * @property {string} name - The person's full name.
  * @property {string} email - The person's email address.
  * @property {string} url - The URL of the person's website.
@@ -47,7 +52,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package's version-control repository.
  *
- * @typedef {Object} module:jsdoc/package.Package~RepositoryInfo
+ * @typedef {object} module:jsdoc/package.Package~RepositoryInfo
  * @property {string} type - The type of version-control system that the repository uses (for
  * example, `git` or `svn`).
  * @property {string} url - The URL for the repository.
@@ -139,7 +144,7 @@ class Package {
             /**
              * The dependencies for this package.
              *
-             * @type {Object}
+             * @type {object}
              * @since 3.3.0
              */
             this.dependencies = packageInfo.dependencies;
@@ -158,7 +163,7 @@ class Package {
             /**
              * The development dependencies for this package.
              *
-             * @type {Object}
+             * @type {object}
              * @since 3.3.0
              */
             this.devDependencies = packageInfo.devDependencies;
@@ -171,7 +176,7 @@ class Package {
              * [semver](https://www.npmjs.org/doc/misc/semver.html)-compliant version number for the
              * engine.
              *
-             * @type {Object}
+             * @type {object}
              * @since 3.3.0
              */
             this.engines = packageInfo.engines;

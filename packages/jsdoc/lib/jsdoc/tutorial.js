@@ -39,7 +39,6 @@ class Tutorial {
      * @param {string} name - Tutorial name.
      * @param {string} content - Text content.
      * @param {number} type - Source formating.
-
      */
     constructor(name, content, type) {
         this.title = this.name = this.longname = name;
@@ -54,7 +53,7 @@ class Tutorial {
     /**
      * Moves children from current parent to different one.
      *
-     * @param {?Tutorial} parent - New parent. If null, the tutorial has no parent.
+     * @param {?Tutorial} parent - New parent. If `null`, the tutorial has no parent.
      */
     setParent(parent) {
         // removes node from old parent
@@ -91,7 +90,7 @@ class Tutorial {
     /**
      * Prepares source.
      *
-     * @return {string} HTML source.
+     * @returns {string} HTML source.
      */
     parse() {
         switch (this.type) {
@@ -114,7 +113,8 @@ exports.Tutorial = Tutorial;
 
 /**
  * Represents the root tutorial.
- * @extends {module:jsdoc/tutorial.Tutorial}
+ *
+ * @augments {module:jsdoc/tutorial.Tutorial}
  */
 class RootTutorial extends Tutorial {
     constructor() {
@@ -125,8 +125,9 @@ class RootTutorial extends Tutorial {
 
     /**
      * Retrieve a tutorial by name.
+     *
      * @param {string} name - Tutorial name.
-     * @return {module:jsdoc/tutorial.Tutorial} Tutorial instance.
+     * @returns {module:jsdoc/tutorial.Tutorial} Tutorial instance.
      */
     getByName(name) {
         return hasOwnProp.call(this._tutorials, name) && this._tutorials[name];
@@ -134,6 +135,7 @@ class RootTutorial extends Tutorial {
 
     /**
      * Add a child tutorial to the root.
+     *
      * @param {module:jsdoc/tutorial.Tutorial} child - Child tutorial.
      */
     _addTutorial(child) {

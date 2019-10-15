@@ -4,6 +4,13 @@ const help = require('./help');
 const ow = require('ow');
 const yargs = require('yargs-parser');
 
+/**
+ * Validates a command-line flag for the command-line interface (CLI).
+ *
+ * @param {object} flagInfo        - Contains info about the command-line flag.
+ * @param {Array.<string>} choices - A list of acceptable choices for the flag.
+ * @param {Array.<string>} values  - A list of values passed to the flag.
+ */
 function validateChoice(flagInfo, choices, values) {
     let flagNames = flagInfo.alias ? `-${flagInfo.alias}/` : '';
 
@@ -81,13 +88,13 @@ const { KNOWN_FLAGS, YARGS_FLAGS } = (() => {
 /**
  * CLI engine for JSDoc.
  *
- * @alias module:@jsdoc/core.Engine
+ * @alias module:'@jsdoc/core.Engine'
  */
 class Engine {
     /**
      * Create an instance of the CLI engine.
      *
-     * @param {Object} opts - Options for the CLI engine.
+     * @param {object} opts - Options for the CLI engine.
      * @param {string} [opts.version] - The version of JSDoc that is running.
      * @param {Date} [opts.revision] - A timestamp for the version of JSDoc that is running.
      */
@@ -108,10 +115,10 @@ class Engine {
      * line within the maximum length, but it only splits on word boundaries. If you specify a small
      * length, such as `10`, some lines will exceed that length.
      *
-     * @param {Object} [opts] - Options for formatting the help text.
+     * @param {object} [opts] - Options for formatting the help text.
      * @param {number} [opts.maxLength=Infinity] - The desired maximum length of each line in the
      * formatted text.
-     * @return {string} The formatted help text.
+     * @returns {string} The formatted help text.
      */
     help(opts = {}) {
         ow(opts, ow.object);
@@ -127,6 +134,8 @@ class Engine {
 
     /**
      * Details about the command-line flags that JSDoc recognizes.
+     *
+     * @returns {object} Recognized flags (with details!).
      */
     get knownFlags() {
         return flags;
@@ -137,8 +146,8 @@ class Engine {
      *
      * Use the instance's `flags` property to retrieve the parsed flags later.
      *
-     * @param {Array<string>} cliFlags - The command-line flags to parse.
-     * @returns {Object} The name and value for each flag. The `_` property contains all arguments
+     * @param {Array.<string>} cliFlags - The command-line flags to parse.
+     * @returns {object} The name and value for each flag. The `_` property contains all arguments
      * other than flags and their values.
      */
     parseFlags(cliFlags) {
@@ -187,6 +196,8 @@ class Engine {
 
     /**
      * A string that describes the current JSDoc version.
+     *
+     * @returns {string} JSDoc’s version string.
      */
     get versionDetails() {
         let revision = '';

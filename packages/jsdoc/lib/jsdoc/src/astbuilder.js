@@ -41,6 +41,11 @@ const parserOptions = exports.parserOptions = {
     sourceType: env.conf.source.type
 };
 
+/**
+ * @param {string} source - The source to parse (from `filename`).
+ * @param {string} filename - The filename of `source`.
+ * @returns {object} An abstract syntax tree (AST).
+ */
 function parse(source, filename) {
     let ast;
 
@@ -55,7 +60,7 @@ function parse(source, filename) {
     return ast;
 }
 
-// TODO: docs
+
 class AstBuilder {
     // TODO: docs
     /* eslint-disable no-empty-function */

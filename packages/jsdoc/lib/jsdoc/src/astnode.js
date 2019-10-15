@@ -12,8 +12,8 @@ let uid = 100000000;
  * Check whether an AST node represents a function.
  *
  * @alias module:jsdoc/src/astnode.isFunction
- * @param {(Object|string)} node - The AST node to check, or the `type` property of a node.
- * @return {boolean} Set to `true` if the node is a function or `false` in all other cases.
+ * @param {(object|string)} node - The AST node to check, or the `type` property of a node.
+ * @returns {boolean} Whether or not `node` is a function.
  */
 const isFunction = exports.isFunction = node => {
     let type;
@@ -37,8 +37,8 @@ const isFunction = exports.isFunction = node => {
  * Check whether an AST node creates a new scope.
  *
  * @alias module:jsdoc/src/astnode.isScope
- * @param {Object} node - The AST node to check.
- * @return {Boolean} Set to `true` if the node creates a new scope, or `false` in all other cases.
+ * @param {object} node - The AST node to check.
+ * @returns {boolean} Whether or not `node` creates a new scope.
  */
 exports.isScope = node => // TODO: handle blocks with "let" declarations
     Boolean(node) && typeof node === 'object' && (node.type === Syntax.CatchClause ||
@@ -335,6 +335,9 @@ exports.isAssignment = node => Boolean(node) && typeof node === 'object' &&
 // TODO: docs
 /**
  * Retrieve information about the node, including its name and type.
+ *
+ * @param {object} node - The AST node to get info from.
+ * @returns {object} The info about `node`.
  */
 exports.getInfo = node => {
     const info = {};

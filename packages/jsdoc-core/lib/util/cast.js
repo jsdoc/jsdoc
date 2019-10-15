@@ -1,7 +1,7 @@
 /**
  * Module to convert values between various JavaScript types.
  *
- * @alias module:@jsdoc/core.util.cast
+ * @alias module:'@jsdoc/core.util.cast'
  */
 
 /**
@@ -10,7 +10,7 @@
  *
  * @private
  * @param {string} str - The string to convert.
- * @return {(string|number|boolean)} The converted value.
+ * @returns {(string|number|boolean)} The converted value.
  */
 function castString(str) {
     let number;
@@ -66,8 +66,8 @@ function castString(str) {
  * converted to the appropriate types. The original object or array is not modified.
  *
  * @private
- * @param {(string|Object|Array)} item - The item whose type or types will be converted.
- * @return {*?} The converted value.
+ * @param {(string|object|Array)} item - The item whose type or types will be converted.
+ * @returns {*?} The converted value.
  */
 const cast = module.exports = item => {
     let result;

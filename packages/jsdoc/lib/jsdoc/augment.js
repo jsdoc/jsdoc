@@ -1,5 +1,6 @@
 /**
  * Provides methods for augmenting the parse results based on their content.
+ *
  * @module jsdoc/augment
  */
 
@@ -11,6 +12,13 @@ const name = require('jsdoc/name');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
+/**
+ * Maps dependencies for `propertyName` in `index`.
+ *
+ * @param {object} index - FIXME
+ * @param {string} propertyName - The name of the property to look up in `index`.
+ * @returns {object} A map of dependencies.
+ */
 function mapDependencies(index, propertyName) {
     const dependencies = {};
     let doc;
@@ -67,12 +75,26 @@ class Sorter {
     }
 }
 
+/**
+ * Sort `dependencies` using a `Sorter`.
+ *
+ * @param {*} dependencies - FIXME
+ * @returns {Array} A sorted listed of `dependencies`.
+ */
 function sort(dependencies) {
     const sorter = new Sorter(dependencies);
 
     return sorter.sort();
 }
 
+/**
+ * FIXME
+ *
+ * @param {string} longname - FIXME
+ * @param {object.index}    - FIXME
+ * @param {*} scopes        - FIXME
+ * @returns {Array} A list of members.
+ */
 function getMembers(longname, {index}, scopes) {
     const memberof = index.memberof[longname] || [];
     const members = [];
@@ -86,18 +108,40 @@ function getMembers(longname, {index}, scopes) {
     return members;
 }
 
+/**
+ * Return the documented `longname` from `{index}`.
+ *
+ * @param {string} longname - FIXME
+ * @param {object} - FIXME
+ * @returns {string} The long name.
+ */
 function getDocumentedLongname(longname, {index}) {
     const doclets = index.documented[longname] || [];
 
     return doclets[doclets.length - 1];
 }
 
+/**
+ * Add a `propName:value` to each doclet in `doclets`.
+ *
+ * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - A list of doclets to update.
+ * @param {string} propName - The property name to add to each doclet.
+ * @param {*} value         - The property value to add to each doclet.
+ * @returns {void}
+ */
 function addDocletProperty(doclets, propName, value) {
     for (let i = 0, l = doclets.length; i < l; i++) {
         doclets[i][propName] = value;
     }
 }
 
+/**
+ * FIXME
+ *
+ * @param {object} - FIXME
+ * @param {object} child - FIXME
+ * @returns {void}
+ */
 function reparentDoclet({longname}, child) {
     const parts = name.shorten(child.longname);
 
@@ -106,10 +150,22 @@ function reparentDoclet({longname}, child) {
     child.longname = name.combine(parts);
 }
 
+/**
+ * Return whether a parent is a class.
+ *
+ * @param {object} - FIXME
+ * @returns {boolean} Whether `kind` is a class.
+ */
 function parentIsClass({kind}) {
     return kind === 'class';
 }
 
+/**
+ * Update `doclet` to instance type.
+ *
+ * @param {module:jsdoc/doclet.Doclet} doclet - FIXME
+ * @returns {void}
+ */
 function staticToInstance(doclet) {
     const parts = name.shorten(doclet.longname);
 
@@ -121,20 +177,27 @@ function staticToInstance(doclet) {
 /**
  * Update the list of doclets to be added to another symbol.
  *
- * We add only one doclet per longname. For example: If `ClassA` inherits from two classes that both
+ * Only one doclet is added per longname. For example: If `ClassA` inherits from two classes that both
  * use the same method name, `ClassA` gets docs for one method rather than two.
  *
- * Also, the last symbol wins for any given longname. For example: If you write `@extends Class1
- * @extends Class2`, and both classes have an instance method called `myMethod`, you get the docs
- * from `Class2#myMethod`.
+ * Also, the last symbol wins for any given longname. For example, if you write the following:
+ *
+ * <pre><code>
+ *
+ * @augments Class1
+ * @augments Class2
+ * </code></pre>
+ *
+ * ...and both classes have an instance method called `myMethod()`, you get the docs from
+ * `Class2#myMethod`.
  *
  * @private
  * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to be added.
  * @param {Array.<module:jsdoc/doclet.Doclet>} additions - An array of doclets that will be added to
  * another symbol.
- * @param {Object.<string, number>} indexes - A dictionary of indexes into the `additions` array.
+ * @param {object.<string, number>} indexes - A dictionary of indexes into the `additions` array.
  * Each key is a longname, and each value is the index of the longname's doclet.
- * @return {void}
+ * @returns {void}
  */
 function updateAddedDoclets(doclet, additions, indexes) {
     if (typeof indexes[doclet.longname] !== 'undefined') {
@@ -153,9 +216,9 @@ function updateAddedDoclets(doclet, additions, indexes) {
  *
  * @private
  * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to be added to the index.
- * @param {Object.<string, Array.<module:jsdoc/doclet.Doclet>>} documented - The index of doclets
+ * @param {object.<string, Array.<module:jsdoc/doclet.Doclet>>} documented - The index of doclets
  * whose `undocumented` property is not `true`.
- * @return {void}
+ * @returns {void}
  */
 function updateDocumentedDoclets(doclet, documented) {
     if ( !hasOwnProp.call(documented, doclet.longname) ) {
@@ -170,9 +233,9 @@ function updateDocumentedDoclets(doclet, documented) {
  *
  * @private
  * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to be added to the index.
- * @param {Object.<string, Array.<module:jsdoc/doclet.Doclet>>} memberof - The index of doclets
+ * @param {object.<string, Array.<module:jsdoc/doclet.Doclet>>} memberof - The index of doclets
  * with a `memberof` value.
- * @return {void}
+ * @returns {void}
  */
 function updateMemberofDoclets(doclet, memberof) {
     if (doclet.memberof) {
@@ -184,6 +247,12 @@ function updateMemberofDoclets(doclet, memberof) {
     }
 }
 
+/**
+ * Returns whether any items in `doclets` inherits or overrides.
+ *
+ * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - A list of doclets to search.
+ * @returns {boolean} True if any doclet inherits or overrides.
+ */
 function explicitlyInherits(doclets) {
     let doclet;
     let inherits = false;
@@ -199,6 +268,13 @@ function explicitlyInherits(doclets) {
     return inherits;
 }
 
+/**
+ * Updates the `memberof` value for `longname`.
+ *
+ * @param {string} longname - The member’s longname.
+ * @param {*} newMemberof   - FIXME
+ * @returns {*} FIXME
+ */
 function changeMemberof(longname, newMemberof) {
     const atoms = name.shorten(longname);
 
@@ -207,7 +283,16 @@ function changeMemberof(longname, newMemberof) {
     return name.combine(atoms);
 }
 
-// TODO: try to reduce overlap with similar methods
+
+/**
+ * FIXME
+ *
+ * @todo - try to reduce overlap with similar methods
+ * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - A list of doclets.
+ * @param {*} docs - FIXME
+ * @param {object} - FIXME
+ * @returns {Array} A list of inherited additions.
+ */
 function getInheritedAdditions(doclets, docs, {documented, memberof}) {
     let additionIndexes;
     const additions = [];
@@ -317,6 +402,13 @@ function getInheritedAdditions(doclets, docs, {documented, memberof}) {
     return additions;
 }
 
+/**
+ * FIXME
+ *
+ * @param {*} mixedDoclet   - FIXME
+ * @param {*} mixedLongname - FIXME
+ * @returns {void}
+ */
 function updateMixes(mixedDoclet, mixedLongname) {
     let idx;
     let mixedName;
@@ -344,7 +436,15 @@ function updateMixes(mixedDoclet, mixedLongname) {
     }
 }
 
-// TODO: try to reduce overlap with similar methods
+/**
+ * FIXME
+ *
+ * @todo - try to reduce overlap with similar methods
+ * @param {Array.<module:jsdoc/doclet.Doclet>} mixinDoclets - FIXME
+ * @param {Array.<module:jsdoc/doclet.Doclet>} allDoclets - FIXME
+ * @param {object} - FIXME
+ * @returns {Array} A list of mixed in additions.
+ */
 function getMixedInAdditions(mixinDoclets, allDoclets, {documented, memberof}) {
     let additionIndexes;
     const additions = [];
@@ -397,6 +497,13 @@ function getMixedInAdditions(mixinDoclets, allDoclets, {documented, memberof}) {
     return additions;
 }
 
+/**
+ * FIXME
+ *
+ * @param {Array.<module:jsdoc/doclet.Doclet>} implDoclets - FIXME
+ * @param {*} implementedLongname - FIXME
+ * @returns {void}
+ */
 function updateImplements(implDoclets, implementedLongname) {
     if ( !Array.isArray(implDoclets) ) {
         implDoclets = [implDoclets];
@@ -413,7 +520,15 @@ function updateImplements(implDoclets, implementedLongname) {
     });
 }
 
-// TODO: try to reduce overlap with similar methods
+/**
+ * FIXME
+ *
+ * @todo - try to reduce overlap with similar methods
+ * @param {Array.<module:jsdoc/doclet.Doclet>} implDoclets - FIXME
+ * @param {Array.<module:jsdoc/doclet.Doclet>} allDoclets - FIXME
+ * @param {object} - FIXME
+ * @returns {Array} A list of mixed in additions.
+ */
 function getImplementedAdditions(implDoclets, allDoclets, {documented, memberof}) {
     let additionIndexes;
     const additions = [];
@@ -515,6 +630,14 @@ function getImplementedAdditions(implDoclets, allDoclets, {documented, memberof}
     return additions;
 }
 
+/**
+ * FIXME
+ *
+ * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - FIXME
+ * @param {string} propertyName - FIXME
+ * @param {*} docletFinder      - FIXME
+ * @returns {void}
+ */
 function augment(doclets, propertyName, docletFinder) {
     const index = doclets.index.longname;
     const dependencies = sort( mapDependencies(index, propertyName) );
@@ -541,8 +664,8 @@ function augment(doclets, propertyName, docletFinder) {
  * calling this method creates a new doclet for `ClassB#myMethod`.
  *
  * @param {!Array.<module:jsdoc/doclet.Doclet>} doclets - The doclets generated by JSDoc.
- * @param {!Object} doclets.index - The doclet index.
- * @return {void}
+ * @param {!object} doclets.index - The doclet index.
+ * @returns {void}
  */
 exports.addInherited = doclets => {
     augment(doclets, 'augments', getInheritedAdditions);
@@ -560,8 +683,8 @@ exports.addInherited = doclets => {
  * creates a new doclet for the instance method `ClassA#myMethod`.
  *
  * @param {!Array.<module:jsdoc/doclet.Doclet>} doclets - The doclets generated by JSDoc.
- * @param {!Object} doclets.index - The doclet index.
- * @return {void}
+ * @param {!object} doclets.index - The doclet index.
+ * @returns {void}
  */
 exports.addMixedIn = doclets => {
     augment(doclets, 'mixes', getMixedInAdditions);
@@ -580,9 +703,9 @@ exports.addMixedIn = doclets => {
  * If `ClassA#myMethod` used the `@override` or `@inheritdoc` tag, calling this method would also
  * generate a new doclet that reflects the interface's documentation for `InterfaceA#myMethod`.
  *
- * @param {!Array.<module:jsdoc/doclet.Doclet>} docs - The doclets generated by JSDoc.
- * @param {!Object} doclets.index - The doclet index.
- * @return {void}
+ * @param {!Array.<module:jsdoc/doclet.Doclet>} doclets - The doclets generated by JSDoc.
+ * @param {!object} doclets.index - The doclet index.
+ * @returns {void}
  */
 exports.addImplemented = doclets => {
     augment(doclets, 'implements', getImplementedAdditions);
@@ -597,7 +720,8 @@ exports.addImplemented = doclets => {
  *
  * Calling this method is equivalent to calling all other methods exported by this module.
  *
- * @return {void}
+ * @param {!Array.<module:jsdoc/doclet.Doclet>} doclets - The doclets to augment.
+ * @returns {void}
  */
 exports.augmentAll = doclets => {
     exports.addMixedIn(doclets);

@@ -37,6 +37,10 @@
 // lookup table of function doclets by longname
 let functionDoclets;
 
+/**
+ * @param {object} obj - FIXME
+ * @returns {boolean} Whether `obj` has unique values.
+ */
 function hasUniqueValues(obj) {
     let isUnique = true;
     const seen = [];
@@ -52,6 +56,10 @@ function hasUniqueValues(obj) {
     return isUnique;
 }
 
+/**
+ * @param {Array.<object>} params - params whose names to get.
+ * @returns {string} A single string containing comma-separated names of `params`.
+ */
 function getParamNames(params) {
     const names = [];
 
@@ -69,15 +77,26 @@ function getParamNames(params) {
     return names.length ? names.join(', ') : '';
 }
 
+/**
+ * @param {object} fixMyName - FIXME
+ * @returns {Array.<object>} FIXME
+ */
 function getParamVariation({params}) {
     return getParamNames(params || []);
 }
 
+/**
+ * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - Doclets to get unique values for.
+ * @returns {object} FIXME
+ */
 function getUniqueVariations(doclets) {
     let counter = 0;
     const variations = {};
     const docletKeys = Object.keys(doclets);
 
+    /**
+     *
+     */
     function getUniqueNumbers() {
         docletKeys.forEach(doclet => {
             let newLongname;
@@ -95,6 +114,9 @@ function getUniqueVariations(doclets) {
         });
     }
 
+    /**
+     *
+     */
     function getUniqueNames() {
         // start by trying to preserve existing variations
         docletKeys.forEach(doclet => {
@@ -125,6 +147,10 @@ function getUniqueVariations(doclets) {
     return variations;
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} newDoclet - FIXME
+ * @returns {module:jsdoc/doclet.Doclet} A doclet with a unique longname.
+ */
 function ensureUniqueLongname(newDoclet) {
     const doclets = {
         oldDoclet: functionDoclets[newDoclet.longname],

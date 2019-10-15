@@ -1,13 +1,33 @@
 const flags = require('./flags');
 
+/**
+ * Pads the start of `str` with `length` spaces.
+ *
+ * @param {string} str    - The string to pad.
+ * @param {number} length - The number of spaces to add to the start of `str`.
+ * @returns {string} The padded string.
+ */
 function padLeft(str, length) {
     return str.padStart(str.length + length);
 }
 
+/**
+ * Pads the end of `str` with `length` spaces.
+ *
+ * @param {string} str    - The string to pad.
+ * @param {number} length - The number of spaces to add to the end of `str`.
+ * @returns {string} The padded string.
+ */
 function padRight(str, length) {
     return str.padEnd(str.length + length);
 }
 
+/**
+ * Finds the highest `length` value of every object in `arr`.
+ *
+ * @param {Array} arr - The array to search.
+ * @returns {number} The highest value found from each object’s `length` property within `arr`.
+ */
 function findMaxLength(arr) {
     let max = 0;
 
@@ -18,6 +38,14 @@ function findMaxLength(arr) {
     return max;
 }
 
+/**
+ * Concatenates (in order) the values of `items`. If any value exceeds `maxLength`,
+ * concatenation stops and the result is returned.
+ *
+ * @param {Array} items      - The list of values to concatenate.
+ * @param {number} maxLength - The maximum length allowed for concatenation to continue.
+ * @returns {string} The concatenated result.
+ */
 function concatWithMaxLength(items, maxLength) {
     let result = '';
 
@@ -41,12 +69,13 @@ function concatWithMaxLength(items, maxLength) {
  * |    --bar        This description is not as long.                         |
  * ```
  *
- * @param {Object} flagInfo - Information about each known flag.
- * @param {Array<string>} flagInfo.names - An array of known flag names.
- * @param {Array<string>} flagInfo.descriptions - An array of descriptions for each known flag, in
+ * @param {object} flagInfo - Information about each known flag.
+ * @param {Array.<string>} flagInfo.names - An array of known flag names.
+ * @param {Array.<string>} flagInfo.descriptions - An array of descriptions for each known flag, in
  * the same order as `flagInfo.names`.
- * @param {Object} opts - Options for formatting the text.
+ * @param {object} opts - Options for formatting the text.
  * @param {number} opts.maxLength - The maximum length of each line.
+ * @returns {Array.<string>} The list of formatted strings.
  */
 function formatHelpInfo({names, descriptions}, {maxLength}) {
     const MARGIN_SIZE = 4;
@@ -88,10 +117,10 @@ function formatHelpInfo({names, descriptions}, {maxLength}) {
 /**
  * Get a formatted version of the help text for JSDoc.
  *
- * @alias module:@jsdoc/core/lib/engine/help
- * @param {Object} opts - Options for formatting the help text.
+ * @alias module:'@jsdoc/core/lib/engine/help'
+ * @param {object} opts - Options for formatting the help text.
  * @param {number} opts.maxLength - The maximum length of each line in the formatted text.
- * @return {string} The formatted help text.
+ * @returns {string} The formatted help text.
  * @private
  */
 module.exports = ({ maxLength }) => {

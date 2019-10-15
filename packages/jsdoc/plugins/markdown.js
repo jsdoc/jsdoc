@@ -22,6 +22,11 @@ const parse = require('jsdoc/util/markdown').getParser();
 let tags = [];
 let excludeTags = [];
 
+/**
+ * @param {object} tagName - FIXME
+ * @param {string} text - FIXME
+ * @returns {boolean} FIXME
+ */
 function shouldProcessString(tagName, text) {
     let shouldProcess = true;
 
@@ -35,9 +40,12 @@ function shouldProcessString(tagName, text) {
 
 /**
  * Process the markdown source in a doclet. The properties that should be processed are
- * configurable, but always include "author", "classdesc", "description", "exceptions", "params",
- * "properties",  "returns", and "see".  Handled properties can be bare strings, objects, or arrays
- * of objects.
+ * configurable, but always include "author", "classdesc", "description", "exceptions",
+ * "params", "properties",  "returns", and "see".
+ *
+ * Handled properties can be bare strings, objects, or arrays of objects.
+ *
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to process.
  */
 function process(doclet) {
     tags.forEach(tag => {

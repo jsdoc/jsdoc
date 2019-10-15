@@ -1,5 +1,6 @@
 /**
  * A collection of functions relating to JSDoc symbol name manipulation.
+ *
  * @module jsdoc/name
  */
 const _ = require('lodash');
@@ -21,7 +22,12 @@ const LONGNAMES = exports.LONGNAMES = {
     GLOBAL: '<global>'
 };
 
-// Module namespace prefix.
+/**
+ * Module namespace prefix.
+ *
+ * @constant
+ * @namespace
+ */
 const MODULE_NAMESPACE = 'module:';
 
 /**
@@ -63,12 +69,21 @@ const DESCRIPTION = '(?:(?:[ \\t]*\\-\\s*|\\s+)(\\S[\\s\\S]*))?$';
 const REGEXP_DESCRIPTION = new RegExp(DESCRIPTION);
 const REGEXP_NAME_DESCRIPTION = new RegExp(`^(\\[[^\\]]+\\]|\\S+)${DESCRIPTION}`);
 
+/**
+ * @param {string} name - FIXME
+ * @param {*} memberof - FIXME
+ * @returns {boolean} True if `name` is a longname defined in `memberof`.
+ */
 function nameIsLongname(name, memberof) {
     const regexp = new RegExp(`^${escape(memberof)}${SCOPE_PUNC_STRING}`);
 
     return regexp.test(name);
 }
 
+/**
+ * @param {string} name - A JSDoc symbol.
+ * @returns {string} FIXME
+ */
 function prototypeToPunc(name) {
     // don't mangle symbols named "prototype"
     if (name === 'prototype') {
@@ -78,10 +93,12 @@ function prototypeToPunc(name) {
     return name.replace(/(?:^|\.)prototype\.?/g, SCOPE.PUNC.INSTANCE);
 }
 
-// TODO: docs
 /**
+ *
+ * @todo - docs
+ *
  * @param {string} name - The symbol's longname.
- * @return {string} The symbol's basename.
+ * @returns {string} The symbol's basename.
  */
 exports.getBasename = name => {
     if (name !== undefined) {
@@ -91,10 +108,13 @@ exports.getBasename = name => {
     return undefined;
 };
 
-// TODO: deprecate exports.resolve in favor of a better name
+
 /**
- * Resolves the longname, memberof, variation and name values of the given doclet.
- * @param {module:jsdoc/doclet.Doclet} doclet
+ * Resolves the `longname`, `memberof`, `variation`, and `name` values of the given doclet.
+ *
+ * @todo Deprecate `exports.resolve` in favor of a better name.
+ *
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to resolve.
  */
 exports.resolve = doclet => {
     let about = {};
@@ -214,9 +234,10 @@ exports.resolve = doclet => {
 };
 
 /**
- * @param {string} longname The full longname of the symbol.
- * @param {string} ns The namespace to be applied.
- * @returns {string} The longname with the namespace applied.
+ * @function
+ * @param {string} longname - The full `longname` of the symbol.
+ * @param {string} ns - The `namespace` to be applied.
+ * @returns {string} The `longname` with the `namespace` applied.
  */
 exports.applyNamespace = (longname, ns) => {
     const nameParts = exports.shorten(longname);
@@ -231,15 +252,22 @@ exports.applyNamespace = (longname, ns) => {
     return longname;
 };
 
-// TODO: docs
+/**
+ * Strip namespace from `longname`.
+ *
+ * @function
+ * @param {string} longname - The longname to strip the namespace from.
+ * @returns {string} The namespace-stripped `longname`.
+ */
 exports.stripNamespace = longname => longname.replace(/^[a-zA-Z]+:/, '');
 
 /**
  * Check whether a parent longname is an ancestor of a child longname.
  *
+ * @function
  * @param {string} parent - The parent longname.
  * @param {string} child - The child longname.
- * @return {boolean} `true` if the parent is an ancestor of the child; otherwise, `false`.
+ * @returns {boolean} `true` if the parent is an ancestor of the child; otherwise, `false`.
  */
 exports.hasAncestor = (parent, child) => {
     let hasAncestor = false;
@@ -265,7 +293,14 @@ exports.hasAncestor = (parent, child) => {
     return hasAncestor;
 };
 
-// TODO: docs
+/**
+ * @todo - docs
+ *
+ * @param {string} longname - FIXME
+ * @param {Array} sliceChars - FIXME
+ * @param {string} [forcedMemberof] - FIXME
+ * @returns {object} FIXME
+ */
 function atomize(longname, sliceChars, forcedMemberof) {
     let i;
     let memberof = '';
@@ -343,17 +378,32 @@ function atomize(longname, sliceChars, forcedMemberof) {
     };
 }
 
-// TODO: deprecate exports.shorten in favor of a better name
 /**
- * Given a longname like "a.b#c(2)", slice it up into an object containing the memberof, the scope,
- * the name, and variation.
- * @param {string} longname
- * @param {string} forcedMemberof
+ * Given a longname like `"a.b#c(2)"`, slice it up into an object containing the `memberof`, the `scope`,
+ * the `name`, and `variation`.
+ *
+ * @todo Deprecate `exports.shorten` in favor of a better name.
+ *
+ * @function
+ * @param {string} longname - The longname to shorten.
+ * @param {string} forcedMemberof - FIXME
  * @returns {object} Representing the properties of the given name.
  */
 exports.shorten = (longname, forcedMemberof) => atomize(longname, SCOPE_PUNC, forcedMemberof);
 
-// TODO: docs
+
+/**
+ *
+ * @todo Docs
+ *
+ * @function
+ * @param {object} obj           - FIXME
+ * @param {string} obj.memberof  - FIXME
+ * @param {string} obj.scope     - FIXME
+ * @param {string} obj.name      - FIXME
+ * @param {string} obj.variation - FIXME
+ * @returns {string} The combined string value.
+ */
 exports.combine = ({memberof, scope, name, variation}) => [
     (memberof || ''),
     (scope || ''),
@@ -361,7 +411,13 @@ exports.combine = ({memberof, scope, name, variation}) => [
     (variation || '')
 ].join('');
 
-// TODO: docs
+/**
+ * @todo Docs
+ *
+ * @function
+ * @param {string} name - FIXME
+ * @returns {string} FIXME
+ */
 exports.stripVariation = name => {
     const parts = exports.shorten(name);
 
@@ -370,6 +426,11 @@ exports.stripVariation = name => {
     return exports.combine(parts);
 };
 
+/**
+ * @param {string} longname - FIXME - The longname to split.
+ * @param {object} options - FIXME
+ * @returns {object} FIXME
+ */
 function splitLongname(longname, options) {
     const chunks = [];
     let currentNameInfo;
@@ -403,13 +464,13 @@ function splitLongname(longname, options) {
  * Each level of the tree is an object with the following properties:
  *
  * + `longname {string}`: The longname.
- * + `memberof {string?}`: The memberof.
- * + `scope {string?}`: The longname's scope, represented as a punctuation mark (for example, `#`
+ * + `memberof {?string}`: The memberof.
+ * + `scope {?string}`: The longname's scope, represented as a punctuation mark (for example, `#`
  * for instance and `.` for static).
  * + `name {string}`: The short name.
- * + `doclet {Object?}`: The doclet associated with the longname, or `null` if the doclet was not
+ * + `doclet {?Object}`: The doclet associated with the longname, or `null` if the doclet was not
  * provided.
- * + `children {Object?}`: The children of the current longname. Not present if there are no
+ * + `children {?Object}`: The children of the current longname. Not present if there are no
  * children.
  *
  * For example, suppose you have the following array of doclet longnames:
@@ -472,11 +533,12 @@ function splitLongname(longname, options) {
  * }
  * ```
  *
- * @param {Array<string>} longnames - The longnames to convert into a tree.
- * @param {Object<string, module:jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
- * Each property should be the longname of a doclet, and each value should be the doclet for that
+ * @function
+ * @param {Array.<string>} longnames - The longnames to convert into a tree.
+ * @param {object.<string, module:jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
+ * Each property should be the `longname` of a doclet, and each value should be the doclet for that
  * longname.
- * @return {Object} A tree with information about each longname in the format shown above.
+ * @returns {object} A tree with information about each longname in the format shown above.
  */
 exports.longnamesToTree = (longnames, doclets) => {
     const splitOptions = { includeVariation: false };
@@ -521,9 +583,10 @@ exports.longnamesToTree = (longnames, doclets) => {
 /**
  * Split a string that starts with a name and ends with a description into its parts. Allows the
  * defaultvalue (if present) to contain brackets. If the name is found to have mismatched brackets,
- * null is returned.
- * @param {string} nameDesc
- * @returns {object} Hash with "name" and "description" properties.
+ * `null` is returned.
+ *
+ * @param {string} nameDesc - FIXME
+ * @returns {?object} Hash with `name` and `description` properties.
  */
 function splitNameMatchingBrackets(nameDesc) {
     const buffer = [];
@@ -565,11 +628,14 @@ function splitNameMatchingBrackets(nameDesc) {
 }
 
 
-// TODO: deprecate exports.splitName in favor of a better name
 /**
  * Split a string that starts with a name and ends with a description into its parts.
- * @param {string} nameDesc
- * @returns {object} Hash with "name" and "description" properties.
+ *
+ * @todo Deprecate `exports.splitName` in favor of a better name.
+ *
+ * @function
+ * @param {string} nameDesc - FIXME
+ * @returns {object} Hash with `name` and `description` properties.
  */
 exports.splitName = nameDesc => {
     // like: name, [name], name text, [name] text, name - text, or [name] - text

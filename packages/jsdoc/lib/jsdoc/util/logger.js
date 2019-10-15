@@ -21,7 +21,7 @@
  * + `%j`: JSON.
  *
  * @module jsdoc/util/logger
- * @extends module:events.EventEmitter
+ * @augments module:events.EventEmitter
  * @example
  * var logger = require('jsdoc/util/logger');
  *
@@ -118,7 +118,15 @@ const PREFIXES = {
     WARN: 'WARNING: '
 };
 
-// Add a prefix to a log message if necessary.
+/**
+ * Add a prefix to a log message if necessary.
+ *
+ * @param {Array.<*>} args - FIXME
+ * @param {string} prefix - FIXME
+ * @returns {Array.<*>} The prefix-updated list of `args`.
+ * (If `prefix` was falsey, or `args[0]` was not a string, then `args` is returned
+ * unmodified.)
+ */
 function addPrefix(args, prefix) {
     let updatedArgs;
 
@@ -130,7 +138,13 @@ function addPrefix(args, prefix) {
     return updatedArgs || args;
 }
 
-// TODO: document events
+/**
+ * @todo Document events.
+ *
+ * @param {string} name - FIXME
+ * @param {Function} func - The function to wrap.
+ * @returns {Function} A wrapped `func`.
+ */
 function wrapLogFunction(name, func) {
     const eventName = `logger:${name}`;
     const upperCaseName = name.toUpperCase();
@@ -152,7 +166,11 @@ function wrapLogFunction(name, func) {
     };
 }
 
-// Print a message to STDOUT without a terminating newline.
+/**
+ * Print a message to STDOUT without a terminating newline.
+ *
+ * @param {...*} args - Arguments to print.
+ */
 function printToStdout(...args) {
     process.stdout.write( util.format(...args) );
 }
@@ -162,7 +180,7 @@ function printToStdout(...args) {
  *
  * @alias module:jsdoc/util/logger.debug
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.debug = wrapLogFunction('debug', console.info);
 /**
@@ -171,7 +189,7 @@ logger.debug = wrapLogFunction('debug', console.info);
  *
  * @alias module:jsdoc/util/logger.printDebug
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.printDebug = wrapLogFunction('debug', printToStdout);
 /**
@@ -179,7 +197,7 @@ logger.printDebug = wrapLogFunction('debug', printToStdout);
  *
  * @alias module:jsdoc/util/logger.error
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.error = wrapLogFunction('error', console.error);
 /**
@@ -187,7 +205,7 @@ logger.error = wrapLogFunction('error', console.error);
  *
  * @alias module:jsdoc/util/logger.fatal
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.fatal = wrapLogFunction('fatal', console.error);
 /**
@@ -195,7 +213,7 @@ logger.fatal = wrapLogFunction('fatal', console.error);
  *
  * @alias module:jsdoc/util/logger.info
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.info = wrapLogFunction('info', console.info);
 /**
@@ -204,7 +222,7 @@ logger.info = wrapLogFunction('info', console.info);
  *
  * @alias module:jsdoc/util/logger.printInfo
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.printInfo = wrapLogFunction('info', printToStdout);
 /**
@@ -212,7 +230,7 @@ logger.printInfo = wrapLogFunction('info', printToStdout);
  *
  * @alias module:jsdoc/util/logger.verbose
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.verbose = wrapLogFunction('verbose', console.info);
 /**
@@ -221,7 +239,7 @@ logger.verbose = wrapLogFunction('verbose', console.info);
  *
  * @alias module:jsdoc/util/logger.printVerbose
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.printVerbose = wrapLogFunction('verbose', printToStdout);
 /**
@@ -229,7 +247,7 @@ logger.printVerbose = wrapLogFunction('verbose', printToStdout);
  *
  * @alias module:jsdoc/util/logger.warn
  * @param {string} message - The message to log.
- * @param {...*=} values - The values that will replace the message's placeholders.
+ * @param {...*} [values] - The values that will replace the message's placeholders.
  */
 logger.warn = wrapLogFunction('warn', console.warn);
 
@@ -247,7 +265,7 @@ logger.setLevel = function(level) {
  * Get the current log level.
  *
  * @alias module:jsdoc/util/logger.getLevel
- * @return {module:jsdoc/util/logger.LEVELS} The current log level.
+ * @returns {module:jsdoc/util/logger.LEVELS} The current log level.
  */
 logger.getLevel = function() {
     return logLevel;

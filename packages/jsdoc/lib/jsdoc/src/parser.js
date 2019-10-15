@@ -12,12 +12,19 @@ const { Syntax } = require('jsdoc/src/syntax');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
-// TODO: docs
+/**
+ * @todo Docs
+ */
 const PARSERS = exports.PARSERS = {
     js: 'jsdoc/src/parser'
 };
 /* eslint-disable no-script-url */
-// Prefix for JavaScript strings that were provided in lieu of a filename.
+
+/**
+ * Prefix for JavaScript strings that were provided in lieu of a filename.
+ *
+ * @constant
+ */
 const SCHEMA = 'javascript:';
 /* eslint-enable no-script-url */
 
@@ -44,7 +51,13 @@ class DocletCache {
     }
 }
 
-// TODO: docs
+/**
+ * Create a parser from `type`.
+ *
+ * @function
+ * @param {*} type - FIXME
+ * @returns {module:jsdoc/src/parser.Parser} The newly created parser.
+ */
 exports.createParser = type => {
     let modulePath;
 
@@ -65,7 +78,11 @@ exports.createParser = type => {
     return new (require(modulePath).Parser)();
 };
 
-// TODO: docs
+/**
+ * @todo Docs
+ * @param {string} code - Code to pretreat.
+ * @returns {string} The pretreated code.
+ */
 function pretreat(code) {
     return code
         // comment out hashbang at the top of the file, like: #!/usr/bin/env node
@@ -77,19 +94,32 @@ function pretreat(code) {
         .replace(/\*\/\/\*\*+/g, '@also');
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ *
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to test for being in scope.
+ * @param {string} basename - FIXME
+ * @returns {boolean} Is `doclet` defined in scope?
+ */
 function definedInScope(doclet, basename) {
     return Boolean(doclet) && Boolean(doclet.meta) && Boolean(doclet.meta.vars) &&
         Boolean(basename) && hasOwnProp.call(doclet.meta.vars, basename);
 }
 
-// TODO: docs
 /**
+ * @todo Docs
+ *
  * @alias module:jsdoc/src/parser.Parser
- * @extends module:events.EventEmitter
+ * @augments module:events.EventEmitter
  */
 class Parser extends EventEmitter {
-    // TODO: docs
+    /**
+     * @todo Docs
+     *
+     * @param {object} builderInstance - FIXME
+     * @param {object} visitorInstance - FIXME
+     * @param {object} walkerInstance  - FIXME
+     */
     constructor(builderInstance, visitorInstance, walkerInstance) {
         super();
 
@@ -120,7 +150,7 @@ class Parser extends EventEmitter {
         });
     }
 
-    // TODO: docs
+    /** @todo Docs */
     clear() {
         this._resultBuffer = [];
         this._resultBuffer.index = {
@@ -136,11 +166,14 @@ class Parser extends EventEmitter {
         });
     }
 
-    // TODO: update docs
     /**
      * Parse the given source files for JSDoc comments.
-     * @param {Array.<string>} sourceFiles An array of filepaths to the JavaScript sources.
-     * @param {string} [encoding]
+     *
+     * @todo Update docs
+     *
+     * @param {Array.<string>} sourceFiles - An array of filepaths to the JavaScript sources.
+     * @param {string} [encoding] - FIXME
+     * @returns {*} The current Parser’s pseudo-private `_resultBuffer`.
      *
      * @fires module:jsdoc/src/parser.Parser.parseBegin
      * @fires module:jsdoc/src/parser.Parser.fileBegin
@@ -151,8 +184,8 @@ class Parser extends EventEmitter {
      * @fires module:jsdoc/src/parser.Parser.parseComplete
      *
      * @example <caption>Parse two source files.</caption>
-     * var myFiles = ['file1.js', 'file2.js'];
-     * var docs = jsdocParser.parse(myFiles);
+     *      let myFiles = ['file1.js', 'file2.js'];
+     *      let docs = jsdocParser.parse(myFiles);
      */
     parse(sourceFiles, encoding) {
         encoding = encoding || conf.encoding || 'utf8';
@@ -205,19 +238,27 @@ class Parser extends EventEmitter {
         return this._resultBuffer;
     }
 
-    // TODO: docs
+    /**
+     * @todo Docs
+     *
+     * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - Doclets to fire with
+     * `processingComplete` event.
+     */
     fireProcessingComplete(doclets) {
         this.emit('processingComplete', { doclets: doclets });
     }
 
-    // TODO: docs
+    /**
+     * @returns {object} This parser’s `_resultBuffer`.
+     */
     results() {
         return this._resultBuffer;
     }
 
-    // TODO: update docs
     /**
-     * @param {module:jsdoc/doclet.Doclet} doclet The parse result to add to the result buffer.
+     * @todo Update docs
+     *
+     * @param {module:jsdoc/doclet.Doclet} doclet - The parse result to add to the result buffer.
      */
     addResult(doclet) {
         const index = this._resultBuffer.index;
@@ -252,17 +293,25 @@ class Parser extends EventEmitter {
         }
     }
 
-    // TODO: docs
+    /**
+     * @param {*} visitor - FIXME
+     */
     addAstNodeVisitor(visitor) {
         this._visitor.addAstNodeVisitor(visitor);
     }
 
-    // TODO: docs
+    /**
+     * @returns {*} FIXME
+     */
     getAstNodeVisitors() {
         return this._visitor.getAstNodeVisitors();
     }
 
-    /** @private */
+    /**
+     * @private
+     * @param {string} sourceCode - FIXME
+     * @param {string} sourceName - FIXME
+     */
     _parseSourceCode(sourceCode, sourceName) {
         let ast;
         let e = {
@@ -292,12 +341,21 @@ class Parser extends EventEmitter {
         this.emit('fileComplete', e);
     }
 
-    /** @private */
+    /**
+     * Recursively walk `ast` with `visitor` (and `sourceName`).
+     *
+     * @private
+     * @param {*} ast - FIXME
+     * @param {*} visitor - FIXME
+     * @param {*} sourceName - FIXME
+     */
     _walkAst(ast, visitor, sourceName) {
         this._walker.recurse(ast, visitor, sourceName);
     }
 
-    // TODO: docs
+    /**
+     * @param {*} e - FIXME
+     */
     addDocletRef(e) {
         let fakeDoclet;
         let node;
@@ -326,7 +384,10 @@ class Parser extends EventEmitter {
         }
     }
 
-    // TODO: docs
+    /**
+     * @param {*} id - FIXME
+     * @returns {module:jsdoc/doclet.Doclet} The doclet with `id`.
+     */
     _getDocletById(id) {
         return this._byNodeId.get(id);
     }
@@ -335,16 +396,18 @@ class Parser extends EventEmitter {
      * Retrieve the most recently seen doclet that has the given longname.
      *
      * @param {string} longname - The longname to search for.
-     * @return {module:jsdoc/doclet.Doclet?} The most recent doclet for the longname.
+     * @returns {?module:jsdoc/doclet.Doclet} The most recent doclet for the longname.
      */
     _getDocletByLongname(longname) {
         return this._byLongname.get(longname);
     }
 
-    // TODO: docs
     /**
      * Given a node, determine what the node is a member of.
-     * @param {node} node
+     *
+     * @todo Docs
+     *
+     * @param {object} node - FIXME
      * @returns {string} The long name of the node that this is a member of.
      */
     astnodeToMemberof(node) {
@@ -441,15 +504,20 @@ class Parser extends EventEmitter {
     /**
      * Get the doclet for the lowest-level class, if any, that is in the scope chain for a given node.
      *
-     * @param {Object} node - The node whose scope chain will be searched.
-     * @return {module:jsdoc/doclet.Doclet?} The doclet for the lowest-level class in the node's scope
-     * chain.
+     * @param {object} node - The node whose scope chain will be searched.
+     * @param {object} node.enclosingScope - The scope used during the search.
+     * @returns {?module:jsdoc/doclet.Doclet} The doclet for the lowest-level class in the
+     * node's scope chain.
      */
     _getParentClass({enclosingScope}) {
         let doclet;
         let nameAtoms;
         let scope = enclosingScope;
 
+        /**
+         * @param {object} d - FIXME
+         * @returns {boolean} Is `d` a class?
+         */
         function isClass(d) {
             return d && d.kind === 'class';
         }
@@ -482,11 +550,11 @@ class Parser extends EventEmitter {
         return (isClass(doclet) ? doclet : null);
     }
 
-    // TODO: docs
     /**
-     * Resolve what "this" refers to relative to a node.
-     * @param {node} node - The "this" node
-     * @returns {string} The longname of the enclosing node.
+     * Resolve what `this` refers to relative to a `node`.
+     *
+     * @param {object} node - The `this` node.
+     * @returns {string} The `longname` of the enclosing node.
      */
     resolveThis(node) {
         let doclet;
@@ -564,8 +632,8 @@ class Parser extends EventEmitter {
      * If the object is part of a chained assignment (for example, `var foo = exports.FOO = { x: 1 }`,
      * this method returns multiple doclets (in this case, the doclets for `foo` and `exports.FOO`).
      *
-     * @param {Object} node - An AST node representing an object property.
-     * @return {Array.<module:jsdoc/doclet.Doclet>} An array of doclets for the parent object or objects, or
+     * @param {object} node - An AST node representing an object property.
+     * @returns {Array.<module:jsdoc/doclet.Doclet>} An array of doclets for the parent object or objects, or
      * an empty array if no doclets are found.
      */
     resolvePropertyParents({parent}) {
@@ -595,11 +663,15 @@ class Parser extends EventEmitter {
         return doclets;
     }
 
-    // TODO: docs
     /**
-     * Resolve what function a var is limited to.
-     * @param {astnode} node
-     * @param {string} basename The leftmost name in the long name: in foo.bar.zip the basename is foo.
+     * Resolve which function a `var` is limited to.
+     *
+     * @todo Docs
+     *
+     * @param {object} node - FIXME
+     * @param {string} basename - The leftmost name in the long name. For example, in
+     * `foo.bar.zip`, the basename is `foo`.
+     * @returns {string} The resolved result.
      */
     resolveVar({enclosingScope, type}, basename) {
         let doclet;
@@ -627,7 +699,9 @@ class Parser extends EventEmitter {
         return result;
     }
 
-    // TODO: docs
+    /**
+     * @param {object} e - FIXME
+     */
     resolveEnum(e) {
         const doclets = this.resolvePropertyParents(e.code.node.parent);
 
@@ -652,14 +726,17 @@ class Parser extends EventEmitter {
 }
 exports.Parser = Parser;
 
-// TODO: document other events
+
 /**
  * Fired once for each JSDoc comment in the current source code.
+ *
+ * @todo Document other events.
+ *
  * @event jsdocCommentFound
  * @memberof module:jsdoc/src/parser.Parser
- * @type {Object}
- * @property {string} comment The text content of the JSDoc comment
- * @property {number} lineno The line number associated with the found comment.
- * @property {number} columnno The column number associated with the found comment.
- * @property {string} filename The file name associated with the found comment.
+ * @type {object}
+ * @property {string} comment   - The text content of the JSDoc comment
+ * @property {number} lineno    - The line number associated with the found comment.
+ * @property {number} columnno  - The column number associated with the found comment.
+ * @property {string} filename  - The file name associated with the found comment.
  */

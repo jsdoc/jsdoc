@@ -1,5 +1,5 @@
 /**
- * @module jsdoc/doclet
+ * @module module:jsdoc/doclet
  */
 const _ = require('lodash');
 let dictionary = require('jsdoc/tag/dictionary');
@@ -9,6 +9,14 @@ const path = require('jsdoc/path');
 const { Syntax } = require('jsdoc/src/syntax');
 const { Tag } = require('jsdoc/tag');
 
+/**
+ * Updates `doclet` with the key-value pair of `title`:`value`.
+ *
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to update.
+ * @param {object} tag - The tag with the property name and value to add to `doclet`.
+ * @param {string} tag.title - The property name to add to `doclet`.
+ * @param {*}      tag.value - The property value to add to `doclet`.
+ */
 function applyTag(doclet, {title, value}) {
     if (title === 'name') {
         doclet.name = value;
@@ -23,6 +31,12 @@ function applyTag(doclet, {title, value}) {
     }
 }
 
+/**
+ * Returns fake metadata for `node`.
+ *
+ * @param {object} node - FIXME
+ * @returns {object} FIXME
+ */
 function fakeMeta(node) {
     return {
         type: node ? node.type : null,
@@ -31,7 +45,14 @@ function fakeMeta(node) {
 }
 
 // use the meta info about the source code to guess what the doclet kind should be
-// TODO: set this elsewhere (maybe jsdoc/src/astnode.getInfo)
+/**
+ * Gets a string representing the “kind” value of `code`.
+ *
+ * @todo - set this elsewhere (maybe jsdoc/src/astnode.getInfo)
+ *
+ * @param {*} code - FIXME
+ * @returns {string} The `kind` value of `code`.
+ */
 function codeToKind(code) {
     let kind = 'member';
     const node = code.node;
@@ -69,6 +90,12 @@ function codeToKind(code) {
     return kind;
 }
 
+/**
+ * FIXME
+ *
+ * @param {string} docletSrc - The raw source code of the JSDoc comment.
+ * @returns {string} The unwrapped source code of `docletSrc`.
+ */
 function unwrap(docletSrc) {
     if (!docletSrc) { return ''; }
 
@@ -91,7 +118,10 @@ function unwrap(docletSrc) {
 
 /**
  * Convert the raw source of the doclet comment into an array of pseudo-Tag objects.
+ *
  * @private
+ * @param {string} docletSrc - The raw source code of the JSDoc comment.
+ * @returns {Array.<object.<string, string>>} An array of pseudo-Tag objects.
  */
 function toTags(docletSrc) {
     let parsedTag;
@@ -127,6 +157,14 @@ function toTags(docletSrc) {
     return tagData;
 }
 
+/**
+ * FIXME
+ *
+ * @param {string} docletSrc - The raw source code of the JSDoc comment.
+ * @param {object} fixMyName - FIXME
+ * @param {object} fixMyName.code - FIXME
+ * @returns {string} FIXME
+ */
 function fixDescription(docletSrc, {code}) {
     let isClass;
 
@@ -155,6 +193,12 @@ exports._replaceDictionary = function _replaceDictionary(dict) {
     require('jsdoc/util/templateHelper')._replaceDictionary(dict);
 };
 
+/**
+ * FIXME
+ *
+ * @param {string} longname - FIXME
+ * @returns {string} FIXME
+ */
 function removeGlobal(longname) {
     const globalRegexp = new RegExp(`^${name.LONGNAMES.GLOBAL}\\.?`);
 
@@ -165,8 +209,8 @@ function removeGlobal(longname) {
  * Get the full path to the source file that is associated with a doclet.
  *
  * @private
- * @param {module:jsdoc/doclet.Doclet} The doclet to check for a filepath.
- * @return {string} The path to the doclet's source file, or an empty string if the path is not
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to check for a filepath.
+ * @returns {string} The path to the doclet's source file, or an empty string if the path is not
  * available.
  */
 function getFilepath(doclet) {
@@ -177,6 +221,14 @@ function getFilepath(doclet) {
     return path.join(doclet.meta.path || '', doclet.meta.filename);
 }
 
+/**
+ * Clone each property in `properties` from `source` to `target`.
+ *
+ * @param {object} source - The source to clone properties from.
+ * @param {object} target - The target to clone properties to.
+ * @param {*} properties - FIXME
+ * @returns {void}
+ */
 function clone(source, target, properties) {
     properties.forEach(property => {
         switch (typeof source[property]) {
@@ -196,8 +248,8 @@ function clone(source, target, properties) {
 }
 
 /**
- * Copy all but a list of excluded properties from one of two doclets onto a target doclet. Prefers
- * the primary doclet over the secondary doclet.
+ * Copy all but a list of excluded properties from one of two doclets onto a target doclet.
+ * Prefers the primary doclet over the secondary doclet.
  *
  * @private
  * @param {module:jsdoc/doclet.Doclet} primary - The primary doclet.
@@ -216,8 +268,8 @@ function copyMostProperties(primary, secondary, target, exclude) {
 
 /**
  * Copy specific properties from one of two doclets onto a target doclet, as long as the property
- * has a non-falsy value and a length greater than 0. Prefers the primary doclet over the secondary
- * doclet.
+ * has a non-falsy value and a `length` greater than `0`.
+ * Prefers the primary doclet over the secondary doclet.
  *
  * @private
  * @param {module:jsdoc/doclet.Doclet} primary - The primary doclet.
@@ -247,8 +299,8 @@ class Doclet {
     /**
      * Create a doclet.
      *
-     * @param {string} docletSrc - The raw source code of the jsdoc comment.
-     * @param {object=} meta - Properties describing the code related to this comment.
+     * @param {string} docletSrc - The raw source code of the JSDoc comment.
+     * @param {object} [meta={}] - Properties describing the code related to this comment.
      */
     constructor(docletSrc, meta = {}) {
         let newTags = [];
@@ -332,6 +384,7 @@ class Doclet {
     setMemberof(sid) {
         /**
          * The longname of the symbol that contains this one, if any.
+         *
          * @type {string}
          */
         this.memberof = removeGlobal(sid)
@@ -346,6 +399,7 @@ class Doclet {
     setLongname(longname) {
         /**
          * The fully resolved symbol name.
+         *
          * @type {string}
          */
         this.longname = removeGlobal(longname);
@@ -398,6 +452,7 @@ class Doclet {
         if (!this.borrowed) {
             /**
              * A list of symbols that are borrowed by this one, if any.
+             *
              * @type {Array.<string>}
              */
             this.borrowed = [];
@@ -408,7 +463,8 @@ class Doclet {
     mix(source) {
         /**
          * A list of symbols that are mixed into this one, if any.
-         * @type Array.<string>
+         *
+         * @type {Array.<string>}
          */
         this.mixes = this.mixes || [];
         this.mixes.push(source);
@@ -417,12 +473,13 @@ class Doclet {
     /**
      * Add a symbol to the doclet's `augments` array.
      *
-     * @param {string} base - The longname of the base symbol.
+     * @param {string} base - The `longname` of the base symbol.
      */
     augment(base) {
         /**
          * A list of symbols that are augmented by this one, if any.
-         * @type Array.<string>
+         *
+         * @type {Array.<string>}
          */
         this.augments = this.augments || [];
         this.augments.push(base);
@@ -431,13 +488,14 @@ class Doclet {
     /**
      * Set the `meta` property of this doclet.
      *
-     * @param {object} meta
+     * @param {object} meta - FIXME
      */
     setMeta(meta) {
         let pathname;
 
         /**
          * Information about the source code associated with this doclet.
+         *
          * @namespace
          */
         this.meta = this.meta || {};
@@ -445,7 +503,8 @@ class Doclet {
         if (meta.range) {
             /**
              * The positions of the first and last characters of the code associated with this doclet.
-             * @type Array.<number>
+             *
+             * @type {Array.<number>}
              */
             this.meta.range = meta.range.slice(0);
         }
@@ -453,17 +512,20 @@ class Doclet {
         if (meta.lineno) {
             /**
              * The name of the file containing the code associated with this doclet.
-             * @type string
+             *
+             * @type {string}
              */
             this.meta.filename = path.basename(meta.filename);
             /**
              * The line number of the code associated with this doclet.
-             * @type number
+             *
+             * @type {number}
              */
             this.meta.lineno = meta.lineno;
             /**
              * The column number of the code associated with this doclet.
-             * @type number
+             *
+             * @type {number}
              */
             this.meta.columnno = meta.columnno;
 
@@ -475,6 +537,7 @@ class Doclet {
 
         /**
          * Information about the code symbol.
+         *
          * @namespace
          */
         this.meta.code = this.meta.code || {};
@@ -483,6 +546,7 @@ class Doclet {
             if (meta.code.name) {
                 /**
                  * The name of the symbol in the source code.
+                 *
                  * @type {string}
                  */
                 this.meta.code.name = meta.code.name;
@@ -490,6 +554,7 @@ class Doclet {
             if (meta.code.type) {
                 /**
                  * The type of the symbol in the source code.
+                 *
                  * @type {string}
                  */
                 this.meta.code.type = meta.code.type;
@@ -506,6 +571,7 @@ class Doclet {
             if (typeof meta.code.value !== 'undefined') {
                 /**
                  * The value of the symbol in the source code.
+                 *
                  * @type {*}
                  */
                 this.meta.code.value = meta.code.value;

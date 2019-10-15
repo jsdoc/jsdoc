@@ -29,8 +29,8 @@ if (conf.exclude) {
 /**
  * Replace AST node objects in events with a placeholder.
  *
- * @param {Object} o - An object whose properties may contain AST node objects.
- * @return {Object} The modified object.
+ * @param {object} o - An object whose properties may contain AST node objects.
+ * @returns {object} The modified object.
  */
 function replaceNodeObjects(o) {
     const OBJECT_PLACEHOLDER = '<Object>';
@@ -58,7 +58,7 @@ function replaceNodeObjects(o) {
  * Get rid of unwanted crud in an event object.
  *
  * @param {object} e The event object.
- * @return {object} The fixed-up object.
+ * @returns {object} The fixed-up object.
  */
 function cleanse(e) {
     let result = {};

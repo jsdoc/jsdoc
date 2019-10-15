@@ -4,7 +4,7 @@
 /**
  * Information about an inline tag that was found within a string.
  *
- * @typedef {Object} InlineTagInfo
+ * @typedef {object} InlineTagInfo
  * @memberof module:jsdoc/tag/inline
  * @property {?string} completeTag - The entire inline tag, including its enclosing braces.
  * @property {?string} tag - The tag whose text was found.
@@ -14,7 +14,7 @@
 /**
  * Information about the results of replacing inline tags within a string.
  *
- * @typedef {Object} InlineTagResult
+ * @typedef {object} InlineTagResult
  * @memberof module:jsdoc/tag/inline
  * @property {Array.<module:jsdoc/tag/inline.InlineTagInfo>} tags - The inline tags that were found.
  * @property {string} newString - The updated text string after extracting or replacing the inline
@@ -28,7 +28,7 @@
  * @memberof module:jsdoc/tag/inline
  * @param {string} string - The complete string containing the inline tag.
  * @param {module:jsdoc/tag/inline.InlineTagInfo} tagInfo - Information about the inline tag.
- * @return {string} An updated version of the complete string.
+ * @returns {string} An updated version of the complete string.
  */
 
 /**
@@ -62,15 +62,22 @@ exports.isInlineTag = (string, tagName) => regExpFactory(tagName, '^', '$').test
  * Replace all instances of multiple inline tags with other text.
  *
  * @param {string} string - The string in which to replace the inline tags.
- * @param {Object} replacers - The functions that are used to replace text in the string. The keys
+ * @param {object} replacers - The functions that are used to replace text in the string. The keys
  * must contain tag names (for example, `link`), and the values must contain functions with the
  * type {@link module:jsdoc/tag/inline.InlineTagReplacer}.
- * @return {module:jsdoc/tag/inline.InlineTagResult} The updated string, as well as information
+ * @returns {module:jsdoc/tag/inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
 exports.replaceInlineTags = (string, replacers) => {
     const tagInfo = [];
 
+    /**
+     * @param {object} replacer - FIXME
+     * @param {object} tag - FIXME
+     * @param {object} match - FIXME
+     * @param {string} text - FIXME
+     * @returns {object} FIXME
+     */
     function replaceMatch(replacer, tag, match, text) {
         const matchedTag = {
             completeTag: match,
@@ -113,7 +120,7 @@ exports.replaceInlineTags = (string, replacers) => {
  * @param {string} tag - The name of the inline tag to replace.
  * @param {module:jsdoc/tag/inline.InlineTagReplacer} replacer - The function that is used to
  * replace text in the string.
- * @return {module:jsdoc/tag/inline.InlineTagResult} The updated string, as well as information
+ * @returns {module:jsdoc/tag/inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
 exports.replaceInlineTag = (string, tag, replacer) => {
@@ -129,7 +136,7 @@ exports.replaceInlineTag = (string, tag, replacer) => {
  *
  * @param {string} string - The string from which to extract text.
  * @param {?string} tag - The inline tag to extract.
- * @return {module:jsdoc/tag/inline.InlineTagResult} The updated string, as well as information
+ * @returns {module:jsdoc/tag/inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
 exports.extractInlineTag = (string, tag) => exports.replaceInlineTag(string, tag, (str, {completeTag}) => str.replace(completeTag, ''));

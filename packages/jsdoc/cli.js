@@ -86,11 +86,17 @@ module.exports = (() => {
 
     // TODO: docs
     cli.configureLogger = () => {
-        function recoverableError() {
+        /**
+         *
+         */
+function recoverableError() {
             props.shouldExitWithError = true;
         }
 
-        function fatalError() {
+        /**
+         *
+         */
+function fatalError() {
             cli.exit(1);
         }
 
@@ -214,6 +220,14 @@ module.exports = (() => {
         }
     };
 
+    /**
+     * Reads the `package.json` at `filepath`, ignoring comments.
+     * (This deviates from the strict definition of JSON, which forbids comments.)
+     *
+     * @param {string} filepath - The path to the JSON file.
+     * @returns {(string|null)} The contents of the the parsed file (or `null`, if the file
+     * could not be read).
+     */
     function readPackageJson(filepath) {
         const fs = require('jsdoc/fs');
 
@@ -227,6 +241,11 @@ module.exports = (() => {
         }
     }
 
+    /**
+     * @todo Add a description!
+     *
+     * @returns {Array} The list of source files.
+     */
     function buildSourceList() {
         const Readme = require('jsdoc/readme');
 
@@ -291,6 +310,12 @@ module.exports = (() => {
         return cli;
     };
 
+    /**
+     * Resolves `paths` for JSDoc plugins.
+     *
+     * @param {Array.<string>} paths - A list of paths to plugins.
+     * @returns {Array.<string>} The resolved paths.
+     */
     function resolvePluginPaths(paths) {
         const path = require('jsdoc/path');
 

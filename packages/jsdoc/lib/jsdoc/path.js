@@ -1,11 +1,19 @@
 /**
  * Extended version of the standard `path` module.
+ *
  * @module jsdoc/path
  */
 const env = require('jsdoc/env');
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * @todo Add description.
+ *
+ * @param {string} previousPath - The previous path.
+ * @param {string} current - The current path.
+ * @returns {string} FIXME
+ */
 function prefixReducer(previousPath, current) {
     let currentPath = [];
 
@@ -47,7 +55,7 @@ function prefixReducer(previousPath, current) {
  * and an empty string is returned.
  *
  * @param {Array.<string>} paths - The paths to search for a common prefix.
- * @return {string} The common prefix, or an empty string if there is no common prefix.
+ * @returns {string} The common prefix, or an empty string if there is no common prefix.
  */
 exports.commonPrefix = (paths = []) => {
     let prefix = '';
@@ -99,13 +107,17 @@ exports.commonPrefix = (paths = []) => {
  * @param {string} filepath - The path to the requested resource. May be an absolute path; a path
  * relative to the JSDoc directory; or a path relative to the current working directory.
  * @param {string} [filename] - The filename of the requested resource.
- * @return {string} The fully qualified path to the requested resource. Includes the filename if one
+ * @returns {string} The fully qualified path to the requested resource. Includes the filename if one
  * was provided.
  */
 exports.getResourcePath = (filepath, filename) => {
     let result = null;
     const searchDirs = [env.pwd, path.dirname(env.opts.configure || ''), env.dirname];
 
+    /**
+     * @param {string} p - Path to check for existence.
+     * @returns {boolean} Whether the path exists.
+     */
     function exists(p) {
         try {
             fs.statSync(p);
@@ -117,6 +129,10 @@ exports.getResourcePath = (filepath, filename) => {
         }
     }
 
+    /**
+     * @param {string} p - Path to resolve.
+     * @returns {?string} The resolved path, or `null` if it could not be resolved.
+     */
     function resolve(p) {
         try {
             return require.resolve(p);
@@ -126,6 +142,10 @@ exports.getResourcePath = (filepath, filename) => {
         }
     }
 
+    /**
+     * @param {string} p - Path to check for existence.
+     * @returns {boolean} Whether `p` exists and can be resolved and `require()` -ed.
+     */
     function find(p) {
         // does the requested path exist?
         if ( exists(p) ) {

@@ -5,7 +5,7 @@ const querystring = require('querystring');
 /**
  * Command-line flags recognized by JSDoc.
  *
- * @alias module:@jsdoc/core/lib/engine/flags
+ * @alias module:'@jsdoc/core/lib/engine/flags'
  */
 module.exports = {
     access: {

@@ -9,7 +9,7 @@ const logger = require('jsdoc/util/logger');
 const path = require('jsdoc/path');
 
 /**
- * @extends module:events.EventEmitter
+ * @augments module:events.EventEmitter
  */
 class Scanner extends EventEmitter {
     constructor() {
@@ -17,10 +17,17 @@ class Scanner extends EventEmitter {
     }
 
     /**
-     * Recursively searches the given searchPaths for js files.
-     * @param {Array.<string>} searchPaths
-     * @param {number} [depth]
+     * Recursively search `searchPaths` for files.
+     *
+     * @todo Default parameters should be last. (Fix `filter`.)
+     *
+     * @param {Array.<string>} [searchPaths=[]] - The paths to search.
+     * @param {number} [depth=1] - Depth to search.
+     * @param {module:jsdoc/src/filter.Filter} filter - The filter which determines which file(s) to return.
+     *
      * @fires sourceFileFound
+     *
+     * @returns {Array.<string>} Filepaths found during the search.
      */
     scan(searchPaths = [], depth = 1, filter) {
         let currentFile;

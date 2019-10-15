@@ -7,12 +7,24 @@ const astnode = require('jsdoc/src/astnode');
 const logger = require('jsdoc/util/logger');
 const { Syntax } = require('jsdoc/src/syntax');
 
-// TODO: docs
+
+/**
+ * @todo Docs
+ *
+ * @param {Array} scopes - A list of scopes.
+ * @returns {?object} The current scope (or `null`, if no scopes remain.)
+ */
 function getCurrentScope(scopes) {
     return scopes[scopes.length - 1] || null;
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ *
+ * @param {object} source - FIXME
+ * @param {object} target - FIXME
+ * @param {number} [count] - FIXME
+ */
 function moveLeadingComments(source, target, count) {
     if (source.leadingComments) {
         if (count === undefined) {
@@ -24,7 +36,13 @@ function moveLeadingComments(source, target, count) {
     }
 }
 
-// TODO: docs
+/**
+ * @todo Docs
+ *
+ * @param {object} source - FIXME
+ * @param {object} target - FIXME
+ * @param {number} [count] - FIXME
+ */
 function moveTrailingComments(source, target, count) {
     if (source.trailingComments) {
         if (count === undefined) {
@@ -39,10 +57,18 @@ function moveTrailingComments(source, target, count) {
 }
 
 /* eslint-disable no-empty-function, no-unused-vars */
+/**
+ * @param {object} node - FIXME
+ * @param {object} parent - FIXME
+ * @param {object} state - FIXME
+ * @param {Function} cb - A callback function.
+ */
 function leafNode(node, parent, state, cb) {}
 /* eslint-enable no-empty-function, no-unused-vars */
 
-// TODO: docs
+/**
+ * @todo Docs
+ */
 const walkers = exports.walkers = {};
 
 walkers[Syntax.ArrayExpression] = (node, parent, state, cb) => {
@@ -53,7 +79,13 @@ walkers[Syntax.ArrayExpression] = (node, parent, state, cb) => {
     }
 };
 
-// TODO: verify correctness
+/**
+ * @todo Verify correctness.
+ * @param {object} node - FIXME
+ * @param {object} parent -  FIXME
+ * @param {object} state -  FIXME
+ * @param {Function} cb - A callback function.
+ */
 walkers[Syntax.ArrayPattern] = (node, parent, state, cb) => {
     for (let element of node.elements) {
         // must be an identifier or an expression
@@ -149,10 +181,19 @@ walkers[Syntax.ClassExpression] = walkers[Syntax.ClassDeclaration];
 
 // walkers[Syntax.ClassProperty] is defined later
 
-// TODO: verify correctness
+/**
+ * @todo Verify correctness.
+ */
 walkers[Syntax.ComprehensionBlock] = walkers[Syntax.AssignmentExpression];
 
-// TODO: verify correctness
+/**
+ * @todo Verify correctness.
+ *
+ * @param {object} node - FIXME
+ * @param {object} parent -  FIXME
+ * @param {object} state -  FIXME
+ * @param {Function} cb - A callback function.
+ */
 walkers[Syntax.ComprehensionExpression] = (node, parent, state, cb) => {
     cb(node.body, node, state);
 
@@ -379,7 +420,14 @@ walkers[Syntax.LabeledStatement] = (node, parent, state, cb) => {
     cb(node.body, node, state);
 };
 
-// TODO: add scope info??
+/**
+ * @todo Add scope info??
+ *
+ * @param {object} node - FIXME
+ * @param {object} parent -  FIXME
+ * @param {object} state -  FIXME
+ * @param {Function} cb - A callback function.
+ */
 walkers[Syntax.LetStatement] = (node, parent, state, cb) => {
     for (let headItem of node.head) {
         cb(headItem.id, node, state);
@@ -645,11 +693,19 @@ class Walker {
             scopes: []
         };
 
+        /**
+         *
+         */
         function logUnknownNodeType({type}) {
             logger.debug('Found a node with unrecognized type %s. Ignoring the node and its ' +
                 'descendants.', type);
         }
 
+        /**
+         * @param {object} node - FIXME
+         * @param {object} parent -  FIXME
+         * @param {object} cbState - FIXME
+         */
         function cb(node, parent, cbState) {
             let currentScope;
 

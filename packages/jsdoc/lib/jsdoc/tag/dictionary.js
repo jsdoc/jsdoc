@@ -23,7 +23,11 @@ class TagDefinition {
         });
     }
 
-    /** @private */
+    /**
+     * @private
+     * @param {object} synonymName - FIXME
+     * @returns {TagDefinition} The current instance.
+     */
     synonym(synonymName) {
         this._dictionary.defineSynonym(this.title, synonymName);
 

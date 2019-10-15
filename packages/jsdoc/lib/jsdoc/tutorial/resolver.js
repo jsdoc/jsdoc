@@ -16,6 +16,7 @@ const finder = /^(.*)\.(x(?:ht)?ml|html?|md|markdown|json)$/i;
 
 /** checks if `conf` is the metadata for a single tutorial.
  * A tutorial's metadata has a property 'title' and/or a property 'children'.
+ *
  * @param {object} json - the object we want to test (typically from JSON.parse)
  * @returns {boolean} whether `json` could be the metadata for a tutorial.
  */
@@ -26,6 +27,7 @@ function isTutorialJSON(json) {
 
 /**
  * Root tutorial.
+ *
  * @type {module:jsdoc/tutorial.Root}
  */
 exports.root = new tutorial.RootTutorial();
@@ -76,6 +78,7 @@ function addTutorialConf(name, meta) {
 
 /**
  * Add a tutorial.
+ *
  * @param {module:jsdoc/tutorial.Tutorial} current - Tutorial to add.
  */
 exports.addTutorial = current => {
@@ -91,6 +94,7 @@ exports.addTutorial = current => {
 
 /**
  * Load tutorials from the given path.
+ *
  * @param {string} filepath - Tutorials directory.
  */
 exports.load = filepath => {

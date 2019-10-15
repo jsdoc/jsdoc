@@ -1,6 +1,12 @@
 const ow = require('ow');
 const Task = require('./task');
 
+/**
+ * FIXME
+ *
+ * @param {object} t - A task object.
+ * @returns {object} FIXME
+ */
 function checkTask(t) {
     return {
         validator: t instanceof Task,

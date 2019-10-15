@@ -20,8 +20,11 @@ const containers = ['class', 'module', 'external', 'namespace', 'mixin', 'interf
 
 let tutorials;
 
-/** Sets tutorials map.
-    @param {jsdoc.tutorial.Tutorial} root - Root tutorial node.
+
+/**
+ * Sets tutorials map.
+ *
+ * @param {module:jsdoc/tutorial.Tutorial} root - Root tutorial node.
  */
 exports.setTutorials = root => {
     tutorials = root;
@@ -58,6 +61,10 @@ const registerId = exports.registerId = (longname, fragment) => {
     linkMap.longnameToId[longname] = fragment;
 };
 
+/**
+ * @param {*} kind - FIXME
+ * @returns {string} The namespace, or an empty string if `kind` is not a namespace.
+ */
 function getNamespace(kind) {
     if (dictionary.isNamespace(kind)) {
         return `${kind}:`;
@@ -66,6 +73,10 @@ function getNamespace(kind) {
     return '';
 }
 
+/**
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to format.
+ * @returns {string} FIXME
+ */
 function formatNameForLink(doclet) {
     let newName = getNamespace(doclet.kind) + (doclet.name || '') + (doclet.variation || '');
     const scopePunc = exports.scopeToPunc[doclet.scope] || '';
@@ -80,6 +91,11 @@ function formatNameForLink(doclet) {
     return newName;
 }
 
+/**
+ * @param {string} filename - A filename.
+ * @param {string} str - The string to use as the value.
+ * @returns {string} The new `filename`, used (lower-case) as a key in `files`.
+ */
 function makeUniqueFilename(filename, str) {
     let key = filename.toLowerCase();
     let nonUnique = true;
@@ -111,12 +127,13 @@ function makeUniqueFilename(filename, str) {
  * Filenames are cached to ensure that they are used only once. For example, if the same string is
  * passed in twice, two different filenames will be returned.
  *
- * Also, filenames are not considered unique if they are capitalized differently but are otherwise
- * identical.
+ * This function is case-sensitive when considering filename. (Filenames will not be
+ * considered unique if they differ in case, but are otherwise
+ * identical.)
  *
  * @function
- * @param {string} str The string to convert.
- * @return {string} The filename to use for the string.
+ * @param {string} str - The string to convert.
+ * @returns {string} The filename to use for the string.
  */
 const getUniqueFilename = exports.getUniqueFilename = str => {
     const namespaces = dictionary.getNamespaces().join('|');
@@ -143,9 +160,12 @@ const getUniqueFilename = exports.getUniqueFilename = str => {
 };
 
 /**
- * Get a longname's filename if one has been registered; otherwise, generate a unique filename, then
- * register the filename.
+ * Get a longname's filename if one has been registered. Otherwise, generate a unique
+ * filename, then register the filename.
+ *
  * @private
+ * @param {string} longname - The longname to try and look up.
+ * @returns {string} A file URL.
  */
 function getFilename(longname) {
     let fileUrl;
@@ -167,14 +187,18 @@ function getFilename(longname) {
  *
  * @private
  * @param {module:jsdoc/doclet.Doclet} doclet - The doclet for the symbol.
- * @return {boolean} `true` if the symbol is the only symbol exported by a module; otherwise,
- * `false`.
+ * @returns {boolean} Whether or not the symbol is the only symbol exported by a module.
  */
 function isModuleExports(doclet) {
     return doclet.longname && doclet.longname === doclet.name &&
         doclet.longname.indexOf(MODULE_NAMESPACE) === 0 && doclet.kind !== 'module';
 }
 
+/**
+ * @param {string} filename - The filename
+ * @param {string} id - FIXME
+ * @returns {string} A processed `id`.
+ */
 function makeUniqueId(filename, id) {
     let key;
     let nonUnique = true;
@@ -202,9 +226,13 @@ function makeUniqueId(filename, id) {
 }
 
 /**
- * Get a doclet's ID if one has been registered; otherwise, generate a unique ID, then register
- * the ID.
+ * Get a doclet's ID if one has been registered; otherwise, generate a unique ID, then
+ * register the ID.
+ *
  * @private
+ * @param {string} longname - FIXME
+ * @param {string} id - FIXME
+ * @returns {string} A processed `id`.
  */
 function getId(longname, id) {
     if ( hasOwnProp.call(longnameToId, longname) ) {
@@ -228,10 +256,10 @@ function getId(longname, id) {
  * Identifiers are not considered unique if they are capitalized differently but are otherwise
  * identical.
  *
- * @method
+ * @function
  * @param {string} filename - The file in which the identifier will be used.
- * @param {string} doclet - The doclet to convert.
- * @return {string} A unique identifier based on the file and doclet.
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to convert.
+ * @returns {string} A unique identifier based on the file and doclet.
  */
 exports.getUniqueId = makeUniqueId;
 
@@ -244,6 +272,10 @@ const htmlsafe = exports.htmlsafe = str => {
         .replace(/</g, '&lt;');
 };
 
+/**
+ * @param {string} longname - FIXME
+ * @returns {*} FIXME
+ */
 function parseType(longname) {
     let err;
 
@@ -258,6 +290,12 @@ function parseType(longname) {
     }
 }
 
+/**
+ * @param {object} parsedType - FIXME
+ * @param {object} cssClass - FIXME
+ * @param {object} stringifyLinkMap - FIXME
+ * @returns {string} The stringified type.
+ */
 function stringifyType(parsedType, cssClass, stringifyLinkMap) {
     return require('catharsis').stringify(parsedType, {
         cssClass: cssClass,
@@ -266,15 +304,27 @@ function stringifyType(parsedType, cssClass, stringifyLinkMap) {
     });
 }
 
+/**
+ * @param {string} text - Text to check.
+ * @returns {boolean} Does `text` have a URL prefix?
+ */
 function hasUrlPrefix(text) {
     return (/^(http|ftp)s?:\/\//).test(text);
 }
 
+/**
+ * @param {object} expr - An expression to check.
+ * @returns {boolean} Is `expr` a complex type?
+ */
 function isComplexTypeExpression(expr) {
     // record types, type unions, and type applications all count as "complex"
     return /^{.+}$/.test(expr) || /^.+\|.+$/.test(expr) || /^.+<.+>$/.test(expr);
 }
 
+/**
+ * @param {object} fragmentId - FIXME
+ * @returns {string} FIXME
+ */
 function fragmentHash(fragmentId) {
     if (!fragmentId) {
         return '';
@@ -283,6 +333,10 @@ function fragmentHash(fragmentId) {
     return `#${fragmentId}`;
 }
 
+/**
+ * @param {string} longname - FIXME
+ * @returns {string} The shortened name of `longname`.
+ */
 function getShortName(longname) {
     return name.shorten(longname).name;
 }
@@ -299,19 +353,19 @@ function getShortName(longname) {
  * is ignored for type applications.
  *
  * @param {string} longname - The longname (or URL) that is the target of the link.
- * @param {string=} linkText - The text to display for the link, or `longname` if no text is
+ * @param {string} [linkText=longname] - The text to display for the link, or `longname` if no text is
  * provided.
- * @param {Object} options - Options for building the link.
- * @param {string=} options.cssClass - The CSS class (or classes) to include in the link's `<a>`
+ * @param {object} options - Options for building the link.
+ * @param {string} [options.cssClass] - The CSS class (or classes) to include in the link's `<a>`
  * tag.
- * @param {string=} options.fragmentId - The fragment identifier (for example, `name` in
+ * @param {string=} [options.fragmentId] - The fragment identifier (for example, `name` in
  * `foo.html#name`) to append to the link target.
- * @param {string=} options.linkMap - The link map in which to look up the longname.
- * @param {boolean=} options.monospace - Indicates whether to display the link text in a monospace
+ * @param {string} [options.linkMap] - The link map in which to look up the longname.
+ * @param {boolean} [options.monospace] - Indicates whether to display the link text in a monospace
  * font.
- * @param {boolean=} options.shortenName - Indicates whether to extract the short name from the
+ * @param {boolean} [options.shortenName] - Indicates whether to extract the short name from the
  * longname and display the short name in the link text. Ignored if `linkText` is specified.
- * @return {string} The HTML link, or the link text if the link is not available.
+ * @returns {string} The HTML link, or the link text if the link is not available.
  */
 function buildLink(longname, linkText, options) {
     const classString = options.cssClass ? ` class="${options.cssClass}"` : '';
@@ -371,7 +425,7 @@ function buildLink(longname, linkText, options) {
  * @param {string=} cssClass - The CSS class (or classes) to include in the link's `<a>` tag.
  * @param {string=} fragmentId - The fragment identifier (for example, `name` in `foo.html#name`) to
  * append to the link target.
- * @return {string} The HTML link, or a plain-text string if the link is not available.
+ * @returns {string} The HTML link, or a plain-text string if the link is not available.
  */
 const linkto = exports.linkto = (longname, linkText, cssClass, fragmentId) => buildLink(longname, linkText, {
     cssClass: cssClass,
@@ -379,6 +433,11 @@ const linkto = exports.linkto = (longname, linkText, cssClass, fragmentId) => bu
     linkMap: longnameToUrl
 });
 
+/**
+ * @param {module:jsdoc/tag.Tag} tag - FIXME
+ * @param {string} text - FIXME
+ * @returns {boolean} FIXME
+ */
 function useMonospace(tag, text) {
     let cleverLinks;
     let monospaceLinks;
@@ -405,6 +464,10 @@ function useMonospace(tag, text) {
     return result || false;
 }
 
+/**
+ * @param {string} text - The text to split
+ * @returns {object} Containing `linkText` and `target` properties.
+ */
 function splitLinkText(text) {
     let linkText;
     let target;
@@ -457,13 +520,13 @@ const tutorialToUrl = exports.tutorialToUrl = tutorial => {
  *
  * @function
  * @todo Deprecate missingOpts once we have a better error-reporting mechanism.
- * @param {string} tutorial The name of the tutorial.
- * @param {string} content The link text to use.
- * @param {object} [missingOpts] Options for displaying the name of a missing tutorial.
- * @param {string} missingOpts.classname The CSS class to wrap around the tutorial name.
- * @param {string} missingOpts.prefix The prefix to add to the tutorial name.
- * @param {string} missingOpts.tag The tag to wrap around the tutorial name.
- * @return {string} An HTML link to the tutorial, or the name of the tutorial with the specified
+ * @param {string} tutorial - The name of the tutorial.
+ * @param {string} content - The link text to use.
+ * @param {object} [missingOpts] - Options for displaying the name of a missing tutorial.
+ * @param {string} missingOpts.classname - The CSS class to wrap around the tutorial name.
+ * @param {string} missingOpts.prefix - The prefix to add to the tutorial name.
+ * @param {string} missingOpts.tag - The tag to wrap around the tutorial name.
+ * @returns {string} An HTML link to the tutorial, or the name of the tutorial with the specified
  * options.
  */
 const toTutorial = exports.toTutorial = (tutorial, content, missingOpts) => {
@@ -503,6 +566,9 @@ const toTutorial = exports.toTutorial = (tutorial, content, missingOpts) => {
     return `<a href="${tutorialToUrl(tutorial)}">${content}</a>`;
 };
 
+/**
+ * @returns {boolean} Should longnames be shortened?
+ */
 function shouldShortenLongname() {
     if (env.conf && env.conf.templates && env.conf.templates.useShortNamesInLinks) {
         return true;
@@ -515,11 +581,16 @@ function shouldShortenLongname() {
  * Find `{@link ...}` and `{@tutorial ...}` inline tags and turn them into HTML links.
  *
  * @param {string} str - The string to search for `{@link ...}` and `{@tutorial ...}` tags.
- * @return {string} The linkified text.
+ * @returns {string} The linkified text.
  */
-exports.resolveLinks = str => {
+exports.resolveLinks = (str) => {
     let replacers;
 
+    /**
+     * @param {string} string - FIXME
+     * @param {module:jsdoc/tag.Tag} completeTag - FIXME
+     * @returns {object} FIXME
+     */
     function extractLeadingText(string, completeTag) {
         const tagIndex = string.indexOf(completeTag);
         let leadingText = null;
@@ -543,6 +614,11 @@ exports.resolveLinks = str => {
         };
     }
 
+    /**
+     * @param {string} string - FIXME
+     * @param {object} fixMyName - FIXME
+     * @returns {string} FIXME
+     */
     function processLink(string, {completeTag, text, tag}) {
         const leading = extractLeadingText(string, completeTag);
         let linkText = leading.leadingText;
@@ -565,6 +641,11 @@ exports.resolveLinks = str => {
         }) );
     }
 
+    /**
+     * @param {string} string - FIXME
+     * @param {object} fixMyName - FIXME
+     * @returns {string} FIXME
+     */
     function processTutorial(string, {completeTag, text}) {
         const leading = extractLeadingText(string, completeTag);
 
@@ -586,8 +667,10 @@ exports.resolveLinks = str => {
 /**
  * Convert tag text like `Jane Doe <jdoe@example.org>` into a `mailto:` link.
  *
+ * @function
+ *
  * @param {string} str - The tag text.
- * @return {string} The linkified text.
+ * @returns {string} The linkified text.
  */
 exports.resolveAuthorLinks = str => {
     let author = '';
@@ -611,11 +694,12 @@ exports.resolveAuthorLinks = str => {
  * Find items in a TaffyDB database that match the specified key-value pairs.
  *
  * @function
- * @param {TAFFY} data The TaffyDB database to search.
- * @param {object|function} spec Key-value pairs to match against (for example,
+ *
+ * @param {module:taffydb.taffy} data The TaffyDB database to search.
+ * @param {object|Function} spec Key-value pairs to match against (for example,
  * `{ longname: 'foo' }`), or a function that returns `true` if a value matches or `false` if it
  * does not match.
- * @return {array<object>} The matching items.
+ * @returns {Array.<object>} The matching items.
  */
 const find = exports.find = (data, spec) => data(spec).get();
 
@@ -629,8 +713,9 @@ const find = exports.find = (data, spec) => data(spec).get();
  * + Modules
  * + Namespaces
  * + Events
- * @param {TAFFY} data The TaffyDB database to search.
- * @return {object} An object with `classes`, `externals`, `globals`, `mixins`, `modules`,
+ *
+ * @param {module:taffydb.taffy} data The TaffyDB database to search.
+ * @returns {object} An object with `classes`, `externals`, `globals`, `mixins`, `modules`,
  * `events`, and `namespaces` properties. Each property contains an array of objects.
  */
 exports.getMembers = data => {
@@ -667,8 +752,9 @@ exports.getMembers = data => {
 /**
  * Retrieve the member attributes for a doclet (for example, `virtual`, `static`, and
  * `readonly`).
- * @param {object} d The doclet whose attributes will be retrieved.
- * @return {array<string>} The member attributes for the doclet.
+ *
+ * @param {module:jsdoc/doclet.Doclet} d - The doclet whose attributes will be retrieved.
+ * @returns {Array.<string>} The member attributes for the doclet.
  */
 exports.getAttribs = d => {
     const attribs = [];
@@ -722,9 +808,9 @@ exports.getAttribs = d => {
 /**
  * Retrieve links to allowed types for the member.
  *
- * @param {Object} d - The doclet whose types will be retrieved.
+ * @param {module:jsdoc/doclet.Doclet} d - The doclet whose types will be retrieved.
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
- * @return {Array.<string>} HTML links to allowed types for the member.
+ * @returns {Array.<string>} HTML links to allowed types for the member.
  */
 exports.getSignatureTypes = ({type}, cssClass) => {
     let types = [];
@@ -743,11 +829,12 @@ exports.getSignatureTypes = ({type}, cssClass) => {
 /**
  * Retrieve names of the parameters that the member accepts. If a value is provided for `optClass`,
  * the names of optional parameters will be wrapped in a `<span>` tag with that class.
+ *
  * @param {object} d The doclet whose parameter names will be retrieved.
  * @param {string} [optClass] The class to assign to the `<span>` tag that is wrapped around the
  * names of optional parameters. If a value is not provided, optional parameter names will not be
  * wrapped with a `<span>` tag. Must be a legal value for a CSS class name.
- * @return {array<string>} An array of parameter names, with or without `<span>` tags wrapping the
+ * @returns {Array.<string>} An array of parameter names, with or without `<span>` tags wrapping the
  * names of optional parameters.
  */
 exports.getSignatureParams = ({params}, optClass) => {
@@ -772,9 +859,9 @@ exports.getSignatureParams = ({params}, optClass) => {
 /**
  * Retrieve links to types that the member can return or yield.
  *
- * @param {Object} d - The doclet whose types will be retrieved.
+ * @param {module:jsdoc/doclet.Doclet} d - The doclet whose types will be retrieved.
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
- * @return {Array.<string>} HTML links to types that the member can return or yield.
+ * @returns {Array.<string>} HTML links to types that the member can return or yield.
  */
 exports.getSignatureReturns = ({yields, returns}, cssClass) => {
     let returnTypes = [];
@@ -799,9 +886,9 @@ exports.getSignatureReturns = ({yields, returns}, cssClass) => {
 /**
  * Retrieve an ordered list of doclets for a symbol's ancestors.
  *
- * @param {TAFFY} data - The TaffyDB database to search.
- * @param {Object} doclet - The doclet whose ancestors will be retrieved.
- * @return {Array.<module:jsdoc/doclet.Doclet>} A array of ancestor doclets, sorted from most to
+ * @param {module:taffydb.taffy} data - The TaffyDB database to search.
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose ancestors will be retrieved.
+ * @returns {Array.<module:jsdoc/doclet.Doclet>} A array of ancestor doclets, sorted from most to
  * least distant.
  */
 exports.getAncestors = (data, doclet) => {
@@ -829,10 +916,10 @@ exports.getAncestors = (data, doclet) => {
 /**
  * Retrieve links to a member's ancestors.
  *
- * @param {TAFFY} data - The TaffyDB database to search.
- * @param {Object} doclet - The doclet whose ancestors will be retrieved.
+ * @param {module:taffydb.taffy} data - The TaffyDB database to search.
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet whose ancestors will be retrieved.
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
- * @return {Array.<string>} HTML links to a member's ancestors.
+ * @returns {Array.<string>} HTML links to a member's ancestors.
  */
 exports.getAncestorLinks = (data, doclet, cssClass) => {
     const ancestors = exports.getAncestors(data, doclet);
@@ -856,7 +943,7 @@ exports.getAncestorLinks = (data, doclet, cssClass) => {
  * Iterates through all the doclets in `data`, ensuring that if a method `@listens` to an event,
  * then that event has a `listeners` array with the longname of the listener in it.
  *
- * @param {TAFFY} data - The TaffyDB database to search.
+ * @param {module:taffydb.taffy} data - The TaffyDB database to search.
  */
 exports.addEventListeners = data => {
     // just a cache to prevent me doing so many lookups
@@ -902,8 +989,9 @@ exports.addEventListeners = data => {
  * + Members of anonymous classes.
  * + Members tagged `@private`, unless the `private` option is enabled.
  * + Members tagged with anything other than specified by the `access` options.
- * @param {TAFFY} data The TaffyDB database to prune.
- * @return {TAFFY} The pruned database.
+ *
+ * @param {module:taffydb.taffy} data The TaffyDB database to prune.
+ * @returns {module:taffydb.taffy} The pruned database.
  */
 exports.prune = data => {
     data({undocumented: true}).remove();
@@ -941,7 +1029,7 @@ exports.prune = data => {
  * represents a method), the URL will consist of a filename and a fragment ID.
  *
  * @param {module:jsdoc/doclet.Doclet} doclet - The doclet that will be used to create the URL.
- * @return {string} The URL to the generated documentation for the doclet.
+ * @returns {string} The URL to the generated documentation for the doclet.
  */
 exports.createLink = doclet => {
     let fakeContainer;
@@ -994,11 +1082,11 @@ exports.createLink = doclet => {
  *
  * @function
  * @see module:jsdoc/name.longnamesToTree
- * @param {Array<string>} longnames - The longnames to convert into a tree.
- * @param {Object<string, module:jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
+ * @param {Array.<string>} longnames - The longnames to convert into a tree.
+ * @param {object<string, module:jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
  * Each property should be the longname of a doclet, and each value should be the doclet for that
  * longname.
- * @return {Object} A tree with information about each longname.
+ * @returns {object} A tree with information about each longname.
  */
 exports.longnamesToTree = name.longnamesToTree;
 

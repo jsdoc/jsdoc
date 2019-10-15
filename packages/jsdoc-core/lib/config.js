@@ -1,7 +1,7 @@
 /**
  * Manages configuration settings for JSDoc.
  *
- * @alias module:@jsdoc/core.config
+ * @alias module:'@jsdoc/core.config'
  */
 
 const _ = require('lodash');
@@ -91,10 +91,24 @@ class Config {
     }
 }
 
+/**
+ *  Loads JSON using cosmiconfig.
+ *
+ *  @param {string} filepath - The path to the JSON file.
+ *  @param {string} content  - The file’s content. (Filtered to strip JSON comments and BOM characters.)
+ *  @returns {object} - The configuration object.
+ */
 function loadJson(filepath, content) {
     return cosmiconfig.loadJson(filepath, stripBom(stripJsonComments(content)));
 }
 
+/**
+ *  Loads JSON using `cosmiconfig`.
+ *
+ *  @param {string} filepath - The path to the YAML file.
+ *  @param {string} content - The file’s content. (Filtered to strip BOM characters.)
+ *  @returns {object} - The configuration object.
+ */
 function loadYaml(filepath, content) {
     return cosmiconfig.loadYaml(filepath, stripBom(content));
 }

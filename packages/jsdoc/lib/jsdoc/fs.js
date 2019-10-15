@@ -1,5 +1,6 @@
 /**
  * Extended version of the standard `fs` module.
+ *
  * @module jsdoc/fs
  */
 const fs = require('fs');
