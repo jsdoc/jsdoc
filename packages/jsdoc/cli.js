@@ -89,14 +89,14 @@ module.exports = (() => {
         /**
          *
          */
-function recoverableError() {
+        function recoverableError() {
             props.shouldExitWithError = true;
         }
 
         /**
          *
          */
-function fatalError() {
+        function fatalError() {
             cli.exit(1);
         }
 
