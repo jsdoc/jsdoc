@@ -65,29 +65,18 @@ module.exports = class TaskRunner extends Emittery {
     }
 
     _createTaskSequence(tasks) {
-        let firstTask;
-        let promise;
-
         if (!tasks.length) {
             return null;
         }
 
-        firstTask = this._nameToTask.get(tasks[0]);
-        promise = new Promise((resolve, reject) => {
-            this._bindTaskFunc(firstTask)().then(resolve, reject);
-        });
+        return () => tasks.reduce((p, taskName) => {
+            const task = this._nameToTask.get(taskName);
 
-        promise = tasks.reduce((p, _taskName, i) => {
-            const nextTask = this._nameToTask.get(tasks[i + 1]);
-
-            if (!nextTask) {
-                return p;
-            } else {
-                return p.then(this._bindTaskFunc(nextTask));
-            }
-        }, promise);
-
-        return () => promise;
+            return p.then(
+                this._bindTaskFunc(task),
+                e => Promise.reject(e)
+            );
+        }, Promise.resolve());
     }
 
     _init(context) {
@@ -100,6 +89,8 @@ module.exports = class TaskRunner extends Emittery {
         this._unsubscribers = new Map();
 
         this.context = context || {};
+
+        this._queue.pause();
     }
 
     _newDependencyCycleError(cyclePath) {
@@ -264,12 +255,12 @@ module.exports = class TaskRunner extends Emittery {
 
     run() {
         let endPromise;
-        let { error, parallel, sequential } = this._orderTasks();
+        const { error, parallel, sequential } = this._orderTasks();
         let runningPromise;
         let taskFuncs = [];
         let taskSequence;
 
-        // First, fail based on the runner's state.
+        // First, fail if the runner is already running.
         runningPromise = this._rejectIfRunning();
         if (runningPromise) {
             return runningPromise;
@@ -279,8 +270,6 @@ module.exports = class TaskRunner extends Emittery {
         if (error) {
             return Promise.reject(error);
         }
-
-        this._queue.pause();
 
         for (const taskName of parallel) {
             taskFuncs.push(this._bindTaskFunc(this._nameToTask.get(taskName)));
@@ -292,11 +281,9 @@ module.exports = class TaskRunner extends Emittery {
         }
 
         endPromise = this._queue.addAll(taskFuncs).then(() => {
-            const err = this._error;
-
             this.end();
 
-            if (err) {
+            if (this._error) {
                 return Promise.reject(this._error);
             } else {
                 return Promise.resolve();
