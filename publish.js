@@ -34,6 +34,7 @@ exports.publish = async (taffyData, options, tutorials) => {
         templateConfig
     };
     const docletHelper = new DocletHelper();
+    // TODO: Stop passing context to constructor when that's possible.
     const runner = new TaskRunner(context);
 
     // set up tutorials
@@ -54,7 +55,7 @@ exports.publish = async (taffyData, options, tutorials) => {
 
     runner.addTasks(tasks);
     try {
-        await runner.run();
+        await runner.run(context);
     } catch (e) {
         // TODO: Send to message bus
         return Promise.reject(e);
