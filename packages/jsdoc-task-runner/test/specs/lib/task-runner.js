@@ -27,7 +27,7 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
     let runner;
 
     beforeEach(() => {
-        runner = new TaskRunner();
+        runner = new TaskRunner({});
         foo = new Task({
             name: 'foo',
             func: () => new Promise(resolve => {
@@ -64,14 +64,6 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
         }
 
         expect(factory).not.toThrow();
-    });
-
-    it('accepts a context object', () => {
-        const context = {};
-
-        runner = new TaskRunner(context);
-
-        expect(runner.context).toBe(context);
     });
 
     it('does not accept a non-object context', () => {
@@ -242,15 +234,6 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
         });
     });
 
-    describe('context', () => {
-        it('is the provided context', () => {
-            const context = {};
-            const r = new TaskRunner(context);
-
-            expect(r.context).toBe(context);
-        });
-    });
-
     describe('end', () => {
         it('stops the task runner', () => {
             function addAfterEnding() {
@@ -269,14 +252,6 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
             await runner.end();
 
             expect(runner.tasks).toBeEmptyObject();
-        });
-
-        it('resets the context', async () => {
-            runner.addTask(foo);
-            runner.run();
-            await runner.end();
-
-            expect(runner.context).toBeEmptyObject();
         });
     });
 
@@ -577,7 +552,6 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
             runner.addTask(taskA);
             await runner.run();
 
-            expect(runner.context).toBeEmptyObject();
             expect(runner.tasks).toBeEmptyObject();
         });
 
@@ -595,6 +569,52 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
         });
 
         describe('context', () => {
+            it('prefers the context passed to `run()`', async () => {
+                const context = {};
+                const t = new TaskRunner({});
+
+                t.addTask(new Task({
+                    name: 'foo',
+                    func: ctx => {
+                        ctx.foo = 'foo';
+
+                        return Promise.resolve();
+                    }
+                }));
+                await t.run(context);
+
+                expect(context.foo).toBe('foo');
+            });
+
+            it('falls back on the context passed to the constructor', async () => {
+                const context = {};
+                const t = new TaskRunner(context);
+
+                t.addTask(new Task({
+                    name: 'foo',
+                    func: ctx => {
+                        ctx.foo = 'foo';
+
+                        return Promise.resolve();
+                    }
+                }));
+                await t.run();
+
+                expect(context.foo).toBe('foo');
+            });
+
+            it('fails if the context is not an object', async () => {
+                let error;
+
+                try {
+                    await new TaskRunner().run(7);
+                } catch (e) {
+                    error = e;
+                }
+
+                expect(error).toBeErrorOfType(ARGUMENT_ERROR);
+            });
+
             it('passes the context to tasks with no dependencies', async () => {
                 const context = {};
                 const r = new TaskRunner(context);

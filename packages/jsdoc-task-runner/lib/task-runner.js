@@ -61,7 +61,7 @@ module.exports = class TaskRunner extends Emittery {
     }
 
     _bindTaskFunc(task) {
-        return _.bind(task.run, task, this.context);
+        return _.bind(task.run, task, this._context);
     }
 
     _createTaskSequence(tasks) {
@@ -80,6 +80,7 @@ module.exports = class TaskRunner extends Emittery {
     }
 
     _init(context) {
+        this._context = context;
         this._deps = new Map();
         this._error = null;
         this._queue = new Queue();
@@ -87,8 +88,6 @@ module.exports = class TaskRunner extends Emittery {
         this._nameToTask = new Map();
         this._running = false;
         this._unsubscribers = new Map();
-
-        this.context = context || {};
 
         this._queue.pause();
     }
@@ -253,7 +252,9 @@ module.exports = class TaskRunner extends Emittery {
         return this;
     }
 
-    run() {
+    run(context) {
+        ow(context, ow.optional.object);
+
         let endPromise;
         const { error, parallel, sequential } = this._orderTasks();
         let runningPromise;
@@ -270,6 +271,8 @@ module.exports = class TaskRunner extends Emittery {
         if (error) {
             return Promise.reject(error);
         }
+
+        this._context = context || this._context;
 
         for (const taskName of parallel) {
             taskFuncs.push(this._bindTaskFunc(this._nameToTask.get(taskName)));
