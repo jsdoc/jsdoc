@@ -16,11 +16,11 @@
 const _ = require('lodash');
 const config = require('./lib/config');
 const { db } = require('./lib/db');
-const defaultTasks = require('./lib/default-tasks');
 const DocletHelper = require('./lib/doclethelper');
 const env = require('jsdoc/env');
 const helper = require('jsdoc/util/templateHelper');
 const { TaskRunner } = require('@jsdoc/task-runner');
+const tasks = require('./lib/default-tasks');
 
 exports.publish = async (taffyData, options, tutorials) => {
     const templateConfig = config.loadSync().get();
@@ -35,7 +35,6 @@ exports.publish = async (taffyData, options, tutorials) => {
     };
     const docletHelper = new DocletHelper();
     const runner = new TaskRunner(context);
-    const tasks = defaultTasks(allConfig);
 
     // set up tutorials
     helper.setTutorials(tutorials);
