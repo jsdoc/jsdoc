@@ -50,8 +50,6 @@ exports.publish = async (taffyData, options, tutorials) => {
         values: docletHelper.allDoclets
     });
     context.sourceFiles = docletHelper.shortPaths;
-    context.package = docletHelper.getPackage();
-    context.allLongnamesTree = docletHelper.allLongnamesTree;
 
     runner.addTasks(tasks);
     try {
