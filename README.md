@@ -29,11 +29,6 @@ recent patch-level version. See
 [this Stack Overflow answer](https://stackoverflow.com/questions/22343224) for
 more information about the caret and tilde operators.
 
-To install the latest development version locally, without updating your
-project's `package.json` file:
-
-    npm install git+https://github.com/jsdoc/jsdoc.git
-
 If you installed JSDoc locally, the JSDoc command-line tool is available in
 `./node_modules/.bin`. To generate documentation for the file
 `yourJavaScriptFile.js`:
