@@ -9,7 +9,7 @@
     "eslint": "^6.5.1",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
-    "gulp-json-editor": "^2.5.3",
+    "gulp-json-editor": "^2.5.4",
     "jasmine": "^3.5.0",
     "jasmine-console-reporter": "^3.1.0",
     "klaw-sync": "^6.0.0",
