@@ -27,7 +27,7 @@
     "ow": "^0.14.0",
     "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.0.1",
-    "yargs-parser": "^15.0.0"
+    "yargs-parser": "^16.0.0"
   },
   "gitHead": "81a824eb0968851f836fc6069376d0337775f9ba"
 }
