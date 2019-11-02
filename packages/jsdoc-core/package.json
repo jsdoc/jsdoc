@@ -22,7 +22,7 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "cosmiconfig": "^5.2.1",
+    "cosmiconfig": "^6.0.0",
     "lodash": "^4.17.15",
     "ow": "^0.14.0",
     "strip-bom": "^4.0.0",
