@@ -24,7 +24,7 @@
   "dependencies": {
     "cosmiconfig": "^6.0.0",
     "lodash": "^4.17.15",
-    "ow": "^0.14.0",
+    "ow": "^0.15.0",
     "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.0.1",
     "yargs-parser": "^16.1.0"
