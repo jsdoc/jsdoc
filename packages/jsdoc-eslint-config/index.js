@@ -6,7 +6,7 @@ module.exports = {
     },
 
     parserOptions: {
-        ecmaVersion: 2015,
+        ecmaVersion: 2018,
         sourceType: 'module'
     },
 
@@ -32,6 +32,7 @@ module.exports = {
         'no-extra-parens': 'off',
         'no-extra-semi': 'error',
         'no-func-assign': 'error',
+        'no-import-assign': 'error',
         'no-inner-declarations': ['error', 'functions'],
         'no-invalid-regexp': 'error',
         'no-irregular-whitespace': 'error',
@@ -58,6 +59,7 @@ module.exports = {
         'consistent-return': 'error',
         curly: ['error', 'all'],
         'default-case': 'error',
+        'default-param-last': 'error',
         'dot-location': ['error', 'property'],
         'dot-notation': 'error',
         eqeqeq: ['error', 'smart'],
@@ -116,6 +118,7 @@ module.exports = {
         'no-warning-comments': 'off',
         'no-with': 'error',
         'prefer-promise-reject-errors': 'error',
+        'prefer-regex-literals': 'off',
         radix: 'error',
         'require-await': 'error',
         'require-unicode-regexp': 'off',
@@ -281,7 +284,11 @@ module.exports = {
         'sort-keys': 'off',
         'sort-vars': 'off', // TODO: enable?
         'space-before-blocks': ['error', 'always'],
-        'space-before-function-paren': ['error', 'never'],
+        'space-before-function-paren': ['error', {
+            anonymous: 'never',
+            named: 'never',
+            asyncArrow: 'always'
+        }],
         'space-in-parens': 'off', // TODO: enable?
         'space-infix-ops': 'error',
         'space-unary-ops': 'error',

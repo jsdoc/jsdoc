@@ -1,4 +1,2 @@
-templates/default/static/scripts/*
-test/fixtures/*
-test/lib/*
-test/tutorials/*
+**/node_modules/**/*.js
+**/test/fixtures/**/*.js

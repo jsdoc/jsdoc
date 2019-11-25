@@ -1,11 +1,15 @@
 /**
- * Provides core functionality for JSDoc.
+ * Core functionality for JSDoc.
  *
- * @module @jsdoc/config
+ * @module @jsdoc/core
  */
 
 const config = require('./lib/config');
+const Engine = require('./lib/engine');
+const util = require('./lib/util');
 
 module.exports = {
-    config
+    config,
+    Engine,
+    util
 };

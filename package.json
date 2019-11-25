@@ -1,47 +1,20 @@
 {
   "name": "jsdoc",
-  "version": "4.0.0-dev",
-  "revision": "1563126982480",
-  "description": "An API documentation generator for JavaScript.",
-  "keywords": [
-    "documentation",
-    "javascript"
-  ],
+  "private": true,
   "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jsdoc/jsdoc"
-  },
-  "dependencies": {
-    "@babel/parser": "^7.5.5",
-    "@jsdoc/core": "^0.1.1",
-    "bluebird": "^3.5.5",
-    "catharsis": "^0.8.11",
-    "code-prettify": "^0.1.0",
-    "color-themes-for-google-code-prettify": "^2.0.4",
-    "escape-string-regexp": "^2.0.0",
-    "lodash": "^4.17.15",
-    "markdown-it": "^9.0.1",
-    "markdown-it-anchor": "^5.2.4",
-    "marked": "^0.7.0",
-    "mkdirp": "^0.5.1",
-    "open-sans-fonts": "^1.5.1",
-    "requizzle": "^0.2.3",
-    "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.0.1",
-    "taffydb": "2.6.2"
-  },
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.0.1",
+    "@jsdoc/eslint-config": "^1.0.8",
+    "@jsdoc/test-matchers": "^0.1.0",
     "ajv": "^6.10.2",
+    "eslint": "^6.7.1",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
-    "gulp-json-editor": "^2.5.3",
-    "jasmine": "^3.4.0",
+    "gulp-json-editor": "^2.5.4",
+    "jasmine": "^3.5.0",
     "jasmine-console-reporter": "^3.1.0",
-    "jasmine-expect": "^4.0.3",
     "klaw-sync": "^6.0.0",
-    "lerna": "^3.16.4",
+    "lerna": "^3.19.0",
+    "mock-fs": "^4.10.3",
     "nyc": "^14.1.1"
   },
   "engines": {
@@ -49,24 +22,5 @@
   },
   "scripts": {
     "test": "gulp"
-  },
-  "bin": {
-    "jsdoc": "./jsdoc.js"
-  },
-  "bugs": "https://github.com/jsdoc/jsdoc/issues",
-  "author": {
-    "name": "Michael Mathews",
-    "email": "micmath@gmail.com"
-  },
-  "contributors": [
-    {
-      "url": "https://github.com/jsdoc/jsdoc/graphs/contributors"
-    }
-  ],
-  "maintainers": [
-    {
-      "name": "Jeff Williams",
-      "email": "jeffrey.l.williams@gmail.com"
-    }
-  ]
+  }
 }

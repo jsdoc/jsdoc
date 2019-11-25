@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/core",
-  "version": "0.1.2",
+  "version": "0.1.9",
   "description": "Core functionality for JSDoc.",
   "keywords": [
     "jsdoc"
@@ -22,12 +22,12 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "cosmiconfig": "^5.2.1",
+    "cosmiconfig": "^6.0.0",
     "lodash": "^4.17.15",
+    "ow": "^0.15.0",
     "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.0.1"
+    "strip-json-comments": "^3.0.1",
+    "yargs-parser": "^16.1.0"
   },
-  "devDependencies": {
-    "mock-fs": "^4.10.1"
-  }
+  "gitHead": "81a824eb0968851f836fc6069376d0337775f9ba"
 }

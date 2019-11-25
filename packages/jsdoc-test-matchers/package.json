@@ -1,18 +1,16 @@
 {
-  "name": "@jsdoc/eslint-config",
-  "version": "1.1.1",
-  "description": "Default ESLint configuration for JSDoc packages.",
+  "name": "@jsdoc/test-matchers",
+  "version": "0.1.2",
+  "description": "Jasmine matchers that JSDoc uses in its tests.",
   "keywords": [
-    "eslint",
-    "jsdoc"
+    "jasmine",
+    "jsdoc",
+    "task",
+    "test"
   ],
   "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
-  "homepage": "https://github.com/jsdoc/jsdoc#readme",
+  "homepage": "https://jsdoc.app/",
   "license": "Apache-2.0",
-  "main": "index.js",
-  "peerDependencies": {
-    "eslint": ">= 6.7.1"
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -26,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
-  "gitHead": "81a824eb0968851f836fc6069376d0337775f9ba"
+  "dependencies": {
+    "add-matchers": "^0.6.2",
+    "jasmine-expect": "^4.0.3"
+  }
 }

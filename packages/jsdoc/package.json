@@ -1,0 +1,60 @@
+{
+  "name": "jsdoc",
+  "private": true,
+  "version": "4.0.0-dev.5",
+  "revision": "1569013511930",
+  "description": "An API documentation generator for JavaScript.",
+  "keywords": [
+    "documentation",
+    "javascript"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdoc/jsdoc"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.7.4",
+    "@jsdoc/core": "^0.1.9",
+    "bluebird": "^3.7.1",
+    "catharsis": "^0.8.11",
+    "code-prettify": "^0.1.0",
+    "color-themes-for-google-code-prettify": "^2.0.4",
+    "escape-string-regexp": "^2.0.0",
+    "lodash": "^4.17.15",
+    "markdown-it": "^10.0.0",
+    "markdown-it-anchor": "^5.2.5",
+    "marked": "^0.7.0",
+    "mkdirp": "^0.5.1",
+    "open-sans-fonts": "^1.5.1",
+    "requizzle": "^0.2.3",
+    "strip-bom": "^4.0.0",
+    "strip-json-comments": "^3.0.1",
+    "taffydb": "2.6.2"
+  },
+  "engines": {
+    "node": ">=8.15.0"
+  },
+  "scripts": {
+    "test": "gulp"
+  },
+  "bin": {
+    "jsdoc": "./jsdoc.js"
+  },
+  "bugs": "https://github.com/jsdoc/jsdoc/issues",
+  "author": {
+    "name": "Michael Mathews",
+    "email": "micmath@gmail.com"
+  },
+  "contributors": [
+    {
+      "url": "https://github.com/jsdoc/jsdoc/graphs/contributors"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Jeff Williams",
+      "email": "jeffrey.l.williams@gmail.com"
+    }
+  ]
+}
