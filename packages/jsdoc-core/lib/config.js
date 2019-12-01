@@ -5,7 +5,7 @@
  */
 
 const _ = require('lodash');
-const cosmiconfig = require('cosmiconfig');
+const { cosmiconfigSync, defaultLoaders } = require('cosmiconfig');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 
@@ -92,14 +92,14 @@ class Config {
 }
 
 function loadJson(filepath, content) {
-    return cosmiconfig.loadJson(filepath, stripBom(stripJsonComments(content)));
+    return defaultLoaders['.json'](filepath, stripBom(stripJsonComments(content)));
 }
 
 function loadYaml(filepath, content) {
-    return cosmiconfig.loadYaml(filepath, stripBom(content));
+    return defaultLoaders['.yaml'](filepath, stripBom(content));
 }
 
-const explorer = cosmiconfig(MODULE_NAME, {
+const explorerSync = cosmiconfigSync(MODULE_NAME, {
     cache: false,
     loaders: {
         '.json': loadJson,
@@ -122,9 +122,9 @@ exports.loadSync = (filepath) => {
     let loaded;
 
     if (filepath) {
-        loaded = explorer.loadSync(filepath);
+        loaded = explorerSync.load(filepath);
     } else {
-        loaded = explorer.searchSync() || {};
+        loaded = explorerSync.search() || {};
     }
 
     return new Config(
