@@ -26,6 +26,11 @@ module.exports = () => {
         }
     });
 
+    // Treat an unhandled promise rejection as an error.
+    process.on('unhandledRejection', e => {
+        throw e;
+    });
+
     jasmine.loadConfig({
         helpers: [
             'node_modules/@jsdoc/test-matchers',
