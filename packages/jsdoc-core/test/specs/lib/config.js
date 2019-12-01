@@ -1,7 +1,11 @@
-const config = require('../../../lib/config');
 const mockFs = require('mock-fs');
+const config = require('../../../lib/config');
 
 describe('@jsdoc/core/lib/config', () => {
+    // Explicitly require `yaml` before we run any tests. `cosmiconfig` tries to load `yaml` lazily,
+    // but that doesn't work when the file system is mocked.
+    beforeAll(() => require('yaml'));
+
     afterEach(() => mockFs.restore());
 
     it('is an object', () => {
