@@ -291,28 +291,6 @@ module.exports = (() => {
         return cli;
     };
 
-    function resolvePluginPaths(paths) {
-        const path = require('jsdoc/path');
-
-        const pluginPaths = [];
-
-        paths.forEach(plugin => {
-            const basename = path.basename(plugin);
-            const dirname = path.dirname(plugin);
-            const pluginPath = path.getResourcePath(dirname, basename);
-
-            if (!pluginPath) {
-                logger.error('Unable to find the plugin "%s"', plugin);
-
-                return;
-            }
-
-            pluginPaths.push( pluginPath );
-        });
-
-        return pluginPaths;
-    }
-
     cli.createParser = () => {
         const handlers = require('jsdoc/src/handlers');
         const parser = require('jsdoc/src/parser');
@@ -321,7 +299,6 @@ module.exports = (() => {
         props.parser = parser.createParser(env.conf.parser);
 
         if (env.conf.plugins) {
-            env.conf.plugins = resolvePluginPaths(env.conf.plugins);
             plugins.installPlugins(env.conf.plugins, props.parser);
         }
 
@@ -388,22 +365,17 @@ module.exports = (() => {
 
     cli.generateDocs = () => {
         let message;
-        const path = require('jsdoc/path');
+        const path = require('path');
         const resolver = require('jsdoc/tutorial/resolver');
         const taffy = require('taffydb').taffy;
 
         let template;
 
-        env.opts.template = (() => {
-            const publish = env.opts.template || 'templates/default';
-            const templatePath = path.getResourcePath(publish);
-
-            // if we didn't find the template, keep the user-specified value so the error message is
-            // useful
-            return templatePath || env.opts.template;
-        })();
+        env.opts.template = env.opts.template || path.join(__dirname, 'templates', 'default');
 
         try {
+            // TODO: Just look for a `publish` function in the specified module, not a `publish.js`
+            // file _and_ a `publish` function.
             template = require(`${env.opts.template}/publish`);
         }
         catch (e) {

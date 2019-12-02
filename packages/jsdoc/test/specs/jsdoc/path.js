@@ -22,10 +22,6 @@ describe('jsdoc/path', () => {
         expect(path.commonPrefix).toBeFunction();
     });
 
-    it('should export a "getResourcePath" function', () => {
-        expect(path.getResourcePath).toBeFunction();
-    });
-
     describe('commonPrefix', () => {
         let oldPwd;
         let cwd;
@@ -123,88 +119,5 @@ describe('jsdoc/path', () => {
                 expect( path.commonPrefix(paths) ).toBe(prefix);
             });
         }
-    });
-
-    describe('getResourcePath', () => {
-        let oldConf;
-        let oldPwd;
-
-        beforeEach(() => {
-            oldConf = env.opts.configure;
-            oldPwd = env.pwd;
-
-            env.opts.configure = path.join(env.dirname, 'lib', 'conf.json');
-            env.pwd = __dirname;
-        });
-
-        afterEach(() => {
-            env.opts.configure = oldConf;
-            env.pwd = oldPwd;
-        });
-
-        it('resolves pwd-relative path that exists', () => {
-            const resolved = path.getResourcePath('doclet');
-
-            expect(resolved).toBe( path.join(__dirname, 'doclet.js') );
-        });
-
-        it('resolves relative to ./ path that exists', () => {
-            // `path.join` discards the `.`, so we join with `path.sep` instead
-            const p = ['.', 'util'].join(path.sep);
-            const resolved = path.getResourcePath(p);
-
-            expect(resolved).toBe( path.join(__dirname, 'util') );
-        });
-
-        it('resolves relative to ../ path that exists', () => {
-            const p = path.join('..', 'jsdoc', 'util');
-            const resolved = path.getResourcePath(p);
-
-            expect(resolved).toBe( path.join(__dirname, 'util') );
-        });
-
-        it('resolves path using node_modules/', () => {
-            const resolved = path.getResourcePath('node_modules', 'catharsis');
-
-            expect(resolved).toBe( path.join(env.dirname, 'node_modules', 'catharsis') );
-        });
-
-        it('resolves paths relative to the configuration file\'s path', () => {
-            const resolved = path.getResourcePath('jsdoc');
-
-            expect(resolved).toBe( path.join(env.dirname, 'lib', 'jsdoc') );
-        });
-
-        it('resolves paths relative to the JSDoc path', () => {
-            const resolved = path.getResourcePath( path.join('lib', 'jsdoc') );
-
-            expect(resolved).toBe( path.join(env.dirname, 'lib', 'jsdoc') );
-        });
-
-        it('resolves installed module', () => {
-            const resolved = path.getResourcePath('catharsis');
-
-            expect(resolved).toBe( path.join(env.dirname, 'node_modules', 'catharsis',
-                'catharsis.js') );
-        });
-
-        it('fails to find a relative path that does not exist', () => {
-            const resolved = path.getResourcePath('foo');
-
-            expect(resolved).toBeNull();
-        });
-
-        it('finds an absolute path that does exist', () => {
-            const p = path.join(env.dirname, 'lib');
-            const resolved = path.getResourcePath(p);
-
-            expect(resolved).toBe(p);
-        });
-
-        it('fails to find an absolute path that does not exist', () => {
-            const resolved = path.getResourcePath( path.join(env.dirname, 'foo') );
-
-            expect(resolved).toBeNull();
-        });
     });
 });

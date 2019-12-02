@@ -7,7 +7,6 @@ const logger = require('jsdoc/util/logger');
 const MarkdownIt = require('markdown-it');
 const marked = require('marked');
 const mda = require('markdown-it-anchor');
-const path = require('jsdoc/path');
 
 /**
  * Enumeration of Markdown parsers that are available.
@@ -138,25 +137,18 @@ function unencodeQuotes(source) {
  */
 function getHighlighter(conf) {
     let highlighter;
-    let highlighterPath;
 
     switch (typeof conf.highlight) {
         case 'string':
-            highlighterPath = path.getResourcePath(conf.highlight);
-
-            if (highlighterPath) {
-                highlighter = require(highlighterPath).highlight;
-
-                if (typeof highlighter !== 'function') {
-                    logger.error('The syntax highlighting module "%s" does not assign a method ' +
-                        'to exports.highlight. Using the default syntax highlighter.',
-                    conf.highlight);
-                    highlighter = highlight;
-                }
+            try {
+                highlighter = require(conf.highlight).highlight;
+            } catch (e) {
+                logger.error(e);
             }
-            else {
-                logger.error('Unable to find the syntax highlighting module "%s". Using the ' +
-                    'default syntax highlighter.', conf.highlight);
+
+            if (typeof highlighter !== 'function') {
+                logger.error(`The syntax highlighting module ${conf.highlight} does not assign a ` +
+                    'method to `exports.highlight`. Using the default syntax highlighter.');
                 highlighter = highlight;
             }
 
@@ -257,8 +249,8 @@ function getParseFunction(parserName, conf) {
             return parserFunction;
 
         default:
-            logger.error('Unrecognized Markdown parser "%s". Markdown support is disabled.',
-                parserName);
+            logger.error(`Unrecognized Markdown parser "${parserName}". Markdown support is ` +
+                'disabled.');
 
             return undefined;
     }

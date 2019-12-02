@@ -453,8 +453,7 @@ exports.publish = (taffyData, opts, tutorials) => {
 
     // set up templating
     view.layout = conf.default.layoutFile ?
-        path.getResourcePath(path.dirname(conf.default.layoutFile),
-            path.basename(conf.default.layoutFile) ) :
+        path.resolve(conf.default.layoutFile) :
         'layout.tmpl';
 
     // set up tutorials for helper
