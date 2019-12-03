@@ -1,6 +1,6 @@
 describe('@overview tag', () => {
     const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     let doclets;
 
@@ -24,12 +24,10 @@ describe('@overview tag', () => {
     });
 
     it('When a file overview tag appears in a doclet, the name of the doclet should contain the path to the file.', () => {
-        const filename = 'test/fixtures/file.js';
+        const filename = path.resolve(env.pwd, 'test/fixtures/file.js');
 
         env.sourceFiles.push(filename);
-        doclets = srcParser.parse(
-            path.normalize( path.join(env.pwd, filename) )
-        );
+        doclets = srcParser.parse(filename);
 
         expect(doclets[0].name).toMatch(/^file\.js$/);
     });

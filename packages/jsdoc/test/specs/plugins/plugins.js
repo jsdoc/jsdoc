@@ -1,7 +1,7 @@
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe('plugins', () => {
     const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     let docSet;
     const pluginPaths = [

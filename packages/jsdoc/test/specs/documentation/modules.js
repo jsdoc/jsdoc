@@ -1,13 +1,9 @@
 describe('module names', () => {
     const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     let doclets;
-
-    const pwd = env.pwd;
     let srcParser = null;
-    const sourceFiles = env.sourceFiles.slice(0);
-    const sourcePaths = env.opts._.slice(0);
 
     beforeEach(() => {
         env.opts._ = [path.normalize(`${__dirname}/../../fixtures/modules/data`)];
@@ -17,19 +13,11 @@ describe('module names', () => {
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 
-    afterEach(() => {
-        env.opts._ = sourcePaths;
-        env.pwd = pwd;
-        env.sourceFiles = sourceFiles;
-    });
-
     it('should create a name from the file path when no documented module name exists', () => {
-        const filename = 'test/fixtures/modules/data/mod-1.js';
+        const filename = path.resolve(env.pwd, 'test/fixtures/modules/data/mod-1.js');
 
         env.sourceFiles.push(filename);
-        doclets = srcParser.parse(
-            path.normalize( path.join(env.pwd, filename) )
-        );
+        doclets = srcParser.parse(filename);
 
         expect(doclets.length).toBeGreaterThan(1);
         expect(doclets[0].longname).toBe('module:mod-1');

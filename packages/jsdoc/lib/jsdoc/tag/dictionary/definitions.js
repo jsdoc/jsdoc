@@ -3,12 +3,13 @@
  * @module jsdoc/tag/dictionary/definitions
  */
 const _ = require('lodash');
+const commonPathPrefix = require('common-path-prefix');
 const env = require('jsdoc/env');
 const { isInlineTag } = require('jsdoc/tag/inline');
 const logger = require('jsdoc/util/logger');
 const name = require('jsdoc/name');
 const { nodeToValue } = require('jsdoc/src/astnode');
-const path = require('jsdoc/path');
+const path = require('path');
 const { Syntax } = require('jsdoc/src/syntax');
 const parseTagType = require('jsdoc/tag/type').parse;
 
@@ -46,9 +47,13 @@ function getSourcePaths() {
 }
 
 function filepathMinusPrefix(filepath) {
+    let commonPrefix;
     const sourcePaths = getSourcePaths();
-    const commonPrefix = path.commonPrefix(sourcePaths);
     let result = '';
+
+    commonPrefix = sourcePaths.length > 1 ?
+        commonPathPrefix(sourcePaths) :
+        path.dirname(sourcePaths[0] || '') + path.sep;
 
     if (filepath) {
         filepath = path.normalize(filepath);

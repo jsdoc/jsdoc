@@ -1,6 +1,6 @@
 /* global jsdoc */
 const env = require('jsdoc/env');
-const path = require('jsdoc/path');
+const path = require('path');
 
 describe('markdown plugin', () => {
     const pluginPath = 'plugins/markdown';

@@ -5,7 +5,7 @@ const _ = require('lodash');
 let dictionary = require('jsdoc/tag/dictionary');
 const { isFunction } = require('jsdoc/src/astnode');
 const name = require('jsdoc/name');
-const path = require('jsdoc/path');
+const path = require('path');
 const { Syntax } = require('jsdoc/src/syntax');
 const { Tag } = require('jsdoc/tag');
 

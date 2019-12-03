@@ -2,7 +2,7 @@
 
 describe('commentConvert plugin', () => {
     const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     let docSet;
     const parser = jsdoc.createParser();

@@ -6,7 +6,7 @@ describe('jsdoc/src/parser', () => {
     const fs = require('jsdoc/fs');
     const jsdocParser = require('jsdoc/src/parser');
     const logger = require('jsdoc/util/logger');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     it('should exist', () => {
         expect(jsdocParser).toBeObject();

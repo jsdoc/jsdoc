@@ -6,7 +6,7 @@ const dictionary = require('jsdoc/tag/dictionary');
 const env = require('jsdoc/env');
 const fs = require('jsdoc/fs');
 const handlers = require('jsdoc/src/handlers');
-const path = require('jsdoc/path');
+const path = require('path');
 
 const originalDictionary = dictionary;
 const parseResults = [];

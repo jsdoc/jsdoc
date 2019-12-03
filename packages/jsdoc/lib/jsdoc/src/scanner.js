@@ -6,7 +6,7 @@ const { EventEmitter } = require('events');
 const env = require('jsdoc/env');
 const fs = require('jsdoc/fs');
 const logger = require('jsdoc/util/logger');
-const path = require('jsdoc/path');
+const path = require('path');
 
 /**
  * @extends module:events.EventEmitter

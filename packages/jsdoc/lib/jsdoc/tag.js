@@ -1,17 +1,10 @@
 /**
  * Functionality related to JSDoc tags.
  * @module jsdoc/tag
- * @requires module:jsdoc/env
- * @requires module:jsdoc/path
- * @requires module:jsdoc/tag/dictionary
- * @requires module:jsdoc/tag/validator
- * @requires module:jsdoc/tag/type
- * @requires module:jsdoc/util/logger
- * @requires module:util
  */
 const env = require('jsdoc/env');
 const logger = require('jsdoc/util/logger');
-const path = require('jsdoc/path');
+const path = require('path');
 const tag = {
     dictionary: require('jsdoc/tag/dictionary'),
     validator: require('jsdoc/tag/validator'),

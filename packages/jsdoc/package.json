@@ -20,6 +20,7 @@
     "catharsis": "^0.8.11",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
+    "common-path-prefix": "^3.0.0",
     "escape-string-regexp": "^2.0.0",
     "lodash": "^4.17.15",
     "markdown-it": "^10.0.0",

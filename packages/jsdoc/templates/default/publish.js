@@ -1,9 +1,10 @@
 const _ = require('lodash');
+const commonPathPrefix = require('common-path-prefix');
 const env = require('jsdoc/env');
 const fs = require('jsdoc/fs');
 const helper = require('jsdoc/util/templateHelper');
 const logger = require('jsdoc/util/logger');
-const path = require('jsdoc/path');
+const path = require('path');
 const { taffy } = require('taffydb');
 const template = require('jsdoc/template');
 
@@ -591,7 +592,7 @@ exports.publish = (taffyData, opts, tutorials) => {
     }
 
     if (sourceFilePaths.length) {
-        sourceFiles = shortenPaths( sourceFiles, path.commonPrefix(sourceFilePaths) );
+        sourceFiles = shortenPaths( sourceFiles, commonPathPrefix(sourceFilePaths) );
     }
     data().each(doclet => {
         let docletPath;

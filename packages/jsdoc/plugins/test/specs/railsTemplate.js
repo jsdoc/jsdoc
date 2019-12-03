@@ -1,7 +1,7 @@
 /* global jsdoc */
 describe('railsTemplate plugin', () => {
     const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     const parser = jsdoc.createParser();
     const pluginPath = path.join(env.dirname, 'plugins/railsTemplate');
