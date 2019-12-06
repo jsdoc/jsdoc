@@ -14,7 +14,7 @@
     "url": "https://github.com/jsdoc/jsdoc"
   },
   "dependencies": {
-    "@babel/parser": "^7.7.4",
+    "@babel/parser": "^7.7.5",
     "@jsdoc/core": "^0.1.9",
     "bluebird": "^3.7.2",
     "catharsis": "^0.8.11",
