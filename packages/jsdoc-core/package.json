@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/core",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Core functionality for JSDoc.",
   "keywords": [
     "jsdoc"
