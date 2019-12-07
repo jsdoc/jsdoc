@@ -2,8 +2,8 @@ describe('@example tag', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/exampletag.js');
     const doc = docSet.getByLongname('x')[0];
     const doc2 = docSet.getByLongname('y')[0];
-    const txtRegExp = new RegExp('console\\.log\\("foo"\\);[\\r\\n]{1,2}console\\.log\\("bar"\\);');
-    const txt2RegExp = new RegExp('<caption>Example 2</caption>[\\r\\n]{1,2}1 \\+ 2;');
+    const txtRegExp = /console\.log\("foo"\);[\r\n]{1,2}console\.log\("bar"\)/;
+    const txt2RegExp = /<caption>Example 2<\/caption>[\r\n]{1,2}1 \+ 2;/;
 
     it("creates an 'examples' property on the doclet with the example", () => {
         expect(doc.examples).toBeArrayOfSize(1);

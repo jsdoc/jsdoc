@@ -14,8 +14,8 @@ describe('jsdoc/src/filter', () => {
     describe('Filter', () => {
         let myFilter;
 
-        const defaultIncludePattern = new RegExp('.+\\.js(doc)?$');
-        const defaultExcludePattern = new RegExp('(^|\\/|\\\\)_');
+        const defaultIncludePattern = /.+\.js(doc)?$/;
+        const defaultExcludePattern = /(^|\/|\\)_/;
 
         beforeEach(() => {
             myFilter = new filter.Filter({});
@@ -68,7 +68,7 @@ describe('jsdoc/src/filter', () => {
             });
 
             it('should contain the regexp passed to the constructor', () => {
-                const regExp = new RegExp('^foo$');
+                const regExp = /^foo$/;
                 const options = {};
 
                 options[name] = regExp;

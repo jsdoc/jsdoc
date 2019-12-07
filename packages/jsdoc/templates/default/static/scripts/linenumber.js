@@ -1,4 +1,4 @@
-/*global document */
+/* global document */
 (() => {
     const source = document.getElementsByClassName('prettyprint source linenums');
     let i = 0;

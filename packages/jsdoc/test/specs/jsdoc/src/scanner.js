@@ -3,8 +3,8 @@ describe('jsdoc/src/scanner', () => {
     const scanner = require('jsdoc/src/scanner');
 
     const filter = new (require('jsdoc/src/filter').Filter)({
-        includePattern: new RegExp('.+\\.js(doc)?$'),
-        excludePattern: new RegExp('(^|\\/|\\\\)_')
+        includePattern: /.+\.js(doc)?$/,
+        excludePattern: /(^|\/|\\)_/
     });
     const sourcePath = path.normalize(`${__dirname}/../../../fixtures/src`);
 

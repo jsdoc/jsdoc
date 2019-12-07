@@ -22,9 +22,12 @@ class Scanner extends EventEmitter {
      * @param {number} [depth]
      * @fires sourceFileFound
      */
-    scan(searchPaths = [], depth = 1, filter) {
+    scan(searchPaths, depth, filter) {
         let currentFile;
         let filePaths = [];
+
+        searchPaths = searchPaths || [];
+        depth = depth || 1;
 
         searchPaths.forEach($ => {
             const filepath = path.resolve( env.pwd, decodeURIComponent($) );
