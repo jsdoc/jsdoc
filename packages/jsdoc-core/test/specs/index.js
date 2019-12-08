@@ -5,6 +5,14 @@ describe('@jsdoc/core', () => {
         expect(core).toBeObject();
     });
 
+    describe('config', () => {
+        it('is lib/config', () => {
+            const config = require('../../lib/config');
+
+            expect(core.config).toBe(config);
+        });
+    });
+
     describe('Engine', () => {
         it('is lib/engine', () => {
             const Engine = require('../../lib/engine');
@@ -13,11 +21,11 @@ describe('@jsdoc/core', () => {
         });
     });
 
-    describe('config', () => {
-        it('is lib/config', () => {
-            const config = require('../../lib/config');
+    describe('util', () => {
+        it('is lib/util', () => {
+            const util = require('../../lib/util');
 
-            expect(core.config).toBe(config);
+            expect(core.util).toBe(util);
         });
     });
 });
