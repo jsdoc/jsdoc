@@ -415,6 +415,7 @@ function buildNav(members) {
 exports.publish = (taffyData, opts, tutorials) => {
     let classes;
     let conf;
+    let cwd;
     let externals;
     let files;
     let fromDir;
@@ -574,11 +575,12 @@ exports.publish = (taffyData, opts, tutorials) => {
             [];
         staticFileFilter = new (require('jsdoc/src/filter').Filter)(conf.default.staticFiles);
         staticFileScanner = new (require('jsdoc/src/scanner').Scanner)();
+        cwd = process.cwd();
 
         staticFilePaths.forEach(filePath => {
             let extraStaticFiles;
 
-            filePath = path.resolve(env.pwd, filePath);
+            filePath = path.resolve(cwd, filePath);
             extraStaticFiles = staticFileScanner.scan([filePath], 10, staticFileFilter);
 
             extraStaticFiles.forEach(fileName => {

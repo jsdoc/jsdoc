@@ -3,7 +3,6 @@
  * @requires module:jsdoc/fs
  */
 const { EventEmitter } = require('events');
-const env = require('jsdoc/env');
 const fs = require('jsdoc/fs');
 const logger = require('jsdoc/util/logger');
 const path = require('path');
@@ -30,7 +29,7 @@ class Scanner extends EventEmitter {
         depth = depth || 1;
 
         searchPaths.forEach($ => {
-            const filepath = path.resolve( env.pwd, decodeURIComponent($) );
+            const filepath = path.resolve(process.cwd(), decodeURIComponent($));
 
             try {
                 currentFile = fs.statSync(filepath);

@@ -7,7 +7,6 @@
 
     let env;
     let jsdocPath = __dirname;
-    const pwd = process.cwd();
 
     // Create a custom require method that adds `lib/jsdoc` and `node_modules` to the module
     // lookup path. This makes it possible to `require('jsdoc/foo')` from external templates and
@@ -30,7 +29,6 @@
 
     env = require('./lib/jsdoc/env');
     env.dirname = jsdocPath;
-    env.pwd = pwd;
     env.args = process.argv.slice(2);
 })();
 

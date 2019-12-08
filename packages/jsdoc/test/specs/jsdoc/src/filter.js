@@ -1,5 +1,4 @@
 describe('jsdoc/src/filter', () => {
-    const env = require('jsdoc/env');
     const filter = require('jsdoc/src/filter');
     const path = require('path');
 
@@ -58,7 +57,7 @@ describe('jsdoc/src/filter', () => {
                     exclude: [filename]
                 });
 
-                expect(myFilter.exclude).toEqual([path.resolve(env.pwd, filename)]);
+                expect(myFilter.exclude).toEqual([path.resolve(process.cwd(), filename)]);
             });
         });
 
@@ -100,7 +99,7 @@ describe('jsdoc/src/filter', () => {
                     '/yes.jsdoc',
                     '/_nope.js',
                     '.ignore',
-                    path.normalize(`${env.pwd}/scratch/conf.js`)
+                    path.normalize(`${process.cwd()}/scratch/conf.js`)
                 ];
 
                 myFilter = new filter.Filter({

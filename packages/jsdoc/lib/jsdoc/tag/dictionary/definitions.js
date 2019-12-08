@@ -35,7 +35,7 @@ function getSourcePaths() {
 
     if (env.opts._) {
         env.opts._.forEach(sourcePath => {
-            const resolved = path.resolve(env.pwd, sourcePath);
+            const resolved = path.resolve(process.cwd(), sourcePath);
 
             if (!sourcePaths.includes(resolved)) {
                 sourcePaths.push(resolved);

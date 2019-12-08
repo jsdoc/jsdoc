@@ -1,7 +1,6 @@
 /**
  * @module jsdoc/src/filter
  */
-const env = require('jsdoc/env');
 const path = require('path');
 
 function makeRegExp(config) {
@@ -25,8 +24,9 @@ class Filter {
      * @param {(string|RegExp)} opts.excludePattern
      */
     constructor({exclude, includePattern, excludePattern}) {
+        this._cwd = process.cwd();
         this.exclude = exclude && Array.isArray(exclude) ?
-            exclude.map($ => path.resolve(env.pwd, $)) :
+            exclude.map($ => path.resolve(this._cwd, $)) :
             null;
         this.includePattern = makeRegExp(includePattern);
         this.excludePattern = makeRegExp(excludePattern);
@@ -39,7 +39,7 @@ class Filter {
     isIncluded(filepath) {
         let included = true;
 
-        filepath = path.resolve(env.pwd, filepath);
+        filepath = path.resolve(this._cwd, filepath);
 
         if ( this.includePattern && !this.includePattern.test(filepath) ) {
             included = false;

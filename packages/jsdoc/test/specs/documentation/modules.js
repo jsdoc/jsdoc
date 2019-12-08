@@ -7,14 +7,13 @@ describe('module names', () => {
 
     beforeEach(() => {
         env.opts._ = [path.normalize(`${__dirname}/../../fixtures/modules/data`)];
-        env.pwd = env.dirname;
         env.sourceFiles = [];
         srcParser = jsdoc.createParser();
         require('jsdoc/src/handlers').attachTo(srcParser);
     });
 
     it('should create a name from the file path when no documented module name exists', () => {
-        const filename = path.resolve(env.pwd, 'test/fixtures/modules/data/mod-1.js');
+        const filename = path.resolve(env.dirname, 'test/fixtures/modules/data/mod-1.js');
 
         env.sourceFiles.push(filename);
         doclets = srcParser.parse(filename);
@@ -49,7 +48,7 @@ describe('module names', () => {
 
         env.sourceFiles.push(filename);
         doclets = srcParser.parse(
-            path.normalize( path.join(env.pwd, filename) )
+            path.normalize( path.join(env.dirname, filename) )
         );
 
         expect(doclets.length).toBeGreaterThan(1);
