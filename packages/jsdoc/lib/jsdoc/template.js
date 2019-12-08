@@ -3,7 +3,7 @@
  * @module jsdoc/template
  */
 const _ = require('lodash');
-const fs = require('jsdoc/fs');
+const fs = require('fs');
 const path = require('path');
 
 /**

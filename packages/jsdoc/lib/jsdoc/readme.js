@@ -3,7 +3,7 @@
  * @module jsdoc/readme
  */
 const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
+const fs = require('fs');
 const markdown = require('jsdoc/util/markdown');
 
 /**

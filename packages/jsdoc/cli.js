@@ -215,7 +215,7 @@ module.exports = (() => {
     };
 
     function readPackageJson(filepath) {
-        const fs = require('jsdoc/fs');
+        const fs = require('fs');
 
         try {
             return stripJsonComments( fs.readFileSync(filepath, 'utf8') );

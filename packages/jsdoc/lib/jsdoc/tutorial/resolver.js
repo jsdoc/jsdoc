@@ -2,8 +2,9 @@
  * @module jsdoc/tutorial/resolver
  */
 const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
+const fs = require('fs');
 const logger = require('jsdoc/util/logger');
+const { lsSync } = require('@jsdoc/core').util.fs;
 const path = require('path');
 const stripBom = require('strip-bom');
 const tutorial = require('jsdoc/tutorial');
@@ -96,7 +97,9 @@ exports.addTutorial = current => {
 exports.load = filepath => {
     let content;
     let current;
-    const files = fs.ls(filepath, env.opts.recurse ? env.conf.recurseDepth : undefined);
+    const files = lsSync(filepath, {
+        depth: env.opts.recurse ? env.conf.recurseDepth : 0
+    });
     let name;
     let match;
     let type;

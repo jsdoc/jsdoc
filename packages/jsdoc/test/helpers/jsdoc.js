@@ -4,7 +4,7 @@ const { createParser } = require('jsdoc/src/parser');
 const { defineTags } = require('jsdoc/tag/dictionary/definitions');
 const dictionary = require('jsdoc/tag/dictionary');
 const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
+const fs = require('fs');
 const handlers = require('jsdoc/src/handlers');
 const path = require('path');
 

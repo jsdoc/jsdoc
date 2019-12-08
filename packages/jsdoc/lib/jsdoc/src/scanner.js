@@ -1,11 +1,11 @@
 /**
  * @module jsdoc/src/scanner
- * @requires module:jsdoc/fs
  */
 const { EventEmitter } = require('events');
-const fs = require('jsdoc/fs');
 const logger = require('jsdoc/util/logger');
+const { lsSync } = require('@jsdoc/core').util.fs;
 const path = require('path');
+const { statSync } = require('fs');
 
 /**
  * @extends module:events.EventEmitter
@@ -32,7 +32,7 @@ class Scanner extends EventEmitter {
             const filepath = path.resolve(process.cwd(), decodeURIComponent($));
 
             try {
-                currentFile = fs.statSync(filepath);
+                currentFile = statSync(filepath);
             }
             catch (e) {
                 logger.error('Unable to find the source file or directory %s', filepath);
@@ -44,7 +44,7 @@ class Scanner extends EventEmitter {
                 filePaths.push(filepath);
             }
             else {
-                filePaths = filePaths.concat( fs.ls(filepath, depth) );
+                filePaths = filePaths.concat(lsSync(filepath, depth));
             }
         });
 
