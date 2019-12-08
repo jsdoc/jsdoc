@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "cosmiconfig": "^6.0.0",
+    "klaw-sync": "^6.0.0",
     "lodash": "^4.17.15",
+    "mkdirp": "^0.5.1",
     "ow": "^0.15.0",
     "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.0.1",

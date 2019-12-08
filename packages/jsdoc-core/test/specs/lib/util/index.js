@@ -12,4 +12,12 @@ describe('@jsdoc/core/lib/util', () => {
             expect(util.cast).toBe(cast);
         });
     });
+
+    describe('fs', () => {
+        it('is lib/util/fs', () => {
+            const fs = require('../../../../lib/util/fs');
+
+            expect(util.fs).toBe(fs);
+        });
+    });
 });
