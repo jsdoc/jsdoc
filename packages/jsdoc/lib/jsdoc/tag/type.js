@@ -1,7 +1,7 @@
 /**
  * @module jsdoc/tag/type
  */
-const { cast } = require('@jsdoc/core').util;
+const { cast } = require('@jsdoc/core');
 const catharsis = require('catharsis');
 const { extractInlineTag } = require('jsdoc/tag/inline');
 const { splitName } = require('jsdoc/name');

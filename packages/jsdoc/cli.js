@@ -1,6 +1,7 @@
 /* eslint-disable indent, no-process-exit */
 
-const { config, Engine } = require('@jsdoc/core');
+const { config } = require('@jsdoc/core');
+const Engine = require('@jsdoc/cli');
 const env = require('jsdoc/env');
 const logger = require('jsdoc/util/logger');
 const stripBom = require('strip-bom');

@@ -4,7 +4,7 @@
 const env = require('jsdoc/env');
 const fs = require('fs');
 const logger = require('jsdoc/util/logger');
-const { lsSync } = require('@jsdoc/core').util.fs;
+const { lsSync } = require('@jsdoc/core').fs;
 const path = require('path');
 const stripBom = require('strip-bom');
 const tutorial = require('jsdoc/tutorial');
