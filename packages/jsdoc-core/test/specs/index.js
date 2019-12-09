@@ -21,6 +21,14 @@ describe('@jsdoc/core', () => {
         });
     });
 
+    describe('EventBus', () => {
+        it('is lib/bus', () => {
+            const bus = require('../../lib/bus');
+
+            expect(core.EventBus).toBe(bus);
+        });
+    });
+
     describe('fs', () => {
         it('is lib/fs', () => {
             const fs = require('../../lib/fs');
