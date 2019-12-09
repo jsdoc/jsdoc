@@ -29,5 +29,6 @@
     "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.0.1",
     "yargs-parser": "^16.1.0"
-  }
+  },
+  "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"
 }
