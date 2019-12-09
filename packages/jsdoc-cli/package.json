@@ -23,11 +23,9 @@
   },
   "dependencies": {
     "@jsdoc/core": "^0.2.0",
-    "cosmiconfig": "^6.0.0",
     "lodash": "^4.17.15",
     "ow": "^0.15.0",
     "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.0.1",
     "yargs-parser": "^16.1.0"
   },
   "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"

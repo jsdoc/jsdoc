@@ -22,9 +22,12 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
+    "cosmiconfig": "^6.0.0",
     "klaw-sync": "^6.0.0",
     "lodash": "^4.17.15",
-    "ow": "^0.15.0"
+    "ow": "^0.15.0",
+    "strip-bom": "^4.0.0",
+    "strip-json-comments": "^3.0.1"
   },
   "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"
 }
