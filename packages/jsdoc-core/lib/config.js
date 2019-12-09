@@ -84,6 +84,7 @@ const defaults = exports.defaults = {
     }
 };
 
+// TODO: Consider exporting this class.
 class Config {
     constructor(filepath, config) {
         this.config = config;

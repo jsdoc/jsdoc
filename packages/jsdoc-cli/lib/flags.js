@@ -1,4 +1,4 @@
-const cast = require('../util/cast');
+const { cast } = require('@jsdoc/core');
 const querystring = require('querystring');
 
 // TODO: Document the format of this object, then update the docs for `Engine`.

@@ -4,12 +4,12 @@
  * @module @jsdoc/core
  */
 
+const cast = require('./lib/cast');
 const config = require('./lib/config');
-const Engine = require('./lib/engine');
-const util = require('./lib/util');
+const fs = require('./lib/fs');
 
 module.exports = {
+    cast,
     config,
-    Engine,
-    util
+    fs
 };

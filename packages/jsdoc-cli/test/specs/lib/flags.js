@@ -1,4 +1,4 @@
-const flags = require('../../../../lib/engine/flags');
+const flags = require('../../../lib/flags');
 const ow = require('ow');
 
 function validate(name, opts) {
@@ -23,7 +23,7 @@ function validate(name, opts) {
     }
 }
 
-describe('@jsdoc/core/lib/engine/flags', () => {
+describe('@jsdoc/cli/lib/flags', () => {
     it('is an object', () => {
         expect(flags).toBeObject();
     });

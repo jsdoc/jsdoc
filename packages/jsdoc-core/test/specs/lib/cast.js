@@ -1,5 +1,5 @@
-describe('@jsdoc/core/lib/util/cast', () => {
-    const cast = require('../../../../lib/util/cast');
+describe('@jsdoc/core/lib/cast', () => {
+    const cast = require('../../../lib/cast');
 
     it('is a function', () => {
         expect(cast).toBeFunction();

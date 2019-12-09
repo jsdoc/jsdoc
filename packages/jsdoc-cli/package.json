@@ -1,7 +1,7 @@
 {
-  "name": "@jsdoc/core",
-  "version": "0.1.11",
-  "description": "Core functionality for JSDoc.",
+  "name": "@jsdoc/cli",
+  "version": "0.0.1",
+  "description": "Command-line tool for JSDoc.",
   "keywords": [
     "jsdoc"
   ],
@@ -22,9 +22,12 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "klaw-sync": "^6.0.0",
+    "@jsdoc/core": "^0.1.11",
+    "cosmiconfig": "^6.0.0",
     "lodash": "^4.17.15",
-    "ow": "^0.15.0"
-  },
-  "gitHead": "81a824eb0968851f836fc6069376d0337775f9ba"
+    "ow": "^0.15.0",
+    "strip-bom": "^4.0.0",
+    "strip-json-comments": "^3.0.1",
+    "yargs-parser": "^16.1.0"
+  }
 }

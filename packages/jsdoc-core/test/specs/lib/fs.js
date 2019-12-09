@@ -1,6 +1,6 @@
-describe('@jsdoc/util/lib/fs', () => {
+describe('@jsdoc/core/lib/fs', () => {
     const mockFs = require('mock-fs');
-    const fsUtil = require('../../../../lib/util/fs');
+    const fsUtil = require('../../../lib/fs');
     const path = require('path');
 
     afterEach(() => mockFs.restore());

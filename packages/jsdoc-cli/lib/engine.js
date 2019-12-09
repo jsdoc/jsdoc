@@ -81,7 +81,7 @@ const { KNOWN_FLAGS, YARGS_FLAGS } = (() => {
 /**
  * CLI engine for JSDoc.
  *
- * @alias module:@jsdoc/core.Engine
+ * @alias module:@jsdoc/cli
  */
 class Engine {
     /**

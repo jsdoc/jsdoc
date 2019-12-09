@@ -1,7 +1,7 @@
-const Engine = require('../../../../lib/engine');
-const flags = require('../../../../lib/engine/flags');
+const Engine = require('../../../lib/engine');
+const flags = require('../../../lib/flags');
 
-describe('@jsdoc/core/lib/engine', () => {
+describe('@jsdoc/cli/lib/engine', () => {
     it('exists', () => {
         expect(Engine).toBeFunction();
     });
