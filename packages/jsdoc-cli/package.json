@@ -28,5 +28,8 @@
     "strip-bom": "^4.0.0",
     "yargs-parser": "^16.1.0"
   },
+  "engines": {
+    "node": ">=10.18.0"
+  },
   "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"
 }
