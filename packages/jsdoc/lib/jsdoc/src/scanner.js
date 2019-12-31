@@ -3,7 +3,7 @@
  */
 const { EventEmitter } = require('events');
 const logger = require('jsdoc/util/logger');
-const { lsSync } = require('@jsdoc/core').fs;
+const { lsSync } = require('@jsdoc/util').fs;
 const path = require('path');
 const { statSync } = require('fs');
 

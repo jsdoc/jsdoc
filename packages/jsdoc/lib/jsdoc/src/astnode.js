@@ -1,6 +1,6 @@
 // TODO: docs
 /** @module jsdoc/src/astnode */
-const { cast } = require('@jsdoc/core');
+const { cast } = require('@jsdoc/util');
 const env = require('jsdoc/env');
 const name = require('jsdoc/name');
 const { Syntax } = require('jsdoc/src/syntax');

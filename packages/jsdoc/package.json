@@ -17,6 +17,7 @@
     "@babel/parser": "^7.7.7",
     "@jsdoc/cli": "^0.2.0",
     "@jsdoc/core": "^0.3.0",
+    "@jsdoc/util": "^0.1.0",
     "bluebird": "^3.7.2",
     "catharsis": "^0.8.11",
     "code-prettify": "^0.1.0",
