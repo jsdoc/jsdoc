@@ -1,4 +1,4 @@
-describe('@jsdoc/core/lib/bus', () => {
+describe('@jsdoc/util/lib/bus', () => {
     const EventBus = require('../../../lib/bus');
     const EventEmitter = require('events').EventEmitter;
 

@@ -1,11 +1,11 @@
-const { cast } = require('@jsdoc/core');
+const { cast } = require('@jsdoc/util');
 const querystring = require('querystring');
 
 // TODO: Document the format of this object, then update the docs for `Engine`.
 /**
  * Command-line flags recognized by JSDoc.
  *
- * @alias module:@jsdoc/core/lib/engine/flags
+ * @alias module:@jsdoc/cli/lib/flags
  */
 module.exports = {
     access: {

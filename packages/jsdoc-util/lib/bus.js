@@ -17,7 +17,7 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
  *     to `true` when you create the event bus. (Setting this property to `true` also forces a new
  *     event bus to be created, even if there's a cached event bus with the same name.)
  *
- * @alias module:@jsdoc/bus
+ * @alias module:@jsdoc/util.EventBus
  * @extends module:events.EventEmitter
  */
 class EventBus extends EventEmitter {

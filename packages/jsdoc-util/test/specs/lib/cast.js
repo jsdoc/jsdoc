@@ -1,4 +1,4 @@
-describe('@jsdoc/core/lib/cast', () => {
+describe('@jsdoc/util/lib/cast', () => {
     const cast = require('../../../lib/cast');
 
     it('is a function', () => {

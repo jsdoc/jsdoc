@@ -1,4 +1,4 @@
-describe('@jsdoc/core/lib/fs', () => {
+describe('@jsdoc/util/lib/fs', () => {
     const mockFs = require('mock-fs');
     const fsUtil = require('../../../lib/fs');
     const path = require('path');

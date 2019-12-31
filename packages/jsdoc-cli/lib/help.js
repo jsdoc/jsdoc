@@ -88,7 +88,7 @@ function formatHelpInfo({names, descriptions}, {maxLength}) {
 /**
  * Get a formatted version of the help text for JSDoc.
  *
- * @alias module:@jsdoc/core/lib/engine/help
+ * @alias module:@jsdoc/cli/lib/help
  * @param {Object} opts - Options for formatting the help text.
  * @param {number} opts.maxLength - The maximum length of each line in the formatted text.
  * @return {string} The formatted help text.

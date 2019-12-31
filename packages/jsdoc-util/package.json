@@ -1,7 +1,7 @@
 {
-  "name": "@jsdoc/core",
-  "version": "0.2.2",
-  "description": "Core functionality for JSDoc.",
+  "name": "@jsdoc/util",
+  "version": "0.0.1",
+  "description": "Utility modules for JSDoc.",
   "keywords": [
     "jsdoc"
   ],
@@ -22,9 +22,9 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "cosmiconfig": "^6.0.0",
-    "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.0.1"
+    "klaw-sync": "^6.0.0",
+    "lodash": "^4.17.15",
+    "ow": "^0.15.0"
   },
   "engines": {
     "node": ">=10.18.0"

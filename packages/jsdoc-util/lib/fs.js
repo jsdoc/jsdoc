@@ -1,5 +1,5 @@
 /**
- * @module @jsdoc/util/lib/fs
+ * @alias @jsdoc/util.fs
  */
 
 const _ = require('lodash');

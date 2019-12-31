@@ -1,7 +1,7 @@
 /**
  * Module to convert values between various JavaScript types.
  *
- * @alias module:@jsdoc/core.util.cast
+ * @alias module:@jsdoc/util.cast
  */
 
 /**
