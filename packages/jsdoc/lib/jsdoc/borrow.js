@@ -3,7 +3,7 @@
  * @module jsdoc/borrow
  */
 const _ = require('lodash');
-const { SCOPE } = require('jsdoc/name');
+const { SCOPE } = require('@jsdoc/core').name;
 
 function cloneBorrowedDoclets({borrowed, longname}, doclets) {
     borrowed.forEach(({from, as}) => {

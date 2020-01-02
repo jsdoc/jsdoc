@@ -4,7 +4,7 @@
 // TODO: consider exporting more stuff so users can override it
 const astNode = require('jsdoc/src/astnode');
 const combineDoclets = require('jsdoc/doclet').combine;
-const { getBasename, LONGNAMES } = require('jsdoc/name');
+const { getBasename, LONGNAMES } = require('@jsdoc/core').name;
 const { Syntax } = require('jsdoc/src/syntax');
 
 /**

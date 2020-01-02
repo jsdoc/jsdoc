@@ -4,10 +4,10 @@
  */
 
 const _ = require('lodash');
+const { fromParts, SCOPE, toParts } = require('@jsdoc/core').name;
 const jsdoc = {
     doclet: require('jsdoc/doclet')
 };
-const name = require('jsdoc/name');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -99,11 +99,11 @@ function addDocletProperty(doclets, propName, value) {
 }
 
 function reparentDoclet({longname}, child) {
-    const parts = name.shorten(child.longname);
+    const parts = toParts(child.longname);
 
     parts.memberof = longname;
     child.memberof = longname;
-    child.longname = name.combine(parts);
+    child.longname = fromParts(parts);
 }
 
 function parentIsClass({kind}) {
@@ -111,11 +111,11 @@ function parentIsClass({kind}) {
 }
 
 function staticToInstance(doclet) {
-    const parts = name.shorten(doclet.longname);
+    const parts = toParts(doclet.longname);
 
-    parts.scope = name.SCOPE.PUNC.INSTANCE;
-    doclet.longname = name.combine(parts);
-    doclet.scope = name.SCOPE.NAMES.INSTANCE;
+    parts.scope = SCOPE.PUNC.INSTANCE;
+    doclet.longname = fromParts(parts);
+    doclet.scope = SCOPE.NAMES.INSTANCE;
 }
 
 /**
@@ -200,11 +200,11 @@ function explicitlyInherits(doclets) {
 }
 
 function changeMemberof(longname, newMemberof) {
-    const atoms = name.shorten(longname);
+    const atoms = toParts(longname);
 
     atoms.memberof = newMemberof;
 
-    return name.combine(atoms);
+    return fromParts(atoms);
 }
 
 // TODO: try to reduce overlap with similar methods
@@ -259,9 +259,9 @@ function getInheritedAdditions(doclets, docs, {documented, memberof}) {
                     member.inherited = true;
 
                     member.memberof = doc.longname;
-                    parts = name.shorten(member.longname);
+                    parts = toParts(member.longname);
                     parts.memberof = doc.longname;
-                    member.longname = name.combine(parts);
+                    member.longname = fromParts(parts);
 
                     // Indicate what the descendant is overriding. (We only care about the closest
                     // ancestor. For classes A > B > C, if B#a overrides A#a, and C#a inherits B#a,
@@ -328,10 +328,10 @@ function updateMixes(mixedDoclet, mixedLongname) {
     }
     else {
         // find the short name of the longname we're mixing in
-        mixedName = name.shorten(mixedLongname).name;
+        mixedName = toParts(mixedLongname).name;
         // find the short name of each previously mixed-in symbol
         // TODO: why do we run a map if we always shorten the same value? this looks like a bug...
-        names = mixedDoclet.mixes.map(() => name.shorten(mixedDoclet.longname).name);
+        names = mixedDoclet.mixes.map(() => toParts(mixedDoclet.longname).name);
 
         // if we're mixing `myMethod` into `MixinC` from `MixinB`, and `MixinB` had the method mixed
         // in from `MixinA`, don't show `MixinA.myMethod` in the `mixes` list

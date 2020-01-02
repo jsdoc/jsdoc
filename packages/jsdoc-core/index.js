@@ -5,7 +5,9 @@
  */
 
 const config = require('./lib/config');
+const name = require('./lib/name');
 
 module.exports = {
-    config
+    config,
+    name
 };

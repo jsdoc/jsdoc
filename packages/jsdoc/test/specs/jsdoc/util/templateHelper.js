@@ -30,8 +30,8 @@ describe("jsdoc/util/templateHelper", () => {
         expect(helper.fileExtension).toBeString();
     });
 
-    it("should export a 'scopeToPunc' property", () => {
-        expect(helper.scopeToPunc).toBeObject();
+    it("should export a 'SCOPE_TO_PUNC' property", () => {
+        expect(helper.SCOPE_TO_PUNC).toBeObject();
     });
 
     it("should export a 'getUniqueFilename' function", () => {
@@ -153,9 +153,9 @@ describe("jsdoc/util/templateHelper", () => {
         });
     });
 
-    describe("scopeToPunc", () => {
+    describe("SCOPE_TO_PUNC", () => {
         it("should map 'static' to '.', 'inner', to '~', 'instance' to '#'", () => {
-            expect(helper.scopeToPunc).toEqual({
+            expect(helper.SCOPE_TO_PUNC).toEqual({
                 static: '.',
                 inner: '~',
                 instance: '#'

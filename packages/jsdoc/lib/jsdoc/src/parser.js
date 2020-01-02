@@ -7,7 +7,7 @@ const { conf } = require('jsdoc/env');
 const { EventEmitter } = require('events');
 const fs = require('fs');
 const logger = require('jsdoc/util/logger');
-const name = require('jsdoc/name');
+const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
 const { Syntax } = require('jsdoc/src/syntax');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
@@ -131,7 +131,7 @@ class Parser extends EventEmitter {
         };
         this._byNodeId = new DocletCache();
         this._byLongname = new DocletCache();
-        this._byLongname.put(name.LONGNAMES.GLOBAL, {
+        this._byLongname.put(LONGNAMES.GLOBAL, {
             meta: {}
         });
     }
@@ -315,7 +315,7 @@ class Parser extends EventEmitter {
                     node.type === Syntax.ArrowFunctionExpression) &&
                     !this._getDocletById(node.nodeId) ) {
                 fakeDoclet = {
-                    longname: name.LONGNAMES.ANONYMOUS,
+                    longname: LONGNAMES.ANONYMOUS,
                     meta: {
                         code: e.code
                     }
@@ -361,20 +361,20 @@ class Parser extends EventEmitter {
             doclet = this._getDocletById(node.enclosingScope.nodeId);
 
             if (!doclet) {
-                result.memberof = name.LONGNAMES.ANONYMOUS + name.SCOPE.PUNC.INNER;
+                result.memberof = LONGNAMES.ANONYMOUS + SCOPE.PUNC.INNER;
             }
             else {
-                result.memberof = doclet.longname + name.SCOPE.PUNC.INNER;
+                result.memberof = doclet.longname + SCOPE.PUNC.INNER;
             }
         }
         else if (type === Syntax.ClassPrivateProperty || type === Syntax.ClassProperty) {
             doclet = this._getDocletById(node.enclosingScope.nodeId);
 
             if (!doclet) {
-                result.memberof = name.LONGNAMES.ANONYMOUS + name.SCOPE.PUNC.INSTANCE;
+                result.memberof = LONGNAMES.ANONYMOUS + SCOPE.PUNC.INSTANCE;
             }
             else {
-                result.memberof = doclet.longname + name.SCOPE.PUNC.INSTANCE;
+                result.memberof = doclet.longname + SCOPE.PUNC.INSTANCE;
             }
         }
         else if (type === Syntax.MethodDefinition && node.kind === 'constructor') {
@@ -382,7 +382,7 @@ class Parser extends EventEmitter {
 
             // global classes aren't a member of anything
             if (doclet.memberof) {
-                result.memberof = doclet.memberof + name.SCOPE.PUNC.INNER;
+                result.memberof = doclet.memberof + SCOPE.PUNC.INNER;
             }
         }
         // special case for methods in classes that are returned by arrow function expressions; for
@@ -395,14 +395,14 @@ class Parser extends EventEmitter {
             if (doclet) {
                 result.memberof = doclet.longname +
                     (node.static === true ?
-                        name.SCOPE.PUNC.STATIC :
-                        name.SCOPE.PUNC.INSTANCE);
+                        SCOPE.PUNC.STATIC :
+                        SCOPE.PUNC.INSTANCE);
             }
         }
         else {
             // check local references for aliases
             scope = node;
-            basename = name.getBasename( astNode.nodeToValue(node) );
+            basename = getBasename( astNode.nodeToValue(node) );
 
             // walk up the scope chain until we find the scope in which the node is defined
             while (scope.enclosingScope) {
@@ -419,7 +419,7 @@ class Parser extends EventEmitter {
             }
 
             // do we know that it's a global?
-            doclet = this._getDocletByLongname(name.LONGNAMES.GLOBAL);
+            doclet = this._getDocletByLongname(LONGNAMES.GLOBAL);
             if ( doclet && definedInScope(doclet, basename) ) {
                 result.memberof = doclet.meta.vars[basename];
                 result.basename = basename;
@@ -447,7 +447,7 @@ class Parser extends EventEmitter {
      */
     _getParentClass({enclosingScope}) {
         let doclet;
-        let nameAtoms;
+        let parts;
         let scope = enclosingScope;
 
         function isClass(d) {
@@ -466,9 +466,9 @@ class Parser extends EventEmitter {
 
                 // is the doclet for an instance member of a class? if so, try to get the doclet for the
                 // owning class
-                nameAtoms = name.shorten(doclet.longname);
-                if (nameAtoms.scope === name.SCOPE.PUNC.INSTANCE) {
-                    doclet = this._getDocletByLongname(nameAtoms.memberof);
+                parts = toParts(doclet.longname);
+                if (parts.scope === SCOPE.PUNC.INSTANCE) {
+                    doclet = this._getDocletByLongname(parts.memberof);
                     if ( isClass(doclet) ) {
                         break;
                     }
@@ -506,7 +506,7 @@ class Parser extends EventEmitter {
             }
 
             if (!doclet) {
-                result = name.LONGNAMES.ANONYMOUS; // TODO handle global this?
+                result = LONGNAMES.ANONYMOUS; // TODO handle global this?
             }
             else if (doclet.this) {
                 result = doclet.this;

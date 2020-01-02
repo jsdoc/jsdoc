@@ -12,4 +12,12 @@ describe('@jsdoc/core', () => {
             expect(core.config).toBe(config);
         });
     });
+
+    describe('name', () => {
+        it('is lib/name', () => {
+            const name = require('../../lib/name');
+
+            expect(core.name).toBe(name);
+        });
+    });
 });

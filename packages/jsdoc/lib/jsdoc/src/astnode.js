@@ -2,7 +2,7 @@
 /** @module jsdoc/src/astnode */
 const { cast } = require('@jsdoc/util');
 const env = require('jsdoc/env');
-const name = require('jsdoc/name');
+const { SCOPE } = require('@jsdoc/core').name;
 const { Syntax } = require('jsdoc/src/syntax');
 
 // Counter for generating unique node IDs.
@@ -213,7 +213,7 @@ const nodeToValue = exports.nodeToValue = node => {
             parent = node.parent.parent;
             // for class expressions, we want the name of the variable the class is assigned to
             // (but there won't be a name if the class is returned by an arrow function expression)
-            // TODO: we should use `name.LONGNAMES.ANONYMOUS` instead of an empty string, but that
+            // TODO: we should use `LONGNAMES.ANONYMOUS` instead of an empty string, but that
             // causes problems downstream if the parent class has an `@alias` tag
             if (parent.type === Syntax.ClassExpression) {
                 str = nodeToValue(parent.parent) || '';
@@ -245,7 +245,7 @@ const nodeToValue = exports.nodeToValue = node => {
 
             if (node.kind !== 'constructor') {
                 if (str) {
-                    str += node.static ? name.SCOPE.PUNC.STATIC : name.SCOPE.PUNC.INSTANCE;
+                    str += node.static ? SCOPE.PUNC.STATIC : SCOPE.PUNC.INSTANCE;
                 }
                 str += nodeToValue(node.key);
             }

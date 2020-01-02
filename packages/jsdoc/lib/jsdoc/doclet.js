@@ -4,24 +4,24 @@
 const _ = require('lodash');
 let dictionary = require('jsdoc/tag/dictionary');
 const { isFunction } = require('jsdoc/src/astnode');
-const name = require('jsdoc/name');
+const {
+    applyNamespace,
+    hasLeadingScope,
+    hasTrailingScope,
+    LONGNAMES,
+    MODULE_NAMESPACE,
+    nameIsLongname,
+    prototypeToPunc,
+    PUNC_TO_SCOPE,
+    SCOPE,
+    SCOPE_TO_PUNC,
+    toParts
+} = require('@jsdoc/core').name;
 const path = require('path');
 const { Syntax } = require('jsdoc/src/syntax');
 const { Tag } = require('jsdoc/tag');
 
-function applyTag(doclet, {title, value}) {
-    if (title === 'name') {
-        doclet.name = value;
-    }
-
-    if (title === 'kind') {
-        doclet.kind = value;
-    }
-
-    if (title === 'description') {
-        doclet.description = value;
-    }
-}
+const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
 
 function fakeMeta(node) {
     return {
@@ -36,14 +36,14 @@ function codeToKind(code) {
     let kind = 'member';
     const node = code.node;
 
-    if ( isFunction(code.type) && code.type !== Syntax.MethodDefinition ) {
+    if (isFunction(code.type) && code.type !== Syntax.MethodDefinition) {
         kind = 'function';
     }
-    else if (code.type === Syntax.MethodDefinition) {
-        if (code.node.kind === 'constructor') {
+    else if (code.type === Syntax.MethodDefinition && node) {
+        if (node.kind === 'constructor') {
             kind = 'class';
         }
-        else if (code.node.kind !== 'get' && code.node.kind !== 'set') {
+        else if (node.kind !== 'get' && node.kind !== 'set') {
             kind = 'function';
         }
     }
@@ -62,7 +62,7 @@ function codeToKind(code) {
         // this value will often be an Identifier for a variable, which isn't very useful
         kind = codeToKind(fakeMeta(node.local));
     }
-    else if ( code.node && code.node.parent && isFunction(code.node.parent) ) {
+    else if (node && node.parent && isFunction(node.parent)) {
         kind = 'param';
     }
 
@@ -70,7 +70,9 @@ function codeToKind(code) {
 }
 
 function unwrap(docletSrc) {
-    if (!docletSrc) { return ''; }
+    if (!docletSrc) {
+        return '';
+    }
 
     // note: keep trailing whitespace for @examples
     // extra opening/closing stars are ignored
@@ -142,6 +144,135 @@ function fixDescription(docletSrc, {code}) {
 }
 
 /**
+ * Resolves the following properties of a doclet:
+ *
+ * + `name`
+ * + `longname`
+ * + `memberof`
+ * + `variation`
+ *
+ * @private
+ */
+function resolve(doclet) {
+    let about = {};
+    let memberof = doclet.memberof || '';
+    let metaName;
+    let name = doclet.name ? String(doclet.name) : '';
+    let puncAndName;
+    let puncAndNameIndex;
+
+    // Change `MyClass.prototype.instanceMethod` to `MyClass#instanceMethod`
+    // (but not in function params, which lack `doclet.kind`).
+    // TODO: Check for specific `doclet.kind` values (probably `function`, `class`, and `module`).
+    if (name && doclet.kind) {
+        name = prototypeToPunc(name);
+    }
+    doclet.name = name;
+
+    // Does the doclet have an alias that identifies the memberof? If so, use it
+    if (doclet.alias) {
+        about = toParts(name);
+
+        if (about.memberof) {
+            memberof = about.memberof;
+        }
+    }
+    // Member of a var in an outer scope?
+    else if (name && !memberof && doclet.meta.code && doclet.meta.code.funcscope) {
+        name = doclet.longname = doclet.meta.code.funcscope + SCOPE.PUNC.INNER + name;
+    }
+
+    if (memberof || doclet.forceMemberof) { // @memberof tag given
+        memberof = prototypeToPunc(memberof);
+
+        // The name is a complete longname, like `@name foo.bar` with `@memberof foo`.
+        if (name && nameIsLongname(name, memberof) && name !== memberof) {
+            about = toParts(name, (doclet.forceMemberof ? memberof : undefined));
+        }
+        // The name and memberof are identical and refer to a module, like `@name module:foo` with
+        // `@memberof module:foo`.
+        else if (name && name === memberof && name.indexOf(MODULE_NAMESPACE) === 0) {
+            about = toParts(name, (doclet.forceMemberof ? memberof : undefined));
+        }
+        // The name and memberof are identical, like `@name foo` with `@memberof foo`.
+        else if (name && name === memberof) {
+            doclet.scope = doclet.scope || DEFAULT_SCOPE;
+            name = memberof + SCOPE_TO_PUNC[doclet.scope] + name;
+            about = toParts(name, (doclet.forceMemberof ? memberof : undefined));
+        }
+        // Like `@memberof foo#` or `@memberof foo~`.
+        else if (name && hasTrailingScope(memberof) ) {
+            about = toParts(memberof + name, (doclet.forceMemberof ? memberof : undefined));
+        }
+        else if (name && doclet.scope) {
+            about = toParts(memberof + (SCOPE_TO_PUNC[doclet.scope] || '') + name,
+                (doclet.forceMemberof ? memberof : undefined));
+        }
+    } else {
+        // No memberof.
+        about = toParts(name);
+    }
+
+    if (about.name) {
+        doclet.name = about.name;
+    }
+
+    if (about.memberof) {
+        doclet.setMemberof(about.memberof);
+    }
+
+    if (about.longname && (!doclet.longname || doclet.longname === doclet.name)) {
+        doclet.setLongname(about.longname);
+    }
+
+    if (doclet.scope === SCOPE.NAMES.GLOBAL) { // via @global tag?
+        doclet.setLongname(doclet.name);
+        delete doclet.memberof;
+    }
+    else if (about.scope) {
+        if (about.memberof === LONGNAMES.GLOBAL) { // via @memberof <global> ?
+            doclet.scope = SCOPE.NAMES.GLOBAL;
+        }
+        else {
+            doclet.scope = PUNC_TO_SCOPE[about.scope];
+        }
+    }
+    else if (doclet.name && doclet.memberof && !doclet.longname) {
+        if (hasLeadingScope(doclet.name)) {
+            doclet.scope = PUNC_TO_SCOPE[RegExp.$1];
+            doclet.name = doclet.name.substr(1);
+        }
+        else if (doclet.meta.code && doclet.meta.code.name) {
+            // HACK: Handle cases where an ES 2015 class is a static memberof something else, and
+            // the class has instance members. In these cases, we have to detect the instance
+            // members' scope by looking at the meta info. There's almost certainly a better way to
+            // do this...
+            metaName = String(doclet.meta.code.name);
+            puncAndName = SCOPE.PUNC.INSTANCE + doclet.name;
+            puncAndNameIndex = metaName.indexOf(puncAndName);
+            if (
+                puncAndNameIndex !== -1 &&
+                (puncAndNameIndex === metaName.length - puncAndName.length)
+            ) {
+                doclet.scope = SCOPE.NAMES.INSTANCE;
+            }
+        }
+
+        doclet.scope = doclet.scope || DEFAULT_SCOPE;
+        doclet.setLongname(doclet.memberof + SCOPE_TO_PUNC[doclet.scope] + doclet.name);
+    }
+
+    if (about.variation) {
+        doclet.variation = about.variation;
+    }
+
+    // If we never found a longname, just use an empty string.
+    if (!doclet.longname) {
+        doclet.longname = '';
+    }
+}
+
+/**
  * Replace the existing tag dictionary with a new tag dictionary.
  *
  * Used for testing only.
@@ -156,7 +287,7 @@ exports._replaceDictionary = function _replaceDictionary(dict) {
 };
 
 function removeGlobal(longname) {
-    const globalRegexp = new RegExp(`^${name.LONGNAMES.GLOBAL}\\.?`);
+    const globalRegexp = new RegExp(`^${LONGNAMES.GLOBAL}\\.?`);
 
     return longname.replace(globalRegexp, '');
 }
@@ -269,13 +400,13 @@ class Doclet {
         this.postProcess();
     }
 
+    // TODO: We call this method in the constructor _and_ in `jsdoc/src/handlers`. It appears that
+    // if we don't call the method twice, various doclet properties can be incorrect, including name
+    // and memberof.
     /** Called once after all tags have been added. */
     postProcess() {
-        let i;
-        let l;
-
         if (!this.preserveName) {
-            name.resolve(this);
+            resolve(this);
         }
         if (this.name && !this.longname) {
             this.setLongname(this.name);
@@ -294,7 +425,7 @@ class Doclet {
 
         // add in any missing param names
         if (this.params && this.meta && this.meta.code && this.meta.code.paramnames) {
-            for (i = 0, l = this.params.length; i < l; i++) {
+            for (let i = 0, l = this.params.length; i < l; i++) {
                 if (!this.params[i].name) {
                     this.params[i].name = this.meta.code.paramnames[i] || '';
                 }
@@ -320,8 +451,6 @@ class Doclet {
             this.tags = this.tags || [];
             this.tags.push(newTag);
         }
-
-        applyTag(this, newTag);
     }
 
     /**
@@ -335,7 +464,8 @@ class Doclet {
          * @type {string}
          */
         this.memberof = removeGlobal(sid)
-            .replace(/\.prototype/g, name.SCOPE.PUNC.INSTANCE);
+            // TODO: Use `prototypeToPunc` instead?
+            .replace(/\.prototype/g, SCOPE.PUNC.INSTANCE);
     }
 
     /**
@@ -350,22 +480,21 @@ class Doclet {
          */
         this.longname = removeGlobal(longname);
         if (dictionary.isNamespace(this.kind)) {
-            this.longname = name.applyNamespace(this.longname, this.kind);
+            this.longname = applyNamespace(this.longname, this.kind);
         }
     }
 
     /**
      * Set the doclet's `scope` property. Must correspond to a scope name that is defined in
-     * {@link module:jsdoc/name.SCOPE.NAMES}.
+     * {@link module:@jsdoc/core.name.SCOPE.NAMES}.
      *
-     * @param {module:jsdoc/name.SCOPE.NAMES} scope - The scope for the doclet relative to the
-     * symbol's parent.
+     * @param {string} scope - The scope for the doclet relative to the symbol's parent.
      * @throws {Error} If the scope name is not recognized.
      */
     setScope(scope) {
         let errorMessage;
         let filepath;
-        const scopeNames = _.values(name.SCOPE.NAMES);
+        const scopeNames = _.values(SCOPE.NAMES);
 
         if (!scopeNames.includes(scope)) {
             filepath = getFilepath(this);

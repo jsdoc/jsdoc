@@ -4,7 +4,7 @@
 const { cast } = require('@jsdoc/util');
 const catharsis = require('catharsis');
 const { extractInlineTag } = require('jsdoc/tag/inline');
-const { splitName } = require('jsdoc/name');
+const { splitNameAndDescription } = require('@jsdoc/core').name;
 
 /**
  * Information about a type expression extracted from tag text.
@@ -91,7 +91,7 @@ function getTagInfo(tagValue, canHaveName, canHaveType) {
     }
 
     if (canHaveName) {
-        nameAndDescription = splitName(text);
+        nameAndDescription = splitNameAndDescription(text);
         name = nameAndDescription.name;
         text = nameAndDescription.description;
     }
@@ -132,7 +132,6 @@ function getTagInfo(tagValue, canHaveName, canHaveType) {
  * can vary (for example, in a function that accepts any number of parameters).
  */
 
-// TODO: move to module:jsdoc/name?
 /**
  * Extract JSDoc-style type information from the name specified in the tag info, including the
  * member name; whether the member is optional; and the default value of the member.

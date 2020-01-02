@@ -6,7 +6,7 @@ let dictionary = require('jsdoc/tag/dictionary');
 const env = require('jsdoc/env');
 const inline = require('jsdoc/tag/inline');
 const logger = require('jsdoc/util/logger');
-const name = require('jsdoc/name');
+const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = require('@jsdoc/core').name;
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -27,9 +27,9 @@ exports.setTutorials = root => {
     tutorials = root;
 };
 
-exports.globalName = name.SCOPE.NAMES.GLOBAL;
+exports.globalName = SCOPE.NAMES.GLOBAL;
 exports.fileExtension = '.html';
-exports.scopeToPunc = name.scopeToPunc;
+exports.SCOPE_TO_PUNC = SCOPE_TO_PUNC;
 
 const linkMap = {
     // two-way lookup
@@ -68,7 +68,7 @@ function getNamespace(kind) {
 
 function formatNameForLink(doclet) {
     let newName = getNamespace(doclet.kind) + (doclet.name || '') + (doclet.variation || '');
-    const scopePunc = exports.scopeToPunc[doclet.scope] || '';
+    const scopePunc = SCOPE_TO_PUNC[doclet.scope] || '';
 
     // Only prepend the scope punctuation if it's not the same character that marks the start of a
     // fragment ID. Using `#` in HTML5 fragment IDs is legal, but URLs like `foo.html##bar` are
@@ -284,7 +284,7 @@ function fragmentHash(fragmentId) {
 }
 
 function getShortName(longname) {
-    return name.shorten(longname).name;
+    return toParts(longname).name;
 }
 
 /**
@@ -693,7 +693,7 @@ exports.getAttribs = d => {
         attribs.push(d.access);
     }
 
-    if (d.scope && d.scope !== 'instance' && d.scope !== name.SCOPE.NAMES.GLOBAL) {
+    if (d.scope && d.scope !== 'instance' && d.scope !== SCOPE.NAMES.GLOBAL) {
         if (d.kind === 'function' || d.kind === 'member' || d.kind === 'constant') {
             attribs.push(d.scope);
         }
@@ -839,14 +839,14 @@ exports.getAncestorLinks = (data, doclet, cssClass) => {
     const links = [];
 
     ancestors.forEach(ancestor => {
-        const linkText = (exports.scopeToPunc[ancestor.scope] || '') + ancestor.name;
+        const linkText = (SCOPE_TO_PUNC[ancestor.scope] || '') + ancestor.name;
         const link = linkto(ancestor.longname, linkText, cssClass);
 
         links.push(link);
     });
 
     if (links.length) {
-        links[links.length - 1] += (exports.scopeToPunc[doclet.scope] || '');
+        links[links.length - 1] += (SCOPE_TO_PUNC[doclet.scope] || '');
     }
 
     return links;
@@ -977,7 +977,7 @@ exports.createLink = doclet => {
     // the doclet is within another HTML file
     else {
         filename = getFilename(doclet.memberof || exports.globalName);
-        if ( (doclet.name !== doclet.longname) || (doclet.scope === name.SCOPE.NAMES.GLOBAL) ) {
+        if ( (doclet.name !== doclet.longname) || (doclet.scope === SCOPE.NAMES.GLOBAL) ) {
             fragment = formatNameForLink(doclet);
             fragment = getId(longname, fragment);
         }
@@ -993,14 +993,14 @@ exports.createLink = doclet => {
  * tree.
  *
  * @function
- * @see module:jsdoc/name.longnamesToTree
+ * @see module:@jsdoc/core.name.longnamesToTree
  * @param {Array<string>} longnames - The longnames to convert into a tree.
  * @param {Object<string, module:jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
  * Each property should be the longname of a doclet, and each value should be the doclet for that
  * longname.
  * @return {Object} A tree with information about each longname.
  */
-exports.longnamesToTree = name.longnamesToTree;
+exports.longnamesToTree = longnamesToTree;
 
 /**
  * Replace the existing tag dictionary with a new tag dictionary.

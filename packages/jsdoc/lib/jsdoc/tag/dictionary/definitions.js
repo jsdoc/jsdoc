@@ -3,11 +3,11 @@
  * @module jsdoc/tag/dictionary/definitions
  */
 const _ = require('lodash');
+const { applyNamespace, SCOPE, LONGNAMES } = require('@jsdoc/core').name;
 const commonPathPrefix = require('common-path-prefix');
 const env = require('jsdoc/env');
 const { isInlineTag } = require('jsdoc/tag/inline');
 const logger = require('jsdoc/util/logger');
-const name = require('jsdoc/name');
 const { nodeToValue } = require('jsdoc/src/astnode');
 const path = require('path');
 const { Syntax } = require('jsdoc/src/syntax');
@@ -131,16 +131,16 @@ function setDocletMemberof(doclet, {value}) {
     }
 }
 
-function applyNamespace(docletOrNs, tag) {
+function applyNamespaceToTag(docletOrNs, tag) {
     if (typeof docletOrNs === 'string') { // ns
-        tag.value = name.applyNamespace(tag.value, docletOrNs);
+        tag.value = applyNamespace(tag.value, docletOrNs);
     }
     else { // doclet
         if (!docletOrNs.name) {
             return; // error?
         }
 
-        docletOrNs.longname = name.applyNamespace(docletOrNs.name, tag.title);
+        docletOrNs.longname = applyNamespace(docletOrNs.name, tag.title);
     }
 }
 
@@ -232,13 +232,22 @@ const internalTags = {
     },
     description: {
         mustHaveValue: true,
+        onTagged: (doclet, {value}) => {
+            doclet.description = value;
+        },
         synonyms: ['desc']
     },
     kind: {
-        mustHaveValue: true
+        mustHaveValue: true,
+        onTagged: (doclet, {value}) => {
+            doclet.kind = value;
+        }
     },
     name: {
-        mustHaveValue: true
+        mustHaveValue: true,
+        onTagged: (doclet, {value}) => {
+            doclet.name = value;
+        }
     },
     undocumented: {
         mustNotHaveValue: true,
@@ -466,7 +475,7 @@ let baseTags = exports.baseTags = {
         mustHaveValue: true,
         onTagged(doclet, tag) {
             doclet.fires = doclet.fires || [];
-            applyNamespace('event', tag);
+            applyNamespaceToTag('event', tag);
             doclet.fires.push(tag.value);
         },
         synonyms: ['emits']
@@ -487,7 +496,7 @@ let baseTags = exports.baseTags = {
     global: {
         mustNotHaveValue: true,
         onTagged(doclet) {
-            doclet.scope = name.SCOPE.NAMES.GLOBAL;
+            doclet.scope = SCOPE.NAMES.GLOBAL;
             delete doclet.memberof;
         }
     },
@@ -539,7 +548,7 @@ let baseTags = exports.baseTags = {
     },
     lends: {
         onTagged(doclet, {value}) {
-            doclet.alias = value || name.LONGNAMES.GLOBAL;
+            doclet.alias = value || LONGNAMES.GLOBAL;
             doclet.addTag('undocumented');
         }
     },
@@ -553,7 +562,7 @@ let baseTags = exports.baseTags = {
         mustHaveValue: true,
         onTagged(doclet, tag) {
             doclet.listens = doclet.listens || [];
-            applyNamespace('event', tag);
+            applyNamespaceToTag('event', tag);
             doclet.listens.push(tag.value);
         }
     },
@@ -572,7 +581,7 @@ let baseTags = exports.baseTags = {
         onTagged(doclet, tag) {
             if (tag.originalTitle === 'memberof!') {
                 doclet.forceMemberof = true;
-                if (tag.value === name.LONGNAMES.GLOBAL) {
+                if (tag.value === LONGNAMES.GLOBAL) {
                     doclet.addTag('global');
                     delete doclet.memberof;
                 }
