@@ -381,7 +381,7 @@ class Parser extends EventEmitter {
             doclet = this._getDocletById(node.enclosingScope.nodeId);
 
             // global classes aren't a member of anything
-            if (doclet.memberof) {
+            if (doclet && doclet.memberof) {
                 result.memberof = doclet.memberof + SCOPE.PUNC.INNER;
             }
         }
