@@ -174,7 +174,15 @@ function getTypeStrings(parsedType, isOutermostType) {
             types.push('*');
             break;
         case TYPES.FunctionType:
-            types.push('function');
+            typeString = 'function';
+            if ( parsedType.params ) {
+                typeString += `(${parsedType.params.map(param => 
+                    catharsis.stringify(param)).join(', ')})`;
+            }
+            if ( parsedType.result ) {
+                typeString += `:${catharsis.stringify(parsedType.result)}`;
+            }
+            types.push(typeString);
             break;
         case TYPES.NameExpression:
             types.push(parsedType.name);
