@@ -176,7 +176,7 @@ function getTypeStrings(parsedType, isOutermostType) {
         case TYPES.FunctionType:
             typeString = 'function';
             if ( parsedType.params ) {
-                typeString += `(${parsedType.params.map(param => 
+                typeString += `(${parsedType.params.map(param =>
                     catharsis.stringify(param)).join(', ')})`;
             }
             if ( parsedType.result ) {
