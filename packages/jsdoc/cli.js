@@ -7,7 +7,7 @@ const logger = require('jsdoc/util/logger');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 const Promise = require('bluebird');
-
+const fs = require('fs');
 /**
  * Helper methods for running JSDoc on the command line.
  *
@@ -374,10 +374,19 @@ module.exports = (() => {
 
         env.opts.template = env.opts.template || path.join(__dirname, 'templates', 'default');
 
-        try {
+         try {
             // TODO: Just look for a `publish` function in the specified module, not a `publish.js`
             // file _and_ a `publish` function.
-            template = require(`${env.opts.template}/publish`);
+            let _publish;
+            let _publishPath = (ext) =>`${env.opts.template}/publish.${ext}`;
+
+            if(fs.existsSync(_publishPath('js'))){
+              _publish = _publishPath('cjs');
+            }else if(fs.existsSync(_publishPath('cjs'))){
+              _publish = _publishPath('cjs');
+            };
+
+            template = require(_publish);
         }
         catch (e) {
             logger.fatal(`Unable to load template: ${e.message}` || e);
