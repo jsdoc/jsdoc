@@ -7,6 +7,7 @@ const logger = require('jsdoc/util/logger');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 const Promise = require('bluebird');
+const fs = require('fs');
 /**
  * Helper methods for running JSDoc on the command line.
  *
