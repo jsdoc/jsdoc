@@ -26,7 +26,7 @@
     "lodash": "^4.17.15",
     "ow": "^0.15.1",
     "strip-bom": "^4.0.0",
-    "yargs-parser": "^16.1.0"
+    "yargs-parser": "^17.0.0"
   },
   "engines": {
     "node": ">=10.18.0"
