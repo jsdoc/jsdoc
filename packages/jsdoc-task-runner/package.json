@@ -23,7 +23,7 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "dependency-graph": "^0.8.1",
+    "dependency-graph": "^0.9.0",
     "emittery": "^0.5.1",
     "ow": "^0.15.1",
     "p-queue": "^6.2.1"
