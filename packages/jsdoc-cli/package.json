@@ -24,7 +24,7 @@
   "dependencies": {
     "@jsdoc/core": "^0.3.0",
     "lodash": "^4.17.15",
-    "ow": "^0.15.1",
+    "ow": "^0.16.0",
     "strip-bom": "^4.0.0",
     "yargs-parser": "^17.0.0"
   },
