@@ -1,5 +1,18 @@
-const Engine = require('../../../lib/engine');
+const RealEngine = require('../../../lib/engine');
 const flags = require('../../../lib/flags');
+const { LEVELS } = require('../../../lib/logger');
+
+const TYPE_ERROR = 'TypeError';
+
+// Wrapper to prevent reuse of the event bus, which leads to `MaxListenersExceededWarning` messages.
+class Engine extends RealEngine {
+    constructor(opts) {
+        opts = opts || {};
+        opts._cacheEventBus = false;
+
+        super(opts);
+    }
+}
 
 describe('@jsdoc/cli/lib/engine', () => {
     it('exists', () => {
@@ -10,12 +23,20 @@ describe('@jsdoc/cli/lib/engine', () => {
         expect(() => new Engine()).not.toThrow();
     });
 
+    it('has a static LOG_LEVELS property', () => {
+        expect(Engine.LOG_LEVELS).toBeObject();
+    });
+
     it('has an empty array of flags by default', () => {
         expect(new Engine().flags).toBeEmptyArray();
     });
 
     it('has a property that contains the known flags', () => {
         expect(new Engine().knownFlags).toBe(flags);
+    });
+
+    it('has a logLevel property that defaults to LEVELS.WARN', () => {
+        expect(new Engine().logLevel).toBe(LEVELS.WARN);
     });
 
     it('has an undefined revision property by default', () => {
@@ -32,6 +53,19 @@ describe('@jsdoc/cli/lib/engine', () => {
 
     it('throws if the input is not an object', () => {
         expect(() => new Engine('hi')).toThrow();
+    });
+
+    it('sets the logLevel if provided', () => {
+        const logLevel = LEVELS.VERBOSE;
+        const instance = new Engine({ logLevel });
+
+        expect(instance.logLevel).toBe(logLevel);
+    });
+
+    it('throws if the logLevel is invalid', () => {
+        const logLevel = LEVELS.VERBOSE + 1;
+
+        expect(() => new Engine({ logLevel })).toThrowErrorOfType(TYPE_ERROR);
     });
 
     it('sets the revision if provided', () => {
@@ -79,6 +113,12 @@ describe('@jsdoc/cli/lib/engine', () => {
 
         it('throws on a bad maxLength option', () => {
             expect(() => instance.help({ maxLength: 'long' })).toThrow();
+        });
+    });
+
+    describe('LOG_LEVELS', () => {
+        it('is lib/logger.LEVELS', () => {
+            expect(Engine.LOG_LEVELS).toBe(LEVELS);
         });
     });
 

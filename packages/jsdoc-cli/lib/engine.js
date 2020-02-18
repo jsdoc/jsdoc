@@ -1,6 +1,8 @@
 const _ = require('lodash');
+const { EventBus } = require('@jsdoc/util');
 const flags = require('./flags');
 const help = require('./help');
+const { LEVELS, Logger } = require('./logger');
 const ow = require('ow');
 const yargs = require('yargs-parser');
 
@@ -88,17 +90,42 @@ class Engine {
      * Create an instance of the CLI engine.
      *
      * @param {Object} opts - Options for the CLI engine.
+     * @param {number} [opts.logLevel] - The maximum logging level to print to the console. Must be
+     * an enumerated value of `module:@jsdoc/cli.LOG_LEVELS`. The default value is
+     * `module:@jsdoc/cli.LOG_LEVELS.WARN`.
      * @param {string} [opts.version] - The version of JSDoc that is running.
      * @param {Date} [opts.revision] - A timestamp for the version of JSDoc that is running.
      */
     constructor(opts = {}) {
         ow(opts, ow.object);
+        // The `Logger` class validates `opts.level`, so no need to validate it here.
         ow(opts.revision, ow.optional.date);
         ow(opts.version, ow.optional.string);
 
+        this._bus = new EventBus('jsdoc', {
+            cache: _.isBoolean(opts._cacheEventBus) ? opts._cacheEventBus : true
+        });
+        this._logger = new Logger({
+            emitter: this._bus,
+            level: opts.logLevel
+        });
         this.flags = [];
         this.revision = opts.revision;
         this.version = opts.version;
+    }
+
+    /**
+     * The log level to use. Messages are logged only if they are at or above this level.
+     * Must be an enumerated value of {@link module:@jsdoc/cli.LOG_LEVELS}.
+     *
+     * The default value is `module:@jsdoc/cli.LOG_LEVELS.WARN`.
+     */
+    get logLevel() {
+        return this._logger.level;
+    }
+
+    set logLevel(level) {
+        this._logger.level = level;
     }
 
     /**
@@ -202,5 +229,7 @@ class Engine {
         return `JSDoc ${this.version} ${revision}`.trim();
     }
 }
+
+Engine.LOG_LEVELS = LEVELS;
 
 module.exports = Engine;

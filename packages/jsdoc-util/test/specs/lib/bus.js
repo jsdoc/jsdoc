@@ -2,7 +2,7 @@ describe('@jsdoc/util/lib/bus', () => {
     const EventBus = require('../../../lib/bus');
     const EventEmitter = require('events').EventEmitter;
 
-    const ignoreCache = { ignoreCache: true };
+    const ignoreCache = { cache: false };
 
     it('inherits from EventEmitter', () => {
         expect(new EventBus('foo', ignoreCache) instanceof EventEmitter).toBeTrue();
