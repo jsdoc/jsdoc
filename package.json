@@ -13,7 +13,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "klaw-sync": "^6.0.0",
     "lerna": "^3.20.2",
-    "mock-fs": "^4.10.4",
+    "mock-fs": "^4.11.0",
     "nyc": "^15.0.0"
   },
   "engines": {
