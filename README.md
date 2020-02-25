@@ -68,6 +68,7 @@ and customize your documentation. Here are a few of them:
 
 + [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)
 + [JSDoc Gulp plugin](https://github.com/mlucool/gulp-jsdoc3)
++ [JSDoc GitHub Action](https://github.com/andstor/jsdoc-action)
 
 ### Other tools
 
