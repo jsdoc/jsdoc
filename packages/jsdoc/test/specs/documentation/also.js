@@ -46,22 +46,14 @@ describe('multiple doclets per symbol', () => {
 
     it('When a file contains a JSDoc comment with an @also tag, and the "tags.allowUnknownTags" ' +
         'option is set to false, the file can be parsed without errors.', () => {
-        const logger = require('jsdoc/util/logger');
-
         const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
-        const errors = [];
 
-        function errorListener(err) {
-            errors.push(err);
+        function getDocSet() {
+            env.conf.tags.allowUnknownTags = false;
+            jsdoc.getDocSetFromFile('test/fixtures/also2.js');
+            env.conf.tags.allowUnknownTags = allowUnknownTags;
         }
 
-        logger.addListener('logger:error', errorListener);
-        env.conf.tags.allowUnknownTags = false;
-
-        jsdoc.getDocSetFromFile('test/fixtures/also2.js');
-        expect(errors[0]).not.toBeDefined();
-
-        logger.removeListener('logger:error', errorListener);
-        env.conf.tags.allowUnknownTags = allowUnknownTags;
+        expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();
     });
 });

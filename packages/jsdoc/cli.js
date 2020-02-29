@@ -3,7 +3,7 @@
 const { config } = require('@jsdoc/core');
 const Engine = require('@jsdoc/cli');
 const env = require('jsdoc/env');
-const logger = require('jsdoc/util/logger');
+const { EventBus, log } = require('@jsdoc/util');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 const Promise = require('bluebird');
@@ -22,10 +22,12 @@ module.exports = (() => {
         tmpdir: null
     };
 
-    const FATAL_ERROR_MESSAGE = 'Exiting JSDoc because an error occurred. See the previous log ' +
-        'messages for details.';
+    const bus = new EventBus('jsdoc');
     const cli = {};
     const engine = new Engine();
+    const FATAL_ERROR_MESSAGE = 'Exiting JSDoc because an error occurred. See the previous log ' +
+        'messages for details.';
+    const LOG_LEVELS = Engine.LOG_LEVELS;
 
     // TODO: docs
     cli.setVersionInfo = () => {
@@ -96,24 +98,24 @@ module.exports = (() => {
         }
 
         if (env.opts.test) {
-            logger.setLevel(logger.LEVELS.SILENT);
+            engine.logLevel = LOG_LEVELS.SILENT;
         } else {
             if (env.opts.debug) {
-                logger.setLevel(logger.LEVELS.DEBUG);
+                engine.logLevel = LOG_LEVELS.DEBUG;
             }
             else if (env.opts.verbose) {
-                logger.setLevel(logger.LEVELS.INFO);
+                engine.logLevel = LOG_LEVELS.INFO;
             }
 
             if (env.opts.pedantic) {
-                logger.once('logger:warn', recoverableError);
-                logger.once('logger:error', fatalError);
+                bus.once('logger:warn', recoverableError);
+                bus.once('logger:error', fatalError);
             }
             else {
-                logger.once('logger:error', recoverableError);
+                bus.once('logger:error', recoverableError);
             }
 
-            logger.once('logger:fatal', fatalError);
+            bus.once('logger:fatal', fatalError);
         }
 
         return cli;
@@ -121,8 +123,8 @@ module.exports = (() => {
 
     // TODO: docs
     cli.logStart = () => {
-        logger.debug(engine.versionDetails);
-        logger.debug('Environment info: %j', {
+        log.debug(engine.versionDetails);
+        log.debug('Environment info: %j', {
             env: {
                 conf: env.conf,
                 opts: env.opts
@@ -141,7 +143,7 @@ module.exports = (() => {
 
         if (delta !== undefined) {
             deltaSeconds = (delta / 1000).toFixed(2);
-            logger.info(`Finished running in ${deltaSeconds} seconds.`);
+            log.info(`Finished running in ${deltaSeconds} seconds.`);
         }
     };
 
@@ -222,7 +224,7 @@ module.exports = (() => {
             return stripJsonComments( fs.readFileSync(filepath, 'utf8') );
         }
         catch (e) {
-            logger.error(`Unable to read the package file ${filepath}`);
+            log.error(`Unable to read the package file ${filepath}`);
 
             return null;
         }
@@ -323,11 +325,11 @@ module.exports = (() => {
         packageDocs.files = env.sourceFiles || [];
         docs.push(packageDocs);
 
-        logger.debug('Adding inherited symbols, mixins, and interface implementations...');
+        log.debug('Adding inherited symbols, mixins, and interface implementations...');
         augment.augmentAll(docs);
-        logger.debug('Adding borrowed doclets...');
+        log.debug('Adding borrowed doclets...');
         borrow.resolveBorrows(docs);
-        logger.debug('Post-processing complete.');
+        log.debug('Post-processing complete.');
 
         props.parser.fireProcessingComplete(docs);
 
@@ -380,14 +382,14 @@ module.exports = (() => {
             template = require(`${env.opts.template}/publish`);
         }
         catch (e) {
-            logger.fatal(`Unable to load template: ${e.message}` || e);
+            log.fatal(`Unable to load template: ${e.message}` || e);
         }
 
         // templates should include a publish.js file that exports a "publish" function
         if (template.publish && typeof template.publish === 'function') {
             let publishPromise;
 
-            logger.info('Generating output files...');
+            log.info('Generating output files...');
             publishPromise = template.publish(
                 taffy(props.docs),
                 env.opts,
@@ -399,7 +401,7 @@ module.exports = (() => {
         else {
             message = `${env.opts.template} does not export a "publish" function. ` +
                 'Global "publish" functions are no longer supported.';
-            logger.fatal(message);
+            log.fatal(message);
 
             return Promise.reject(new Error(message));
         }

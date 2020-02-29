@@ -3,7 +3,7 @@
  */
 const { Doclet } = require('jsdoc/doclet');
 const escape = require('escape-string-regexp');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { SCOPE } = require('@jsdoc/core').name;
 const { Syntax } = require('jsdoc/src/syntax');
 
@@ -36,7 +36,7 @@ function createDoclet(comment, e) {
     catch (error) {
         flatComment = comment.replace(/[\r\n]/g, '');
         msg = `cannot create a doclet for the comment "${flatComment}": ${error.message}`;
-        logger.error(msg);
+        log.error(msg);
         doclet = new Doclet('', e);
     }
 

@@ -1,6 +1,6 @@
 const babelParser = require('@babel/parser');
 const env = require('jsdoc/env');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 
 // exported so we can use them in tests
 const parserOptions = exports.parserOptions = {
@@ -46,10 +46,9 @@ function parse(source, filename) {
 
     try {
         ast = babelParser.parse(source, parserOptions);
-        // console.log(JSON.stringify(ast, null, 2));
     }
     catch (e) {
-        logger.error(`Unable to parse ${filename}: ${e.message}`);
+        log.error(`Unable to parse ${filename}: ${e.message}`);
     }
 
     return ast;

@@ -5,7 +5,6 @@ describe('jsdoc/src/parser', () => {
     const { dirname } = require('jsdoc/env');
     const fs = require('fs');
     const jsdocParser = require('jsdoc/src/parser');
-    const logger = require('jsdoc/util/logger');
     const path = require('path');
 
     it('should exist', () => {
@@ -32,10 +31,11 @@ describe('jsdoc/src/parser', () => {
         });
 
         it('should log a fatal error on bad input', () => {
-            spyOn(logger, 'fatal');
-            jsdocParser.createParser('not-a-real-parser-ever');
+            function createParser() {
+                jsdocParser.createParser('not-a-real-parser-ever');
+            }
 
-            expect(logger.fatal).toHaveBeenCalled();
+            expect(jsdoc.didLog(createParser, 'fatal')).toBeTrue();
         });
     });
 

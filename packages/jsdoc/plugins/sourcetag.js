@@ -1,7 +1,7 @@
 /**
  * @module plugins/sourcetag
  */
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 
 exports.handlers = {
     /**
@@ -35,7 +35,10 @@ exports.handlers = {
                     value = JSON.parse(tag.value);
                 }
                 catch (ex) {
-                    logger.error('@source tag expects a valid JSON value, like { "filename": "myfile.js", "lineno": 123 }.');
+                    log.error(
+                        '@source tag expects a valid JSON value, like ' +
+                        '{ "filename": "myfile.js", "lineno": 123 }.'
+                    );
 
                     return;
                 }

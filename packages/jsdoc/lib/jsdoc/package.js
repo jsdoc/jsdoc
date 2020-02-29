@@ -1,4 +1,4 @@
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const stripBom = require('strip-bom');
 
 /**
@@ -82,7 +82,7 @@ class Package {
             packageInfo = JSON.parse(json ? stripBom(json) : '{}');
         }
         catch (e) {
-            logger.error('Unable to parse the package file: %s', e.message);
+            log.error(`Unable to parse the package file: ${e.message}`);
             packageInfo = {};
         }
 

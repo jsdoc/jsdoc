@@ -1,12 +1,10 @@
 describe('@polymerBehavior tag', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
 
     const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
     beforeEach(() => {
         env.conf.tags.allowUnknownTags = false;
-        spyOn(logger, 'error');
     });
 
     afterEach(() => {
@@ -20,9 +18,11 @@ describe('@polymerBehavior tag', () => {
         });
 
         it('should not recognize the @polymerBehavior tag', () => {
-            jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
+            function getDocSet() {
+                jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
         });
     });
 
@@ -32,9 +32,11 @@ describe('@polymerBehavior tag', () => {
         });
 
         it('should recognize the @polymerBehavior tag', () => {
-            jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
+            function getDocSet() {
+                jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
+            }
 
-            expect(logger.error).not.toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();
         });
     });
 });

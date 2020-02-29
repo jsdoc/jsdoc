@@ -4,10 +4,12 @@ const { createParser } = require('jsdoc/src/parser');
 const { defineTags } = require('jsdoc/tag/dictionary/definitions');
 const dictionary = require('jsdoc/tag/dictionary');
 const env = require('jsdoc/env');
+const { EventBus } = require('@jsdoc/util');
 const fs = require('fs');
 const handlers = require('jsdoc/src/handlers');
 const path = require('path');
 
+const bus = new EventBus('jsdoc');
 const originalDictionary = dictionary;
 const parseResults = [];
 
@@ -19,6 +21,19 @@ const helpers = global.jsdoc = {
         });
     },
     createParser,
+    didLog: (fn, level) => {
+        const events = [];
+
+        function listener(e) {
+            events.push(e);
+        }
+
+        bus.on(`logger:${level}`, listener);
+        fn();
+        bus.off(`logger:${level}`, listener);
+
+        return events.length !== 0;
+    },
     getDocSetFromFile: (filename, parser, shouldValidate, augment) => {
         let doclets;
 

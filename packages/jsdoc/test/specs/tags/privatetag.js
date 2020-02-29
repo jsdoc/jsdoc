@@ -1,5 +1,3 @@
-const logger = require('jsdoc/util/logger');
-
 describe('@private tag', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/privatetag.js');
     const foo = docSet.getByLongname('Foo')[0];
@@ -21,32 +19,40 @@ describe('@private tag', () => {
         });
 
         it('When JSDoc tags are enabled, the @private tag does not accept a value.', () => {
-            jsdoc.replaceTagDictionary('jsdoc');
-            spyOn(logger, 'warn');
+            function getDocSet() {
+                jsdoc.replaceTagDictionary('jsdoc');
+                jsdoc.getDocSetFromFile('test/fixtures/privatetag2.js');
+            }
 
-            jsdoc.getDocSetFromFile('test/fixtures/privatetag2.js');
-
-            expect(logger.warn).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'warn')).toBeTrue();
         });
     });
 
     describe('Closure Compiler tags', () => {
+        beforeEach(() => {
+            jsdoc.replaceTagDictionary('closure');
+        });
+
         afterEach(() => {
             jsdoc.restoreTagDictionary();
         });
 
         it('When Closure Compiler tags are enabled, the @private tag accepts a type expression.',
             () => {
+                function getDocSet() {
+                    jsdoc.getDocSetFromFile('test/fixtures/privatetag2.js');
+                }
+
+                expect(jsdoc.didLog(getDocSet, 'warn')).toBeFalse();
+            });
+
+        it('When Closure Compiler tags are enabled, the @private tag parses the type expression.',
+            () => {
                 let connectionPorts;
                 let privateDocs;
 
-                jsdoc.replaceTagDictionary('closure');
-                spyOn(logger, 'warn');
-
                 privateDocs = jsdoc.getDocSetFromFile('test/fixtures/privatetag2.js');
                 connectionPorts = privateDocs.getByLongname('connectionPorts')[0];
-
-                expect(logger.warn).not.toHaveBeenCalled();
 
                 expect(connectionPorts).toBeObject();
                 expect(connectionPorts.access).toBe('private');

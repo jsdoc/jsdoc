@@ -5,7 +5,7 @@ const catharsis = require('catharsis');
 let dictionary = require('jsdoc/tag/dictionary');
 const env = require('jsdoc/env');
 const inline = require('jsdoc/tag/inline');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = require('@jsdoc/core').name;
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
@@ -252,7 +252,7 @@ function parseType(longname) {
     }
     catch (e) {
         err = new Error(`unable to parse ${longname}: ${e.message}`);
-        logger.error(err);
+        log.error(err);
 
         return longname;
     }
@@ -435,7 +435,7 @@ const tutorialToUrl = exports.tutorialToUrl = tutorial => {
 
     // no such tutorial
     if (!node) {
-        logger.error( new Error(`No such tutorial: ${tutorial}`) );
+        log.error( new Error(`No such tutorial: ${tutorial}`) );
 
         return null;
     }
@@ -474,7 +474,7 @@ const toTutorial = exports.toTutorial = (tutorial, content, missingOpts) => {
 
 
     if (!tutorial) {
-        logger.error( new Error('Missing required parameter: tutorial') );
+        log.error(new Error('Missing required parameter: tutorial'));
 
         return null;
     }

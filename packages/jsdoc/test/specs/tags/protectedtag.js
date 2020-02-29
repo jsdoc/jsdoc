@@ -1,5 +1,3 @@
-const logger = require('jsdoc/util/logger');
-
 describe('@protected tag', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/protectedtag.js');
     const uidCounter = docSet.getByLongname('module:uid~uidCounter')[0];
@@ -21,12 +19,12 @@ describe('@protected tag', () => {
         });
 
         it('When JSDoc tags are enabled, the @protected tag does not accept a value.', () => {
-            jsdoc.replaceTagDictionary('jsdoc');
-            spyOn(logger, 'warn');
+            function getDocSet() {
+                jsdoc.replaceTagDictionary('jsdoc');
+                jsdoc.getDocSetFromFile('test/fixtures/protectedtag2.js');
+            }
 
-            jsdoc.getDocSetFromFile('test/fixtures/protectedtag2.js');
-
-            expect(logger.warn).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'warn')).toBeTrue();
         });
     });
 
@@ -37,16 +35,23 @@ describe('@protected tag', () => {
 
         it('When Closure Compiler tags are enabled, the @private tag accepts a type expression.',
             () => {
+                function getDocSet() {
+                    jsdoc.replaceTagDictionary('closure');
+                    jsdoc.getDocSetFromFile('test/fixtures/protectedtag2.js');
+                }
+
+                expect(jsdoc.didLog(getDocSet, 'warn')).toBeFalse();
+            });
+
+        it('When Closure Compiler tags are enabled, the @private tag parses the type expression.',
+            () => {
                 let counter;
                 let protectedDocs;
 
                 jsdoc.replaceTagDictionary('closure');
-                spyOn(logger, 'warn');
 
                 protectedDocs = jsdoc.getDocSetFromFile('test/fixtures/protectedtag2.js');
                 counter = protectedDocs.getByLongname('uidCounter')[0];
-
-                expect(logger.warn).not.toHaveBeenCalled();
 
                 expect(counter).toBeObject();
                 expect(counter.access).toBe('protected');

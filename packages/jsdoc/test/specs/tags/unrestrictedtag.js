@@ -1,12 +1,10 @@
 describe('@unrestricted tag', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
 
     const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
     beforeEach(() => {
         env.conf.tags.allowUnknownTags = false;
-        spyOn(logger, 'error');
     });
 
     afterEach(() => {
@@ -20,9 +18,11 @@ describe('@unrestricted tag', () => {
         });
 
         it('should not recognize the @unrestricted tag', () => {
-            jsdoc.getDocSetFromFile('test/fixtures/unrestrictedtag.js');
+            function getDocSet() {
+                jsdoc.getDocSetFromFile('test/fixtures/unrestrictedtag.js');
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
         });
     });
 
@@ -32,9 +32,11 @@ describe('@unrestricted tag', () => {
         });
 
         it('should recognize the @unrestricted tag', () => {
-            jsdoc.getDocSetFromFile('test/fixtures/unrestrictedtag.js');
+            function getDocSet() {
+                jsdoc.getDocSetFromFile('test/fixtures/unrestrictedtag.js');
+            }
 
-            expect(logger.error).not.toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();
         });
     });
 });

@@ -2,7 +2,6 @@ describe('jsdoc/tag/dictionary/definitions', () => {
     const env = require('jsdoc/env');
     const definitions = require('jsdoc/tag/dictionary/definitions');
     const Dictionary = require('jsdoc/tag/dictionary').Dictionary;
-    const logger = require('jsdoc/util/logger');
 
     it('should exist', () => {
         expect(definitions).toBeObject();
@@ -48,19 +47,21 @@ describe('jsdoc/tag/dictionary/definitions', () => {
         });
 
         it('should log an error if `env.conf.tags.dictionaries` is undefined', () => {
-            env.conf.tags.dictionaries = undefined;
-            spyOn(logger, 'error');
-            definitions.defineTags(tagDict);
+            function defineTags() {
+                env.conf.tags.dictionaries = undefined;
+                definitions.defineTags(tagDict);
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(defineTags, 'error')).toBeTrue();
         });
 
         it('should log an error if an unknown dictionary is requested', () => {
-            env.conf.tags.dictionaries = ['jsmarmoset'];
-            spyOn(logger, 'error');
-            definitions.defineTags(tagDict);
+            function defineTags() {
+                env.conf.tags.dictionaries = ['jsmarmoset'];
+                definitions.defineTags(tagDict);
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(defineTags, 'error')).toBeTrue();
         });
 
         it('should add both JSDoc and Closure tags by default', () => {

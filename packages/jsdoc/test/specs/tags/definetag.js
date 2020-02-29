@@ -1,6 +1,4 @@
 describe('@define tag', () => {
-    const logger = require('jsdoc/util/logger');
-
     describe('JSDoc tags', () => {
         const env = require('jsdoc/env');
 
@@ -12,13 +10,13 @@ describe('@define tag', () => {
         });
 
         it('should not recognize the @define tag', () => {
-            env.conf.tags.allowUnknownTags = false;
-            jsdoc.replaceTagDictionary('jsdoc');
-            spyOn(logger, 'error');
+            function getDocSet() {
+                env.conf.tags.allowUnknownTags = false;
+                jsdoc.replaceTagDictionary('jsdoc');
+                jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
+            }
 
-            jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
-
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
         });
     });
 

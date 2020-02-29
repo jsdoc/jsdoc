@@ -4,7 +4,7 @@
  * @module jsdoc/src/walker
  */
 const astnode = require('jsdoc/src/astnode');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { Syntax } = require('jsdoc/src/syntax');
 
 // TODO: docs
@@ -646,8 +646,10 @@ class Walker {
         };
 
         function logUnknownNodeType({type}) {
-            logger.debug('Found a node with unrecognized type %s. Ignoring the node and its ' +
-                'descendants.', type);
+            log.debug(
+                `Found a node with unrecognized type ${type}. Ignoring the node and its ` +
+                'descendants.'
+            );
         }
 
         function cb(node, parent, cbState) {

@@ -3,7 +3,6 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 describe('jsdoc/package', () => {
     let emptyPackage;
     const jsdocPackage = require('jsdoc/package');
-    const logger = require('jsdoc/util/logger');
     const Package = jsdocPackage.Package;
 
     function checkPackageProperty(name, value) {
@@ -61,10 +60,8 @@ describe('jsdoc/package', () => {
                 return new Package('abcdefg');
             }
 
-            spyOn(logger, 'error');
-
             expect(newPackage).not.toThrow();
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(newPackage, 'error')).toBeTrue();
         });
 
         describe('author', () => {

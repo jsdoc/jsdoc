@@ -6,7 +6,7 @@ const astNode = require('jsdoc/src/astnode');
 const { conf } = require('jsdoc/env');
 const { EventEmitter } = require('events');
 const fs = require('fs');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
 const { Syntax } = require('jsdoc/src/syntax');
 
@@ -57,7 +57,7 @@ exports.createParser = type => {
         modulePath = PARSERS[type];
     }
     else {
-        logger.fatal('The parser type "%s" is not recognized.', type);
+        log.fatal(`The parser type "${type}" is not recognized.`);
 
         return null;
     }
@@ -168,7 +168,7 @@ class Parser extends EventEmitter {
         }
 
         e.sourcefiles = sourceFiles;
-        logger.debug('Parsing source files: %j', sourceFiles);
+        log.debug('Parsing source files: %j', sourceFiles);
 
         this.emit('parseBegin', e);
 
@@ -186,7 +186,7 @@ class Parser extends EventEmitter {
                     sourceCode = fs.readFileSync(filename, encoding);
                 }
                 catch (err) {
-                    logger.error('Unable to read and parse the source file %s: %s', filename, err);
+                    log.error(`Unable to read and parse the source file ${filename}: ${err}`);
                 }
             }
 
@@ -200,7 +200,7 @@ class Parser extends EventEmitter {
             sourcefiles: parsedFiles,
             doclets: this._resultBuffer
         });
-        logger.debug('Finished parsing source files.');
+        log.debug('Finished parsing source files.');
 
         return this._resultBuffer;
     }
@@ -270,7 +270,7 @@ class Parser extends EventEmitter {
         };
 
         this.emit('fileBegin', e);
-        logger.info('Parsing %s ...', sourceName);
+        log.info(`Parsing ${sourceName} ...`);
 
         if (!e.defaultPrevented) {
             e = {

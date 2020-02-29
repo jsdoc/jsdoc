@@ -1,6 +1,5 @@
 describe('jsdoc/tutorial/resolver', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
     const resolver = require('jsdoc/tutorial/resolver');
     const tutorial = require('jsdoc/tutorial');
 
@@ -160,8 +159,6 @@ describe('jsdoc/tutorial/resolver', () => {
     //       |- test4
     describe('resolve', () => {
         beforeEach(() => {
-            spyOn(logger, 'error');
-            spyOn(logger, 'warn');
             loadTutorials();
             resolver.resolve();
         });
@@ -211,27 +208,32 @@ describe('jsdoc/tutorial/resolver', () => {
         });
 
         it('logs an error for missing tutorials', () => {
-            resolver.load(`${env.dirname}/test/fixtures/tutorials/incomplete`);
-            resolver.resolve();
+            function load() {
+                resolver.load(`${env.dirname}/test/fixtures/tutorials/incomplete`);
+                resolver.resolve();
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(load, 'error')).toBeTrue();
         });
 
         it('logs a warning for duplicate-named tutorials (e.g. test.md, test.html)', () => {
-            const tute = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
+            function load() {
+                const tute = new tutorial.Tutorial('myTutorial', '', tutorial.TYPES.HTML);
 
-            resolver.addTutorial(tute);
-            resolver.addTutorial(tute);
+                resolver.addTutorial(tute);
+                resolver.addTutorial(tute);
+            }
 
-            expect(logger.warn).toHaveBeenCalled();
+            expect(jsdoc.didLog(load, 'warn')).toBeTrue();
         });
 
         it('allows tutorials to be defined in one .json file and redefined in another', () => {
-            resolver.load(`${env.dirname}/test/fixtures/tutorials/duplicateDefined`);
-            resolver.resolve();
+            function load() {
+                resolver.load(`${env.dirname}/test/fixtures/tutorials/duplicateDefined`);
+                resolver.resolve();
+            }
 
-            expect(logger.error).not.toHaveBeenCalled();
-            expect(logger.warn).toHaveBeenCalled();
+            expect(jsdoc.didLog(load, 'warn')).toBeTrue();
             // we don't check to see which one wins; it depends on the order in which the JS engine
             // iterates over object keys
             expect(resolver.root.getByName('asdf')).toBeObject();

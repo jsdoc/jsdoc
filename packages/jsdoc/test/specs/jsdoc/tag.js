@@ -4,7 +4,6 @@ describe('jsdoc/tag', () => {
     const env = require('jsdoc/env');
     const jsdocDictionary = require('jsdoc/tag/dictionary');
     const jsdocTag = require('jsdoc/tag');
-    const logger = require('jsdoc/util/logger');
     const parseType = require('jsdoc/tag/type').parse;
 
     it('should exist', () => {
@@ -115,14 +114,14 @@ describe('jsdoc/tag', () => {
                 let wsOnly;
                 let wsTrailing;
 
-                spyOn(logger, 'error');
+                function newTags() {
+                    wsOnly = new jsdocTag.Tag('name', ' ', { code: { name: ' ' } });
+                    wsLeading = new jsdocTag.Tag('name', '  foo', { code: { name: '  foo' } });
+                    wsTrailing = new jsdocTag.Tag('name', 'foo  ', { code: { name: 'foo  ' } });
+                    wsBoth = new jsdocTag.Tag('name', '  foo  ', { code: { name: '  foo  ' } });
+                }
 
-                wsOnly = new jsdocTag.Tag('name', ' ', { code: { name: ' ' } });
-                wsLeading = new jsdocTag.Tag('name', '  foo', { code: { name: '  foo' } });
-                wsTrailing = new jsdocTag.Tag('name', 'foo  ', { code: { name: 'foo  ' } });
-                wsBoth = new jsdocTag.Tag('name', '  foo  ', { code: { name: '  foo  ' } });
-
-                expect(logger.error).not.toHaveBeenCalled();
+                expect(jsdoc.didLog(newTags, 'error')).toBeFalse();
                 expect(wsOnly.text).toBe('" "');
                 expect(wsLeading.text).toBe('"  foo"');
                 expect(wsTrailing.text).toBe('"foo  "');
@@ -207,24 +206,20 @@ describe('jsdoc/tag', () => {
 
         // further tests for this sort of thing are in jsdoc/tag/validator.js tests.
         describe('tag validating', () => {
-            beforeEach(() => {
-                spyOn(logger, 'error');
-            });
-
             it('logs an error for tags with bad type expressions', () => {
-                /* eslint-disable no-unused-vars */
-                const tag = new jsdocTag.Tag('param', '{!*!*!*!} foo');
-                /* eslint-enable no-unused-vars */
+                function newTag() {
+                    return new jsdocTag.Tag('param', '{!*!*!*!} foo');
+                }
 
-                expect(logger.error).toHaveBeenCalled();
+                expect(jsdoc.didLog(newTag, 'error')).toBeTrue();
             });
 
             it('validates tags with no text', () => {
-                /* eslint-disable no-unused-vars */
-                const tag = new jsdocTag.Tag('copyright');
-                /* eslint-enable no-unused-vars */
+                function newTag() {
+                    return new jsdocTag.Tag('copyright');
+                }
 
-                expect(logger.error).toHaveBeenCalled();
+                expect(jsdoc.didLog(newTag, 'error')).toBeTrue();
             });
         });
     });

@@ -1,6 +1,5 @@
 describe('@override tag', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
 
     const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
@@ -10,7 +9,6 @@ describe('@override tag', () => {
 
     beforeEach(() => {
         env.conf.tags.allowUnknownTags = false;
-        spyOn(logger, 'error');
     });
 
     afterEach(() => {
@@ -24,9 +22,11 @@ describe('@override tag', () => {
         });
 
         it('should not recognize the @override tag', () => {
-            jsdoc.getDocSetFromFile('test/fixtures/overridetag.js');
+            function getDocSet() {
+                jsdoc.getDocSetFromFile('test/fixtures/overridetag.js');
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
         });
     });
 

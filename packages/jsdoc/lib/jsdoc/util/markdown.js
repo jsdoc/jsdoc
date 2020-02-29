@@ -3,7 +3,7 @@
  * @module jsdoc/util/markdown
  */
 const env = require('jsdoc/env');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const MarkdownIt = require('markdown-it');
 const marked = require('marked');
 const mda = require('markdown-it-anchor');
@@ -143,11 +143,11 @@ function getHighlighter(conf) {
             try {
                 highlighter = require(conf.highlight).highlight;
             } catch (e) {
-                logger.error(e);
+                log.error(e);
             }
 
             if (typeof highlighter !== 'function') {
-                logger.error(`The syntax highlighting module ${conf.highlight} does not assign a ` +
+                log.error(`The syntax highlighting module ${conf.highlight} does not assign a ` +
                     'method to `exports.highlight`. Using the default syntax highlighter.');
                 highlighter = highlight;
             }
@@ -249,8 +249,9 @@ function getParseFunction(parserName, conf) {
             return parserFunction;
 
         default:
-            logger.error(`Unrecognized Markdown parser "${parserName}". Markdown support is ` +
-                'disabled.');
+            log.error(
+                `Unrecognized Markdown parser "${parserName}". Markdown support is disabled.`
+            );
 
             return undefined;
     }

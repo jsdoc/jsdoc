@@ -1,6 +1,4 @@
 describe('@interface tag', () => {
-    const logger = require('jsdoc/util/logger');
-
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/interface-implements.js');
     const testerInterface = docSet.getByLongname('ITester')[0];
     const testerImplementation = docSet.getByLongname('MyTester')[0];
@@ -14,10 +12,6 @@ describe('@interface tag', () => {
     });
 
     describe('virtual doclets', () => {
-        beforeEach(() => {
-            spyOn(logger, 'warn');
-        });
-
         afterEach(() => {
             jsdoc.restoreTagDictionary();
         });
@@ -26,12 +20,17 @@ describe('@interface tag', () => {
             let docSet2;
             let virtualInterface;
 
-            jsdoc.replaceTagDictionary('jsdoc');
+            function getDocSet() {
+                jsdoc.replaceTagDictionary('jsdoc');
 
-            docSet2 = jsdoc.getDocSetFromFile('test/fixtures/interfacetag2.js');
+                return jsdoc.getDocSetFromFile('test/fixtures/interfacetag2.js');
+            }
+
+            expect(jsdoc.didLog(getDocSet, 'warn')).toBeFalse();
+
+            docSet2 = getDocSet();
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];
 
-            expect(logger.warn).not.toHaveBeenCalled();
             expect(virtualInterface).toBeObject();
             expect(virtualInterface.longname).toBe('VirtualInterface');
         });
@@ -40,12 +39,17 @@ describe('@interface tag', () => {
             let docSet2;
             let virtualInterface;
 
-            jsdoc.replaceTagDictionary('closure');
+            function getDocSet() {
+                jsdoc.replaceTagDictionary('closure');
 
-            docSet2 = jsdoc.getDocSetFromFile('test/fixtures/interfacetag2.js');
+                return jsdoc.getDocSetFromFile('test/fixtures/interfacetag2.js');
+            }
+
+            expect(jsdoc.didLog(getDocSet, 'warn')).toBeTrue();
+
+            docSet2 = getDocSet();
             virtualInterface = docSet2.getByLongname('VirtualInterface')[0];
 
-            expect(logger.warn).toHaveBeenCalled();
             expect(virtualInterface).toBeUndefined();
         });
     });

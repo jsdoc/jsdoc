@@ -1,6 +1,5 @@
 describe('jsdoc/util/markdown', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
     const markdown = require('jsdoc/util/markdown');
     const path = require('path');
 
@@ -69,11 +68,12 @@ describe('jsdoc/util/markdown', () => {
         });
 
         it('should log an error if an unrecognized Markdown parser is requested', () => {
-            setMarkdownConf({parser: 'not-a-real-markdown-parser'});
-            spyOn(logger, 'error');
-            markdown.getParser();
+            function getParser() {
+                setMarkdownConf({parser: 'not-a-real-markdown-parser'});
+                markdown.getParser();
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(getParser, 'error')).toBeTrue();
         });
 
         it('should not apply formatting to inline tags', () => {
@@ -164,26 +164,26 @@ describe('jsdoc/util/markdown', () => {
             });
 
             it('should log an error if the `highlight` module cannot be found', () => {
-                spyOn(logger, 'error');
+                function getParser() {
+                    setMarkdownConf({
+                        highlight: 'foo/bar/baz'
+                    });
+                    markdown.getParser();
+                }
 
-                setMarkdownConf({
-                    highlight: 'foo/bar/baz'
-                });
-                markdown.getParser();
-
-                expect(logger.error).toHaveBeenCalled();
+                expect(jsdoc.didLog(getParser, 'error')).toBeTrue();
             });
 
             it('should log an error if the `highlight` module does not assign a method to ' +
                 '`exports.highlight`', () => {
-                spyOn(logger, 'error');
+                function getParser() {
+                    setMarkdownConf({
+                        highlight: path.join(env.dirname, 'test/fixtures/markdown/badhighlighter')
+                    });
+                    markdown.getParser();
+                }
 
-                setMarkdownConf({
-                    highlight: path.join(env.dirname, 'test/fixtures/markdown/badhighlighter')
-                });
-                markdown.getParser();
-
-                expect(logger.error).toHaveBeenCalled();
+                expect(jsdoc.didLog(getParser, 'error')).toBeTrue();
             });
         });
     });

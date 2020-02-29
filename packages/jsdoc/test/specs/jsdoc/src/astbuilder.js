@@ -23,19 +23,13 @@ describe('jsdoc/src/astbuilder', () => {
 
         describe('build', () => {
             // TODO: more tests
-            const logger = require('jsdoc/util/logger');
-
-            beforeEach(() => {
-                spyOn(logger, 'error');
-            });
-
             it('should log (not throw) an error when a file cannot be parsed', () => {
                 function parse() {
                     builder.build('qwerty!!!!!', 'bad.js');
                 }
 
                 expect(parse).not.toThrow();
-                expect(logger.error).toHaveBeenCalled();
+                expect(jsdoc.didLog(parse, 'error')).toBeTrue();
             });
         });
     });

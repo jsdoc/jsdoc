@@ -2,7 +2,7 @@
  * @module jsdoc/src/scanner
  */
 const { EventEmitter } = require('events');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { lsSync } = require('@jsdoc/util').fs;
 const path = require('path');
 const { statSync } = require('fs');
@@ -35,7 +35,7 @@ class Scanner extends EventEmitter {
                 currentFile = statSync(filepath);
             }
             catch (e) {
-                logger.error('Unable to find the source file or directory %s', filepath);
+                log.error(`Unable to find the source file or directory ${filepath}`);
 
                 return;
             }

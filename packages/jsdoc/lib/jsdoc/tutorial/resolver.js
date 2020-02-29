@@ -3,7 +3,7 @@
  */
 const env = require('jsdoc/env');
 const fs = require('fs');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { lsSync } = require('@jsdoc/util').fs;
 const path = require('path');
 const stripBom = require('strip-bom');
@@ -62,7 +62,10 @@ function addTutorialConf(name, meta) {
         }
         // check if the tutorial has already been defined...
         if (hasOwnProp.call(conf, name)) {
-            logger.warn(`Metadata for the tutorial ${name} is defined more than once. Only the first definition will be used.`);
+            log.warn(
+                `Metadata for the tutorial ${name} is defined more than once. ` +
+                'Only the first definition will be used.'
+            );
         } else {
             conf[name] = meta;
         }
@@ -81,7 +84,10 @@ function addTutorialConf(name, meta) {
  */
 exports.addTutorial = current => {
     if (exports.root.getByName(current.name)) {
-        logger.warn('The tutorial %s is defined more than once. Only the first definition will be used.', current.name);
+        log.warn(
+            `The tutorial ${current.name} is defined more than once. ` +
+            'Only the first definition will be used.'
+        );
     } else {
         // by default, the root tutorial is the parent
         current.setParent(exports.root);
@@ -175,7 +181,7 @@ exports.resolve = () => {
                 const childTutorial = exports.root.getByName(child);
 
                 if (!childTutorial) {
-                    logger.error('Missing child tutorial: %s', child);
+                    log.error(`Missing child tutorial: ${child}`);
                 }
                 else {
                     childTutorial.setParent(current);

@@ -7,7 +7,7 @@ const { applyNamespace, SCOPE, LONGNAMES } = require('@jsdoc/core').name;
 const commonPathPrefix = require('common-path-prefix');
 const env = require('jsdoc/env');
 const { isInlineTag } = require('jsdoc/tag/inline');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { nodeToValue } = require('jsdoc/src/astnode');
 const path = require('path');
 const { Syntax } = require('jsdoc/src/syntax');
@@ -79,7 +79,7 @@ function setDocletScopeToTitle(doclet, {title}) {
         doclet.setScope(title);
     }
     catch (e) {
-        logger.error(e.message);
+        log.error(e.message);
     }
 }
 
@@ -1064,8 +1064,10 @@ exports.defineTags = (dictionary, tagDefinitions) => {
         dictionaries = env.conf.tags.dictionaries;
 
         if (!dictionaries) {
-            logger.error('The configuration setting "tags.dictionaries" is undefined. ' +
-                'Unable to load tag definitions.');
+            log.error(
+                'The configuration setting "tags.dictionaries" is undefined. ' +
+                'Unable to load tag definitions.'
+            );
 
             return;
         }
@@ -1077,8 +1079,10 @@ exports.defineTags = (dictionary, tagDefinitions) => {
             const tagDefs = exports[DEFINITIONS[dictName]];
 
             if (!tagDefs) {
-                logger.error('The configuration setting "tags.dictionaries" contains ' +
-                    'the unknown dictionary name %s. Ignoring the dictionary.', dictName);
+                log.error(
+                    'The configuration setting "tags.dictionaries" contains ' +
+                    `the unknown dictionary name ${dictName}. Ignoring the dictionary.`
+                );
 
                 return;
             }

@@ -8,7 +8,6 @@ describe("jsdoc/util/templateHelper", () => {
     const doclet = require('jsdoc/doclet');
     const env = require('jsdoc/env');
     const helper = require('jsdoc/util/templateHelper');
-    const logger = require('jsdoc/util/logger');
     const resolver = require('jsdoc/tutorial/resolver');
     const { taffy } = require('taffydb');
 
@@ -406,11 +405,11 @@ describe("jsdoc/util/templateHelper", () => {
 
         it('does not try to parse a longname starting with <anonymous> as a type application',
             () => {
-                spyOn(logger, 'error');
+                function linkto() {
+                    helper.linkto('<anonymous>~foo');
+                }
 
-                helper.linkto('<anonymous>~foo');
-
-                expect(logger.error).not.toHaveBeenCalled();
+                expect(jsdoc.didLog(linkto, 'error')).toBeFalse();
             });
 
         it('does not treat a longname with a variation as a type application', () => {
@@ -1281,7 +1280,6 @@ describe("jsdoc/util/templateHelper", () => {
 
     describe("tutorialToUrl", () => {
         beforeEach(() => {
-            spyOn(logger, 'error');
             helper.setTutorials(resolver.root);
         });
 
@@ -1290,15 +1288,19 @@ describe("jsdoc/util/templateHelper", () => {
         });
 
         it('logs an error if the tutorial is missing', () => {
-            helper.tutorialToUrl('be-a-perfect-person-in-just-three-days');
+            function toUrl() {
+                helper.tutorialToUrl('be-a-perfect-person-in-just-three-days');
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(toUrl, 'error')).toBeTrue();
         });
 
         it("logs an error if the tutorial's name is a reserved JS keyword and it doesn't exist", () => {
-            helper.tutorialToUrl('prototype');
+            function toUrl() {
+                helper.tutorialToUrl('prototype');
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(toUrl, 'error')).toBeTrue();
         });
 
         it("creates links to tutorials if they exist", () => {
@@ -1326,7 +1328,6 @@ describe("jsdoc/util/templateHelper", () => {
 
     describe("toTutorial", () => {
         beforeEach(() => {
-            spyOn(logger, 'error');
             helper.setTutorials(resolver.root);
         });
 
@@ -1335,9 +1336,11 @@ describe("jsdoc/util/templateHelper", () => {
         });
 
         it('logs an error if the first param is missing', () => {
-            helper.toTutorial();
+            function toTutorial() {
+                helper.toTutorial();
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(toTutorial, 'error')).toBeTrue();
         });
 
         // missing tutorials

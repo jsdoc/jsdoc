@@ -1,5 +1,3 @@
-const logger = require('jsdoc/util/logger');
-
 describe('@type tag', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/typetag.js');
 
@@ -29,12 +27,12 @@ describe('@type tag', () => {
         });
 
         it('When JSDoc tags are enabled, the @type tag does not accept a description.', () => {
-            jsdoc.replaceTagDictionary('jsdoc');
-            spyOn(logger, 'warn');
+            function getDocSet() {
+                jsdoc.replaceTagDictionary('jsdoc');
+                jsdoc.getDocSetFromFile('test/fixtures/typetag2.js');
+            }
 
-            jsdoc.getDocSetFromFile('test/fixtures/typetag2.js');
-
-            expect(logger.warn).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'warn')).toBeTrue();
         });
     });
 
@@ -44,16 +42,22 @@ describe('@type tag', () => {
         });
 
         it('When Closure tags are enabled, the @type tag accepts a description.', () => {
+            function getDocSet() {
+                jsdoc.replaceTagDictionary('closure');
+                jsdoc.getDocSetFromFile('test/fixtures/typetag2.js');
+            }
+
+            expect(jsdoc.didLog(getDocSet, 'warn')).toBeFalse();
+        });
+
+        it('When Closure tags are enabled, the @type tag captures the description.', () => {
             let stringOrNumber;
             let typeDocs;
 
             jsdoc.replaceTagDictionary('closure');
-            spyOn(logger, 'warn');
 
             typeDocs = jsdoc.getDocSetFromFile('test/fixtures/typetag2.js');
             stringOrNumber = typeDocs.getByLongname('stringOrNumber')[0];
-
-            expect(logger.warn).not.toHaveBeenCalled();
 
             expect(stringOrNumber).toBeObject();
             expect(stringOrNumber.description).toBe('A string or a number.');

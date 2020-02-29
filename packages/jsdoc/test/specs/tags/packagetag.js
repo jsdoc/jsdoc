@@ -1,5 +1,3 @@
-const logger = require('jsdoc/util/logger');
-
 describe('@package tag', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/packagetag.js');
     const foo = docSet.getByLongname('foo')[0];
@@ -15,12 +13,12 @@ describe('@package tag', () => {
         });
 
         it('When JSDoc tags are enabled, the @package tag does not accept a value.', () => {
-            jsdoc.replaceTagDictionary('jsdoc');
-            spyOn(logger, 'warn');
+            function getDocSet() {
+                jsdoc.replaceTagDictionary('jsdoc');
+                jsdoc.getDocSetFromFile('test/fixtures/packagetag2.js');
+            }
 
-            jsdoc.getDocSetFromFile('test/fixtures/packagetag2.js');
-
-            expect(logger.warn).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'warn')).toBeTrue();
         });
     });
 
@@ -31,16 +29,23 @@ describe('@package tag', () => {
 
         it('When Closure Compiler tags are enabled, the @package tag accepts a type expression.',
             () => {
+                function getDocSet() {
+                    jsdoc.replaceTagDictionary('closure');
+                    jsdoc.getDocSetFromFile('test/fixtures/packagetag2.js');
+                }
+
+                expect(jsdoc.didLog(getDocSet, 'warn')).toBeFalse();
+            });
+
+        it('When Closure Compiler tags are enabled, the @package tag parses the type expression.',
+            () => {
                 let connectionPorts;
                 let privateDocs;
 
                 jsdoc.replaceTagDictionary('closure');
-                spyOn(logger, 'warn');
 
                 privateDocs = jsdoc.getDocSetFromFile('test/fixtures/packagetag2.js');
                 connectionPorts = privateDocs.getByLongname('connectionPorts')[0];
-
-                expect(logger.warn).not.toHaveBeenCalled();
 
                 expect(connectionPorts).toBeObject();
                 expect(connectionPorts.access).toBe('package');

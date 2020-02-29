@@ -3,7 +3,7 @@
  * @requires jsdoc/tag/dictionary
  */
 const env = require('jsdoc/env');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 
 function buildMessage(tagName, {filename, lineno, comment}, desc) {
     let result = `The @${tagName} tag ${desc}. File: ${filename}, line: ${lineno}`;
@@ -27,7 +27,7 @@ exports.validate = ({title, text, value}, tagDef, meta) => {
         if (!allowUnknownTags ||
             (Array.isArray(allowUnknownTags) &&
              !allowUnknownTags.includes(title))) {
-            logger.error( buildMessage(title, meta, 'is not a known tag') );
+            log.error(buildMessage(title, meta, 'is not a known tag'));
         }
 
         // stop validation, since there's nothing to validate against
@@ -36,16 +36,16 @@ exports.validate = ({title, text, value}, tagDef, meta) => {
 
     // check for errors that make the tag useless
     if (!text && tagDef.mustHaveValue) {
-        logger.error( buildMessage(title, meta, 'requires a value') );
+        log.error(buildMessage(title, meta, 'requires a value'));
     }
 
     // check for minor issues that are usually harmless
     else if (text && tagDef.mustNotHaveValue) {
-        logger.warn( buildMessage(title, meta,
-            'does not permit a value; the value will be ignored') );
+        log.warn(buildMessage(title, meta,
+            'does not permit a value; the value will be ignored'));
     }
     else if (value && value.description && tagDef.mustNotHaveDescription) {
-        logger.warn( buildMessage(title, meta,
-            'does not permit a description; the description will be ignored') );
+        log.warn(buildMessage(title, meta,
+            'does not permit a description; the description will be ignored'));
     }
 };

@@ -1,12 +1,10 @@
 describe('@nocompile tag', () => {
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
 
     const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
     beforeEach(() => {
         env.conf.tags.allowUnknownTags = false;
-        spyOn(logger, 'error');
     });
 
     afterEach(() => {
@@ -20,9 +18,11 @@ describe('@nocompile tag', () => {
         });
 
         it('should not recognize the @nocompile tag', () => {
-            jsdoc.getDocSetFromFile('test/fixtures/nocompiletag.js');
+            function getDocSet() {
+                jsdoc.getDocSetFromFile('test/fixtures/nocompiletag.js');
+            }
 
-            expect(logger.error).toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
         });
     });
 
@@ -32,9 +32,11 @@ describe('@nocompile tag', () => {
         });
 
         it('should recognize the @nocompile tag', () => {
-            jsdoc.getDocSetFromFile('test/fixtures/nocompiletag.js');
+            function getDocSet() {
+                jsdoc.getDocSetFromFile('test/fixtures/nocompiletag.js');
+            }
 
-            expect(logger.error).not.toHaveBeenCalled();
+            expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();
         });
     });
 });

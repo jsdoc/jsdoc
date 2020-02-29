@@ -3,7 +3,7 @@
  * @module jsdoc/tag
  */
 const env = require('jsdoc/env');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const path = require('path');
 const tag = {
     dictionary: require('jsdoc/tag/dictionary'),
@@ -58,7 +58,7 @@ function parseType({text, originalTitle}, {canHaveName, canHaveType}, meta) {
         return tag.type.parse(text, canHaveName, canHaveType);
     }
     catch (e) {
-        logger.error(
+        log.error(
             'Unable to parse a tag\'s type expression%s with tag title "%s" and text "%s": %s',
             meta.filename ? ( ` for source file ${path.join(meta.path, meta.filename)}${meta.lineno ? (` in line ${meta.lineno}`) : ''}` ) : '',
             originalTitle,
