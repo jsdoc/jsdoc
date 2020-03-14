@@ -3,7 +3,7 @@ const commonPathPrefix = require('common-path-prefix');
 const env = require('jsdoc/env');
 const fs = require('fs');
 const helper = require('jsdoc/util/templateHelper');
-const logger = require('jsdoc/util/logger');
+const { log } = require('@jsdoc/util');
 const { lsSync } = require('@jsdoc/util').fs;
 const mkdirpSync = require('mkdirp').sync;
 const path = require('path');
@@ -271,7 +271,7 @@ function generateSourceFiles(sourceFiles, encoding = 'utf8') {
             };
         }
         catch (e) {
-            logger.error('Error while generating source file %s: %s', file, e.message);
+            log.error(`Error while generating source file ${file}: ${e.message}`);
         }
 
         generate(`Source: ${sourceFiles[file].shortened}`, [source], sourceOutfile,
