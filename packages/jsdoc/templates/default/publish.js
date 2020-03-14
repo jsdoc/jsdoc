@@ -5,7 +5,6 @@ const fs = require('fs');
 const helper = require('jsdoc/util/templateHelper');
 const { log } = require('@jsdoc/util');
 const { lsSync } = require('@jsdoc/util').fs;
-const mkdirpSync = require('mkdirp').sync;
 const path = require('path');
 const { taffy } = require('taffydb');
 const template = require('jsdoc/template');
@@ -35,6 +34,10 @@ let data;
 let view;
 
 let outdir = path.normalize(env.opts.destination);
+
+function mkdirpSync(filepath) {
+    return fs.mkdirSync(filepath, { recursive: true });
+}
 
 function find(spec) {
     return helper.find(data, spec);
