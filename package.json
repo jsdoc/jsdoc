@@ -13,27 +13,27 @@
     "url": "https://github.com/jsdoc/jsdoc"
   },
   "dependencies": {
-    "@babel/parser": "^7.4.4",
-    "bluebird": "^3.5.4",
+    "@babel/parser": "^7.9.4",
+    "bluebird": "^3.7.2",
     "catharsis": "^0.8.11",
     "escape-string-regexp": "^2.0.0",
-    "js2xmlparser": "^4.0.0",
+    "js2xmlparser": "^4.0.1",
     "klaw": "^3.0.0",
-    "markdown-it": "^8.4.2",
-    "markdown-it-anchor": "^5.0.2",
-    "marked": "^0.7.0",
-    "mkdirp": "^0.5.1",
+    "markdown-it": "^10.0.0",
+    "markdown-it-anchor": "^5.2.7",
+    "marked": "^0.8.2",
+    "mkdirp": "^1.0.4",
     "requizzle": "^0.2.3",
-    "strip-json-comments": "^3.0.1",
+    "strip-json-comments": "^3.1.0",
     "taffydb": "2.6.2",
-    "underscore": "~1.9.1"
+    "underscore": "~1.10.2"
   },
   "devDependencies": {
-    "ajv": "^6.10.0",
-    "gulp": "^4.0.1",
+    "ajv": "^6.12.0",
+    "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
-    "gulp-json-editor": "^2.5.2",
-    "nyc": "^14.1.0"
+    "gulp-json-editor": "^2.5.4",
+    "nyc": "^15.0.1"
   },
   "engines": {
     "node": ">=8.15.0"
