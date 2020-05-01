@@ -11,7 +11,10 @@
         "cleverLinks": false,
         "monospaceLinks": false,
         "default": {
-            "outputSourceFiles": true
+            "outputSourceFiles": false,
+            "externalSourceLinks": {
+                "urlPrefix": "https://github.com/org/repo/blob/master/src/"
+            }
         }
     }
 }
