@@ -62,7 +62,7 @@ and customize your documentation. Here are a few of them:
 + [tui-jsdoc-template](https://github.com/nhnent/tui.jsdoc-template)
 ([example](https://nhnent.github.io/tui.jsdoc-template/latest/))
 + [better-docs](https://github.com/SoftwareBrothers/better-docs)
-([example](https://softwarebrothers.github.io/admin-bro-dev/index.html))
+([example](https://softwarebrothers.github.io/example-design-system/index.html))
 
 ### Build tools
 
