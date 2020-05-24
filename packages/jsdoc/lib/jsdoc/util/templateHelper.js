@@ -379,6 +379,16 @@ const linkto = exports.linkto = (longname, linkText, cssClass, fragmentId) => bu
     linkMap: longnameToUrl
 });
 
+exports.externalsourcelink = (path, linkText, lineno) => {
+    const externalSourceLinks = env.conf.templates.default.externalSourceLinks;
+    const url = externalSourceLinks.urlPrefix + path;
+    const fragmentId = lineno ? (externalSourceLinks.linenoPrefix || 'L') + lineno : null;
+
+    return buildLink(url, linkText || path, {
+        fragmentId: fragmentId
+    });
+};
+
 function useMonospace(tag, text) {
     let cleverLinks;
     let monospaceLinks;

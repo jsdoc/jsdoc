@@ -114,6 +114,13 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     </li></ul></dd>
     <?js } ?>
 
+    <?js if (data.meta && self.externalSourceLinks) {?>
+    <dt class="tag-source">External Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <?js= self.externalsourcelink(meta.shortpath) ?>, <?js= self.externalsourcelink(meta.shortpath, 'line ' + meta.lineno, meta.lineno) ?>
+    </li></ul></dd>
+    <?js } ?>
+
     <?js if (data.tutorials && tutorials.length) {?>
     <dt class="tag-tutorial">Tutorials:</dt>
     <dd class="tag-tutorial">
