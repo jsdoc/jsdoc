@@ -18,11 +18,10 @@ const config = require('./lib/config');
 const { db } = require('./lib/db');
 const DocletHelper = require('./lib/doclethelper');
 const env = require('jsdoc/env');
-const helper = require('jsdoc/util/templateHelper');
 const { TaskRunner } = require('@jsdoc/task-runner');
 const tasks = require('./lib/default-tasks');
 
-exports.publish = async (taffyData, options, tutorials) => {
+exports.publish = async (taffyData, options) => {
     const templateConfig = config.loadSync().get();
     const allConfig = _.defaults({}, {
         templates: {
@@ -36,9 +35,6 @@ exports.publish = async (taffyData, options, tutorials) => {
     const docletHelper = new DocletHelper();
     // TODO: Stop passing context to constructor when that's possible.
     const runner = new TaskRunner(context);
-
-    // set up tutorials
-    helper.setTutorials(tutorials);
 
     docletHelper.addDoclets(taffyData);
     // TODO: Replicate this logic when `DocletHelper` goes away:
