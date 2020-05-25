@@ -151,6 +151,8 @@ function slice(longname, sliceChars, forcedMemberof) {
     const tokens = [];
     let variation;
 
+    sliceChars = sliceChars || SCOPE_PUNC;
+
     // Quoted strings in a longname are atomic, so we convert them to tokens:
     // foo["bar"] => foo.@{1}@
     // Foo.prototype["bar"] => Foo#@{1}
@@ -229,8 +231,8 @@ function slice(longname, sliceChars, forcedMemberof) {
  * @param {string} forcedMemberof
  * @returns {object} Representing the properties of the given name.
  */
-const toParts = exports.toParts = (longname, forcedMemberof) => slice(
-    longname, SCOPE_PUNC, forcedMemberof
+exports.toParts = (longname, forcedMemberof) => slice(
+    longname, null, forcedMemberof
 );
 
 // TODO: docs
@@ -240,7 +242,7 @@ const toParts = exports.toParts = (longname, forcedMemberof) => slice(
  * @returns {string} The longname with the namespace applied.
  */
 exports.applyNamespace = (longname, ns) => {
-    const nameParts = toParts(longname);
+    const nameParts = slice(longname);
     const name = nameParts.name;
 
     longname = nameParts.longname;
@@ -273,7 +275,7 @@ exports.hasAncestor = (parent, child) => {
     }
 
     do {
-        memberof = toParts(memberof).memberof;
+        memberof = slice(memberof).memberof;
 
         if (memberof === parent) {
             hasAncestor = true;
@@ -293,7 +295,7 @@ const fromParts = exports.fromParts = ({memberof, scope, name, variation}) => [
 
 // TODO: docs
 exports.stripVariation = name => {
-    const parts = toParts(name);
+    const parts = slice(name);
 
     parts.variation = '';
 
@@ -315,7 +317,7 @@ function splitLongname(longname, options) {
         if (!options.includeVariation) {
             previousName = exports.stripVariation(previousName);
         }
-        currentNameInfo = nameInfo[previousName] = toParts(previousName, splitters);
+        currentNameInfo = nameInfo[previousName] = slice(previousName, splitters);
         previousName = currentNameInfo.memberof;
         chunks.push(currentNameInfo.scope + currentNameInfo.name);
     } while (previousName);
