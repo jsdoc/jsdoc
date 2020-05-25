@@ -18,15 +18,6 @@ const ids = {};
 // each container gets its own html file
 const containers = ['class', 'module', 'external', 'namespace', 'mixin', 'interface'];
 
-let tutorials;
-
-/** Sets tutorials map.
-    @param {jsdoc.tutorial.Tutorial} root - Root tutorial node.
- */
-exports.setTutorials = root => {
-    tutorials = root;
-};
-
 exports.globalName = SCOPE.NAMES.GLOBAL;
 exports.fileExtension = '.html';
 exports.SCOPE_TO_PUNC = SCOPE_TO_PUNC;
@@ -38,12 +29,6 @@ const linkMap = {
 
     // one-way lookup (IDs are only unique per file)
     longnameToId: {}
-};
-
-// two-way lookup
-const tutorialLinkMap = {
-    nameToUrl: {},
-    urlToName: {}
 };
 
 const longnameToUrl = exports.longnameToUrl = linkMap.longnameToUrl;
@@ -429,80 +414,6 @@ function splitLinkText(text) {
     };
 }
 
-const tutorialToUrl = exports.tutorialToUrl = tutorial => {
-    let fileUrl;
-    const node = tutorials.getByName(tutorial);
-
-    // no such tutorial
-    if (!node) {
-        log.error( new Error(`No such tutorial: ${tutorial}`) );
-
-        return null;
-    }
-
-    // define the URL if necessary
-    if (!hasOwnProp.call(tutorialLinkMap.nameToUrl, node.name)) {
-        fileUrl = `tutorial-${getUniqueFilename(node.name)}`;
-        tutorialLinkMap.nameToUrl[node.name] = fileUrl;
-        tutorialLinkMap.urlToName[fileUrl] = node.name;
-    }
-
-    return tutorialLinkMap.nameToUrl[node.name];
-};
-
-/**
- * Retrieve a link to a tutorial, or the name of the tutorial if the tutorial is missing. If the
- * `missingOpts` parameter is supplied, the names of missing tutorials will be prefixed by the
- * specified text and wrapped in the specified HTML tag and CSS class.
- *
- * @function
- * @todo Deprecate missingOpts once we have a better error-reporting mechanism.
- * @param {string} tutorial The name of the tutorial.
- * @param {string} content The link text to use.
- * @param {object} [missingOpts] Options for displaying the name of a missing tutorial.
- * @param {string} missingOpts.classname The CSS class to wrap around the tutorial name.
- * @param {string} missingOpts.prefix The prefix to add to the tutorial name.
- * @param {string} missingOpts.tag The tag to wrap around the tutorial name.
- * @return {string} An HTML link to the tutorial, or the name of the tutorial with the specified
- * options.
- */
-const toTutorial = exports.toTutorial = (tutorial, content, missingOpts) => {
-    let classname;
-    let link;
-    let node;
-    let tag;
-
-
-    if (!tutorial) {
-        log.error(new Error('Missing required parameter: tutorial'));
-
-        return null;
-    }
-
-    node = tutorials.getByName(tutorial);
-    // no such tutorial
-    if (!node) {
-        missingOpts = missingOpts || {};
-        tag = missingOpts.tag;
-        classname = missingOpts.classname;
-
-        link = tutorial;
-        if (missingOpts.prefix) {
-            link = missingOpts.prefix + link;
-        }
-        if (tag) {
-            link = `<${tag}${classname ? (` class="${classname}">`) : '>'}${link}`;
-            link += `</${tag}>`;
-        }
-
-        return link;
-    }
-
-    content = content || node.title;
-
-    return `<a href="${tutorialToUrl(tutorial)}">${content}</a>`;
-};
-
 function shouldShortenLongname() {
     if (env.conf && env.conf.templates && env.conf.templates.useShortNamesInLinks) {
         return true;
@@ -512,9 +423,9 @@ function shouldShortenLongname() {
 }
 
 /**
- * Find `{@link ...}` and `{@tutorial ...}` inline tags and turn them into HTML links.
+ * Find `{@link ...}` inline tags and turn them into HTML links.
  *
- * @param {string} str - The string to search for `{@link ...}` and `{@tutorial ...}` tags.
+ * @param {string} str - The string to search for `{@link ...}` tags.
  * @return {string} The linkified text.
  */
 exports.resolveLinks = str => {
@@ -565,19 +476,10 @@ exports.resolveLinks = str => {
         }) );
     }
 
-    function processTutorial(string, {completeTag, text}) {
-        const leading = extractLeadingText(string, completeTag);
-
-        string = leading.string;
-
-        return string.replace( completeTag, toTutorial(text, leading.leadingText) );
-    }
-
     replacers = {
         link: processLink,
         linkcode: processLink,
-        linkplain: processLink,
-        tutorial: processTutorial
+        linkplain: processLink
     };
 
     return inline.replaceInlineTags(str, replacers).newString;

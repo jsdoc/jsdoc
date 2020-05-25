@@ -8,17 +8,12 @@ describe("jsdoc/util/templateHelper", () => {
     const doclet = require('jsdoc/doclet');
     const env = require('jsdoc/env');
     const helper = require('jsdoc/util/templateHelper');
-    const resolver = require('jsdoc/tutorial/resolver');
     const { taffy } = require('taffydb');
 
     helper.registerLink('test', 'path/to/test.html');
 
     it("should exist", () => {
         expect(helper).toBeObject();
-    });
-
-    it("should export a 'setTutorials' function", () => {
-        expect(helper.setTutorials).toBeFunction();
     });
 
     it("should export a 'globalName' property", () => {
@@ -97,14 +92,6 @@ describe("jsdoc/util/templateHelper", () => {
         expect(helper.registerLink).toBeFunction();
     });
 
-    it("should export a 'tutorialToUrl' function", () => {
-        expect(helper.tutorialToUrl).toBeFunction();
-    });
-
-    it("should export a 'toTutorial' function", () => {
-        expect(helper.toTutorial).toBeFunction();
-    });
-
     it("should export a 'resolveLinks' function", () => {
         expect(helper.resolveLinks).toBeFunction();
     });
@@ -119,25 +106,6 @@ describe("jsdoc/util/templateHelper", () => {
 
     it('should export a "longnamesToTree" function', () => {
         expect(helper.longnamesToTree).toBeFunction();
-    });
-
-    describe("setTutorials", () => {
-        // used in tutorialToUrl, toTutorial.
-        it("setting tutorials to null causes all tutorial lookups to fail", () => {
-            // bit of a dodgy test but the best I can manage. setTutorials doesn't do much.
-            helper.setTutorials(null);
-
-            // should throw error: no 'getByName' in tutorials.
-            expect(() => helper.tutorialToUrl('asdf')).toThrow();
-        });
-
-        it("setting tutorials to the root tutorial object lets lookups work", () => {
-            helper.setTutorials(resolver.root);
-            spyOn(resolver.root, 'getByName');
-            helper.tutorialToUrl('asdf');
-
-            expect(resolver.root.getByName).toHaveBeenCalled();
-        });
     });
 
     describe("globalName", () => {
@@ -1275,150 +1243,6 @@ describe("jsdoc/util/templateHelper", () => {
             helper.registerLink('MySymbol', 'asdf.html');
 
             expect(helper.linkto('MySymbol')).toBe('<a href="asdf.html">MySymbol</a>');
-        });
-    });
-
-    describe("tutorialToUrl", () => {
-        beforeEach(() => {
-            helper.setTutorials(resolver.root);
-        });
-
-        afterEach(() => {
-            helper.setTutorials(null);
-        });
-
-        it('logs an error if the tutorial is missing', () => {
-            function toUrl() {
-                helper.tutorialToUrl('be-a-perfect-person-in-just-three-days');
-            }
-
-            expect(jsdoc.didLog(toUrl, 'error')).toBeTrue();
-        });
-
-        it("logs an error if the tutorial's name is a reserved JS keyword and it doesn't exist", () => {
-            function toUrl() {
-                helper.tutorialToUrl('prototype');
-            }
-
-            expect(jsdoc.didLog(toUrl, 'error')).toBeTrue();
-        });
-
-        it("creates links to tutorials if they exist", () => {
-            let url;
-
-            // load the tutorials we already have for the tutorials tests
-            resolver.load(`${env.dirname}/test/fixtures/tutorials/tutorials`);
-            resolver.resolve();
-
-            url = helper.tutorialToUrl('test');
-
-            expect(url).toBe('tutorial-test.html');
-        });
-
-        it("creates links for tutorials where the name is a reserved JS keyword", () => {
-            const url = helper.tutorialToUrl('constructor');
-
-            expect(url).toBe('tutorial-constructor.html');
-        });
-
-        it("returns the same link if called multiple times on the same tutorial", () => {
-            expect(helper.tutorialToUrl('test2')).toBe(helper.tutorialToUrl('test2'));
-        });
-    });
-
-    describe("toTutorial", () => {
-        beforeEach(() => {
-            helper.setTutorials(resolver.root);
-        });
-
-        afterEach(() => {
-            helper.setTutorials(null);
-        });
-
-        it('logs an error if the first param is missing', () => {
-            function toTutorial() {
-                helper.toTutorial();
-            }
-
-            expect(jsdoc.didLog(toTutorial, 'error')).toBeTrue();
-        });
-
-        // missing tutorials
-        it("returns the tutorial name if it's missing and no missingOpts is provided", () => {
-            let link;
-
-            helper.setTutorials(resolver.root);
-            link = helper.toTutorial('qwerty');
-
-            expect(link).toBe('qwerty');
-        });
-
-        it("returns the tutorial name wrapped in missingOpts.tag if provided and the tutorial is missing", () => {
-            const link = helper.toTutorial('qwerty', 'lkjklqwerty', {tag: 'span'});
-
-            expect(link).toBe('<span>qwerty</span>');
-        });
-
-        it("returns the tutorial name wrapped in missingOpts.tag with class missingOpts.classname if provided and the tutorial is missing", () => {
-            let link = helper.toTutorial('qwerty', 'lkjklqwerty', {classname: 'missing'});
-
-            expect(link).toBe('qwerty');
-
-            link = helper.toTutorial('qwerty', 'lkjklqwerty', {
-                tag: 'span',
-                classname: 'missing'
-            });
-            expect(link).toBe('<span class="missing">qwerty</span>');
-        });
-
-        it("prefixes the tutorial name with missingOpts.prefix if provided and the tutorial is missing", () => {
-            let link = helper.toTutorial('qwerty', 'lkjklqwerty', {
-                tag: 'span',
-                classname: 'missing',
-                prefix: 'TODO-'
-            });
-
-            expect(link).toBe('<span class="missing">TODO-qwerty</span>');
-
-            link = helper.toTutorial('qwerty', 'lkjklqwerty', {prefix: 'TODO-'});
-
-            expect(link).toBe('TODO-qwerty');
-
-            link = helper.toTutorial('qwerty', 'lkjklqwerty', {
-                prefix: 'TODO-',
-                classname: 'missing'
-            });
-
-            expect(link).toBe('TODO-qwerty');
-        });
-
-        // now we do non-missing tutorials.
-        it("returns a link to the tutorial if not missing", () => {
-            let link;
-
-            // load the tutorials we already have for the tutorials tests
-            resolver.load(`${env.dirname}/test/fixtures/tutorials/tutorials`);
-            resolver.resolve();
-
-            link = helper.toTutorial('constructor', 'The Constructor tutorial');
-
-            expect(link).toBe(`<a href="${helper.tutorialToUrl('constructor')}">The Constructor tutorial</a>`);
-        });
-
-        it("uses the tutorial's title for the link text if no content parameter is provided", () => {
-            const link = helper.toTutorial('test');
-
-            expect(link).toBe(`<a href="${helper.tutorialToUrl('test')}">Test tutorial</a>`);
-        });
-
-        it("does not apply any of missingOpts if the tutorial was found", () => {
-            const link = helper.toTutorial('test', '', {
-                tag: 'span',
-                classname: 'missing',
-                prefix: 'TODO-'
-            });
-
-            expect(link).toBe(`<a href="${helper.tutorialToUrl('test')}">Test tutorial</a>`);
         });
     });
 

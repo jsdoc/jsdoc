@@ -760,13 +760,6 @@ let baseTags = exports.baseTags = {
         },
         synonyms: ['exception']
     },
-    tutorial: {
-        mustHaveValue: true,
-        onTagged(doclet, {value}) {
-            doclet.tutorials = doclet.tutorials || [];
-            doclet.tutorials.push(value);
-        }
-    },
     type: {
         mustHaveValue: true,
         mustNotHaveDescription: true,

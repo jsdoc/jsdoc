@@ -96,12 +96,6 @@ module.exports = {
         boolean: true,
         description: 'Run all tests and exit.'
     },
-    tutorials: {
-        alias: 'u',
-        description: 'The directory to search for tutorials.',
-        normalize: true,
-        requiresArg: true
-    },
     verbose: {
         boolean: true,
         description: 'Log detailed information to the console.'

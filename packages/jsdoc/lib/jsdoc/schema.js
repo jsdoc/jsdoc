@@ -491,14 +491,6 @@ const DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
                 type: STRING
             }
         },
-        // extended tutorials
-        tutorials: {
-            type: ARRAY,
-            minItems: 1,
-            items: {
-                type: STRING
-            }
-        },
         // what type is the value that this doc is associated with, like `number`
         type: TYPE_PROPERTY_SCHEMA,
         undocumented: {

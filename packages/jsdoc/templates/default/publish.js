@@ -43,14 +43,6 @@ function find(spec) {
     return helper.find(data, spec);
 }
 
-function tutoriallink(tutorial) {
-    return helper.toTutorial(tutorial, null, {
-        tag: 'em',
-        classname: 'disabled',
-        prefix: 'Tutorial: '
-    });
-}
-
 function getAncestorLinks(doclet) {
     return helper.getAncestorLinks(data, doclet);
 }
@@ -353,10 +345,6 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     return nav;
 }
 
-function linktoTutorial(longName, name) {
-    return tutoriallink(name);
-}
-
 function linktoExternal(longName, name) {
     return linkto(longName, name.replace(/(^"|"$)/g, ''));
 }
@@ -370,7 +358,6 @@ function linktoExternal(longName, name) {
  * @param {array<object>} members.mixins
  * @param {array<object>} members.modules
  * @param {array<object>} members.namespaces
- * @param {array<object>} members.tutorials
  * @param {array<object>} members.events
  * @param {array<object>} members.interfaces
  * @return {string} The HTML for the navigation sidebar.
@@ -379,7 +366,6 @@ function buildNav(members) {
     let globalNav;
     let nav = '<h2><a href="index.html">Home</a></h2>';
     const seen = {};
-    const seenTutorials = {};
 
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
     nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
@@ -388,7 +374,6 @@ function buildNav(members) {
     nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
     nav += buildMemberNav(members.events, 'Events', seen, linkto);
     nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
-    nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial);
 
     if (members.globals.length) {
         globalNav = '';
@@ -421,9 +406,8 @@ function sourceToDestination(parentDir, sourcePath, destDir) {
 /**
     @param {TAFFY} taffyData See <http://taffydb.com/>.
     @param {object} opts
-    @param {Tutorial} tutorials
  */
-exports.publish = (taffyData, opts, tutorials) => {
+exports.publish = (taffyData, opts) => {
     let classes;
     let conf;
     let cwd;
@@ -468,9 +452,6 @@ exports.publish = (taffyData, opts, tutorials) => {
     view.layout = conf.default.layoutFile ?
         path.resolve(conf.default.layoutFile) :
         'layout.tmpl';
-
-    // set up tutorials for helper
-    helper.setTutorials(tutorials);
 
     data = helper.prune(data);
     data.sort('longname, version, since');
@@ -656,7 +637,6 @@ exports.publish = (taffyData, opts, tutorials) => {
     });
 
     members = helper.getMembers(data);
-    members.tutorials = tutorials.children;
 
     // output pretty-printed source files by default
     outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false;
@@ -665,7 +645,6 @@ exports.publish = (taffyData, opts, tutorials) => {
     view.find = find;
     view.linkto = linkto;
     view.resolveAuthorLinks = resolveAuthorLinks;
-    view.tutoriallink = tutoriallink;
     view.htmlsafe = htmlsafe;
     view.outputSourceFiles = outputSourceFiles;
 
@@ -733,31 +712,4 @@ exports.publish = (taffyData, opts, tutorials) => {
             generate(`Interface: ${myInterfaces[0].name}`, myInterfaces, helper.longnameToUrl[longname]);
         }
     });
-
-    // TODO: move the tutorial functions to templateHelper.js
-    function generateTutorial(title, tutorial, filename) {
-        const tutorialData = {
-            title: title,
-            header: tutorial.title,
-            content: tutorial.parse(),
-            children: tutorial.children
-        };
-        const tutorialPath = path.join(outdir, filename);
-        let html = view.render('tutorial.tmpl', tutorialData);
-
-        // yes, you can use {@link} in tutorials too!
-        html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
-
-        fs.writeFileSync(tutorialPath, html, 'utf8');
-    }
-
-    // tutorials can have only one parent so there is no risk for loops
-    function saveChildren({children}) {
-        children.forEach(child => {
-            generateTutorial(`Tutorial: ${child.title}`, child, helper.tutorialToUrl(child.name));
-            saveChildren(child);
-        });
-    }
-
-    saveChildren(tutorials);
 };

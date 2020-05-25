@@ -343,8 +343,6 @@ module.exports = (() => {
             return Promise.resolve();
         }
         else {
-            cli.resolveTutorials();
-
             return cli.generateDocs();
         }
     };
@@ -355,21 +353,9 @@ module.exports = (() => {
         return cli;
     };
 
-    cli.resolveTutorials = () => {
-        const resolver = require('jsdoc/tutorial/resolver');
-
-        if (env.opts.tutorials) {
-            resolver.load(env.opts.tutorials);
-            resolver.resolve();
-        }
-
-        return cli;
-    };
-
     cli.generateDocs = () => {
         let message;
         const path = require('path');
-        const resolver = require('jsdoc/tutorial/resolver');
         const taffy = require('taffydb').taffy;
 
         let template;
@@ -392,8 +378,7 @@ module.exports = (() => {
             log.info('Generating output files...');
             publishPromise = template.publish(
                 taffy(props.docs),
-                env.opts,
-                resolver.root
+                env.opts
             );
 
             return Promise.resolve(publishPromise);
