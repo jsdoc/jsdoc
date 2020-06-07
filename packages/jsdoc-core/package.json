@@ -26,7 +26,7 @@
     "escape-string-regexp": "^4.0.0",
     "lodash": "^4.17.15",
     "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.0.1"
+    "strip-json-comments": "^3.1.0"
   },
   "engines": {
     "node": ">=10.18.0"
