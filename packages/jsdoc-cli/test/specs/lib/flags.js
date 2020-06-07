@@ -5,21 +5,25 @@ function validate(name, opts) {
     name = `--${name}`;
 
     if (!opts.description) {
-        throw new TypeError(`${name} is missing its description.`);
+        throw new TypeError(`${name} is missing its description`);
     }
 
     if (opts.array && opts.boolean) {
-        throw new TypeError(`${name} can be an array or a boolean, but not both.`);
+        throw new TypeError(`${name} can be an array or a boolean, but not both`);
+    }
+
+    if (opts.requiresArg && opts.boolean) {
+        throw new TypeError(`${name} can require an argument or be a boolean, but not both`);
     }
 
     try {
         ow(opts.coerce, ow.optional.function);
     } catch (e) {
-        throw new TypeError(`The coerce value for ${name} is not a function.`);
+        throw new TypeError(`The coerce value for ${name} is not a function`);
     }
 
     if (opts.choices && !opts.requiresArg) {
-        throw new TypeError(`${name} specifies choices, but not requiresArg.`);
+        throw new TypeError(`${name} specifies choices, but not requiresArg`);
     }
 }
 

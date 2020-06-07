@@ -76,7 +76,6 @@ module.exports = {
     },
     readme: {
         alias: 'R',
-        boolean: true,
         description: 'The `README` file to include in the documentation.',
         normalize: true,
         requiresArg: true

@@ -4,6 +4,7 @@ const { config } = require('@jsdoc/core');
 const Engine = require('@jsdoc/cli');
 const env = require('jsdoc/env');
 const { EventBus, log } = require('@jsdoc/util');
+const path = require('path');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 const Promise = require('bluebird');
@@ -32,7 +33,6 @@ module.exports = (() => {
     // TODO: docs
     cli.setVersionInfo = () => {
         const fs = require('fs');
-        const path = require('path');
 
         // allow this to throw--something is really wrong if we can't read our own package file
         const info = JSON.parse(stripBom(fs.readFileSync(path.join(env.dirname, 'package.json'),
@@ -260,6 +260,11 @@ module.exports = (() => {
             }
         }
 
+        // Resolve the path to the README.
+        if (env.opts.readme) {
+            env.opts.readme = path.resolve(env.opts.readme);
+        }
+
         props.packageJson = packageJson;
 
         return sourceFiles;
@@ -348,7 +353,6 @@ module.exports = (() => {
 
     cli.generateDocs = () => {
         let message;
-        const path = require('path');
         const taffy = require('taffydb').taffy;
 
         let template;
