@@ -231,10 +231,7 @@ module.exports = (() => {
     }
 
     function buildSourceList() {
-        const Readme = require('jsdoc/readme');
-
         let packageJson;
-        let readmeHtml;
         let sourceFile;
         let sourceFiles = env.opts._ ? env.opts._.slice(0) : [];
 
@@ -242,12 +239,9 @@ module.exports = (() => {
             sourceFiles = sourceFiles.concat(env.conf.source.include);
         }
 
-        // load the user-specified package/README files, if any
+        // load the user-specified package file, if any
         if (env.opts.package) {
             packageJson = readPackageJson(env.opts.package);
-        }
-        if (env.opts.readme) {
-            readmeHtml = new Readme(env.opts.readme).html;
         }
 
         // source files named `package.json` or `README.md` get special treatment, unless the user
@@ -261,13 +255,12 @@ module.exports = (() => {
             }
 
             if ( !env.opts.readme && /(\bREADME|\.md)$/i.test(sourceFile) ) {
-                readmeHtml = new Readme(sourceFile).html;
+                env.opts.readme = sourceFile;
                 sourceFiles.splice(i--, 1);
             }
         }
 
         props.packageJson = packageJson;
-        env.opts.readme = readmeHtml;
 
         return sourceFiles;
     }

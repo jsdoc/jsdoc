@@ -667,7 +667,6 @@ exports.publish = (taffyData, opts) => {
         packages.concat(
             [{
                 kind: 'mainpage',
-                readme: opts.readme,
                 longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'
             }]
         ).concat(files), indexUrl);
