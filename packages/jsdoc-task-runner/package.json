@@ -26,7 +26,7 @@
     "dependency-graph": "^0.9.0",
     "emittery": "^0.7.0",
     "ow": "^0.17.0",
-    "p-queue": "^6.4.0"
+    "p-queue": "^6.5.0"
   },
   "engines": {
     "node": ">=10.18.0"
