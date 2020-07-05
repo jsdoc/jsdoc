@@ -319,7 +319,7 @@ function makeConstructorFinisher(parser) {
             return;
         }
 
-        combined = combineDoclets(eventDoclet, parentDoclet);
+        combined = combineDoclets(parentDoclet, eventDoclet);
         combined.longname = parentDoclet.longname;
         if (parentDoclet.memberof) {
             combined.memberof = parentDoclet.memberof;

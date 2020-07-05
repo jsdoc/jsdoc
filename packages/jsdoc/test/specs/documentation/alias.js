@@ -106,4 +106,14 @@ describe('aliases', () => {
             expect(method).toBeArrayOfSize(1);
         });
     });
+
+    describe('class with constructor exported from module', () => {
+        it('When an exported class with a constructor has an alias, the exported class has the correct scope.', () => {
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/aliasexports.js');
+            const klass = docSet.getByLongname('module:foo.Bar').filter(d => !d.undocumented);
+
+            expect(klass).toBeArrayOfSize(1);
+            expect(klass[0].scope).toBe('static');
+        });
+    });
 });
