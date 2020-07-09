@@ -24,7 +24,7 @@
     "color-themes-for-google-code-prettify": "^2.0.4",
     "common-path-prefix": "^3.0.0",
     "escape-string-regexp": "^4.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "open-sans-fonts": "^1.6.2",
     "requizzle": "^0.2.3",
     "strip-bom": "^4.0.0",
