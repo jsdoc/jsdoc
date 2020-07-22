@@ -3,6 +3,12 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.5 (July 2020)
+
+Prevents circular references in doclets when two function parameters use the same type expression,
+and the `--debug` flag is present.
+
+
 ## 3.6.4 (April 2020)
 
 Updates dependencies.
