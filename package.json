@@ -9,7 +9,7 @@
     "eslint": "^7.5.0",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
-    "jasmine": "^3.5.0",
+    "jasmine": "^3.6.1",
     "jasmine-console-reporter": "^3.1.0",
     "klaw-sync": "^6.0.0",
     "lerna": "^3.22.1",
