@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "add-matchers": "^0.6.2",
-    "jasmine-expect": "^4.0.3"
+    "jasmine-expect": "^5.0.0"
   },
   "engines": {
     "node": ">=10.18.0"
