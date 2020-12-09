@@ -21,7 +21,7 @@
     "klaw": "~2.0.0",
     "markdown-it": "~8.3.1",
     "markdown-it-named-headers": "~0.0.4",
-    "marked": "~0.3.6",
+    "marked": "^1.2.5",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
@@ -30,10 +30,10 @@
   },
   "devDependencies": {
     "ajv": "~5.2.2",
-    "gulp": "~3.9.1",
+    "gulp": "^4.0.2",
     "gulp-eslint": "~4.0.0",
     "gulp-json-editor": "~2.2.1",
-    "nyc": "~11.1.0"
+    "nyc": "^15.1.0"
   },
   "engines": {
     "node": ">=4.2.0"

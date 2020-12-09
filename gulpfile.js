@@ -59,4 +59,4 @@ gulp.task('test', function(cb) {
     exec(cmd, execCb.bind(null, cb));
 });
 
-gulp.task('default', ['lint', 'test']);
+gulp.task('default', gulp.series('lint', 'test'));
