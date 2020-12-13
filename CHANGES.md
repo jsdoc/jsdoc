@@ -3,6 +3,33 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.6 (September 2020)
+
+Fixes an issue that could cause members of an interface to be tracked incorrectly if the interface
+was both defined as an ES2015 class and assigned to a variable. For example:
+
+```js
+/** @interface */
+foo.Bar = class {
+    constructor() {
+        /** This member was missing from the generated docs. */
+        this.baz = null;
+    }
+}
+```
+
+
+## 3.6.5 (July 2020)
+
+Prevents circular references in doclets when two function parameters use the same type expression,
+and the `--debug` flag is present.
+
+
+## 3.6.4 (April 2020)
+
+Updates dependencies.
+
+
 ## 3.6.3 (July 2019)
 
 Updates dependencies.
