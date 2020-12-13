@@ -319,11 +319,9 @@ function makeConstructorFinisher(parser) {
             return;
         }
 
+        // We prefer the parent doclet because it has the correct kind, longname, and memberof.
+        // The child doclet might or might not have the correct kind, longname, and memberof.
         combined = combineDoclets(parentDoclet, eventDoclet);
-        combined.longname = parentDoclet.longname;
-        if (parentDoclet.memberof) {
-            combined.memberof = parentDoclet.memberof;
-        }
 
         parser.addResult(combined);
 

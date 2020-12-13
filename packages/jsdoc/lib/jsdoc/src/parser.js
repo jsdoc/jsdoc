@@ -531,7 +531,8 @@ class Parser extends EventEmitter {
                 result = doclet.longname;
             }
             // walk up to the closest class we can find
-            else if (doclet.kind === 'class' || doclet.kind === 'module') {
+            else if (doclet.kind === 'class' || doclet.kind === 'interface' ||
+                doclet.kind === 'module') {
                 result = doclet.longname;
             }
             else if (node.enclosingScope) {

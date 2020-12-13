@@ -54,6 +54,50 @@ describe('@interface tag', () => {
         });
     });
 
+    describe('ES2015 classes as interfaces', () => {
+        const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/interface-implements2.js');
+        const docSet3 = jsdoc.getDocSetFromFile('test/fixtures/interface-assignment.js');
+
+        it('should set the correct kind on the interface', () => {
+            const workerInterface = docSet2.getByLongname('IWorker').filter(d => !d.undocumented)[0];
+
+            expect(workerInterface.kind).toBe('interface');
+        });
+
+        it('should set the correct kind on methods in the interface', () => {
+            const workerInterfaceWork = docSet2.getByLongname('IWorker#work')
+                .filter(d => !d.undocumented)[0];
+
+            expect(workerInterfaceWork.kind).toBe('function');
+        });
+
+        it('should set the correct kind on the implementing class', () => {
+            const workerImpl = docSet2.getByLongname('MyWorker').filter(d => !d.undocumented)[0];
+
+            expect(workerImpl.kind).toBe('class');
+        });
+
+        it('should set the correct kind on an interface assigned to a variable', () => {
+            const workerInterface = docSet3.getByLongname('myCorp.IWorker').filter(d => !d.undocumented)[0];
+
+            expect(workerInterface.kind).toBe('interface');
+        });
+
+        it('should set the correct kind on methods in an interface assigned to a variable', () => {
+            const workerInterfaceWork = docSet3.getByLongname('myCorp.IWorker#work')
+                .filter(d => !d.undocumented)[0];
+
+            expect(workerInterfaceWork.kind).toBe('function');
+        });
+
+        it('should set the correct kind on other members in an interface assigned to a variable', () => {
+            const workerName = docSet3.getByLongname('myCorp.IWorker#workerName')
+                .filter(d => !d.undocumented)[0];
+
+            expect(workerName.kind).toBe('member');
+        });
+    });
+
     describe('Closure Compiler tags', () => {
         afterEach(() => {
             jsdoc.restoreTagDictionary();
