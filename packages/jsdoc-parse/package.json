@@ -1,28 +1,27 @@
 {
-    "name": "@jsdoc/parse",
-    "version": "0.0.1",
-    "description": "Code-parsing tools for JSDoc",
-    "keywords": [
-      "jsdoc"
-    ],
-    "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
-    "homepage": "https://jsdoc.app/",
-    "license": "Apache-2.0",
-    "publishConfig": {
-      "access": "public"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/jsdoc/jsdoc.git"
-    },
-    "scripts": {
-      "test": "echo \"Error: run tests from root\" && exit 1"
-    },
-    "bugs": {
-      "url": "https://github.com/jsdoc/jsdoc/issues"
-    },
-    "dependencies": {},
-    "engines": {
-      "node": ">=10.18.0"
-    }
+  "name": "@jsdoc/parse",
+  "version": "0.1.0",
+  "description": "Code-parsing tools for JSDoc",
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://jsdoc.app/",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  },
+  "engines": {
+    "node": ">=10.18.0"
   }
+}
