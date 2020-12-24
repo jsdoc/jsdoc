@@ -20,4 +20,12 @@ describe('@jsdoc/core', () => {
             expect(core.name).toBe(name);
         });
     });
+
+    describe('Syntax', () => {
+        it('is lib/syntax.Syntax', () => {
+            const { Syntax } = require('../../lib/syntax');
+
+            expect(core.Syntax).toBe(Syntax);
+        });
+    });
 });
