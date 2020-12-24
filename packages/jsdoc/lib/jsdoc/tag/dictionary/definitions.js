@@ -10,7 +10,7 @@ const { isInlineTag } = require('jsdoc/tag/inline');
 const { log } = require('@jsdoc/util');
 const { nodeToValue } = require('jsdoc/src/astnode');
 const path = require('path');
-const { Syntax } = require('jsdoc/src/syntax');
+const { Syntax } = require('@jsdoc/parse');
 const parseTagType = require('jsdoc/tag/type').parse;
 
 const hasOwnProp = Object.prototype.hasOwnProperty;

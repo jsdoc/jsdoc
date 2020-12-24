@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const { cast } = require('@jsdoc/util');
 const { SCOPE } = require('@jsdoc/core').name;
-const { Syntax } = require('jsdoc/src/syntax');
+const { Syntax } = require('@jsdoc/parse');
 
 // Counter for generating unique node IDs.
 let uid = 100000000;

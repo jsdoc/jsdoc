@@ -5,7 +5,7 @@
  */
 const astnode = require('jsdoc/src/astnode');
 const { log } = require('@jsdoc/util');
-const { Syntax } = require('jsdoc/src/syntax');
+const { Syntax } = require('@jsdoc/parse');
 
 // TODO: docs
 function getCurrentScope(scopes) {

@@ -5,7 +5,7 @@ const { Doclet } = require('jsdoc/doclet');
 const escape = require('escape-string-regexp');
 const { log } = require('@jsdoc/util');
 const { SCOPE } = require('@jsdoc/core').name;
-const { Syntax } = require('jsdoc/src/syntax');
+const { Syntax } = require('@jsdoc/parse');
 
 let currentModule = null;
 

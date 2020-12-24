@@ -5,7 +5,7 @@
 const astNode = require('jsdoc/src/astnode');
 const combineDoclets = require('jsdoc/doclet').combine;
 const { getBasename, LONGNAMES } = require('@jsdoc/core').name;
-const { Syntax } = require('jsdoc/src/syntax');
+const { Syntax } = require('@jsdoc/parse');
 
 /**
  * Get the raw comment string for a block comment node.

@@ -18,7 +18,7 @@ const {
     toParts
 } = require('@jsdoc/core').name;
 const path = require('path');
-const { Syntax } = require('jsdoc/src/syntax');
+const { Syntax } = require('@jsdoc/parse');
 const { Tag } = require('jsdoc/tag');
 
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;

@@ -7,7 +7,7 @@ const { EventEmitter } = require('events');
 const fs = require('fs');
 const { log } = require('@jsdoc/util');
 const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
-const { Syntax } = require('jsdoc/src/syntax');
+const { Syntax } = require('@jsdoc/parse');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
