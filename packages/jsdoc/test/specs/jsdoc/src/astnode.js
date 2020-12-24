@@ -2,7 +2,6 @@ describe('jsdoc/src/astNode', () => {
     const astBuilder = require('jsdoc/src/astbuilder');
     const astNode = require('jsdoc/src/astnode');
     const babelParser = require('@babel/parser');
-    const env = require('jsdoc/env');
     const Syntax = require('jsdoc/src/syntax').Syntax;
 
     function parse(str) {
@@ -79,16 +78,6 @@ describe('jsdoc/src/astNode', () => {
     });
 
     describe('addNodeProperties', () => {
-        let debugEnabled;
-
-        beforeEach(() => {
-            debugEnabled = Boolean(env.opts.debug);
-        });
-
-        afterEach(() => {
-            env.opts.debug = debugEnabled;
-        });
-
         it('should return null for undefined input', () => {
             expect( astNode.addNodeProperties() ).toBe(null);
         });
@@ -104,13 +93,13 @@ describe('jsdoc/src/astNode', () => {
             expect(node.foo).toBe(1);
         });
 
-        it('should add a non-enumerable nodeId if necessary', () => {
+        it('should add a nodeId if necessary', () => {
             const node = astNode.addNodeProperties({});
             const descriptor = Object.getOwnPropertyDescriptor(node, 'nodeId');
 
             expect(descriptor).toBeObject();
             expect(descriptor.value).toBeString();
-            expect(descriptor.enumerable).toBeFalse();
+            expect(descriptor.enumerable).toBeTrue();
         });
 
         it('should not overwrite an existing nodeId', () => {
@@ -118,17 +107,6 @@ describe('jsdoc/src/astNode', () => {
             const node = astNode.addNodeProperties({nodeId: nodeId});
 
             expect(node.nodeId).toBe(nodeId);
-        });
-
-        it('should add an enumerable nodeId in debug mode', () => {
-            let descriptor;
-            let node;
-
-            env.opts.debug = true;
-            node = astNode.addNodeProperties({});
-            descriptor = Object.getOwnPropertyDescriptor(node, 'nodeId');
-
-            expect(descriptor.enumerable).toBeTrue();
         });
 
         it('should add a non-enumerable, writable parent if necessary', () => {
@@ -154,34 +132,24 @@ describe('jsdoc/src/astNode', () => {
             expect(node.parent).toBeNull();
         });
 
-        it('should add an enumerable parentId in debug mode', () => {
-            let descriptor;
-            let node;
-
-            env.opts.debug = true;
-            node = astNode.addNodeProperties({});
-            descriptor = Object.getOwnPropertyDescriptor(node, 'parentId');
+        it('should add an enumerable parentId', () => {
+            const node = astNode.addNodeProperties({});
+            const descriptor = Object.getOwnPropertyDescriptor(node, 'parentId');
 
             expect(descriptor).toBeObject();
             expect(descriptor.enumerable).toBeTrue();
         });
 
-        it('should provide a null parentId in debug mode for nodes with no parent', () => {
-            let node;
-
-            env.opts.debug = true;
-            node = astNode.addNodeProperties({});
+        it('should provide a null parentId for nodes with no parent', () => {
+            const node = astNode.addNodeProperties({});
 
             expect(node.parentId).toBeNull();
         });
 
-        it('should provide a non-null parentId in debug mode for nodes with a parent', () => {
-            let node;
-            let parent;
+        it('should provide a non-null parentId for nodes with a parent', () => {
+            const node = astNode.addNodeProperties({});
+            const parent = astNode.addNodeProperties({});
 
-            env.opts.debug = true;
-            node = astNode.addNodeProperties({});
-            parent = astNode.addNodeProperties({});
             node.parent = parent;
 
             expect(node.parentId).toBe(parent.nodeId);
@@ -210,36 +178,24 @@ describe('jsdoc/src/astNode', () => {
             expect(node.enclosingScope).toBeNull();
         });
 
-        it('should add an enumerable enclosingScopeId in debug mode', () => {
-            let descriptor;
-            let node;
-
-            env.opts.debug = true;
-            node = astNode.addNodeProperties({});
-            descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScopeId');
+        it('should add an enumerable enclosingScopeId', () => {
+            const node = astNode.addNodeProperties({});
+            const descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScopeId');
 
             expect(descriptor).toBeObject();
             expect(descriptor.enumerable).toBeTrue();
         });
 
-        it('should provide a null enclosingScopeId in debug mode for nodes with no enclosing scope',
-            () => {
-                let node;
+        it('should provide a null enclosingScopeId for nodes with no enclosing scope', () => {
+            const node = astNode.addNodeProperties({});
 
-                env.opts.debug = true;
-                node = astNode.addNodeProperties({});
+            expect(node.enclosingScopeId).toBeNull();
+        });
 
-                expect(node.enclosingScopeId).toBeNull();
-            });
+        it('should provide a non-null enclosingScopeId for nodes with an enclosing scope', () => {
+            const node = astNode.addNodeProperties({});
+            const enclosingScope = astNode.addNodeProperties({});
 
-        it('should provide a non-null enclosingScopeId in debug mode for nodes with an enclosing ' +
-            'scope', () => {
-            let enclosingScope;
-            let node;
-
-            env.opts.debug = true;
-            node = astNode.addNodeProperties({});
-            enclosingScope = astNode.addNodeProperties({});
             node.enclosingScope = enclosingScope;
 
             expect(node.enclosingScopeId).toBe(enclosingScope.nodeId);
