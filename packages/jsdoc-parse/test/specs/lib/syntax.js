@@ -1,5 +1,5 @@
-describe('@jsdoc/core.Syntax', () => {
-    const { Syntax } = require('@jsdoc/core');
+describe('@jsdoc/parse.Syntax', () => {
+    const { Syntax } = require('../../../index');
 
     it('is an object', () => {
         expect(Syntax).toBeObject();
