@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { DepGraph } = require('dependency-graph');
 const Emittery = require('emittery');
-const ow = require('ow');
+const {default: ow} = require('ow');
 const Queue = require('p-queue').default;
 const v = require('./validators');
 

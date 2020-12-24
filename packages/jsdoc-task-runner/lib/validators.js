@@ -1,4 +1,4 @@
-const ow = require('ow');
+const {default: ow} = require('ow');
 const Task = require('./task');
 
 function checkTask(t) {

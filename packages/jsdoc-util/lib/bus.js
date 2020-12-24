@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const EventEmitter = require('events').EventEmitter;
-const ow = require('ow');
+const {default: ow} = require('ow');
 
 let cache = {};
 const hasOwnProp = Object.prototype.hasOwnProperty;

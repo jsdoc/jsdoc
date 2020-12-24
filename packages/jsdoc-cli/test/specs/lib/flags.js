@@ -1,5 +1,5 @@
 const flags = require('../../../lib/flags');
-const ow = require('ow');
+const {default: ow} = require('ow');
 
 function validate(name, opts) {
     name = `--${name}`;

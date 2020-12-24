@@ -3,7 +3,7 @@ const { EventBus } = require('@jsdoc/util');
 const flags = require('./flags');
 const help = require('./help');
 const { LEVELS, Logger } = require('./logger');
-const ow = require('ow');
+const {default: ow} = require('ow');
 const yargs = require('yargs-parser');
 
 function validateChoice(flagInfo, choices, values) {

@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const ow = require('ow');
+const {default: ow} = require('ow');
 
 /**
  * Logging levels for the JSDoc logger. The default logging level is

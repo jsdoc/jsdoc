@@ -1,5 +1,5 @@
 const Emittery = require('emittery');
-const ow = require('ow');
+const {default: ow} = require('ow');
 
 module.exports = class Task extends Emittery {
     constructor(opts = {}) {
