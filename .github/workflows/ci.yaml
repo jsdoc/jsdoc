@@ -1,0 +1,20 @@
+name: Node.js CI
+on: [push, pull_request]
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [10, 12, 14]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Test and lint
+        run: |
+          npm install -g gulp lerna
+          npm install
+          lerna bootstrap
+          gulp
