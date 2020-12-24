@@ -283,7 +283,7 @@ class Parser extends EventEmitter {
 
             sourceCode = pretreat(e.source);
 
-            ast = this._astBuilder.build(sourceCode, sourceName);
+            ast = this._astBuilder.build(sourceCode, sourceName, conf.source.type);
             if (ast) {
                 this._walkAst(ast, this._visitor, sourceName);
             }

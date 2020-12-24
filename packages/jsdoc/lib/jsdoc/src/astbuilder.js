@@ -1,5 +1,5 @@
+const _ = require('lodash');
 const babelParser = require('@babel/parser');
-const env = require('jsdoc/env');
 const { log } = require('@jsdoc/util');
 
 // exported so we can use them in tests
@@ -8,6 +8,7 @@ const parserOptions = exports.parserOptions = {
     allowImportExportEverywhere: true,
     allowReturnOutsideFunction: true,
     allowSuperOutsideMethod: true,
+    allowUndeclaredExports: true,
     plugins: [
         'asyncGenerators',
         'bigInt',
@@ -37,15 +38,15 @@ const parserOptions = exports.parserOptions = {
         }],
         'throwExpressions'
     ],
-    ranges: true,
-    sourceType: env.conf.source.type
+    ranges: true
 };
 
-function parse(source, filename) {
+function parse(source, filename, sourceType) {
     let ast;
+    const options = _.defaults({}, parserOptions, {sourceType});
 
     try {
-        ast = babelParser.parse(source, parserOptions);
+        ast = babelParser.parse(source, options);
     }
     catch (e) {
         log.error(`Unable to parse ${filename}: ${e.message}`);
@@ -57,14 +58,9 @@ function parse(source, filename) {
 // TODO: docs
 class AstBuilder {
     // TODO: docs
-    /* eslint-disable no-empty-function */
-    constructor() {}
-    /* eslint-enable no-empty-function */
-
-    // TODO: docs
     /* eslint-disable class-methods-use-this */
-    build(source, filename) {
-        return parse(source, filename);
+    build(source, filename, sourceType) {
+        return parse(source, filename, sourceType);
     }
     /* eslint-enable class-methods-use-this */
 }
