@@ -2,10 +2,11 @@
 describe('jsdoc/src/parser', () => {
     const _ = require('lodash');
     const { attachTo } = require('jsdoc/src/handlers');
-    const { dirname } = require('jsdoc/env');
     const fs = require('fs');
     const jsdocParser = require('jsdoc/src/parser');
     const path = require('path');
+
+    const dirname = path.resolve(path.join(__dirname, '..', '..', '..', '..'));
 
     it('should exist', () => {
         expect(jsdocParser).toBeObject();
