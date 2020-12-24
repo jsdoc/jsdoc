@@ -1,7 +1,7 @@
 name: Node.js CI
 on: [push, pull_request]
 jobs:
-  ci:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

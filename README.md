@@ -1,6 +1,6 @@
 # JSDoc
 
-[![Build Status](https://travis-ci.org/jsdoc/jsdoc.svg?branch=master)](http://travis-ci.org/jsdoc/jsdoc)
+![Build status](https://github.com/jsdoc/jsdoc/workflows/build/badge.svg)
 
 An API documentation generator for JavaScript.
 
