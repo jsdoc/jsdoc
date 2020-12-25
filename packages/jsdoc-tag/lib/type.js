@@ -1,16 +1,17 @@
 /**
- * @module jsdoc/tag/type
+ * @module @jsdoc/tag/lib/type
+ * @alias @jsdoc/tag.type
  */
 const { cast } = require('@jsdoc/util');
 const catharsis = require('catharsis');
-const { extractInlineTag } = require('jsdoc/tag/inline');
+const { extractInlineTag } = require('./inline');
 const { splitNameAndDescription } = require('@jsdoc/core').name;
 
 /**
  * Information about a type expression extracted from tag text.
  *
  * @typedef TypeExpressionInfo
- * @memberof module:jsdoc/tag/type
+ * @memberof module:@jsdoc/tag.type
  * @property {string} expression - The type expression.
  * @property {string} text - The updated tag text.
  */
@@ -26,7 +27,7 @@ function unescapeBraces(text) {
  *
  * @private
  * @param {string} string - The tag text.
- * @return {module:jsdoc/tag/type.TypeExpressionInfo} The type expression and updated tag text.
+ * @return {module:@jsdoc/tag.type.TypeExpressionInfo} The type expression and updated tag text.
  */
 function extractTypeExpression(string) {
     let completeExpression;
@@ -116,7 +117,7 @@ function getTagInfo(tagValue, canHaveName, canHaveType) {
  * Information provided in a JSDoc tag.
  *
  * @typedef {Object} TagInfo
- * @memberof module:jsdoc/tag/type
+ * @memberof module:@jsdoc/tag.type
  * @property {string} TagInfo.defaultvalue - The default value of the member.
  * @property {string} TagInfo.name - The name of the member (for example, `myParamName`).
  * @property {boolean} TagInfo.nullable - Indicates whether the member can be set to `null` or
@@ -137,8 +138,8 @@ function getTagInfo(tagValue, canHaveName, canHaveType) {
  * member name; whether the member is optional; and the default value of the member.
  *
  * @private
- * @param {module:jsdoc/tag/type.TagInfo} tagInfo - Information contained in the tag.
- * @return {module:jsdoc/tag/type.TagInfo} Updated information from the tag.
+ * @param {module:@jsdoc/tag.type.TagInfo} tagInfo - Information contained in the tag.
+ * @return {module:@jsdoc/tag.type.TagInfo} Updated information from the tag.
  */
 function parseName(tagInfo) {
     // like '[foo]' or '[ foo ]' or '[foo=bar]' or '[ foo=bar ]' or '[ foo = bar ]'
@@ -222,8 +223,8 @@ function getTypeStrings(parsedType, isOutermostType) {
  * specified in the tag info.
  *
  * @private
- * @param {module:jsdoc/tag/type.TagInfo} tagInfo - Information contained in the tag.
- * @return {module:jsdoc/tag/type.TagInfo} Updated information from the tag.
+ * @param {module:@jsdoc/tag.type.TagInfo} tagInfo - Information contained in the tag.
+ * @return {module:@jsdoc/tag.type.TagInfo} Updated information from the tag.
  */
 function parseTypeExpression(tagInfo) {
     let parsedType;
@@ -273,7 +274,7 @@ const typeParsers = [parseName, parseTypeExpression];
  * @param {boolean} canHaveName - Indicates whether the value can include a symbol name.
  * @param {boolean} canHaveType - Indicates whether the value can include a type expression that
  * describes the symbol.
- * @return {module:jsdoc/tag/type.TagInfo} Information obtained from the tag.
+ * @return {module:@jsdoc/tag.type.TagInfo} Information obtained from the tag.
  * @throws {Error} Thrown if a type expression cannot be parsed.
  */
 exports.parse = (tagValue, canHaveName, canHaveType) => {

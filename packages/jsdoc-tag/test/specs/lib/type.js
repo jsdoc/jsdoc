@@ -22,19 +22,19 @@ function buildText(type, name, desc) {
     return text;
 }
 
-describe('jsdoc/tag/type', () => {
-    const type = require('jsdoc/tag/type');
+describe('@jsdoc/tag/lib/type', () => {
+    const type = require('../../../lib/type');
 
-    it('should exist', () => {
+    it('is an object', () => {
         expect(type).toBeObject();
     });
 
-    it('should export a parse function', () => {
+    it('exports a parse function', () => {
         expect(type.parse).toBeFunction();
     });
 
     describe('parse', () => {
-        it('should return an object with name, type, and text properties', () => {
+        it('returns an object with name, type, and text properties', () => {
             const info = type.parse('');
 
             expect(info.name).toBeString();
@@ -42,7 +42,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBeString();
         });
 
-        it('should not extract a name or type if canHaveName and canHaveType are not set', () => {
+        it('does not extract a name or type if canHaveName and canHaveType are not set', () => {
             const desc = '{number} foo The foo parameter.';
             const info = type.parse(desc);
 
@@ -51,7 +51,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe(desc);
         });
 
-        it('should extract a name, but not a type, if canHaveName === true and canHaveType === false', () => {
+        it('extracts a name, but not a type, if canHaveName is true and canHaveType is false', () => {
             const name = 'bar';
             const desc = 'The bar parameter.';
             const info = type.parse( buildText(null, name, desc), true, false );
@@ -61,7 +61,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe(desc);
         });
 
-        it('should extract a type, but not a name, if canHaveName === false and canHaveType === true', () => {
+        it('extracts a type, but not a name, if canHaveName is false and canHaveType is true', () => {
             const typeString = 'boolean';
             const desc = 'Set to true on alternate Thursdays.';
             const info = type.parse(buildText(typeString, null, desc), false, true);
@@ -71,7 +71,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe(desc);
         });
 
-        it('should extract a name and type if canHaveName and canHaveType are true', () => {
+        it('extracts a name and type if canHaveName and canHaveType are true', () => {
             const typeString = 'string';
             const name = 'baz';
             const desc = 'The baz parameter.';
@@ -82,7 +82,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe(desc);
         });
 
-        it('should report optional types correctly no matter which syntax we use', () => {
+        it('reports optional types correctly for both JSDoc and Closure syntax', () => {
             let desc = '{string} [foo]';
             let info = type.parse(desc, true, true);
 
@@ -97,14 +97,14 @@ describe('jsdoc/tag/type', () => {
             expect(info.optional).toBeTrue();
         });
 
-        it('should return the types as an array', () => {
+        it('returnsthe types as an array', () => {
             const desc = '{string} foo';
             const info = type.parse(desc, true, true);
 
             expect(info.type).toEqual( ['string'] );
         });
 
-        it('should recognize the entire list of possible types', () => {
+        it('recognizes the entire list of possible types', () => {
             let desc = '{(string|number)} foo';
             let info = type.parse(desc, true, true);
 
@@ -123,14 +123,14 @@ describe('jsdoc/tag/type', () => {
             expect(info.type).toEqual( ['string', 'number', 'boolean', 'function'] );
         });
 
-        it('should not find any type if there is no text in braces', () => {
+        it('does not find any type if there is no text in braces', () => {
             const desc = 'braceless text';
             const info = type.parse(desc, false, true);
 
             expect(info.type).toBeEmptyArray();
         });
 
-        it('should cope with bad escapement at the end of the string', () => {
+        it('copes with bad escapement at the end of the string', () => {
             const desc = 'bad {escapement \\';
             const info = type.parse(desc, false, true);
 
@@ -138,21 +138,21 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe(desc);
         });
 
-        it('should handle escaped braces correctly', () => {
+        it('handles escaped braces correctly', () => {
             const desc = '{weirdObject."with\\}AnnoyingProperty"}';
             const info = type.parse(desc, false, true);
 
             expect(info.type[0]).toBe('weirdObject."with}AnnoyingProperty"');
         });
 
-        it('should work if the type expression is the entire string', () => {
+        it('works if the type expression is the entire string', () => {
             const desc = '{textInBraces}';
             const info = type.parse(desc, false, true);
 
             expect(info.type[0]).toBe('textInBraces');
         });
 
-        it('should work if the type expression is at the beginning of the string', () => {
+        it('works if the type expression is at the beginning of the string', () => {
             const desc = '{testString} ahoy';
             const info = type.parse(desc, false, true);
 
@@ -160,7 +160,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe('ahoy');
         });
 
-        it('should work if the type expression is in the middle of the string', () => {
+        it('works if the type expression is in the middle of the string', () => {
             const desc = 'a {testString} yay';
             const info = type.parse(desc, false, true);
 
@@ -168,7 +168,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe('a  yay');
         });
 
-        it('should work if the tag is at the end of the string', () => {
+        it('works if the tag is at the end of the string', () => {
             const desc = 'a {testString}';
             const info = type.parse(desc, false, true);
 
@@ -176,7 +176,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe('a');
         });
 
-        it('should work when there are nested braces', () => {
+        it('works when there are nested braces', () => {
             const desc = 'some {{double}} braces';
             const info = type.parse(desc, false, true);
 
@@ -185,7 +185,7 @@ describe('jsdoc/tag/type', () => {
             expect(info.text).toBe('some  braces');
         });
 
-        it('should override the type expression if an inline @type tag is specified', () => {
+        it('overrides the type expression if an inline @type tag is specified', () => {
             let desc = '{Object} cookie {@type Monster}';
             let info = type.parse(desc, true, true);
 
@@ -214,7 +214,7 @@ describe('jsdoc/tag/type', () => {
         });
 
         describe('JSDoc-style type info', () => {
-            it('should parse JSDoc-style optional parameters', () => {
+            it('parses JSDoc-style optional parameters', () => {
                 let name = '[qux]';
                 const desc = 'The qux parameter.';
                 let info = type.parse( buildText(null, name, desc), true, false );
@@ -245,9 +245,9 @@ describe('jsdoc/tag/type', () => {
             });
         });
 
-        // TODO: add more tests related to how JSDoc mangles the Catharsis parse results
+        // TODO: Add more tests related to how JSDoc mangles the Catharsis parse results.
         describe('Closure Compiler-style type info', () => {
-            it('should recognize variable (repeatable) parameters', () => {
+            it('recognizes variable (repeatable) parameters', () => {
                 const desc = '{...string} foo - Foo.';
                 const info = type.parse(desc, true, true);
 
@@ -255,13 +255,12 @@ describe('jsdoc/tag/type', () => {
                 expect(info.variable).toBeTrue();
             });
 
-            it('should set the type correctly for type applications that contain type unions',
-                () => {
-                    const desc = '{Array.<(string|number)>} foo - Foo.';
-                    const info = type.parse(desc, true, true);
+            it('sets the type correctly for type applications that contain type unions', () => {
+                const desc = '{Array.<(string|number)>} foo - Foo.';
+                const info = type.parse(desc, true, true);
 
-                    expect(info.type).toEqual(['Array.<(string|number)>']);
-                });
+                expect(info.type).toEqual(['Array.<(string|number)>']);
+            });
         });
     });
 });

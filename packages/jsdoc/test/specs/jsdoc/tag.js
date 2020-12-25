@@ -4,7 +4,7 @@ describe('jsdoc/tag', () => {
     const env = require('jsdoc/env');
     const jsdocDictionary = require('jsdoc/tag/dictionary');
     const jsdocTag = require('jsdoc/tag');
-    const parseType = require('jsdoc/tag/type').parse;
+    const parseType = require('@jsdoc/tag').type.parse;
 
     it('should exist', () => {
         expect(jsdocTag).toBeObject();
@@ -176,7 +176,6 @@ describe('jsdoc/tag', () => {
             }
 
             it('if the tag has a type, tag.value should contain the type information', () => {
-                // we assume jsdoc/tag/type.parse works (it has its own tests to verify this)
                 [true, false].forEach(bool => {
                     env.opts.debug = bool;
                     createTags();

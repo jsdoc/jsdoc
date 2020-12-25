@@ -4,7 +4,7 @@
 const catharsis = require('catharsis');
 let dictionary = require('jsdoc/tag/dictionary');
 const env = require('jsdoc/env');
-const inline = require('jsdoc/tag/inline');
+const { inline } = require('@jsdoc/tag');
 const { log } = require('@jsdoc/util');
 const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = require('@jsdoc/core').name;
 

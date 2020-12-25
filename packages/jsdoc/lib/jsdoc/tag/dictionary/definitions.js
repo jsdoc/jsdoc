@@ -6,12 +6,12 @@ const _ = require('lodash');
 const { applyNamespace, SCOPE, LONGNAMES } = require('@jsdoc/core').name;
 const commonPathPrefix = require('common-path-prefix');
 const env = require('jsdoc/env');
-const { isInlineTag } = require('jsdoc/tag/inline');
+const { isInlineTag } = require('@jsdoc/tag').inline;
 const { log } = require('@jsdoc/util');
 const { nodeToValue } = require('@jsdoc/parse').astNode;
 const path = require('path');
 const { Syntax } = require('@jsdoc/parse');
-const parseTagType = require('jsdoc/tag/type').parse;
+const parseTagType = require('@jsdoc/tag').type.parse;
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 

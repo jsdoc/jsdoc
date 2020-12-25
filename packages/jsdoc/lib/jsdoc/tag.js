@@ -8,7 +8,7 @@ const path = require('path');
 const tag = {
     dictionary: require('jsdoc/tag/dictionary'),
     validator: require('jsdoc/tag/validator'),
-    type: require('jsdoc/tag/type')
+    type: require('@jsdoc/tag').type
 };
 
 // Check whether the text is the same as a symbol name with leading or trailing whitespace. If so,
