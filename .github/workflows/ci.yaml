@@ -10,7 +10,7 @@ jobs:
         node: [10, 12, 14]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
       - name: Test and lint
