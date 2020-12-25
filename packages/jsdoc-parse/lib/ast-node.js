@@ -1,9 +1,9 @@
 // TODO: docs
-/** @module jsdoc/src/astnode */
+/** @module @jsdoc/parse.astNode */
 const _ = require('lodash');
 const { cast } = require('@jsdoc/util');
 const { SCOPE } = require('@jsdoc/core').name;
-const { Syntax } = require('@jsdoc/parse');
+const { Syntax } = require('./syntax');
 
 // Counter for generating unique node IDs.
 let uid = 100000000;
@@ -11,7 +11,7 @@ let uid = 100000000;
 /**
  * Check whether an AST node represents a function.
  *
- * @alias module:jsdoc/src/astnode.isFunction
+ * @alias module:@jsdoc/parse.astNode.isFunction
  * @param {(Object|string)} node - The AST node to check, or the `type` property of a node.
  * @return {boolean} Set to `true` if the node is a function or `false` in all other cases.
  */
@@ -36,7 +36,7 @@ const isFunction = exports.isFunction = node => {
 /**
  * Check whether an AST node creates a new scope.
  *
- * @alias module:jsdoc/src/astnode.isScope
+ * @alias module:@jsdoc/parse.astNode.isScope
  * @param {Object} node - The AST node to check.
  * @return {Boolean} Set to `true` if the node creates a new scope, or `false` in all other cases.
  */

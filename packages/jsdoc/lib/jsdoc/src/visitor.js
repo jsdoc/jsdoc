@@ -2,7 +2,7 @@
  * @module jsdoc/src/visitor
  */
 // TODO: consider exporting more stuff so users can override it
-const astNode = require('jsdoc/src/astnode');
+const { astNode } = require('@jsdoc/parse');
 const combineDoclets = require('jsdoc/doclet').combine;
 const { getBasename, LONGNAMES } = require('@jsdoc/core').name;
 const { Syntax } = require('@jsdoc/parse');

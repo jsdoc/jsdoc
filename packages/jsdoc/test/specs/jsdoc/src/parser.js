@@ -49,32 +49,12 @@ describe('jsdoc/src/parser', () => {
 
         newParser();
 
-        it('should have an "astBuilder" property', () => {
-            expect(parser.astBuilder).toBeObject();
-        });
-
         it('should have a "visitor" property', () => {
             expect(parser.visitor).toBeObject();
         });
 
         it('should have a "walker" property', () => {
             expect(parser.walker).toBeObject();
-        });
-
-        it('should accept an astBuilder, visitor, and walker as arguments', () => {
-            const astBuilder = {};
-            const visitor = {
-                /* eslint-disable no-empty-function */
-                setParser() {}
-                /* eslint-enable no-empty-function */
-            };
-            const walker = {};
-
-            const myParser = new jsdocParser.Parser(astBuilder, visitor, walker);
-
-            expect(myParser.astBuilder).toBe(astBuilder);
-            expect(myParser.visitor).toBe(visitor);
-            expect(myParser.walker).toBe(walker);
         });
 
         it('should have a "parse" method', () => {
@@ -91,14 +71,6 @@ describe('jsdoc/src/parser', () => {
 
         it('should have a "getAstNodeVisitors" method', () => {
             expect(parser.getAstNodeVisitors).toBeFunction();
-        });
-
-        describe('astBuilder', () => {
-            it('should contain an appropriate astBuilder by default', () => {
-                const { AstBuilder } = require('jsdoc/src/astbuilder');
-
-                expect(parser.astBuilder instanceof AstBuilder).toBeTrue();
-            });
         });
 
         describe('visitor', () => {

@@ -3,7 +3,7 @@
  *
  * @module jsdoc/src/walker
  */
-const astnode = require('jsdoc/src/astnode');
+const { astNode } = require('@jsdoc/parse');
 const { log } = require('@jsdoc/util');
 const { Syntax } = require('@jsdoc/parse');
 
@@ -655,9 +655,9 @@ class Walker {
         function cb(node, parent, cbState) {
             let currentScope;
 
-            const isScope = astnode.isScope(node);
+            const isScope = astNode.isScope(node);
 
-            astnode.addNodeProperties(node);
+            astNode.addNodeProperties(node);
             node.parent = parent || null;
 
             currentScope = getCurrentScope(cbState.scopes);

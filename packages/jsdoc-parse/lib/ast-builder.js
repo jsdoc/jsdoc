@@ -2,7 +2,7 @@ const _ = require('lodash');
 const babelParser = require('@babel/parser');
 const { log } = require('@jsdoc/util');
 
-// exported so we can use them in tests
+// Exported so we can use them in tests.
 const parserOptions = exports.parserOptions = {
     allowAwaitOutsideFunction: true,
     allowImportExportEverywhere: true,
@@ -58,10 +58,8 @@ function parse(source, filename, sourceType) {
 // TODO: docs
 class AstBuilder {
     // TODO: docs
-    /* eslint-disable class-methods-use-this */
-    build(source, filename, sourceType) {
+    static build(source, filename, sourceType) {
         return parse(source, filename, sourceType);
     }
-    /* eslint-enable class-methods-use-this */
 }
 exports.AstBuilder = AstBuilder;

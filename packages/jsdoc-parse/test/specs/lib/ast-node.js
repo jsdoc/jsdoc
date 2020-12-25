@@ -1,11 +1,11 @@
-describe('jsdoc/src/astNode', () => {
-    const astBuilder = require('jsdoc/src/astbuilder');
-    const astNode = require('jsdoc/src/astnode');
+describe('@jsdoc/parse/lib/ast-node', () => {
+    const astNode = require('../../../lib/ast-node');
     const babelParser = require('@babel/parser');
-    const { Syntax } = require('@jsdoc/parse');
+    const { parserOptions } = require('../../../lib/ast-builder');
+    const { Syntax } = require('../../../lib/syntax');
 
     function parse(str) {
-        return babelParser.parse(str, astBuilder.parserOptions).program.body[0];
+        return babelParser.parse(str, parserOptions).program.body[0];
     }
 
     // create the AST nodes we'll be testing
@@ -526,8 +526,8 @@ describe('jsdoc/src/astNode', () => {
 
         // TODO: we can't test this here because JSDoc, not Babylon, adds the `parent` property to
         // nodes. also, we currently return an empty string instead of `<anonymous>` in this case;
-        // see `module:jsdoc/src/astnode.nodeToValue` and the comment on `Syntax.MethodDefinition`
-        // for details
+        // see `module:@jsdoc/parse.astNode.nodeToValue` and the comment on
+        // `Syntax.MethodDefinition` for details
         xit('should return `<anonymous>` for method definitions inside classes that were ' +
             'returned by an arrow function expression', () => {
             expect( astNode.nodeToValue(methodDefinition2) ).toBe('<anonymous>');

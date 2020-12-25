@@ -2,12 +2,13 @@
  * @module jsdoc/src/parser
  */
 const _ = require('lodash');
-const astNode = require('jsdoc/src/astnode');
+const { AstBuilder, astNode, Syntax } = require('@jsdoc/parse');
 const { EventEmitter } = require('events');
 const fs = require('fs');
 const { log } = require('@jsdoc/util');
 const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
-const { Syntax } = require('@jsdoc/parse');
+const { Visitor } = require('jsdoc/src/visitor');
+const { Walker } = require('jsdoc/src/walker');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -61,7 +62,7 @@ exports.createParser = (type, conf) => {
         return null;
     }
 
-    return new (require(modulePath).Parser)(null, null, null, conf);
+    return new (require(modulePath).Parser)(conf);
 };
 
 // TODO: docs
@@ -89,24 +90,18 @@ function definedInScope(doclet, basename) {
  */
 class Parser extends EventEmitter {
     // TODO: docs
-    constructor(builderInstance, visitorInstance, walkerInstance, conf) {
+    constructor(conf) {
         super();
 
         this.clear();
 
-        this._astBuilder = builderInstance || new (require('jsdoc/src/astbuilder').AstBuilder)();
         this._conf = conf || {};
-        this._visitor = visitorInstance || new (require('jsdoc/src/visitor').Visitor)();
-        this._walker = walkerInstance || new (require('jsdoc/src/walker').Walker)();
+        this._visitor = new Visitor();
+        this._walker = new Walker();
 
         this._visitor.setParser(this);
 
         Object.defineProperties(this, {
-            astBuilder: {
-                get() {
-                    return this._astBuilder;
-                }
-            },
             visitor: {
                 get() {
                     return this._visitor;
@@ -285,7 +280,7 @@ class Parser extends EventEmitter {
             sourceCode = pretreat(e.source);
             sourceType = this._conf.source ? this._conf.source.type : undefined;
 
-            ast = this._astBuilder.build(sourceCode, sourceName, sourceType);
+            ast = AstBuilder.build(sourceCode, sourceName, sourceType);
             if (ast) {
                 this._walkAst(ast, this._visitor, sourceName);
             }
