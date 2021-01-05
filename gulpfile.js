@@ -15,7 +15,7 @@
 */
 const ConsoleReporter = require('jasmine-console-reporter');
 const csso = require('gulp-csso');
-const eslint = require('gulp-eslint');
+const eslint = require('gulp-eslint7');
 const gulp = require('gulp');
 const less = require('gulp-less');
 const path = require('path');
@@ -128,8 +128,6 @@ exports.jasmine = jasmine;
 exports['js-copy'] = jsCopy;
 exports['js-minify'] = jsMinify;
 exports.lint = lint;
-// For backwards compatibility.
-exports.mocha = jasmine;
 
 exports.js = gulp.series(exports['js-copy'], exports['js-minify']);
 exports.build = gulp.parallel(exports['css-minify'], exports.js);
