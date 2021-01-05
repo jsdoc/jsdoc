@@ -131,6 +131,6 @@ exports.lint = lint;
 
 exports.js = gulp.series(exports['js-copy'], exports['js-minify']);
 exports.build = gulp.parallel(exports['css-minify'], exports.js);
-exports.default = gulp.series(exports.lint, exports.mocha);
+exports.default = gulp.series(exports.lint, exports.jasmine);
 exports.dev = gulp.parallel(exports.css, exports.js);
 exports.test = exports.default;
