@@ -25,7 +25,7 @@
   "dependencies": {
     "dependency-graph": "^0.10.0",
     "emittery": "^0.8.1",
-    "ow": "^0.22.0",
+    "ow": "^0.23.0",
     "p-queue": "^6.6.2"
   },
   "engines": {
