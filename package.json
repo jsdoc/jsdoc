@@ -6,7 +6,7 @@
     "@jsdoc/eslint-config": "^1.0.8",
     "@jsdoc/test-matchers": "^0.1.0",
     "ajv": "^7.1.0",
-    "eslint": "^7.19.0",
+    "eslint": "^7.20.0",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "jasmine": "^3.6.4",
