@@ -29,6 +29,6 @@
     "jasmine-expect": "^5.0.0"
   },
   "engines": {
-    "node": ">=10.18.0"
+    "node": ">=v10.23.3"
   }
 }

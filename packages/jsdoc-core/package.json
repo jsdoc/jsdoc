@@ -29,7 +29,7 @@
     "strip-json-comments": "^3.1.1"
   },
   "engines": {
-    "node": ">=10.18.0"
+    "node": ">=v10.23.3"
   },
   "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"
 }
