@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "klaw-sync": "^6.0.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "ow": "^0.23.0"
   },
   "engines": {
