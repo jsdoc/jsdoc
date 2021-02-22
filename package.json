@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.0.8",
-    "@jsdoc/test-matchers": "^0.1.0",
+    "@jsdoc/test-matchers": "^0.1.6",
     "ajv": "^7.1.1",
     "eslint": "^7.20.0",
     "gulp": "^4.0.2",
