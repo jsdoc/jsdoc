@@ -17,7 +17,7 @@
     "nyc": "^15.1.0"
   },
   "engines": {
-    "node": ">=v10.23.3"
+    "node": ">=v14.15.5"
   },
   "scripts": {
     "test": "gulp"
