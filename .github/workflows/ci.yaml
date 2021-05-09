@@ -7,7 +7,7 @@ jobs:
       matrix:
         # os: [ubuntu-latest, windows-latest]
         os: [ubuntu-latest]
-        node: [10, 12, 14]
+        node: [12, 14, 16]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
