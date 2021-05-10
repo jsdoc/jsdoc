@@ -5,7 +5,7 @@
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.0.8",
     "@jsdoc/test-matchers": "^0.1.6",
-    "ajv": "^7.2.4",
+    "ajv": "^8.3.0",
     "eslint": "^7.26.0",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
