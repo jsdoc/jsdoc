@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.7 (May 2021)
+
+Updates dependencies.
+
+
 ## 3.6.6 (September 2020)
 
 Fixes an issue that could cause members of an interface to be tracked incorrectly if the interface
