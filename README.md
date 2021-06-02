@@ -4,7 +4,7 @@
 
 An API documentation generator for JavaScript.
 
-Want to contribute to JSDoc? Please read `CONTRIBUTING.md`.
+Want to contribute to JSDoc? Please read [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 Installation and Usage
 ----------------------
@@ -93,4 +93,4 @@ JSDoc is copyright (c) 2011-present Michael Mathews <micmath@gmail.com> and
 the [contributors to JSDoc](https://github.com/jsdoc/jsdoc/graphs/contributors).
 
 JSDoc is free software, licensed under the Apache License, Version 2.0. See the
-`LICENSE` file for more details.
+[`LICENSE`](LICENSE) file for more details.
