@@ -24,7 +24,7 @@
   "dependencies": {
     "klaw-sync": "^6.0.0",
     "lodash": "^4.17.21",
-    "ow": "^0.23.1"
+    "ow": "^0.24.1"
   },
   "engines": {
     "node": ">=v14.17.0"
