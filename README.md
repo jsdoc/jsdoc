@@ -58,7 +58,7 @@ and customize your documentation. Here are a few of them:
   ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))
 + [minami](https://github.com/Nijikokun/minami)
 + [docdash](https://github.com/clenemt/docdash)
-([example](http://clenemt.github.io/docdash/))
+([example](https://clenemt.github.io/docdash/))
 + [tui-jsdoc-template](https://github.com/nhnent/tui.jsdoc-template)
 ([example](https://nhnent.github.io/tui.jsdoc-template/latest/))
 + [better-docs](https://github.com/SoftwareBrothers/better-docs)
@@ -83,9 +83,9 @@ JSDoc](https://medium.com/@kevinast/integrate-gitbook-jsdoc-974be8df6fb3)
 [jsdoc/jsdoc.github.io](https://github.com/jsdoc/jsdoc.github.io).
 + [Join JSDoc's Slack channel](https://jsdoc-slack.appspot.com/).
 + Ask for help on the
-[JSDoc Users mailing list](http://groups.google.com/group/jsdoc-users).
+[JSDoc Users mailing list](https://groups.google.com/group/jsdoc-users).
 + Post questions tagged `jsdoc` to
-[Stack Overflow](http://stackoverflow.com/questions/tagged/jsdoc).
+[Stack Overflow](https://stackoverflow.com/questions/tagged/jsdoc).
 
 ## License
 
