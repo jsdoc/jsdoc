@@ -56,6 +56,24 @@ describe('@typedef tag', () => {
             expect(calculatorBattery).toBeObject();
             expect(calculatorBattery.scope).toBe('global');
         });
+
+        it('When a symbol has a @typedef tag with a name, in file with module scope, the scope is `inner`.', () => {
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag3.js');
+            const moduleScopedTypedef = docSet.getByLongname('module:m~ModuleScopedTypedef')[0];
+
+
+            expect(moduleScopedTypedef).toBeObject();
+            expect(moduleScopedTypedef.scope).toBe('inner');
+        });
+
+        it('When a symbol has @global on a @typedef tag with a name, in a file with module scope, the scope is `global`.', () => {
+            const docSet = jsdoc.getDocSetFromFile('test/fixtures/typedeftag3.js');
+
+            const globallyScopedTypedef = docSet.getByLongname('GloballyScopedTypedef')[0];
+
+            expect(globallyScopedTypedef).toBeObject();
+            expect(globallyScopedTypedef.scope).toBe('global');
+        });
     });
 
     describe('Closure Compiler tags', () => {
