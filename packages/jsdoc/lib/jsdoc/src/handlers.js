@@ -14,8 +14,10 @@ class CurrentModule {
         this.doclet = doclet;
         this.longname = doclet.longname;
         this.originalName = doclet.meta.code.name || '';
+        this.range = doclet.meta.range || [0, Number.MAX_SAFE_INTEGER];
     }
 }
+
 function filterByLongname({longname}) {
     // you can't document prototypes
     if ( /#$/.test(longname) ) {
@@ -80,12 +82,19 @@ function setCurrentModule(doclet) {
     }
 }
 
+function isInModule(doclet) {
+    return currentModule && currentModule.longname !== doclet.name &&
+           doclet.meta && doclet.meta.range &&
+           currentModule.range[0] <= doclet.meta.range[0] &&
+           currentModule.range[1] >= doclet.meta.range[1];
+}
+
 function setModuleScopeMemberOf(parser, doclet) {
     let parentDoclet;
     let skipMemberof;
 
     // handle module symbols that are _not_ assigned to module.exports
-    if (currentModule && currentModule.longname !== doclet.name) {
+    if (isInModule(doclet)) {
         if (!doclet.scope) {
             // is this a method definition? if so, we usually get the scope from the node directly
             if (doclet.meta && doclet.meta.code && doclet.meta.code.node &&
