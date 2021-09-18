@@ -3,7 +3,6 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe("jsdoc/util/templateHelper", () => {
     const _ = require('lodash');
-    const definitions = require('jsdoc/tag/dictionary/definitions');
     const dictionary = require('jsdoc/tag/dictionary');
     const doclet = require('jsdoc/doclet');
     const env = require('jsdoc/env');
@@ -201,7 +200,6 @@ describe("jsdoc/util/templateHelper", () => {
             dict.defineTag('anaphylaxis', {
                 isNamespace: true
             });
-            definitions.defineTags(dict);
             doclet._replaceDictionary(dict);
 
             filename = helper.getUniqueFilename('anaphylaxis:peanut');

@@ -17,9 +17,11 @@ const {
     SCOPE_TO_PUNC,
     toParts
 } = require('@jsdoc/core').name;
+const helper = require('jsdoc/util/templateHelper');
 const path = require('path');
 const { Syntax } = require('@jsdoc/parse');
-const { Tag } = require('jsdoc/tag');
+const tag = require('jsdoc/tag');
+const Tag = tag.Tag;
 
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
 
@@ -282,8 +284,8 @@ function resolve(doclet) {
  */
 exports._replaceDictionary = function _replaceDictionary(dict) {
     dictionary = dict;
-    require('jsdoc/tag')._replaceDictionary(dict);
-    require('jsdoc/util/templateHelper')._replaceDictionary(dict);
+    tag._replaceDictionary(dict);
+    helper._replaceDictionary(dict);
 };
 
 function removeGlobal(longname) {

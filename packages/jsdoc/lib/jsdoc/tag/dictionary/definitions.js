@@ -15,11 +15,12 @@ const parseTagType = require('@jsdoc/tag').type.parse;
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
-const DEFINITIONS = {
-    closure: 'closureTags',
-    jsdoc: 'jsdocTags'
-};
 const MODULE_NAMESPACE = 'module:';
+const NOOP_TAG = {
+    onTagged: () => {
+        // Do nothing.
+    }
+};
 
 // Clone a tag definition, excluding synonyms.
 function cloneTagDef(tagDef, extras) {
@@ -214,7 +215,7 @@ function combineTypes({value}) {
 }
 
 // Tags that JSDoc uses internally, and that must always be defined.
-const internalTags = {
+const internalTags = exports.internalTags = {
     // Special separator tag indicating that multiple doclets should be generated for the same
     // comment. Used internally (and by some JSDoc users, although it's not officially supported).
     // In the following example, the parser will replace `//**` with an `@also` tag:
@@ -855,10 +856,6 @@ baseTags = _.extend(baseTags, internalTags);
 // Tag dictionary for JSDoc.
 exports.jsdocTags = baseTags;
 
-function ignore() {
-    // do nothing
-}
-
 // Tag dictionary for Google Closure Compiler.
 exports.closureTags = {
     const: {
@@ -873,18 +870,12 @@ exports.closureTags = {
     constructor: cloneTagDef(baseTags.class),
     deprecated: cloneTagDef(baseTags.deprecated),
     // Closure Compiler only
-    dict: {
-        onTagged: ignore
-    },
+    dict: NOOP_TAG,
     enum: cloneTagDef(baseTags.enum),
     // Closure Compiler only
-    export: {
-        onTagged: ignore
-    },
+    export: NOOP_TAG,
     // Closure Compiler only
-    externs: {
-        onTagged: ignore
-    },
+    externs: NOOP_TAG,
     extends: cloneTagDef(baseTags.augments),
     fileoverview: {
         onTagged(doclet, tag) {
@@ -898,9 +889,7 @@ exports.closureTags = {
     final: cloneTagDef(baseTags.readonly),
     implements: cloneTagDef(baseTags.implements),
     // Closure Compiler only
-    implicitcast: {
-        onTagged: ignore
-    },
+    implicitcast: NOOP_TAG,
     inheritdoc: cloneTagDef(baseTags.inheritdoc),
     interface: cloneTagDef(baseTags.interface, {
         canHaveName: false,
@@ -912,17 +901,11 @@ exports.closureTags = {
     license: cloneTagDef(baseTags.license),
     modifies: cloneTagDef(baseTags.modifies),
     // Closure Compiler only
-    noalias: {
-        onTagged: ignore
-    },
+    noalias: NOOP_TAG,
     // Closure Compiler only
-    nocollapse: {
-        onTagged: ignore
-    },
+    nocollapse: NOOP_TAG,
     // Closure Compiler only
-    nocompile: {
-        onTagged: ignore
-    },
+    nocompile: NOOP_TAG,
     // Closure Compiler only
     nosideeffects: {
         onTagged(doclet) {
@@ -948,13 +931,9 @@ exports.closureTags = {
     },
     param: cloneTagDef(baseTags.param),
     // Closure Compiler only
-    polymer: {
-        onTagged: ignore
-    },
+    polymer: NOOP_TAG,
     // Closure Compiler only
-    polymerBehavior: {
-        onTagged: ignore
-    },
+    polymerBehavior: NOOP_TAG,
     // Closure Compiler only
     preserve: cloneTagDef(baseTags.license),
     private: {
@@ -989,17 +968,11 @@ exports.closureTags = {
     },
     return: cloneTagDef(baseTags.returns),
     // Closure Compiler only
-    struct: {
-        onTagged: ignore
-    },
+    struct: NOOP_TAG,
     // Closure Compiler only
-    suppress: {
-        onTagged: ignore
-    },
+    suppress: NOOP_TAG,
     // Closure Compiler only
-    template: {
-        onTagged: ignore
-    },
+    template: NOOP_TAG,
     'this': {
         canHaveType: true,
         onTagged(doclet, tag) {
@@ -1018,72 +991,5 @@ exports.closureTags = {
         }
     },
     // Closure Compiler only
-    unrestricted: {
-        onTagged: ignore
-    }
-};
-
-function addTagDefinitions(dictionary, tagDefs) {
-    Object.keys(tagDefs).forEach(tagName => {
-        let tagDef;
-
-        tagDef = tagDefs[tagName];
-        dictionary.defineTag(tagName, tagDef);
-
-        if (tagDef.synonyms) {
-            tagDef.synonyms.forEach(synonym => {
-                dictionary.defineSynonym(tagName, synonym);
-            });
-        }
-    });
-}
-
-/**
- * Populate the given dictionary with the appropriate JSDoc tag definitions.
- *
- * If the `tagDefinitions` parameter is omitted, JSDoc uses its configuration settings to decide
- * which tags to add to the dictionary.
- *
- * If the `tagDefinitions` parameter is included, JSDoc adds only the tag definitions from the
- * `tagDefinitions` object. The configuration settings are ignored.
- *
- * @param {module:jsdoc/tag/dictionary} dictionary
- * @param {Object} [tagDefinitions] - A dictionary whose values define the rules for a JSDoc tag.
- */
-exports.defineTags = (dictionary, tagDefinitions) => {
-    let dictionaries;
-
-    if (!tagDefinitions) {
-        dictionaries = env.conf.tags.dictionaries;
-
-        if (!dictionaries) {
-            log.error(
-                'The configuration setting "tags.dictionaries" is undefined. ' +
-                'Unable to load tag definitions.'
-            );
-
-            return;
-        }
-        else {
-            dictionaries = dictionaries.slice(0).reverse();
-        }
-
-        dictionaries.forEach(dictName => {
-            const tagDefs = exports[DEFINITIONS[dictName]];
-
-            if (!tagDefs) {
-                log.error(
-                    'The configuration setting "tags.dictionaries" contains ' +
-                    `the unknown dictionary name ${dictName}. Ignoring the dictionary.`
-                );
-
-                return;
-            }
-
-            addTagDefinitions(dictionary, _.extend(tagDefs, internalTags));
-        });
-    }
-    else {
-        addTagDefinitions(dictionary, _.extend(tagDefinitions, internalTags));
-    }
+    unrestricted: NOOP_TAG
 };
