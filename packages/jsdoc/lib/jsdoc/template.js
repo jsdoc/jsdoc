@@ -5,6 +5,9 @@
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
+const env = require('jsdoc/env');
+
+const config = (env.conf.templates && env.conf.templates.overwrite) || false;
 
 /**
  * Template helper.
@@ -23,6 +26,23 @@ class Template {
             interpolate: /<\?js=([\s\S]+?)\?>/g,
             escape: /<\?js~([\s\S]+?)\?>/g
         };
+
+        if (typeof config === 'string') {
+            try {
+                this.overwrite = require(config).bind(this)
+            } catch (err) {
+                err.message = 'Config `conf.templates.overwrite` is not a valid module name/filepath. '+ err.message;
+                throw err
+            }
+        } else if (typeof config === 'object' && config !== null) {
+            this.overwrite = function (path) {
+                return (config[path]) ? config[path] : path;
+            }
+        } else {
+            this.overwrite = function (path) {
+                return path;
+            }
+        }
     }
 
     /**
@@ -31,7 +51,7 @@ class Template {
      * @return {function} Returns template closure.
      */
     load(file) {
-        return _.template(fs.readFileSync(file, 'utf8'), this.settings);
+        return _.template(fs.readFileSync(file, 'utf8'), null, this.settings);
     }
 
     /**
@@ -39,20 +59,25 @@ class Template {
      *
      * This is low-level function, for rendering full templates use {@link Template.render()}.
      *
-     * @param {string} file - Template filename.
+     * @param {string} file - Template file.
      * @param {object} data - Template variables (doesn't have to be object, but passing variables dictionary is best way and most common use).
      * @return {string} Rendered template.
      */
     partial(file, data) {
         file = path.resolve(this.path, file);
+        const stdPath = standardize(file);
+        const filepath = this.overwrite(stdPath, data)
 
         // load template into cache
-        if (!(file in this.cache)) {
-            this.cache[file] = this.load(file);
+        if (!(filepath in this.cache)) {
+            if (config) {
+                console.log('load', filepath, (stdPath !== filepath) ? 'instead ' + stdPath : '');
+            }
+            this.cache[filepath] = this.load(filepath);
         }
 
         // keep template helper context
-        return this.cache[file].call(this, data);
+        return this.cache[filepath].call(this, data);
     }
 
     /**
@@ -77,4 +102,17 @@ class Template {
         return content;
     }
 }
+
 exports.Template = Template;
+
+
+/**
+ * Private function standardize path
+ * @private true
+ * @param {string} path - Filepath.
+ * @return {function} Returns Standardized filepath.
+ */
+function standardize(filepath) {
+    filepath = path.relative(process.cwd(), filepath);
+    return filepath.replace(/\\/g, '/') // windows support
+}
