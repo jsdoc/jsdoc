@@ -15,6 +15,77 @@ const MODULE_NAMESPACE = 'module:';
 const files = {};
 const ids = {};
 
+const jsGlobalObjects = [
+    'Array',
+    'ArrayBuffer',
+    'AsyncFunction',
+    'Atomics',
+    'BigInt',
+    'BigInt64Array',
+    'BigUint64Array',
+    'Boolean',
+    'DataView',
+    'Date',
+    'Error',
+    'EvalError',
+    'Float32Array',
+    'Float64Array',
+    'Function',
+    'Generator',
+    'GeneratorFunction',
+    'Infinity',
+    'Int16Array',
+    'Int32Array',
+    'Int8Array',
+    'InternalError',
+    'Intl',
+    'Intl.Collator',
+    'Intl.DateTimeFormat',
+    'Intl.ListFormat',
+    'Intl.Locale',
+    'Intl.NumberFormat',
+    'Intl.PluralRules',
+    'Intl.RelativeTimeFormat',
+    'JSON',
+    'Map',
+    'Math',
+    'NaN',
+    'Number',
+    'Object',
+    'Promise',
+    'Proxy',
+    'RangeError',
+    'ReferenceError',
+    'Reflect',
+    'RegExp',
+    'Set',
+    'SharedArrayBuffer',
+    'String',
+    'Symbol',
+    'SyntaxError',
+    'TypeError',
+    'URIError',
+    'Uint16Array',
+    'Uint32Array',
+    'Uint8Array',
+    'Uint8ClampedArray',
+    'WeakMap',
+    'WeakSet',
+    'WebAssembly',
+    'WebAssembly.CompileError',
+    'WebAssembly.Instance',
+    'WebAssembly.LinkError',
+    'WebAssembly.Memory',
+    'WebAssembly.Module',
+    'WebAssembly.RuntimeError',
+    'WebAssembly.Table',
+    'globalThis',
+    'null',
+    'undefined',
+];
+
+const externalDocsLink = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/'
+
 // each container gets its own html file
 const containers = ['class', 'module', 'external', 'namespace', 'mixin', 'interface'];
 
@@ -307,6 +378,8 @@ function buildLink(longname, linkText, options) {
 
     let parsedType;
 
+    const jsGlobalObjectId = jsGlobalObjects.findIndex(item => item.toLowerCase() === longname.toLowerCase())
+
     // handle cases like:
     // @see <http://example.org>
     // @see http://example.org
@@ -322,6 +395,11 @@ function buildLink(longname, linkText, options) {
         parsedType = parseType(longname);
 
         return stringifyType(parsedType, options.cssClass, options.linkMap);
+    }
+    // handle global built-in JavaScript objects
+    else if (jsGlobalObjectId >= 0) {
+      fileUrl = externalDocsLink + jsGlobalObjects[jsGlobalObjectId].replace(/\./g, '/')
+      text = longname
     }
     else {
         fileUrl = hasOwnProp.call(options.linkMap, longname) ? options.linkMap[longname] : '';
