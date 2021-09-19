@@ -15,38 +15,38 @@
 */
 /* global document, window */
 // Function to prevent the top navbar from obscuring the page content.
-(function() {
-    // timeout for scrolling the window
-    var TIMEOUT = 5;
-    // top navbar height
-    var TOP_OFFSET = 50;
+(function () {
+  // timeout for scrolling the window
+  var TIMEOUT = 5;
+  // top navbar height
+  var TOP_OFFSET = 50;
 
-    function scrollTo(hash) {
-        var element = document.getElementById(hash.replace(/^#/, ''));
-        var elementOffset;
-        var rect;
+  function scrollTo(hash) {
+    var element = document.getElementById(hash.replace(/^#/, ''));
+    var elementOffset;
+    var rect;
 
-        if (element) {
-            rect = element.getBoundingClientRect();
-            elementOffset = rect.top + window.pageYOffset;
+    if (element) {
+      rect = element.getBoundingClientRect();
+      elementOffset = rect.top + window.pageYOffset;
 
-            setTimeout(function() {
-                window.scrollTo(0, elementOffset - TOP_OFFSET);
-            }, TIMEOUT);
-        }
+      setTimeout(function () {
+        window.scrollTo(0, elementOffset - TOP_OFFSET);
+      }, TIMEOUT);
+    }
+  }
+
+  window.addEventListener('load', function () {
+    var currentHash = window.location.hash;
+
+    // if we're loading a URL with an anchor, scroll appropriately
+    if (currentHash && currentHash !== '#') {
+      scrollTo(currentHash);
     }
 
-    window.addEventListener('load', function() {
-        var currentHash = window.location.hash;
-
-        // if we're loading a URL with an anchor, scroll appropriately
-        if (currentHash && currentHash !== '#') {
-            scrollTo(currentHash);
-        }
-
-        // if the user clicks on an in-page anchor tag, scroll appropriately
-        window.addEventListener('hashchange', function() {
-            scrollTo(window.location.hash);
-        });
+    // if the user clicks on an in-page anchor tag, scroll appropriately
+    window.addEventListener('hashchange', function () {
+      scrollTo(window.location.hash);
     });
+  });
 })();

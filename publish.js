@@ -22,38 +22,43 @@ const { TaskRunner } = require('@jsdoc/task-runner');
 const tasks = require('./lib/default-tasks');
 
 exports.publish = async (taffyData, options) => {
-    const templateConfig = config.loadSync().get();
-    const allConfig = _.defaults({}, {
-        templates: {
-            baseline: templateConfig
-        }
-    }, options, { opts: env.opts });
-    const context = {
-        config: allConfig,
-        templateConfig
-    };
-    const docletHelper = new DocletHelper();
-    // TODO: Stop passing context to constructor when that's possible.
-    const runner = new TaskRunner(context);
+  const templateConfig = config.loadSync().get();
+  const allConfig = _.defaults(
+    {},
+    {
+      templates: {
+        baseline: templateConfig,
+      },
+    },
+    options,
+    { opts: env.opts }
+  );
+  const context = {
+    config: allConfig,
+    templateConfig,
+  };
+  const docletHelper = new DocletHelper();
+  // TODO: Stop passing context to constructor when that's possible.
+  const runner = new TaskRunner(context);
 
-    docletHelper.addDoclets(taffyData);
-    // TODO: Replicate this logic when `DocletHelper` goes away:
-    // helper.prune(taffyData);
-    // taffyData.sort('longname, version, since');
-    // TODO: Do all of this in the `setContext` task.
-    context.doclets = db({
-        config: allConfig,
-        values: docletHelper.allDoclets
-    });
-    context.sourceFiles = docletHelper.shortPaths;
+  docletHelper.addDoclets(taffyData);
+  // TODO: Replicate this logic when `DocletHelper` goes away:
+  // helper.prune(taffyData);
+  // taffyData.sort('longname, version, since');
+  // TODO: Do all of this in the `setContext` task.
+  context.doclets = db({
+    config: allConfig,
+    values: docletHelper.allDoclets,
+  });
+  context.sourceFiles = docletHelper.shortPaths;
 
-    runner.addTasks(tasks);
-    try {
-        await runner.run(context);
-    } catch (e) {
-        // TODO: Send to message bus
-        return Promise.reject(e);
-    }
+  runner.addTasks(tasks);
+  try {
+    await runner.run(context);
+  } catch (e) {
+    // TODO: Send to message bus
+    return Promise.reject(e);
+  }
 
-    return Promise.resolve();
+  return Promise.resolve();
 };

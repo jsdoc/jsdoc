@@ -14,21 +14,21 @@
     limitations under the License.
 */
 /* global document */
-(function() {
-    var counter = 0;
-    var numbered;
-    var source = document.getElementsByClassName('prettyprint');
+(function () {
+  var counter = 0;
+  var numbered;
+  var source = document.getElementsByClassName('prettyprint');
 
-    if (source && source[0]) {
-        source = source[0].getElementsByTagName('code')[0];
+  if (source && source[0]) {
+    source = source[0].getElementsByTagName('code')[0];
 
-        numbered = source.innerHTML.split('\n');
-        numbered = numbered.map(function(item) {
-            counter++;
+    numbered = source.innerHTML.split('\n');
+    numbered = numbered.map(function (item) {
+      counter++;
 
-            return '<span id="source-line-' + counter + '" class="line"></span>' + item;
-        });
+      return '<span id="source-line-' + counter + '" class="line"></span>' + item;
+    });
 
-        source.innerHTML = numbered.join('\n');
-    }
+    source.innerHTML = numbered.join('\n');
+  }
 })();

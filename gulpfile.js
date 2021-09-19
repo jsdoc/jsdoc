@@ -19,6 +19,7 @@ const eslint = require('gulp-eslint7');
 const gulp = require('gulp');
 const less = require('gulp-less');
 const path = require('path');
+const prettier = require('gulp-prettier');
 const uglify = require('gulp-uglify');
 
 const NODE_MODULES_PATH = path.join(__dirname, 'node_modules');
@@ -26,104 +27,99 @@ const NODE_MODULES_PATH = path.join(__dirname, 'node_modules');
 // Patch the `require` function so it can locate JSDoc modules and dependencies.
 // Must be called before any Gulp task that uses JSDoc modules.
 function patchRequire() {
-    const jsdocPath = path.join(NODE_MODULES_PATH, 'jsdoc');
+  const jsdocPath = path.join(NODE_MODULES_PATH, 'jsdoc');
 
-    /* eslint-disable no-global-assign, no-redeclare */
-    require = require('requizzle')({
-        requirePaths: {
-            before: [path.join(jsdocPath, 'lib')],
-            after: [path.join(jsdocPath, 'node_modules')]
-        },
-        infect: true
-    });
-    /* eslint-enable no-global-assign, no-redeclare */
+  /* eslint-disable no-global-assign, no-redeclare */
+  require = require('requizzle')({
+    requirePaths: {
+      before: [path.join(jsdocPath, 'lib')],
+      after: [path.join(jsdocPath, 'node_modules')],
+    },
+    infect: true,
+  });
+  /* eslint-enable no-global-assign, no-redeclare */
 }
 
 const source = {
-    code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
-    helpers: [
-        './test/helpers/**/*.js',
-        './node_modules/@jsdoc/test-matchers'
+  code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
+  helpers: ['./test/helpers/**/*.js', './node_modules/@jsdoc/test-matchers'],
+  js: {
+    copy: [path.join(NODE_MODULES_PATH, 'jquery/dist/jquery.min.js')],
+    minify: [
+      './scripts/*.js',
+      path.join(NODE_MODULES_PATH, 'code-prettify/src/prettify.js'),
+      path.join(NODE_MODULES_PATH, 'code-prettify/src/lang-css.js'),
+      path.join(NODE_MODULES_PATH, 'jqtree/tree.jquery.js'),
     ],
-    js: {
-        copy: [
-            path.join(NODE_MODULES_PATH, 'jquery/dist/jquery.min.js')
-        ],
-        minify: [
-            './scripts/*.js',
-            path.join(NODE_MODULES_PATH, 'code-prettify/src/prettify.js'),
-            path.join(NODE_MODULES_PATH, 'code-prettify/src/lang-css.js'),
-            path.join(NODE_MODULES_PATH, 'jqtree/tree.jquery.js')
-        ]
-    },
-    less: './styles/bootstrap/baseline.less',
-    tests: ['./test/specs/**/*.js'],
-    views: ['./views/**/*.hbs']
+  },
+  less: './styles/bootstrap/baseline.less',
+  lint: [
+    '*.js',
+    './lib/**/*.js',
+    './scripts/**/*.js',
+    './test/**/*.js',
+    '!./test/fixtures/**/*.js',
+  ],
+  tests: ['./test/specs/**/*.js'],
+  views: ['./views/**/*.hbs'],
 };
 
 const target = {
-    css: './static/css',
-    js: './static/scripts'
+  css: './static/css',
+  js: './static/scripts',
 };
 
 function css() {
-    return gulp.src(source.less)
-        .pipe(less())
-        .pipe(gulp.dest(target.css));
+  return gulp.src(source.less).pipe(less()).pipe(gulp.dest(target.css));
 }
 
 function cssMinify() {
-    return gulp.src(source.less)
-        .pipe(less())
-        .pipe(csso())
-        .pipe(gulp.dest(target.css));
+  return gulp.src(source.less).pipe(less()).pipe(csso()).pipe(gulp.dest(target.css));
+}
+
+function format() {
+  return gulp.src(source.lint, { base: './' }).pipe(prettier()).pipe(gulp.dest('./'));
 }
 
 function jsCopy() {
-    return gulp.src(source.js.copy)
-        .pipe(gulp.dest(target.js));
+  return gulp.src(source.js.copy).pipe(gulp.dest(target.js));
 }
 
 function jsMinify() {
-    return gulp.src(source.js.minify)
-        .pipe(uglify())
-        .pipe(gulp.dest(target.js));
+  return gulp.src(source.js.minify).pipe(uglify()).pipe(gulp.dest(target.js));
 }
 
 function lint() {
-    return gulp.src(source.code.concat(source.tests))
-        .pipe(eslint())
-        .pipe(eslint.formatEach())
-        .pipe(eslint.failOnError());
+  return gulp.src(source.lint).pipe(eslint()).pipe(eslint.formatEach()).pipe(eslint.failOnError());
 }
 
 function jasmine() {
-    let gulpJasmine;
-    const reporter = new ConsoleReporter({
-        beep: false,
-        verbosity: {
-            disabled: false,
-            pending: false,
-            specs: false,
-            summary: true
-        }
-    });
+  let gulpJasmine;
+  const reporter = new ConsoleReporter({
+    beep: false,
+    verbosity: {
+      disabled: false,
+      pending: false,
+      specs: false,
+      summary: true,
+    },
+  });
 
-    patchRequire();
-    gulpJasmine = require('gulp-jasmine')({
-        config: {
-            helpers: source.helpers,
-            random: false
-        },
-        reporter
-    });
+  patchRequire();
+  gulpJasmine = require('gulp-jasmine')({
+    config: {
+      helpers: source.helpers,
+      random: false,
+    },
+    reporter,
+  });
 
-    return gulp.src(source.tests)
-        .pipe(gulpJasmine);
+  return gulp.src(source.tests).pipe(gulpJasmine);
 }
 
 exports.css = css;
 exports['css-minify'] = cssMinify;
+exports.format = format;
 exports.jasmine = jasmine;
 exports['js-copy'] = jsCopy;
 exports['js-minify'] = jsMinify;
