@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/tag",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tools for working with block and inline JSDoc tags.",
   "keywords": [
     "jsdoc"
