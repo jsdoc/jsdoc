@@ -38,144 +38,143 @@
 let functionDoclets;
 
 function hasUniqueValues(obj) {
-    let isUnique = true;
-    const seen = [];
+  let isUnique = true;
+  const seen = [];
 
-    Object.keys(obj).forEach(key => {
-        if (seen.includes(obj[key])) {
-            isUnique = false;
-        }
+  Object.keys(obj).forEach((key) => {
+    if (seen.includes(obj[key])) {
+      isUnique = false;
+    }
 
-        seen.push(obj[key]);
-    });
+    seen.push(obj[key]);
+  });
 
-    return isUnique;
+  return isUnique;
 }
 
 function getParamNames(params) {
-    const names = [];
+  const names = [];
 
-    params.forEach(param => {
-        let name = param.name || '';
+  params.forEach((param) => {
+    let name = param.name || '';
 
-        if (param.variable) {
-            name = `...${name}`;
-        }
-        if (name !== '') {
-            names.push(name);
-        }
-    });
+    if (param.variable) {
+      name = `...${name}`;
+    }
+    if (name !== '') {
+      names.push(name);
+    }
+  });
 
-    return names.length ? names.join(', ') : '';
+  return names.length ? names.join(', ') : '';
 }
 
-function getParamVariation({params}) {
-    return getParamNames(params || []);
+function getParamVariation({ params }) {
+  return getParamNames(params || []);
 }
 
 function getUniqueVariations(doclets) {
-    let counter = 0;
-    const variations = {};
-    const docletKeys = Object.keys(doclets);
+  let counter = 0;
+  const variations = {};
+  const docletKeys = Object.keys(doclets);
 
-    function getUniqueNumbers() {
-        docletKeys.forEach(doclet => {
-            let newLongname;
+  function getUniqueNumbers() {
+    docletKeys.forEach((doclet) => {
+      let newLongname;
 
-            while (true) {
-                counter++;
-                variations[doclet] = String(counter);
+      while (true) {
+        counter++;
+        variations[doclet] = String(counter);
 
-                // is this longname + variation unique?
-                newLongname = `${doclets[doclet].longname}(${variations[doclet]})`;
-                if ( !functionDoclets[newLongname] ) {
-                    break;
-                }
-            }
-        });
-    }
-
-    function getUniqueNames() {
-        // start by trying to preserve existing variations
-        docletKeys.forEach(doclet => {
-            variations[doclet] = doclets[doclet].variation || getParamVariation(doclets[doclet]);
-        });
-
-        // if they're identical, try again, without preserving existing variations
-        if ( !hasUniqueValues(variations) ) {
-            docletKeys.forEach(doclet => {
-                variations[doclet] = getParamVariation(doclets[doclet]);
-            });
-
-            // if they're STILL identical, switch to numeric variations
-            if ( !hasUniqueValues(variations) ) {
-                getUniqueNumbers();
-            }
+        // is this longname + variation unique?
+        newLongname = `${doclets[doclet].longname}(${variations[doclet]})`;
+        if (!functionDoclets[newLongname]) {
+          break;
         }
-    }
+      }
+    });
+  }
 
-    // are we already using numeric variations? if so, keep doing that
-    if (functionDoclets[`${doclets.newDoclet.longname}(1)`]) {
+  function getUniqueNames() {
+    // start by trying to preserve existing variations
+    docletKeys.forEach((doclet) => {
+      variations[doclet] = doclets[doclet].variation || getParamVariation(doclets[doclet]);
+    });
+
+    // if they're identical, try again, without preserving existing variations
+    if (!hasUniqueValues(variations)) {
+      docletKeys.forEach((doclet) => {
+        variations[doclet] = getParamVariation(doclets[doclet]);
+      });
+
+      // if they're STILL identical, switch to numeric variations
+      if (!hasUniqueValues(variations)) {
         getUniqueNumbers();
+      }
     }
-    else {
-        getUniqueNames();
-    }
+  }
 
-    return variations;
+  // are we already using numeric variations? if so, keep doing that
+  if (functionDoclets[`${doclets.newDoclet.longname}(1)`]) {
+    getUniqueNumbers();
+  } else {
+    getUniqueNames();
+  }
+
+  return variations;
 }
 
 function ensureUniqueLongname(newDoclet) {
-    const doclets = {
-        oldDoclet: functionDoclets[newDoclet.longname],
-        newDoclet: newDoclet
-    };
-    const docletKeys = Object.keys(doclets);
-    let oldDocletLongname;
-    let variations = {};
+  const doclets = {
+    oldDoclet: functionDoclets[newDoclet.longname],
+    newDoclet: newDoclet,
+  };
+  const docletKeys = Object.keys(doclets);
+  let oldDocletLongname;
+  let variations = {};
 
-    if (doclets.oldDoclet) {
-        oldDocletLongname = doclets.oldDoclet.longname;
-        // if the shared longname has a variation, like MyClass#myLongname(variation),
-        // remove the variation
-        if (doclets.oldDoclet.variation || doclets.oldDoclet.variation === '') {
-            docletKeys.forEach(doclet => {
-                doclets[doclet].longname = doclets[doclet].longname.replace(/\([\s\S]*\)$/, '');
-                doclets[doclet].variation = null;
-            });
-        }
-
-        variations = getUniqueVariations(doclets);
-
-        // update the longnames/variations
-        docletKeys.forEach(doclet => {
-            doclets[doclet].longname += `(${variations[doclet]})`;
-            doclets[doclet].variation = variations[doclet];
-        });
-
-        // update the old doclet in the lookup table
-        functionDoclets[oldDocletLongname] = null;
-        functionDoclets[doclets.oldDoclet.longname] = doclets.oldDoclet;
+  if (doclets.oldDoclet) {
+    oldDocletLongname = doclets.oldDoclet.longname;
+    // if the shared longname has a variation, like MyClass#myLongname(variation),
+    // remove the variation
+    if (doclets.oldDoclet.variation || doclets.oldDoclet.variation === '') {
+      docletKeys.forEach((doclet) => {
+        doclets[doclet].longname = doclets[doclet].longname.replace(/\([\s\S]*\)$/, '');
+        doclets[doclet].variation = null;
+      });
     }
 
-    // always store the new doclet in the lookup table
-    functionDoclets[doclets.newDoclet.longname] = doclets.newDoclet;
+    variations = getUniqueVariations(doclets);
 
-    return doclets.newDoclet;
+    // update the longnames/variations
+    docletKeys.forEach((doclet) => {
+      doclets[doclet].longname += `(${variations[doclet]})`;
+      doclets[doclet].variation = variations[doclet];
+    });
+
+    // update the old doclet in the lookup table
+    functionDoclets[oldDocletLongname] = null;
+    functionDoclets[doclets.oldDoclet.longname] = doclets.oldDoclet;
+  }
+
+  // always store the new doclet in the lookup table
+  functionDoclets[doclets.newDoclet.longname] = doclets.newDoclet;
+
+  return doclets.newDoclet;
 }
 
 exports.handlers = {
-    parseBegin() {
-        functionDoclets = {};
-    },
+  parseBegin() {
+    functionDoclets = {};
+  },
 
-    newDoclet(e) {
-        if (e.doclet.kind === 'function') {
-            e.doclet = ensureUniqueLongname(e.doclet);
-        }
-    },
-
-    parseComplete() {
-        functionDoclets = null;
+  newDoclet(e) {
+    if (e.doclet.kind === 'function') {
+      e.doclet = ensureUniqueLongname(e.doclet);
     }
+  },
+
+  parseComplete() {
+    functionDoclets = null;
+  },
 };

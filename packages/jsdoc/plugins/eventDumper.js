@@ -10,20 +10,20 @@ const conf = env.conf.eventDumper || {};
 
 // Dump the included parser events (defaults to all events)
 let events = conf.include || [
-    'parseBegin',
-    'fileBegin',
-    'beforeParse',
-    'jsdocCommentFound',
-    'symbolFound',
-    'newDoclet',
-    'fileComplete',
-    'parseComplete',
-    'processingComplete'
+  'parseBegin',
+  'fileBegin',
+  'beforeParse',
+  'jsdocCommentFound',
+  'symbolFound',
+  'newDoclet',
+  'fileComplete',
+  'parseComplete',
+  'processingComplete',
 ];
 
 // Don't dump the excluded parser events
 if (conf.exclude) {
-    events = _.difference(events, conf.exclude);
+  events = _.difference(events, conf.exclude);
 }
 
 /**
@@ -33,25 +33,25 @@ if (conf.exclude) {
  * @return {Object} The modified object.
  */
 function replaceNodeObjects(o) {
-    const OBJECT_PLACEHOLDER = '<Object>';
+  const OBJECT_PLACEHOLDER = '<Object>';
 
-    if (o.code && o.code.node) {
-        // don't break the original object!
-        o.code = _.cloneDeep(o.code);
-        o.code.node = OBJECT_PLACEHOLDER;
-    }
+  if (o.code && o.code.node) {
+    // don't break the original object!
+    o.code = _.cloneDeep(o.code);
+    o.code.node = OBJECT_PLACEHOLDER;
+  }
 
-    if (o.doclet && o.doclet.meta && o.doclet.meta.code && o.doclet.meta.code.node) {
-        // don't break the original object!
-        o.doclet.meta.code = _.cloneDeep(o.doclet.meta.code);
-        o.doclet.meta.code.node = OBJECT_PLACEHOLDER;
-    }
+  if (o.doclet && o.doclet.meta && o.doclet.meta.code && o.doclet.meta.code.node) {
+    // don't break the original object!
+    o.doclet.meta.code = _.cloneDeep(o.doclet.meta.code);
+    o.doclet.meta.code.node = OBJECT_PLACEHOLDER;
+  }
 
-    if (o.astnode) {
-        o.astnode = OBJECT_PLACEHOLDER;
-    }
+  if (o.astnode) {
+    o.astnode = OBJECT_PLACEHOLDER;
+  }
 
-    return o;
+  return o;
 }
 
 /**
@@ -61,35 +61,43 @@ function replaceNodeObjects(o) {
  * @return {object} The fixed-up object.
  */
 function cleanse(e) {
-    let result = {};
+  let result = {};
 
-    Object.keys(e).forEach(prop => {
-        // by default, don't stringify properties that contain an array of functions
-        if (!conf.includeFunctions && Array.isArray(e[prop]) && e[prop][0] &&
-            String(typeof e[prop][0]) === 'function') {
-            result[prop] = `function[${e[prop].length}]`;
-        }
-        // never include functions that belong to the object
-        else if (typeof e[prop] !== 'function') {
-            result[prop] = e[prop];
-        }
-    });
-
-    // allow users to omit node objects, which can be enormous
-    if (conf.omitNodes) {
-        result = replaceNodeObjects(result);
+  Object.keys(e).forEach((prop) => {
+    // by default, don't stringify properties that contain an array of functions
+    if (
+      !conf.includeFunctions &&
+      Array.isArray(e[prop]) &&
+      e[prop][0] &&
+      String(typeof e[prop][0]) === 'function'
+    ) {
+      result[prop] = `function[${e[prop].length}]`;
     }
+    // never include functions that belong to the object
+    else if (typeof e[prop] !== 'function') {
+      result[prop] = e[prop];
+    }
+  });
 
-    return result;
+  // allow users to omit node objects, which can be enormous
+  if (conf.omitNodes) {
+    result = replaceNodeObjects(result);
+  }
+
+  return result;
 }
 
 exports.handlers = {};
 
-events.forEach(eventType => {
-    exports.handlers[eventType] = e => {
-        console.log(JSON.stringify({
-            type: eventType,
-            content: cleanse(e)
-        }), null, 4);
-    };
+events.forEach((eventType) => {
+  exports.handlers[eventType] = (e) => {
+    console.log(
+      JSON.stringify({
+        type: eventType,
+        content: cleanse(e),
+      }),
+      null,
+      4
+    );
+  };
 });

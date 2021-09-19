@@ -1,5 +1,5 @@
 module.exports = {
-    globals: {
-        jsdoc: 'readonly'
-    }
+  globals: {
+    jsdoc: 'readonly',
+  },
 };

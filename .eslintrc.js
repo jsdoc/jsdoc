@@ -1,3 +1,3 @@
 module.exports = {
-    extends: '@jsdoc'
+  extends: ['@jsdoc', 'plugin:prettier/recommended'],
 };

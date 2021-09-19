@@ -1,0 +1,5 @@
+# Ignore test fixtures.
+**/test/fixtures/**
+
+# Ignore code coverage reports.
+.nyc_output/

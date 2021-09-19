@@ -5,35 +5,34 @@
 const _ = require('lodash');
 const { SCOPE } = require('@jsdoc/core').name;
 
-function cloneBorrowedDoclets({borrowed, longname}, doclets) {
-    borrowed.forEach(({from, as}) => {
-        const borrowedDoclets = doclets.index.longname[from];
-        let borrowedAs = as || from;
-        let parts;
-        let scopePunc;
+function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
+  borrowed.forEach(({ from, as }) => {
+    const borrowedDoclets = doclets.index.longname[from];
+    let borrowedAs = as || from;
+    let parts;
+    let scopePunc;
 
-        if (borrowedDoclets) {
-            borrowedAs = borrowedAs.replace(/^prototype\./, SCOPE.PUNC.INSTANCE);
-            _.cloneDeep(borrowedDoclets).forEach(clone => {
-                // TODO: this will fail on longnames like '"Foo#bar".baz'
-                parts = borrowedAs.split(SCOPE.PUNC.INSTANCE);
+    if (borrowedDoclets) {
+      borrowedAs = borrowedAs.replace(/^prototype\./, SCOPE.PUNC.INSTANCE);
+      _.cloneDeep(borrowedDoclets).forEach((clone) => {
+        // TODO: this will fail on longnames like '"Foo#bar".baz'
+        parts = borrowedAs.split(SCOPE.PUNC.INSTANCE);
 
-                if (parts.length === 2) {
-                    clone.scope = SCOPE.NAMES.INSTANCE;
-                    scopePunc = SCOPE.PUNC.INSTANCE;
-                }
-                else {
-                    clone.scope = SCOPE.NAMES.STATIC;
-                    scopePunc = SCOPE.PUNC.STATIC;
-                }
-
-                clone.name = parts.pop();
-                clone.memberof = longname;
-                clone.longname = clone.memberof + scopePunc + clone.name;
-                doclets.push(clone);
-            });
+        if (parts.length === 2) {
+          clone.scope = SCOPE.NAMES.INSTANCE;
+          scopePunc = SCOPE.PUNC.INSTANCE;
+        } else {
+          clone.scope = SCOPE.NAMES.STATIC;
+          scopePunc = SCOPE.PUNC.STATIC;
         }
-    });
+
+        clone.name = parts.pop();
+        clone.memberof = longname;
+        clone.longname = clone.memberof + scopePunc + clone.name;
+        doclets.push(clone);
+      });
+    }
+  });
 }
 
 /**
@@ -42,11 +41,11 @@ function cloneBorrowedDoclets({borrowed, longname}, doclets) {
     moving docs from the "borrowed" array and into the general docs, then
     deleting the "borrowed" array.
  */
-exports.resolveBorrows = doclets => {
-    for (let doclet of doclets.index.borrowed) {
-        cloneBorrowedDoclets(doclet, doclets);
-        delete doclet.borrowed;
-    }
+exports.resolveBorrows = (doclets) => {
+  for (let doclet of doclets.index.borrowed) {
+    cloneBorrowedDoclets(doclet, doclets);
+    delete doclet.borrowed;
+  }
 
-    doclets.index.borrowed = [];
+  doclets.index.borrowed = [];
 };

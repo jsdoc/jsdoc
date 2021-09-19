@@ -40,8 +40,8 @@ Your debug output here
 
 ### Your environment
 
-| Software         | Version
-| ---------------- | -------
+| Software         | Version |
+| ---------------- | ------- |
 | JSDoc            |
 | Node.js          |
 | npm              |

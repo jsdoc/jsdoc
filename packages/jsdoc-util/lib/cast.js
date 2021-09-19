@@ -13,49 +13,47 @@
  * @return {(string|number|boolean)} The converted value.
  */
 function castString(str) {
-    let number;
-    let result;
+  let number;
+  let result;
 
-    switch (str) {
-        case 'true':
-            result = true;
-            break;
+  switch (str) {
+    case 'true':
+      result = true;
+      break;
 
-        case 'false':
-            result = false;
-            break;
+    case 'false':
+      result = false;
+      break;
 
-        case 'NaN':
-            result = NaN;
-            break;
+    case 'NaN':
+      result = NaN;
+      break;
 
-        case 'null':
-            result = null;
-            break;
+    case 'null':
+      result = null;
+      break;
 
-        case 'undefined':
-            result = undefined;
-            break;
+    case 'undefined':
+      result = undefined;
+      break;
 
-        default:
-            if (typeof str === 'string') {
-                if (str.includes('.')) {
-                    number = parseFloat(str);
-                }
-                else {
-                    number = parseInt(str, 10);
-                }
+    default:
+      if (typeof str === 'string') {
+        if (str.includes('.')) {
+          number = parseFloat(str);
+        } else {
+          number = parseInt(str, 10);
+        }
 
-                if (String(number) === str && !isNaN(number)) {
-                    result = number;
-                }
-                else {
-                    result = str;
-                }
-            }
-    }
+        if (String(number) === str && !isNaN(number)) {
+          result = number;
+        } else {
+          result = str;
+        }
+      }
+  }
 
-    return result;
+  return result;
 }
 
 /**
@@ -69,27 +67,24 @@ function castString(str) {
  * @param {(string|Object|Array)} item - The item whose type or types will be converted.
  * @return {*?} The converted value.
  */
-const cast = module.exports = item => {
-    let result;
+const cast = (module.exports = (item) => {
+  let result;
 
-    if (Array.isArray(item)) {
-        result = [];
-        for (let i = 0, l = item.length; i < l; i++) {
-            result[i] = cast(item[i]);
-        }
+  if (Array.isArray(item)) {
+    result = [];
+    for (let i = 0, l = item.length; i < l; i++) {
+      result[i] = cast(item[i]);
     }
-    else if (typeof item === 'object' && item !== null) {
-        result = {};
-        Object.keys(item).forEach(prop => {
-            result[prop] = cast(item[prop]);
-        });
-    }
-    else if (typeof item === 'string') {
-        result = castString(item);
-    }
-    else {
-        result = item;
-    }
+  } else if (typeof item === 'object' && item !== null) {
+    result = {};
+    Object.keys(item).forEach((prop) => {
+      result[prop] = cast(item[prop]);
+    });
+  } else if (typeof item === 'string') {
+    result = castString(item);
+  } else {
+    result = item;
+  }
 
-    return result;
-};
+  return result;
+});

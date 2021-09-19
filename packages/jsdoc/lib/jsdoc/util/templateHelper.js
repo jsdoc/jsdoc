@@ -23,71 +23,71 @@ exports.fileExtension = '.html';
 exports.SCOPE_TO_PUNC = SCOPE_TO_PUNC;
 
 const linkMap = {
-    // two-way lookup
-    longnameToUrl: {},
-    urlToLongname: {},
+  // two-way lookup
+  longnameToUrl: {},
+  urlToLongname: {},
 
-    // one-way lookup (IDs are only unique per file)
-    longnameToId: {}
+  // one-way lookup (IDs are only unique per file)
+  longnameToId: {},
 };
 
-const longnameToUrl = exports.longnameToUrl = linkMap.longnameToUrl;
-const longnameToId = exports.longnameToId = linkMap.longnameToId;
+const longnameToUrl = (exports.longnameToUrl = linkMap.longnameToUrl);
+const longnameToId = (exports.longnameToId = linkMap.longnameToId);
 
-const registerLink = exports.registerLink = (longname, fileUrl) => {
-    linkMap.longnameToUrl[longname] = fileUrl;
-    linkMap.urlToLongname[fileUrl] = longname;
-};
+const registerLink = (exports.registerLink = (longname, fileUrl) => {
+  linkMap.longnameToUrl[longname] = fileUrl;
+  linkMap.urlToLongname[fileUrl] = longname;
+});
 
-const registerId = exports.registerId = (longname, fragment) => {
-    linkMap.longnameToId[longname] = fragment;
-};
+const registerId = (exports.registerId = (longname, fragment) => {
+  linkMap.longnameToId[longname] = fragment;
+});
 
 function getNamespace(kind) {
-    if (dictionary.isNamespace(kind)) {
-        return `${kind}:`;
-    }
+  if (dictionary.isNamespace(kind)) {
+    return `${kind}:`;
+  }
 
-    return '';
+  return '';
 }
 
 function formatNameForLink(doclet) {
-    let newName = getNamespace(doclet.kind) + (doclet.name || '') + (doclet.variation || '');
-    const scopePunc = SCOPE_TO_PUNC[doclet.scope] || '';
+  let newName = getNamespace(doclet.kind) + (doclet.name || '') + (doclet.variation || '');
+  const scopePunc = SCOPE_TO_PUNC[doclet.scope] || '';
 
-    // Only prepend the scope punctuation if it's not the same character that marks the start of a
-    // fragment ID. Using `#` in HTML5 fragment IDs is legal, but URLs like `foo.html##bar` are
-    // just confusing.
-    if (scopePunc !== '#') {
-        newName = scopePunc + newName;
-    }
+  // Only prepend the scope punctuation if it's not the same character that marks the start of a
+  // fragment ID. Using `#` in HTML5 fragment IDs is legal, but URLs like `foo.html##bar` are
+  // just confusing.
+  if (scopePunc !== '#') {
+    newName = scopePunc + newName;
+  }
 
-    return newName;
+  return newName;
 }
 
 function makeUniqueFilename(filename, str) {
-    let key = filename.toLowerCase();
-    let nonUnique = true;
+  let key = filename.toLowerCase();
+  let nonUnique = true;
 
-    // don't allow filenames to begin with an underscore
-    if (!filename.length || filename[0] === '_') {
-        filename = `-${filename}`;
-        key = filename.toLowerCase();
+  // don't allow filenames to begin with an underscore
+  if (!filename.length || filename[0] === '_') {
+    filename = `-${filename}`;
+    key = filename.toLowerCase();
+  }
+
+  // append enough underscores to make the filename unique
+  while (nonUnique) {
+    if (hasOwnProp.call(files, key)) {
+      filename += '_';
+      key = filename.toLowerCase();
+    } else {
+      nonUnique = false;
     }
+  }
 
-    // append enough underscores to make the filename unique
-    while (nonUnique) {
-        if ( hasOwnProp.call(files, key) ) {
-            filename += '_';
-            key = filename.toLowerCase();
-        } else {
-            nonUnique = false;
-        }
-    }
+  files[key] = str;
 
-    files[key] = str;
-
-    return filename;
+  return filename;
 }
 
 /**
@@ -103,29 +103,29 @@ function makeUniqueFilename(filename, str) {
  * @param {string} str The string to convert.
  * @return {string} The filename to use for the string.
  */
-const getUniqueFilename = exports.getUniqueFilename = str => {
-    const namespaces = dictionary.getNamespaces().join('|');
-    let basename = (str || '')
-        // use - instead of : in namespace prefixes
-        .replace(new RegExp(`^(${namespaces}):`), '$1-')
-        // replace characters that can cause problems on some filesystems
-        .replace(/[\\/?*:|'"<>]/g, '_')
-        // use - instead of ~ to denote 'inner'
-        .replace(/~/g, '-')
-        // use _ instead of # to denote 'instance'
-        .replace(/#/g, '_')
-        // use _ instead of / (for example, in module names)
-        .replace(/\//g, '_')
-        // remove the variation, if any
-        .replace(/\([\s\S]*\)$/, '')
-        // make sure we don't create hidden files, or files whose names start with a dash
-        .replace(/^[.-]/, '');
+const getUniqueFilename = (exports.getUniqueFilename = (str) => {
+  const namespaces = dictionary.getNamespaces().join('|');
+  let basename = (str || '')
+    // use - instead of : in namespace prefixes
+    .replace(new RegExp(`^(${namespaces}):`), '$1-')
+    // replace characters that can cause problems on some filesystems
+    .replace(/[\\/?*:|'"<>]/g, '_')
+    // use - instead of ~ to denote 'inner'
+    .replace(/~/g, '-')
+    // use _ instead of # to denote 'instance'
+    .replace(/#/g, '_')
+    // use _ instead of / (for example, in module names)
+    .replace(/\//g, '_')
+    // remove the variation, if any
+    .replace(/\([\s\S]*\)$/, '')
+    // make sure we don't create hidden files, or files whose names start with a dash
+    .replace(/^[.-]/, '');
 
-    // in case we've now stripped the entire basename (uncommon, but possible):
-    basename = basename.length ? basename : '_';
+  // in case we've now stripped the entire basename (uncommon, but possible):
+  basename = basename.length ? basename : '_';
 
-    return makeUniqueFilename(basename, str) + exports.fileExtension;
-};
+  return makeUniqueFilename(basename, str) + exports.fileExtension;
+});
 
 /**
  * Get a longname's filename if one has been registered; otherwise, generate a unique filename, then
@@ -133,17 +133,16 @@ const getUniqueFilename = exports.getUniqueFilename = str => {
  * @private
  */
 function getFilename(longname) {
-    let fileUrl;
+  let fileUrl;
 
-    if ( hasOwnProp.call(longnameToUrl, longname) ) {
-        fileUrl = longnameToUrl[longname];
-    }
-    else {
-        fileUrl = getUniqueFilename(longname);
-        registerLink(longname, fileUrl);
-    }
+  if (hasOwnProp.call(longnameToUrl, longname)) {
+    fileUrl = longnameToUrl[longname];
+  } else {
+    fileUrl = getUniqueFilename(longname);
+    registerLink(longname, fileUrl);
+  }
 
-    return fileUrl;
+  return fileUrl;
 }
 
 /**
@@ -156,34 +155,37 @@ function getFilename(longname) {
  * `false`.
  */
 function isModuleExports(doclet) {
-    return doclet.longname && doclet.longname === doclet.name &&
-        doclet.longname.indexOf(MODULE_NAMESPACE) === 0 && doclet.kind !== 'module';
+  return (
+    doclet.longname &&
+    doclet.longname === doclet.name &&
+    doclet.longname.indexOf(MODULE_NAMESPACE) === 0 &&
+    doclet.kind !== 'module'
+  );
 }
 
 function makeUniqueId(filename, id) {
-    let key;
-    let nonUnique = true;
+  let key;
+  let nonUnique = true;
 
-    key = id.toLowerCase();
+  key = id.toLowerCase();
 
-    // HTML5 IDs cannot contain whitespace characters
-    id = id.replace(/\s/g, '');
+  // HTML5 IDs cannot contain whitespace characters
+  id = id.replace(/\s/g, '');
 
-    // append enough underscores to make the identifier unique
-    while (nonUnique) {
-        if ( hasOwnProp.call(ids, filename) && hasOwnProp.call(ids[filename], key) ) {
-            id += '_';
-            key = id.toLowerCase();
-        }
-        else {
-            nonUnique = false;
-        }
+  // append enough underscores to make the identifier unique
+  while (nonUnique) {
+    if (hasOwnProp.call(ids, filename) && hasOwnProp.call(ids[filename], key)) {
+      id += '_';
+      key = id.toLowerCase();
+    } else {
+      nonUnique = false;
     }
+  }
 
-    ids[filename] = ids[filename] || {};
-    ids[filename][key] = id;
+  ids[filename] = ids[filename] || {};
+  ids[filename][key] = id;
 
-    return id;
+  return id;
 }
 
 /**
@@ -192,19 +194,17 @@ function makeUniqueId(filename, id) {
  * @private
  */
 function getId(longname, id) {
-    if ( hasOwnProp.call(longnameToId, longname) ) {
-        id = longnameToId[longname];
-    }
-    else if (!id) {
-        // no ID required
-        return '';
-    }
-    else {
-        id = makeUniqueId(longname, id);
-        registerId(longname, id);
-    }
+  if (hasOwnProp.call(longnameToId, longname)) {
+    id = longnameToId[longname];
+  } else if (!id) {
+    // no ID required
+    return '';
+  } else {
+    id = makeUniqueId(longname, id);
+    registerId(longname, id);
+  }
 
-    return id;
+  return id;
 }
 
 /**
@@ -220,56 +220,54 @@ function getId(longname, id) {
  */
 exports.getUniqueId = makeUniqueId;
 
-const htmlsafe = exports.htmlsafe = str => {
-    if (typeof str !== 'string') {
-        str = String(str);
-    }
+const htmlsafe = (exports.htmlsafe = (str) => {
+  if (typeof str !== 'string') {
+    str = String(str);
+  }
 
-    return str.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;');
-};
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+});
 
 function parseType(longname) {
-    let err;
+  let err;
 
-    try {
-        return catharsis.parse(longname, {jsdoc: true});
-    }
-    catch (e) {
-        err = new Error(`unable to parse ${longname}: ${e.message}`);
-        log.error(err);
+  try {
+    return catharsis.parse(longname, { jsdoc: true });
+  } catch (e) {
+    err = new Error(`unable to parse ${longname}: ${e.message}`);
+    log.error(err);
 
-        return longname;
-    }
+    return longname;
+  }
 }
 
 function stringifyType(parsedType, cssClass, stringifyLinkMap) {
-    return require('catharsis').stringify(parsedType, {
-        cssClass: cssClass,
-        htmlSafe: true,
-        links: stringifyLinkMap
-    });
+  return require('catharsis').stringify(parsedType, {
+    cssClass: cssClass,
+    htmlSafe: true,
+    links: stringifyLinkMap,
+  });
 }
 
 function hasUrlPrefix(text) {
-    return (/^(http|ftp)s?:\/\//).test(text);
+  return /^(http|ftp)s?:\/\//.test(text);
 }
 
 function isComplexTypeExpression(expr) {
-    // record types, type unions, and type applications all count as "complex"
-    return /^{.+}$/.test(expr) || /^.+\|.+$/.test(expr) || /^.+<.+>$/.test(expr);
+  // record types, type unions, and type applications all count as "complex"
+  return /^{.+}$/.test(expr) || /^.+\|.+$/.test(expr) || /^.+<.+>$/.test(expr);
 }
 
 function fragmentHash(fragmentId) {
-    if (!fragmentId) {
-        return '';
-    }
+  if (!fragmentId) {
+    return '';
+  }
 
-    return `#${fragmentId}`;
+  return `#${fragmentId}`;
 }
 
 function getShortName(longname) {
-    return toParts(longname).name;
+  return toParts(longname).name;
 }
 
 /**
@@ -299,43 +297,45 @@ function getShortName(longname) {
  * @return {string} The HTML link, or the link text if the link is not available.
  */
 function buildLink(longname, linkText, options) {
-    const classString = options.cssClass ? ` class="${options.cssClass}"` : '';
-    let fileUrl;
-    const fragmentString = fragmentHash(options.fragmentId);
-    let stripped;
-    let text;
+  const classString = options.cssClass ? ` class="${options.cssClass}"` : '';
+  let fileUrl;
+  const fragmentString = fragmentHash(options.fragmentId);
+  let stripped;
+  let text;
 
-    let parsedType;
+  let parsedType;
 
-    // handle cases like:
-    // @see <http://example.org>
-    // @see http://example.org
-    stripped = longname ? longname.replace(/^<|>$/g, '') : '';
-    if ( hasUrlPrefix(stripped) ) {
-        fileUrl = stripped;
-        text = linkText || stripped;
-    }
-    // handle complex type expressions that may require multiple links
-    // (but skip anything that looks like an inline tag or HTML tag)
-    else if (longname && isComplexTypeExpression(longname) && /\{@.+\}/.test(longname) === false &&
-        /^<[\s\S]+>/.test(longname) === false) {
-        parsedType = parseType(longname);
+  // handle cases like:
+  // @see <http://example.org>
+  // @see http://example.org
+  stripped = longname ? longname.replace(/^<|>$/g, '') : '';
+  if (hasUrlPrefix(stripped)) {
+    fileUrl = stripped;
+    text = linkText || stripped;
+  }
+  // handle complex type expressions that may require multiple links
+  // (but skip anything that looks like an inline tag or HTML tag)
+  else if (
+    longname &&
+    isComplexTypeExpression(longname) &&
+    /\{@.+\}/.test(longname) === false &&
+    /^<[\s\S]+>/.test(longname) === false
+  ) {
+    parsedType = parseType(longname);
 
-        return stringifyType(parsedType, options.cssClass, options.linkMap);
-    }
-    else {
-        fileUrl = hasOwnProp.call(options.linkMap, longname) ? options.linkMap[longname] : '';
-        text = linkText || (options.shortenName ? getShortName(longname) : longname);
-    }
+    return stringifyType(parsedType, options.cssClass, options.linkMap);
+  } else {
+    fileUrl = hasOwnProp.call(options.linkMap, longname) ? options.linkMap[longname] : '';
+    text = linkText || (options.shortenName ? getShortName(longname) : longname);
+  }
 
-    text = options.monospace ? `<code>${text}</code>` : text;
+  text = options.monospace ? `<code>${text}</code>` : text;
 
-    if (!fileUrl) {
-        return text;
-    }
-    else {
-        return `<a href="${encodeURI(fileUrl + fragmentString)}"${classString}>${text}</a>`;
-    }
+  if (!fileUrl) {
+    return text;
+  } else {
+    return `<a href="${encodeURI(fileUrl + fragmentString)}"${classString}>${text}</a>`;
+  }
 }
 
 /**
@@ -358,68 +358,66 @@ function buildLink(longname, linkText, options) {
  * append to the link target.
  * @return {string} The HTML link, or a plain-text string if the link is not available.
  */
-const linkto = exports.linkto = (longname, linkText, cssClass, fragmentId) => buildLink(longname, linkText, {
+const linkto = (exports.linkto = (longname, linkText, cssClass, fragmentId) =>
+  buildLink(longname, linkText, {
     cssClass: cssClass,
     fragmentId: fragmentId,
-    linkMap: longnameToUrl
-});
+    linkMap: longnameToUrl,
+  }));
 
 function useMonospace(tag, text) {
-    let cleverLinks;
-    let monospaceLinks;
-    let result;
+  let cleverLinks;
+  let monospaceLinks;
+  let result;
 
-    if ( hasUrlPrefix(text) ) {
-        result = false;
-    }
-    else if (tag === 'linkplain') {
-        result = false;
-    }
-    else if (tag === 'linkcode') {
-        result = true;
-    }
-    else {
-        cleverLinks = env.conf.templates.cleverLinks;
-        monospaceLinks = env.conf.templates.monospaceLinks;
+  if (hasUrlPrefix(text)) {
+    result = false;
+  } else if (tag === 'linkplain') {
+    result = false;
+  } else if (tag === 'linkcode') {
+    result = true;
+  } else {
+    cleverLinks = env.conf.templates.cleverLinks;
+    monospaceLinks = env.conf.templates.monospaceLinks;
 
-        if (monospaceLinks || cleverLinks) {
-            result = true;
-        }
+    if (monospaceLinks || cleverLinks) {
+      result = true;
     }
+  }
 
-    return result || false;
+  return result || false;
 }
 
 function splitLinkText(text) {
-    let linkText;
-    let target;
-    let splitIndex;
+  let linkText;
+  let target;
+  let splitIndex;
 
-    // if a pipe is not present, we split on the first space
-    splitIndex = text.indexOf('|');
-    if (splitIndex === -1) {
-        splitIndex = text.search(/\s/);
-    }
+  // if a pipe is not present, we split on the first space
+  splitIndex = text.indexOf('|');
+  if (splitIndex === -1) {
+    splitIndex = text.search(/\s/);
+  }
 
-    if (splitIndex !== -1) {
-        linkText = text.substr(splitIndex + 1);
-        // Normalize subsequent newlines to a single space.
-        linkText = linkText.replace(/\n+/, ' ');
-        target = text.substr(0, splitIndex);
-    }
+  if (splitIndex !== -1) {
+    linkText = text.substr(splitIndex + 1);
+    // Normalize subsequent newlines to a single space.
+    linkText = linkText.replace(/\n+/, ' ');
+    target = text.substr(0, splitIndex);
+  }
 
-    return {
-        linkText: linkText,
-        target: target || text
-    };
+  return {
+    linkText: linkText,
+    target: target || text,
+  };
 }
 
 function shouldShortenLongname() {
-    if (env.conf && env.conf.templates && env.conf.templates.useShortNamesInLinks) {
-        return true;
-    }
+  if (env.conf && env.conf.templates && env.conf.templates.useShortNamesInLinks) {
+    return true;
+  }
 
-    return false;
+  return false;
 }
 
 /**
@@ -428,61 +426,64 @@ function shouldShortenLongname() {
  * @param {string} str - The string to search for `{@link ...}` tags.
  * @return {string} The linkified text.
  */
-exports.resolveLinks = str => {
-    let replacers;
+exports.resolveLinks = (str) => {
+  let replacers;
 
-    function extractLeadingText(string, completeTag) {
-        const tagIndex = string.indexOf(completeTag);
-        let leadingText = null;
-        const leadingTextRegExp = /\[(.+?)\]/g;
-        let leadingTextInfo = leadingTextRegExp.exec(string);
+  function extractLeadingText(string, completeTag) {
+    const tagIndex = string.indexOf(completeTag);
+    let leadingText = null;
+    const leadingTextRegExp = /\[(.+?)\]/g;
+    let leadingTextInfo = leadingTextRegExp.exec(string);
 
-        // did we find leading text, and if so, does it immediately precede the tag?
-        while (leadingTextInfo && leadingTextInfo.length) {
-            if (leadingTextInfo.index + leadingTextInfo[0].length === tagIndex) {
-                string = string.replace(leadingTextInfo[0], '');
-                leadingText = leadingTextInfo[1];
-                break;
-            }
+    // did we find leading text, and if so, does it immediately precede the tag?
+    while (leadingTextInfo && leadingTextInfo.length) {
+      if (leadingTextInfo.index + leadingTextInfo[0].length === tagIndex) {
+        string = string.replace(leadingTextInfo[0], '');
+        leadingText = leadingTextInfo[1];
+        break;
+      }
 
-            leadingTextInfo = leadingTextRegExp.exec(string);
-        }
-
-        return {
-            leadingText: leadingText,
-            string: string
-        };
+      leadingTextInfo = leadingTextRegExp.exec(string);
     }
 
-    function processLink(string, {completeTag, text, tag}) {
-        const leading = extractLeadingText(string, completeTag);
-        let linkText = leading.leadingText;
-        let monospace;
-        let split;
-        let target;
-
-        string = leading.string;
-
-        split = splitLinkText(text);
-        target = split.target;
-        linkText = linkText || split.linkText;
-
-        monospace = useMonospace(tag, text);
-
-        return string.replace( completeTag, buildLink(target, linkText, {
-            linkMap: longnameToUrl,
-            monospace: monospace,
-            shortenName: shouldShortenLongname()
-        }) );
-    }
-
-    replacers = {
-        link: processLink,
-        linkcode: processLink,
-        linkplain: processLink
+    return {
+      leadingText: leadingText,
+      string: string,
     };
+  }
 
-    return inline.replaceInlineTags(str, replacers).newString;
+  function processLink(string, { completeTag, text, tag }) {
+    const leading = extractLeadingText(string, completeTag);
+    let linkText = leading.leadingText;
+    let monospace;
+    let split;
+    let target;
+
+    string = leading.string;
+
+    split = splitLinkText(text);
+    target = split.target;
+    linkText = linkText || split.linkText;
+
+    monospace = useMonospace(tag, text);
+
+    return string.replace(
+      completeTag,
+      buildLink(target, linkText, {
+        linkMap: longnameToUrl,
+        monospace: monospace,
+        shortenName: shouldShortenLongname(),
+      })
+    );
+  }
+
+  replacers = {
+    link: processLink,
+    linkcode: processLink,
+    linkplain: processLink,
+  };
+
+  return inline.replaceInlineTags(str, replacers).newString;
 };
 
 /**
@@ -491,22 +492,21 @@ exports.resolveLinks = str => {
  * @param {string} str - The tag text.
  * @return {string} The linkified text.
  */
-exports.resolveAuthorLinks = str => {
-    let author = '';
-    let matches;
+exports.resolveAuthorLinks = (str) => {
+  let author = '';
+  let matches;
 
-    if (str) {
-        matches = str.match(/^\s?([\s\S]+)\b\s+<(\S+@\S+)>\s?$/);
+  if (str) {
+    matches = str.match(/^\s?([\s\S]+)\b\s+<(\S+@\S+)>\s?$/);
 
-        if (matches && matches.length === 3) {
-            author = `<a href="mailto:${matches[2]}">${htmlsafe(matches[1])}</a>`;
-        }
-        else {
-            author = htmlsafe(str);
-        }
+    if (matches && matches.length === 3) {
+      author = `<a href="mailto:${matches[2]}">${htmlsafe(matches[1])}</a>`;
+    } else {
+      author = htmlsafe(str);
     }
+  }
 
-    return author;
+  return author;
 };
 
 /**
@@ -519,7 +519,7 @@ exports.resolveAuthorLinks = str => {
  * does not match.
  * @return {array<object>} The matching items.
  */
-const find = exports.find = (data, spec) => data(spec).get();
+const find = (exports.find = (data, spec) => data(spec).get());
 
 /**
  * Retrieve all of the following types of members from a set of doclets:
@@ -535,35 +535,35 @@ const find = exports.find = (data, spec) => data(spec).get();
  * @return {object} An object with `classes`, `externals`, `globals`, `mixins`, `modules`,
  * `events`, and `namespaces` properties. Each property contains an array of objects.
  */
-exports.getMembers = data => {
-    const members = {
-        classes: find( data, {kind: 'class'} ),
-        externals: find( data, {kind: 'external'} ),
-        events: find( data, {kind: 'event'} ),
-        globals: find(data, {
-            kind: ['member', 'function', 'constant', 'typedef'],
-            memberof: { isUndefined: true }
-        }),
-        mixins: find( data, {kind: 'mixin'} ),
-        modules: find( data, {kind: 'module'} ),
-        namespaces: find( data, {kind: 'namespace'} ),
-        interfaces: find( data, {kind: 'interface'} )
-    };
+exports.getMembers = (data) => {
+  const members = {
+    classes: find(data, { kind: 'class' }),
+    externals: find(data, { kind: 'external' }),
+    events: find(data, { kind: 'event' }),
+    globals: find(data, {
+      kind: ['member', 'function', 'constant', 'typedef'],
+      memberof: { isUndefined: true },
+    }),
+    mixins: find(data, { kind: 'mixin' }),
+    modules: find(data, { kind: 'module' }),
+    namespaces: find(data, { kind: 'namespace' }),
+    interfaces: find(data, { kind: 'interface' }),
+  };
 
-    // strip quotes from externals, since we allow quoted names that would normally indicate a
-    // namespace hierarchy (as in `@external "jquery.fn"`)
-    // TODO: we should probably be doing this for other types of symbols, here or elsewhere; see
-    // jsdoc3/jsdoc#396
-    members.externals = members.externals.map(doclet => {
-        doclet.name = doclet.name.replace(/(^"|"$)/g, '');
+  // strip quotes from externals, since we allow quoted names that would normally indicate a
+  // namespace hierarchy (as in `@external "jquery.fn"`)
+  // TODO: we should probably be doing this for other types of symbols, here or elsewhere; see
+  // jsdoc3/jsdoc#396
+  members.externals = members.externals.map((doclet) => {
+    doclet.name = doclet.name.replace(/(^"|"$)/g, '');
 
-        return doclet;
-    });
+    return doclet;
+  });
 
-    // functions that are also modules (as in `module.exports = function() {};`) are not globals
-    members.globals = members.globals.filter(doclet => !isModuleExports(doclet));
+  // functions that are also modules (as in `module.exports = function() {};`) are not globals
+  members.globals = members.globals.filter((doclet) => !isModuleExports(doclet));
 
-    return members;
+  return members;
 };
 
 /**
@@ -572,53 +572,52 @@ exports.getMembers = data => {
  * @param {object} d The doclet whose attributes will be retrieved.
  * @return {array<string>} The member attributes for the doclet.
  */
-exports.getAttribs = d => {
-    const attribs = [];
+exports.getAttribs = (d) => {
+  const attribs = [];
 
-    if (!d) {
-        return attribs;
-    }
-
-    if (d.async) {
-        attribs.push('async');
-    }
-
-    if (d.generator) {
-        attribs.push('generator');
-    }
-
-    if (d.virtual) {
-        attribs.push('abstract');
-    }
-
-    if (d.access && d.access !== 'public') {
-        attribs.push(d.access);
-    }
-
-    if (d.scope && d.scope !== 'instance' && d.scope !== SCOPE.NAMES.GLOBAL) {
-        if (d.kind === 'function' || d.kind === 'member' || d.kind === 'constant') {
-            attribs.push(d.scope);
-        }
-    }
-
-    if (d.readonly === true) {
-        if (d.kind === 'member') {
-            attribs.push('readonly');
-        }
-    }
-
-    if (d.kind === 'constant') {
-        attribs.push('constant');
-    }
-
-    if (d.nullable === true) {
-        attribs.push('nullable');
-    }
-    else if (d.nullable === false) {
-        attribs.push('non-null');
-    }
-
+  if (!d) {
     return attribs;
+  }
+
+  if (d.async) {
+    attribs.push('async');
+  }
+
+  if (d.generator) {
+    attribs.push('generator');
+  }
+
+  if (d.virtual) {
+    attribs.push('abstract');
+  }
+
+  if (d.access && d.access !== 'public') {
+    attribs.push(d.access);
+  }
+
+  if (d.scope && d.scope !== 'instance' && d.scope !== SCOPE.NAMES.GLOBAL) {
+    if (d.kind === 'function' || d.kind === 'member' || d.kind === 'constant') {
+      attribs.push(d.scope);
+    }
+  }
+
+  if (d.readonly === true) {
+    if (d.kind === 'member') {
+      attribs.push('readonly');
+    }
+  }
+
+  if (d.kind === 'constant') {
+    attribs.push('constant');
+  }
+
+  if (d.nullable === true) {
+    attribs.push('nullable');
+  } else if (d.nullable === false) {
+    attribs.push('non-null');
+  }
+
+  return attribs;
 };
 
 /**
@@ -628,18 +627,18 @@ exports.getAttribs = d => {
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
  * @return {Array.<string>} HTML links to allowed types for the member.
  */
-exports.getSignatureTypes = ({type}, cssClass) => {
-    let types = [];
+exports.getSignatureTypes = ({ type }, cssClass) => {
+  let types = [];
 
-    if (type && type.names) {
-        types = type.names;
-    }
+  if (type && type.names) {
+    types = type.names;
+  }
 
-    if (types && types.length) {
-        types = types.map(t => linkto(t, htmlsafe(t), cssClass));
-    }
+  if (types && types.length) {
+    types = types.map((t) => linkto(t, htmlsafe(t), cssClass));
+  }
 
-    return types;
+  return types;
 };
 
 /**
@@ -652,23 +651,22 @@ exports.getSignatureTypes = ({type}, cssClass) => {
  * @return {array<string>} An array of parameter names, with or without `<span>` tags wrapping the
  * names of optional parameters.
  */
-exports.getSignatureParams = ({params}, optClass) => {
-    const pnames = [];
+exports.getSignatureParams = ({ params }, optClass) => {
+  const pnames = [];
 
-    if (params) {
-        params.forEach(p => {
-            if (p.name && !p.name.includes('.')) {
-                if (p.optional && optClass) {
-                    pnames.push(`<span class="${optClass}">${p.name}</span>`);
-                }
-                else {
-                    pnames.push(p.name);
-                }
-            }
-        });
-    }
+  if (params) {
+    params.forEach((p) => {
+      if (p.name && !p.name.includes('.')) {
+        if (p.optional && optClass) {
+          pnames.push(`<span class="${optClass}">${p.name}</span>`);
+        } else {
+          pnames.push(p.name);
+        }
+      }
+    });
+  }
 
-    return pnames;
+  return pnames;
 };
 
 /**
@@ -678,24 +676,24 @@ exports.getSignatureParams = ({params}, optClass) => {
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
  * @return {Array.<string>} HTML links to types that the member can return or yield.
  */
-exports.getSignatureReturns = ({yields, returns}, cssClass) => {
-    let returnTypes = [];
+exports.getSignatureReturns = ({ yields, returns }, cssClass) => {
+  let returnTypes = [];
 
-    if (yields || returns) {
-        (yields || returns).forEach(r => {
-            if (r && r.type && r.type.names) {
-                if (!returnTypes.length) {
-                    returnTypes = r.type.names;
-                }
-            }
-        });
-    }
+  if (yields || returns) {
+    (yields || returns).forEach((r) => {
+      if (r && r.type && r.type.names) {
+        if (!returnTypes.length) {
+          returnTypes = r.type.names;
+        }
+      }
+    });
+  }
 
-    if (returnTypes && returnTypes.length) {
-        returnTypes = returnTypes.map(r => linkto(r, htmlsafe(r), cssClass));
-    }
+  if (returnTypes && returnTypes.length) {
+    returnTypes = returnTypes.map((r) => linkto(r, htmlsafe(r), cssClass));
+  }
 
-    return returnTypes;
+  return returnTypes;
 };
 
 /**
@@ -707,25 +705,25 @@ exports.getSignatureReturns = ({yields, returns}, cssClass) => {
  * least distant.
  */
 exports.getAncestors = (data, doclet) => {
-    const ancestors = [];
-    let doc = doclet;
-    let previousDoc;
+  const ancestors = [];
+  let doc = doclet;
+  let previousDoc;
 
-    while (doc) {
-        previousDoc = doc;
-        doc = find(data, {longname: doc.memberof})[0];
+  while (doc) {
+    previousDoc = doc;
+    doc = find(data, { longname: doc.memberof })[0];
 
-        // prevent infinite loop that can be caused by duplicated module definitions
-        if (previousDoc === doc) {
-            break;
-        }
-
-        if (doc) {
-            ancestors.unshift(doc);
-        }
+    // prevent infinite loop that can be caused by duplicated module definitions
+    if (previousDoc === doc) {
+      break;
     }
 
-    return ancestors;
+    if (doc) {
+      ancestors.unshift(doc);
+    }
+  }
+
+  return ancestors;
 };
 
 /**
@@ -737,21 +735,21 @@ exports.getAncestors = (data, doclet) => {
  * @return {Array.<string>} HTML links to a member's ancestors.
  */
 exports.getAncestorLinks = (data, doclet, cssClass) => {
-    const ancestors = exports.getAncestors(data, doclet);
-    const links = [];
+  const ancestors = exports.getAncestors(data, doclet);
+  const links = [];
 
-    ancestors.forEach(ancestor => {
-        const linkText = (SCOPE_TO_PUNC[ancestor.scope] || '') + ancestor.name;
-        const link = linkto(ancestor.longname, linkText, cssClass);
+  ancestors.forEach((ancestor) => {
+    const linkText = (SCOPE_TO_PUNC[ancestor.scope] || '') + ancestor.name;
+    const link = linkto(ancestor.longname, linkText, cssClass);
 
-        links.push(link);
-    });
+    links.push(link);
+  });
 
-    if (links.length) {
-        links[links.length - 1] += (SCOPE_TO_PUNC[doclet.scope] || '');
-    }
+  if (links.length) {
+    links[links.length - 1] += SCOPE_TO_PUNC[doclet.scope] || '';
+  }
 
-    return links;
+  return links;
 };
 
 /**
@@ -760,40 +758,42 @@ exports.getAncestorLinks = (data, doclet, cssClass) => {
  *
  * @param {TAFFY} data - The TaffyDB database to search.
  */
-exports.addEventListeners = data => {
-    // just a cache to prevent me doing so many lookups
-    const _events = {};
-    let doc;
-    let l;
-    // TODO: do this on the *pruned* data
-    // find all doclets that @listen to something.
-    /* eslint-disable no-invalid-this */
-    const listeners = find(data, function() {
-        return this.listens && this.listens.length;
-    });
-    /* eslint-enable no-invalid-this */
+exports.addEventListeners = (data) => {
+  // just a cache to prevent me doing so many lookups
+  const _events = {};
+  let doc;
+  let l;
+  // TODO: do this on the *pruned* data
+  // find all doclets that @listen to something.
+  /* eslint-disable no-invalid-this */
+  const listeners = find(data, function () {
+    return this.listens && this.listens.length;
+  });
+  /* eslint-enable no-invalid-this */
 
-    if (!listeners.length) {
-        return;
-    }
+  if (!listeners.length) {
+    return;
+  }
 
-    listeners.forEach(({listens, longname}) => {
-        l = listens;
-        l.forEach(eventLongname => {
-            doc = _events[eventLongname] || find(data, {
-                longname: eventLongname,
-                kind: 'event'
-            })[0];
-            if (doc) {
-                if (!doc.listeners) {
-                    doc.listeners = [longname];
-                } else {
-                    doc.listeners.push(longname);
-                }
-                _events[eventLongname] = _events[eventLongname] || doc;
-            }
-        });
+  listeners.forEach(({ listens, longname }) => {
+    l = listens;
+    l.forEach((eventLongname) => {
+      doc =
+        _events[eventLongname] ||
+        find(data, {
+          longname: eventLongname,
+          kind: 'event',
+        })[0];
+      if (doc) {
+        if (!doc.listeners) {
+          doc.listeners = [longname];
+        } else {
+          doc.listeners.push(longname);
+        }
+        _events[eventLongname] = _events[eventLongname] || doc;
+      }
     });
+  });
 };
 
 /**
@@ -807,30 +807,33 @@ exports.addEventListeners = data => {
  * @param {TAFFY} data The TaffyDB database to prune.
  * @return {TAFFY} The pruned database.
  */
-exports.prune = data => {
-    data({undocumented: true}).remove();
-    data({ignore: true}).remove();
-    data({memberof: '<anonymous>'}).remove();
+exports.prune = (data) => {
+  data({ undocumented: true }).remove();
+  data({ ignore: true }).remove();
+  data({ memberof: '<anonymous>' }).remove();
 
-    if (!env.opts.access || (env.opts.access && !env.opts.access.includes('all'))) {
-        if (env.opts.access && !env.opts.access.includes('package')) {
-            data({access: 'package'}).remove();
-        }
-        if (env.opts.access && !env.opts.access.includes('public')) {
-            data({access: 'public'}).remove();
-        }
-        if (env.opts.access && !env.opts.access.includes('protected')) {
-            data({access: 'protected'}).remove();
-        }
-        if (!env.opts.private && (!env.opts.access || (env.opts.access && !env.opts.access.includes('private')))) {
-            data({access: 'private'}).remove();
-        }
-        if (env.opts.access && !env.opts.access.includes('undefined')) {
-            data({access: {isUndefined: true}}).remove();
-        }
+  if (!env.opts.access || (env.opts.access && !env.opts.access.includes('all'))) {
+    if (env.opts.access && !env.opts.access.includes('package')) {
+      data({ access: 'package' }).remove();
     }
+    if (env.opts.access && !env.opts.access.includes('public')) {
+      data({ access: 'public' }).remove();
+    }
+    if (env.opts.access && !env.opts.access.includes('protected')) {
+      data({ access: 'protected' }).remove();
+    }
+    if (
+      !env.opts.private &&
+      (!env.opts.access || (env.opts.access && !env.opts.access.includes('private')))
+    ) {
+      data({ access: 'private' }).remove();
+    }
+    if (env.opts.access && !env.opts.access.includes('undefined')) {
+      data({ access: { isUndefined: true } }).remove();
+    }
+  }
 
-    return data;
+  return data;
 };
 
 /**
@@ -845,49 +848,49 @@ exports.prune = data => {
  * @param {module:jsdoc/doclet.Doclet} doclet - The doclet that will be used to create the URL.
  * @return {string} The URL to the generated documentation for the doclet.
  */
-exports.createLink = doclet => {
-    let fakeContainer;
-    let filename;
-    let fileUrl;
-    let fragment = '';
-    const longname = doclet.longname;
-    let match;
+exports.createLink = (doclet) => {
+  let fakeContainer;
+  let filename;
+  let fileUrl;
+  let fragment = '';
+  const longname = doclet.longname;
+  let match;
 
-    // handle doclets in which doclet.longname implies that the doclet gets its own HTML file, but
-    // doclet.kind says otherwise. this happens due to mistagged JSDoc (for example, a module that
-    // somehow has doclet.kind set to `member`).
-    // TODO: generate a warning (ideally during parsing!)
-    if (!containers.includes(doclet.kind)) {
-        match = /(\S+):/.exec(longname);
-        if (match && containers.includes(match[1])) {
-            fakeContainer = match[1];
-        }
+  // handle doclets in which doclet.longname implies that the doclet gets its own HTML file, but
+  // doclet.kind says otherwise. this happens due to mistagged JSDoc (for example, a module that
+  // somehow has doclet.kind set to `member`).
+  // TODO: generate a warning (ideally during parsing!)
+  if (!containers.includes(doclet.kind)) {
+    match = /(\S+):/.exec(longname);
+    if (match && containers.includes(match[1])) {
+      fakeContainer = match[1];
     }
+  }
 
-    // the doclet gets its own HTML file
-    if ( containers.includes(doclet.kind) || isModuleExports(doclet) ) {
-        filename = getFilename(longname);
+  // the doclet gets its own HTML file
+  if (containers.includes(doclet.kind) || isModuleExports(doclet)) {
+    filename = getFilename(longname);
+  }
+  // mistagged version of a doclet that gets its own HTML file
+  else if (!containers.includes(doclet.kind) && fakeContainer) {
+    filename = getFilename(doclet.memberof || longname);
+    if (doclet.name !== doclet.longname) {
+      fragment = formatNameForLink(doclet);
+      fragment = getId(longname, fragment);
     }
-    // mistagged version of a doclet that gets its own HTML file
-    else if ( !containers.includes(doclet.kind) && fakeContainer ) {
-        filename = getFilename(doclet.memberof || longname);
-        if (doclet.name !== doclet.longname) {
-            fragment = formatNameForLink(doclet);
-            fragment = getId(longname, fragment);
-        }
+  }
+  // the doclet is within another HTML file
+  else {
+    filename = getFilename(doclet.memberof || exports.globalName);
+    if (doclet.name !== doclet.longname || doclet.scope === SCOPE.NAMES.GLOBAL) {
+      fragment = formatNameForLink(doclet);
+      fragment = getId(longname, fragment);
     }
-    // the doclet is within another HTML file
-    else {
-        filename = getFilename(doclet.memberof || exports.globalName);
-        if ( (doclet.name !== doclet.longname) || (doclet.scope === SCOPE.NAMES.GLOBAL) ) {
-            fragment = formatNameForLink(doclet);
-            fragment = getId(longname, fragment);
-        }
-    }
+  }
 
-    fileUrl = encodeURI( filename + fragmentHash(fragment) );
+  fileUrl = encodeURI(filename + fragmentHash(fragment));
 
-    return fileUrl;
+  return fileUrl;
 };
 
 /**
@@ -914,5 +917,5 @@ exports.longnamesToTree = longnamesToTree;
  * @param {module:jsdoc/tag/dictionary.Dictionary} dict - The new tag dictionary.
  */
 exports._replaceDictionary = function _replaceDictionary(dict) {
-    dictionary = dict;
+  dictionary = dict;
 };

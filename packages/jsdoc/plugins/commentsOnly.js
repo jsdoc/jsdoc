@@ -4,14 +4,14 @@
  * @module plugins/commentsOnly
  */
 exports.handlers = {
-    beforeParse(e) {
-        // a JSDoc comment looks like: /**[one or more chars]*/
-        const comments = e.source.match(/\/\*\*[\s\S]+?\*\//g);
+  beforeParse(e) {
+    // a JSDoc comment looks like: /**[one or more chars]*/
+    const comments = e.source.match(/\/\*\*[\s\S]+?\*\//g);
 
-        if (comments) {
-            e.source = comments.join('\n\n');
-        } else {
-            e.source = ''; // If file has no comments, parser should still receive no code
-        }
+    if (comments) {
+      e.source = comments.join('\n\n');
+    } else {
+      e.source = ''; // If file has no comments, parser should still receive no code
     }
+  },
 };

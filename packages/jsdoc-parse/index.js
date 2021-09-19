@@ -3,7 +3,7 @@ const astNode = require('./lib/ast-node');
 const { Syntax } = require('./lib/syntax');
 
 module.exports = {
-    AstBuilder,
-    astNode,
-    Syntax
+  AstBuilder,
+  astNode,
+  Syntax,
 };

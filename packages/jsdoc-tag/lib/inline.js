@@ -45,7 +45,7 @@
  * @returns {RegExp} A regular expression that matches the requested inline tag.
  */
 function regExpFactory(tagName = '\\S+', prefix = '', suffix = '') {
-    return new RegExp(`${prefix}\\{@${tagName}\\s+((?:.|\n)+?)\\}${suffix}`, 'i');
+  return new RegExp(`${prefix}\\{@${tagName}\\s+((?:.|\n)+?)\\}${suffix}`, 'i');
 }
 
 /**
@@ -70,43 +70,43 @@ exports.isInlineTag = (string, tagName) => regExpFactory(tagName, '^', '$').test
  * @return {module:@jsdoc/tag.inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
-const replaceInlineTags = exports.replaceInlineTags = (string, replacers) => {
-    const tagInfo = [];
+const replaceInlineTags = (exports.replaceInlineTags = (string, replacers) => {
+  const tagInfo = [];
 
-    function replaceMatch(replacer, tag, match, text) {
-        const matchedTag = {
-            completeTag: match,
-            tag: tag,
-            text: text
-        };
-
-        tagInfo.push(matchedTag);
-
-        return replacer(string, matchedTag);
-    }
-
-    string = string || '';
-
-    Object.keys(replacers).forEach(replacer => {
-        const tagRegExp = regExpFactory(replacer);
-        let matches;
-        let previousString;
-
-        // call the replacer once for each match
-        do {
-            matches = tagRegExp.exec(string);
-            if (matches) {
-                previousString = string;
-                string = replaceMatch(replacers[replacer], replacer, matches[0], matches[1]);
-            }
-        } while (matches && previousString !== string);
-    });
-
-    return {
-        tags: tagInfo,
-        newString: string.trim()
+  function replaceMatch(replacer, tag, match, text) {
+    const matchedTag = {
+      completeTag: match,
+      tag: tag,
+      text: text,
     };
-};
+
+    tagInfo.push(matchedTag);
+
+    return replacer(string, matchedTag);
+  }
+
+  string = string || '';
+
+  Object.keys(replacers).forEach((replacer) => {
+    const tagRegExp = regExpFactory(replacer);
+    let matches;
+    let previousString;
+
+    // call the replacer once for each match
+    do {
+      matches = tagRegExp.exec(string);
+      if (matches) {
+        previousString = string;
+        string = replaceMatch(replacers[replacer], replacer, matches[0], matches[1]);
+      }
+    } while (matches && previousString !== string);
+  });
+
+  return {
+    tags: tagInfo,
+    newString: string.trim(),
+  };
+});
 
 /**
  * Replace all instances of an inline tag with other text.
@@ -118,13 +118,13 @@ const replaceInlineTags = exports.replaceInlineTags = (string, replacers) => {
  * @return {module:@jsdoc/tag.inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
-const replaceInlineTag = exports.replaceInlineTag = (string, tag, replacer) => {
-    const replacers = {};
+const replaceInlineTag = (exports.replaceInlineTag = (string, tag, replacer) => {
+  const replacers = {};
 
-    replacers[tag] = replacer;
+  replacers[tag] = replacer;
 
-    return replaceInlineTags(string, replacers);
-};
+  return replaceInlineTags(string, replacers);
+});
 
 /**
  * Extract inline tags from a string, replacing them with an empty string.
@@ -135,5 +135,4 @@ const replaceInlineTag = exports.replaceInlineTag = (string, tag, replacer) => {
  * about the inline tags that were found.
  */
 exports.extractInlineTag = (string, tag) =>
-    replaceInlineTag(string, tag, (str, {completeTag}) =>
-        str.replace(completeTag, ''));
+  replaceInlineTag(string, tag, (str, { completeTag }) => str.replace(completeTag, ''));
