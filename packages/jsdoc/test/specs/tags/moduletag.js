@@ -170,7 +170,7 @@ describe('@module tag', () => {
         expect(foo).toBeObject();
       });
 
-      it('should merge the doclet for the constructor with the doclet for the ' + 'class', () => {
+      it('should merge the doclet for the constructor with the doclet for the class', () => {
         expect(foo.description).toBe('Test class constructor.');
       });
 

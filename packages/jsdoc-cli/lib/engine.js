@@ -144,9 +144,7 @@ class Engine {
 
     const maxLength = opts.maxLength || Infinity;
 
-    return (
-      `Options:\n${help({ maxLength })}\n\n` + 'Visit https://jsdoc.app/ for more information.'
-    );
+    return `Options:\n${help({ maxLength })}\n\nVisit https://jsdoc.app/ for more information.`;
   }
 
   /**

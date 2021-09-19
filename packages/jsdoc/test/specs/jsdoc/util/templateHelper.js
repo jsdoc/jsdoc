@@ -354,9 +354,7 @@ describe('jsdoc/util/templateHelper', () => {
     it('works correctly with type applications if a class is specified', () => {
       const link = helper.linkto('Array.<LinktoFakeClass>', 'link text', 'myclass');
 
-      expect(link).toBe(
-        'Array.&lt;<a href="fakeclass.html" class="myclass">LinktoFakeClass' + '</a>>'
-      );
+      expect(link).toBe('Array.&lt;<a href="fakeclass.html" class="myclass">LinktoFakeClass</a>>');
     });
 
     it('works correctly with type applications that include a type union', () => {
@@ -372,7 +370,7 @@ describe('jsdoc/util/templateHelper', () => {
       const link = helper.linkto('linktoTest|LinktoFakeClass', 'link text');
 
       expect(link).toBe(
-        '(<a href="test.html">linktoTest</a>|' + '<a href="fakeclass.html">LinktoFakeClass</a>)'
+        '(<a href="test.html">linktoTest</a>|<a href="fakeclass.html">LinktoFakeClass</a>)'
       );
     });
 

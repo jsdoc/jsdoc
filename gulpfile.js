@@ -1,4 +1,4 @@
-const eslint = require('gulp-eslint');
+const eslint = require('gulp-eslint7');
 const { exec } = require('child_process');
 const gulp = require('gulp');
 const path = require('path');
@@ -11,14 +11,12 @@ function execCb(cb, err, stdout, stderr) {
 }
 
 const options = {
-  coveragePaths: [
+  lintPaths: [
     '*.js',
     'packages/**/*.js',
-    '!packages/**/test/*.js',
-    '!packages/**/test/**/*.js',
     '!packages/**/static/*.js',
+    '!packages/**/test/fixtures/**/*.js',
   ],
-  lintPaths: ['*.js', 'packages/**/*.js', '!packages/**/static/*.js'],
   nodeBin: path.resolve(__dirname, './packages/jsdoc/jsdoc.js'),
   nodePath: process.execPath,
 };
@@ -30,7 +28,7 @@ function coverage(cb) {
 }
 
 function format() {
-  return gulp.src(options.lintPaths).pipe(prettier());
+  return gulp.src(options.lintPaths, { base: './' }).pipe(prettier()).pipe(gulp.dest('./'));
 }
 
 function lint() {

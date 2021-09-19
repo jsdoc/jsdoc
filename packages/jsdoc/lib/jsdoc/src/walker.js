@@ -648,7 +648,7 @@ class Walker {
 
     function logUnknownNodeType({ type }) {
       log.debug(
-        `Found a node with unrecognized type ${type}. Ignoring the node and its ` + 'descendants.'
+        `Found a node with unrecognized type ${type}. Ignoring the node and its descendants.`
       );
     }
 

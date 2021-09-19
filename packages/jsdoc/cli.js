@@ -27,7 +27,7 @@ module.exports = (() => {
   const cli = {};
   const engine = new Engine();
   const FATAL_ERROR_MESSAGE =
-    'Exiting JSDoc because an error occurred. See the previous log ' + 'messages for details.';
+    'Exiting JSDoc because an error occurred. See the previous log messages for details.';
   const LOG_LEVELS = Engine.LOG_LEVELS;
 
   // TODO: docs

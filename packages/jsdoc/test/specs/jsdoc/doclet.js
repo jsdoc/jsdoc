@@ -268,30 +268,27 @@ describe('jsdoc/doclet', () => {
         }
       );
 
-      it(
-        "should use the primary doclet's params and properties if the primary doclet has " + 'some',
-        () => {
-          const primaryComment = [
-            '/**',
-            ' * @param {number} baz - The baz.',
-            ' * @property {string} qux - The qux.',
-            ' */',
-          ].join('\n');
-          const primaryDoclet = new Doclet(primaryComment);
-          const secondaryComment = [
-            '/**',
-            ' * @param {string} foo - The foo.',
-            ' * @property {number} bar - The bar.',
-            ' */',
-          ].join('\n');
-          const secondaryDoclet = new Doclet(secondaryComment);
-          const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
+      it("should use the primary doclet's params and properties if the primary doclet has some", () => {
+        const primaryComment = [
+          '/**',
+          ' * @param {number} baz - The baz.',
+          ' * @property {string} qux - The qux.',
+          ' */',
+        ].join('\n');
+        const primaryDoclet = new Doclet(primaryComment);
+        const secondaryComment = [
+          '/**',
+          ' * @param {string} foo - The foo.',
+          ' * @property {number} bar - The bar.',
+          ' */',
+        ].join('\n');
+        const secondaryDoclet = new Doclet(secondaryComment);
+        const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
-          properties.forEach((property) => {
-            expect(newDoclet[property]).toEqual(primaryDoclet[property]);
-          });
-        }
-      );
+        properties.forEach((property) => {
+          expect(newDoclet[property]).toEqual(primaryDoclet[property]);
+        });
+      });
     });
   });
 });

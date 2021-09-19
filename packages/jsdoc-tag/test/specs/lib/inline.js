@@ -168,7 +168,7 @@ describe('@jsdoc/tag/lib/inline', () => {
       }
 
       const result = inline.replaceInlineTag(
-        'some {@foo text} with multiple ' + '{@foo tags}, {@foo like} {@foo this}',
+        'some {@foo text} with multiple {@foo tags}, {@foo like} {@foo this}',
         'foo',
         replacer
       );

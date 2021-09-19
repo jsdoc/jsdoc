@@ -353,19 +353,16 @@ describe('jsdoc/src/parser', () => {
           }
         }
 
-        it(
-          'should fire interleaved jsdocCommentFound and symbolFound events, ' + 'in source order',
-          () => {
-            attachTo(parser);
-            parser.parse(source);
-            events.all
-              .slice(0)
-              .sort(sourceOrderSort)
-              .forEach((e, i) => {
-                expect(e).toBe(events.all[i]);
-              });
-          }
-        );
+        it('should fire interleaved jsdocCommentFound and symbolFound events, in source order', () => {
+          attachTo(parser);
+          parser.parse(source);
+          events.all
+            .slice(0)
+            .sort(sourceOrderSort)
+            .forEach((e, i) => {
+              expect(e).toBe(events.all[i]);
+            });
+        });
       });
     });
 

@@ -111,7 +111,7 @@ module.exports = class TaskRunner extends Emittery {
     }
 
     return new v.UnknownDependencyError(
-      `The task ${dependent} depends on ${errorText}: ` + `${unknownDeps.join(', ')}`
+      `The task ${dependent} depends on ${errorText}: ${unknownDeps.join(', ')}`
     );
   }
 
