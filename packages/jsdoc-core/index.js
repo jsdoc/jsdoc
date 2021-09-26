@@ -5,11 +5,11 @@
  */
 
 const config = require('./lib/config');
-const dependencies = require('./lib/dependencies');
+const Dependencies = require('./lib/dependencies');
 const name = require('./lib/name');
 
 module.exports = {
   config,
-  dependencies,
+  Dependencies,
   name,
 };

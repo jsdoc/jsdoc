@@ -13,11 +13,11 @@ describe('@jsdoc/core', () => {
     });
   });
 
-  describe('dependencies', () => {
+  describe('Dependencies', () => {
     it('is lib/dependencies', () => {
-      const dependencies = require('../../lib/dependencies');
+      const Dependencies = require('../../lib/dependencies');
 
-      expect(core.dependencies).toBe(dependencies);
+      expect(core.Dependencies).toBe(Dependencies);
     });
   });
 
