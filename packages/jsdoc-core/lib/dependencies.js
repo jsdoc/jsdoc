@@ -1,7 +1,5 @@
 const yaioc = require('yaioc');
 
-let dependencies;
-
 /**
  * Container for JSDoc classes, objects, and values that can be injected into other modules.
  *
@@ -36,7 +34,4 @@ class Dependencies {
   }
 }
 
-dependencies = new Dependencies();
-dependencies.Dependencies = Dependencies;
-
-module.exports = dependencies;
+module.exports = Dependencies;

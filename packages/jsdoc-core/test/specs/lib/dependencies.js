@@ -1,20 +1,14 @@
-const dependencies = require('../../../lib/dependencies');
+const Dependencies = require('../../../lib/dependencies');
 
 describe('@jsdoc/core/lib/dependencies', () => {
   let container;
 
   beforeEach(() => {
-    container = new dependencies.Dependencies();
+    container = new Dependencies();
   });
 
-  it('is an object', () => {
-    expect(dependencies).toBeObject();
-  });
-
-  describe('Dependencies', () => {
-    it('is the constructor of the dependencies object', () => {
-      expect(dependencies.Dependencies).toBe(dependencies.constructor);
-    });
+  it('is a constructor', () => {
+    expect(Dependencies).toBeFunction();
   });
 
   describe('get', () => {
