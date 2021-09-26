@@ -1,12 +1,17 @@
 /* eslint-disable indent, no-process-exit */
-
-const { config } = require('@jsdoc/core');
+const _ = require('lodash');
+const { config, Dependencies } = require('@jsdoc/core');
 const Engine = require('@jsdoc/cli');
-const env = require('jsdoc/env');
+const jsdocEnv = require('jsdoc/env');
 const { EventBus, log } = require('@jsdoc/util');
+const { Filter } = require('jsdoc/src/filter');
+const fs = require('fs');
+const { Package } = require('jsdoc/package');
 const path = require('path');
+const { Scanner } = require('jsdoc/src/scanner');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
+const { taffy } = require('taffydb');
 const Promise = require('bluebird');
 
 /**
@@ -25,14 +30,17 @@ module.exports = (() => {
 
   const bus = new EventBus('jsdoc');
   const cli = {};
+  const dependencies = new Dependencies();
   const engine = new Engine();
   const FATAL_ERROR_MESSAGE =
     'Exiting JSDoc because an error occurred. See the previous log messages for details.';
   const LOG_LEVELS = Engine.LOG_LEVELS;
 
+  dependencies.registerValue('env', jsdocEnv);
+
   // TODO: docs
   cli.setVersionInfo = () => {
-    const fs = require('fs');
+    const env = dependencies.get('env');
 
     // allow this to throw--something is really wrong if we can't read our own package file
     const info = JSON.parse(
@@ -53,8 +61,7 @@ module.exports = (() => {
 
   // TODO: docs
   cli.loadConfig = () => {
-    const _ = require('lodash');
-    let conf;
+    const env = dependencies.get('env');
 
     try {
       env.opts = engine.parseFlags(env.args);
@@ -66,22 +73,26 @@ module.exports = (() => {
     }
 
     try {
-      conf = config.loadSync(env.opts.configure);
-      env.conf = conf.config;
+      env.conf = config.loadSync(env.opts.configure).config;
     } catch (e) {
-      cli.exit(1, `Cannot parse the config file ${conf.filepath}: ${e}\n${FATAL_ERROR_MESSAGE}`);
+      cli.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
 
       return cli;
     }
 
-    // look for options on the command line, then in the config
+    // Look for options on the command line, then in the config.
     env.opts = _.defaults(env.opts, env.conf.opts);
+    // Now that we're done loading and merging things, register dependencies.
+    dependencies.registerValue('config', env.conf);
+    dependencies.registerValue('options', env.opts);
 
     return cli;
   };
 
   // TODO: docs
   cli.configureLogger = () => {
+    const options = dependencies.get('options');
+
     function recoverableError() {
       props.shouldExitWithError = true;
     }
@@ -90,16 +101,16 @@ module.exports = (() => {
       cli.exit(1);
     }
 
-    if (env.opts.test) {
+    if (options.test) {
       engine.logLevel = LOG_LEVELS.SILENT;
     } else {
-      if (env.opts.debug) {
+      if (options.debug) {
         engine.logLevel = LOG_LEVELS.DEBUG;
-      } else if (env.opts.verbose) {
+      } else if (options.verbose) {
         engine.logLevel = LOG_LEVELS.INFO;
       }
 
-      if (env.opts.pedantic) {
+      if (options.pedantic) {
         bus.once('logger:warn', recoverableError);
         bus.once('logger:error', fatalError);
       } else {
@@ -117,8 +128,8 @@ module.exports = (() => {
     log.debug(engine.versionDetails);
     log.debug('Environment info: %j', {
       env: {
-        conf: env.conf,
-        opts: env.opts,
+        conf: dependencies.get('config'),
+        opts: dependencies.get('options'),
       },
     });
   };
@@ -127,12 +138,10 @@ module.exports = (() => {
   cli.logFinish = () => {
     let delta;
     let deltaSeconds;
+    const env = dependencies.get('env');
 
     if (env.run.finish && env.run.start) {
       delta = env.run.finish.getTime() - env.run.start.getTime();
-    }
-
-    if (delta !== undefined) {
       deltaSeconds = (delta / 1000).toFixed(2);
       log.info(`Finished running in ${deltaSeconds} seconds.`);
     }
@@ -141,16 +150,16 @@ module.exports = (() => {
   // TODO: docs
   cli.runCommand = () => {
     let cmd;
-    const opts = env.opts;
+    const options = dependencies.get('options');
 
     // If we already need to exit with an error, don't do any more work.
     if (props.shouldExitWithError) {
       cmd = () => Promise.resolve(0);
-    } else if (opts.help) {
+    } else if (options.help) {
       cmd = cli.printHelp;
-    } else if (opts.test) {
+    } else if (options.test) {
       cmd = cli.runTests;
-    } else if (opts.version) {
+    } else if (options.version) {
       cmd = cli.printVersion;
     } else {
       cmd = cli.main;
@@ -186,6 +195,8 @@ module.exports = (() => {
 
   // TODO: docs
   cli.main = () => {
+    const env = dependencies.get('env');
+
     cli.scanFiles();
 
     if (env.sourceFiles.length === 0) {
@@ -206,8 +217,6 @@ module.exports = (() => {
   };
 
   function readPackageJson(filepath) {
-    const fs = require('fs');
-
     try {
       return stripJsonComments(fs.readFileSync(filepath, 'utf8'));
     } catch (e) {
@@ -218,17 +227,19 @@ module.exports = (() => {
   }
 
   function buildSourceList() {
+    const conf = dependencies.get('config');
+    const options = dependencies.get('options');
     let packageJson;
     let sourceFile;
-    let sourceFiles = env.opts._ ? env.opts._.slice(0) : [];
+    let sourceFiles = options._ ? options._.slice(0) : [];
 
-    if (env.conf.source && env.conf.source.include) {
-      sourceFiles = sourceFiles.concat(env.conf.source.include);
+    if (conf.source && conf.source.include) {
+      sourceFiles = sourceFiles.concat(config.source.include);
     }
 
     // load the user-specified package file, if any
-    if (env.opts.package) {
-      packageJson = readPackageJson(env.opts.package);
+    if (options.package) {
+      packageJson = readPackageJson(options.package);
     }
 
     // source files named `package.json` or `README.md` get special treatment, unless the user
@@ -236,20 +247,20 @@ module.exports = (() => {
     for (let i = 0, l = sourceFiles.length; i < l; i++) {
       sourceFile = sourceFiles[i];
 
-      if (!env.opts.package && /\bpackage\.json$/i.test(sourceFile)) {
+      if (!options.package && /\bpackage\.json$/i.test(sourceFile)) {
         packageJson = readPackageJson(sourceFile);
         sourceFiles.splice(i--, 1);
       }
 
-      if (!env.opts.readme && /(\bREADME|\.md)$/i.test(sourceFile)) {
-        env.opts.readme = sourceFile;
+      if (!options.readme && /(\bREADME|\.md)$/i.test(sourceFile)) {
+        options.readme = sourceFile;
         sourceFiles.splice(i--, 1);
       }
     }
 
     // Resolve the path to the README.
-    if (env.opts.readme) {
-      env.opts.readme = path.resolve(env.opts.readme);
+    if (options.readme) {
+      options.readme = path.resolve(options.readme);
     }
 
     props.packageJson = packageJson;
@@ -259,22 +270,22 @@ module.exports = (() => {
 
   // TODO: docs
   cli.scanFiles = () => {
-    const { Filter } = require('jsdoc/src/filter');
-    const { Scanner } = require('jsdoc/src/scanner');
-
+    const conf = dependencies.get('config');
+    const env = dependencies.get('env');
+    const options = dependencies.get('options');
     let filter;
     let scanner;
 
-    env.opts._ = buildSourceList();
+    options._ = buildSourceList();
 
     // are there any files to scan and parse?
-    if (env.conf.source && env.opts._.length) {
-      filter = new Filter(env.conf.source);
+    if (conf.source && options._.length) {
+      filter = new Filter(conf.source);
       scanner = new Scanner();
 
       env.sourceFiles = scanner.scan(
-        env.opts._,
-        env.opts.recurse ? env.conf.recurseDepth : undefined,
+        options._,
+        options.recurse ? conf.recurseDepth : undefined,
         filter
       );
     }
@@ -283,14 +294,17 @@ module.exports = (() => {
   };
 
   cli.createParser = () => {
+    // Must be imported after the config is loaded.
     const handlers = require('jsdoc/src/handlers');
     const parser = require('jsdoc/src/parser');
     const plugins = require('jsdoc/plugins');
 
-    props.parser = parser.createParser(env.conf);
+    const conf = dependencies.get('config');
 
-    if (env.conf.plugins) {
-      plugins.installPlugins(env.conf.plugins, props.parser);
+    props.parser = parser.createParser(conf);
+
+    if (conf.plugins) {
+      plugins.installPlugins(conf.plugins, props.parser);
     }
 
     handlers.attachTo(props.parser);
@@ -299,14 +313,16 @@ module.exports = (() => {
   };
 
   cli.parseFiles = () => {
+    // Must be imported after the config is loaded.
     const augment = require('jsdoc/augment');
     const borrow = require('jsdoc/borrow');
-    const Package = require('jsdoc/package').Package;
 
     let docs;
+    const env = dependencies.get('env');
+    const options = dependencies.get('options');
     let packageDocs;
 
-    props.docs = docs = props.parser.parse(env.sourceFiles, env.opts.encoding);
+    props.docs = docs = props.parser.parse(env.sourceFiles, options.encoding);
 
     // If there is no package.json, just create an empty package
     packageDocs = new Package(props.packageJson);
@@ -325,7 +341,9 @@ module.exports = (() => {
   };
 
   cli.processParseResults = () => {
-    if (env.opts.explain) {
+    const options = dependencies.get('options');
+
+    if (options.explain) {
       cli.dumpParseResults();
 
       return Promise.resolve();
@@ -342,16 +360,15 @@ module.exports = (() => {
 
   cli.generateDocs = () => {
     let message;
-    const taffy = require('taffydb').taffy;
-
+    const options = dependencies.get('options');
     let template;
 
-    env.opts.template = env.opts.template || path.join(__dirname, 'templates', 'default');
+    options.template = options.template || path.join(__dirname, 'templates', 'default');
 
     try {
       // TODO: Just look for a `publish` function in the specified module, not a `publish.js`
       // file _and_ a `publish` function.
-      template = require(`${env.opts.template}/publish`);
+      template = require(`${options.template}/publish`);
     } catch (e) {
       log.fatal(`Unable to load template: ${e.message}` || e);
     }
@@ -361,12 +378,12 @@ module.exports = (() => {
       let publishPromise;
 
       log.info('Generating output files...');
-      publishPromise = template.publish(taffy(props.docs), env.opts);
+      publishPromise = template.publish(taffy(props.docs), options);
 
       return Promise.resolve(publishPromise);
     } else {
       message =
-        `${env.opts.template} does not export a "publish" function. ` +
+        `${options.template} does not export a "publish" function. ` +
         'Global "publish" functions are no longer supported.';
       log.fatal(message);
 
