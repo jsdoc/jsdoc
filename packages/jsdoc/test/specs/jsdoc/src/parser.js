@@ -2,6 +2,7 @@
 describe('jsdoc/src/parser', () => {
   const _ = require('lodash');
   const { attachTo } = require('jsdoc/src/handlers');
+  const env = require('jsdoc/env');
   const fs = require('fs');
   const jsdocParser = require('jsdoc/src/parser');
   const path = require('path');
@@ -21,33 +22,17 @@ describe('jsdoc/src/parser', () => {
   });
 
   describe('createParser', () => {
-    it('should return a Parser when called without arguments', () => {
-      expect(jsdocParser.createParser()).toBeObject();
-    });
-
-    it('should create a jsdoc/src/parser.Parser instance with the argument "js"', () => {
-      const parser = jsdocParser.createParser('js');
-
-      expect(parser instanceof jsdocParser.Parser).toBeTrue();
-    });
-
-    it('should log a fatal error on bad input', () => {
-      function createParser() {
-        jsdocParser.createParser('not-a-real-parser-ever');
-      }
-
-      expect(jsdoc.didLog(createParser, 'fatal')).toBeTrue();
+    it('should return a Parser when called with a config', () => {
+      expect(jsdocParser.createParser(env.conf)).toBeObject();
     });
   });
 
   describe('Parser', () => {
     let parser;
 
-    function newParser() {
+    beforeEach(() => {
       parser = new jsdocParser.Parser();
-    }
-
-    newParser();
+    });
 
     it('should have a "visitor" property', () => {
       expect(parser.visitor).toBeObject();
@@ -90,8 +75,6 @@ describe('jsdoc/src/parser', () => {
     });
 
     describe('parse', () => {
-      beforeEach(newParser);
-
       it('should fire "parseBegin" events before it parses any files', () => {
         const spy = jasmine.createSpy();
         const sourceFiles = ['javascript:/** @name foo */'];
@@ -287,8 +270,6 @@ describe('jsdoc/src/parser', () => {
     });
 
     describe('results', () => {
-      beforeEach(newParser);
-
       it('returns an empty array before files are parsed', () => {
         const results = parser.results();
 
@@ -374,8 +355,6 @@ describe('jsdoc/src/parser', () => {
 
       let visitors;
 
-      beforeEach(newParser);
-
       it('should work with a single node visitor', () => {
         parser.addAstNodeVisitor(visitorA);
 
@@ -395,8 +374,6 @@ describe('jsdoc/src/parser', () => {
     });
 
     describe('getAstNodeVisitors', () => {
-      beforeEach(newParser);
-
       it('should return an empty array by default', () => {
         const visitors = parser.getAstNodeVisitors();
 

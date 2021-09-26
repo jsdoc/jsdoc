@@ -12,10 +12,6 @@ const { Walker } = require('jsdoc/src/walker');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
-// TODO: docs
-const PARSERS = (exports.PARSERS = {
-  js: 'jsdoc/src/parser',
-});
 /* eslint-disable no-script-url */
 // Prefix for JavaScript strings that were provided in lieu of a filename.
 const SCHEMA = 'javascript:';
@@ -43,26 +39,6 @@ class DocletCache {
     this._doclets[itemName].push(value);
   }
 }
-
-// TODO: docs
-exports.createParser = (type, conf) => {
-  let modulePath;
-
-  if (!type) {
-    /* istanbul ignore next */
-    type = 'js';
-  }
-
-  if (hasOwnProp.call(PARSERS, type)) {
-    modulePath = PARSERS[type];
-  } else {
-    log.fatal(`The parser type "${type}" is not recognized.`);
-
-    return null;
-  }
-
-  return new (require(modulePath).Parser)(conf);
-};
 
 // TODO: docs
 function pretreat(code) {
@@ -648,6 +624,11 @@ class Parser extends EventEmitter {
   }
 }
 exports.Parser = Parser;
+
+// TODO: docs
+exports.createParser = (config) => {
+  return new Parser(config);
+};
 
 // TODO: document other events
 /**

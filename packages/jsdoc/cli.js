@@ -287,7 +287,7 @@ module.exports = (() => {
     const parser = require('jsdoc/src/parser');
     const plugins = require('jsdoc/plugins');
 
-    props.parser = parser.createParser(env.conf.parser, env.conf);
+    props.parser = parser.createParser(env.conf);
 
     if (env.conf.plugins) {
       plugins.installPlugins(env.conf.plugins, props.parser);
