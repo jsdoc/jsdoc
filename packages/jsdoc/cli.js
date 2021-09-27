@@ -42,10 +42,9 @@ module.exports = (() => {
   cli.setVersionInfo = () => {
     const env = dependencies.get('env');
 
+    const packageJsonPath = path.join(require.main.path, 'package.json');
     // allow this to throw--something is really wrong if we can't read our own package file
-    const info = JSON.parse(
-      stripBom(fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8'))
-    );
+    const info = JSON.parse(stripBom(fs.readFileSync(packageJsonPath, 'utf8')));
     const revision = new Date(parseInt(info.revision, 10));
 
     env.version = {

@@ -2,11 +2,9 @@
 
 // initialize the environment for Node.js
 (() => {
-  const fs = require('fs');
   const path = require('path');
 
   let env;
-  let jsdocPath = __dirname;
 
   // Create a custom require method that adds `lib/jsdoc` and `node_modules` to the module
   // lookup path. This makes it possible to `require('jsdoc/foo')` from external templates and
@@ -22,13 +20,7 @@
   });
   /* eslint-enable no-global-assign, no-redeclare */
 
-  // resolve the path if it's a symlink
-  if (fs.statSync(jsdocPath).isSymbolicLink()) {
-    jsdocPath = path.resolve(path.dirname(jsdocPath), fs.readlinkSync(jsdocPath));
-  }
-
   env = require('./lib/jsdoc/env');
-  env.dirname = jsdocPath;
   env.args = process.argv.slice(2);
 })();
 

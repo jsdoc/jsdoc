@@ -34,9 +34,8 @@ const helpers = {
   },
   getDocSetFromFile: (filename, parser, shouldValidate, augment) => {
     let doclets;
-    const env = jsdoc.deps.get('env');
-
-    const sourceCode = fs.readFileSync(path.join(env.dirname, filename), 'utf8');
+    const packagePath = path.resolve(__dirname, '../..');
+    const sourceCode = fs.readFileSync(path.join(packagePath, filename), 'utf8');
     const testParser = parser || helpers.createParser();
 
     handlers.attachTo(testParser);

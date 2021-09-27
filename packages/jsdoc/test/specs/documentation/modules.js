@@ -13,7 +13,7 @@ describe('module names', () => {
   });
 
   it('should create a name from the file path when no documented module name exists', () => {
-    const filename = path.resolve(env.dirname, 'test/fixtures/modules/data/mod-1.js');
+    const filename = path.resolve(__dirname, '../../fixtures/modules/data/mod-1.js');
 
     env.sourceFiles.push(filename);
     doclets = srcParser.parse(filename);
@@ -44,10 +44,10 @@ describe('module names', () => {
   }
 
   it('should use the documented module name if available', () => {
-    const filename = 'test/fixtures/modules/data/mod-2.js';
+    const filename = path.resolve(__dirname, '../../fixtures/modules/data/mod-2.js');
 
     env.sourceFiles.push(filename);
-    doclets = srcParser.parse(path.normalize(path.join(env.dirname, filename)));
+    doclets = srcParser.parse(filename);
 
     expect(doclets.length).toBeGreaterThan(1);
     expect(doclets[0].longname).toBe('module:my/module/name');

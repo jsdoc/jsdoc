@@ -32,14 +32,6 @@ module.exports = {
   conf: {},
 
   /**
-   * The absolute path to the base directory in which JSDoc is located. Set at startup.
-   *
-   * @private
-   * @type {string}
-   */
-  dirname: null,
-
-  /**
    * The user's working directory at the time when JSDoc started running.
    *
    * @private
