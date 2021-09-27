@@ -32,17 +32,6 @@
   env.args = process.argv.slice(2);
 })();
 
-/**
- * Data about the environment in which JSDoc is running, including the configuration settings that
- * were used to run JSDoc.
- *
- * @deprecated As of JSDoc 3.4.0. Use `require('jsdoc/env')` to access the `env` object. The global
- * `env` object will be removed in a future release.
- * @namespace
- * @name env
- */
-global.env = (() => require('./lib/jsdoc/env'))();
-
 (async () => {
   const cli = require('./cli');
 
