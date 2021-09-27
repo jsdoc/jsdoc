@@ -32,14 +32,6 @@ module.exports = {
   conf: {},
 
   /**
-   * The user's working directory at the time when JSDoc started running.
-   *
-   * @private
-   * @type {string}
-   */
-  pwd: null,
-
-  /**
    * The command-line arguments, parsed into a key/value hash.
    *
    * @type {Object}
