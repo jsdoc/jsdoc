@@ -1,4 +1,4 @@
-const yaioc = require('yaioc');
+const Bottle = require('bottlejs');
 
 /**
  * Container for JSDoc classes, objects, and values that can be injected into other modules.
@@ -7,12 +7,13 @@ const yaioc = require('yaioc');
  */
 class Dependencies {
   constructor() {
-    // This class provides a lightweight facade for the `yaioc` package.
-    this._container = yaioc.container();
+    // This class provides a lightweight facade for the `bottlejs` package.
+    this._bottle = new Bottle();
+    this._container = this._bottle.container;
   }
 
   get(name) {
-    const dep = this._container.get(name);
+    const dep = this._container[name];
 
     if (dep === undefined) {
       throw new Error(`No dependency registered for the name "${name}"`);
@@ -21,16 +22,12 @@ class Dependencies {
     return dep;
   }
 
-  registerClass(klass, opts = {}) {
-    if (opts.singleton) {
-      this._container.cache().register(klass);
-    } else {
-      this._container.register(klass);
-    }
+  registerClass(name, constructor, ...deps) {
+    this._bottle.service(name, constructor, ...deps);
   }
 
   registerValue(name, value) {
-    this._container.register(name, value);
+    this._bottle.constant(name, value);
   }
 }
 

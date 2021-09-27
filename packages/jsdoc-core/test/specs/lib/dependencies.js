@@ -25,8 +25,8 @@ describe('@jsdoc/core/lib/dependencies', () => {
 
       let instance;
 
-      container.registerClass(Foo);
-      instance = container.get('foo');
+      container.registerClass('Foo', Foo);
+      instance = container.get('Foo');
 
       expect(instance).toBeInstanceOf(Foo);
     });
@@ -42,22 +42,22 @@ describe('@jsdoc/core/lib/dependencies', () => {
 
       let instance;
 
-      container.registerClass(Foo);
-      container.registerClass(Bar);
-      instance = container.get('foo');
+      container.registerClass('Foo', Foo, 'Bar');
+      container.registerClass('Bar', Bar);
+      instance = container.get('Foo');
 
       expect(instance.bar).toBeInstanceOf(Bar);
     });
 
-    it('returns the same instance every time for singletons', () => {
+    it('returns the same instance every time', () => {
       class Foo {}
 
       let instance1;
       let instance2;
 
-      container.registerClass(Foo, { singleton: true });
-      instance1 = container.get('foo');
-      instance2 = container.get('foo');
+      container.registerClass('Foo', Foo);
+      instance1 = container.get('Foo');
+      instance2 = container.get('Foo');
 
       expect(instance2).toBe(instance1);
     });
@@ -72,21 +72,16 @@ describe('@jsdoc/core/lib/dependencies', () => {
   });
 
   describe('registerClass', () => {
-    // The tests for `get()` also test the behavior of these methods more extensively.
-    it('accepts a constructor', () => {
+    // The tests for `get()` also test the behavior of this method more extensively.
+    it('accepts a name and constructor', () => {
       class Foo {}
 
-      expect(() => container.registerClass(Foo)).not.toThrow();
-    });
-
-    it('accepts a `singleton` option', () => {
-      class Foo {}
-
-      expect(() => container.registerClass(Foo, { singleton: true })).not.toThrow();
+      expect(() => container.registerClass('Foo', Foo)).not.toThrow();
     });
   });
 
   describe('registerValue', () => {
+    // The tests for `get()` also test the behavior of this method more extensively.
     it('accepts a name and value', () => {
       expect(() => container.registerValue('name', new Set())).not.toThrow();
     });
