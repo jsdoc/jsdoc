@@ -4,13 +4,13 @@
  */
 const dictionary = require('jsdoc/tag/dictionary');
 
-function addHandlers(handlers, parser) {
+function addHandlers(handlers, parser, deps) {
   Object.keys(handlers).forEach((eventName) => {
-    parser.on(eventName, handlers[eventName]);
+    parser.on(eventName, handlers[eventName], deps);
   });
 }
 
-exports.installPlugins = (plugins, parser) => {
+exports.installPlugins = (plugins, parser, deps) => {
   let plugin;
 
   for (let pluginModule of plugins) {
@@ -19,17 +19,17 @@ exports.installPlugins = (plugins, parser) => {
     // allow user-defined plugins to...
     // ...register event handlers
     if (plugin.handlers) {
-      addHandlers(plugin.handlers, parser);
+      addHandlers(plugin.handlers, parser, deps);
     }
 
     // ...define tags
     if (plugin.defineTags) {
-      plugin.defineTags(dictionary);
+      plugin.defineTags(dictionary, deps);
     }
 
     // ...add an ESTree node visitor
     if (plugin.astNodeVisitor) {
-      parser.addAstNodeVisitor(plugin.astNodeVisitor);
+      parser.addAstNodeVisitor(plugin.astNodeVisitor, deps);
     }
   }
 };

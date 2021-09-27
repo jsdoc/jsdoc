@@ -1,19 +1,18 @@
 // TODO: consolidate with specs/jsdoc/parser and specs/jsdoc/plugins
 describe('plugins', () => {
-  const env = require('jsdoc/env');
   const path = require('path');
 
   let docSet;
   const pluginPaths = [
-    path.normalize(`${env.dirname}/test/fixtures/testPlugin1`),
-    path.normalize(`${env.dirname}/test/fixtures/testPlugin2`),
+    path.join(__dirname, '../../fixtures/testPlugin1'),
+    path.join(__dirname, '../../fixtures/testPlugin2'),
   ];
 
   const parser = jsdoc.createParser();
 
   global.jsdocPluginsTest = global.jsdocPluginsTest || {};
 
-  require('jsdoc/plugins').installPlugins(pluginPaths, parser);
+  require('jsdoc/plugins').installPlugins(pluginPaths, parser, jsdoc.deps);
 
   docSet = jsdoc.getDocSetFromFile('test/fixtures/plugins.js', parser, false);
 

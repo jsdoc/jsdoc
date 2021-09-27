@@ -184,7 +184,7 @@ module.exports = (() => {
   };
 
   // TODO: docs
-  cli.runTests = () => require('./test')();
+  cli.runTests = () => require('./test')(dependencies);
 
   // TODO: docs
   cli.printVersion = () => {

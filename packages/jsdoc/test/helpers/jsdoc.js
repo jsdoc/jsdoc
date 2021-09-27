@@ -12,7 +12,7 @@ const bus = new EventBus('jsdoc');
 const originalDictionaries = env.conf.tags.dictionaries.slice();
 const parseResults = [];
 
-const helpers = (global.jsdoc = {
+const helpers = {
   addParseResults: (filename, doclets) => {
     parseResults.push({
       filename: filename,
@@ -81,4 +81,12 @@ const helpers = (global.jsdoc = {
   restoreTagDictionary: () => {
     _replaceDictionary(Dictionary.fromConfig(env));
   },
-});
+};
+
+if (!global.jsdoc) {
+  global.jsdoc = {};
+}
+
+for (const helper of Object.keys(helpers)) {
+  global.jsdoc[helper] = helpers[helper];
+}

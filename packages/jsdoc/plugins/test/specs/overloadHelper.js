@@ -1,15 +1,13 @@
 /* global jsdoc */
 describe('plugins/overloadHelper', () => {
-  const env = require('jsdoc/env');
   const path = require('path');
 
   let docSet;
   const parser = jsdoc.createParser();
-  const pluginPath = 'plugins/overloadHelper';
-  const pluginPathResolved = path.resolve(env.dirname, pluginPath);
-  const plugin = require(pluginPathResolved);
+  const pluginPath = path.join(__dirname, '../../overloadHelper');
+  const plugin = require(pluginPath);
 
-  require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
+  require('jsdoc/plugins').installPlugins([pluginPath], parser, jsdoc.deps);
   docSet = jsdoc.getDocSetFromFile('plugins/test/fixtures/overloadHelper.js', parser);
 
   it('should exist', () => {

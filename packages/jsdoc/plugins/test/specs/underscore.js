@@ -1,16 +1,13 @@
 /* global jsdoc */
 describe('underscore plugin', () => {
-  const env = require('jsdoc/env');
   const path = require('path');
 
   let docSet;
   const parser = jsdoc.createParser();
-  const pluginPath = 'plugins/underscore';
-  const fixturePath = 'plugins/test/fixtures/underscore';
-  const pluginPathResolved = path.join(env.dirname, pluginPath);
+  const pluginPath = path.resolve(__dirname, '../../underscore.js');
 
-  require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
-  docSet = jsdoc.getDocSetFromFile(`${fixturePath}.js`, parser);
+  require('jsdoc/plugins').installPlugins([pluginPath], parser, jsdoc.deps);
+  docSet = jsdoc.getDocSetFromFile('plugins/test/fixtures/underscore.js', parser);
 
   it('should not mark normal, public properties as private', () => {
     // Base line tests

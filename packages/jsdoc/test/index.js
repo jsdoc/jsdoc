@@ -10,7 +10,7 @@ const SPEC_FILES = [
   SCHEMA_SPEC,
 ];
 
-module.exports = () => {
+module.exports = (deps) => {
   const jasmine = new Jasmine();
   const matcher = env.opts.matcher;
   /* eslint-disable no-empty-function */
@@ -38,6 +38,12 @@ module.exports = () => {
   });
   jasmine.env.clearReporters();
   jasmine.addReporter(reporter);
+
+  // Make dependencies available to all tests.
+  if (!global.jsdoc) {
+    global.jsdoc = {};
+  }
+  global.jsdoc.deps = deps;
 
   jasmine.onComplete(() => promise.resolve());
   jasmine.execute(SPEC_FILES, matcher);

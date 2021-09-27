@@ -4,12 +4,8 @@
  * @module plugins/eventDumper
  */
 const _ = require('lodash');
-const env = require('jsdoc/env');
 
-const conf = env.conf.eventDumper || {};
-
-// Dump the included parser events (defaults to all events)
-let events = conf.include || [
+const EVENT_TYPES = [
   'parseBegin',
   'fileBegin',
   'beforeParse',
@@ -21,9 +17,16 @@ let events = conf.include || [
   'processingComplete',
 ];
 
-// Don't dump the excluded parser events
-if (conf.exclude) {
-  events = _.difference(events, conf.exclude);
+function shouldLog(eventType, config) {
+  if (config.include && !config.include.includes(eventType)) {
+    return false;
+  }
+
+  if (config.exclude && config.exclude.includes(eventType)) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -58,15 +61,16 @@ function replaceNodeObjects(o) {
  * Get rid of unwanted crud in an event object.
  *
  * @param {object} e The event object.
+ * @param {object} config The plugin config.
  * @return {object} The fixed-up object.
  */
-function cleanse(e) {
+function cleanse(e, config) {
   let result = {};
 
   Object.keys(e).forEach((prop) => {
     // by default, don't stringify properties that contain an array of functions
     if (
-      !conf.includeFunctions &&
+      !config.includeFunctions &&
       Array.isArray(e[prop]) &&
       e[prop][0] &&
       String(typeof e[prop][0]) === 'function'
@@ -80,7 +84,7 @@ function cleanse(e) {
   });
 
   // allow users to omit node objects, which can be enormous
-  if (conf.omitNodes) {
+  if (config.omitNodes) {
     result = replaceNodeObjects(result);
   }
 
@@ -89,15 +93,19 @@ function cleanse(e) {
 
 exports.handlers = {};
 
-events.forEach((eventType) => {
-  exports.handlers[eventType] = (e) => {
-    console.log(
-      JSON.stringify({
-        type: eventType,
-        content: cleanse(e),
-      }),
-      null,
-      4
-    );
+EVENT_TYPES.forEach((eventType) => {
+  exports.handlers[eventType] = (e, deps) => {
+    const config = deps.get('config').eventDumper;
+
+    if (shouldLog(eventType, config)) {
+      console.log(
+        JSON.stringify({
+          type: eventType,
+          content: cleanse(e, config),
+        }),
+        null,
+        4
+      );
+    }
   };
 });
