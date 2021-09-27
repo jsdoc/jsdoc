@@ -2,7 +2,6 @@
 const _ = require('lodash');
 const { config, Dependencies } = require('@jsdoc/core');
 const Engine = require('@jsdoc/cli');
-const jsdocEnv = require('jsdoc/env');
 const { EventBus, log } = require('@jsdoc/util');
 const { Filter } = require('jsdoc/src/filter');
 const fs = require('fs');
@@ -36,7 +35,11 @@ module.exports = (() => {
     'Exiting JSDoc because an error occurred. See the previous log messages for details.';
   const LOG_LEVELS = Engine.LOG_LEVELS;
 
-  dependencies.registerValue('env', jsdocEnv);
+  cli.setEnv = (env) => {
+    dependencies.registerValue('env', env);
+
+    return cli;
+  };
 
   // TODO: docs
   cli.setVersionInfo = () => {

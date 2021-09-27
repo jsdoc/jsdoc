@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
+let env;
+
 // initialize the environment for Node.js
 (() => {
   const path = require('path');
-
-  let env;
 
   // Create a custom require method that adds `lib/jsdoc` and `node_modules` to the module
   // lookup path. This makes it possible to `require('jsdoc/foo')` from external templates and
@@ -27,7 +27,7 @@
 (async () => {
   const cli = require('./cli');
 
-  cli.setVersionInfo().loadConfig().configureLogger().logStart();
+  cli.setEnv(env).setVersionInfo().loadConfig().configureLogger().logStart();
 
   await cli.runCommand();
 })();
