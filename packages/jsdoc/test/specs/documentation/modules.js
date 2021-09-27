@@ -1,8 +1,8 @@
 describe('module names', () => {
-  const env = require('jsdoc/env');
   const path = require('path');
 
   let doclets;
+  const env = jsdoc.deps.get('env');
   let srcParser = null;
 
   beforeEach(() => {

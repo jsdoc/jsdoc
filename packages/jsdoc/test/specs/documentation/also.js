@@ -1,4 +1,4 @@
-const env = require('jsdoc/env');
+const config = jsdoc.deps.get('config');
 
 describe('multiple doclets per symbol', () => {
   function undocumented($) {
@@ -60,12 +60,12 @@ describe('multiple doclets per symbol', () => {
     'When a file contains a JSDoc comment with an @also tag, and the "tags.allowUnknownTags" ' +
       'option is set to false, the file can be parsed without errors.',
     () => {
-      const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
+      const allowUnknownTags = Boolean(config.tags.allowUnknownTags);
 
       function getDocSet() {
-        env.conf.tags.allowUnknownTags = false;
+        config.tags.allowUnknownTags = false;
         jsdoc.getDocSetFromFile('test/fixtures/also2.js');
-        env.conf.tags.allowUnknownTags = allowUnknownTags;
+        config.tags.allowUnknownTags = allowUnknownTags;
       }
 
       expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();

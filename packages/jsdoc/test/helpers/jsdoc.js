@@ -2,14 +2,13 @@ const { _replaceDictionary } = require('jsdoc/doclet');
 const { augmentAll } = require('jsdoc/augment');
 const { createParser } = require('jsdoc/src/parser');
 const { Dictionary } = require('jsdoc/tag/dictionary');
-const env = require('jsdoc/env');
 const { EventBus } = require('@jsdoc/util');
 const fs = require('fs');
 const handlers = require('jsdoc/src/handlers');
 const path = require('path');
 
 const bus = new EventBus('jsdoc');
-const originalDictionaries = env.conf.tags.dictionaries.slice();
+let originalDictionaries;
 const parseResults = [];
 
 const helpers = {
@@ -35,6 +34,7 @@ const helpers = {
   },
   getDocSetFromFile: (filename, parser, shouldValidate, augment) => {
     let doclets;
+    const env = jsdoc.deps.get('env');
 
     const sourceCode = fs.readFileSync(path.join(env.dirname, filename), 'utf8');
     const testParser = parser || helpers.createParser();
@@ -65,11 +65,13 @@ const helpers = {
   getParseResults: () => parseResults,
   replaceTagDictionary: (dictionaryNames) => {
     let dict;
+    const env = jsdoc.deps.get('env');
 
     if (!Array.isArray(dictionaryNames)) {
       dictionaryNames = [dictionaryNames];
     }
 
+    originalDictionaries = env.conf.tags.dictionaries.slice();
     env.conf.tags.dictionaries = dictionaryNames;
 
     dict = Dictionary.fromConfig(env);
@@ -79,6 +81,8 @@ const helpers = {
     env.conf.tags.dictionaries = originalDictionaries;
   },
   restoreTagDictionary: () => {
+    const env = jsdoc.deps.get('env');
+
     _replaceDictionary(Dictionary.fromConfig(env));
   },
 };

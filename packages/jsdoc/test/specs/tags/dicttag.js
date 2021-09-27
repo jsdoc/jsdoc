@@ -1,15 +1,14 @@
 describe('@dict tag', () => {
-  const env = require('jsdoc/env');
-
-  const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
+  const config = jsdoc.deps.get('config');
+  const allowUnknownTags = Boolean(config.tags.allowUnknownTags);
 
   beforeEach(() => {
-    env.conf.tags.allowUnknownTags = false;
+    config.tags.allowUnknownTags = false;
   });
 
   afterEach(() => {
     jsdoc.restoreTagDictionary();
-    env.conf.tags.allowUnknownTags = allowUnknownTags;
+    config.tags.allowUnknownTags = allowUnknownTags;
   });
 
   describe('JSDoc tags', () => {

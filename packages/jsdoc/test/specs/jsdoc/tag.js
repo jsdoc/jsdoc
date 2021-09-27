@@ -1,7 +1,7 @@
 const hasOwnProp = Object.prototype.hasOwnProperty;
+const options = jsdoc.deps.get('options');
 
 describe('jsdoc/tag', () => {
-  const env = require('jsdoc/env');
   const jsdocDictionary = require('jsdoc/tag/dictionary');
   const jsdocTag = require('jsdoc/tag');
   const parseType = require('@jsdoc/tag').type.parse;
@@ -131,10 +131,10 @@ describe('jsdoc/tag', () => {
     });
 
     describe("'value' property", () => {
-      const debug = Boolean(env.opts.debug);
+      const debug = Boolean(options.debug);
 
       afterEach(() => {
-        env.opts.debug = debug;
+        options.debug = debug;
       });
 
       it("'value' property should equal tag text if tagDef.canHaveType and canHaveName are both false", () => {
@@ -172,13 +172,13 @@ describe('jsdoc/tag', () => {
           expect(tag.value.type.parsedType).toBeObject();
 
           descriptor = Object.getOwnPropertyDescriptor(tag.value.type, 'parsedType');
-          expect(descriptor.enumerable).toBe(Boolean(env.opts.debug));
+          expect(descriptor.enumerable).toBe(Boolean(options.debug));
         }
       }
 
       it('if the tag has a type, tag.value should contain the type information', () => {
         [true, false].forEach((bool) => {
-          env.opts.debug = bool;
+          options.debug = bool;
           createTags();
 
           verifyTagType(tagType);

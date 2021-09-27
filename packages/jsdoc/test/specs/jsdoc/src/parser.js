@@ -2,11 +2,11 @@
 describe('jsdoc/src/parser', () => {
   const _ = require('lodash');
   const { attachTo } = require('jsdoc/src/handlers');
-  const env = require('jsdoc/env');
   const fs = require('fs');
   const jsdocParser = require('jsdoc/src/parser');
   const path = require('path');
 
+  const config = jsdoc.deps.get('config');
   const dirname = path.resolve(path.join(__dirname, '..', '..', '..', '..'));
 
   it('should exist', () => {
@@ -23,7 +23,7 @@ describe('jsdoc/src/parser', () => {
 
   describe('createParser', () => {
     it('should return a Parser when called with a config', () => {
-      expect(jsdocParser.createParser(env.conf)).toBeObject();
+      expect(jsdocParser.createParser(config)).toBeObject();
     });
   });
 

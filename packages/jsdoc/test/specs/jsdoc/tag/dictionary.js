@@ -1,8 +1,8 @@
 describe('jsdoc/tag/dictionary', () => {
   const dictionary = require('jsdoc/tag/dictionary');
   const Dictionary = dictionary.Dictionary;
-  const env = require('jsdoc/env');
 
+  const env = jsdoc.deps.get('env');
   let testDictionary;
   const tagOptions = {
     canHaveValue: true,

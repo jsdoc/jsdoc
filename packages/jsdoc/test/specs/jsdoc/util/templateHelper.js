@@ -5,9 +5,11 @@ describe('jsdoc/util/templateHelper', () => {
   const _ = require('lodash');
   const dictionary = require('jsdoc/tag/dictionary');
   const doclet = require('jsdoc/doclet');
-  const env = require('jsdoc/env');
   const helper = require('jsdoc/util/templateHelper');
   const { taffy } = require('taffydb');
+
+  const config = jsdoc.deps.get('config');
+  const options = jsdoc.deps.get('options');
 
   helper.registerLink('test', 'path/to/test.html');
 
@@ -1111,12 +1113,12 @@ describe('jsdoc/util/templateHelper', () => {
   });
 
   describe('prune', () => {
-    const access = env.opts.access;
-    const priv = Boolean(env.opts.private);
+    const access = options.access;
+    const priv = Boolean(options.private);
 
     afterEach(() => {
-      env.opts.access = access;
-      env.opts.private = priv;
+      options.access = access;
+      options.private = priv;
     });
 
     const array = [
@@ -1142,7 +1144,7 @@ describe('jsdoc/util/templateHelper', () => {
       { memberof: 'SomeClass' },
     ];
     const arrayPrivate = [
-      // prune (unless env.opts.private is truthy)
+      // prune (unless options.private is truthy)
       { access: 'private' },
     ];
     const arrayMixed = [
@@ -1159,66 +1161,66 @@ describe('jsdoc/util/templateHelper', () => {
       compareObjectArrays(keep, pruned);
     });
 
-    it('should prune private members if env.opts.private is falsy', () => {
+    it('should prune private members if options.private is falsy', () => {
       let pruned;
 
-      env.opts.private = false;
+      options.private = false;
       pruned = helper.prune(taffy(arrayPrivate))().get();
 
       compareObjectArrays([], pruned);
     });
 
-    it('should only keep package-private members if env.opts.access only contains "package"', () => {
+    it('should only keep package-private members if options.access only contains "package"', () => {
       let pruned;
       const keepPackage = [{ access: 'package' }];
 
-      env.opts.access = 'package';
+      options.access = 'package';
       pruned = helper.prune(taffy(arrayMixed))().get();
 
       compareObjectArrays(keepPackage, pruned);
     });
 
-    it('should only keep public members if env.opts.access only contains "public"', () => {
+    it('should only keep public members if options.access only contains "public"', () => {
       let pruned;
       const keepPublic = [{ access: 'public' }];
 
-      env.opts.access = 'public';
+      options.access = 'public';
       pruned = helper.prune(taffy(arrayMixed))().get();
 
       compareObjectArrays(keepPublic, pruned);
     });
 
-    it('should only keep undefined members if env.opts.access only contains "undefined"', () => {
+    it('should only keep undefined members if options.access only contains "undefined"', () => {
       let pruned;
       const keepUndefined = [{ asdf: true }];
 
-      env.opts.access = 'undefined';
+      options.access = 'undefined';
       pruned = helper.prune(taffy(arrayMixed))().get();
 
       compareObjectArrays(keepUndefined, pruned);
     });
 
-    it('should only keep protected members if env.opts.access only contains "protected"', () => {
+    it('should only keep protected members if options.access only contains "protected"', () => {
       let pruned;
       const keepProtected = [{ access: 'protected' }];
 
-      env.opts.access = 'protected';
+      options.access = 'protected';
       pruned = helper.prune(taffy(arrayMixed))().get();
 
       compareObjectArrays(keepProtected, pruned);
     });
 
-    it('should only keep private members if env.opts.access only contains "private"', () => {
+    it('should only keep private members if options.access only contains "private"', () => {
       let pruned;
       const keepPrivate = [{ access: 'private' }];
 
-      env.opts.access = 'private';
+      options.access = 'private';
       pruned = helper.prune(taffy(arrayMixed))().get();
 
       compareObjectArrays(keepPrivate, pruned);
     });
 
-    it('should keep public and protected members if env.opts.access contains "public" and "protected"', () => {
+    it('should keep public and protected members if options.access contains "public" and "protected"', () => {
       let pruned;
       const keepPublicProtected = [
         {
@@ -1229,25 +1231,25 @@ describe('jsdoc/util/templateHelper', () => {
         },
       ];
 
-      env.opts.access = ['public', 'protected'];
+      options.access = ['public', 'protected'];
       pruned = helper.prune(taffy(arrayMixed))().get();
 
       compareObjectArrays(keepPublicProtected, pruned);
     });
 
-    it('should keep everything if env.opts.access contains "all"', () => {
+    it('should keep everything if options.access contains "all"', () => {
       let pruned;
 
-      env.opts.access = 'all';
+      options.access = 'all';
       pruned = helper.prune(taffy(arrayMixed))().get();
 
       compareObjectArrays(arrayMixed, pruned);
     });
 
-    it('should not prune private members if env.opts.private is truthy', () => {
+    it('should not prune private members if options.private is truthy', () => {
       let pruned;
 
-      env.opts.private = true;
+      options.private = true;
       pruned = helper.prune(taffy(arrayPrivate))().get();
 
       compareObjectArrays(arrayPrivate, pruned);
@@ -1276,11 +1278,11 @@ describe('jsdoc/util/templateHelper', () => {
     let conf;
 
     beforeEach(() => {
-      conf = _.cloneDeep(env.conf.templates);
+      conf = _.cloneDeep(config.templates);
     });
 
     afterEach(() => {
-      env.conf.templates = conf;
+      config.templates = conf;
       delete helper.longnameToUrl['my.long.namespace'];
     });
 
@@ -1441,7 +1443,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@link test}';
       let output;
 
-      env.conf.templates.monospaceLinks = true;
+      config.templates.monospaceLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
@@ -1452,7 +1454,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@linkcode test}';
       let output;
 
-      env.conf.templates.monospaceLinks = true;
+      config.templates.monospaceLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
@@ -1462,7 +1464,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@linkplain test}';
       let output;
 
-      env.conf.templates.monospaceLinks = true;
+      config.templates.monospaceLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
@@ -1474,7 +1476,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@link test}';
       let output;
 
-      env.conf.templates.cleverLinks = true;
+      config.templates.cleverLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
@@ -1484,7 +1486,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@link http://github.com}';
       let output;
 
-      env.conf.templates.cleverLinks = true;
+      config.templates.cleverLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
@@ -1495,7 +1497,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@linkcode test}';
       let output;
 
-      env.conf.templates.cleverLinks = true;
+      config.templates.cleverLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
@@ -1505,7 +1507,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@linkplain test}';
       let output;
 
-      env.conf.templates.cleverLinks = true;
+      config.templates.cleverLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
@@ -1517,8 +1519,8 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@link test} and {@link http://github.com}';
       let output;
 
-      env.conf.templates.cleverLinks = true;
-      env.conf.templates.monospaceLinks = true;
+      config.templates.cleverLinks = true;
+      config.templates.monospaceLinks = true;
       output = helper.resolveLinks(input);
 
       expect(output).toBe(
@@ -1531,7 +1533,7 @@ describe('jsdoc/util/templateHelper', () => {
       const input = 'Link to {@link my.long.namespace}';
       let output;
 
-      env.conf.templates.useShortNamesInLinks = true;
+      config.templates.useShortNamesInLinks = true;
       helper.registerLink('my.long.namespace', 'asdf.html');
       output = helper.resolveLinks(input);
 

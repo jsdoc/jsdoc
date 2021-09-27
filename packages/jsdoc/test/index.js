@@ -1,5 +1,4 @@
 const ConsoleReporter = require('jasmine-console-reporter');
-const env = require('jsdoc/env');
 const Jasmine = require('jasmine');
 
 const SCHEMA_SPEC = 'packages/jsdoc/test/specs/jsdoc/schema.js';
@@ -12,7 +11,7 @@ const SPEC_FILES = [
 
 module.exports = (deps) => {
   const jasmine = new Jasmine();
-  const matcher = env.opts.matcher;
+  const matcher = deps.get('options').matcher;
   /* eslint-disable no-empty-function */
   const promise = new Promise(() => {});
   /* eslint-enable no-empty-function */

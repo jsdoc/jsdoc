@@ -1,8 +1,8 @@
 describe('@overview tag', () => {
-  const env = require('jsdoc/env');
   const path = require('path');
 
   let doclets;
+  const env = jsdoc.deps.get('env');
 
   let srcParser;
   const sourceFiles = env.sourceFiles.slice(0);

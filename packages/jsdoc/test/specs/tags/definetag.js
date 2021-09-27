@@ -1,17 +1,17 @@
 describe('@define tag', () => {
   describe('JSDoc tags', () => {
-    const env = require('jsdoc/env');
+    const config = jsdoc.deps.get('config');
 
-    const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
+    const allowUnknownTags = Boolean(config.tags.allowUnknownTags);
 
     afterEach(() => {
       jsdoc.restoreTagDictionary();
-      env.conf.tags.allowUnknownTags = allowUnknownTags;
+      config.tags.allowUnknownTags = allowUnknownTags;
     });
 
     it('should not recognize the @define tag', () => {
       function getDocSet() {
-        env.conf.tags.allowUnknownTags = false;
+        config.tags.allowUnknownTags = false;
         jsdoc.replaceTagDictionary('jsdoc');
         jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
       }

@@ -1,10 +1,10 @@
-const env = require('jsdoc/env');
+const options = jsdoc.deps.get('options');
 
 describe('multiple @param tags with the same type expression', () => {
-  const debug = Boolean(env.opts.debug);
+  const debug = Boolean(options.debug);
 
   afterEach(() => {
-    env.opts.debug = debug;
+    options.debug = debug;
   });
 
   it('does not have circular references when type.parsedType is enumerable', () => {
@@ -13,7 +13,7 @@ describe('multiple @param tags with the same type expression', () => {
     let stringified;
 
     // Force type.parsedType to be enumerable.
-    env.opts.debug = true;
+    options.debug = true;
     docSet = jsdoc.getDocSetFromFile('test/fixtures/paramtagsametype.js');
     params = docSet.getByLongname('foo.bar.Baz').filter((d) => !d.undocumented)[0].params;
     stringified = JSON.stringify(params);

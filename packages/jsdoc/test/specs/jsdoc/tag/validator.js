@@ -1,9 +1,10 @@
 describe('jsdoc/tag/validator', () => {
   const _ = require('lodash');
-  const env = require('jsdoc/env');
   const { EventBus } = require('@jsdoc/util');
   const tag = require('jsdoc/tag');
   const validator = require('jsdoc/tag/validator');
+
+  const config = jsdoc.deps.get('config');
 
   it('should exist', () => {
     expect(validator).toBeObject();
@@ -16,7 +17,7 @@ describe('jsdoc/tag/validator', () => {
   describe('validate', () => {
     const dictionary = require('jsdoc/tag/dictionary');
 
-    const allowUnknown = Boolean(env.conf.tags.allowUnknownTags);
+    const allowUnknown = Boolean(config.tags.allowUnknownTags);
     const badTag = { title: 'lkjasdlkjfb' };
     const badTag2 = new tag.Tag('type', '{string} I am a string!');
     const meta = {
@@ -32,12 +33,12 @@ describe('jsdoc/tag/validator', () => {
     }
 
     afterEach(() => {
-      env.conf.tags.allowUnknownTags = allowUnknown;
+      config.tags.allowUnknownTags = allowUnknown;
     });
 
     it('logs an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is false', () => {
       function validate() {
-        env.conf.tags.allowUnknownTags = false;
+        config.tags.allowUnknownTags = false;
         validateTag(badTag);
       }
 
@@ -46,7 +47,7 @@ describe('jsdoc/tag/validator', () => {
 
     it('logs an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is does not include it', () => {
       function validate() {
-        env.conf.tags.allowUnknownTags = [];
+        config.tags.allowUnknownTags = [];
         validateTag(badTag);
       }
 
@@ -55,7 +56,7 @@ describe('jsdoc/tag/validator', () => {
 
     it('does not log an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is true', () => {
       function validate() {
-        env.conf.tags.allowUnknownTags = true;
+        config.tags.allowUnknownTags = true;
         validateTag(badTag);
       }
 
@@ -64,7 +65,7 @@ describe('jsdoc/tag/validator', () => {
 
     it('does not log an error if the tag is not in the dictionary and conf.tags.allowUnknownTags includes it', () => {
       function validate() {
-        env.conf.tags.allowUnknownTags = [badTag.title];
+        config.tags.allowUnknownTags = [badTag.title];
         validateTag(badTag);
       }
 
@@ -116,7 +117,7 @@ describe('jsdoc/tag/validator', () => {
       const events = [];
 
       bus.once('logger:error', (e) => events.push(e));
-      env.conf.tags.allowUnknownTags = false;
+      config.tags.allowUnknownTags = false;
       validateTag(badTag);
 
       expect(events[0]).toContain(meta.comment);
