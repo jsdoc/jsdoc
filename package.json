@@ -21,7 +21,7 @@
     "prettier": "^2.4.1"
   },
   "engines": {
-    "node": ">=v14.17.6"
+    "node": ">=v14.18.0"
   },
   "scripts": {
     "test": "gulp"
