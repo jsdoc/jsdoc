@@ -58,7 +58,7 @@ describe('@overview tag', () => {
         lineno: 1,
         filename: fakePath,
       };
-      doclet = new Doclet(docletSrc, docletMeta);
+      doclet = new Doclet(docletSrc, docletMeta, jsdoc.deps);
       doclet.addTag('file', 'A random file.');
 
       expect(doclet.name).toBe('somefile.js');

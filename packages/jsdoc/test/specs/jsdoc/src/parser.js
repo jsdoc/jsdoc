@@ -6,7 +6,6 @@ describe('jsdoc/src/parser', () => {
   const jsdocParser = require('jsdoc/src/parser');
   const path = require('path');
 
-  const config = jsdoc.deps.get('config');
   const dirname = path.resolve(path.join(__dirname, '..', '..', '..', '..'));
 
   it('should exist', () => {
@@ -22,8 +21,8 @@ describe('jsdoc/src/parser', () => {
   });
 
   describe('createParser', () => {
-    it('should return a Parser when called with a config', () => {
-      expect(jsdocParser.createParser(config)).toBeObject();
+    it('should return a Parser when called with dependencies', () => {
+      expect(jsdocParser.createParser(jsdoc.deps)).toBeObject();
     });
   });
 
@@ -31,7 +30,7 @@ describe('jsdoc/src/parser', () => {
     let parser;
 
     beforeEach(() => {
-      parser = new jsdocParser.Parser();
+      parser = new jsdocParser.Parser(jsdoc.deps);
     });
 
     it('should have a "visitor" property', () => {

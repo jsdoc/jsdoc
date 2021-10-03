@@ -380,13 +380,19 @@ class Doclet {
    * Create a doclet.
    *
    * @param {string} docletSrc - The raw source code of the jsdoc comment.
-   * @param {object=} meta - Properties describing the code related to this comment.
+   * @param {object} meta - Properties describing the code related to this comment.
+   * @param {object} dependencies - JSDoc dependencies.
    */
-  constructor(docletSrc, meta = {}) {
+  constructor(docletSrc, meta, dependencies) {
     let newTags = [];
 
+    meta = meta || {};
     /** The original text of the comment from the source code. */
     this.comment = docletSrc;
+    Object.defineProperty(this, 'dependencies', {
+      enumerable: false,
+      value: dependencies,
+    });
     this.setMeta(meta);
 
     docletSrc = unwrap(docletSrc);
@@ -442,7 +448,7 @@ class Doclet {
    */
   addTag(title, text) {
     const tagDef = dictionary.lookUp(title);
-    const newTag = new Tag(title, text, this.meta);
+    const newTag = new Tag(title, text, this.meta, this.dependencies);
 
     if (tagDef && tagDef.onTagged) {
       tagDef.onTagged(this, newTag);
@@ -663,7 +669,7 @@ exports.Doclet = Doclet;
 exports.combine = (primary, secondary) => {
   const copyMostPropertiesExclude = ['params', 'properties', 'undocumented'];
   const copySpecificPropertiesInclude = ['params', 'properties'];
-  const target = new Doclet('');
+  const target = new Doclet('', null, secondary.dependencies);
 
   // First, copy most properties to the target doclet.
   copyMostProperties(primary, secondary, target, copyMostPropertiesExclude);

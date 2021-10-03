@@ -34,10 +34,14 @@ describe('module names', () => {
       ];
       env.opts._ = [];
 
-      doclet = new Doclet('/** @module */', {
-        lineno: 1,
-        filename: 'C:\\Users\\Jane Smith\\myproject\\lib\\mymodule.js',
-      });
+      doclet = new Doclet(
+        '/** @module */',
+        {
+          lineno: 1,
+          filename: 'C:\\Users\\Jane Smith\\myproject\\lib\\mymodule.js',
+        },
+        jsdoc.deps
+      );
 
       expect(doclet.name).toBe('lib/mymodule');
     });

@@ -2,7 +2,6 @@
  * @module jsdoc/tag/validator
  * @requires jsdoc/tag/dictionary
  */
-const env = require('jsdoc/env');
 const { log } = require('@jsdoc/util');
 
 function buildMessage(tagName, { filename, lineno, comment }, desc) {
@@ -18,8 +17,9 @@ function buildMessage(tagName, { filename, lineno, comment }, desc) {
 /**
  * Validate the given tag.
  */
-exports.validate = ({ title, text, value }, tagDef, meta) => {
-  const allowUnknownTags = env.conf.tags.allowUnknownTags;
+exports.validate = ({ dependencies, title, text, value }, tagDef, meta) => {
+  const config = dependencies.get('config');
+  const allowUnknownTags = config.tags.allowUnknownTags;
 
   // handle cases where the tag definition does not exist
   if (!tagDef) {

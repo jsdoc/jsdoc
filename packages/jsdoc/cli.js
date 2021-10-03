@@ -303,7 +303,7 @@ module.exports = (() => {
 
     const conf = dependencies.get('config');
 
-    props.parser = parser.createParser(conf);
+    props.parser = parser.createParser(dependencies);
 
     if (conf.plugins) {
       plugins.installPlugins(conf.plugins, props.parser);

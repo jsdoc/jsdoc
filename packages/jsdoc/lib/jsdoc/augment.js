@@ -511,12 +511,12 @@ function getImplementedAdditions(implDoclets, allDoclets, { documented, memberof
   return additions;
 }
 
-function augment(doclets, propertyName, docletFinder) {
+function augment(doclets, propertyName, docletFinder, jsdocDeps) {
   const index = doclets.index.longname;
   const dependencies = sort(mapDependencies(index, propertyName));
 
   dependencies.forEach((depName) => {
-    const additions = docletFinder(index[depName], doclets, doclets.index);
+    const additions = docletFinder(index[depName], doclets, doclets.index, jsdocDeps);
 
     additions.forEach((addition) => {
       const longname = addition.longname;

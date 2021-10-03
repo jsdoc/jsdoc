@@ -45,17 +45,17 @@ describe('jsdoc/tag', () => {
     // allow each test to recreate the tags (for example, after enabling debug mode)
     function createTags() {
       // synonym for @param; space in the title
-      tagArg = new jsdocTag.Tag('arg  ', text, meta);
+      tagArg = new jsdocTag.Tag('arg  ', text, meta, jsdoc.deps);
       // @param with no type, but with optional and defaultvalue
-      tagParam = new jsdocTag.Tag('param', '[foo=1]', meta);
+      tagParam = new jsdocTag.Tag('param', '[foo=1]', meta, jsdoc.deps);
       // @param with type and no type modifiers (such as optional)
-      tagParamWithType = new jsdocTag.Tag('param', '{string} foo', meta);
+      tagParamWithType = new jsdocTag.Tag('param', '{string} foo', meta, jsdoc.deps);
       // @example that does not need indentation to be removed
-      tagExample = new jsdocTag.Tag('example', textExample, meta);
+      tagExample = new jsdocTag.Tag('example', textExample, meta, jsdoc.deps);
       // @example that needs indentation to be removed
-      tagExampleIndented = new jsdocTag.Tag('example', textExampleIndented, meta);
+      tagExampleIndented = new jsdocTag.Tag('example', textExampleIndented, meta, jsdoc.deps);
       // for testing that onTagText is run when necessary
-      tagType = new jsdocTag.Tag('type', 'MyType ', meta);
+      tagType = new jsdocTag.Tag('type', 'MyType ', meta, jsdoc.deps);
     }
 
     beforeEach(() => {
@@ -116,10 +116,10 @@ describe('jsdoc/tag', () => {
         let wsTrailing;
 
         function newTags() {
-          wsOnly = new jsdocTag.Tag('name', ' ', { code: { name: ' ' } });
-          wsLeading = new jsdocTag.Tag('name', '  foo', { code: { name: '  foo' } });
-          wsTrailing = new jsdocTag.Tag('name', 'foo  ', { code: { name: 'foo  ' } });
-          wsBoth = new jsdocTag.Tag('name', '  foo  ', { code: { name: '  foo  ' } });
+          wsOnly = new jsdocTag.Tag('name', ' ', { code: { name: ' ' } }, jsdoc.deps);
+          wsLeading = new jsdocTag.Tag('name', '  foo', { code: { name: '  foo' } }, jsdoc.deps);
+          wsTrailing = new jsdocTag.Tag('name', 'foo  ', { code: { name: 'foo  ' } }, jsdoc.deps);
+          wsBoth = new jsdocTag.Tag('name', '  foo  ', { code: { name: '  foo  ' } }, jsdoc.deps);
         }
 
         expect(jsdoc.didLog(newTags, 'error')).toBeFalse();
@@ -208,7 +208,7 @@ describe('jsdoc/tag', () => {
     describe('tag validating', () => {
       it('logs an error for tags with bad type expressions', () => {
         function newTag() {
-          return new jsdocTag.Tag('param', '{!*!*!*!} foo');
+          return new jsdocTag.Tag('param', '{!*!*!*!} foo', null, jsdoc.deps);
         }
 
         expect(jsdoc.didLog(newTag, 'error')).toBeTrue();
@@ -216,7 +216,7 @@ describe('jsdoc/tag', () => {
 
       it('validates tags with no text', () => {
         function newTag() {
-          return new jsdocTag.Tag('copyright');
+          return new jsdocTag.Tag('copyright', null, null, jsdoc.deps);
         }
 
         expect(jsdoc.didLog(newTag, 'error')).toBeTrue();

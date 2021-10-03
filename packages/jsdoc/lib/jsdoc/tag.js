@@ -2,7 +2,7 @@
  * Functionality related to JSDoc tags.
  * @module jsdoc/tag
  */
-const env = require('jsdoc/env');
+const _ = require('lodash');
 const { log } = require('@jsdoc/util');
 const path = require('path');
 const tag = {
@@ -22,7 +22,7 @@ function trim(text, opts, meta) {
   let match;
 
   opts = opts || {};
-  text = String(typeof text === 'undefined' ? '' : text);
+  text = String(_.isNull(text) || _.isUndefined(text) ? '' : text);
 
   if (mustPreserveWhitespace(text, meta)) {
     text = `"${text}"`;
@@ -42,11 +42,13 @@ function trim(text, opts, meta) {
   return text;
 }
 
-function addHiddenProperty(obj, propName, propValue) {
+function addHiddenProperty(obj, propName, propValue, dependencies) {
+  const options = dependencies.get('options');
+
   Object.defineProperty(obj, propName, {
     value: propValue,
     writable: true,
-    enumerable: Boolean(env.opts.debug),
+    enumerable: Boolean(options.debug),
     configurable: true,
   });
 }
@@ -71,7 +73,7 @@ function parseType({ text, originalTitle }, { canHaveName, canHaveType }, meta) 
   }
 }
 
-function processTagText(tagInstance, tagDef, meta) {
+function processTagText(tagInstance, tagDef, meta, dependencies) {
   let tagType;
 
   if (tagDef.onTagText) {
@@ -92,7 +94,7 @@ function processTagText(tagInstance, tagDef, meta) {
         tagInstance.value.type = {
           names: tagType.type,
         };
-        addHiddenProperty(tagInstance.value.type, 'parsedType', tagType.parsedType);
+        addHiddenProperty(tagInstance.value.type, 'parsedType', tagType.parsedType, dependencies);
       }
 
       ['optional', 'nullable', 'variable', 'defaultvalue'].forEach((prop) => {
@@ -138,15 +140,17 @@ class Tag {
    * Constructs a new tag object. Calls the tag validator.
    *
    * @param {string} tagTitle
-   * @param {string=} tagBody
-   * @param {object=} meta
+   * @param {string} tagBody
+   * @param {object} meta
+   * @param {object} dependencies
    */
-  constructor(tagTitle, tagBody, meta) {
+  constructor(tagTitle, tagBody, meta, dependencies) {
     let tagDef;
     let trimOpts;
 
     meta = meta || {};
 
+    this.dependencies = dependencies;
     this.originalTitle = trim(tagTitle);
 
     /** The title of the tag (for example, `title` in `@title text`). */
@@ -179,7 +183,7 @@ class Tag {
     this.text = trim(tagBody, trimOpts, meta);
 
     if (this.text) {
-      processTagText(this, tagDef, meta);
+      processTagText(this, tagDef, meta, dependencies);
     }
 
     tag.validator.validate(this, tagDef, meta);

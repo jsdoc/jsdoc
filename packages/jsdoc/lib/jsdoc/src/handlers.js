@@ -25,18 +25,18 @@ function filterByLongname({ longname }) {
   return false;
 }
 
-function createDoclet(comment, e) {
+function createDoclet(comment, e, deps) {
   let doclet;
   let flatComment;
   let msg;
 
   try {
-    doclet = new Doclet(comment, e);
+    doclet = new Doclet(comment, e, deps);
   } catch (error) {
     flatComment = comment.replace(/[\r\n]/g, '');
     msg = `cannot create a doclet for the comment "${flatComment}": ${error.message}`;
     log.error(msg);
-    doclet = new Doclet('', e);
+    doclet = new Doclet('', e, deps);
   }
 
   return doclet;
@@ -61,13 +61,13 @@ function createDoclet(comment, e) {
  *
  * @private
  */
-function createSymbolDoclet(comment, e) {
-  let doclet = createDoclet(comment, e);
+function createSymbolDoclet(comment, e, deps) {
+  let doclet = createDoclet(comment, e, deps);
 
   if (doclet.name) {
     // try again, without the comment
     e.comment = '@undocumented';
-    doclet = createDoclet(e.comment, e);
+    doclet = createDoclet(e.comment, e, deps);
   }
 
   return doclet;
@@ -273,7 +273,7 @@ function addSymbolMemberof(parser, doclet, astNode) {
 }
 
 function newSymbolDoclet(parser, docletSrc, e) {
-  const newDoclet = createSymbolDoclet(docletSrc, e);
+  const newDoclet = createSymbolDoclet(docletSrc, e, parser.dependencies);
 
   // if there's an alias, use that as the symbol name
   if (newDoclet.alias) {
@@ -327,7 +327,7 @@ exports.attachTo = (parser) => {
     let newDoclet;
 
     for (let i = 0, l = comments.length; i < l; i++) {
-      newDoclet = createDoclet(comments[i], e);
+      newDoclet = createDoclet(comments[i], e, parser.dependencies);
 
       // we're only interested in virtual comments here
       if (!newDoclet.name) {

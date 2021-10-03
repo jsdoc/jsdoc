@@ -18,7 +18,7 @@ const helpers = {
       doclets: doclets,
     });
   },
-  createParser,
+  createParser: () => createParser(jsdoc.deps),
   didLog: (fn, level) => {
     const events = [];
 
@@ -55,7 +55,7 @@ const helpers = {
     }
 
     return {
-      doclets: doclets,
+      doclets,
       getByLongname(longname) {
         return doclets.filter((doclet) => (doclet.longname || doclet.name) === longname);
       },

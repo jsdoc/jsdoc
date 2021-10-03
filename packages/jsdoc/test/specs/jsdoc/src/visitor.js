@@ -3,7 +3,7 @@ describe('jsdoc/src/visitor', () => {
 
   const { Parser } = require('jsdoc/src/parser');
   const { Visitor } = require('jsdoc/src/visitor');
-  const parser = new Parser();
+  const parser = new Parser(jsdoc.deps);
   const visitor = new Visitor();
 
   describe('visitNodeComments', () => {

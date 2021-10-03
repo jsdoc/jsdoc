@@ -669,7 +669,7 @@ describe('jsdoc/util/templateHelper', () => {
     let attribs;
 
     it('should return an array', () => {
-      doc = new doclet.Doclet('/** ljklajsdf */', {});
+      doc = new doclet.Doclet('/** ljklajsdf */', {}, jsdoc.deps);
       attribs = helper.getAttribs(doc);
 
       expect(attribs).toBeEmptyArray();
@@ -681,7 +681,7 @@ describe('jsdoc/util/templateHelper', () => {
     function doTests(tests, whatNotToContain) {
       for (const src in tests) {
         if (hasOwnProp.call(tests, src)) {
-          doc = new doclet.Doclet(`/** ${src} */`, {});
+          doc = new doclet.Doclet(`/** ${src} */`, {}, jsdoc.deps);
           attribs = helper.getAttribs(doc);
 
           if (tests[src]) {
@@ -782,7 +782,11 @@ describe('jsdoc/util/templateHelper', () => {
     });
 
     it('should detect multiple attributes', () => {
-      const fdsaFoo = new doclet.Doclet('/** @const module:fdsa~FOO\n@readonly\n@private */', {});
+      const fdsaFoo = new doclet.Doclet(
+        '/** @const module:fdsa~FOO\n@readonly\n@private */',
+        {},
+        jsdoc.deps
+      );
 
       attribs = helper.getAttribs(fdsaFoo);
 
@@ -814,14 +818,14 @@ describe('jsdoc/util/templateHelper', () => {
 
     // returns links to allowed types for a doclet.
     it('returns an empty array if the doclet has no specified type', () => {
-      const doc = new doclet.Doclet('/** @const ASDF */', {});
+      const doc = new doclet.Doclet('/** @const ASDF */', {}, jsdoc.deps);
       const types = helper.getSignatureTypes(doc);
 
       expect(types).toBeEmptyArray();
     });
 
     it("returns a string array of the doclet's types", () => {
-      const doc = new doclet.Doclet('/** @const {number|Array.<boolean>} ASDF */', {});
+      const doc = new doclet.Doclet('/** @const {number|Array.<boolean>} ASDF */', {}, jsdoc.deps);
       const types = helper.getSignatureTypes(doc);
 
       expect(types).toBeArrayOfSize(2);
@@ -836,7 +840,7 @@ describe('jsdoc/util/templateHelper', () => {
       // make some links.
       helper.longnameToUrl.MyClass = 'MyClass.html';
 
-      doc = new doclet.Doclet('/** @const {MyClass} ASDF */', {});
+      doc = new doclet.Doclet('/** @const {MyClass} ASDF */', {}, jsdoc.deps);
       types = helper.getSignatureTypes(doc);
 
       expect(types).toBeArrayOfSize(1);
@@ -850,7 +854,7 @@ describe('jsdoc/util/templateHelper', () => {
       // make some links.
       helper.longnameToUrl.MyClass = 'MyClass.html';
 
-      doc = new doclet.Doclet('/** @const {MyClass} ASDF */', {});
+      doc = new doclet.Doclet('/** @const {MyClass} ASDF */', {}, jsdoc.deps);
       types = helper.getSignatureTypes(doc, 'myCSSClass');
 
       expect(types).toBeArrayOfSize(1);
@@ -862,7 +866,7 @@ describe('jsdoc/util/templateHelper', () => {
     // retrieves parameter names.
     // if css class is provided, optional parameters are wrapped in a <span> with that class.
     it('returns an empty array if the doclet has no specified type', () => {
-      const doc = new doclet.Doclet('/** @function myFunction */', {});
+      const doc = new doclet.Doclet('/** @function myFunction */', {}, jsdoc.deps);
       const params = helper.getSignatureParams(doc);
 
       expect(params).toBeEmptyArray();
@@ -871,7 +875,8 @@ describe('jsdoc/util/templateHelper', () => {
     it("returns a string array of the doclet's parameter names", () => {
       const doc = new doclet.Doclet(
         '/** @function myFunction\n @param {string} foo - asdf. */',
-        {}
+        {},
+        jsdoc.deps
       );
       const params = helper.getSignatureParams(doc);
 
@@ -886,7 +891,8 @@ describe('jsdoc/util/templateHelper', () => {
           ' * @param {number} [bar=1] - another explanation.\n' +
           ' * @param {string} [baz] - another explanation.\n' +
           ' */',
-        {}
+        {},
+        jsdoc.deps
       );
       const params = helper.getSignatureParams(doc, 'cssClass');
 
@@ -903,7 +909,8 @@ describe('jsdoc/util/templateHelper', () => {
           ' * @param {number} [bar=1] - another explanation.\n' +
           ' * @param {string} [baz] - another explanation.\n' +
           ' */',
-        {}
+        {},
+        jsdoc.deps
       );
       const params = helper.getSignatureParams(doc);
 
@@ -936,7 +943,7 @@ describe('jsdoc/util/templateHelper', () => {
     });
 
     it('returns an empty array if the doclet has no returns', () => {
-      const doc = new doclet.Doclet('/** @function myFunction */', {});
+      const doc = new doclet.Doclet('/** @function myFunction */', {}, jsdoc.deps);
       const returns = helper.getSignatureReturns(doc);
 
       expect(returns).toBeEmptyArray();
@@ -945,7 +952,8 @@ describe('jsdoc/util/templateHelper', () => {
     it('returns an empty array if the doclet has @returns but with no type', () => {
       const doc = new doclet.Doclet(
         '/** @function myFunction\n@returns an interesting result.*/',
-        {}
+        {},
+        jsdoc.deps
       );
       const returns = helper.getSignatureReturns(doc);
 
@@ -953,14 +961,14 @@ describe('jsdoc/util/templateHelper', () => {
     });
 
     it('uses the value of the `yields` property', () => {
-      const doc = new doclet.Doclet('/** @yields {string} A string. */', {});
+      const doc = new doclet.Doclet('/** @yields {string} A string. */', {}, jsdoc.deps);
       const html = helper.getSignatureReturns(doc);
 
       expect(html).toContain('string');
     });
 
     it('prefers `yields` over `returns`', () => {
-      const doc = new doclet.Doclet('/** @yields {string}\n@returns {number} */', {});
+      const doc = new doclet.Doclet('/** @yields {string}\n@returns {number} */', {}, jsdoc.deps);
       const html = helper.getSignatureReturns(doc);
 
       expect(html).toContain('string');
@@ -976,7 +984,8 @@ describe('jsdoc/util/templateHelper', () => {
 
       doc = new doclet.Doclet(
         '/** @function myFunction\n@returns {number|MyClass} an interesting result.*/',
-        {}
+        {},
+        jsdoc.deps
       );
       returns = helper.getSignatureReturns(doc);
 
@@ -994,7 +1003,8 @@ describe('jsdoc/util/templateHelper', () => {
 
       doc = new doclet.Doclet(
         '/** @function myFunction\n@returns {number|MyClass} an interesting result.*/',
-        {}
+        {},
+        jsdoc.deps
       );
       returns = helper.getSignatureReturns(doc, 'myCssClass');
 
@@ -1012,14 +1022,16 @@ describe('jsdoc/util/templateHelper', () => {
     // make a hierarchy.
     const lackeys = new doclet.Doclet(
       '/** @member lackeys\n@memberof module:mafia/gangs.Sharks~Henchman\n@instance*/',
-      {}
+      {},
+      jsdoc.deps
     );
     const henchman = new doclet.Doclet(
       '/** @class Henchman\n@memberof module:mafia/gangs.Sharks\n@inner */',
-      {}
+      {},
+      jsdoc.deps
     );
-    const gang = new doclet.Doclet('/** @namespace module:mafia/gangs.Sharks */', {});
-    const mafia = new doclet.Doclet('/** @module mafia/gangs */', {});
+    const gang = new doclet.Doclet('/** @namespace module:mafia/gangs.Sharks */', {}, jsdoc.deps);
+    const mafia = new doclet.Doclet('/** @module mafia/gangs */', {}, jsdoc.deps);
     const data = taffy([lackeys, henchman, gang, mafia]);
 
     afterEach(() => {

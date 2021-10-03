@@ -18,15 +18,15 @@ describe('jsdoc/tag/validator', () => {
     const dictionary = require('jsdoc/tag/dictionary');
 
     const allowUnknown = Boolean(config.tags.allowUnknownTags);
-    const badTag = { title: 'lkjasdlkjfb' };
-    const badTag2 = new tag.Tag('type', '{string} I am a string!');
+    const badTag = { dependencies: jsdoc.deps, title: 'lkjasdlkjfb' };
+    const badTag2 = new tag.Tag('type', '{string} I am a string!', null, jsdoc.deps);
     const meta = {
       filename: 'asdf.js',
       lineno: 1,
       comment: 'Better luck next time.',
     };
-    const goodTag = new tag.Tag('name', 'MyDocletName', meta); // mustHaveValue
-    const goodTag2 = new tag.Tag('ignore', '', meta); // mustNotHaveValue
+    const goodTag = new tag.Tag('name', 'MyDocletName', meta, jsdoc.deps); // mustHaveValue
+    const goodTag2 = new tag.Tag('ignore', '', meta, jsdoc.deps); // mustNotHaveValue
 
     function validateTag(theTag) {
       validator.validate(theTag, dictionary.lookUp(theTag.title), meta);

@@ -72,18 +72,24 @@ function definedInScope(doclet, basename) {
  */
 class Parser extends EventEmitter {
   // TODO: docs
-  constructor(conf) {
+  constructor(dependencies) {
     super();
 
     this.clear();
 
-    this._conf = conf || {};
+    this._conf = dependencies.get('config');
+    this._dependencies = dependencies;
     this._visitor = new Visitor();
     this._walker = new Walker();
 
     this._visitor.setParser(this);
 
     Object.defineProperties(this, {
+      dependencies: {
+        get() {
+          return this._dependencies;
+        },
+      },
       visitor: {
         get() {
           return this._visitor;
@@ -626,8 +632,8 @@ class Parser extends EventEmitter {
 exports.Parser = Parser;
 
 // TODO: docs
-exports.createParser = (config) => {
-  return new Parser(config);
+exports.createParser = (deps) => {
+  return new Parser(deps);
 };
 
 // TODO: document other events

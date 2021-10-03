@@ -5,13 +5,12 @@
 const _ = require('lodash');
 const { applyNamespace, SCOPE, LONGNAMES } = require('@jsdoc/core').name;
 const commonPathPrefix = require('common-path-prefix');
-const env = require('jsdoc/env');
 const { isInlineTag } = require('@jsdoc/tag').inline;
 const { log } = require('@jsdoc/util');
 const { nodeToValue } = require('@jsdoc/parse').astNode;
+const parseTagType = require('@jsdoc/tag').type.parse;
 const path = require('path');
 const { Syntax } = require('@jsdoc/parse');
-const parseTagType = require('@jsdoc/tag').type.parse;
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -31,7 +30,7 @@ function cloneTagDef(tagDef, extras) {
   return extras ? _.extend(newTagDef, extras) : newTagDef;
 }
 
-function getSourcePaths() {
+function getSourcePaths(env) {
   const sourcePaths = env.sourceFiles.slice(0) || [];
 
   if (env.opts._) {
@@ -47,9 +46,9 @@ function getSourcePaths() {
   return sourcePaths;
 }
 
-function filepathMinusPrefix(filepath) {
+function filepathMinusPrefix(filepath, env) {
   let commonPrefix;
-  const sourcePaths = getSourcePaths();
+  const sourcePaths = getSourcePaths(env);
   let result = '';
 
   commonPrefix =
@@ -121,7 +120,8 @@ function setNameToFile(doclet) {
   let docletName;
 
   if (doclet.meta.filename) {
-    docletName = filepathMinusPrefix(doclet.meta.path) + doclet.meta.filename;
+    docletName =
+      filepathMinusPrefix(doclet.meta.path, doclet.dependencies.get('env')) + doclet.meta.filename;
     doclet.addTag('name', docletName);
   }
 }
@@ -150,8 +150,9 @@ function setDocletNameToFilename(doclet) {
   let docletName = '';
 
   if (doclet.meta.path) {
-    docletName = filepathMinusPrefix(doclet.meta.path);
+    docletName = filepathMinusPrefix(doclet.meta.path, doclet.dependencies.get('env'));
   }
+  // TODO: Drop the file extension regardless of what it is.
   docletName += doclet.meta.filename.replace(/\.js$/i, '');
 
   doclet.name = docletName;

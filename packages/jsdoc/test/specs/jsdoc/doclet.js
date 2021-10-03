@@ -38,7 +38,7 @@ describe('jsdoc/doclet', () => {
       function makeDoclet(tagStrings) {
         const comment = `/**\n${tagStrings.join('\n')}\n*/`;
 
-        return new Doclet(comment, {});
+        return new Doclet(comment, {}, jsdoc.deps);
       }
 
       describe('aliases', () => {
@@ -205,7 +205,7 @@ describe('jsdoc/doclet', () => {
   describe('setScope', () => {
     it('should accept the correct scope names', () => {
       function setScope(scopeName) {
-        const newDoclet = new Doclet('/** Huzzah, a doclet! */');
+        const newDoclet = new Doclet('/** Huzzah, a doclet! */', null, jsdoc.deps);
 
         newDoclet.setScope(scopeName);
       }
@@ -217,7 +217,7 @@ describe('jsdoc/doclet', () => {
 
     it('should throw an error for invalid scope names', () => {
       function setScope() {
-        const newDoclet = new Doclet('/** Woe betide this doclet. */');
+        const newDoclet = new Doclet('/** Woe betide this doclet. */', null, jsdoc.deps);
 
         newDoclet.setScope('fiddlesticks');
       }
@@ -228,8 +228,12 @@ describe('jsdoc/doclet', () => {
 
   describe('combine', () => {
     it('should override most properties of the secondary doclet', () => {
-      const primaryDoclet = new Doclet('/** New and improved!\n@version 2.0.0 */');
-      const secondaryDoclet = new Doclet('/** Hello!\n@version 1.0.0 */');
+      const primaryDoclet = new Doclet(
+        '/** New and improved!\n@version 2.0.0 */',
+        null,
+        jsdoc.deps
+      );
+      const secondaryDoclet = new Doclet('/** Hello!\n@version 1.0.0 */', null, jsdoc.deps);
       const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
       Object.getOwnPropertyNames(newDoclet).forEach((property) => {
@@ -238,8 +242,8 @@ describe('jsdoc/doclet', () => {
     });
 
     it('should add properties that are missing from the secondary doclet', () => {
-      const primaryDoclet = new Doclet('/** Hello!\n@version 2.0.0 */');
-      const secondaryDoclet = new Doclet('/** Hello! */');
+      const primaryDoclet = new Doclet('/** Hello!\n@version 2.0.0 */', null, jsdoc.deps);
+      const secondaryDoclet = new Doclet('/** Hello! */', null, jsdoc.deps);
       const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
       expect(newDoclet.version).toBe('2.0.0');
@@ -252,14 +256,14 @@ describe('jsdoc/doclet', () => {
         "should use the secondary doclet's params and properties if the primary doclet " +
           'had none',
         () => {
-          const primaryDoclet = new Doclet('/** Hello! */');
+          const primaryDoclet = new Doclet('/** Hello! */', null, jsdoc.deps);
           const secondaryComment = [
             '/**',
             ' * @param {string} foo - The foo.',
             ' * @property {number} bar - The bar.',
             ' */',
           ].join('\n');
-          const secondaryDoclet = new Doclet(secondaryComment);
+          const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.deps);
           const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
           properties.forEach((property) => {
@@ -275,14 +279,14 @@ describe('jsdoc/doclet', () => {
           ' * @property {string} qux - The qux.',
           ' */',
         ].join('\n');
-        const primaryDoclet = new Doclet(primaryComment);
+        const primaryDoclet = new Doclet(primaryComment, null, jsdoc.deps);
         const secondaryComment = [
           '/**',
           ' * @param {string} foo - The foo.',
           ' * @property {number} bar - The bar.',
           ' */',
         ].join('\n');
-        const secondaryDoclet = new Doclet(secondaryComment);
+        const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.deps);
         const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
         properties.forEach((property) => {
