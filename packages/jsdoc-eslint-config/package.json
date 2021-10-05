@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/eslint-config",
-  "version": "1.1.4",
+  "version": "1.1.7",
   "description": "Default ESLint configuration for JSDoc packages.",
   "keywords": [
     "eslint",
@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "peerDependencies": {
-    "eslint": ">= 7.7.0"
+    "eslint": ">= 7.32.0"
   },
   "publishConfig": {
     "access": "public"
@@ -27,7 +27,7 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "engines": {
-    "node": ">=10.18.0"
+    "node": ">=v14.18.0"
   },
   "gitHead": "81a824eb0968851f836fc6069376d0337775f9ba"
 }

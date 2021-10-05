@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/core",
-  "version": "0.3.2",
+  "version": "0.4.1",
   "description": "Core functionality for JSDoc.",
   "keywords": [
     "jsdoc"
@@ -22,14 +22,15 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "cosmiconfig": "^7.0.0",
+    "bottlejs": "^2.0.0",
+    "cosmiconfig": "^7.0.1",
     "escape-string-regexp": "^4.0.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.1.1"
   },
   "engines": {
-    "node": ">=10.18.0"
+    "node": ">=v14.18.0"
   },
   "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"
 }

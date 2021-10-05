@@ -1,0 +1,8 @@
+# Ignore test fixtures.
+packages/**/test/fixtures/**/*.js
+
+# Ignore static JS files.
+packages/**/static/*.js
+
+# Ignore code coverage reports.
+.nyc_output/

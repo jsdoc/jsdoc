@@ -5,7 +5,7 @@ To create or use your own template:
 
 For example:
 
-````javascript
+```javascript
 /** @module publish */
 
 /**
@@ -15,13 +15,13 @@ For example:
  *                       all the symbols documented in your code.
  * @param {object} opts - An object with options information.
  */
-exports.publish = function(data, opts) {
-    // do stuff here to generate your output files
+exports.publish = function (data, opts) {
+  // do stuff here to generate your output files
 };
-````
+```
 
 To invoke JSDoc 3 with your own template, use the `-t` command line option, and specify the path to your template folder:
 
-````
+```
 ./jsdoc mycode.js -t /path/to/mycooltemplate
-````
+```

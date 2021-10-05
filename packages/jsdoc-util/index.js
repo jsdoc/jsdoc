@@ -10,8 +10,8 @@ const fs = require('./lib/fs');
 const log = require('./lib/log');
 
 module.exports = {
-    cast,
-    EventBus,
-    fs,
-    log
+  cast,
+  EventBus,
+  fs,
+  log,
 };

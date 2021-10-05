@@ -30,9 +30,6 @@ export {Socket};
 // ImportDeclaration, ImportSpecifier
 import {Packet} from 'lib/data';
 
-// ModuleDeclaration
-module util from 'lib/util';
-
 // SpreadElement
 function logItems(...items) {
     items.forEach(function(item) {

@@ -4,20 +4,24 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.0.8",
-    "@jsdoc/test-matchers": "^0.1.0",
-    "ajv": "^6.12.4",
-    "eslint": "^7.7.0",
+    "@jsdoc/test-matchers": "^0.1.6",
+    "ajv": "^8.6.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "gulp": "^4.0.2",
-    "gulp-eslint": "^6.0.0",
-    "jasmine": "^3.6.1",
+    "gulp-eslint7": "^0.3.2",
+    "gulp-prettier": "^4.0.0",
+    "jasmine": "^3.9.0",
     "jasmine-console-reporter": "^3.1.0",
     "klaw-sync": "^6.0.0",
-    "lerna": "^3.22.1",
-    "mock-fs": "^4.13.0",
-    "nyc": "^15.1.0"
+    "lerna": "^4.0.0",
+    "mock-fs": "^5.1.1",
+    "nyc": "^15.1.0",
+    "prettier": "^2.4.1"
   },
   "engines": {
-    "node": ">=10.18.0"
+    "node": ">=v14.18.0"
   },
   "scripts": {
     "test": "gulp"

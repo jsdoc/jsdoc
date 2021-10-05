@@ -1,0 +1,31 @@
+{
+  "name": "@jsdoc/prettier-config",
+  "version": "0.1.0",
+  "description": "A Prettier (https://prettier.io/) configuration for JSDoc.",
+  "keywords": [
+    "prettier",
+    "jsdoc"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://github.com/jsdoc/jsdoc",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "peerDependencies": {
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  }
+}

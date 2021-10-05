@@ -1,42 +1,41 @@
 describe('@polymerBehavior tag', () => {
-    const env = require('jsdoc/env');
+  const config = jsdoc.deps.get('config');
+  const allowUnknownTags = Boolean(config.tags.allowUnknownTags);
 
-    const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
+  beforeEach(() => {
+    config.tags.allowUnknownTags = false;
+  });
 
+  afterEach(() => {
+    jsdoc.restoreTagDictionary();
+    config.tags.allowUnknownTags = allowUnknownTags;
+  });
+
+  describe('JSDoc tags', () => {
     beforeEach(() => {
-        env.conf.tags.allowUnknownTags = false;
+      jsdoc.replaceTagDictionary('jsdoc');
     });
 
-    afterEach(() => {
-        jsdoc.restoreTagDictionary();
-        env.conf.tags.allowUnknownTags = allowUnknownTags;
+    it('should not recognize the @polymerBehavior tag', () => {
+      function getDocSet() {
+        jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
+      }
+
+      expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
+    });
+  });
+
+  describe('Closure Compiler tags', () => {
+    beforeEach(() => {
+      jsdoc.replaceTagDictionary('closure');
     });
 
-    describe('JSDoc tags', () => {
-        beforeEach(() => {
-            jsdoc.replaceTagDictionary('jsdoc');
-        });
+    it('should recognize the @polymerBehavior tag', () => {
+      function getDocSet() {
+        jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
+      }
 
-        it('should not recognize the @polymerBehavior tag', () => {
-            function getDocSet() {
-                jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
-            }
-
-            expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
-        });
+      expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();
     });
-
-    describe('Closure Compiler tags', () => {
-        beforeEach(() => {
-            jsdoc.replaceTagDictionary('closure');
-        });
-
-        it('should recognize the @polymerBehavior tag', () => {
-            function getDocSet() {
-                jsdoc.getDocSetFromFile('test/fixtures/polymerbehaviortag.js');
-            }
-
-            expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();
-        });
-    });
+  });
 });

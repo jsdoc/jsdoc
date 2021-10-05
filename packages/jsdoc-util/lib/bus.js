@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const EventEmitter = require('events').EventEmitter;
-const ow = require('ow');
+const { default: ow } = require('ow');
 
 let cache = {};
 const hasOwnProp = Object.prototype.hasOwnProperty;
@@ -22,31 +22,31 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
  * @extends module:events.EventEmitter
  */
 class EventBus extends EventEmitter {
-    /**
-     * Create a new event bus, or retrieve the cached event bus for the ID you specify.
-     *
-     * @param {(string|Symbol)} id - The ID for the event bus.
-     * @param {Object} opts - Options for the event bus.
-     * @param {boolean} [opts.cache=true] - Set to `false` to prevent the event bus from being
-     * cached, and to return a new event bus even if there is already an event bus with the same ID.
-     */
-    constructor(id, opts = {}) {
-        super();
+  /**
+   * Create a new event bus, or retrieve the cached event bus for the ID you specify.
+   *
+   * @param {(string|Symbol)} id - The ID for the event bus.
+   * @param {Object} opts - Options for the event bus.
+   * @param {boolean} [opts.cache=true] - Set to `false` to prevent the event bus from being
+   * cached, and to return a new event bus even if there is already an event bus with the same ID.
+   */
+  constructor(id, opts = {}) {
+    super();
 
-        ow(id, ow.any(ow.string, ow.symbol));
+    ow(id, ow.any(ow.string, ow.symbol));
 
-        const shouldCache = _.isBoolean(opts.cache) ? opts.cache : true;
+    const shouldCache = _.isBoolean(opts.cache) ? opts.cache : true;
 
-        if (hasOwnProp.call(cache, id) && shouldCache) {
-            return cache[id];
-        }
-
-        this._id = id;
-
-        if (shouldCache) {
-            cache[id] = this;
-        }
+    if (hasOwnProp.call(cache, id) && shouldCache) {
+      return cache[id];
     }
+
+    this._id = id;
+
+    if (shouldCache) {
+      cache[id] = this;
+    }
+  }
 }
 
 module.exports = EventBus;
