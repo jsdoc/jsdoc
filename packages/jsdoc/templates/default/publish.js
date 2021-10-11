@@ -242,7 +242,7 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   html = view.render('container.tmpl', docData);
 
   if (resolveLinks) {
-    html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+    html = helper.resolveLinks(html, dependencies); // turn {@link foo} into <a href="foodoc.html">foo</a>
   }
 
   fs.writeFileSync(outpath, html, 'utf8');
@@ -318,7 +318,7 @@ function attachModuleSymbols(doclets, modules) {
 }
 
 function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, dependencies) {
-  const env = dependencies.get('env');
+  const config = dependencies.get('config');
   let nav = '';
 
   if (items.length) {
@@ -330,7 +330,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, dependencies) {
       if (!hasOwnProp.call(item, 'longname')) {
         itemsNav += `<li>${linktoFn('', item.name)}</li>`;
       } else if (!hasOwnProp.call(itemsSeen, item.longname)) {
-        if (env.conf.templates.default.useLongnameInNav) {
+        if (config.templates.default.useLongnameInNav) {
           displayName = item.longname;
         } else {
           displayName = item.name;
@@ -463,7 +463,7 @@ exports.publish = (taffyData, dependencies) => {
     ? path.resolve(templateConfig.default.layoutFile)
     : 'layout.tmpl';
 
-  data = helper.prune(data);
+  data = helper.prune(data, dependencies);
   data.sort('longname, version, since');
   helper.addEventListeners(data);
 

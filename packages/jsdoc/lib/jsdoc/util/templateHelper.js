@@ -3,7 +3,6 @@
  */
 const catharsis = require('catharsis');
 let dictionary = require('jsdoc/tag/dictionary');
-const env = require('jsdoc/env');
 const { inline } = require('@jsdoc/tag');
 const { log } = require('@jsdoc/util');
 const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = require('@jsdoc/core').name;
@@ -365,8 +364,9 @@ const linkto = (exports.linkto = (longname, linkText, cssClass, fragmentId) =>
     linkMap: longnameToUrl,
   }));
 
-function useMonospace(tag, text) {
+function useMonospace(tag, text, dependencies) {
   let cleverLinks;
+  const config = dependencies.get('config');
   let monospaceLinks;
   let result;
 
@@ -377,8 +377,8 @@ function useMonospace(tag, text) {
   } else if (tag === 'linkcode') {
     result = true;
   } else {
-    cleverLinks = env.conf.templates.cleverLinks;
-    monospaceLinks = env.conf.templates.monospaceLinks;
+    cleverLinks = config.templates.cleverLinks;
+    monospaceLinks = config.templates.monospaceLinks;
 
     if (monospaceLinks || cleverLinks) {
       result = true;
@@ -412,8 +412,10 @@ function splitLinkText(text) {
   };
 }
 
-function shouldShortenLongname() {
-  if (env.conf && env.conf.templates && env.conf.templates.useShortNamesInLinks) {
+function shouldShortenLongname(dependencies) {
+  const config = dependencies.get('config');
+
+  if (config && config.templates && config.templates.useShortNamesInLinks) {
     return true;
   }
 
@@ -424,9 +426,10 @@ function shouldShortenLongname() {
  * Find `{@link ...}` inline tags and turn them into HTML links.
  *
  * @param {string} str - The string to search for `{@link ...}` tags.
+ * @param {object} dependencies - The JSDoc dependencies container.
  * @return {string} The linkified text.
  */
-exports.resolveLinks = (str) => {
+exports.resolveLinks = (str, dependencies) => {
   let replacers;
 
   function extractLeadingText(string, completeTag) {
@@ -465,14 +468,14 @@ exports.resolveLinks = (str) => {
     target = split.target;
     linkText = linkText || split.linkText;
 
-    monospace = useMonospace(tag, text);
+    monospace = useMonospace(tag, text, dependencies);
 
     return string.replace(
       completeTag,
       buildLink(target, linkText, {
         linkMap: longnameToUrl,
         monospace: monospace,
-        shortenName: shouldShortenLongname(),
+        shortenName: shouldShortenLongname(dependencies),
       })
     );
   }
@@ -805,30 +808,33 @@ exports.addEventListeners = (data) => {
  * + Members tagged `@private`, unless the `private` option is enabled.
  * + Members tagged with anything other than specified by the `access` options.
  * @param {TAFFY} data The TaffyDB database to prune.
+ * @param {object} dependencies The JSDoc dependencies container.
  * @return {TAFFY} The pruned database.
  */
-exports.prune = (data) => {
+exports.prune = (data, dependencies) => {
+  const options = dependencies.get('options');
+
   data({ undocumented: true }).remove();
   data({ ignore: true }).remove();
   data({ memberof: '<anonymous>' }).remove();
 
-  if (!env.opts.access || (env.opts.access && !env.opts.access.includes('all'))) {
-    if (env.opts.access && !env.opts.access.includes('package')) {
+  if (!options.access || (options.access && !options.access.includes('all'))) {
+    if (options.access && !options.access.includes('package')) {
       data({ access: 'package' }).remove();
     }
-    if (env.opts.access && !env.opts.access.includes('public')) {
+    if (options.access && !options.access.includes('public')) {
       data({ access: 'public' }).remove();
     }
-    if (env.opts.access && !env.opts.access.includes('protected')) {
+    if (options.access && !options.access.includes('protected')) {
       data({ access: 'protected' }).remove();
     }
     if (
-      !env.opts.private &&
-      (!env.opts.access || (env.opts.access && !env.opts.access.includes('private')))
+      !options.private &&
+      (!options.access || (options.access && !options.access.includes('private')))
     ) {
       data({ access: 'private' }).remove();
     }
-    if (env.opts.access && !env.opts.access.includes('undefined')) {
+    if (options.access && !options.access.includes('undefined')) {
       data({ access: { isUndefined: true } }).remove();
     }
   }
