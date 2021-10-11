@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const commonPathPrefix = require('common-path-prefix');
-const env = require('jsdoc/env');
 const fs = require('fs');
 const helper = require('jsdoc/util/templateHelper');
 const { log } = require('@jsdoc/util');
@@ -27,8 +26,6 @@ const PRETTIFIER_SCRIPT_FILES = ['lang-css.js', 'prettify.js'];
 
 let data;
 let view;
-
-let outdir = path.normalize(env.opts.destination);
 
 function mkdirpSync(filepath) {
   return fs.mkdirSync(filepath, { recursive: true });
@@ -227,8 +224,9 @@ function getPathFromDoclet({ meta }) {
   return meta.path && meta.path !== 'null' ? path.join(meta.path, meta.filename) : meta.filename;
 }
 
-function generate(title, docs, filename, resolveLinks) {
+function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   let docData;
+  const env = dependencies.get('env');
   let html;
   let outpath;
 
@@ -250,7 +248,9 @@ function generate(title, docs, filename, resolveLinks) {
   fs.writeFileSync(outpath, html, 'utf8');
 }
 
-function generateSourceFiles(sourceFiles, encoding = 'utf8') {
+function generateSourceFiles(sourceFiles, encoding, outdir, dependencies) {
+  encoding = encoding || 'utf8';
+
   Object.keys(sourceFiles).forEach((file) => {
     let source;
     // links are keyed to the shortened path in each doclet's `meta.shortpath` property
@@ -267,7 +267,14 @@ function generateSourceFiles(sourceFiles, encoding = 'utf8') {
       log.error(`Error while generating source file ${file}: ${e.message}`);
     }
 
-    generate(`Source: ${sourceFiles[file].shortened}`, [source], sourceOutfile, false);
+    generate(
+      `Source: ${sourceFiles[file].shortened}`,
+      [source],
+      sourceOutfile,
+      false,
+      outdir,
+      dependencies
+    );
   });
 }
 
@@ -310,7 +317,8 @@ function attachModuleSymbols(doclets, modules) {
   });
 }
 
-function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
+function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, dependencies) {
+  const env = dependencies.get('env');
   let nav = '';
 
   if (items.length) {
@@ -361,18 +369,18 @@ function linktoExternal(longName, name) {
  * @param {array<object>} members.interfaces
  * @return {string} The HTML for the navigation sidebar.
  */
-function buildNav(members) {
+function buildNav(members, dependencies) {
   let globalNav;
   let nav = '<h2><a href="index.html">Home</a></h2>';
   const seen = {};
 
-  nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
-  nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
-  nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
-  nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
-  nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
-  nav += buildMemberNav(members.events, 'Events', seen, linkto);
-  nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
+  nav += buildMemberNav(members.modules, 'Modules', {}, linkto, dependencies);
+  nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal, dependencies);
+  nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto, dependencies);
+  nav += buildMemberNav(members.classes, 'Classes', seen, linkto, dependencies);
+  nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto, dependencies);
+  nav += buildMemberNav(members.events, 'Events', seen, linkto, dependencies);
+  nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto, dependencies);
 
   if (members.globals.length) {
     globalNav = '';
@@ -405,9 +413,9 @@ function sourceToDestination(parentDir, sourcePath, destDir) {
     @param {TAFFY} taffyData See <http://taffydb.com/>.
     @param {object} opts
  */
-exports.publish = (taffyData, opts) => {
+exports.publish = (taffyData, dependencies) => {
   let classes;
-  let conf;
+  let config;
   let cwd;
   let externals;
   let files;
@@ -419,6 +427,8 @@ exports.publish = (taffyData, opts) => {
   let mixins;
   let modules;
   let namespaces;
+  let opts;
+  let outdir;
   let outputSourceFiles;
   let packageInfo;
   let packages;
@@ -428,13 +438,15 @@ exports.publish = (taffyData, opts) => {
   let staticFilePaths;
   let staticFiles;
   let staticFileScanner;
+  let templateConfig;
   let templatePath;
 
   data = taffyData;
-
-  conf = env.conf.templates || {};
-  conf.default = conf.default || {};
-
+  opts = dependencies.get('options');
+  config = dependencies.get('config');
+  templateConfig = config.templates || {};
+  templateConfig.default = templateConfig.default || {};
+  outdir = path.normalize(opts.destination);
   templatePath = path.normalize(opts.template);
   view = new template.Template(path.join(templatePath, 'tmpl'));
 
@@ -447,7 +459,9 @@ exports.publish = (taffyData, opts) => {
   helper.registerLink('global', globalUrl);
 
   // set up templating
-  view.layout = conf.default.layoutFile ? path.resolve(conf.default.layoutFile) : 'layout.tmpl';
+  view.layout = templateConfig.default.layoutFile
+    ? path.resolve(templateConfig.default.layoutFile)
+    : 'layout.tmpl';
 
   data = helper.prune(data);
   data.sort('longname, version, since');
@@ -552,11 +566,12 @@ exports.publish = (taffyData, opts) => {
   });
 
   // copy user-specified static files to outdir
-  if (conf.default.staticFiles) {
+  if (templateConfig.default.staticFiles) {
     // The canonical property name is `include`. We accept `paths` for backwards compatibility
     // with a bug in JSDoc 3.2.x.
-    staticFilePaths = conf.default.staticFiles.include || conf.default.staticFiles.paths || [];
-    staticFileFilter = new (require('jsdoc/src/filter').Filter)(conf.default.staticFiles);
+    staticFilePaths =
+      templateConfig.default.staticFiles.include || templateConfig.default.staticFiles.paths || [];
+    staticFileFilter = new (require('jsdoc/src/filter').Filter)(templateConfig.default.staticFiles);
     staticFileScanner = new (require('jsdoc/src/scanner').Scanner)();
     cwd = process.cwd();
 
@@ -629,7 +644,7 @@ exports.publish = (taffyData, opts) => {
   members = helper.getMembers(data);
 
   // output pretty-printed source files by default
-  outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false;
+  outputSourceFiles = templateConfig.default && templateConfig.default.outputSourceFiles !== false;
 
   // add template helpers
   view.find = find;
@@ -639,16 +654,16 @@ exports.publish = (taffyData, opts) => {
   view.outputSourceFiles = outputSourceFiles;
 
   // once for all
-  view.nav = buildNav(members);
+  view.nav = buildNav(members, dependencies);
   attachModuleSymbols(find({ longname: { left: 'module:' } }), members.modules);
 
   // generate the pretty-printed source files first so other pages can link to them
   if (outputSourceFiles) {
-    generateSourceFiles(sourceFiles, opts.encoding);
+    generateSourceFiles(sourceFiles, opts.encoding, outdir, dependencies);
   }
 
   if (members.globals.length) {
-    generate('Global', [{ kind: 'globalobj' }], globalUrl);
+    generate('Global', [{ kind: 'globalobj' }], globalUrl, true, outdir, dependencies);
   }
 
   // index page displays information from package.json and lists files
@@ -665,7 +680,10 @@ exports.publish = (taffyData, opts) => {
         },
       ])
       .concat(files),
-    indexUrl
+    indexUrl,
+    true,
+    outdir,
+    dependencies
   );
 
   // set up the lists that we'll use to generate pages
@@ -685,27 +703,69 @@ exports.publish = (taffyData, opts) => {
     const myNamespaces = helper.find(namespaces, { longname: longname });
 
     if (myModules.length) {
-      generate(`Module: ${myModules[0].name}`, myModules, helper.longnameToUrl[longname]);
+      generate(
+        `Module: ${myModules[0].name}`,
+        myModules,
+        helper.longnameToUrl[longname],
+        true,
+        outdir,
+        dependencies
+      );
     }
 
     if (myClasses.length) {
-      generate(`Class: ${myClasses[0].name}`, myClasses, helper.longnameToUrl[longname]);
+      generate(
+        `Class: ${myClasses[0].name}`,
+        myClasses,
+        helper.longnameToUrl[longname],
+        true,
+        outdir,
+        dependencies
+      );
     }
 
     if (myNamespaces.length) {
-      generate(`Namespace: ${myNamespaces[0].name}`, myNamespaces, helper.longnameToUrl[longname]);
+      generate(
+        `Namespace: ${myNamespaces[0].name}`,
+        myNamespaces,
+        helper.longnameToUrl[longname],
+        true,
+        outdir,
+        dependencies
+      );
     }
 
     if (myMixins.length) {
-      generate(`Mixin: ${myMixins[0].name}`, myMixins, helper.longnameToUrl[longname]);
+      generate(
+        `Mixin: ${myMixins[0].name}`,
+        myMixins,
+        helper.longnameToUrl[longname],
+        true,
+        outdir,
+        dependencies
+      );
     }
 
     if (myExternals.length) {
-      generate(`External: ${myExternals[0].name}`, myExternals, helper.longnameToUrl[longname]);
+      generate(
+        `External: ${myExternals[0].name}`,
+        myExternals,
+        helper.longnameToUrl[longname],
+        true,
+        outdir,
+        dependencies
+      );
     }
 
     if (myInterfaces.length) {
-      generate(`Interface: ${myInterfaces[0].name}`, myInterfaces, helper.longnameToUrl[longname]);
+      generate(
+        `Interface: ${myInterfaces[0].name}`,
+        myInterfaces,
+        helper.longnameToUrl[longname],
+        true,
+        outdir,
+        dependencies
+      );
     }
   });
 };

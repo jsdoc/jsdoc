@@ -380,7 +380,7 @@ module.exports = (() => {
       let publishPromise;
 
       log.info('Generating output files...');
-      publishPromise = template.publish(taffy(props.docs), options);
+      publishPromise = template.publish(taffy(props.docs), dependencies);
 
       return Promise.resolve(publishPromise);
     } else {
