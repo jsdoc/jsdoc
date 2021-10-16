@@ -1168,7 +1168,7 @@ describe('jsdoc/util/templateHelper', () => {
     ];
 
     it('should prune the correct members', () => {
-      const pruned = helper.prune(taffy(array))().get();
+      const pruned = helper.prune(taffy(array), jsdoc.deps)().get();
 
       compareObjectArrays(keep, pruned);
     });
@@ -1177,7 +1177,7 @@ describe('jsdoc/util/templateHelper', () => {
       let pruned;
 
       options.private = false;
-      pruned = helper.prune(taffy(arrayPrivate))().get();
+      pruned = helper.prune(taffy(arrayPrivate), jsdoc.deps)().get();
 
       compareObjectArrays([], pruned);
     });
@@ -1187,7 +1187,7 @@ describe('jsdoc/util/templateHelper', () => {
       const keepPackage = [{ access: 'package' }];
 
       options.access = 'package';
-      pruned = helper.prune(taffy(arrayMixed))().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
 
       compareObjectArrays(keepPackage, pruned);
     });
@@ -1197,7 +1197,7 @@ describe('jsdoc/util/templateHelper', () => {
       const keepPublic = [{ access: 'public' }];
 
       options.access = 'public';
-      pruned = helper.prune(taffy(arrayMixed))().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
 
       compareObjectArrays(keepPublic, pruned);
     });
@@ -1207,7 +1207,7 @@ describe('jsdoc/util/templateHelper', () => {
       const keepUndefined = [{ asdf: true }];
 
       options.access = 'undefined';
-      pruned = helper.prune(taffy(arrayMixed))().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
 
       compareObjectArrays(keepUndefined, pruned);
     });
@@ -1217,7 +1217,7 @@ describe('jsdoc/util/templateHelper', () => {
       const keepProtected = [{ access: 'protected' }];
 
       options.access = 'protected';
-      pruned = helper.prune(taffy(arrayMixed))().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
 
       compareObjectArrays(keepProtected, pruned);
     });
@@ -1227,7 +1227,7 @@ describe('jsdoc/util/templateHelper', () => {
       const keepPrivate = [{ access: 'private' }];
 
       options.access = 'private';
-      pruned = helper.prune(taffy(arrayMixed))().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
 
       compareObjectArrays(keepPrivate, pruned);
     });
@@ -1244,7 +1244,7 @@ describe('jsdoc/util/templateHelper', () => {
       ];
 
       options.access = ['public', 'protected'];
-      pruned = helper.prune(taffy(arrayMixed))().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
 
       compareObjectArrays(keepPublicProtected, pruned);
     });
@@ -1253,7 +1253,7 @@ describe('jsdoc/util/templateHelper', () => {
       let pruned;
 
       options.access = 'all';
-      pruned = helper.prune(taffy(arrayMixed))().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
 
       compareObjectArrays(arrayMixed, pruned);
     });
@@ -1262,7 +1262,7 @@ describe('jsdoc/util/templateHelper', () => {
       let pruned;
 
       options.private = true;
-      pruned = helper.prune(taffy(arrayPrivate))().get();
+      pruned = helper.prune(taffy(arrayPrivate), jsdoc.deps)().get();
 
       compareObjectArrays(arrayPrivate, pruned);
     });
@@ -1300,21 +1300,21 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should translate {@link test} into a HTML link.', () => {
       const input = 'This is a {@link test}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
 
     it('should translate {@link unknown} into a simple text.', () => {
       const input = 'This is a {@link unknown}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is a unknown.');
     });
 
     it('should translate {@link test} into a HTML links multiple times.', () => {
       const input = 'This is a {@link test} and {@link test}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe(
         'This is a <a href="path/to/test.html">test</a> and <a href="path/to/test.html">test</a>.'
@@ -1323,21 +1323,21 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should translate [hello there]{@link test} into a HTML link with the custom content.', () => {
       const input = 'This is a [hello there]{@link test}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is a <a href="path/to/test.html">hello there</a>.');
     });
 
     it('should translate [dummy text] and [hello there]{@link test} into an HTML link with the custom content.', () => {
       const input = 'This is [dummy text] and [hello there]{@link test}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is [dummy text] and <a href="path/to/test.html">hello there</a>.');
     });
 
     it('should translate [dummy text] and [more] and [hello there]{@link test} into an HTML link with the custom content.', () => {
       const input = 'This is [dummy text] and [more] and [hello there]{@link test}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe(
         'This is [dummy text] and [more] and <a href="path/to/test.html">hello there</a>.'
@@ -1346,105 +1346,105 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should ignore [hello there].', () => {
       const input = 'This is a [hello there].';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe(input);
     });
 
     it('should translate http links in the tag', () => {
       const input = 'Link to {@link http://github.com}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
     });
 
     it('should translate ftp links in the tag', () => {
       const input = 'Link to {@link ftp://foo.bar}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="ftp://foo.bar">ftp://foo.bar</a>');
     });
 
     it('should allow pipe to be used as delimiter between href and text (external link)', () => {
       const input = 'Link to {@link http://github.com|Github}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="http://github.com">Github</a>');
     });
 
     it('should allow pipe to be used as delimiter between href and text (symbol link)', () => {
       const input = 'Link to {@link test|Test}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html">Test</a>');
     });
 
     it('should allow first space to be used as delimiter between href and text (external link)', () => {
       const input = 'Link to {@link http://github.com Github}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="http://github.com">Github</a>');
     });
 
     it('should allow first space to be used as delimiter between href and text (symbol link)', () => {
       const input = 'Link to {@link test My Caption}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
     });
 
     it('if pipe and space are present in link tag, use pipe as the delimiter', () => {
       const input = 'Link to {@link test|My Caption}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
     });
 
     it('Test of {@linkcode } which should be in monospace', () => {
       const input = 'Link to {@linkcode test}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
 
     it('Test of {@linkplain } which should be in normal font', () => {
       const input = 'Link to {@linkplain test}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
     });
 
     it('should be careful with linking to links whose names are reserved JS keywords', () => {
       const input = 'Link to {@link constructor}';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to constructor');
     });
 
     it('should allow linebreaks between link tag and content', () => {
       const input = 'This is a {@link\ntest}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
 
     it('should allow linebreaks to separate url from link text', () => {
       const input = 'This is a {@link\ntest\ntest}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
 
     it('should normalize additional newlines to spaces', () => {
       const input = 'This is a {@link\ntest\ntest\n\ntest}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test test</a>.');
     });
 
     it('should allow tabs between link tag and content', () => {
       const input = 'This is a {@link\ttest}.';
-      const output = helper.resolveLinks(input);
+      const output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
@@ -1456,7 +1456,7 @@ describe('jsdoc/util/templateHelper', () => {
       let output;
 
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1467,7 +1467,7 @@ describe('jsdoc/util/templateHelper', () => {
       let output;
 
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1477,7 +1477,7 @@ describe('jsdoc/util/templateHelper', () => {
       let output;
 
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
     });
@@ -1489,7 +1489,7 @@ describe('jsdoc/util/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1499,7 +1499,7 @@ describe('jsdoc/util/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
     });
@@ -1510,7 +1510,7 @@ describe('jsdoc/util/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1520,7 +1520,7 @@ describe('jsdoc/util/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
     });
@@ -1533,7 +1533,7 @@ describe('jsdoc/util/templateHelper', () => {
 
       config.templates.cleverLinks = true;
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe(
         'Link to <a href="path/to/test.html"><code>test</code></a> and ' +
@@ -1547,7 +1547,7 @@ describe('jsdoc/util/templateHelper', () => {
 
       config.templates.useShortNamesInLinks = true;
       helper.registerLink('my.long.namespace', 'asdf.html');
-      output = helper.resolveLinks(input);
+      output = helper.resolveLinks(input, jsdoc.deps);
 
       expect(output).toBe('Link to <a href="asdf.html">namespace</a>');
     });
