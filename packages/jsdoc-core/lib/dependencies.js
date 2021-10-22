@@ -24,10 +24,44 @@ class Dependencies {
 
   registerClass(name, constructor, ...deps) {
     this._bottle.service(name, constructor, ...deps);
+    // Remove the cached provider.
+    this._bottle.middleware(name, (_, next) => {
+      this._bottle.resetProviders([name]);
+      next();
+    });
+  }
+
+  registerFactory(name, factory, ...deps) {
+    const realFactory = () => {
+      const args = deps.map((dep) => this.get(dep));
+
+      return factory(...args);
+    };
+
+    this._bottle.serviceFactory(name, realFactory, ...deps);
+    // Remove the cached provider.
+    this._bottle.middleware(name, (_, next) => {
+      this._bottle.resetProviders([name]);
+      next();
+    });
+  }
+
+  registerSingleton(name, constructor, ...deps) {
+    this._bottle.service(name, constructor, ...deps);
+  }
+
+  registerSingletonFactory(name, factory, ...deps) {
+    const realFactory = () => {
+      const args = deps.map((dep) => this.get(dep));
+
+      return factory(...args);
+    };
+
+    this._bottle.factory(name, realFactory);
   }
 
   registerValue(name, value) {
-    this._bottle.constant(name, value);
+    this._bottle.value(name, value);
   }
 }
 

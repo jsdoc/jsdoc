@@ -49,7 +49,7 @@ describe('@jsdoc/core/lib/dependencies', () => {
       expect(instance.bar).toBeInstanceOf(Bar);
     });
 
-    it('returns the same instance every time', () => {
+    it('returns a new instance every time, for normal classes', () => {
       class Foo {}
 
       let instance1;
@@ -59,10 +59,49 @@ describe('@jsdoc/core/lib/dependencies', () => {
       instance1 = container.get('Foo');
       instance2 = container.get('Foo');
 
+      expect(instance2).not.toBe(instance1);
+    });
+
+    it('returns a new result every time, for factories', () => {
+      const factory = () => new Set();
+      let set1;
+      let set2;
+
+      container.registerFactory('setFactory', factory);
+      set1 = container.get('setFactory');
+      set2 = container.get('setFactory');
+
+      expect(set2).not.toBe(set1);
+    });
+
+    it('returns the same instance every time, for singletons', () => {
+      class Foo {}
+
+      let instance1;
+      let instance2;
+
+      container.registerSingleton('Foo', Foo);
+      instance1 = container.get('Foo');
+      instance2 = container.get('Foo');
+
       expect(instance2).toBe(instance1);
     });
 
-    it('returns static values', () => {
+    it('returns the same instance every time, for singleton factories', () => {
+      class Foo {}
+
+      const factory = () => new Foo();
+      let instance1;
+      let instance2;
+
+      container.registerSingletonFactory('Foo', factory);
+      instance1 = container.get('Foo');
+      instance2 = container.get('Foo');
+
+      expect(instance2).toBe(instance1);
+    });
+
+    it('returns values', () => {
       const value = new Set();
 
       container.registerValue('foo', value);
@@ -77,6 +116,29 @@ describe('@jsdoc/core/lib/dependencies', () => {
       class Foo {}
 
       expect(() => container.registerClass('Foo', Foo)).not.toThrow();
+    });
+  });
+
+  describe('registerFactory', () => {
+    // The tests for `get()` also test the behavior of this method more extensively.
+    it('accepts a name and function', () => {
+      expect(() => container.registerFactory('foo', () => null)).not.toThrow();
+    });
+  });
+
+  describe('registerSingleton', () => {
+    // The tests for `get()` also test the behavior of this method more extensively.
+    it('accepts a name and constructor', () => {
+      class Foo {}
+
+      expect(() => container.registerSingleton('Foo', Foo)).not.toThrow();
+    });
+  });
+
+  describe('registerSingletonFactory', () => {
+    // The tests for `get()` also test the behavior of this method more extensively.
+    it('accepts a name and function', () => {
+      expect(() => container.registerSingletonFactory('foo', () => null)).not.toThrow();
     });
   });
 
