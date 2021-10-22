@@ -150,7 +150,25 @@ describe('@jsdoc/core/lib/dependencies', () => {
   });
 
   describe('reset', () => {
-    it('throws on non-array input', () => {
+    it('accepts a string', () => {
+      class Foo {}
+
+      container.registerClass('Foo', Foo);
+
+      expect(() => container.reset('Foo')).not.toThrow();
+    });
+
+    it('accepts an array of strings', () => {
+      class Foo {}
+      class Bar {}
+
+      container.registerClass('Foo', Foo);
+      container.registerClass('Bar', Bar);
+
+      expect(() => container.reset(['Foo', 'Bar'])).not.toThrow();
+    });
+
+    it('throws on non-array, non-string input', () => {
       expect(() => container.reset()).toThrowError();
     });
 

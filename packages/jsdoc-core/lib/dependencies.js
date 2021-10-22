@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Bottle = require('bottlejs');
 
 /**
@@ -25,7 +26,7 @@ class Dependencies {
   registerClass(name, constructor, ...deps) {
     this._bottle.service(name, constructor, ...deps);
     // Remove the cached provider.
-    this._bottle.middleware(name, (_, next) => {
+    this._bottle.middleware(name, (provider, next) => {
       this._bottle.resetProviders([name]);
       next();
     });
@@ -40,7 +41,7 @@ class Dependencies {
 
     this._bottle.serviceFactory(name, realFactory, ...deps);
     // Remove the cached provider.
-    this._bottle.middleware(name, (_, next) => {
+    this._bottle.middleware(name, (provider, next) => {
       this._bottle.resetProviders([name]);
       next();
     });
@@ -65,7 +66,9 @@ class Dependencies {
   }
 
   reset(names) {
-    if (!Array.isArray(names)) {
+    if (_.isString(names)) {
+      names = [names];
+    } else if (!Array.isArray(names)) {
       throw new Error('Must provide an array of provider names');
     }
 
