@@ -63,6 +63,14 @@ class Dependencies {
   registerValue(name, value) {
     this._bottle.value(name, value);
   }
+
+  reset(names) {
+    if (!Array.isArray(names)) {
+      throw new Error('Must provide an array of provider names');
+    }
+
+    this._bottle.resetProviders(names);
+  }
 }
 
 module.exports = Dependencies;

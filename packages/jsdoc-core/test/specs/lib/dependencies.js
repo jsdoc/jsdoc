@@ -148,4 +148,24 @@ describe('@jsdoc/core/lib/dependencies', () => {
       expect(() => container.registerValue('name', new Set())).not.toThrow();
     });
   });
+
+  describe('reset', () => {
+    it('throws on non-array input', () => {
+      expect(() => container.reset()).toThrowError();
+    });
+
+    it('removes cached singletons', () => {
+      class Foo {}
+
+      let instance1;
+      let instance2;
+
+      container.registerSingleton('Foo', Foo);
+      instance1 = container.get('Foo');
+      container.reset(['Foo']);
+      instance2 = container.get('Foo');
+
+      expect(instance2).not.toBe(instance1);
+    });
+  });
 });
