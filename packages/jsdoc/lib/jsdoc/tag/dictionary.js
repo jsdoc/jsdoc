@@ -1,6 +1,5 @@
 /** @module jsdoc/tag/dictionary */
 const definitions = require('jsdoc/tag/dictionary/definitions');
-const jsdocEnv = require('jsdoc/env');
 const { log } = require('@jsdoc/util');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
@@ -9,8 +8,6 @@ const DEFINITIONS = {
   closure: 'closureTags',
   jsdoc: 'jsdocTags',
 };
-
-let dictionary;
 
 /** @private */
 class TagDefinition {
@@ -173,11 +170,5 @@ class Dictionary {
   }
 }
 
-// initialize the default dictionary
-dictionary = Dictionary.fromConfig(jsdocEnv);
-
-// make the constructor available for unit-testing purposes
-dictionary.Dictionary = Dictionary;
-
 /** @type {module:jsdoc/tag/dictionary.Dictionary} */
-module.exports = dictionary;
+exports.Dictionary = Dictionary;

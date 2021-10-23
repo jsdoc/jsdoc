@@ -2,7 +2,6 @@
  * @module jsdoc/util/templateHelper
  */
 const catharsis = require('catharsis');
-let dictionary = require('jsdoc/tag/dictionary');
 const { inline } = require('@jsdoc/tag');
 const { log } = require('@jsdoc/util');
 const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = require('@jsdoc/core').name;
@@ -42,7 +41,7 @@ const registerId = (exports.registerId = (longname, fragment) => {
   linkMap.longnameToId[longname] = fragment;
 });
 
-function getNamespace(kind) {
+function getNamespace(kind, dictionary) {
   if (dictionary.isNamespace(kind)) {
     return `${kind}:`;
   }
@@ -50,8 +49,10 @@ function getNamespace(kind) {
   return '';
 }
 
-function formatNameForLink(doclet) {
-  let newName = getNamespace(doclet.kind) + (doclet.name || '') + (doclet.variation || '');
+function formatNameForLink(doclet, dependencies) {
+  const dictionary = dependencies.get('tags');
+  let newName =
+    getNamespace(doclet.kind, dictionary) + (doclet.name || '') + (doclet.variation || '');
   const scopePunc = SCOPE_TO_PUNC[doclet.scope] || '';
 
   // Only prepend the scope punctuation if it's not the same character that marks the start of a
@@ -100,9 +101,11 @@ function makeUniqueFilename(filename, str) {
  *
  * @function
  * @param {string} str The string to convert.
+ * @param {Object} dependencies The JSDoc dependency container.
  * @return {string} The filename to use for the string.
  */
-const getUniqueFilename = (exports.getUniqueFilename = (str) => {
+const getUniqueFilename = (exports.getUniqueFilename = (str, dependencies) => {
+  const dictionary = dependencies.get('tags');
   const namespaces = dictionary.getNamespaces().join('|');
   let basename = (str || '')
     // use - instead of : in namespace prefixes
@@ -131,13 +134,13 @@ const getUniqueFilename = (exports.getUniqueFilename = (str) => {
  * register the filename.
  * @private
  */
-function getFilename(longname) {
+function getFilename(longname, dependencies) {
   let fileUrl;
 
   if (hasOwnProp.call(longnameToUrl, longname)) {
     fileUrl = longnameToUrl[longname];
   } else {
-    fileUrl = getUniqueFilename(longname);
+    fileUrl = getUniqueFilename(longname, dependencies);
     registerLink(longname, fileUrl);
   }
 
@@ -852,9 +855,10 @@ exports.prune = (data, dependencies) => {
  * represents a method), the URL will consist of a filename and a fragment ID.
  *
  * @param {module:jsdoc/doclet.Doclet} doclet - The doclet that will be used to create the URL.
+ * @param {Object} dependencies - The JSDoc dependency container.
  * @return {string} The URL to the generated documentation for the doclet.
  */
-exports.createLink = (doclet) => {
+exports.createLink = (doclet, dependencies) => {
   let fakeContainer;
   let filename;
   let fileUrl;
@@ -875,21 +879,21 @@ exports.createLink = (doclet) => {
 
   // the doclet gets its own HTML file
   if (containers.includes(doclet.kind) || isModuleExports(doclet)) {
-    filename = getFilename(longname);
+    filename = getFilename(longname, dependencies);
   }
   // mistagged version of a doclet that gets its own HTML file
   else if (!containers.includes(doclet.kind) && fakeContainer) {
-    filename = getFilename(doclet.memberof || longname);
+    filename = getFilename(doclet.memberof || longname, dependencies);
     if (doclet.name !== doclet.longname) {
-      fragment = formatNameForLink(doclet);
+      fragment = formatNameForLink(doclet, dependencies);
       fragment = getId(longname, fragment);
     }
   }
   // the doclet is within another HTML file
   else {
-    filename = getFilename(doclet.memberof || exports.globalName);
+    filename = getFilename(doclet.memberof || exports.globalName, dependencies);
     if (doclet.name !== doclet.longname || doclet.scope === SCOPE.NAMES.GLOBAL) {
-      fragment = formatNameForLink(doclet);
+      fragment = formatNameForLink(doclet, dependencies);
       fragment = getId(longname, fragment);
     }
   }
@@ -912,16 +916,3 @@ exports.createLink = (doclet) => {
  * @return {Object} A tree with information about each longname.
  */
 exports.longnamesToTree = longnamesToTree;
-
-/**
- * Replace the existing tag dictionary with a new tag dictionary.
- *
- * Used for testing only. Do not call this method directly. Instead, call
- * {@link module:jsdoc/doclet._replaceDictionary}, which also updates this module's tag dictionary.
- *
- * @private
- * @param {module:jsdoc/tag/dictionary.Dictionary} dict - The new tag dictionary.
- */
-exports._replaceDictionary = function _replaceDictionary(dict) {
-  dictionary = dict;
-};

@@ -2,7 +2,6 @@
  * @module jsdoc/doclet
  */
 const _ = require('lodash');
-let dictionary = require('jsdoc/tag/dictionary');
 const { isFunction } = require('@jsdoc/parse').astNode;
 const {
   applyNamespace,
@@ -17,7 +16,6 @@ const {
   SCOPE_TO_PUNC,
   toParts,
 } = require('@jsdoc/core').name;
-const helper = require('jsdoc/util/templateHelper');
 const path = require('path');
 const { Syntax } = require('@jsdoc/parse');
 const tag = require('jsdoc/tag');
@@ -266,20 +264,6 @@ function resolve(doclet) {
   }
 }
 
-/**
- * Replace the existing tag dictionary with a new tag dictionary.
- *
- * Used for testing only.
- *
- * @private
- * @param {module:jsdoc/tag/dictionary.Dictionary} dict - The new tag dictionary.
- */
-exports._replaceDictionary = function _replaceDictionary(dict) {
-  dictionary = dict;
-  tag._replaceDictionary(dict);
-  helper._replaceDictionary(dict);
-};
-
 function removeGlobal(longname) {
   const globalRegexp = new RegExp(`^${LONGNAMES.GLOBAL}\\.?`);
 
@@ -447,6 +431,7 @@ class Doclet {
    * @param {string} [text] - The text of the tag being added.
    */
   addTag(title, text) {
+    const dictionary = this.dependencies.get('tags');
     const tagDef = dictionary.lookUp(title);
     const newTag = new Tag(title, text, this.meta, this.dependencies);
 
@@ -481,6 +466,8 @@ class Doclet {
    * @param {string} longname - The longname for the doclet.
    */
   setLongname(longname) {
+    const dictionary = this.dependencies.get('tags');
+
     /**
      * The fully resolved symbol name.
      * @type {string}

@@ -2,7 +2,7 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 const options = jsdoc.deps.get('options');
 
 describe('jsdoc/tag', () => {
-  const jsdocDictionary = require('jsdoc/tag/dictionary');
+  const jsdocDictionary = jsdoc.deps.get('tags');
   const jsdocTag = require('jsdoc/tag');
   const parseType = require('@jsdoc/tag').type.parse;
 

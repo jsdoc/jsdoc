@@ -6,7 +6,6 @@ const _ = require('lodash');
 const { log } = require('@jsdoc/util');
 const path = require('path');
 const tag = {
-  dictionary: require('jsdoc/tag/dictionary'),
   validator: require('jsdoc/tag/validator'),
   type: require('@jsdoc/tag').type,
 };
@@ -120,19 +119,6 @@ function processTagText(tagInstance, tagDef, meta, dependencies) {
 }
 
 /**
- * Replace the existing tag dictionary with a new tag dictionary.
- *
- * Used for testing only. Do not call this method directly. Instead, call
- * {@link module:jsdoc/doclet._replaceDictionary}, which also updates this module's tag dictionary.
- *
- * @private
- * @param {module:jsdoc/tag/dictionary.Dictionary} dict - The new tag dictionary.
- */
-exports._replaceDictionary = function _replaceDictionary(dict) {
-  tag.dictionary = dict;
-};
-
-/**
  * Represents a single doclet tag.
  */
 class Tag {
@@ -145,6 +131,7 @@ class Tag {
    * @param {object} dependencies
    */
   constructor(tagTitle, tagBody, meta, dependencies) {
+    const dictionary = dependencies.get('tags');
     let tagDef;
     let trimOpts;
 
@@ -154,9 +141,9 @@ class Tag {
     this.originalTitle = trim(tagTitle);
 
     /** The title of the tag (for example, `title` in `@title text`). */
-    this.title = tag.dictionary.normalize(this.originalTitle);
+    this.title = dictionary.normalize(this.originalTitle);
 
-    tagDef = tag.dictionary.lookUp(this.title);
+    tagDef = dictionary.lookUp(this.title);
     trimOpts = {
       keepsWhitespace: tagDef.keepsWhitespace,
       removesIndent: tagDef.removesIndent,

@@ -3,7 +3,8 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe('jsdoc/util/templateHelper', () => {
   const _ = require('lodash');
-  const dictionary = require('jsdoc/tag/dictionary');
+  const { Dependencies } = require('@jsdoc/core');
+  const { Dictionary } = require('jsdoc/tag/dictionary');
   const doclet = require('jsdoc/doclet');
   const helper = require('jsdoc/util/templateHelper');
   const { taffy } = require('taffydb');
@@ -139,31 +140,31 @@ describe('jsdoc/util/templateHelper', () => {
     // TODO: needs more tests for unusual values and things that get special treatment (such as
     // inner members)
     it('should convert a simple string into the string plus the default extension', () => {
-      const filename = helper.getUniqueFilename('BackusNaur');
+      const filename = helper.getUniqueFilename('BackusNaur', jsdoc.deps);
 
       expect(filename).toBe('BackusNaur.html');
     });
 
     it('should replace slashes with underscores', () => {
-      const filename = helper.getUniqueFilename('tick/tock');
+      const filename = helper.getUniqueFilename('tick/tock', jsdoc.deps);
 
       expect(filename).toBe('tick_tock.html');
     });
 
     it('should replace other problematic characters with underscores', () => {
-      const filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename');
+      const filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename', jsdoc.deps);
 
       expect(filename).toBe('a very strange __________ filename.html');
     });
 
     it('should not allow a filename to start with an underscore', () => {
-      expect(helper.getUniqueFilename('')).toBe('-_.html');
+      expect(helper.getUniqueFilename('', jsdoc.deps)).toBe('-_.html');
     });
 
     it('should not return the same filename twice', () => {
       const name = 'polymorphic';
-      const filename1 = helper.getUniqueFilename(name);
-      const filename2 = helper.getUniqueFilename(name);
+      const filename1 = helper.getUniqueFilename(name, jsdoc.deps);
+      const filename2 = helper.getUniqueFilename(name, jsdoc.deps);
 
       expect(filename1).not.toBe(filename2);
     });
@@ -171,23 +172,26 @@ describe('jsdoc/util/templateHelper', () => {
     it('should not consider the same name with different letter case to be unique', () => {
       const camel = 'myJavaScriptIdentifier';
       const pascal = 'MyJavaScriptIdentifier';
-      const filename1 = helper.getUniqueFilename(camel);
-      const filename2 = helper.getUniqueFilename(pascal);
+      const filename1 = helper.getUniqueFilename(camel, jsdoc.deps);
+      const filename2 = helper.getUniqueFilename(pascal, jsdoc.deps);
 
       expect(filename1.toLowerCase()).not.toBe(filename2.toLowerCase());
     });
 
     it('should remove variations from the longname before generating the filename', () => {
-      const filename = helper.getUniqueFilename('MyClass(foo, bar)');
+      const filename = helper.getUniqueFilename('MyClass(foo, bar)', jsdoc.deps);
 
       expect(filename).toBe('MyClass.html');
     });
 
     it('should generate the correct filename for built-in namespaces', () => {
-      const filenameEvent = helper.getUniqueFilename('event:userDidSomething');
-      const filenameExternal = helper.getUniqueFilename('external:NotInThisPackage');
-      const filenameModule = helper.getUniqueFilename('module:some/sort/of/module');
-      const filenamePackage = helper.getUniqueFilename('package:node-solve-all-your-problems');
+      const filenameEvent = helper.getUniqueFilename('event:userDidSomething', jsdoc.deps);
+      const filenameExternal = helper.getUniqueFilename('external:NotInThisPackage', jsdoc.deps);
+      const filenameModule = helper.getUniqueFilename('module:some/sort/of/module', jsdoc.deps);
+      const filenamePackage = helper.getUniqueFilename(
+        'package:node-solve-all-your-problems',
+        jsdoc.deps
+      );
 
       expect(filenameEvent).toBe('event-userDidSomething.html');
       expect(filenameExternal).toBe('external-NotInThisPackage.html');
@@ -196,15 +200,16 @@ describe('jsdoc/util/templateHelper', () => {
     });
 
     it('should generate the correct filename for user-specified namespaces', () => {
+      const deps = new Dependencies();
+      const dict = new Dictionary();
       let filename;
-      const dict = new dictionary.Dictionary();
 
       dict.defineTag('anaphylaxis', {
         isNamespace: true,
       });
-      doclet._replaceDictionary(dict);
+      deps.registerSingletonFactory('tags', () => dict);
 
-      filename = helper.getUniqueFilename('anaphylaxis:peanut');
+      filename = helper.getUniqueFilename('anaphylaxis:peanut', deps);
 
       expect(filename).toBe('anaphylaxis-peanut.html');
     });
@@ -1556,6 +1561,7 @@ describe('jsdoc/util/templateHelper', () => {
   describe('createLink', () => {
     it('should create a url for a simple global.', () => {
       const mockDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         longname: 'foo',
         name: 'foo',
@@ -1568,6 +1574,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should create a url for a namespace.', () => {
       const mockDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'namespace',
         longname: 'foo',
         name: 'foo',
@@ -1579,6 +1586,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should create a url for a member of a namespace.', () => {
       const mockDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         longname: 'ns.foo',
         name: 'foo',
@@ -1590,6 +1598,7 @@ describe('jsdoc/util/templateHelper', () => {
     });
 
     const nestedNamespaceDoclet = {
+      dependencies: jsdoc.deps,
       kind: 'function',
       longname: 'ns1.ns2.foo',
       name: 'foo',
@@ -1611,6 +1620,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should create a url for a name with invalid characters.', () => {
       const mockDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         longname: 'ns1."!"."*foo"',
         name: '"*foo"',
@@ -1623,6 +1633,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should create a url for a function that is the only symbol exported by a module.', () => {
       const mockDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         longname: 'module:bar',
         name: 'module:bar',
@@ -1634,11 +1645,13 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', () => {
       const moduleDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'module',
         longname: 'module:baz',
         name: 'module:baz',
       };
       const badDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'member',
         longname: 'module:baz',
         name: 'module:baz',
@@ -1652,11 +1665,13 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should create a url for a function that is a member of a doclet with the wrong kind', () => {
       const badModuleDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'member',
         longname: 'module:qux',
         name: 'module:qux',
       };
       const memberDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         name: 'frozzle',
         memberof: 'module:qux',
@@ -1672,6 +1687,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should include the scope punctuation in the fragment ID for static members', () => {
       const functionDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         longname: 'Milk.pasteurize',
         name: 'pasteurize',
@@ -1685,6 +1701,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should include the scope punctuation in the fragment ID for inner members', () => {
       const functionDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         longname: 'Milk~removeSticksAndLeaves',
         name: 'removeSticksAndLeaves',
@@ -1698,6 +1715,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should omit the scope punctuation from the fragment ID for instance members', () => {
       const propertyDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'member',
         longname: 'Milk#calcium',
         name: 'calcium',
@@ -1711,6 +1729,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     it('should include the variation, if present, in the fragment ID', () => {
       const variationDoclet = {
+        dependencies: jsdoc.deps,
         kind: 'function',
         longname: 'Milk#fat(percent)',
         name: 'fat',

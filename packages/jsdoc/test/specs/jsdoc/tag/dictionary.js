@@ -1,6 +1,5 @@
 describe('jsdoc/tag/dictionary', () => {
-  const dictionary = require('jsdoc/tag/dictionary');
-  const Dictionary = dictionary.Dictionary;
+  const { Dictionary } = require('jsdoc/tag/dictionary');
 
   const env = jsdoc.deps.get('env');
   let testDictionary;
@@ -17,56 +16,12 @@ describe('jsdoc/tag/dictionary', () => {
     TAG_DEF = testDictionary.defineTag(TAG_TITLE, tagOptions).synonym(TAG_SYNONYM);
   });
 
-  it('is an instance of dictionary.Dictionary', () => {
-    expect(dictionary instanceof dictionary.Dictionary).toBe(true);
-  });
-
-  it('has a defineSynonym method', () => {
-    expect(dictionary.defineSynonym).toBeFunction();
-  });
-
-  it('has a defineTag method', () => {
-    expect(dictionary.defineTag).toBeFunction();
-  });
-
-  it('has a defineTags method', () => {
-    expect(dictionary.defineTags).toBeFunction();
-  });
-
-  it('has a fromConfig static method', () => {
-    expect(dictionary.Dictionary.fromConfig).toBeFunction();
-  });
-
-  it('has a lookup method', () => {
-    expect(dictionary.lookup).toBeFunction();
-  });
-
-  it('has a lookUp method', () => {
-    expect(dictionary.lookUp).toBeFunction();
-  });
-
-  it('has an isNamespace method', () => {
-    expect(dictionary.isNamespace).toBeFunction();
-  });
-
-  it('has a normalise method', () => {
-    expect(dictionary.normalise).toBeFunction();
-  });
-
-  it('has a normalize method', () => {
-    expect(dictionary.normalize).toBeFunction();
-  });
-
-  it('has a Dictionary constructor', () => {
-    expect(dictionary.Dictionary).toBeFunction();
-  });
-
   describe('defineSynonym', () => {
     it('adds a synonym for the specified tag', () => {
-      dictionary.defineTag('foo', {});
-      dictionary.defineSynonym('foo', 'bar');
+      testDictionary.defineTag('foo', {});
+      testDictionary.defineSynonym('foo', 'bar');
 
-      expect(dictionary.normalize('bar')).toBe('foo');
+      expect(testDictionary.normalize('bar')).toBe('foo');
     });
   });
 
@@ -272,16 +227,6 @@ describe('jsdoc/tag/dictionary', () => {
 
     it('returns the canonical name if the synonym is normalized', () => {
       expect(testDictionary.normalize(TAG_SYNONYM)).toBe(TAG_DEF.title);
-    });
-  });
-
-  describe('Dictionary', () => {
-    it('is a constructor', () => {
-      function newDictionary() {
-        return new dictionary.Dictionary();
-      }
-
-      expect(newDictionary).not.toThrow();
     });
   });
 });

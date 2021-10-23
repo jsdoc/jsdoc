@@ -39,14 +39,14 @@ function getAncestorLinks(doclet) {
   return helper.getAncestorLinks(data, doclet);
 }
 
-function hashToLink(doclet, hash) {
+function hashToLink(doclet, hash, dependencies) {
   let url;
 
   if (!/^(#.+)/.test(hash)) {
     return hash;
   }
 
-  url = helper.createLink(doclet);
+  url = helper.createLink(doclet, dependencies);
   url = url.replace(/(#.+|$)/, hash);
 
   return `<a href="${url}">${hash}</a>`;
@@ -254,7 +254,7 @@ function generateSourceFiles(sourceFiles, encoding, outdir, dependencies) {
   Object.keys(sourceFiles).forEach((file) => {
     let source;
     // links are keyed to the shortened path in each doclet's `meta.shortpath` property
-    const sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened);
+    const sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened, dependencies);
 
     helper.registerLink(sourceFiles[file].shortened, sourceOutfile);
 
@@ -452,10 +452,10 @@ exports.publish = (taffyData, dependencies) => {
 
   // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
   // doesn't try to hand them out later
-  indexUrl = helper.getUniqueFilename('index');
+  indexUrl = helper.getUniqueFilename('index', dependencies);
   // don't call registerLink() on this one! 'index' is also a valid longname
 
-  globalUrl = helper.getUniqueFilename('global');
+  globalUrl = helper.getUniqueFilename('global', dependencies);
   helper.registerLink('global', globalUrl);
 
   // set up templating
@@ -490,7 +490,7 @@ exports.publish = (taffyData, dependencies) => {
     }
     if (doclet.see) {
       doclet.see.forEach((seeItem, i) => {
-        doclet.see[i] = hashToLink(doclet, seeItem);
+        doclet.see[i] = hashToLink(doclet, seeItem, dependencies);
       });
     }
 
@@ -595,7 +595,7 @@ exports.publish = (taffyData, dependencies) => {
   }
   data().each((doclet) => {
     let docletPath;
-    const url = helper.createLink(doclet);
+    const url = helper.createLink(doclet, dependencies);
 
     helper.registerLink(doclet.longname, url);
 

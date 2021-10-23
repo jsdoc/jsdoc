@@ -1,14 +1,12 @@
-const { _replaceDictionary } = require('jsdoc/doclet');
 const { augmentAll } = require('jsdoc/augment');
 const { createParser } = require('jsdoc/src/parser');
-const { Dictionary } = require('jsdoc/tag/dictionary');
 const { EventBus } = require('@jsdoc/util');
 const fs = require('fs');
 const handlers = require('jsdoc/src/handlers');
 const path = require('path');
 
 const bus = new EventBus('jsdoc');
-let originalDictionaries;
+const originalDictionaries = ['jsdoc', 'closure'];
 const parseResults = [];
 
 const helpers = {
@@ -63,26 +61,20 @@ const helpers = {
   },
   getParseResults: () => parseResults,
   replaceTagDictionary: (dictionaryNames) => {
-    let dict;
-    const env = jsdoc.deps.get('env');
+    const config = jsdoc.deps.get('config');
 
     if (!Array.isArray(dictionaryNames)) {
       dictionaryNames = [dictionaryNames];
     }
 
-    originalDictionaries = env.conf.tags.dictionaries.slice();
-    env.conf.tags.dictionaries = dictionaryNames;
-
-    dict = Dictionary.fromConfig(env);
-    dict.Dictionary = Dictionary;
-    _replaceDictionary(dict);
-
-    env.conf.tags.dictionaries = originalDictionaries;
+    config.tags.dictionaries = dictionaryNames;
+    jsdoc.deps.reset('tags');
   },
   restoreTagDictionary: () => {
-    const env = jsdoc.deps.get('env');
+    const config = jsdoc.deps.get('config');
 
-    _replaceDictionary(Dictionary.fromConfig(env));
+    config.tags.dictionaries = originalDictionaries.slice();
+    jsdoc.deps.reset('tags');
   },
 };
 

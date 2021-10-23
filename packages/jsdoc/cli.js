@@ -1,6 +1,7 @@
 /* eslint-disable indent, no-process-exit */
 const _ = require('lodash');
 const { config, Dependencies } = require('@jsdoc/core');
+const { Dictionary } = require('jsdoc/tag/dictionary');
 const Engine = require('@jsdoc/cli');
 const { EventBus, log } = require('@jsdoc/util');
 const { Filter } = require('jsdoc/src/filter');
@@ -87,6 +88,9 @@ module.exports = (() => {
     // Now that we're done loading and merging things, register dependencies.
     dependencies.registerValue('config', env.conf);
     dependencies.registerValue('options', env.opts);
+    dependencies.registerSingletonFactory('tags', () =>
+      Dictionary.fromConfig(dependencies.get('env'))
+    );
 
     return cli;
   };

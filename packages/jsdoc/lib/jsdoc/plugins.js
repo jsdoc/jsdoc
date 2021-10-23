@@ -2,7 +2,6 @@
  * Utility functions to support the JSDoc plugin framework.
  * @module jsdoc/plugins
  */
-const dictionary = require('jsdoc/tag/dictionary');
 
 function addHandlers(handlers, parser, deps) {
   Object.keys(handlers).forEach((eventName) => {
@@ -11,6 +10,7 @@ function addHandlers(handlers, parser, deps) {
 }
 
 exports.installPlugins = (plugins, parser, deps) => {
+  let dictionary;
   let plugin;
 
   for (let pluginModule of plugins) {
@@ -24,6 +24,7 @@ exports.installPlugins = (plugins, parser, deps) => {
 
     // ...define tags
     if (plugin.defineTags) {
+      dictionary = deps.get('tags');
       plugin.defineTags(dictionary, deps);
     }
 
