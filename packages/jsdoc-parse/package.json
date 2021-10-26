@@ -22,6 +22,6 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "engines": {
-    "node": ">=v14.18.1"
+    "node": ">=v16.12.0"
   }
 }
