@@ -20,10 +20,19 @@
     "nyc": "^15.1.0",
     "prettier": "^2.4.1"
   },
+  "resolutions": {
+    "ansi-regex": "5.0.1",
+    "fsevents": "2.3.2",
+    "glob-parent": "6.0.2",
+    "set-value": "4.0.1",
+    "trim-newlines": "3.0.1",
+    "trim-off-newlines": "1.0.3"
+  },
   "engines": {
     "node": ">=v16.13.0"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "test": "gulp"
   }
 }
