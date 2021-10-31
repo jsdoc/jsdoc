@@ -1567,7 +1567,7 @@ describe('jsdoc/util/templateHelper', () => {
         name: 'foo',
         scope: 'global',
       };
-      const url = helper.createLink(mockDoclet);
+      const url = helper.createLink(mockDoclet, jsdoc.deps);
 
       expect(url).toBe('global.html#foo');
     });
@@ -1579,7 +1579,7 @@ describe('jsdoc/util/templateHelper', () => {
         longname: 'foo',
         name: 'foo',
       };
-      const url = helper.createLink(mockDoclet);
+      const url = helper.createLink(mockDoclet, jsdoc.deps);
 
       expect(url).toBe('foo.html');
     });
@@ -1592,7 +1592,7 @@ describe('jsdoc/util/templateHelper', () => {
         name: 'foo',
         memberof: 'ns',
       };
-      const url = helper.createLink(mockDoclet);
+      const url = helper.createLink(mockDoclet, jsdoc.deps);
 
       expect(url).toBe('ns.html#foo');
     });
@@ -1607,13 +1607,13 @@ describe('jsdoc/util/templateHelper', () => {
     let nestedNamespaceUrl;
 
     it('should create a url for a member of a nested namespace.', () => {
-      nestedNamespaceUrl = helper.createLink(nestedNamespaceDoclet);
+      nestedNamespaceUrl = helper.createLink(nestedNamespaceDoclet, jsdoc.deps);
 
       expect(nestedNamespaceUrl).toBe('ns1.ns2.html#foo');
     });
 
     it('should return the same value when called twice with the same doclet.', () => {
-      const newUrl = helper.createLink(nestedNamespaceDoclet);
+      const newUrl = helper.createLink(nestedNamespaceDoclet, jsdoc.deps);
 
       expect(newUrl).toBe(nestedNamespaceUrl);
     });
@@ -1626,7 +1626,7 @@ describe('jsdoc/util/templateHelper', () => {
         name: '"*foo"',
         memberof: 'ns1."!"',
       };
-      const url = helper.createLink(mockDoclet);
+      const url = helper.createLink(mockDoclet, jsdoc.deps);
 
       expect(url).toEqual('ns1._!_.html#%22*foo%22');
     });
@@ -1638,7 +1638,7 @@ describe('jsdoc/util/templateHelper', () => {
         longname: 'module:bar',
         name: 'module:bar',
       };
-      const url = helper.createLink(mockDoclet);
+      const url = helper.createLink(mockDoclet, jsdoc.deps);
 
       expect(url).toEqual('module-bar.html');
     });
@@ -1656,8 +1656,8 @@ describe('jsdoc/util/templateHelper', () => {
         longname: 'module:baz',
         name: 'module:baz',
       };
-      const moduleDocletUrl = helper.createLink(moduleDoclet);
-      const badDocletUrl = helper.createLink(badDoclet);
+      const moduleDocletUrl = helper.createLink(moduleDoclet, jsdoc.deps);
+      const badDocletUrl = helper.createLink(badDoclet, jsdoc.deps);
 
       expect(moduleDocletUrl).toBe('module-baz.html');
       expect(badDocletUrl).toBe('module-baz.html');
@@ -1678,8 +1678,8 @@ describe('jsdoc/util/templateHelper', () => {
         scope: 'instance',
         longname: 'module:qux#frozzle',
       };
-      const badModuleDocletUrl = helper.createLink(badModuleDoclet);
-      const memberDocletUrl = helper.createLink(memberDoclet);
+      const badModuleDocletUrl = helper.createLink(badModuleDoclet, jsdoc.deps);
+      const memberDocletUrl = helper.createLink(memberDoclet, jsdoc.deps);
 
       expect(badModuleDocletUrl).toBe('module-qux.html');
       expect(memberDocletUrl).toBe('module-qux.html#frozzle');
@@ -1694,7 +1694,7 @@ describe('jsdoc/util/templateHelper', () => {
         memberof: 'Milk',
         scope: 'static',
       };
-      const docletUrl = helper.createLink(functionDoclet);
+      const docletUrl = helper.createLink(functionDoclet, jsdoc.deps);
 
       expect(docletUrl).toBe('Milk.html#.pasteurize');
     });
@@ -1708,7 +1708,7 @@ describe('jsdoc/util/templateHelper', () => {
         memberof: 'Milk',
         scope: 'inner',
       };
-      const docletUrl = helper.createLink(functionDoclet);
+      const docletUrl = helper.createLink(functionDoclet, jsdoc.deps);
 
       expect(docletUrl).toBe('Milk.html#~removeSticksAndLeaves');
     });
@@ -1722,7 +1722,7 @@ describe('jsdoc/util/templateHelper', () => {
         memberof: 'Milk',
         scope: 'instance',
       };
-      const docletUrl = helper.createLink(propertyDoclet);
+      const docletUrl = helper.createLink(propertyDoclet, jsdoc.deps);
 
       expect(docletUrl).toBe('Milk.html#calcium');
     });
@@ -1737,7 +1737,7 @@ describe('jsdoc/util/templateHelper', () => {
         scope: 'instance',
         variation: '(percent)',
       };
-      const docletUrl = helper.createLink(variationDoclet);
+      const docletUrl = helper.createLink(variationDoclet, jsdoc.deps);
 
       expect(docletUrl).toBe('Milk.html#fat(percent)');
     });
