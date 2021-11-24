@@ -80,17 +80,15 @@ describe('plugins/outerDocs', () => {
     it('should work on constants, not interfere with regular @see tag usage, and interpolate "/" according to configuration specs', ()=> {
         let date = docSet.getByLongname('date')[0];
         expect(date.see.length).toEqual(2);
-        expect(date.see[0]).toEqual('{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date  A classic JS Date Object}');
+        expect(date.see[0]).toEqual('{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date A classic JS Date Object}');
         expect(date.see[1]).toEqual('anotherref')
     })
     it('should append *.html according to config and be used multiple times on the same doclet', ()=> {
         let boxstyle = docSet.getByLongname('boxStyle')[0];
         expect(boxstyle.see.length).toEqual(2);
-        expect(boxstyle.see[0]).toEqual('{@link https://reactjs.org/docs/dom-elements.html#style  React docs}');
-        expect(boxstyle.see[1]).toEqual('{@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style  MDN docs}')
+        expect(boxstyle.see[0]).toEqual('{@link https://reactjs.org/docs/dom-elements.html#style React docs}');
+        expect(boxstyle.see[1]).toEqual('{@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style MDN docs}')
     })
-
-    //console.log('odx',docSet.getByLongname('external:OuterdoccedTests'))
 
 
   });

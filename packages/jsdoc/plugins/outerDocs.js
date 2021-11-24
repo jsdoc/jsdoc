@@ -105,11 +105,11 @@
  
  /**
   * @typedef {Object} splitLink
-  * @description Object with a prop for the id(#) component of a string and a prop for the leading part of the string
+  * @description Splits value passed to outerdoc into its component parts
   * @private
   * @property {string} id - the id and # which will be appended to the end of the url
   * @property {string} linkBase - the base of the string before the id portion
-  * @property {string} linkText - The name to display for the link, defaults to link base
+  * @property {string} linkText - The name to display for the link, defaults to linkBase
   */
  
  /**
@@ -127,7 +127,7 @@
      }
      let spaceIndex = tagValue.indexOf(' ');
      if(spaceIndex > 0) {
-         returnObject.linkText = tagValue.substr(spaceIndex);
+         returnObject.linkText = tagValue.substr(spaceIndex).trim();
          tagValue = tagValue.substr(0, spaceIndex);
      } else {
          returnObject.linkText = tagValue;
@@ -150,7 +150,7 @@
      try{
          let outerdocsConfig = env.conf["outerdocs"];
      } catch(e) {
-         logger.warn('plugin/@outerdocs couldnt load configuration on first try.')
+         // logger.warn('plugin/@outerdocs couldnt load configuration on first try.')
      }
  }
  
