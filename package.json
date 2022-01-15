@@ -34,5 +34,8 @@
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
     "test": "gulp"
+  },
+  "dependencies": {
+    "yargs-parser": "^21.0.0"
   }
 }
