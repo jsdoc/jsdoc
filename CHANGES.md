@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.8 (January 2022)
+
+Updates dependencies.
+
+
 ## 3.6.7 (May 2021)
 
 Updates dependencies.
