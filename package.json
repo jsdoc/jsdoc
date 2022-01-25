@@ -50,7 +50,6 @@
     "node": ">=8.15.0"
   },
   "scripts": {
-    "preinstall": "npx force-resolutions",
     "test": "gulp lint; gulp test"
   },
   "bin": {
