@@ -3,6 +3,12 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.10 (January 2022)
+
+Fixes an issue in JSDoc 3.6.9 that prevented JSDoc from being installed in some continuous
+integration (CI) environments.
+
+
 ## 3.6.9 (January 2022)
 
 Fixes an issue in JSDoc 3.6.8 that prevented `npm install jsdoc` from working.
