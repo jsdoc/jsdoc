@@ -1,0 +1,5 @@
+{
+  "packageAllowlist": [
+    "taffydb" // MIT licensed, per its source code
+  ]
+}
