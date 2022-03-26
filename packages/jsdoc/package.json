@@ -30,7 +30,7 @@
     "open-sans-fonts": "^1.6.2",
     "requizzle": "^0.2.3",
     "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.1.1",
+    "strip-json-comments": "^4.0.0",
     "taffydb": "2.6.2"
   },
   "engines": {
