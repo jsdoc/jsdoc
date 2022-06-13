@@ -114,15 +114,6 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     </li></ul></dd>
     <?js } ?>
 
-    <?js if (data.tutorials && tutorials.length) {?>
-    <dt class="tag-tutorial">Tutorials:</dt>
-    <dd class="tag-tutorial">
-        <ul><?js tutorials.forEach(function(t) { ?>
-            <li><?js= self.tutoriallink(t) ?></li>
-        <?js }); ?></ul>
-    </dd>
-    <?js } ?>
-
     <?js if (data.see && see.length) {?>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">

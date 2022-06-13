@@ -1,13 +1,10 @@
 describe('JSX support', () => {
-    it('should parse JSX files without errors', () => {
-        const logger = require('jsdoc/util/logger');
+  it('should parse JSX files without errors', () => {
+    function parseJsx() {
+      return jsdoc.getDocSetFromFile('test/fixtures/jsx.js');
+    }
 
-        function parseJsx() {
-            return jsdoc.getDocSetFromFile('test/fixtures/jsx.js');
-        }
-
-        spyOn(logger, 'error');
-        expect(parseJsx).not.toThrow();
-        expect(logger.error).not.toHaveBeenCalled();
-    });
+    expect(parseJsx).not.toThrow();
+    expect(jsdoc.didLog(parseJsx, 'error')).toBeFalse();
+  });
 });

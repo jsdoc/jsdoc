@@ -4,23 +4,36 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.0.8",
-    "@jsdoc/test-matchers": "^0.1.0",
-    "ajv": "^6.10.2",
-    "eslint": "^6.6.0",
+    "@jsdoc/test-matchers": "^0.1.6",
+    "ajv": "^8.10.0",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "gulp": "^4.0.2",
-    "gulp-eslint": "^6.0.0",
-    "gulp-json-editor": "^2.5.4",
-    "jasmine": "^3.5.0",
+    "gulp-eslint7": "^0.3.2",
+    "gulp-prettier": "^4.0.0",
+    "jasmine": "^3.99.0",
     "jasmine-console-reporter": "^3.1.0",
+    "js-green-licenses": "^3.0.1",
     "klaw-sync": "^6.0.0",
-    "lerna": "^3.18.4",
-    "mock-fs": "^4.10.3",
-    "nyc": "^14.1.1"
+    "lerna": "^4.0.0",
+    "mock-fs": "^5.1.2",
+    "nyc": "^15.1.0",
+    "prettier": "^2.5.1"
+  },
+  "resolutions": {
+    "ansi-regex": "5.0.1",
+    "fsevents": "2.3.2",
+    "glob-parent": "6.0.2",
+    "set-value": "4.0.1",
+    "trim-newlines": "4.0.2",
+    "trim-off-newlines": "1.0.3"
   },
   "engines": {
-    "node": ">=8.15.0"
+    "node": ">=v16.14.0"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "test": "gulp"
   }
 }

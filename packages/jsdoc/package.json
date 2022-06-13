@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "private": true,
-  "version": "4.0.0-dev.5",
+  "version": "4.0.0-dev.17",
   "revision": "1569013511930",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
@@ -14,32 +14,33 @@
     "url": "https://github.com/jsdoc/jsdoc"
   },
   "dependencies": {
-    "@babel/parser": "^7.7.3",
-    "@jsdoc/core": "^0.1.9",
-    "bluebird": "^3.7.1",
-    "catharsis": "^0.8.11",
+    "@babel/parser": "^7.17.0",
+    "@jsdoc/cli": "^0.2.6",
+    "@jsdoc/core": "^0.4.1",
+    "@jsdoc/parse": "^0.1.2",
+    "@jsdoc/tag": "^0.1.1",
+    "@jsdoc/util": "^0.2.5",
+    "bluebird": "^3.7.2",
+    "catharsis": "^0.9.0",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
-    "escape-string-regexp": "^2.0.0",
-    "lodash": "^4.17.15",
-    "markdown-it": "^10.0.0",
-    "markdown-it-anchor": "^5.2.5",
-    "marked": "^0.7.0",
-    "mkdirp": "^0.5.1",
-    "open-sans-fonts": "^1.5.1",
+    "common-path-prefix": "^3.0.0",
+    "escape-string-regexp": "^4.0.0",
+    "lodash": "^4.17.21",
+    "open-sans-fonts": "^1.6.2",
     "requizzle": "^0.2.3",
     "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.0.1",
+    "strip-json-comments": "^3.1.1",
     "taffydb": "2.6.2"
   },
   "engines": {
-    "node": ">=8.15.0"
+    "node": ">=v16.14.0"
   },
   "scripts": {
     "test": "gulp"
   },
   "bin": {
-    "jsdoc": "./jsdoc.js"
+    "jsdoc": "jsdoc.js"
   },
   "bugs": "https://github.com/jsdoc/jsdoc/issues",
   "author": {

@@ -1,20 +1,18 @@
 /* global jsdoc */
 
 describe('commentConvert plugin', () => {
-    const env = require('jsdoc/env');
-    const path = require('jsdoc/path');
+  const path = require('path');
 
-    let docSet;
-    const parser = jsdoc.createParser();
-    const pluginPath = 'plugins/commentConvert';
-    const pluginPathResolved = path.join(env.dirname, pluginPath);
+  let docSet;
+  const parser = jsdoc.createParser();
+  const pluginPath = path.join(__dirname, '../../commentConvert');
 
-    require('jsdoc/plugins').installPlugins([pluginPathResolved], parser);
-    docSet = jsdoc.getDocSetFromFile(`${pluginPath}.js`, parser);
+  require('jsdoc/plugins').installPlugins([pluginPath], parser, jsdoc.deps);
+  docSet = jsdoc.getDocSetFromFile(`plugins/commentConvert.js`, parser);
 
-    it('should convert ///-style comments into jsdoc comments', () => {
-        const doclet = docSet.getByLongname('module:plugins/commentConvert.handlers.beforeParse');
+  it('should convert ///-style comments into jsdoc comments', () => {
+    const doclet = docSet.getByLongname('module:plugins/commentConvert.handlers.beforeParse');
 
-        expect(doclet.length).toEqual(1);
-    });
+    expect(doclet.length).toEqual(1);
+  });
 });

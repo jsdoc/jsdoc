@@ -1,62 +1,62 @@
 /**
  * @module jsdoc/src/scanner
- * @requires module:jsdoc/fs
  */
 const { EventEmitter } = require('events');
-const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
-const logger = require('jsdoc/util/logger');
-const path = require('jsdoc/path');
+const { log } = require('@jsdoc/util');
+const { lsSync } = require('@jsdoc/util').fs;
+const path = require('path');
+const { statSync } = require('fs');
 
 /**
  * @extends module:events.EventEmitter
  */
 class Scanner extends EventEmitter {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    /**
-     * Recursively searches the given searchPaths for js files.
-     * @param {Array.<string>} searchPaths
-     * @param {number} [depth]
-     * @fires sourceFileFound
-     */
-    scan(searchPaths = [], depth = 1, filter) {
-        let currentFile;
-        let filePaths = [];
+  /**
+   * Recursively searches the given searchPaths for js files.
+   * @param {Array.<string>} searchPaths
+   * @param {number} [depth]
+   * @fires sourceFileFound
+   */
+  scan(searchPaths, depth, filter) {
+    let currentFile;
+    let filePaths = [];
 
-        searchPaths.forEach($ => {
-            const filepath = path.resolve( env.pwd, decodeURIComponent($) );
+    searchPaths = searchPaths || [];
+    depth = depth || 1;
 
-            try {
-                currentFile = fs.statSync(filepath);
-            }
-            catch (e) {
-                logger.error('Unable to find the source file or directory %s', filepath);
+    searchPaths.forEach(($) => {
+      const filepath = path.resolve(process.cwd(), decodeURIComponent($));
 
-                return;
-            }
+      try {
+        currentFile = statSync(filepath);
+      } catch (e) {
+        log.error(`Unable to find the source file or directory ${filepath}`);
 
-            if ( currentFile.isFile() ) {
-                filePaths.push(filepath);
-            }
-            else {
-                filePaths = filePaths.concat( fs.ls(filepath, depth) );
-            }
-        });
+        return;
+      }
 
-        filePaths = filePaths.filter($ => filter.isIncluded($));
+      if (currentFile.isFile()) {
+        filePaths.push(filepath);
+      } else {
+        filePaths = filePaths.concat(lsSync(filepath, depth));
+      }
+    });
 
-        filePaths = filePaths.filter($ => {
-            const e = { fileName: $ };
+    filePaths = filePaths.filter(($) => filter.isIncluded($));
 
-            this.emit('sourceFileFound', e);
+    filePaths = filePaths.filter(($) => {
+      const e = { fileName: $ };
 
-            return !e.defaultPrevented;
-        });
+      this.emit('sourceFileFound', e);
 
-        return filePaths;
-    }
+      return !e.defaultPrevented;
+    });
+
+    return filePaths;
+  }
 }
 exports.Scanner = Scanner;

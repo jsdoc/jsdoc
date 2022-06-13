@@ -7,10 +7,10 @@
  */
 
 exports.handlers = {
-    newDoclet({doclet}) {
-        // Ignore comment blocks for all symbols that begin with underscore
-        if (doclet.name.charAt(0) === '_' || doclet.name.substr(0, 6) === 'this._') {
-            doclet.access = 'private';
-        }
+  newDoclet({ doclet }) {
+    // Ignore comment blocks for all symbols that begin with underscore
+    if (doclet.name.charAt(0) === '_' || doclet.name.substr(0, 6) === 'this._') {
+      doclet.access = 'private';
     }
+  },
 };

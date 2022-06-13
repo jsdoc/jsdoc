@@ -1,43 +1,41 @@
 describe('@define tag', () => {
-    const logger = require('jsdoc/util/logger');
+  describe('JSDoc tags', () => {
+    const config = jsdoc.deps.get('config');
 
-    describe('JSDoc tags', () => {
-        const env = require('jsdoc/env');
+    const allowUnknownTags = Boolean(config.tags.allowUnknownTags);
 
-        const allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
-
-        afterEach(() => {
-            jsdoc.restoreTagDictionary();
-            env.conf.tags.allowUnknownTags = allowUnknownTags;
-        });
-
-        it('should not recognize the @define tag', () => {
-            env.conf.tags.allowUnknownTags = false;
-            jsdoc.replaceTagDictionary('jsdoc');
-            spyOn(logger, 'error');
-
-            jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
-
-            expect(logger.error).toHaveBeenCalled();
-        });
+    afterEach(() => {
+      jsdoc.restoreTagDictionary();
+      config.tags.allowUnknownTags = allowUnknownTags;
     });
 
-    describe('Closure Compiler tags', () => {
-        beforeEach(() => {
-            jsdoc.replaceTagDictionary('closure');
-        });
+    it('should not recognize the @define tag', () => {
+      function getDocSet() {
+        config.tags.allowUnknownTags = false;
+        jsdoc.replaceTagDictionary('jsdoc');
+        jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
+      }
 
-        afterEach(() => {
-            jsdoc.restoreTagDictionary();
-        });
-
-        it('should recognize the @define tag', () => {
-            const docSet = jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
-            const enableDebug = docSet.getByLongname('ENABLE_DEBUG')[0];
-
-            expect(enableDebug.kind).toBe('constant');
-            expect(enableDebug.type).toBeObject();
-            expect(enableDebug.type.names[0]).toBe('boolean');
-        });
+      expect(jsdoc.didLog(getDocSet, 'error')).toBeTrue();
     });
+  });
+
+  describe('Closure Compiler tags', () => {
+    beforeEach(() => {
+      jsdoc.replaceTagDictionary('closure');
+    });
+
+    afterEach(() => {
+      jsdoc.restoreTagDictionary();
+    });
+
+    it('should recognize the @define tag', () => {
+      const docSet = jsdoc.getDocSetFromFile('test/fixtures/definetag.js');
+      const enableDebug = docSet.getByLongname('ENABLE_DEBUG')[0];
+
+      expect(enableDebug.kind).toBe('constant');
+      expect(enableDebug.type).toBeObject();
+      expect(enableDebug.type.names[0]).toBe('boolean');
+    });
+  });
 });

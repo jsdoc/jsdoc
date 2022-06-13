@@ -1,10 +1,9 @@
-const logger = require('jsdoc/util/logger');
-
 describe('empty JSDoc comments', () => {
-    it('should not report an error when a JSDoc comment contains only whitespace', () => {
-        spyOn(logger, 'error');
-        jsdoc.getDocSetFromFile('test/fixtures/emptycomments.js');
+  it('should not report an error when a JSDoc comment contains only whitespace', () => {
+    function getDocSet() {
+      jsdoc.getDocSetFromFile('test/fixtures/emptycomments.js');
+    }
 
-        expect(logger.error).not.toHaveBeenCalled();
-    });
+    expect(jsdoc.didLog(getDocSet, 'error')).toBeFalse();
+  });
 });

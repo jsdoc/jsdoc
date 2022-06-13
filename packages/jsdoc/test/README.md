@@ -14,7 +14,7 @@ Clone the GitHub repository; change to its directory; and run the following comm
 
 You can write tests for all of the following:
 
-+ **JSDoc itself**. See the `test` directory. Test specs are in `test/specs`, and fixtures used by
-the tests are in `test/fixtures`.
-+ **Plugins**. See the `plugins/test` directory.
-+ **Packages**. See the `packages/**/test` directories.
+- **JSDoc itself**. See the `test` directory. Test specs are in `test/specs`, and fixtures used by
+  the tests are in `test/fixtures`.
+- **Plugins**. See the `plugins/test` directory.
+- **Packages**. See the `packages/**/test` directories.
