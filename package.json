@@ -19,7 +19,7 @@
     "catharsis": "^0.9.0",
     "escape-string-regexp": "^2.0.0",
     "js2xmlparser": "^4.0.2",
-    "klaw": "^4.0.1",
+    "klaw": "^3.0.0",
     "markdown-it": "^12.3.2",
     "markdown-it-anchor": "^8.4.1",
     "marked": "^4.0.10",
