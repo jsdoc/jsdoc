@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
-  "version": "3.6.10",
-  "revision": "1643076339624",
+  "version": "3.6.11",
+  "revision": "1658338843387",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
     "documentation",
@@ -47,7 +47,7 @@
     "trim-off-newlines": "1.0.3"
   },
   "engines": {
-    "node": ">=8.15.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
     "test": "gulp lint; gulp test"

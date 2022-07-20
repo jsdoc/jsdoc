@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc 3.
 
 
+## 3.6.11 (July 2022)
+
+Updates dependency versions to make JSDoc compatible with Node.js 12.0.0 and later.
+
+
 ## 3.6.10 (January 2022)
 
 Fixes an issue in JSDoc 3.6.9 that prevented JSDoc from being installed in some continuous
