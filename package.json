@@ -17,7 +17,7 @@
     "js-green-licenses": "^3.0.1",
     "klaw-sync": "^6.0.0",
     "lerna": "^5.4.3",
-    "mock-fs": "^5.1.2",
+    "mock-fs": "^5.1.4",
     "nyc": "^15.1.0",
     "prettier": "^2.5.1"
   },
