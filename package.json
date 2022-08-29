@@ -8,7 +8,7 @@
     "ajv": "^8.11.0",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "gulp": "^4.0.2",
     "gulp-eslint7": "^0.3.2",
     "gulp-prettier": "^4.0.0",
