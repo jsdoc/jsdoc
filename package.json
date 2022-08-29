@@ -19,7 +19,7 @@
     "lerna": "^5.4.3",
     "mock-fs": "^5.1.4",
     "nyc": "^15.1.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.7.1"
   },
   "resolutions": {
     "ansi-regex": "5.0.1",

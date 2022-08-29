@@ -13,7 +13,7 @@
   "peerDependencies": {
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.5.1"
+    "prettier": "^2.7.1"
   },
   "publishConfig": {
     "access": "public"
