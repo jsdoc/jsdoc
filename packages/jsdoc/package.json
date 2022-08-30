@@ -34,7 +34,7 @@
     "taffydb": "2.6.2"
   },
   "engines": {
-    "node": ">=v16.14.0"
+    "node": ">=v16.17.0"
   },
   "scripts": {
     "test": "gulp"
