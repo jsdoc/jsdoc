@@ -21,6 +21,11 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "dependencies": {
+    "@jsdoc/core": "^0.4.1",
+    "@jsdoc/util": "^0.2.5",
+    "catharsis": "^0.9.0"
+  },
   "engines": {
     "node": ">=v16.17.0"
   }

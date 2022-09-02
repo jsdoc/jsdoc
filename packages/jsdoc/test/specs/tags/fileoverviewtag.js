@@ -1,7 +1,5 @@
 describe('@fileoverview tag', () => {
-  describe('JSDoc tags', () => {
-    // @fileoverview is a synonym of @file, so this is covered by the @file tag tests
-  });
+  // For JSDoc tags, @fileoverview is a synonym of @file, so this is covered by the @file tag tests.
 
   describe('Closure Compiler tags', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/fileoverviewtag.js');

@@ -12,9 +12,6 @@ const SPEC_FILES = [
 module.exports = (deps) => {
   const jasmine = new Jasmine();
   const matcher = deps.get('options').matcher;
-  /* eslint-disable no-empty-function */
-  const promise = new Promise(() => {});
-  /* eslint-enable no-empty-function */
   const reporter = new ConsoleReporter({
     beep: false,
     verbosity: {
@@ -25,13 +22,19 @@ module.exports = (deps) => {
     },
   });
 
+  // Don't exit until the promise from jasmine.execute() is resolved.
+  jasmine.exitOnCompletion = false;
   // Treat an unhandled promise rejection as an error.
   process.on('unhandledRejection', (e) => {
     throw e;
   });
 
   jasmine.loadConfig({
-    helpers: ['node_modules/@jsdoc/test-matchers', 'packages/jsdoc/test/helpers/**/*.js'],
+    helpers: [
+      'node_modules/jasmine-expect/index.js',
+      'node_modules/@jsdoc/test-matchers/index.js',
+      'packages/jsdoc/test/helpers/**/*.js',
+    ],
     random: false,
     stopSpecOnExpectationFailure: false,
   });
@@ -44,8 +47,5 @@ module.exports = (deps) => {
   }
   global.jsdoc.deps = deps;
 
-  jasmine.onComplete(() => promise.resolve());
-  jasmine.execute(SPEC_FILES, matcher);
-
-  return promise;
+  return jasmine.execute(SPEC_FILES, matcher);
 };

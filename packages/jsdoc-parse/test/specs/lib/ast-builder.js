@@ -35,7 +35,7 @@ describe('@jsdoc/parse/lib/ast-builder', () => {
     });
   });
 
-  describe('parserOptions', () => {
+  xdescribe('parserOptions', () => {
     // TODO: tests
   });
 });

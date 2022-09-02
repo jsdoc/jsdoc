@@ -1,5 +1,5 @@
 describe('@jsdoc/core.name', () => {
-  const { name } = require('@jsdoc/core');
+  const { name } = require('../../../index');
 
   it('exists', () => {
     expect(name).toBeObject();
@@ -176,9 +176,7 @@ describe('@jsdoc/core.name', () => {
     // TODO: tests
   });
 
-  describe('MODULE_NAMESPACE', () => {
-    // This is just a string, so nothing to test.
-  });
+  // MODULE_NAMESPACE is just a string, so nothing to test.
 
   xdescribe('nameIsLongname', () => {
     // TODO(hegemonic)

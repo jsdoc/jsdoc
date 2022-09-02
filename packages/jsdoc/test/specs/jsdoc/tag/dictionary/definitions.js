@@ -17,19 +17,5 @@ describe('jsdoc/tag/dictionary/definitions', () => {
     expect(definitions.jsdocTags).toBeObject();
   });
 
-  describe('baseTags', () => {
-    // Nothing to test except which tags are on the list, which would duplicate the code.
-  });
-
-  describe('closureTags', () => {
-    // Nothing to test except which tags are on the list, which would duplicate the code.
-  });
-
-  describe('internalTags', () => {
-    // Nothing to test except which tags are on the list, which would duplicate the code.
-  });
-
-  describe('jsdocTags', () => {
-    // Nothing to test except which tags are on the list, which would duplicate the code.
-  });
+  // Nothing to test in these objects except which tags are listed, which would duplicate the code.
 });

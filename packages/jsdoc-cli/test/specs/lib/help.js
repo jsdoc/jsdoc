@@ -1,3 +1,1 @@
-describe('@jsdoc/cli/lib/help', () => {
-  // Tested indirectly by the tests for `@jsdoc/cli/lib/engine`.
-});
+// `@jsdoc/cli/lib/help` is tested indirectly by the tests for `@jsdoc/cli/lib/engine`.
