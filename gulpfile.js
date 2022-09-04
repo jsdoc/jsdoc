@@ -1,4 +1,4 @@
-const eslint = require('gulp-eslint7');
+const eslint = require('gulp-eslint-new');
 const { exec } = require('child_process');
 const gulp = require('gulp');
 const { LicenseChecker } = require('js-green-licenses');
