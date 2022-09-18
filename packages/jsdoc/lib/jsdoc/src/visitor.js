@@ -769,9 +769,6 @@ class Visitor {
     let comments;
     let e;
     const isBlock = isBlockComment(node);
-    let lastTrailingComment;
-    let nextProgramNode;
-    let nextProgramNodeIndex;
     let rawComment;
 
     function addComments(source) {
@@ -789,30 +786,9 @@ class Visitor {
     }
 
     // trailing comments are always duplicates of leading comments unless they're attached to the
-    // Program node...
+    // Program node
     if (node.type === Syntax.Program && node.trailingComments && node.trailingComments.length) {
       addComments(node.trailingComments);
-    }
-
-    // ...or if they were comments from the end of the file that were erroneously attached to a
-    // `'use strict';` declaration (https://github.com/babel/babel/issues/6688).
-    if (
-      node.type === Syntax.ExpressionStatement &&
-      node.directive === 'use strict' &&
-      node.trailingComments &&
-      node.trailingComments.length
-    ) {
-      // to be safe, we verify that the trailing comments came after the next node in the Program
-      // body, which means the comments were attached to the wrong node
-      if (node.parent.body.length > 1) {
-        nextProgramNodeIndex = node.parent.body.indexOf(node) + 1;
-        nextProgramNode = node.parent.body[nextProgramNodeIndex];
-        lastTrailingComment = node.trailingComments[node.trailingComments.length - 1];
-
-        if (lastTrailingComment.start > nextProgramNode.end) {
-          addComments(node.trailingComments);
-        }
-      }
     }
 
     if (node.innerComments && node.innerComments.length) {
