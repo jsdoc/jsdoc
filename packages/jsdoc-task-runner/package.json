@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/task-runner",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Task runner for JSDoc templates.",
   "keywords": [
     "jsdoc",
