@@ -25,7 +25,7 @@
     "ansi-regex": "5.0.1",
     "fsevents": "2.3.2",
     "glob-parent": "6.0.2",
-    "set-value": "4.0.1",
+    "set-value": "4.1.0",
     "trim-newlines": "4.0.2",
     "trim-off-newlines": "1.0.3"
   },
