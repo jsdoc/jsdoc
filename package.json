@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.0.8",
-    "@jsdoc/test-matchers": "^0.1.6",
+    "@jsdoc/test-matchers": "^0.1.9",
     "ajv": "^8.11.0",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
@@ -17,23 +17,16 @@
     "js-green-licenses": "^3.0.1",
     "klaw-sync": "^6.0.0",
     "lerna": "^5.4.3",
+    "lodash": "^4.17.21",
     "mock-fs": "^5.1.4",
     "nyc": "^15.1.0",
-    "prettier": "^2.7.1"
-  },
-  "resolutions": {
-    "ansi-regex": "5.0.1",
-    "fsevents": "2.3.2",
-    "glob-parent": "6.0.2",
-    "set-value": "4.0.1",
-    "trim-newlines": "4.0.2",
-    "trim-off-newlines": "1.0.3"
+    "prettier": "^2.7.1",
+    "taffydb": "2.6.2"
   },
   "engines": {
     "node": ">=v16.17.0"
   },
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "test": "gulp"
   }
 }
