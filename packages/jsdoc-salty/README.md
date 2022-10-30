@@ -3,7 +3,7 @@
 Salty is a drop-in replacement for (some of) [TaffyDB](https://github.com/typicaljoe/taffydb). It
 supports only the TaffyDB features that JSDoc has historically used.
 
-## Why Salty? {#why}
+## Why Salty?
 
 TaffyDB lets you query an array of objects, similar to the way you would query a database. JSDoc 3.x
 used TaffyDB to manage _doclets_, or objects that contain information about your code.
@@ -14,7 +14,7 @@ the doclets that were needed to generate documentation.
 
 Salty exists because TaffyDB is no longer maintained and is the subject of a
 [CVE](https://www.cve.org/CVERecord?id=CVE-2019-10790), causing TaffyDB to be flagged as a security
-risk. [There's no real security risk](#security-risk), but it sure looks like there is.
+risk. There's no real security risk, but it sure looks like there is.
 
 Also, TaffyDB [can't decide what license it uses](https://github.com/typicaljoe/taffydb/issues/166):
 
@@ -29,7 +29,7 @@ By replacing TaffyDB with Salty, which uses the
 [Apache 2.0 License](https://github.com/jsdoc/jsdoc/blob/main/packages/jsdoc-salty/LICENSE), JSDoc
 resolved the purported security issue and the licensing uncertainty.
 
-## Use Salty in a JSDoc template {#use}
+## Use Salty in a JSDoc template
 
 Starting in version 4.0.0, JSDoc no longer uses the `taffydb` package as a dependency. If you use a
 JSDoc template that comes with JSDoc 4.0.0 or later, then you don't need to make any changes to the
@@ -66,20 +66,20 @@ To replace `taffydb` with `@jsdoc/salty`, do the following:
 
 5.  Run `npm install` in the template directory, then confirm that the template works as expected.
 
-## Supported TaffyDB features {#taffydb-support}
+## Supported TaffyDB features
 
 Salty supports only the TaffyDB features that have historically been used by JSDoc templates. That
 means that most TaffyDB functionality is missing.
 
 Specifically, Salty lets you do the following:
 
-### Create a database {#create-db}
+### Create a database
 
 ```js
 let db = taffy([{ a: 3 }, { a: 1, b: 'hello' }, { a: 7, b: 2 }]);
 ```
 
-### Sort items in a database {#sort-items}
+### Sort items in a database
 
 Items are sorted in place. Salty uses the following sort order, which differs from, but is more
 predictable than, TaffyDB:
@@ -96,7 +96,7 @@ db.sort('a');
 db.sort('a, b');
 ```
 
-### Get items from a database {#get-items}
+### Get items from a database
 
 ```js
 // Get array of all items
@@ -105,7 +105,7 @@ const allItems = db().get();
 const someItems = db({ b: { isUndefined: true } }).get();
 ```
 
-### Get items with a custom query function {#custom-query}
+### Get items with a custom query function
 
 Within the query function, `this` is bound to the current item. As a result, the custom query
 function cannot be an arrow function.
@@ -119,7 +119,7 @@ const items = db(query).get();
 // `items` is `[{ a: 3 }, { a: 7, b: 2 }]`
 ```
 
-### Iterate over items in a database {#iterate-items}
+### Iterate over items in a database
 
 ```js
 // Iterate over all items
@@ -128,7 +128,7 @@ db().each((item, i) => console.log(`'b' property at index ${i}: ${item.b}`));
 db({ b: 'hello' }).each((item) => console.log(`'a' property: ${item.a}`));
 ```
 
-### Remove items from a database {#remove-items}
+### Remove items from a database
 
 ```js
 // Remove items where `a` equals `7`
@@ -139,7 +139,7 @@ db({ b: { isUndefined: true } }).remove(); // returns `1`
 db().remove();
 ```
 
-## New features {#new-features}
+## New features
 
 Salty probably won't gain any new features, ever. It exists solely to meet the requirements of
 JSDoc.
@@ -148,7 +148,7 @@ The exception is if a JSDoc template uses TaffyDB features that aren't available
 the case, [create an issue](https://github.com/jsdoc/jsdoc/issues) with details about the template
 you're using and the feature that's missing.
 
-## TaffyDB, JSDoc, and security {#security-risk}
+## TaffyDB, JSDoc, and security
 
 Is TaffyDB a security risk? And has JSDoc ever used TaffyDB in a way that creates a security risk?
 The answer to both questions is no.
@@ -170,7 +170,7 @@ So Salty doesn't mitigate a security risk or fix a security issue. However, in g
 good idea to tell people to ignore CVEs; also, it can be difficult to convince your colleagues or
 employer to ignore a specific CVE. For those reasons, it was worth the trouble to replace TaffyDB.
 
-## What's with the name? {#name}
+## What's with the name?
 
 It's a play on "saltwater taffy." Hilarious!
 
