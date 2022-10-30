@@ -1,7 +1,9 @@
 const _ = require('lodash');
 
 // Install shim for Object.hasOwn() if necessary.
-require('object.hasown').shim();
+if (!Object.hasOwn) {
+  Object.hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
+}
 
 const IS_UNDEFINED = {
   isUndefined: true,

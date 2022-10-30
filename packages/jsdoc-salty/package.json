@@ -22,8 +22,7 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "object.hasown": "^1.1.1"
+    "lodash": "^4.17.21"
   },
   "engines": {
     "node": ">=v12.0.0"
