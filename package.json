@@ -10,7 +10,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "gulp": "^4.0.2",
-    "gulp-eslint-new": "^1.5.1",
+    "gulp-eslint-new": "^1.6.0",
     "gulp-prettier": "^4.0.0",
     "jasmine": "^3.99.0",
     "jasmine-console-reporter": "^3.1.0",
