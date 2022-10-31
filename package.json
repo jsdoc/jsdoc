@@ -16,7 +16,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^3.0.1",
     "klaw-sync": "^6.0.0",
-    "lerna": "^5.4.3",
+    "lerna": "^5.6.2",
     "lodash": "^4.17.21",
     "mock-fs": "^5.1.4",
     "nyc": "^15.1.0",
