@@ -22,7 +22,7 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "@babel/parser": "^7.20.0",
+    "@babel/parser": "^7.20.1",
     "@jsdoc/core": "^0.4.2",
     "@jsdoc/util": "^0.2.6",
     "lodash": "^4.17.21"
