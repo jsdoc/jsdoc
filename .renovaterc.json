@@ -4,5 +4,11 @@
   "ignoreDeps": ["taffydb"],
   "automerge": true,
   "automergeType": "branch",
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "packageNames": ["node"],
+      "enabled": false
+    }
+  ]
 }
