@@ -100,9 +100,13 @@ db.sort('a, b');
 
 ```js
 // Get array of all items
-const allItems = db().get();
+const emptyMatcher = db().get();
+// Get array of items where `a` is either `1` or `3`
+const arrayMatcher = db({ a: [1, 3] }).get();
+// Get array of items where `a` is `1` and `b` is `hello`
+const multiMatcher = db({ a: 1 }, { b: 'hello' }).get();
 // Get array of items where `b` is undefined
-const someItems = db({ b: { isUndefined: true } }).get();
+const undefinedMatcher = db({ b: { isUndefined: true } }).get();
 ```
 
 ### Get items with a custom query function

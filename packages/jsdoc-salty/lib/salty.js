@@ -1,6 +1,7 @@
 const _ = require('lodash');
 
 // Install shim for Object.hasOwn() if necessary.
+/* istanbul ignore next */
 if (!Object.hasOwn) {
   Object.hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 }
@@ -63,6 +64,10 @@ function finderWithMatcher(salty, ...args) {
         matcherValue = matcher[key];
         if (_.isMatch(matcherValue, IS_UNDEFINED)) {
           matches = _.isUndefined(item[key]);
+        } else if (Array.isArray(matcherValue)) {
+          if (!matcherValue.includes(item[key])) {
+            matches = false;
+          }
         } else if (matcherValue !== item[key]) {
           matches = false;
         }

@@ -169,6 +169,17 @@ describe('@jsdoc/salty/lib/salty', () => {
         });
       });
 
+      it('returns the selected items when the matcher contains an array of values', () => {
+        validate((db) => {
+          const result = db({ a: [2, 47] }).get();
+
+          expect(result).toMatchArrayOfObjects([
+            { a: 2, b: undefined, c: true },
+            { a: 47, b: null, c: true },
+          ]);
+        });
+      });
+
       it('returns the correct items with the special matcher for undefined values', () => {
         validate((db) => {
           const result = db({ b: { isUndefined: true } }).get();
