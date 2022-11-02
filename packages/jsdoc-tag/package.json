@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/tag",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Tools for working with block and inline JSDoc tags.",
   "keywords": [
     "jsdoc"
@@ -22,8 +22,8 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "@jsdoc/core": "^0.4.2",
-    "@jsdoc/util": "^0.2.6",
+    "@jsdoc/core": "^0.4.3",
+    "@jsdoc/util": "^0.2.7",
     "catharsis": "^0.9.0"
   },
   "engines": {
