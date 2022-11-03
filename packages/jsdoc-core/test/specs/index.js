@@ -21,6 +21,14 @@ describe('@jsdoc/core', () => {
     });
   });
 
+  describe('env', () => {
+    it('is lib/env', () => {
+      const env = require('../../lib/env');
+
+      expect(core.env).toBe(env);
+    });
+  });
+
   describe('name', () => {
     it('is lib/name', () => {
       const name = require('../../lib/name');

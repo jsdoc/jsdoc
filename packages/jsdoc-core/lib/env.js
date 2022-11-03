@@ -2,7 +2,7 @@
  * Data about the environment in which JSDoc is running, including the configuration settings that
  * were used to run JSDoc.
  *
- * @module jsdoc/env
+ * @alias @jsdoc/core.env
  */
 module.exports = {
   /**

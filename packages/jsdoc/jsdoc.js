@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-let env;
+const { env } = require('@jsdoc/core');
 
 // initialize the environment for Node.js
 (() => {
@@ -20,7 +20,6 @@ let env;
   });
   /* eslint-enable no-global-assign, no-redeclare */
 
-  env = require('./lib/jsdoc/env');
   env.args = process.argv.slice(2);
 })();
 
