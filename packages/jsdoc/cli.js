@@ -11,7 +11,7 @@ const path = require('path');
 const { Scanner } = require('jsdoc/src/scanner');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
-const { taffy } = require('taffydb');
+const { taffy } = require('@jsdoc/salty');
 const Promise = require('bluebird');
 
 /**

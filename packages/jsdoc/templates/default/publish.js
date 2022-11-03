@@ -5,7 +5,7 @@ const helper = require('jsdoc/util/templateHelper');
 const { log } = require('@jsdoc/util');
 const { lsSync } = require('@jsdoc/util').fs;
 const path = require('path');
-const { taffy } = require('taffydb');
+const { taffy } = require('@jsdoc/salty');
 const template = require('jsdoc/template');
 
 const htmlsafe = helper.htmlsafe;
