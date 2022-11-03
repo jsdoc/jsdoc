@@ -22,13 +22,6 @@ To install the latest version on npm locally and save it in your package's
 
     npm install --save-dev jsdoc
 
-**Note**: By default, npm adds your package using the caret operator in front of
-the version number (for example, `^3.6.3`). We recommend using the tilde
-operator instead (for example, `~3.6.3`), which limits updates to the most
-recent patch-level version. See
-[this Stack Overflow answer](https://stackoverflow.com/questions/22343224) for
-more information about the caret and tilde operators.
-
 To install the latest development version locally, without updating your
 project's `package.json` file:
 
@@ -93,8 +86,8 @@ JSDoc](https://medium.com/@kevinast/integrate-gitbook-jsdoc-974be8df6fb3)
 
 ## License
 
-JSDoc 3 is copyright (c) 2011-present Michael Mathews <micmath@gmail.com> and
-the [contributors to JSDoc](https://github.com/jsdoc/jsdoc/graphs/contributors).
+JSDoc is copyright (c) 2011-present Michael Mathews <micmath@gmail.com> and the
+[contributors to JSDoc](https://github.com/jsdoc/jsdoc/graphs/contributors).
 
-JSDoc 3 is free software, licensed under the Apache License, Version 2.0. See
-the file `LICENSE.md` in this distribution for more details.
+JSDoc is free software, licensed under the Apache License, Version 2.0. See the
+file `LICENSE.md` in this distribution for more details.
