@@ -30,6 +30,9 @@ addMatchers({
 
     return valueName === otherName;
   },
+  toHaveOwnProperty(other, value) {
+    return Object.hasOwn(value, other);
+  },
   // The objects in `value` must have all of the keys and values from the corresponding objects in
   // `other`. The object in `value` can have additional properties as well. For example, if
   // `other[0]` is `{ a: 1 }`, and `value[0]` is `{ a: 1, b: 2 }`, then the objects match.
