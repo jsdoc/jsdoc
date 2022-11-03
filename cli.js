@@ -413,7 +413,7 @@ module.exports = (() => {
     cli.generateDocs = () => {
         const path = require('jsdoc/path');
         const resolver = require('jsdoc/tutorial/resolver');
-        const taffy = require('taffydb').taffy;
+        const { taffy } = require('@jsdoc/salty');
 
         let template;
 

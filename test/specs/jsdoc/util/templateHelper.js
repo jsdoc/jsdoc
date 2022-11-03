@@ -10,7 +10,7 @@ describe("jsdoc/util/templateHelper", () => {
     const helper = require('jsdoc/util/templateHelper');
     const logger = require('jsdoc/util/logger');
     const resolver = require('jsdoc/tutorial/resolver');
-    const taffy = require('taffydb').taffy;
+    const { taffy } = require('@jsdoc/salty');
 
     helper.registerLink('test', 'path/to/test.html');
 
@@ -558,8 +558,7 @@ describe("jsdoc/util/templateHelper", () => {
         });
     });
 
-    // we can't use toEqual() because TaffyDB adds its own stuff to the array it returns.
-    // instead, we make sure arrays a and b are the same length, and that each object in
+    // Make sure arrays a and b are the same length, and that each object in
     // array b has all the properties of the corresponding object in array a
     // used for getMembers and prune tests.
     function compareObjectArrays(a, b) {

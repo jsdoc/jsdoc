@@ -1,6 +1,3 @@
-The default template for JSDoc 3 uses: [the Taffy Database library](http://taffydb.com/) and the [Underscore Template library](http://underscorejs.org/).
-
-
 ## Generating Typeface Fonts
 
 The default template uses the [OpenSans](https://www.google.com/fonts/specimen/Open+Sans) typeface. The font files can be regenerated as follows:
