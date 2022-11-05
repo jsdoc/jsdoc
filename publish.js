@@ -14,7 +14,7 @@
     limitations under the License.
 */
 const _ = require('lodash');
-const config = require('./lib/config');
+const { loadConfigSync } = require('./lib/config');
 const { db } = require('./lib/db');
 const DocletHelper = require('./lib/doclethelper');
 const { TaskRunner } = require('@jsdoc/task-runner');
@@ -22,7 +22,7 @@ const tasks = require('./lib/default-tasks');
 
 exports.publish = async (taffyData, dependencies) => {
   const options = dependencies.get('options');
-  const templateConfig = config.loadSync().get();
+  const templateConfig = loadConfigSync(dependencies);
   const allConfig = _.defaults(
     {},
     {
