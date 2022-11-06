@@ -42,10 +42,6 @@ exports.publish = async (taffyData, dependencies) => {
   const runner = new TaskRunner();
 
   docletHelper.addDoclets(taffyData);
-  // TODO: Replicate this logic when `DocletHelper` goes away:
-  // helper.prune(taffyData);
-  // taffyData.sort('longname, version, since');
-  // TODO: Do all of this in the `setContext` task.
   context.doclets = db({
     config: allConfig,
     values: docletHelper.allDoclets,
