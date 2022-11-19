@@ -12,7 +12,7 @@
     "gulp": "^4.0.2",
     "gulp-eslint-new": "^1.7.0",
     "gulp-prettier": "^4.0.0",
-    "jasmine": "^3.99.0",
+    "jasmine": "^4.5.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^3.0.1",
     "klaw-sync": "^6.0.0",
