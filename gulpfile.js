@@ -15,7 +15,7 @@
 */
 const ConsoleReporter = require('jasmine-console-reporter');
 const csso = require('gulp-csso');
-const eslint = require('gulp-eslint7');
+const eslint = require('gulp-eslint-new');
 const gulp = require('gulp');
 const less = require('gulp-less');
 const path = require('path');
