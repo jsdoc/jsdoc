@@ -24,22 +24,6 @@ const uglify = require('gulp-uglify');
 
 const NODE_MODULES_PATH = path.join(__dirname, 'node_modules');
 
-// Patch the `require` function so it can locate JSDoc modules and dependencies.
-// Must be called before any Gulp task that uses JSDoc modules.
-function patchRequire() {
-  const jsdocPath = path.join(NODE_MODULES_PATH, 'jsdoc');
-
-  /* eslint-disable no-global-assign, no-redeclare */
-  require = require('requizzle')({
-    requirePaths: {
-      before: [path.join(jsdocPath, 'lib')],
-      after: [path.join(jsdocPath, 'node_modules')],
-    },
-    infect: true,
-  });
-  /* eslint-enable no-global-assign, no-redeclare */
-}
-
 const source = {
   code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
   css: './styles/hljs-tomorrow.css',
@@ -109,7 +93,6 @@ function jasmine() {
     },
   });
 
-  patchRequire();
   gulpJasmine = require('gulp-jasmine')({
     config: {
       helpers: source.helpers,
