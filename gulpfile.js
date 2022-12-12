@@ -42,15 +42,11 @@ function patchRequire() {
 
 const source = {
   code: ['./publish.js', './lib/**/*.js', './scripts/**/*.js'],
+  css: './styles/hljs-tomorrow.css',
   helpers: ['./test/helpers/**/*.js', './node_modules/@jsdoc/test-matchers'],
   js: {
     copy: [path.join(NODE_MODULES_PATH, 'jquery/dist/jquery.min.js')],
-    minify: [
-      './scripts/*.js',
-      path.join(NODE_MODULES_PATH, 'code-prettify/src/prettify.js'),
-      path.join(NODE_MODULES_PATH, 'code-prettify/src/lang-css.js'),
-      path.join(NODE_MODULES_PATH, 'jqtree/tree.jquery.js'),
-    ],
+    minify: ['./scripts/*.js', path.join(NODE_MODULES_PATH, 'jqtree/tree.jquery.js')],
   },
   less: './styles/bootstrap/baseline.less',
   lint: [
@@ -69,12 +65,12 @@ const target = {
   js: './static/scripts',
 };
 
-function css() {
-  return gulp.src(source.less).pipe(less()).pipe(gulp.dest(target.css));
+function cssStatic() {
+  return gulp.src(source.css).pipe(gulp.dest(target.css));
 }
 
-function cssMinify() {
-  return gulp.src(source.less).pipe(less()).pipe(csso()).pipe(gulp.dest(target.css));
+function cssStaticMinify() {
+  return gulp.src(source.css).pipe(csso()).pipe(gulp.dest(target.css));
 }
 
 function format() {
@@ -87,6 +83,14 @@ function jsCopy() {
 
 function jsMinify() {
   return gulp.src(source.js.minify).pipe(uglify()).pipe(gulp.dest(target.js));
+}
+
+function lessBuild() {
+  return gulp.src(source.less).pipe(less()).pipe(gulp.dest(target.css));
+}
+
+function lessMinify() {
+  return gulp.src(source.less).pipe(less()).pipe(csso()).pipe(gulp.dest(target.css));
 }
 
 function lint() {
@@ -117,14 +121,14 @@ function jasmine() {
   return gulp.src(source.tests).pipe(gulpJasmine);
 }
 
-exports.css = css;
-exports['css-minify'] = cssMinify;
 exports.format = format;
 exports.jasmine = jasmine;
 exports['js-copy'] = jsCopy;
 exports['js-minify'] = jsMinify;
 exports.lint = lint;
 
+exports.css = gulp.parallel(cssStatic, lessBuild);
+exports['css-minify'] = gulp.parallel(cssStaticMinify, lessMinify);
 exports.js = gulp.series(exports['js-copy'], exports['js-minify']);
 exports.build = gulp.parallel(exports['css-minify'], exports.js);
 exports.default = gulp.series(exports.lint, exports.jasmine);

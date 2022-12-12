@@ -14,8 +14,6 @@
     limitations under the License.
 */
 @import "bootstrap.less";
-@import (inline) "../prettify-tomorrow.css";
-
 @import "../toc.less";
 
 
@@ -127,11 +125,16 @@ dt, th {
 }
 
 .dl-summary-callout dd {
-    margin-bottom: floor(@line-height-computed / 2);
+    margin-bottom: floor((@line-height-computed / 2));
 }
 
 dd > p {
     .p-margin();
+}
+
+.highlighted-code {
+  overflow-wrap: break-word;
+  white-space: pre;
 }
 
 .label {
@@ -170,13 +173,16 @@ dd > p {
     background-color: @deep-purple-light;
 }
 
-.page-header {
-    border-bottom: 0;
+.line-number {
+    color: @code-light-gray;
+    min-width: floor((@line-height-computed * 2));
+    text-align: right;
+    white-space: nowrap;
+    width: 1%;
 }
 
-.prettyprint.linenums li {
-    .code-base();
-    color: @code-light-gray;
+.page-header {
+    border-bottom: 0;
 }
 
 .property-type {
@@ -185,6 +191,10 @@ dd > p {
 
 .signature-params, .signature-returns {
     color: @code-light-gray;
+}
+
+.source-code {
+    &:extend(pre);
 }
 
 .source-link {
@@ -215,7 +225,7 @@ dd > p {
 
 .symbol-detail-labels {
     font-size: @font-size-base * 0.8;
-    margin-bottom: ceil(@font-size-base / 4);
+    margin-bottom: ceil((@font-size-base / 4));
     margin-top: @h-margin-top-large;
 }
 
@@ -320,6 +330,17 @@ h2 + section > .symbol-detail-labels:first-child,
 
 
 /* Tables */
+
+.jsdoc-code-table {
+    .table();
+    .code-base();
+}
+
+.jsdoc-code-table > tbody > tr > td,
+.jsdoc-code-table > tbody > tr > th {
+    border: none;
+    padding: 0 1em 0 1em;
+}
 
 .jsdoc-details-table {
     .table();
