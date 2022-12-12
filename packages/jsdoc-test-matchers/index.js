@@ -1,6 +1,9 @@
 const _ = require('lodash');
 const { addMatchers } = require('add-matchers');
 
+// Adds matchers from https://github.com/JamieMason/Jasmine-Matchers.
+require('jasmine-expect');
+
 addMatchers({
   toBeError(value) {
     return value instanceof Error;
