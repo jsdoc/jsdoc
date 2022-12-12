@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/cli",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Command-line tool for JSDoc.",
   "keywords": [
     "jsdoc"
@@ -22,7 +22,7 @@
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
   "dependencies": {
-    "@jsdoc/core": "^0.4.3",
+    "@jsdoc/core": "^0.4.4",
     "@jsdoc/util": "^0.2.7",
     "lodash": "^4.17.21",
     "ow": "^0.28.2",

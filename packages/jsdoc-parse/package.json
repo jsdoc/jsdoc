@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/parse",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Code-parsing tools for JSDoc",
   "keywords": [
     "jsdoc"
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.20.3",
-    "@jsdoc/core": "^0.4.3",
+    "@jsdoc/core": "^0.4.4",
     "@jsdoc/util": "^0.2.7",
     "lodash": "^4.17.21"
   },
