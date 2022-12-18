@@ -230,8 +230,6 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   let html;
   let outpath;
 
-  resolveLinks = resolveLinks !== false;
-
   docData = {
     env: env,
     title: title,
@@ -241,7 +239,7 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   outpath = path.join(outdir, filename);
   html = view.render('container.tmpl', docData);
 
-  if (resolveLinks) {
+  if (resolveLinks !== false;) {
     html = helper.resolveLinks(html, dependencies); // turn {@link foo} into <a href="foodoc.html">foo</a>
   }
 
