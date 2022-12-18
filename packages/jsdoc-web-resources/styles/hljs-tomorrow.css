@@ -2,15 +2,15 @@
 /* Based on https://github.com/chriskempson/tomorrow-theme */
 
 :root {
-  --background-color: #F5F5F5;
-  --text-color: #3D3D3C;
-  --tomorrow-blue: #4271AE;
-  --tomorrow-gray: #8E908C;
-  --tomorrow-green: #718C00;
-  --tomorrow-orange: #F5871F;
-  --tomorrow-purple: #8959A8;
-  --tomorrow-red: #C82829;
-  --tomorrow-yellow: #C99E00;
+  --background-color: #f5f5f5;
+  --text-color: #3d3d3c;
+  --tomorrow-blue: #4271ae;
+  --tomorrow-gray: #8e908c;
+  --tomorrow-green: #718c00;
+  --tomorrow-orange: #f5871f;
+  --tomorrow-purple: #8959a8;
+  --tomorrow-red: #c82829;
+  --tomorrow-yellow: #c99e00;
 }
 
 .hljs,
