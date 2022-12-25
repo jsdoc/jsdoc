@@ -28,5 +28,8 @@
   },
   "scripts": {
     "test": "gulp"
-  }
+  },
+  "man": [
+    "./jsdoc.1"
+  ]
 }
