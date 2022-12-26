@@ -31,9 +31,8 @@ const sourceGlob = {
     copy: ['node_modules/jqtree/tree.jquery.js', 'node_modules/jquery/dist/jquery.min.js'],
     minify: ['scripts/*.js'],
   },
-  less: ['styles/bootstrap/baseline.less'],
   lint: ['*.js', 'lib/**/*.js', 'scripts/**/*.js', 'test/**/*.js'],
-  lintIgnore: ['test/fixtures/**/*.js'],
+  sass: ['styles/bootstrap/baseline.scss'],
   tests: ['test/specs/**/*.js'],
   views: ['views/**/*.hbs'],
 };
@@ -65,6 +64,18 @@ function copyTo(dest) {
   };
 }
 
+async function removeMaps(filepath) {
+  let files;
+
+  if (!filepath) {
+    throw new Error('You must specify a filepath in which to remove .map files.');
+  }
+
+  files = await glob(path.join(filepath, '**/*.map'));
+
+  await Promise.all(files.map((file) => fs.rm(file)));
+}
+
 function writeTo(dest) {
   return async (file, data) => {
     const out = path.join(dest, path.basename(file));
@@ -91,6 +102,17 @@ const jsCopy = task({
   },
 });
 
+const jsCopyAll = task({
+  name: 'js-copy-all',
+  run: async () => {
+    const copy = await glob(sourceGlob.js.copy);
+    const minify = await glob(sourceGlob.js.minify);
+    const files = [...copy, ...minify];
+
+    await Promise.all(files.map(copyTo(target.js)));
+  },
+});
+
 const jsMinify = task({
   name: 'js-minify',
   run: async () => {
@@ -108,16 +130,16 @@ const jsMinify = task({
   },
 });
 
-const lessBuild = task({
-  name: 'less-build',
+const sassBuild = task({
+  name: 'sass-build',
   run: async () => {
-    const files = await glob(sourceGlob.less);
+    const files = await glob(sourceGlob.sass);
 
     await Promise.all(
       files.map(async (file) => {
         const out = path.join(target.css, changeExtension(file, '.css'));
 
-        await execa(bin('lessc'), [file, out]);
+        await execa(bin('sass'), [file, out]);
       })
     );
   },
@@ -138,7 +160,7 @@ export const coverage = task({
 
 export const css = task({
   name: 'css',
-  dependencies: [cssStatic, lessBuild],
+  dependencies: [cssStatic, sassBuild],
   run: async () => {
     const files = await glob(path.join(target.css, '*.css'));
 
@@ -147,7 +169,13 @@ export const css = task({
         await execa(bin('csso'), ['--input', file, '--output', file]);
       })
     );
+    await removeMaps(target.css);
   },
+});
+
+export const dev = task({
+  name: 'dev',
+  dependencies: [cssStatic, jsCopyAll, sassBuild],
 });
 
 export const format = task({
@@ -160,12 +188,20 @@ export const format = task({
 export const js = task({
   name: 'js',
   dependencies: [jsCopy, jsMinify],
+  run: async () => {
+    await removeMaps(target.js);
+  },
+});
+
+export const build = task({
+  name: 'build',
+  dependencies: [css, js],
 });
 
 export const lint = task({
   name: 'lint',
   run: async () => {
-    await execa(bin('eslint'), ['--ignore-pattern', ...sourceGlob.lintIgnore, ...sourceGlob.lint]);
+    await execa(bin('eslint'), [...sourceGlob.lint]);
   },
 });
 
@@ -190,9 +226,9 @@ export const test = task({
       },
     });
 
-    jasmine.exitOnCompletion = false;
     jasmine.clearReporters();
     jasmine.addReporter(reporter);
+    jasmine.exitOnCompletion = false;
     jasmine.loadConfig({
       helpers: sourceGlob.helpers,
       random: false,

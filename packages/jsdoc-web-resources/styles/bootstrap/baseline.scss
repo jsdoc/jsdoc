@@ -1,0 +1,514 @@
+/*
+  Copyright 2022 Google LLC
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+@import 'bootstrap.scss';
+@import '../toc';
+
+// TODO: Make the Sass variable names more consistent with Bootstrap.
+
+$body-font: 'Noto Serif';
+$code-font: 'Inconsolata';
+$code-font-size: $font-size-base;
+$dl-horizontal-offset: $font-size-base * 10;
+$h-font: 'Karla';
+$h1-font-size: $font-size-base * 2.4;
+$h2-font-size: $font-size-base * 2;
+$h3-font-size: $font-size-base * 1.5;
+$sans-serif-font: $h-font;
+$serif-font: $body-font;
+
+$border-radius-small: 0.25rem;
+$navbar-height: 3rem;
+$footer-height: $navbar-height;
+$line-height-computed: $font-size-base * $line-height-base;
+$h-margin-top-large: $line-height-computed * 2;
+$h-margin-top-small: $line-height-computed;
+
+$link-color: $primary;
+$link-color-hover: tint-color($link-color, 10%);
+
+$blue-light: #90caf9; // Material Design Blue 200
+$code-light-gray: shade-color(#8e908c, 10%);
+$deep-orange-light: #ffab91; // Material Design Deep Orange 200
+$deep-purple-light: #b39ddb; // Material Design Deep Purple 200
+$indigo-light: #9fa8da; // Material Design Indigo 200
+$green-light: #a5d6a7; // Material Design Green 200
+$light-green-light: #c5e1a5; // Material Design Light Green 200
+$orange-light: #ffcc80; // Material Design Orange 200
+
+/* Typography */
+
+@mixin p-margin() {
+  margin-bottom: 0;
+}
+
+@mixin h-base() {
+  font-family: $h-font, sans-serif;
+}
+
+@mixin h-border() {
+  border-bottom: 1px solid $gray-300;
+}
+
+@mixin code-base() {
+  font-family: $code-font, monospace;
+  font-size: 100%;
+  background-color: tint-color($code-color, 95%);
+}
+
+@mixin dl-horizontal() {
+  dd {
+    @extend .clearfix;
+  }
+
+  @include media-breakpoint-up(md) {
+    dt {
+      @include text-truncate();
+      float: left;
+      width: $dl-horizontal-offset;
+      clear: left;
+      text-align: right;
+    }
+
+    dd {
+      margin-left: $dl-horizontal-offset;
+    }
+  }
+}
+
+@mixin lead() {
+  margin-bottom: $line-height-computed * 1.1;
+  font-size: $font-size-base * 1.1;
+  font-weight: 300;
+  line-height: $line-height-computed * 1.1;
+
+  @include media-breakpoint-up(md) {
+    font-size: $font-size-base * 1.5;
+    line-height: $line-height-computed * 1.5;
+  }
+}
+
+@mixin source-code() {
+  @extend pre;
+  @include border-radius(0.2rem);
+  background-color: $gray-100;
+  border: 1px solid $gray-300;
+  margin: 0 0 0.7rem;
+  padding: 0.6rem;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  font-family: $body-font, serif;
+  // Leave space for the header and footer.
+  margin-bottom: $footer-height;
+  padding-top: $navbar-height * 1.5;
+}
+
+h1,
+.h1 {
+  @include h-base();
+  @include h-border();
+  font-size: $h1-font-size;
+  margin-top: $h-margin-top-large;
+
+  + section h2:first-child,
+  + section .h2:first-child {
+    margin-top: $h-margin-top-small;
+  }
+
+  > small {
+    font-size: $h1-font-size * 0.65;
+  }
+}
+
+h2,
+.h2 {
+  @include h-base();
+  @include h-border();
+  font-size: $h2-font-size;
+  margin-top: $h-margin-top-large;
+
+  + section h3:first-child,
+  + section .h3:first-child {
+    margin-top: $h-margin-top-small;
+  }
+}
+
+h3,
+.h3 {
+  @include h-base();
+  font-size: $h3-font-size;
+  margin-top: $h-margin-top-large;
+}
+
+h4,
+.h4 {
+  @include h-base();
+  font-size: $h4-font-size;
+  margin-top: $h-margin-top-small;
+}
+
+h5,
+.h5 {
+  @include h-base();
+  font-size: $h5-font-size;
+  margin-top: $h-margin-top-small;
+}
+
+h6,
+.h6 {
+  @include h-base();
+  font-size: $h6-font-size;
+  margin-top: $h-margin-top-small;
+}
+
+a {
+  @extend .link-primary;
+  text-decoration: none;
+
+  :focus,
+  :hover {
+    text-decoration: underline;
+  }
+}
+
+pre {
+  @include source-code();
+}
+
+code {
+  @include code-base();
+  border-radius: $border-radius-small;
+  padding: 0.125rem 0.25rem;
+}
+
+pre code {
+  background-color: inherit;
+  font-size: $code-font-size;
+}
+
+dt,
+th {
+  font-family: $sans-serif-font;
+}
+
+.dl-compact {
+  @include dl-horizontal();
+
+  dt {
+    text-align: left;
+  }
+
+  dd {
+    line-height: $line-height-computed * 0.75;
+
+    pre {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.dl-compact > dd::after {
+  display: inline-block;
+}
+
+.dl-summary-callout dd {
+  margin-bottom: $line-height-computed * 0.5;
+}
+
+dd > p {
+  @include p-margin();
+}
+
+.highlighted-code {
+  overflow-wrap: break-word;
+  white-space: pre;
+}
+
+// TODO: Reimplement as Bootstrap badges: https://getbootstrap.com/docs/5.2/components/badge/
+.label {
+  color: #ffffff;
+  font-family: $sans-serif-font;
+  font-size: 100%;
+  font-weight: normal;
+  // TODO: Global: update units.
+  padding: 0.1em 0.5em 0.1em;
+  border-radius: $border-radius-small * 0.5;
+  text-transform: uppercase;
+}
+
+.label-async {
+  background-color: $light-green-light;
+}
+
+.label-generator {
+  background-color: $indigo-light;
+}
+
+.label-package,
+.label-private,
+.label-protected,
+.label-public {
+  background-color: $blue-light;
+}
+
+.label-constant,
+.label-readonly {
+  background-color: $deep-orange-light;
+}
+
+.label-kind {
+  background-color: $orange-light;
+}
+
+.label-inner,
+.label-static {
+  background-color: $green-light;
+}
+
+.label-virtual {
+  background-color: $deep-purple-light;
+}
+
+.line-number {
+  color: $code-light-gray;
+  min-width: floor($line-height-computed * 2);
+  text-align: right;
+  white-space: nowrap;
+  width: 1%;
+}
+
+.page-header {
+  border-bottom: 0;
+  margin: 2.5rem 0 1.25rem;
+  padding-bottom: 0.5rem;
+}
+
+.property-type {
+  margin-left: $font-size-base;
+}
+
+.signature-params,
+.signature-returns {
+  color: $code-light-gray;
+}
+
+.source-code {
+  @include source-code();
+}
+
+.source-link {
+  font-size: $font-size-base * 0.9;
+  margin-top: -0.5rem;
+}
+
+.summary-callout,
+.symbol-index-section {
+  font-size: $font-size-base * 0.9;
+}
+
+.summary-callout-heading,
+.symbol-index-section-heading {
+  @extend .h4;
+  // TODO: Change color scheme
+  color: $info;
+  font-size: 1.125rem;
+  margin-top: $h-margin-top-small;
+  border-bottom: 0;
+}
+
+// Use larger text in the first paragraph of the description
+.symbol-classdesc,
+.symbol-description {
+  p:first-child {
+    @include lead();
+  }
+}
+
+.h.symbol-params,
+.h.symbol-properties {
+  font-size: $h4-font-size * 0.9;
+}
+
+.symbol-detail-labels {
+  font-size: $font-size-base * 0.8;
+  margin-bottom: $font-size-base * 0.25;
+  margin-top: $h-margin-top-large;
+}
+
+// Remove whitespace above the first set of labels to follow an h2
+h2 + section > .symbol-detail-labels:first-child,
+.h2 + section > .symbol-detail-labels:first-child {
+  margin-top: 0;
+}
+
+// Remove whitespace above a heading that follows a set of labels
+.symbol-detail-labels + h1,
+.symbol-detail-labels + .h1,
+.symbol-detail-labels + h2,
+.symbol-detail-labels + .h2,
+.symbol-detail-labels + h3,
+.symbol-detail-labels + .h3,
+.symbol-detail-labels + h4,
+.symbol-detail-labels + .h4,
+.symbol-detail-labels + h5,
+.symbol-detail-labels + .h5,
+.symbol-detail-labels + h6,
+.symbol-detail-labels + .h6 {
+  margin-top: 0;
+}
+
+.symbol-index-list > dd {
+  margin-bottom: 0.75em;
+}
+
+.symbol-index-name {
+  text-indent: -1em;
+  margin-left: 1em;
+}
+
+.symbol-name {
+  font-weight: bold;
+}
+
+/* Grid */
+
+// TODO: Use class selectors.
+#jsdoc-body-container,
+#jsdoc-footer-container,
+#jsdoc-navbar-container {
+  @include make-container();
+}
+
+.jsdoc-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height;
+  margin: auto;
+  padding: $navbar-padding-y $navbar-padding-x;
+  background-color: $gray-100;
+  border-top: 1px solid $gray-300;
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.summary-callout,
+.symbol-index {
+  @include make-container();
+}
+
+// TODO: Use class selectors.
+#jsdoc-content,
+.summary-content,
+.symbol-index-section {
+  @include make-row();
+  padding: 0 1rem;
+}
+
+// TODO: Use breakpoints to set width.
+.summary-column,
+.symbol-index-column {
+  @include make-col(4);
+  // padding: 0 1rem;
+}
+
+// TODO: Use breakpoints to set width.
+// TODO: Use class selectors.
+#jsdoc-content-container {
+  @extend .order-2;
+  @include make-col(9);
+}
+
+// TODO: Use breakpoints to set width.
+// TODO: Use class selectors.
+#jsdoc-toc-nav {
+  @include make-col(3);
+  @extend .order-1;
+  font-family: $h-font, sans-serif;
+  margin-top: $line-height-computed * 2.5;
+}
+
+/* Navigation */
+
+.jsdoc-navbar {
+  @extend .navbar;
+  @extend .fixed-top;
+  background-color: $gray-100;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid $gray-300;
+  padding: 0.9rem;
+}
+
+.jsdoc-navbar-package-name {
+  @extend .navbar-brand;
+}
+
+/* Tables */
+
+.jsdoc-code-table {
+  @extend .table;
+  @include code-base();
+  background-color: inherit;
+  font-size: $font-size-base;
+}
+
+.jsdoc-code-table > tbody > tr > td,
+.jsdoc-code-table > tbody > tr > th {
+  border: none;
+  padding: 0 1em 0 1em;
+}
+
+.jsdoc-details-table {
+  @extend .table;
+  @extend .table-hover;
+}
+
+.jsdoc-details-table > thead > tr {
+  border-bottom-width: 2px;
+}
+
+.jsdoc-details-table > tbody > tr:last-child {
+  border-bottom-color: #fff0;
+}
+
+td > p:last-child {
+  @include p-margin();
+}
+
+article td,
+article th {
+  @extend .table-sm;
+  padding-left: 0;
+}
+
+/* Callouts */
+
+.summary-callout {
+  @include border-radius(0.2rem);
+  padding: 0 1em 0 1em;
+  margin: 1em 0 1em 0;
+  border: 1px solid $gray-300;
+  border-left-width: 1em;
+  border-left-color: $info;
+}
