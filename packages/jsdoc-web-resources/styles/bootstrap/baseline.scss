@@ -237,11 +237,6 @@ dd > p {
   @include p-margin();
 }
 
-.highlighted-code {
-  overflow-wrap: break-word;
-  white-space: pre;
-}
-
 // TODO: Reimplement as Bootstrap badges: https://getbootstrap.com/docs/5.2/components/badge/
 .label {
   color: #ffffff;
@@ -288,11 +283,12 @@ dd > p {
 }
 
 .line-number {
+  @extend .text-end;
   color: $code-light-gray;
-  min-width: floor($line-height-computed * 2);
-  text-align: right;
-  white-space: nowrap;
-  width: 1%;
+  min-width: $line-height-computed;
+  user-select: none;
+  white-space: pre-line;
+  border: none;
 }
 
 .page-header {
@@ -312,6 +308,11 @@ dd > p {
 
 .source-code {
   @include source-code();
+  overflow-x: auto;
+}
+
+.source-code-numbered {
+  border: none;
 }
 
 .source-link {
@@ -390,6 +391,11 @@ h2 + section > .symbol-detail-labels:first-child,
 
 /* Grid */
 
+.hljs {
+  @include make-col-ready();
+  flex-basis: fit-content;
+}
+
 // TODO: Use class selectors.
 #jsdoc-body-container,
 #jsdoc-footer-container,
@@ -411,6 +417,20 @@ h2 + section > .symbol-detail-labels:first-child,
     margin: 0;
     text-align: center;
   }
+}
+
+.line-number {
+  @include make-col-ready();
+  flex-basis: fit-content;
+  padding-right: 1rem;
+}
+
+.source-code {
+  @include make-container();
+}
+
+.source-code-numbered {
+  @include make-row();
 }
 
 .summary-callout,
@@ -465,19 +485,6 @@ h2 + section > .symbol-detail-labels:first-child,
 }
 
 /* Tables */
-
-.jsdoc-code-table {
-  @extend .table;
-  @include code-base();
-  background-color: inherit;
-  font-size: $font-size-base;
-}
-
-.jsdoc-code-table > tbody > tr > td,
-.jsdoc-code-table > tbody > tr > th {
-  border: none;
-  padding: 0 1em 0 1em;
-}
 
 .jsdoc-details-table {
   @extend .table;
