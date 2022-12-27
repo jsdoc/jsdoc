@@ -36,7 +36,7 @@ class TagDefinition {
 }
 
 /**
- * @alias module:jsdoc/tag/dictionary.Dictionary
+ * @memberof module:jsdoc/tag/dictionary
  */
 class Dictionary {
   constructor() {
@@ -170,5 +170,4 @@ class Dictionary {
   }
 }
 
-/** @type {module:jsdoc/tag/dictionary.Dictionary} */
 exports.Dictionary = Dictionary;
