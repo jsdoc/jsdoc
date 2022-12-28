@@ -219,6 +219,10 @@ th {
   dd {
     line-height: $line-height-computed * 0.75;
 
+    p {
+      line-height: $line-height-computed;
+    }
+
     pre {
       margin-bottom: 0;
     }
@@ -309,10 +313,6 @@ dd > p {
 .source-code {
   @include source-code();
   overflow-x: auto;
-}
-
-.source-code-numbered {
-  border: none;
 }
 
 .source-link {
@@ -431,11 +431,14 @@ h2 + section > .symbol-detail-labels:first-child,
 
 .source-code-numbered {
   @include make-row();
+  margin: 0.75rem 0;
+  padding: 1.5rem 0.5rem;
 }
 
 .summary-callout,
 .symbol-index {
   @include make-container();
+  padding: 0;
 }
 
 // TODO: Use class selectors.
