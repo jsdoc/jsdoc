@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Google LLC
+  Copyright 2022 the Baseline Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -196,6 +196,14 @@ export const js = task({
 export const build = task({
   name: 'build',
   dependencies: [css, js],
+});
+
+// TODO: Also check that dependencies use acceptable licenses.
+export const licenseCheck = task({
+  name: 'license-check',
+  run: async () => {
+    await execa(bin('license-check-and-add'), ['check', '-f', '.license-check.json']);
+  },
 });
 
 export const lint = task({
