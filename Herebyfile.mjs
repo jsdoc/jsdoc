@@ -19,7 +19,6 @@ import { execa } from 'execa';
 import { promises as fs } from 'fs';
 import glob from 'fast-glob';
 import path from 'path';
-import swc from '@swc/core';
 import { task } from 'hereby';
 
 const BIN_DIR = 'node_modules/.bin';
@@ -32,7 +31,7 @@ const sourceGlob = {
     minify: ['scripts/*.js'],
   },
   lint: ['*.js', 'lib/**/*.js', 'scripts/**/*.js', 'test/**/*.js'],
-  sass: ['styles/bootstrap/baseline.scss'],
+  sass: ['styles/baseline.scss'],
   tests: ['test/specs/**/*.js'],
   views: ['views/**/*.hbs'],
 };
@@ -40,20 +39,13 @@ const target = {
   css: 'static/css',
   js: 'static/scripts',
 };
-const swcOptions = {
-  compress: true,
-  format: {
-    comments: 'some',
-  },
-  mangle: true,
+const parcelArgs = {
+  css: [sourceGlob.css, sourceGlob.sass, '--dist-dir', target.css],
+  js: [sourceGlob.js.minify, '--dist-dir', target.js],
 };
 
 function bin(name) {
   return path.join(BIN_DIR, name);
-}
-
-function changeExtension(file, extension) {
-  return path.basename(file, path.extname(file)) + extension;
 }
 
 function copyTo(dest) {
@@ -76,20 +68,19 @@ async function removeMaps(filepath) {
   await Promise.all(files.map((file) => fs.rm(file)));
 }
 
-function writeTo(dest) {
-  return async (file, data) => {
-    const out = path.join(dest, path.basename(file));
-
-    await fs.writeFile(out, data, 'utf8');
-  };
-}
-
 const cssStatic = task({
   name: 'css-static',
   run: async () => {
     const files = await glob(sourceGlob.css);
 
     await Promise.all(files.map(copyTo(target.css)));
+  },
+});
+
+const jsBuild = task({
+  name: 'js-build',
+  run: async () => {
+    await execa(bin('parcel'), ['build', ...parcelArgs.js, '--no-optimize']);
   },
 });
 
@@ -102,46 +93,17 @@ const jsCopy = task({
   },
 });
 
-const jsCopyAll = task({
-  name: 'js-copy-all',
-  run: async () => {
-    const copy = await glob(sourceGlob.js.copy);
-    const minify = await glob(sourceGlob.js.minify);
-    const files = [...copy, ...minify];
-
-    await Promise.all(files.map(copyTo(target.js)));
-  },
-});
-
 const jsMinify = task({
   name: 'js-minify',
   run: async () => {
-    const files = await glob(sourceGlob.js.minify);
-    const writer = writeTo(target.js);
-
-    await Promise.all(
-      files.map(async (file) => {
-        const src = await fs.readFile(file, 'utf8');
-        const { code } = await swc.minify(src, swcOptions);
-
-        await writer(file, code);
-      })
-    );
+    await execa(bin('parcel'), ['build', ...parcelArgs.js, '--no-source-maps']);
   },
 });
 
 const sassBuild = task({
   name: 'sass-build',
   run: async () => {
-    const files = await glob(sourceGlob.sass);
-
-    await Promise.all(
-      files.map(async (file) => {
-        const out = path.join(target.css, changeExtension(file, '.css'));
-
-        await execa(bin('sass'), [file, out]);
-      })
-    );
+    await execa(bin('parcel'), ['build', ...parcelArgs.css, '--no-optimize']);
   },
 });
 
@@ -160,22 +122,15 @@ export const coverage = task({
 
 export const css = task({
   name: 'css',
-  dependencies: [cssStatic, sassBuild],
   run: async () => {
-    const files = await glob(path.join(target.css, '*.css'));
-
-    await Promise.all(
-      files.map(async (file) => {
-        await execa(bin('csso'), ['--input', file, '--output', file]);
-      })
-    );
     await removeMaps(target.css);
+    await execa(bin('parcel'), ['build', ...parcelArgs.css, '--no-source-maps']);
   },
 });
 
 export const dev = task({
   name: 'dev',
-  dependencies: [cssStatic, jsCopyAll, sassBuild],
+  dependencies: [cssStatic, jsBuild, jsCopy, sassBuild],
 });
 
 export const format = task({
