@@ -1,5 +1,5 @@
 /*
-  Copyright 2014 the Baseline Authors.
+  Copyright 2022 the Baseline Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,40 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-.jqtree_common {
-  list-style: none;
-}
-
-ul.jqtree_common {
-  padding-left: 1.5em;
-}
-
-li.jqtree_common {
-  clear: both;
-}
-
-li.jqtree-closed > ul {
-  display: none;
-}
-
-.jqtree-title {
-  margin-left: 1.5em;
-}
-
-.jqtree-title.jqtree-title-folder {
-  margin-left: 0;
-}
-
-.jqtree-toggler {
-  margin-left: 0.2em;
-  margin-right: 0.6em;
-}
-
-.jqtree-toggler.jqtree-closed {
-  margin-left: 0;
-  margin-right: 0.45em;
-}
-
-.jqtree-toggler:hover {
-  text-decoration: none;
-}
+module.exports = {
+  env: {
+    browser: true,
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  root: true,
+};

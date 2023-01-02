@@ -27,7 +27,7 @@ const sourceGlob = {
   css: ['styles/hljs-tomorrow.css'],
   helpers: ['test/helpers/**/*.js', 'node_modules/@jsdoc/test-matchers/index.js'],
   js: {
-    copy: ['node_modules/jqtree/tree.jquery.js', 'node_modules/jquery/dist/jquery.min.js'],
+    copy: [],
     minify: ['scripts/*.js'],
   },
   lint: ['*.js', 'lib/**/*.js', 'scripts/**/*.js', 'test/**/*.js'],
@@ -38,10 +38,6 @@ const sourceGlob = {
 const target = {
   css: 'static/css',
   js: 'static/scripts',
-};
-const parcelArgs = {
-  css: [sourceGlob.css, sourceGlob.sass, '--dist-dir', target.css],
-  js: [sourceGlob.js.minify, '--dist-dir', target.js],
 };
 
 function bin(name) {
@@ -80,7 +76,9 @@ const cssStatic = task({
 const jsBuild = task({
   name: 'js-build',
   run: async () => {
-    await execa(bin('parcel'), ['build', ...parcelArgs.js, '--no-optimize']);
+    const files = await glob(sourceGlob.js.minify);
+
+    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.js, '--no-optimize']);
   },
 });
 
@@ -96,14 +94,18 @@ const jsCopy = task({
 const jsMinify = task({
   name: 'js-minify',
   run: async () => {
-    await execa(bin('parcel'), ['build', ...parcelArgs.js, '--no-source-maps']);
+    const files = await glob(sourceGlob.js.minify);
+
+    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.js, '--no-source-maps']);
   },
 });
 
 const sassBuild = task({
   name: 'sass-build',
   run: async () => {
-    await execa(bin('parcel'), ['build', ...parcelArgs.css, '--no-optimize']);
+    const files = await glob(sourceGlob.css.concat(sourceGlob.sass));
+
+    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.css, '--no-optimize']);
   },
 });
 
@@ -123,8 +125,10 @@ export const coverage = task({
 export const css = task({
   name: 'css',
   run: async () => {
+    const files = await glob(sourceGlob.css.concat(sourceGlob.sass));
+
     await removeMaps(target.css);
-    await execa(bin('parcel'), ['build', ...parcelArgs.css, '--no-source-maps']);
+    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.css, '--no-source-maps']);
   },
 });
 

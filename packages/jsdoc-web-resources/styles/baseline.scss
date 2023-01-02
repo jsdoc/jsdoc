@@ -14,7 +14,7 @@
   limitations under the License.
 */
 @import 'bootstrap.scss';
-@import 'toc';
+@import 'shoelace.scss';
 
 // TODO: Make the Sass variable names more consistent with Bootstrap.
 
@@ -47,6 +47,20 @@ $indigo-light: #9fa8da; // Material Design Indigo 200
 $green-light: #a5d6a7; // Material Design Green 200
 $light-green-light: #c5e1a5; // Material Design Light Green 200
 $orange-light: #ffcc80; // Material Design Orange 200
+
+/* Spacing */
+
+// TODO: Reimplement margins/padding/etc. in terms of these variables.
+$spacer-3x-small: 0.125rem; // 2px
+$spacer-2x-small: 0.25rem; // 4px
+$spacer-x-small: 0.5rem; // 8px
+$spacer-small: 0.75rem; // 12px
+$spacer-medium: 1rem; // 16px
+$spacer-large: 1.25rem; // 20px
+$spacer-x-large: 1.75rem; // 28px
+$spacer-2x-large: 2.25rem; // 36px
+$spacer-3x-large: 3rem; // 48px
+$spacer-4x-large: 4.5rem; // 72px
 
 /* Typography */
 
@@ -297,7 +311,7 @@ dd > p {
 
 .page-header {
   border-bottom: 0;
-  margin: 2.5rem 0 1.25rem;
+  margin: 0 0 1.25rem;
   padding-bottom: 0.5rem;
 }
 
@@ -354,9 +368,10 @@ dd > p {
   margin-top: $h-margin-top-large;
 }
 
-// Remove whitespace above the first set of labels to follow an h2
+// Remove whitespace above the first set of labels to follow an h2, and above labels in a header
 h2 + section > .symbol-detail-labels:first-child,
-.h2 + section > .symbol-detail-labels:first-child {
+.h2 + section > .symbol-detail-labels:first-child,
+header > .symbol-detail-labels {
   margin-top: 0;
 }
 
@@ -397,7 +412,6 @@ h2 + section > .symbol-detail-labels:first-child,
 }
 
 // TODO: Use class selectors.
-#jsdoc-body-container,
 #jsdoc-footer-container,
 #jsdoc-navbar-container {
   @include make-container();
@@ -441,6 +455,13 @@ h2 + section > .symbol-detail-labels:first-child,
   padding: 0;
 }
 
+// TODO: Use breakpoints to set width.
+// TODO: Use class selectors.
+#jsdoc-content-container {
+  @include make-container();
+  margin-top: $spacer-2x-large;
+}
+
 // TODO: Use class selectors.
 #jsdoc-content,
 .summary-content,
@@ -453,12 +474,11 @@ h2 + section > .symbol-detail-labels:first-child,
 .summary-column,
 .symbol-index-column {
   @include make-col(4);
-  // padding: 0 1rem;
 }
 
 // TODO: Use breakpoints to set width.
 // TODO: Use class selectors.
-#jsdoc-content-container {
+#jsdoc-main {
   @extend .order-2;
   @include make-col(9);
 }
@@ -469,7 +489,6 @@ h2 + section > .symbol-detail-labels:first-child,
   @include make-col(3);
   @extend .order-1;
   font-family: $h-font, sans-serif;
-  margin-top: $line-height-computed * 2.5;
 }
 
 /* Navigation */
@@ -478,7 +497,7 @@ h2 + section > .symbol-detail-labels:first-child,
   @extend .navbar;
   @extend .fixed-top;
   background-color: $gray-100;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0;
   border-bottom: 1px solid $gray-300;
   padding: 0.9rem;
 }

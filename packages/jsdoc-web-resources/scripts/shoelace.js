@@ -1,5 +1,5 @@
 /*
-  Copyright 2014 the Baseline Authors.
+  Copyright 2022 the Baseline Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,11 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-module.exports = {
-  extends: ['@jsdoc', 'plugin:prettier/recommended'],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  root: true,
-};
+import '../node_modules/@shoelace-style/shoelace/dist/components/tree/tree.js';
+import '../node_modules/@shoelace-style/shoelace/dist/components/tree-item/tree-item.js';
+
+// Prevent expandable tree items from expanding when their link is clicked.
+document.querySelectorAll('sl-tree-item').forEach((item) => {
+  const child = item.firstElementChild;
+
+  if (child && child.nodeName === 'A') {
+    child.addEventListener('click', (e) => {
+      e.stopImmediatePropagation();
+    });
+  }
+});
