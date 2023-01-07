@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "private": true,
-  "version": "5.0.0-dev.1",
+  "version": "5.0.0-dev.2",
   "revision": "1667509813080",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
@@ -17,7 +17,7 @@
     "@babel/parser": "^7.20.5",
     "@jsdoc/cli": "^0.2.9",
     "@jsdoc/core": "^0.4.4",
-    "@jsdoc/parse": "^0.1.5",
+    "@jsdoc/parse": "^0.1.6",
     "@jsdoc/salty": "^0.2.2",
     "@jsdoc/tag": "^0.1.4",
     "@jsdoc/util": "^0.2.7",
