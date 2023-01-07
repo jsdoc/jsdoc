@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/test-matchers",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "Jasmine matchers that JSDoc uses in its tests.",
   "keywords": [
     "jasmine",
