@@ -2,11 +2,22 @@ const _ = require('lodash');
 const { addMatchers } = require('add-matchers');
 const { format } = require('prettier');
 
-function formatHtml(str) {
-  return format(str, {
+function stripWhitespace(str) {
+  // Remove leading whitespace.
+  str = str.replace(/^[\s]+/gm, '');
+  // Remove empty lines.
+  str = str.replace(/^\n$/gm, '');
+
+  return str;
+}
+
+function normalizeHtml(str) {
+  str = format(str, {
     parser: 'html',
     tabWidth: 2,
   });
+
+  return stripWhitespace(str);
 }
 
 // Prettier lazy-loads its parsers, so preload the HTML parser while we know we're not mocked.
@@ -44,8 +55,8 @@ addMatchers({
     return valueName === otherName;
   },
   toContainHtml(other, value) {
-    const otherDiffable = formatHtml(other);
-    const valueDiffable = formatHtml(value);
+    const otherDiffable = normalizeHtml(other);
+    const valueDiffable = normalizeHtml(value);
 
     return valueDiffable.includes(otherDiffable);
   },
