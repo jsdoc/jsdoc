@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const { addMatchers } = require('add-matchers');
+const diffableHtml = require('diffable-html');
 
 // Adds matchers from https://github.com/JamieMason/Jasmine-Matchers.
 require('jasmine-expect');
@@ -61,6 +62,12 @@ addMatchers({
     }
 
     return isMatch;
+  },
+  toMatchHtml(other, value) {
+    const otherDiffable = diffableHtml(other);
+    const valueDiffable = diffableHtml(value);
+
+    return otherDiffable.includes(valueDiffable);
   },
   // The `value` object must have all of the keys and values from the `other` object. The `value`
   // object can have additional properties as well. For example, if `other` is `{ a: 1 }`, and
