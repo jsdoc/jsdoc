@@ -34,6 +34,12 @@ addMatchers({
 
     return valueName === otherName;
   },
+  toContainHtml(other, value) {
+    const otherDiffable = diffableHtml(other);
+    const valueDiffable = diffableHtml(value);
+
+    return valueDiffable.includes(otherDiffable);
+  },
   toHaveOwnProperty(other, value) {
     return Object.hasOwn(value, other);
   },
@@ -62,12 +68,6 @@ addMatchers({
     }
 
     return isMatch;
-  },
-  toMatchHtml(other, value) {
-    const otherDiffable = diffableHtml(other);
-    const valueDiffable = diffableHtml(value);
-
-    return otherDiffable.includes(valueDiffable);
   },
   // The `value` object must have all of the keys and values from the `other` object. The `value`
   // object can have additional properties as well. For example, if `other` is `{ a: 1 }`, and
