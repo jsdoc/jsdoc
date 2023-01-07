@@ -1,8 +1,17 @@
 const _ = require('lodash');
 const { addMatchers } = require('add-matchers');
-const diffableHtml = require('diffable-html');
+const { format } = require('prettier');
 
-// Adds matchers from https://github.com/JamieMason/Jasmine-Matchers.
+function formatHtml(str) {
+  return format(str, {
+    parser: 'html',
+    tabWidth: 2,
+  });
+}
+
+// Prettier lazy-loads its parsers, so preload the HTML parser while we know we're not mocked.
+require('prettier/parser-html');
+// Add matchers from https://github.com/JamieMason/Jasmine-Matchers.
 require('jasmine-expect');
 
 addMatchers({
@@ -35,8 +44,8 @@ addMatchers({
     return valueName === otherName;
   },
   toContainHtml(other, value) {
-    const otherDiffable = diffableHtml(other);
-    const valueDiffable = diffableHtml(value);
+    const otherDiffable = formatHtml(other);
+    const valueDiffable = formatHtml(value);
 
     return valueDiffable.includes(otherDiffable);
   },
