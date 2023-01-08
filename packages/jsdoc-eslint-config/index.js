@@ -6,7 +6,7 @@ module.exports = {
   },
 
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
 

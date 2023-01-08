@@ -1,2 +1,14 @@
-**/node_modules/**/*.js
-**/test/fixtures/**/*.js
+# Ignore output files.
+**/out/
+
+# Ignore temp directories.
+**/tmp/
+
+# Ignore code coverage reports.
+coverage/
+
+# Ignore static files that are part of JSDoc's output.
+packages/**/static/**
+
+# Ignore test fixtures.
+packages/**/test/fixtures/**

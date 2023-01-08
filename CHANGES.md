@@ -2,42 +2,35 @@
 
 This file describes notable changes in each version of JSDoc, starting with version 3.0.0.
 
-
 ## 4.0.0 (November 2022)
 
-+ JSDoc releases now use [semantic versioning](https://semver.org/). If JSDoc makes
+- JSDoc releases now use [semantic versioning](https://semver.org/). If JSDoc makes
   backwards-incompatible changes in the future, the major version will be incremented.
-+ JSDoc no longer uses the [`taffydb`](https://taffydb.com/) package. If your JSDoc template or
+- JSDoc no longer uses the [`taffydb`](https://taffydb.com/) package. If your JSDoc template or
   plugin uses the `taffydb` package, see the
   [instructions for replacing `taffydb` with `@jsdoc/salty`](https://github.com/jsdoc/jsdoc/tree/main/packages/jsdoc-salty#use-salty-in-a-jsdoc-template).
-+ JSDoc now supports Node.js 12.0.0 and later.
-
+- JSDoc now supports Node.js 12.0.0 and later.
 
 ## 3.6.11 (July 2022)
 
 Updates dependency versions to make JSDoc compatible with Node.js 12.0.0 and later.
-
 
 ## 3.6.10 (January 2022)
 
 Fixes an issue in JSDoc 3.6.9 that prevented JSDoc from being installed in some continuous
 integration (CI) environments.
 
-
 ## 3.6.9 (January 2022)
 
 Fixes an issue in JSDoc 3.6.8 that prevented `npm install jsdoc` from working.
-
 
 ## 3.6.8 (January 2022)
 
 Updates dependencies.
 
-
 ## 3.6.7 (May 2021)
 
 Updates dependencies.
-
 
 ## 3.6.6 (September 2020)
 

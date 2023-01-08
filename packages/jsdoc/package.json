@@ -36,9 +36,6 @@
   "engines": {
     "node": ">=v18.12.0"
   },
-  "scripts": {
-    "test": "gulp"
-  },
   "bin": {
     "jsdoc": "jsdoc.js"
   },

@@ -29,7 +29,7 @@ describe('@jsdoc/core.env', () => {
 
   it('has a `version` object with `number` and `revision` properties', () => {
     expect(env.version).toBeObject();
-    expect(env.version).toHaveOwnProperty('number');
-    expect(env.version).toHaveOwnProperty('revision');
+    expect(Object.hasOwn(env.version, 'number')).toBeTrue();
+    expect(Object.hasOwn(env.version, 'revision')).toBeTrue();
   });
 });

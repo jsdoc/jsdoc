@@ -6,12 +6,12 @@
     "@jsdoc/eslint-config": "^1.0.8",
     "@jsdoc/test-matchers": "^0.1.9",
     "ajv": "^8.11.2",
+    "c8": "^7.12.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "gulp": "^4.0.2",
-    "gulp-eslint-new": "^1.7.1",
-    "gulp-prettier": "^4.0.0",
+    "execa": "^6.1.0",
+    "hereby": "^1.6.4",
     "jasmine": "^3.99.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^3.0.1",
@@ -19,7 +19,6 @@
     "lerna": "^6.0.3",
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
-    "nyc": "^15.1.0",
     "prettier": "^2.7.1",
     "taffydb": "2.6.2"
   },
@@ -27,6 +26,11 @@
     "node": ">=v18.12.0"
   },
   "scripts": {
-    "test": "gulp"
+    "coverage": "node_modules/.bin/hereby coverage",
+    "default": "node_modules/.bin/hereby",
+    "format": "node_modules/.bin/hereby format",
+    "license-check": "node_modules/.bin/hereby license-check",
+    "lint": "node_modules/.bin/hereby lint",
+    "test": "node_modules/.bin/hereby test"
   }
 }

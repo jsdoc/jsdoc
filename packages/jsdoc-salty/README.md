@@ -18,11 +18,11 @@ risk. There's no real security risk, but it sure looks like there is.
 
 Also, TaffyDB [can't decide what license it uses](https://github.com/typicaljoe/taffydb/issues/166):
 
-+ The [README](https://github.com/typicaljoe/taffydb/blame/d4870cee370abffe510ba598b02e4e7ad6af5d2a/README.md#L146-L156)
+- The [README](https://github.com/typicaljoe/taffydb/blame/d4870cee370abffe510ba598b02e4e7ad6af5d2a/README.md#L146-L156)
   says that TaffyDB uses the [1-clause BSD License](https://opensource.org/licenses/BSD-1-Clause).
-+ The [`package.json` file](https://github.com/typicaljoe/taffydb/blob/d4870cee370abffe510ba598b02e4e7ad6af5d2a/package.json#L32)
+- The [`package.json` file](https://github.com/typicaljoe/taffydb/blob/d4870cee370abffe510ba598b02e4e7ad6af5d2a/package.json#L32)
   says that TaffyDB uses the [2-clause BSD License](https://opensource.org/licenses/BSD-2-Clause).
-+ The [`License` file](https://github.com/typicaljoe/taffydb/blob/d4870cee370abffe510ba598b02e4e7ad6af5d2a/License)
+- The [`License` file](https://github.com/typicaljoe/taffydb/blob/d4870cee370abffe510ba598b02e4e7ad6af5d2a/License)
   says that TaffyDB uses the [MIT License](https://opensource.org/licenses/MIT).
 
 By replacing TaffyDB with Salty, which uses the
@@ -177,4 +177,3 @@ employer to ignore a specific CVE. For those reasons, it was worth the trouble t
 ## What's with the name?
 
 It's a play on "saltwater taffy." Hilarious!
-

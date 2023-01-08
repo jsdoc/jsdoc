@@ -190,7 +190,11 @@ module.exports = (() => {
   };
 
   // TODO: docs
-  cli.runTests = () => require('./test')(dependencies);
+  cli.runTests = async () => {
+    const result = await require('./test')(dependencies);
+
+    return result.overallStatus === 'failed' ? 1 : 0;
+  };
 
   // TODO: docs
   cli.printVersion = () => {

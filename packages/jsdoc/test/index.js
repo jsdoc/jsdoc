@@ -22,13 +22,14 @@ module.exports = (deps) => {
     },
   });
 
-  // Don't exit until the promise from jasmine.execute() is resolved.
-  jasmine.exitOnCompletion = false;
   // Treat an unhandled promise rejection as an error.
   process.on('unhandledRejection', (e) => {
     throw e;
   });
 
+  jasmine.clearReporters();
+  jasmine.addReporter(reporter);
+  jasmine.exitOnCompletion = false;
   jasmine.loadConfig({
     helpers: [
       'node_modules/jasmine-expect/index.js',
@@ -38,8 +39,6 @@ module.exports = (deps) => {
     random: false,
     stopSpecOnExpectationFailure: false,
   });
-  jasmine.env.clearReporters();
-  jasmine.addReporter(reporter);
 
   // Make dependencies available to all tests.
   if (!global.jsdoc) {

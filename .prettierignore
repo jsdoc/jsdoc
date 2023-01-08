@@ -1,8 +1,14 @@
-# Ignore test fixtures.
-packages/**/test/fixtures/**/*.js
+# Ignore output files.
+**/out/
 
-# Ignore static JS files.
-packages/**/static/*.js
+# Ignore temp directories.
+**/tmp/
 
 # Ignore code coverage reports.
-.nyc_output/
+coverage/
+
+# Ignore static files that are part of JSDoc's output.
+packages/**/static/**
+
+# Ignore test fixtures.
+packages/**/test/fixtures/**
