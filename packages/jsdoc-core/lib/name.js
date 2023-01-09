@@ -21,8 +21,6 @@
 const _ = require('lodash');
 const escape = require('escape-string-regexp');
 
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 /**
  * Longnames that have a special meaning in JSDoc.
  *
@@ -443,7 +441,7 @@ exports.longnamesToTree = (longnames, doclets) => {
         currentParent = currentParent.children;
       }
 
-      if (!hasOwnProp.call(currentParent, chunk)) {
+      if (!Object.hasOwn(currentParent, chunk)) {
         currentParent[chunk] = nameInfo[currentLongname];
       }
 

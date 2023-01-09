@@ -13,7 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const hasOwnProp = Object.prototype.hasOwnProperty;
 const options = jsdoc.deps.get('options');
 
 describe('jsdoc/tag', () => {
@@ -175,7 +174,7 @@ describe('jsdoc/tag', () => {
         info = parseType(tag.text, def.canHaveName, def.canHaveType);
 
         ['optional', 'nullable', 'variable', 'defaultvalue'].forEach((prop) => {
-          if (hasOwnProp.call(info, prop)) {
+          if (Object.hasOwn(info, prop)) {
             expect(tag.value[prop]).toBe(info[prop]);
           }
         });
@@ -214,7 +213,7 @@ describe('jsdoc/tag', () => {
 
       it('if the tag has a type without modifiers, tag.value should not include properties for the modifiers', () => {
         ['optional', 'nullable', 'variable', 'defaultvalue'].forEach((modifier) => {
-          expect(hasOwnProp.call(tagParamWithType.value, modifier)).toBeFalse();
+          expect(Object.hasOwn(tagParamWithType.value, modifier)).toBeFalse();
         });
       });
     });

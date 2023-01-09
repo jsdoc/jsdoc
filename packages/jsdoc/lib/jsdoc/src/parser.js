@@ -25,8 +25,6 @@ const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
 const { Visitor } = require('jsdoc/src/visitor');
 const { Walker } = require('jsdoc/src/walker');
 
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 /* eslint-disable no-script-url */
 // Prefix for JavaScript strings that were provided in lieu of a filename.
 const SCHEMA = 'javascript:';
@@ -38,7 +36,7 @@ class DocletCache {
   }
 
   get(itemName) {
-    if (!hasOwnProp.call(this._doclets, itemName)) {
+    if (!Object.hasOwn(this._doclets, itemName)) {
       return null;
     }
 
@@ -47,7 +45,7 @@ class DocletCache {
   }
 
   put(itemName, value) {
-    if (!hasOwnProp.call(this._doclets, itemName)) {
+    if (!Object.hasOwn(this._doclets, itemName)) {
       this._doclets[itemName] = [];
     }
 
@@ -76,7 +74,7 @@ function definedInScope(doclet, basename) {
     Boolean(doclet.meta) &&
     Boolean(doclet.meta.vars) &&
     Boolean(basename) &&
-    hasOwnProp.call(doclet.meta.vars, basename)
+    Object.hasOwn(doclet.meta.vars, basename)
   );
 }
 
@@ -221,14 +219,14 @@ class Parser extends EventEmitter {
     this._resultBuffer.push(doclet);
 
     // track all doclets by longname
-    if (!hasOwnProp.call(index.longname, doclet.longname)) {
+    if (!Object.hasOwn(index.longname, doclet.longname)) {
       index.longname[doclet.longname] = [];
     }
     index.longname[doclet.longname].push(doclet);
 
     // track all doclets that have a memberof by memberof
     if (doclet.memberof) {
-      if (!hasOwnProp.call(index.memberof, doclet.memberof)) {
+      if (!Object.hasOwn(index.memberof, doclet.memberof)) {
         index.memberof[doclet.memberof] = [];
       }
       index.memberof[doclet.memberof].push(doclet);
@@ -236,14 +234,14 @@ class Parser extends EventEmitter {
 
     // track longnames of documented symbols
     if (!doclet.undocumented) {
-      if (!hasOwnProp.call(index.documented, doclet.longname)) {
+      if (!Object.hasOwn(index.documented, doclet.longname)) {
         index.documented[doclet.longname] = [];
       }
       index.documented[doclet.longname].push(doclet);
     }
 
     // track doclets with a `borrowed` property
-    if (hasOwnProp.call(doclet, 'borrowed')) {
+    if (Object.hasOwn(doclet, 'borrowed')) {
       index.borrowed.push(doclet);
     }
   }

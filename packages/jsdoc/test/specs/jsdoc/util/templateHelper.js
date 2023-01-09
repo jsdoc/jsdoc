@@ -13,7 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe('jsdoc/util/templateHelper', () => {
   const _ = require('lodash');
@@ -534,7 +533,7 @@ describe('jsdoc/util/templateHelper', () => {
 
     for (let i = 0, l = a.length; i < l; i++) {
       for (const prop in a[i]) {
-        if (hasOwnProp.call(a[i], prop)) {
+        if (Object.hasOwn(a[i], prop)) {
           expect(b[i][prop]).toBeDefined();
           expect(a[i][prop]).toEqual(b[i][prop]);
         }
@@ -698,7 +697,7 @@ describe('jsdoc/util/templateHelper', () => {
     // or be empty (if whatNotToContain was not provided).
     function doTests(tests, whatNotToContain) {
       for (const src in tests) {
-        if (hasOwnProp.call(tests, src)) {
+        if (Object.hasOwn(tests, src)) {
           doc = new doclet.Doclet(`/** ${src} */`, {}, jsdoc.deps);
           attribs = helper.getAttribs(doc);
 

@@ -353,14 +353,10 @@ function copyMostProperties(primary, secondary, target, exclude) {
  */
 function copySpecificProperties(primary, secondary, target, include) {
   include.forEach((property) => {
-    if (
-      {}.hasOwnProperty.call(primary, property) &&
-      primary[property] &&
-      primary[property].length
-    ) {
+    if (Object.hasOwn(primary, property) && primary[property] && primary[property].length) {
       target[property] = _.cloneDeep(primary[property]);
     } else if (
-      {}.hasOwnProperty.call(secondary, property) &&
+      Object.hasOwn(secondary, property) &&
       secondary[property] &&
       secondary[property].length
     ) {

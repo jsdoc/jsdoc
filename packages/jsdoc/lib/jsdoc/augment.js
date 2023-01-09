@@ -24,8 +24,6 @@ const jsdoc = {
   doclet: require('jsdoc/doclet'),
 };
 
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 function mapDependencies(index, propertyName) {
   const dependencies = {};
   let doc;
@@ -39,7 +37,7 @@ function mapDependencies(index, propertyName) {
       doc = doclets[i];
       if (kinds.includes(doc.kind)) {
         dependencies[indexName] = {};
-        if (hasOwnProp.call(doc, propertyName)) {
+        if (Object.hasOwn(doc, propertyName)) {
           len = doc[propertyName].length;
           for (let j = 0; j < len; j++) {
             dependencies[indexName][doc[propertyName][j]] = true;
@@ -172,7 +170,7 @@ function updateAddedDoclets(doclet, additions, indexes) {
  * @return {void}
  */
 function updateDocumentedDoclets(doclet, documented) {
-  if (!hasOwnProp.call(documented, doclet.longname)) {
+  if (!Object.hasOwn(documented, doclet.longname)) {
     documented[doclet.longname] = [];
   }
 
@@ -190,7 +188,7 @@ function updateDocumentedDoclets(doclet, documented) {
  */
 function updateMemberofDoclets(doclet, memberof) {
   if (doclet.memberof) {
-    if (!hasOwnProp.call(memberof, doclet.memberof)) {
+    if (!Object.hasOwn(memberof, doclet.memberof)) {
       memberof[doclet.memberof] = [];
     }
 
@@ -261,7 +259,7 @@ function getInheritedAdditions(doclets, docs, { documented, memberof }) {
 
           // We don't want to fold in properties from the child doclet if it had an
           // `@inheritdoc` tag.
-          if (hasOwnProp.call(childDoclet, 'inheritdoc')) {
+          if (Object.hasOwn(childDoclet, 'inheritdoc')) {
             childDoclet = {};
           }
 
@@ -280,7 +278,7 @@ function getInheritedAdditions(doclets, docs, { documented, memberof }) {
           // Indicate what the descendant is overriding. (We only care about the closest
           // ancestor. For classes A > B > C, if B#a overrides A#a, and C#a inherits B#a,
           // we don't want the doclet for C#a to say that it overrides A#a.)
-          if (hasOwnProp.call(docs.index.longname, member.longname)) {
+          if (Object.hasOwn(docs.index.longname, member.longname)) {
             member.overrides = parentDoclet.longname;
           } else {
             delete member.overrides;
@@ -288,7 +286,7 @@ function getInheritedAdditions(doclets, docs, { documented, memberof }) {
 
           // Add the ancestor's docs unless the descendant overrides the ancestor AND
           // documents the override.
-          if (!hasOwnProp.call(documented, member.longname)) {
+          if (!Object.hasOwn(documented, member.longname)) {
             updateAddedDoclets(member, additions, additionIndexes);
             updateDocumentedDoclets(member, documented);
             updateMemberofDoclets(member, memberof);
@@ -414,7 +412,7 @@ function updateImplements(implDoclets, implementedLongname) {
   }
 
   implDoclets.forEach((implDoclet) => {
-    if (!hasOwnProp.call(implDoclet, 'implements')) {
+    if (!Object.hasOwn(implDoclet, 'implements')) {
       implDoclet.implements = [];
     }
 
@@ -465,7 +463,7 @@ function getImplementedAdditions(implDoclets, allDoclets, { documented, memberof
 
           // We don't want to fold in properties from the child doclet if it had an
           // `@inheritdoc` tag.
-          if (hasOwnProp.call(childDoclet, 'inheritdoc')) {
+          if (Object.hasOwn(childDoclet, 'inheritdoc')) {
             childDoclet = {};
           }
 
@@ -475,13 +473,13 @@ function getImplementedAdditions(implDoclets, allDoclets, { documented, memberof
           updateImplements(implementationDoclet, parentDoclet.longname);
 
           // If there's no implementation, move along.
-          implExists = hasOwnProp.call(allDoclets.index.longname, implementationDoclet.longname);
+          implExists = Object.hasOwn(allDoclets.index.longname, implementationDoclet.longname);
           if (!implExists) {
             continue;
           }
 
           // Add the interface's docs unless the implementation is already documented.
-          if (!hasOwnProp.call(commentedDoclets, implementationDoclet.longname)) {
+          if (!Object.hasOwn(commentedDoclets, implementationDoclet.longname)) {
             updateAddedDoclets(implementationDoclet, additions, additionIndexes);
             updateDocumentedDoclets(implementationDoclet, commentedDoclets);
             updateMemberofDoclets(implementationDoclet, memberof);
@@ -536,7 +534,7 @@ function augment(doclets, propertyName, docletFinder, jsdocDeps) {
     additions.forEach((addition) => {
       const longname = addition.longname;
 
-      if (!hasOwnProp.call(index, longname)) {
+      if (!Object.hasOwn(index, longname)) {
         index[longname] = [];
       }
       index[longname].push(addition);

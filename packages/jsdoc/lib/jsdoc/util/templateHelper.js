@@ -21,8 +21,6 @@ const { inline } = require('@jsdoc/tag');
 const { log } = require('@jsdoc/util');
 const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = require('@jsdoc/core').name;
 
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 const MODULE_NAMESPACE = 'module:';
 
 const files = {};
@@ -92,7 +90,7 @@ function makeUniqueFilename(filename, str) {
 
   // append enough underscores to make the filename unique
   while (nonUnique) {
-    if (hasOwnProp.call(files, key)) {
+    if (Object.hasOwn(files, key)) {
       filename += '_';
       key = filename.toLowerCase();
     } else {
@@ -152,7 +150,7 @@ const getUniqueFilename = (exports.getUniqueFilename = (str, dependencies) => {
 function getFilename(longname, dependencies) {
   let fileUrl;
 
-  if (hasOwnProp.call(longnameToUrl, longname)) {
+  if (Object.hasOwn(longnameToUrl, longname)) {
     fileUrl = longnameToUrl[longname];
   } else {
     fileUrl = getUniqueFilename(longname, dependencies);
@@ -191,7 +189,7 @@ function makeUniqueId(filename, id) {
 
   // append enough underscores to make the identifier unique
   while (nonUnique) {
-    if (hasOwnProp.call(ids, filename) && hasOwnProp.call(ids[filename], key)) {
+    if (Object.hasOwn(ids, filename) && Object.hasOwn(ids[filename], key)) {
       id += '_';
       key = id.toLowerCase();
     } else {
@@ -211,7 +209,7 @@ function makeUniqueId(filename, id) {
  * @private
  */
 function getId(longname, id) {
-  if (hasOwnProp.call(longnameToId, longname)) {
+  if (Object.hasOwn(longnameToId, longname)) {
     id = longnameToId[longname];
   } else if (!id) {
     // no ID required
@@ -342,7 +340,7 @@ function buildLink(longname, linkText, options) {
 
     return stringifyType(parsedType, options.cssClass, options.linkMap);
   } else {
-    fileUrl = hasOwnProp.call(options.linkMap, longname) ? options.linkMap[longname] : '';
+    fileUrl = Object.hasOwn(options.linkMap, longname) ? options.linkMap[longname] : '';
     text = linkText || (options.shortenName ? getShortName(longname) : longname);
   }
 

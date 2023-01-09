@@ -17,8 +17,6 @@
 const definitions = require('jsdoc/tag/dictionary/definitions');
 const { log } = require('@jsdoc/util');
 
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 const DEFINITIONS = {
   closure: 'closureTags',
   jsdoc: 'jsdocTags',
@@ -159,7 +157,7 @@ class Dictionary {
   lookup(title) {
     title = this.normalize(title);
 
-    if (hasOwnProp.call(this._tags, title)) {
+    if (Object.hasOwn(this._tags, title)) {
       return this._tags[title];
     }
 
@@ -177,7 +175,7 @@ class Dictionary {
   normalize(title) {
     const canonicalName = title.toLowerCase();
 
-    if (hasOwnProp.call(this._tagSynonyms, canonicalName)) {
+    if (Object.hasOwn(this._tagSynonyms, canonicalName)) {
       return this._tagSynonyms[canonicalName];
     }
 

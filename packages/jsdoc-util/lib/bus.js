@@ -18,7 +18,6 @@ const EventEmitter = require('events').EventEmitter;
 const { default: ow } = require('ow');
 
 let cache = {};
-const hasOwnProp = Object.prototype.hasOwnProperty;
 
 /**
  * An event bus that works the same way as a standard Node.js event emitter, with a few key
@@ -52,7 +51,7 @@ class EventBus extends EventEmitter {
 
     const shouldCache = _.isBoolean(opts.cache) ? opts.cache : true;
 
-    if (hasOwnProp.call(cache, id) && shouldCache) {
+    if (Object.hasOwn(cache, id) && shouldCache) {
       return cache[id];
     }
 

@@ -13,8 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const hasOwnProp = Object.prototype.hasOwnProperty;
-
 describe('jsdoc/package', () => {
   let emptyPackage;
   const jsdocPackage = require('jsdoc/package');
@@ -81,7 +79,7 @@ describe('jsdoc/package', () => {
 
     describe('author', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'author')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'author')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -94,7 +92,7 @@ describe('jsdoc/package', () => {
 
     describe('bugs', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'bugs')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'bugs')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -104,7 +102,7 @@ describe('jsdoc/package', () => {
 
     describe('contributors', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'contributors')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'contributors')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -119,7 +117,7 @@ describe('jsdoc/package', () => {
 
     describe('dependencies', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'dependencies')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'dependencies')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -129,7 +127,7 @@ describe('jsdoc/package', () => {
 
     describe('description', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'description')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'description')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -139,7 +137,7 @@ describe('jsdoc/package', () => {
 
     describe('devDependencies', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'devDependencies')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'devDependencies')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -149,7 +147,7 @@ describe('jsdoc/package', () => {
 
     describe('engines', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'engines')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'engines')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -171,7 +169,7 @@ describe('jsdoc/package', () => {
 
     describe('homepage', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'homepage')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'homepage')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -181,7 +179,7 @@ describe('jsdoc/package', () => {
 
     describe('keywords', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'keywords')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'keywords')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -191,7 +189,7 @@ describe('jsdoc/package', () => {
 
     describe('licenses', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'licenses')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'licenses')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -241,7 +239,7 @@ describe('jsdoc/package', () => {
 
     describe('main', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'main')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'main')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -251,7 +249,7 @@ describe('jsdoc/package', () => {
 
     describe('name', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'name')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'name')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -261,7 +259,7 @@ describe('jsdoc/package', () => {
 
     describe('repository', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'repository')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'repository')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {
@@ -274,7 +272,7 @@ describe('jsdoc/package', () => {
 
     describe('version', () => {
       it('should not exist by default', () => {
-        expect(hasOwnProp.call(emptyPackage, 'version')).toBeFalse();
+        expect(Object.hasOwn(emptyPackage, 'version')).toBeFalse();
       });
 
       it('should contain the value from the package file', () => {

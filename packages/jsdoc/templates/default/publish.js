@@ -26,7 +26,6 @@ const template = require('jsdoc/template');
 const htmlsafe = helper.htmlsafe;
 const linkto = helper.linkto;
 const resolveAuthorLinks = helper.resolveAuthorLinks;
-const hasOwnProp = Object.prototype.hasOwnProperty;
 
 const FONT_NAMES = [
   'OpenSans-Bold',
@@ -342,9 +341,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, dependencies) {
     items.forEach((item) => {
       let displayName;
 
-      if (!hasOwnProp.call(item, 'longname')) {
+      if (!Object.hasOwn(item, 'longname')) {
         itemsNav += `<li>${linktoFn('', item.name)}</li>`;
-      } else if (!hasOwnProp.call(itemsSeen, item.longname)) {
+      } else if (!Object.hasOwn(itemsSeen, item.longname)) {
         if (config.templates.default.useLongnameInNav) {
           displayName = item.longname;
         } else {
@@ -401,7 +400,7 @@ function buildNav(members, dependencies) {
     globalNav = '';
 
     members.globals.forEach(({ kind, longname, name }) => {
-      if (kind !== 'typedef' && !hasOwnProp.call(seen, longname)) {
+      if (kind !== 'typedef' && !Object.hasOwn(seen, longname)) {
         globalNav += `<li>${linkto(longname, name)}</li>`;
       }
       seen[longname] = true;
