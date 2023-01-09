@@ -17,6 +17,7 @@
     "js-green-licenses": "^3.0.1",
     "klaw-sync": "^6.0.0",
     "lerna": "^6.0.3",
+    "license-check-and-add": "^4.0.5",
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
     "prettier": "^2.7.1",
@@ -28,8 +29,10 @@
   "scripts": {
     "coverage": "node_modules/.bin/hereby coverage",
     "default": "node_modules/.bin/hereby",
+    "dependency-licenses": "node_modules/.bin/hereby dependency-licenses",
     "format": "node_modules/.bin/hereby format",
     "license-check": "node_modules/.bin/hereby license-check",
+    "license-headers": "node_modules/.bin/hereby license-headers",
     "lint": "node_modules/.bin/hereby lint",
     "test": "node_modules/.bin/hereby test"
   }

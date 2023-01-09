@@ -84,9 +84,16 @@ export const format = task({
   },
 });
 
+export const licenseHeaders = task({
+  name: 'license-headers',
+  run: async () => {
+    await execa(bin('license-check-and-add'), ['check', '-f', '.license-check.json']);
+  },
+});
+
 export const licenseCheck = task({
   name: 'license-check',
-  dependencies: [dependencyLicenses],
+  dependencies: [dependencyLicenses, licenseHeaders],
 });
 
 export const lint = task({

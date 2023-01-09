@@ -1,0 +1,52 @@
+{
+  "defaultFormat": {
+    "prepend": "",
+    "append": ""
+  },
+  "ignore": [
+    ".parcel-cache",
+    "**/.*",
+    "!**/.*.js",
+    "**/*.EXAMPLE",
+    "**/*.json",
+    "**/*.md",
+    "**/*.txt",
+    "**/AUTHORS",
+    "**/CONTRIB*",
+    "**/coverage",
+    "**/test/fixtures",
+    "out",
+    "packages/jsdoc/templates/default/static",
+    "tmp"
+  ],
+  "license": ".license-header.txt",
+  "licenseFormats": {
+    "css|js|mjs|scss|ts": {
+      "prepend": "/*",
+      "eachLine": {
+        "prepend": "  "
+      },
+      "append": "*/"
+    },
+    "njk": {
+      "prepend": "{#-",
+      "eachLine": {
+        "prepend": "  "
+      },
+      "append": "-#}"
+    },
+    "tmpl": {
+      "prepend": "<?js /*",
+      "eachLine": {
+        "prepend": "    "
+      },
+      "append": "*/ ?>"
+    },
+    "yaml": {
+      "eachLine": {
+        "prepend": "# "
+      }
+    }
+  },
+  "regexIdentifier": "%%"
+}
