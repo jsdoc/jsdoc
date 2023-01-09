@@ -342,7 +342,7 @@ const getParamNames = (exports.getParamNames = (node) => {
     return [];
   }
 
-  params = node.params.slice(0);
+  params = node.params.slice();
 
   return params.map((param) => nodeToValue(param));
 });

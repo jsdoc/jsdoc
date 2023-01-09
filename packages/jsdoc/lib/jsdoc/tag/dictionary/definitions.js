@@ -46,7 +46,7 @@ function cloneTagDef(tagDef, extras) {
 }
 
 function getSourcePaths(env) {
-  const sourcePaths = env.sourceFiles.slice(0) || [];
+  const sourcePaths = env.sourceFiles.slice() || [];
 
   if (env.opts._) {
     env.opts._.forEach((sourcePath) => {

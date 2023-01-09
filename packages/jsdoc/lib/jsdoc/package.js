@@ -25,7 +25,7 @@ const stripBom = require('strip-bom');
 
 // Collect all of the license information from a `package.json` file.
 function getLicenses(packageInfo) {
-  const licenses = packageInfo.licenses ? packageInfo.licenses.slice(0) : [];
+  const licenses = packageInfo.licenses ? packageInfo.licenses.slice() : [];
 
   if (packageInfo.license) {
     licenses.push({ type: packageInfo.license });

@@ -352,7 +352,7 @@ describe('jsdoc/src/parser', () => {
           attachTo(parser);
           parser.parse(source);
           events.all
-            .slice(0)
+            .slice()
             .sort(sourceOrderSort)
             .forEach((e, i) => {
               expect(e).toBe(events.all[i]);

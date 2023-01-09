@@ -586,7 +586,7 @@ class Doclet {
        * The positions of the first and last characters of the code associated with this doclet.
        * @type Array.<number>
        */
-      this.meta.range = meta.range.slice(0);
+      this.meta.range = meta.range.slice();
     }
 
     if (meta.lineno) {
@@ -652,7 +652,7 @@ class Doclet {
         this.meta.code.value = meta.code.value;
       }
       if (meta.code.paramnames) {
-        this.meta.code.paramnames = meta.code.paramnames.slice(0);
+        this.meta.code.paramnames = meta.code.paramnames.slice();
       }
     }
   }

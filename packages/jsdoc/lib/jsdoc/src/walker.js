@@ -50,7 +50,7 @@ function moveTrailingComments(source, target, count) {
       source.trailingComments.length - count,
       count
     );
-    source.trailingComments = source.trailingComments.slice(0);
+    source.trailingComments = source.trailingComments.slice();
   }
 }
 

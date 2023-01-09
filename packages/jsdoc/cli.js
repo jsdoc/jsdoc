@@ -256,7 +256,7 @@ module.exports = (() => {
     const options = dependencies.get('options');
     let packageJson;
     let sourceFile;
-    let sourceFiles = options._ ? options._.slice(0) : [];
+    let sourceFiles = options._ ? options._.slice() : [];
 
     if (conf.source && conf.source.include) {
       sourceFiles = sourceFiles.concat(config.source.include);

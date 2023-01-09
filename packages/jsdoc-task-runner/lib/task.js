@@ -29,7 +29,7 @@ module.exports = class Task extends Emittery {
     if (typeof opts.dependsOn === 'string') {
       deps = [opts.dependsOn];
     } else if (Array.isArray(opts.dependsOn)) {
-      deps = opts.dependsOn.slice(0);
+      deps = opts.dependsOn.slice();
     }
 
     this.name = opts.name || null;

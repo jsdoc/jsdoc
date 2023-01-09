@@ -787,7 +787,7 @@ class Visitor {
     let rawComment;
 
     function addComments(source) {
-      comments = comments.concat(source.slice(0));
+      comments = comments.concat(source.slice());
     }
 
     if (!hasComments(node) && (!node.type || !isBlock)) {
