@@ -13,18 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/src/walker', () => {
-  const walker = require('jsdoc/src/walker');
+describe('@jsdoc/parse/lib/walker', () => {
+  const walker = require('../../../lib/walker');
 
-  it('should exist', () => {
+  it('is an object', () => {
     expect(walker).toBeObject();
   });
 
-  it('should export a "walkers" object', () => {
+  it('has a `walkers` object', () => {
     expect(walker.walkers).toBeObject();
   });
 
-  it('should export a "Walker" class', () => {
+  it('has a `Walker` class', () => {
     expect(walker.Walker).toBeFunction();
   });
 
@@ -33,7 +33,7 @@ describe('jsdoc/src/walker', () => {
 
     // TODO: tests for default functions
 
-    it('should contain a function for each known node type', () => {
+    it('has a function for each known node type', () => {
       Object.keys(Syntax).forEach((nodeType) => {
         expect(walker.walkers[nodeType]).toBeFunction();
       });

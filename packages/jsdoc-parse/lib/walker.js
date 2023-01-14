@@ -15,12 +15,10 @@
 */
 /**
  * Traversal utilities for ASTs that are compatible with the ESTree API.
- *
- * @module jsdoc/src/walker
  */
-const { astNode } = require('@jsdoc/parse');
+const astNode = require('./ast-node');
 const { log } = require('@jsdoc/util');
-const { Syntax } = require('@jsdoc/parse');
+const { Syntax } = require('./syntax');
 
 // TODO: docs
 function getCurrentScope(scopes) {
@@ -642,9 +640,7 @@ walkers[Syntax.YieldExpression] = (node, parent, state, cb) => {
 };
 
 /**
- * Create a walker that can traverse an ESTree AST.
- *
- * @memberof module:jsdoc/src/walker
+ * A walker that can traverse an ESTree AST.
  */
 class Walker {
   // TODO: docs

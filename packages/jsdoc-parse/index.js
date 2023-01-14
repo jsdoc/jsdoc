@@ -16,9 +16,11 @@
 const { AstBuilder } = require('./lib/ast-builder');
 const astNode = require('./lib/ast-node');
 const { Syntax } = require('./lib/syntax');
+const { Walker } = require('./lib/walker');
 
 module.exports = {
   AstBuilder,
   astNode,
   Syntax,
+  Walker,
 };

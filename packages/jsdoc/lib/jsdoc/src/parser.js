@@ -17,13 +17,12 @@
  * @module jsdoc/src/parser
  */
 const _ = require('lodash');
-const { AstBuilder, astNode, Syntax } = require('@jsdoc/parse');
+const { AstBuilder, astNode, Syntax, Walker } = require('@jsdoc/parse');
 const { EventEmitter } = require('events');
 const fs = require('fs');
 const { log } = require('@jsdoc/util');
 const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
 const { Visitor } = require('jsdoc/src/visitor');
-const { Walker } = require('jsdoc/src/walker');
 
 /* eslint-disable no-script-url */
 // Prefix for JavaScript strings that were provided in lieu of a filename.

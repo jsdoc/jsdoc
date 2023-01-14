@@ -43,4 +43,12 @@ describe('@jsdoc/parse', () => {
       expect(parse.Syntax).toBe(Syntax);
     });
   });
+
+  describe('Walker', () => {
+    it('is lib/walker.Walker', () => {
+      const { Walker } = require('../../lib/walker');
+
+      expect(parse.Walker).toBe(Walker);
+    });
+  });
 });

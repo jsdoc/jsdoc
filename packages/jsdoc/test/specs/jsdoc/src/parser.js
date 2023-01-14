@@ -82,7 +82,7 @@ describe('jsdoc/src/parser', () => {
 
     describe('walker', () => {
       it('should contain an appropriate walker by default', () => {
-        const { Walker } = require('jsdoc/src/walker');
+        const { Walker } = require('@jsdoc/parse');
 
         expect(parser.walker instanceof Walker).toBeTrue();
       });
