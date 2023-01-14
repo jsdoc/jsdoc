@@ -16,7 +16,7 @@
 const ConsoleReporter = require('jasmine-console-reporter');
 const Jasmine = require('jasmine');
 
-const SCHEMA_SPEC = 'packages/jsdoc/test/specs/jsdoc/schema.js';
+const SCHEMA_SPEC = 'packages/jsdoc/test/specs/validate.js';
 const SPEC_FILES = [
   `!${SCHEMA_SPEC}`,
   '!node_modules',

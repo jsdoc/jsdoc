@@ -15,7 +15,7 @@
 */
 /**
  * Schema for validating JSDoc doclets.
- * @module jsdoc/schema
+ *
  * @see <https://trac.tools.ietf.org/html/draft-wright-json-schema-validation-01>
  */
 // JSON schema types
