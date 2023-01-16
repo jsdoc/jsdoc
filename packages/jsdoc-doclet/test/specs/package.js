@@ -13,10 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/package', () => {
+/* global jsdoc */
+const jsdocPackage = require('../../lib/package');
+const { Package } = jsdocPackage;
+
+describe('@jsdoc/doclet/lib/package', () => {
   let emptyPackage;
-  const jsdocPackage = require('jsdoc/package');
-  const Package = jsdocPackage.Package;
 
   function checkPackageProperty(name, value) {
     let myPackage;
@@ -24,18 +26,18 @@ describe('jsdoc/package', () => {
 
     obj[name] = value;
     myPackage = new Package(JSON.stringify(obj));
-    // add the package object to the cached parse results, so we can validate it against the
-    // doclet schema
+    // Add the package object to the cached parse results, so we can validate it against the
+    // doclet schema.
     jsdoc.addParseResults(`package-property-${name}.js`, [myPackage]);
 
     expect(myPackage[name]).toEqual(value);
   }
 
-  it('should exist', () => {
+  it('is an object', () => {
     expect(jsdocPackage).toBeObject();
   });
 
-  it('should export a "Package" constructor', () => {
+  it('exports a `Package` constructor', () => {
     expect(Package).toBeFunction();
   });
 
@@ -44,7 +46,7 @@ describe('jsdoc/package', () => {
       emptyPackage = new Package();
     });
 
-    it('should accept a JSON-format string', () => {
+    it('accepts a JSON-format string', () => {
       function newPackage() {
         return new Package('{"foo": "bar"}');
       }
@@ -52,7 +54,7 @@ describe('jsdoc/package', () => {
       expect(newPackage).not.toThrow();
     });
 
-    it('should accept a JSON-format string with a leading BOM', () => {
+    it('accepts a JSON-format string with a leading BOM', () => {
       function newPackage() {
         return new Package('\uFEFF{}');
       }
@@ -60,7 +62,7 @@ describe('jsdoc/package', () => {
       expect(newPackage).not.toThrow();
     });
 
-    it('should work when called with no arguments', () => {
+    it('works with no arguments', () => {
       function newPackage() {
         return new Package();
       }
@@ -68,7 +70,7 @@ describe('jsdoc/package', () => {
       expect(newPackage).not.toThrow();
     });
 
-    it('should log an error when called with bad input', () => {
+    it('logs an error when called with bad input', () => {
       function newPackage() {
         return new Package('abcdefg');
       }
@@ -78,11 +80,11 @@ describe('jsdoc/package', () => {
     });
 
     describe('author', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'author')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('author', {
           name: 'Jane Smith',
           email: 'jsmith@example.com',
@@ -91,21 +93,21 @@ describe('jsdoc/package', () => {
     });
 
     describe('bugs', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'bugs')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('bugs', { url: 'http://example.com/bugs' });
       });
     });
 
     describe('contributors', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'contributors')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('contributors', [
           {
             name: 'Jane Smith',
@@ -116,51 +118,51 @@ describe('jsdoc/package', () => {
     });
 
     describe('dependencies', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'dependencies')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('dependencies', { bar: '~1.1.0' });
       });
     });
 
     describe('description', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'description')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('description', 'My package.');
       });
     });
 
     describe('devDependencies', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'devDependencies')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('devDependencies', { baz: '~3.4.5' });
       });
     });
 
     describe('engines', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'engines')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('engines', { node: '>=0.10.3' });
       });
     });
 
     describe('files', () => {
-      it('should contain an empty array by default', () => {
+      it('contains an empty array by default', () => {
         expect(emptyPackage.files).toBeEmptyArray();
       });
 
-      it('should ignore the value from the package file', () => {
+      it('ignores the value from the package file', () => {
         const myPackage = new Package('{"files": ["foo", "bar"]}');
 
         expect(myPackage.files).toBeEmptyArray();
@@ -168,31 +170,31 @@ describe('jsdoc/package', () => {
     });
 
     describe('homepage', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'homepage')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('homepage', 'http://example.com/');
       });
     });
 
     describe('keywords', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'keywords')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('keywords', ['foo', 'bar']);
       });
     });
 
     describe('licenses', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'licenses')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('licenses', [
           {
             type: 'My Open-Source License',
@@ -201,7 +203,7 @@ describe('jsdoc/package', () => {
         ]);
       });
 
-      it('should contain the value of "license" from the package file', () => {
+      it('contains the value of `license` from the package file', () => {
         const myPackage = new Package('{"license": "My-OSS-License"}');
 
         expect(myPackage.license).toBeUndefined();
@@ -209,7 +211,7 @@ describe('jsdoc/package', () => {
         expect(myPackage.licenses[0].type).toBe('My-OSS-License');
       });
 
-      it('should combine the "license" and "licenses" properties', () => {
+      it('combines the `license` and `licenses` properties', () => {
         const packageInfo = {
           license: 'My-OSS-License',
           licenses: [
@@ -226,11 +228,11 @@ describe('jsdoc/package', () => {
     });
 
     describe('longname', () => {
-      it('should default to "package:undefined"', () => {
+      it('defaults to `package:undefined`', () => {
         expect(emptyPackage.longname).toBe('package:undefined');
       });
 
-      it('should reflect the value of the "name" property', () => {
+      it('reflects the value of the `name` property', () => {
         const myPackage = new Package('{"name": "foo"}');
 
         expect(myPackage.longname).toBe('package:foo');
@@ -238,31 +240,31 @@ describe('jsdoc/package', () => {
     });
 
     describe('main', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'main')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('main', 'foo');
       });
     });
 
     describe('name', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'name')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('name', 'foo');
       });
     });
 
     describe('repository', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'repository')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('repository', {
           type: 'git',
           url: 'git@example.org:foo/bar/baz.git',
@@ -271,11 +273,11 @@ describe('jsdoc/package', () => {
     });
 
     describe('version', () => {
-      it('should not exist by default', () => {
+      it('does not exist by default', () => {
         expect(Object.hasOwn(emptyPackage, 'version')).toBeFalse();
       });
 
-      it('should contain the value from the package file', () => {
+      it('contains the value from the package file', () => {
         checkPackageProperty('version', '0.1.2');
       });
     });

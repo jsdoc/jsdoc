@@ -20,6 +20,14 @@ describe('@jsdoc/doclet', () => {
     expect(doclet).toBeObject();
   });
 
+  describe('Package', () => {
+    it('is lib/package.Package', () => {
+      const { Package } = require('../../lib/package');
+
+      expect(doclet.Package).toBe(Package);
+    });
+  });
+
   describe('schema', () => {
     it('is lib/schema', () => {
       const schema = require('../../lib/schema');

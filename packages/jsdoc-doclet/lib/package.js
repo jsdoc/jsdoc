@@ -19,7 +19,6 @@ const stripBom = require('strip-bom');
 /**
  * Provides access to information about a JavaScript package.
  *
- * @module jsdoc/package
  * @see https://www.npmjs.org/doc/files/package.json.html
  */
 
@@ -37,7 +36,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about where to report bugs in the package.
  *
- * @typedef {Object} module:jsdoc/package.Package~BugInfo
+ * @typedef {Object} module:@jsdoc/doclet/package.Package~BugInfo
  * @property {string} email - The email address for reporting bugs.
  * @property {string} url - The URL for reporting bugs.
  */
@@ -45,7 +44,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package's software license.
  *
- * @typedef {Object} module:jsdoc/package.Package~LicenseInfo
+ * @typedef {Object} module:@jsdoc/doclet/package.Package~LicenseInfo
  * @property {string} type - An identifier for the type of license.
  * @property {string} url - The URL for the complete text of the license.
  */
@@ -53,7 +52,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package author or contributor.
  *
- * @typedef {Object} module:jsdoc/package.Package~PersonInfo
+ * @typedef {Object} module:@jsdoc/doclet/package.Package~PersonInfo
  * @property {string} name - The person's full name.
  * @property {string} email - The person's email address.
  * @property {string} url - The URL of the person's website.
@@ -62,7 +61,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package's version-control repository.
  *
- * @typedef {Object} module:jsdoc/package.Package~RepositoryInfo
+ * @typedef {Object} module:@jsdoc/doclet/package.Package~RepositoryInfo
  * @property {string} type - The type of version-control system that the repository uses (for
  * example, `git` or `svn`).
  * @property {string} url - The URL for the repository.
@@ -119,10 +118,10 @@ class Package {
     if (packageInfo.author) {
       /**
        * The author of this package. Contains either a
-       * {@link module:jsdoc/package.Package~PersonInfo PersonInfo} object or a string with
+       * {@link module:@jsdoc/doclet/package.Package~PersonInfo PersonInfo} object or a string with
        * information about the author.
        *
-       * @type {(module:jsdoc/package.Package~PersonInfo|string)}
+       * @type {(module:@jsdoc/doclet/package.Package~PersonInfo|string)}
        * @since 3.3.0
        */
       this.author = packageInfo.author;
@@ -133,7 +132,7 @@ class Package {
        * Information about where to report bugs in the project. May contain a URL, a string, or an
        * object with more detailed information.
        *
-       * @type {(string|module:jsdoc/package.Package~BugInfo)}
+       * @type {(string|module:@jsdoc/doclet/package.Package~BugInfo)}
        * @since 3.3.0
        */
       this.bugs = packageInfo.bugs;
@@ -143,7 +142,7 @@ class Package {
       /**
        * The contributors to this package.
        *
-       * @type {Array.<(module:jsdoc/package.Package~PersonInfo|string)>}
+       * @type {Array.<(module:@jsdoc/doclet/package.Package~PersonInfo|string)>}
        * @since 3.3.0
        */
       this.contributors = packageInfo.contributors;
@@ -229,7 +228,7 @@ class Package {
        * The licenses used by this package. Combines information from the `package.json` file's
        * `license` property and the deprecated `licenses` property.
        *
-       * @type {Array.<module:jsdoc/package.Package~LicenseInfo>}
+       * @type {Array.<module:@jsdoc/doclet/package.Package~LicenseInfo>}
        */
       this.licenses = getLicenses(packageInfo);
     }
@@ -250,7 +249,7 @@ class Package {
       /**
        * The version-control repository for the package.
        *
-       * @type {module:jsdoc/package.Package~RepositoryInfo}
+       * @type {module:@jsdoc/doclet/package.Package~RepositoryInfo}
        * @since 3.3.0
        */
       this.repository = packageInfo.repository;

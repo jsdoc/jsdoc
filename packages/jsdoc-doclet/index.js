@@ -13,8 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+const { Package } = require('./lib/package');
 const schema = require('./lib/schema');
 
 module.exports = {
+  Package,
   schema,
 };
