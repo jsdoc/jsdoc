@@ -17,7 +17,7 @@
  * @module jsdoc/doclet
  */
 const _ = require('lodash');
-const { isFunction } = require('@jsdoc/parse').astNode;
+const { isFunction } = require('@jsdoc/ast').astNode;
 const {
   applyNamespace,
   hasLeadingScope,
@@ -32,7 +32,7 @@ const {
   toParts,
 } = require('@jsdoc/core').name;
 const path = require('path');
-const { Syntax } = require('@jsdoc/parse');
+const { Syntax } = require('@jsdoc/ast');
 const { Tag } = require('@jsdoc/tag');
 
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
@@ -45,7 +45,7 @@ function fakeMeta(node) {
 }
 
 // use the meta info about the source code to guess what the doclet kind should be
-// TODO: set this elsewhere (maybe @jsdoc/parse.astNode.getInfo)
+// TODO: set this elsewhere (maybe @jsdoc/ast.astNode.getInfo)
 function codeToKind(code) {
   let kind = 'member';
   const node = code.node;

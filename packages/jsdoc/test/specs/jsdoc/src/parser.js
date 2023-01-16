@@ -82,7 +82,7 @@ describe('jsdoc/src/parser', () => {
 
     describe('walker', () => {
       it('should contain an appropriate walker by default', () => {
-        const { Walker } = require('@jsdoc/parse');
+        const { Walker } = require('@jsdoc/ast');
 
         expect(parser.walker instanceof Walker).toBeTrue();
       });
@@ -157,7 +157,7 @@ describe('jsdoc/src/parser', () => {
       });
 
       it('should call AST node visitors', () => {
-        const { Syntax } = require('@jsdoc/parse');
+        const { Syntax } = require('@jsdoc/ast');
 
         let args;
         const sourceCode = ['javascript:/** foo */var foo;'];

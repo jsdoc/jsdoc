@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@babel/parser": "^7.20.5",
+    "@jsdoc/ast": "^0.0.1",
     "@jsdoc/cli": "^0.2.9",
     "@jsdoc/core": "^0.4.4",
     "@jsdoc/doclet": "^0.0.1",
-    "@jsdoc/parse": "^0.1.6",
     "@jsdoc/salty": "^0.2.2",
     "@jsdoc/tag": "^0.1.4",
     "@jsdoc/util": "^0.2.7",

@@ -17,7 +17,7 @@
  * @module jsdoc/src/parser
  */
 const _ = require('lodash');
-const { AstBuilder, astNode, Syntax, Walker } = require('@jsdoc/parse');
+const { AstBuilder, astNode, Syntax, Walker } = require('@jsdoc/ast');
 const { EventEmitter } = require('events');
 const fs = require('fs');
 const { log } = require('@jsdoc/util');

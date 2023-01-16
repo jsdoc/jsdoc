@@ -22,10 +22,10 @@ const { applyNamespace, SCOPE, LONGNAMES } = require('@jsdoc/core').name;
 const commonPathPrefix = require('common-path-prefix');
 const { isInlineTag } = require('@jsdoc/tag').inline;
 const { log } = require('@jsdoc/util');
-const { nodeToValue } = require('@jsdoc/parse').astNode;
+const { nodeToValue } = require('@jsdoc/ast').astNode;
 const parseTagType = require('@jsdoc/tag').type.parse;
 const path = require('path');
-const { Syntax } = require('@jsdoc/parse');
+const { Syntax } = require('@jsdoc/ast');
 
 const hasOwnProp = Object.prototype.hasOwnProperty;
 

@@ -14,7 +14,6 @@
   limitations under the License.
 */
 // TODO: docs
-/** @module @jsdoc/parse.astNode */
 const _ = require('lodash');
 const { cast } = require('@jsdoc/util');
 const { SCOPE } = require('@jsdoc/core').name;
@@ -26,7 +25,6 @@ let uid = 100000000;
 /**
  * Check whether an AST node represents a function.
  *
- * @alias module:@jsdoc/parse.astNode.isFunction
  * @param {(Object|string)} node - The AST node to check, or the `type` property of a node.
  * @return {boolean} Set to `true` if the node is a function or `false` in all other cases.
  */
@@ -54,7 +52,6 @@ const isFunction = (exports.isFunction = (node) => {
 /**
  * Check whether an AST node creates a new scope.
  *
- * @alias module:@jsdoc/parse.astNode.isScope
  * @param {Object} node - The AST node to check.
  * @return {Boolean} Set to `true` if the node creates a new scope, or `false` in all other cases.
  */

@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/parse/lib/walker', () => {
+describe('@jsdoc/ast/lib/walker', () => {
   const walker = require('../../../lib/walker');
 
   it('is an object', () => {
@@ -29,7 +29,7 @@ describe('@jsdoc/parse/lib/walker', () => {
   });
 
   describe('walkers', () => {
-    const { Syntax } = require('@jsdoc/parse');
+    const { Syntax } = require('../../../lib/syntax');
 
     // TODO: tests for default functions
 

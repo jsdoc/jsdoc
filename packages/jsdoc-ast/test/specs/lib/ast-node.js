@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/parse/lib/ast-node', () => {
+describe('@jsdoc/ast/lib/ast-node', () => {
   const astNode = require('../../../lib/ast-node');
   const babelParser = require('@babel/parser');
   const { parserOptions } = require('../../../lib/ast-builder');
@@ -540,7 +540,7 @@ describe('@jsdoc/parse/lib/ast-node', () => {
 
     // TODO: we can't test this here because JSDoc, not Babylon, adds the `parent` property to
     // nodes. also, we currently return an empty string instead of `<anonymous>` in this case;
-    // see `module:@jsdoc/parse.astNode.nodeToValue` and the comment on
+    // see `module:@jsdoc/ast.astNode.nodeToValue` and the comment on
     // `Syntax.MethodDefinition` for details
     xit(
       'should return `<anonymous>` for method definitions inside classes that were ' +

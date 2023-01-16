@@ -35,7 +35,7 @@ describe('arrow functions', () => {
   });
 
   // TODO: we currently use the wrong longname in this case; see
-  // `module:@jsdoc/parse.astNode.nodeToValue` and the comment on `case Syntax.MethodDefinition`
+  // `module:@jsdoc/ast.astNode.nodeToValue` and the comment on `case Syntax.MethodDefinition`
   // for details
   xit('should use the correct longname for members of a class returned by an arrow function', () => {
     expect(name).toBeArrayOfSize(2);

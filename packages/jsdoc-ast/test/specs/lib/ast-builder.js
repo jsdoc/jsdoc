@@ -14,7 +14,7 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('@jsdoc/parse/lib/ast-builder', () => {
+describe('@jsdoc/ast/lib/ast-builder', () => {
   const astBuilder = require('../../../lib/ast-builder');
 
   it('is an object', () => {

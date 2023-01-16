@@ -17,10 +17,9 @@
  * @module jsdoc/src/visitor
  */
 // TODO: consider exporting more stuff so users can override it
-const { astNode } = require('@jsdoc/parse');
+const { astNode, Syntax } = require('@jsdoc/ast');
 const combineDoclets = require('jsdoc/doclet').combine;
 const { getBasename, LONGNAMES } = require('@jsdoc/core').name;
-const { Syntax } = require('@jsdoc/parse');
 
 /**
  * Get the raw comment string for a block comment node.

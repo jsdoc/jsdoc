@@ -13,18 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const parse = require('../../index');
+const ast = require('../../index');
 
-describe('@jsdoc/parse', () => {
+describe('@jsdoc/ast', () => {
   it('is an object', () => {
-    expect(parse).toBeObject();
+    expect(ast).toBeObject();
   });
 
   describe('AstBuilder', () => {
     it('is lib/ast-builder.AstBuilder', () => {
       const { AstBuilder } = require('../../lib/ast-builder');
 
-      expect(parse.AstBuilder).toBe(AstBuilder);
+      expect(ast.AstBuilder).toBe(AstBuilder);
     });
   });
 
@@ -32,7 +32,7 @@ describe('@jsdoc/parse', () => {
     it('is lib/ast-node', () => {
       const astNode = require('../../lib/ast-node');
 
-      expect(parse.astNode).toBe(astNode);
+      expect(ast.astNode).toBe(astNode);
     });
   });
 
@@ -40,7 +40,7 @@ describe('@jsdoc/parse', () => {
     it('is lib/syntax.Syntax', () => {
       const { Syntax } = require('../../lib/syntax');
 
-      expect(parse.Syntax).toBe(Syntax);
+      expect(ast.Syntax).toBe(Syntax);
     });
   });
 
@@ -48,7 +48,7 @@ describe('@jsdoc/parse', () => {
     it('is lib/walker.Walker', () => {
       const { Walker } = require('../../lib/walker');
 
-      expect(parse.Walker).toBe(Walker);
+      expect(ast.Walker).toBe(Walker);
     });
   });
 });
