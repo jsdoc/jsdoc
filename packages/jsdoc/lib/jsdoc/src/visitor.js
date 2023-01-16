@@ -18,7 +18,7 @@
  */
 // TODO: consider exporting more stuff so users can override it
 const { astNode, Syntax } = require('@jsdoc/ast');
-const combineDoclets = require('jsdoc/doclet').combine;
+const { combineDoclets } = require('@jsdoc/doclet');
 const { getBasename, LONGNAMES } = require('@jsdoc/core').name;
 
 /**

@@ -13,10 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/doclet', () => {
+/* global jsdoc */
+describe('@jsdoc/doclet/lib/doclet', () => {
   // TODO: more tests
   const _ = require('lodash');
-  const doclet = require('jsdoc/doclet');
+  const doclet = require('../../lib/doclet');
   const Doclet = doclet.Doclet;
   const { SCOPE } = require('@jsdoc/core').name;
 
@@ -47,9 +48,9 @@ describe('jsdoc/doclet', () => {
       expect(descriptor.enumerable).toBeFalse();
     });
 
-    // TODO(hegemonic): more tests (namespaces, modules, etc.)
+    // TODO: more tests (namespaces, modules, etc.)
     describe('name resolution', () => {
-      // TODO(hegemonic): Load fixtures instead of creating doclets manually
+      // TODO: Load fixtures instead of creating doclets manually
       function makeDoclet(tagStrings) {
         const comment = `/**\n${tagStrings.join('\n')}\n*/`;
 
@@ -57,7 +58,7 @@ describe('jsdoc/doclet', () => {
       }
 
       describe('aliases', () => {
-        // TODO(hegemonic): This comment implies that we _don't_ need to set doclet.name...
+        // TODO: This comment implies that we _don't_ need to set doclet.name...
         // If `doclet.alias` is defined, `doclet.name` will be set to the same value by the
         // time the test runs. Therefore, we set both `@alias` and `@name` in these tests.
         it('can resolve aliases that identify instance members', () => {
@@ -185,7 +186,7 @@ describe('jsdoc/doclet', () => {
           expect(newDoclet.longname).toBe('MyClass.event:A');
         });
 
-        // TODO(hegemonic): This only works if you resolve the names twice. As it happens,
+        // TODO: This only works if you resolve the names twice. As it happens,
         // JSDoc does that, because it calls `Doclet#postProcess` twice, so this works in
         // practice. But you shouldn't have to resolve the names twice...
         xit('@event @name MyClass.EventName @memberof somethingelse works', () => {
@@ -198,7 +199,7 @@ describe('jsdoc/doclet', () => {
       });
 
       describe('module members', () => {
-        // TODO(hegemonic): This only works if you resolve the names twice. As it happens,
+        // TODO: This only works if you resolve the names twice. As it happens,
         // JSDoc does that, because it calls `Doclet#postProcess` twice, so this works in
         // practice. But you shouldn't have to resolve the names twice...
         xit('@name @function @memberof works', () => {
@@ -218,7 +219,7 @@ describe('jsdoc/doclet', () => {
   });
 
   describe('setScope', () => {
-    it('should accept the correct scope names', () => {
+    it('accepts the correct scope names', () => {
       function setScope(scopeName) {
         const newDoclet = new Doclet('/** Huzzah, a doclet! */', null, jsdoc.deps);
 
@@ -230,7 +231,7 @@ describe('jsdoc/doclet', () => {
       });
     });
 
-    it('should throw an error for invalid scope names', () => {
+    it('throws an error for invalid scope names', () => {
       function setScope() {
         const newDoclet = new Doclet('/** Woe betide this doclet. */', null, jsdoc.deps);
 
@@ -242,7 +243,7 @@ describe('jsdoc/doclet', () => {
   });
 
   describe('combine', () => {
-    it('should override most properties of the secondary doclet', () => {
+    it('overrides most properties of the secondary doclet', () => {
       const primaryDoclet = new Doclet(
         '/** New and improved!\n@version 2.0.0 */',
         null,
@@ -256,7 +257,7 @@ describe('jsdoc/doclet', () => {
       });
     });
 
-    it('should add properties that are missing from the secondary doclet', () => {
+    it('adds properties from the secondary doclet that are missing', () => {
       const primaryDoclet = new Doclet('/** Hello!\n@version 2.0.0 */', null, jsdoc.deps);
       const secondaryDoclet = new Doclet('/** Hello! */', null, jsdoc.deps);
       const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
@@ -267,27 +268,23 @@ describe('jsdoc/doclet', () => {
     describe('params and properties', () => {
       const properties = ['params', 'properties'];
 
-      it(
-        "should use the secondary doclet's params and properties if the primary doclet " +
-          'had none',
-        () => {
-          const primaryDoclet = new Doclet('/** Hello! */', null, jsdoc.deps);
-          const secondaryComment = [
-            '/**',
-            ' * @param {string} foo - The foo.',
-            ' * @property {number} bar - The bar.',
-            ' */',
-          ].join('\n');
-          const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.deps);
-          const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
+      it('uses params and properties from the secondary doclet if the primary lacks them', () => {
+        const primaryDoclet = new Doclet('/** Hello! */', null, jsdoc.deps);
+        const secondaryComment = [
+          '/**',
+          ' * @param {string} foo - The foo.',
+          ' * @property {number} bar - The bar.',
+          ' */',
+        ].join('\n');
+        const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.deps);
+        const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
 
-          properties.forEach((property) => {
-            expect(newDoclet[property]).toEqual(secondaryDoclet[property]);
-          });
-        }
-      );
+        properties.forEach((property) => {
+          expect(newDoclet[property]).toEqual(secondaryDoclet[property]);
+        });
+      });
 
-      it("should use the primary doclet's params and properties if the primary doclet has some", () => {
+      it('uses params and properties from the primary doclet, if present', () => {
         const primaryComment = [
           '/**',
           ' * @param {number} baz - The baz.',

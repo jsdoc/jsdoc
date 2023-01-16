@@ -15,7 +15,7 @@
 */
 describe('@lends tag', () => {
   // see also specs/documentation/lends.js for tests on @lends behaviour.
-  const { Doclet } = require('jsdoc/doclet');
+  const { Doclet } = require('@jsdoc/doclet');
 
   const doc = new Doclet('/** @lends */', {}, jsdoc.deps);
   const doc2 = new Doclet('/** @lends MyClass# */', {}, jsdoc.deps);

@@ -165,7 +165,7 @@ function getFilename(longname, dependencies) {
  * `module.exports = function() {};`).
  *
  * @private
- * @param {module:jsdoc/doclet.Doclet} doclet - The doclet for the symbol.
+ * @param {module:@jsdoc/doclet.Doclet} doclet - The doclet for the symbol.
  * @return {boolean} `true` if the symbol is the only symbol exported by a module; otherwise,
  * `false`.
  */
@@ -720,7 +720,7 @@ exports.getSignatureReturns = ({ yields, returns }, cssClass) => {
  *
  * @param {TAFFY} data - The TaffyDB database to search.
  * @param {Object} doclet - The doclet whose ancestors will be retrieved.
- * @return {Array.<module:jsdoc/doclet.Doclet>} A array of ancestor doclets, sorted from most to
+ * @return {Array.<module:@jsdoc/doclet.Doclet>} A array of ancestor doclets, sorted from most to
  * least distant.
  */
 exports.getAncestors = (data, doclet) => {
@@ -867,7 +867,7 @@ exports.prune = (data, dependencies) => {
  * If a doclet corresponds to a smaller portion of an output file (for example, if the doclet
  * represents a method), the URL will consist of a filename and a fragment ID.
  *
- * @param {module:jsdoc/doclet.Doclet} doclet - The doclet that will be used to create the URL.
+ * @param {module:@jsdoc/doclet.Doclet} doclet - The doclet that will be used to create the URL.
  * @param {Object} dependencies - The JSDoc dependency container.
  * @return {string} The URL to the generated documentation for the doclet.
  */
@@ -923,7 +923,7 @@ exports.createLink = (doclet, dependencies) => {
  * @function
  * @see module:@jsdoc/core.name.longnamesToTree
  * @param {Array<string>} longnames - The longnames to convert into a tree.
- * @param {Object<string, module:jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
+ * @param {Object<string, module:@jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
  * Each property should be the longname of a doclet, and each value should be the doclet for that
  * longname.
  * @return {Object} A tree with information about each longname.

@@ -20,6 +20,22 @@ describe('@jsdoc/doclet', () => {
     expect(doclet).toBeObject();
   });
 
+  describe('combineDoclets', () => {
+    it('is lib/doclet.combine', () => {
+      const { combine } = require('../../lib/doclet');
+
+      expect(doclet.combineDoclets).toBe(combine);
+    });
+  });
+
+  describe('Doclet', () => {
+    it('is lib/doclet.Doclet', () => {
+      const { Doclet } = require('../../lib/doclet');
+
+      expect(doclet.Doclet).toBe(Doclet);
+    });
+  });
+
   describe('Package', () => {
     it('is lib/package.Package', () => {
       const { Package } = require('../../lib/package');

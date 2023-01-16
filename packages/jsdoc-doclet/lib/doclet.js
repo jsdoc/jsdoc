@@ -13,9 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/**
- * @module jsdoc/doclet
- */
 const _ = require('lodash');
 const { isFunction } = require('@jsdoc/ast').astNode;
 const {
@@ -288,7 +285,7 @@ function removeGlobal(longname) {
  * Get the full path to the source file that is associated with a doclet.
  *
  * @private
- * @param {module:jsdoc/doclet.Doclet} The doclet to check for a filepath.
+ * @param {module:@jsdoc/doclet.Doclet} The doclet to check for a filepath.
  * @return {string} The path to the doclet's source file, or an empty string if the path is not
  * available.
  */
@@ -323,9 +320,9 @@ function clone(source, target, properties) {
  * the primary doclet over the secondary doclet.
  *
  * @private
- * @param {module:jsdoc/doclet.Doclet} primary - The primary doclet.
- * @param {module:jsdoc/doclet.Doclet} secondary - The secondary doclet.
- * @param {module:jsdoc/doclet.Doclet} target - The doclet to which properties will be copied.
+ * @param {module:@jsdoc/doclet.Doclet} primary - The primary doclet.
+ * @param {module:@jsdoc/doclet.Doclet} secondary - The secondary doclet.
+ * @param {module:@jsdoc/doclet.Doclet} target - The doclet to which properties will be copied.
  * @param {Array.<string>} exclude - The names of properties to exclude from copying.
  */
 function copyMostProperties(primary, secondary, target, exclude) {
@@ -345,9 +342,9 @@ function copyMostProperties(primary, secondary, target, exclude) {
  * doclet.
  *
  * @private
- * @param {module:jsdoc/doclet.Doclet} primary - The primary doclet.
- * @param {module:jsdoc/doclet.Doclet} secondary - The secondary doclet.
- * @param {module:jsdoc/doclet.Doclet} target - The doclet to which properties will be copied.
+ * @param {module:@jsdoc/doclet.Doclet} primary - The primary doclet.
+ * @param {module:@jsdoc/doclet.Doclet} secondary - The secondary doclet.
+ * @param {module:@jsdoc/doclet.Doclet} target - The doclet to which properties will be copied.
  * @param {Array.<string>} include - The names of properties to copy.
  */
 function copySpecificProperties(primary, secondary, target, include) {
@@ -367,7 +364,7 @@ function copySpecificProperties(primary, secondary, target, include) {
 /**
  * Represents a single JSDoc comment.
  *
- * @alias module:jsdoc/doclet.Doclet
+ * @alias module:@jsdoc/doclet.Doclet
  */
 class Doclet {
   /**
@@ -657,10 +654,10 @@ exports.Doclet = Doclet;
 /**
  * Combine two doclets into a new doclet.
  *
- * @param {module:jsdoc/doclet.Doclet} primary - The doclet whose properties will be used.
- * @param {module:jsdoc/doclet.Doclet} secondary - The doclet to use as a fallback for properties
+ * @param {module:@jsdoc/doclet.Doclet} primary - The doclet whose properties will be used.
+ * @param {module:@jsdoc/doclet.Doclet} secondary - The doclet to use as a fallback for properties
  * that the primary doclet does not have.
- * @returns {module:jsdoc/doclet.Doclet} A new doclet that combines the primary and secondary
+ * @returns {module:@jsdoc/doclet.Doclet} A new doclet that combines the primary and secondary
  * doclets.
  */
 exports.combine = (primary, secondary) => {

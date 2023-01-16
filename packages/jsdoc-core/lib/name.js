@@ -410,7 +410,7 @@ function splitLongname(longname, options) {
  * ```
  *
  * @param {Array<string>} longnames - The longnames to convert into a tree.
- * @param {Object<string, module:jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
+ * @param {Object<string, module:@jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
  * Each property should be the longname of a doclet, and each value should be the doclet for that
  * longname.
  * @return {Object} A tree with information about each longname in the format shown above.

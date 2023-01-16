@@ -57,7 +57,7 @@ describe('@overview tag', () => {
     'The name should not include the entire filepath when the source file is outside the ' +
       'JSDoc directory',
     () => {
-      const Doclet = require('jsdoc/doclet').Doclet;
+      const { Doclet } = require('@jsdoc/doclet');
 
       let doclet;
       let docletMeta;

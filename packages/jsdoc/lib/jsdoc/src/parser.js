@@ -210,7 +210,7 @@ class Parser extends EventEmitter {
 
   // TODO: update docs
   /**
-   * @param {module:jsdoc/doclet.Doclet} doclet The parse result to add to the result buffer.
+   * @param {module:@jsdoc/doclet.Doclet} doclet The parse result to add to the result buffer.
    */
   addResult(doclet) {
     const index = this._resultBuffer.index;
@@ -332,7 +332,7 @@ class Parser extends EventEmitter {
    * Retrieve the most recently seen doclet that has the given longname.
    *
    * @param {string} longname - The longname to search for.
-   * @return {module:jsdoc/doclet.Doclet?} The most recent doclet for the longname.
+   * @return {module:@jsdoc/doclet.Doclet?} The most recent doclet for the longname.
    */
   _getDocletByLongname(longname) {
     return this._byLongname.get(longname);
@@ -437,7 +437,7 @@ class Parser extends EventEmitter {
    * Get the doclet for the lowest-level class, if any, that is in the scope chain for a given node.
    *
    * @param {Object} node - The node whose scope chain will be searched.
-   * @return {module:jsdoc/doclet.Doclet?} The doclet for the lowest-level class in the node's scope
+   * @return {module:@jsdoc/doclet.Doclet?} The doclet for the lowest-level class in the node's scope
    * chain.
    */
   _getParentClass({ enclosingScope }) {
@@ -559,7 +559,7 @@ class Parser extends EventEmitter {
    * this method returns multiple doclets (in this case, the doclets for `foo` and `exports.FOO`).
    *
    * @param {Object} node - An AST node representing an object property.
-   * @return {Array.<module:jsdoc/doclet.Doclet>} An array of doclets for the parent object or objects, or
+   * @return {Array.<module:@jsdoc/doclet.Doclet>} An array of doclets for the parent object or objects, or
    * an empty array if no doclets are found.
    */
   resolvePropertyParents({ parent }) {

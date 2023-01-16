@@ -299,9 +299,9 @@ function generateSourceFiles(sourceFiles, encoding, outdir, dependencies) {
  * for display purposes. This function mutates the original arrays.
  *
  * @private
- * @param {Array.<module:jsdoc/doclet.Doclet>} doclets - The array of classes and functions to
+ * @param {Array.<module:@jsdoc/doclet.Doclet>} doclets - The array of classes and functions to
  * check.
- * @param {Array.<module:jsdoc/doclet.Doclet>} modules - The array of module doclets to search.
+ * @param {Array.<module:@jsdoc/doclet.Doclet>} modules - The array of module doclets to search.
  */
 function attachModuleSymbols(doclets, modules) {
   const symbols = {};

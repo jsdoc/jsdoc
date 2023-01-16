@@ -40,7 +40,7 @@ describe('module names', () => {
   // Windows-specific test
   if (/^win/.test(require('os').platform())) {
     it('should always use forward slashes when creating a name from the file path', () => {
-      const { Doclet } = require('jsdoc/doclet');
+      const { Doclet } = require('@jsdoc/doclet');
       let doclet;
 
       env.sourceFiles = [

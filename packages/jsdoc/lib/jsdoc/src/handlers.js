@@ -16,7 +16,7 @@
 /**
  * @module jsdoc/src/handlers
  */
-const { Doclet } = require('jsdoc/doclet');
+const { Doclet } = require('@jsdoc/doclet');
 const escape = require('escape-string-regexp');
 const { log } = require('@jsdoc/util');
 const { SCOPE } = require('@jsdoc/core').name;
