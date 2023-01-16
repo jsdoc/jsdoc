@@ -36,7 +36,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about where to report bugs in the package.
  *
- * @typedef {Object} module:@jsdoc/doclet/package.Package~BugInfo
+ * @typedef {Object} module:@jsdoc/doclet.Package~BugInfo
  * @property {string} email - The email address for reporting bugs.
  * @property {string} url - The URL for reporting bugs.
  */
@@ -44,7 +44,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package's software license.
  *
- * @typedef {Object} module:@jsdoc/doclet/package.Package~LicenseInfo
+ * @typedef {Object} module:@jsdoc/doclet.Package~LicenseInfo
  * @property {string} type - An identifier for the type of license.
  * @property {string} url - The URL for the complete text of the license.
  */
@@ -52,7 +52,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package author or contributor.
  *
- * @typedef {Object} module:@jsdoc/doclet/package.Package~PersonInfo
+ * @typedef {Object} module:@jsdoc/doclet.Package~PersonInfo
  * @property {string} name - The person's full name.
  * @property {string} email - The person's email address.
  * @property {string} url - The URL of the person's website.
@@ -61,7 +61,7 @@ function getLicenses(packageInfo) {
 /**
  * Information about a package's version-control repository.
  *
- * @typedef {Object} module:@jsdoc/doclet/package.Package~RepositoryInfo
+ * @typedef {Object} module:@jsdoc/doclet.Package~RepositoryInfo
  * @property {string} type - The type of version-control system that the repository uses (for
  * example, `git` or `svn`).
  * @property {string} url - The URL for the repository.
@@ -118,11 +118,10 @@ class Package {
     if (packageInfo.author) {
       /**
        * The author of this package. Contains either a
-       * {@link module:@jsdoc/doclet/package.Package~PersonInfo PersonInfo} object or a string with
+       * {@link module:@jsdoc/doclet.Package~PersonInfo PersonInfo} object or a string with
        * information about the author.
        *
-       * @type {(module:@jsdoc/doclet/package.Package~PersonInfo|string)}
-       * @since 3.3.0
+       * @type {(module:@jsdoc/doclet.Package~PersonInfo|string)}
        */
       this.author = packageInfo.author;
     }
@@ -132,8 +131,7 @@ class Package {
        * Information about where to report bugs in the project. May contain a URL, a string, or an
        * object with more detailed information.
        *
-       * @type {(string|module:@jsdoc/doclet/package.Package~BugInfo)}
-       * @since 3.3.0
+       * @type {(string|module:@jsdoc/doclet.Package~BugInfo)}
        */
       this.bugs = packageInfo.bugs;
     }
@@ -142,8 +140,7 @@ class Package {
       /**
        * The contributors to this package.
        *
-       * @type {Array.<(module:@jsdoc/doclet/package.Package~PersonInfo|string)>}
-       * @since 3.3.0
+       * @type {Array.<(module:@jsdoc/doclet.Package~PersonInfo|string)>}
        */
       this.contributors = packageInfo.contributors;
     }
@@ -153,7 +150,6 @@ class Package {
        * The dependencies for this package.
        *
        * @type {Object}
-       * @since 3.3.0
        */
       this.dependencies = packageInfo.dependencies;
     }
@@ -172,20 +168,18 @@ class Package {
        * The development dependencies for this package.
        *
        * @type {Object}
-       * @since 3.3.0
        */
       this.devDependencies = packageInfo.devDependencies;
     }
 
     if (packageInfo.engines) {
       /**
-       * The JavaScript engines that this package supports. Each key is a string that identifies
-       * the engine (for example, `node`). Each value is a
+       * The JavaScript engines that this package supports. Each key is a string that identifies the
+       * engine (for example, `node`). Each value is a
        * [semver](https://www.npmjs.org/doc/misc/semver.html)-compliant version number for the
        * engine.
        *
        * @type {Object}
-       * @since 3.3.0
        */
       this.engines = packageInfo.engines;
     }
@@ -208,7 +202,6 @@ class Package {
        * The URL for the package's homepage.
        *
        * @type {string}
-       * @since 3.3.0
        */
       this.homepage = packageInfo.homepage;
     }
@@ -218,7 +211,6 @@ class Package {
        * Keywords to help users find the package.
        *
        * @type {Array.<string>}
-       * @since 3.3.0
        */
       this.keywords = packageInfo.keywords;
     }
@@ -228,7 +220,7 @@ class Package {
        * The licenses used by this package. Combines information from the `package.json` file's
        * `license` property and the deprecated `licenses` property.
        *
-       * @type {Array.<module:@jsdoc/doclet/package.Package~LicenseInfo>}
+       * @type {Array.<module:@jsdoc/doclet.Package~LicenseInfo>}
        */
       this.licenses = getLicenses(packageInfo);
     }
@@ -236,11 +228,10 @@ class Package {
     if (packageInfo.main) {
       /**
        * The module ID that provides the primary entry point to the package. For example, if your
-       * package is a CommonJS module, and the value of this property is `foo`, users should be
-       * able to load your module with `require('foo')`.
+       * package is a CommonJS module, and the value of this property is `foo`, users should be able
+       * to load your module with `require('foo')`.
        *
        * @type {string}
-       * @since 3.3.0
        */
       this.main = packageInfo.main;
     }
@@ -249,8 +240,7 @@ class Package {
       /**
        * The version-control repository for the package.
        *
-       * @type {module:@jsdoc/doclet/package.Package~RepositoryInfo}
-       * @since 3.3.0
+       * @type {module:@jsdoc/doclet.Package~RepositoryInfo}
        */
       this.repository = packageInfo.repository;
     }
@@ -261,7 +251,6 @@ class Package {
        * package.
        *
        * @type {string}
-       * @since 3.2.0
        */
       this.version = packageInfo.version;
     }
