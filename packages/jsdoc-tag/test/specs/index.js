@@ -28,6 +28,14 @@ describe('@jsdoc/tag', () => {
     });
   });
 
+  describe('Tag', () => {
+    it('is lib/tag.Tag', () => {
+      const { Tag } = require('../../lib/tag');
+
+      expect(tag.Tag).toBe(Tag);
+    });
+  });
+
   describe('type', () => {
     it('is lib/type', () => {
       const type = require('../../lib/type');

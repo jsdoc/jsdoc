@@ -33,8 +33,7 @@ const {
 } = require('@jsdoc/core').name;
 const path = require('path');
 const { Syntax } = require('@jsdoc/parse');
-const tag = require('jsdoc/tag');
-const Tag = tag.Tag;
+const { Tag } = require('@jsdoc/tag');
 
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
 

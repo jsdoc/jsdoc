@@ -15,14 +15,13 @@
 */
 /**
  * Functionality related to JSDoc tags.
- * @module jsdoc/tag
  */
 const _ = require('lodash');
 const { log } = require('@jsdoc/util');
 const path = require('path');
 const tag = {
-  validator: require('jsdoc/tag/validator'),
-  type: require('@jsdoc/tag').type,
+  validator: require('./validator'),
+  type: require('./type'),
 };
 
 // Check whether the text is the same as a symbol name with leading or trailing whitespace. If so,
@@ -99,10 +98,6 @@ function processTagText(tagInstance, tagDef, meta, dependencies) {
     tagInstance.value = {};
 
     tagType = parseType(tagInstance, tagDef, meta);
-
-    // It is possible for a tag to *not* have a type but still have
-    // optional or defaultvalue, e.g. '@param [foo]'.
-    // Although tagType.type.length == 0 we should still copy the other properties.
     if (tagType.type) {
       if (tagType.type.length) {
         tagInstance.value.type = {

@@ -13,19 +13,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/tag/validator', () => {
+/* global jsdoc */
+describe('@jsdoc/tag/lib/validator', () => {
   const _ = require('lodash');
   const { EventBus } = require('@jsdoc/util');
-  const tag = require('jsdoc/tag');
-  const validator = require('jsdoc/tag/validator');
+  const { Tag } = require('../../../lib/tag');
+  const validator = require('../../../lib/validator');
 
   const config = jsdoc.deps.get('config');
 
-  it('should exist', () => {
+  it('is an object', () => {
     expect(validator).toBeObject();
   });
 
-  it('should export a validate function', () => {
+  it('exports a `validate` function', () => {
     expect(validator.validate).toBeFunction();
   });
 
@@ -34,14 +35,14 @@ describe('jsdoc/tag/validator', () => {
 
     const allowUnknown = Boolean(config.tags.allowUnknownTags);
     const badTag = { dependencies: jsdoc.deps, title: 'lkjasdlkjfb' };
-    const badTag2 = new tag.Tag('type', '{string} I am a string!', null, jsdoc.deps);
+    const badTag2 = new Tag('type', '{string} I am a string!', null, jsdoc.deps);
     const meta = {
       filename: 'asdf.js',
       lineno: 1,
       comment: 'Better luck next time.',
     };
-    const goodTag = new tag.Tag('name', 'MyDocletName', meta, jsdoc.deps); // mustHaveValue
-    const goodTag2 = new tag.Tag('ignore', '', meta, jsdoc.deps); // mustNotHaveValue
+    const mustHaveValueTag = new Tag('name', 'MyDocletName', meta, jsdoc.deps);
+    const mustNotHaveValueTag = new Tag('ignore', '', meta, jsdoc.deps);
 
     function validateTag(theTag) {
       validator.validate(theTag, dictionary.lookUp(theTag.title), meta);
@@ -51,7 +52,7 @@ describe('jsdoc/tag/validator', () => {
       config.tags.allowUnknownTags = allowUnknown;
     });
 
-    it('logs an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is false', () => {
+    it('logs an error if the tag is not defined and unknown tags are not allowed', () => {
       function validate() {
         config.tags.allowUnknownTags = false;
         validateTag(badTag);
@@ -60,7 +61,7 @@ describe('jsdoc/tag/validator', () => {
       expect(jsdoc.didLog(validate, 'error')).toBeTrue();
     });
 
-    it('logs an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is does not include it', () => {
+    it('logs an error if the tag is not defined and this unknown tag is not allowed', () => {
       function validate() {
         config.tags.allowUnknownTags = [];
         validateTag(badTag);
@@ -69,7 +70,7 @@ describe('jsdoc/tag/validator', () => {
       expect(jsdoc.didLog(validate, 'error')).toBeTrue();
     });
 
-    it('does not log an error if the tag is not in the dictionary and conf.tags.allowUnknownTags is true', () => {
+    it('does not log an error if the tag is not defined, but unknown tags are allowed', () => {
       function validate() {
         config.tags.allowUnknownTags = true;
         validateTag(badTag);
@@ -78,7 +79,7 @@ describe('jsdoc/tag/validator', () => {
       expect(jsdoc.didLog(validate, 'error')).toBeFalse();
     });
 
-    it('does not log an error if the tag is not in the dictionary and conf.tags.allowUnknownTags includes it', () => {
+    it('does not log an error if the tag is not defined, but this unknown tag is allowed', () => {
       function validate() {
         config.tags.allowUnknownTags = [badTag.title];
         validateTag(badTag);
@@ -89,16 +90,16 @@ describe('jsdoc/tag/validator', () => {
 
     it('does not log an error for valid tags', () => {
       function validate() {
-        validateTag(goodTag);
-        validateTag(goodTag2);
+        validateTag(mustHaveValueTag);
+        validateTag(mustNotHaveValueTag);
       }
 
       expect(jsdoc.didLog(validate, 'error')).toBeFalse();
     });
 
-    it('logs an error if the tag has no text but mustHaveValue is true', () => {
+    it('logs an error if the tag has no text but is required to', () => {
       function validate() {
-        const missingName = _.cloneDeep(goodTag);
+        const missingName = _.cloneDeep(mustHaveValueTag);
 
         missingName.text = null;
         validateTag(missingName);
@@ -107,9 +108,9 @@ describe('jsdoc/tag/validator', () => {
       expect(jsdoc.didLog(validate, 'error')).toBeTrue();
     });
 
-    it('logs a warning if the tag has text but mustNotHaveValue is true', () => {
+    it('logs a warning if the tag has text but is required not to', () => {
       function validate() {
-        const missingText = _.cloneDeep(goodTag2);
+        const missingText = _.cloneDeep(mustNotHaveValueTag);
 
         missingText.mustNotHaveValue = true;
         missingText.text = missingText.text || 'asdf';
@@ -119,7 +120,7 @@ describe('jsdoc/tag/validator', () => {
       expect(jsdoc.didLog(validate, 'warn')).toBeTrue();
     });
 
-    it('logs a warning if the tag has a description but mustNotHaveDescription is true', () => {
+    it('logs a warning if the tag has a description but is required not to', () => {
       function validate() {
         validateTag(badTag2);
       }
@@ -127,7 +128,7 @@ describe('jsdoc/tag/validator', () => {
       expect(jsdoc.didLog(validate, 'warn')).toBeTrue();
     });
 
-    it('logs meta.comment when present', () => {
+    it('logs the offending comment for validation errors', () => {
       const bus = new EventBus('jsdoc');
       const events = [];
 

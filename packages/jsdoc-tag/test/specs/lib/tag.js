@@ -13,18 +13,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+/* global jsdoc */
 const options = jsdoc.deps.get('options');
+const jsdocDictionary = jsdoc.deps.get('tags');
+const jsdocTag = require('../../../lib/tag');
+const parseType = require('@jsdoc/tag').type.parse;
+const { Tag } = jsdocTag;
 
-describe('jsdoc/tag', () => {
-  const jsdocDictionary = jsdoc.deps.get('tags');
-  const jsdocTag = require('jsdoc/tag');
-  const parseType = require('@jsdoc/tag').type.parse;
-
-  it('should exist', () => {
+describe('@jsdoc/tag/lib/tag', () => {
+  it('is an object', () => {
     expect(jsdocTag).toBeObject();
   });
 
-  it('should export a Tag function', () => {
+  it('exports a `Tag` constructor', () => {
     expect(jsdocTag.Tag).toBeFunction();
   });
 
@@ -56,56 +57,53 @@ describe('jsdoc/tag', () => {
     let tagParamWithType;
     let tagType;
 
-    // allow each test to recreate the tags (for example, after enabling debug mode)
     function createTags() {
-      // synonym for @param; space in the title
-      tagArg = new jsdocTag.Tag('arg  ', text, meta, jsdoc.deps);
+      // Synonym for @param; space in the title
+      tagArg = new Tag('arg  ', text, meta, jsdoc.deps);
       // @param with no type, but with optional and defaultvalue
-      tagParam = new jsdocTag.Tag('param', '[foo=1]', meta, jsdoc.deps);
+      tagParam = new Tag('param', '[foo=1]', meta, jsdoc.deps);
       // @param with type and no type modifiers (such as optional)
-      tagParamWithType = new jsdocTag.Tag('param', '{string} foo', meta, jsdoc.deps);
+      tagParamWithType = new Tag('param', '{string} foo', meta, jsdoc.deps);
       // @example that does not need indentation to be removed
-      tagExample = new jsdocTag.Tag('example', textExample, meta, jsdoc.deps);
+      tagExample = new Tag('example', textExample, meta, jsdoc.deps);
       // @example that needs indentation to be removed
-      tagExampleIndented = new jsdocTag.Tag('example', textExampleIndented, meta, jsdoc.deps);
-      // for testing that onTagText is run when necessary
-      tagType = new jsdocTag.Tag('type', 'MyType ', meta, jsdoc.deps);
+      tagExampleIndented = new Tag('example', textExampleIndented, meta, jsdoc.deps);
+      // For testing that `onTagText` is called when necessary
+      tagType = new Tag('type', 'MyType ', meta, jsdoc.deps);
     }
 
     beforeEach(() => {
       createTags();
     });
 
-    it("should have a 'originalTitle' property, a string", () => {
-      expect(tagArg.originalTitle).toBeString();
+    describe('`originalTitle` property', () => {
+      it('has an `originalTitle` property', () => {
+        expect(tagArg.originalTitle).toBeString();
+      });
+
+      it('trims the value of `originalTitle`', () => {
+        expect(tagArg.originalTitle).toBe('arg');
+        expect(tagExample.originalTitle).toBe('example');
+      });
     });
 
-    it("'originalTitle' property should be the initial tag title, trimmed of whitespace", () => {
-      expect(tagArg.originalTitle).toBe('arg');
-      expect(tagExample.originalTitle).toBe('example');
+    describe('`title` property', () => {
+      it('has a `title` property', () => {
+        expect(tagArg.title).toBeString();
+      });
+
+      it('contains the normalized tag title', () => {
+        expect(tagArg.title).toBe(jsdocDictionary.normalize(tagArg.originalTitle));
+        expect(tagExample.title).toBe(jsdocDictionary.normalize(tagExample.originalTitle));
+      });
     });
 
-    it("should have a 'title' property, a string", () => {
-      expect(tagArg.title).toBeString();
-    });
+    describe('`text` property', () => {
+      it('has a `text` property', () => {
+        expect(tagArg.text).toBeString();
+      });
 
-    it("'title' property should be the normalized tag title", () => {
-      expect(tagArg.title).toBe(jsdocDictionary.normalize(tagArg.originalTitle));
-      expect(tagExample.title).toBe(jsdocDictionary.normalize(tagExample.originalTitle));
-    });
-
-    it("should have a 'text' property, a string", () => {
-      expect(tagArg.text).toBeString();
-    });
-
-    it("should have a 'value' property", () => {
-      expect(tagArg.value).toBeDefined();
-      expect(tagExample.value).toBeDefined();
-      expect(tagType.value).toBeDefined();
-    });
-
-    describe("'text' property", () => {
-      it("'text' property should be the trimmed tag text, with all leading and trailing space removed unless tagDef.keepsWhitespace", () => {
+      it('is trimmed unless the tag preserves whitespace', () => {
         // @example has keepsWhitespace and removesIndent, @param doesn't
         expect(tagArg.text).toBe(text.replace(/^\s+|\n$/g, ''));
         expect(tagExample.text).toBe(textExample.replace(/\n$/, ''));
@@ -114,7 +112,7 @@ describe('jsdoc/tag', () => {
         );
       });
 
-      it("'text' property should have onTagText run on it if it has it.", () => {
+      it('calls the `onTagText` function for the tag if present', () => {
         const def = jsdocDictionary.lookUp('type');
 
         expect(def.onTagText).toBeFunction();
@@ -123,17 +121,17 @@ describe('jsdoc/tag', () => {
         expect(tagType.text).toBe(def.onTagText('MyType'));
       });
 
-      it('should be enclosed in quotes, with no whitespace trimming, if it is a symbol name with leading or trailing whitespace', () => {
+      it('is quoted and not trimmed for symbol names with leading or trailing whitespace', () => {
         let wsBoth;
         let wsLeading;
         let wsOnly;
         let wsTrailing;
 
         function newTags() {
-          wsOnly = new jsdocTag.Tag('name', ' ', { code: { name: ' ' } }, jsdoc.deps);
-          wsLeading = new jsdocTag.Tag('name', '  foo', { code: { name: '  foo' } }, jsdoc.deps);
-          wsTrailing = new jsdocTag.Tag('name', 'foo  ', { code: { name: 'foo  ' } }, jsdoc.deps);
-          wsBoth = new jsdocTag.Tag('name', '  foo  ', { code: { name: '  foo  ' } }, jsdoc.deps);
+          wsOnly = new Tag('name', ' ', { code: { name: ' ' } }, jsdoc.deps);
+          wsLeading = new Tag('name', '  foo', { code: { name: '  foo' } }, jsdoc.deps);
+          wsTrailing = new Tag('name', 'foo  ', { code: { name: 'foo  ' } }, jsdoc.deps);
+          wsBoth = new Tag('name', '  foo  ', { code: { name: '  foo  ' } }, jsdoc.deps);
         }
 
         expect(jsdoc.didLog(newTags, 'error')).toBeFalse();
@@ -144,20 +142,26 @@ describe('jsdoc/tag', () => {
       });
     });
 
-    describe("'value' property", () => {
+    describe('`value` property', () => {
       const debug = Boolean(options.debug);
 
       afterEach(() => {
         options.debug = debug;
       });
 
-      it("'value' property should equal tag text if tagDef.canHaveType and canHaveName are both false", () => {
+      it('has a `value` property', () => {
+        expect(tagArg.value).toBeDefined();
+        expect(tagExample.value).toBeDefined();
+        expect(tagType.value).toBeDefined();
+      });
+
+      it('is the tag text if the tag cannot have a type or name', () => {
         // @example can't have type or name
         expect(typeof tagExample.value).toBe('string');
         expect(tagExample.value).toBe(tagExample.text);
       });
 
-      it("'value' property should be an object if tagDef can have type or name", () => {
+      it('is an object if the tag can have a type or name', () => {
         expect(typeof tagType.value).toBe('object');
         expect(typeof tagArg.value).toBe('object');
       });
@@ -190,7 +194,7 @@ describe('jsdoc/tag', () => {
         }
       }
 
-      it('if the tag has a type, tag.value should contain the type information', () => {
+      it('contains the type information for tags with types', () => {
         [true, false].forEach((bool) => {
           options.debug = bool;
           createTags();
@@ -201,28 +205,28 @@ describe('jsdoc/tag', () => {
         });
       });
 
-      it('if the tag has a description beyond the name/type, this should be in tag.value.description', () => {
+      it('contains any additional descriptive text', () => {
         expect(tagType.value.description).toBeUndefined();
         expect(tagArg.value.description).toBe(desc);
       });
 
-      it('if the tag can have a name, it should be stored in tag.value.name', () => {
+      it('contains the name for tags with names', () => {
         expect(tagArg.value.name).toBe('foo');
         expect(tagType.value.name).toBeUndefined();
       });
 
-      it('if the tag has a type without modifiers, tag.value should not include properties for the modifiers', () => {
+      it('does not include type modifier properties on the tag value', () => {
         ['optional', 'nullable', 'variable', 'defaultvalue'].forEach((modifier) => {
           expect(Object.hasOwn(tagParamWithType.value, modifier)).toBeFalse();
         });
       });
     });
 
-    // further tests for this sort of thing are in jsdoc/tag/validator.js tests.
+    // Additional tests in validator.js.
     describe('tag validating', () => {
       it('logs an error for tags with bad type expressions', () => {
         function newTag() {
-          return new jsdocTag.Tag('param', '{!*!*!*!} foo', null, jsdoc.deps);
+          return new Tag('param', '{!*!*!*!} foo', null, jsdoc.deps);
         }
 
         expect(jsdoc.didLog(newTag, 'error')).toBeTrue();
@@ -230,7 +234,7 @@ describe('jsdoc/tag', () => {
 
       it('validates tags with no text', () => {
         function newTag() {
-          return new jsdocTag.Tag('copyright', null, null, jsdoc.deps);
+          return new Tag('copyright', null, null, jsdoc.deps);
         }
 
         expect(jsdoc.didLog(newTag, 'error')).toBeTrue();

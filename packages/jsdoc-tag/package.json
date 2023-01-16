@@ -24,7 +24,8 @@
   "dependencies": {
     "@jsdoc/core": "^0.4.4",
     "@jsdoc/util": "^0.2.7",
-    "catharsis": "^0.9.0"
+    "catharsis": "^0.9.0",
+    "lodash": "^4.17.21"
   },
   "engines": {
     "node": ">=v18.12.0"

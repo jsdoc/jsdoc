@@ -13,10 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/**
- * @module jsdoc/tag/validator
- * @requires jsdoc/tag/dictionary
- */
 const { log } = require('@jsdoc/util');
 
 function buildMessage(tagName, { filename, lineno, comment }, desc) {
