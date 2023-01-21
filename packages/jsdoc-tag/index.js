@@ -14,6 +14,7 @@
   limitations under the License.
 */
 const definitions = require('./lib/definitions');
+const { Dictionary } = require('./lib/dictionary');
 const inline = require('./lib/inline');
 const { Tag } = require('./lib/tag');
 const type = require('./lib/type');
@@ -21,6 +22,7 @@ const { validate } = require('./lib/validator');
 
 module.exports = {
   definitions,
+  Dictionary,
   inline,
   Tag,
   type,

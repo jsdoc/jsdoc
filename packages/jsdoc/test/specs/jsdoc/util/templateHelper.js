@@ -17,7 +17,7 @@
 describe('jsdoc/util/templateHelper', () => {
   const _ = require('lodash');
   const { Dependencies } = require('@jsdoc/core');
-  const { Dictionary } = require('jsdoc/tag/dictionary');
+  const { Dictionary } = require('@jsdoc/tag');
   const { Doclet } = require('@jsdoc/doclet');
   const helper = require('jsdoc/util/templateHelper');
   const { taffy } = require('@jsdoc/salty');

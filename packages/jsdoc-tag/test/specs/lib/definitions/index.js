@@ -14,7 +14,7 @@
   limitations under the License.
 */
 describe('@jsdoc/tag/lib/definitions', () => {
-  const definitions = require('../../../lib/definitions');
+  const definitions = require('../../../../lib/definitions');
 
   it('has a `closure` object', () => {
     expect(definitions.closure).toBeObject();

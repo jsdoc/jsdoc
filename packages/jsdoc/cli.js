@@ -16,7 +16,7 @@
 /* eslint-disable indent, no-process-exit */
 const _ = require('lodash');
 const { config, Dependencies } = require('@jsdoc/core');
-const { Dictionary } = require('jsdoc/tag/dictionary');
+const { Dictionary } = require('@jsdoc/tag');
 const Engine = require('@jsdoc/cli');
 const { EventBus, log } = require('@jsdoc/util');
 const { Filter } = require('jsdoc/src/filter');

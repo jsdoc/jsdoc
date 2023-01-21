@@ -28,6 +28,14 @@ describe('@jsdoc/tag', () => {
     });
   });
 
+  describe('Dictionary', () => {
+    it('is lib/dictionary.Dictionary', () => {
+      const { Dictionary } = require('../../lib/dictionary');
+
+      expect(tag.Dictionary).toBe(Dictionary);
+    });
+  });
+
   describe('inline', () => {
     it('is lib/inline', () => {
       const inline = require('../../lib/inline');

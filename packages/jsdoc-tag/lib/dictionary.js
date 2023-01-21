@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/** @module jsdoc/tag/dictionary */
-const { definitions } = require('@jsdoc/tag');
+/** @module @jsdoc/tag/lib/dictionary */
+const definitions = require('./definitions');
 const { log } = require('@jsdoc/util');
 
 const DEFINITIONS = {
