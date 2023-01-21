@@ -20,6 +20,14 @@ describe('@jsdoc/tag', () => {
     expect(tag).toBeObject();
   });
 
+  describe('definitions', () => {
+    it('is lib/definitions', () => {
+      const definitions = require('../../lib/definitions');
+
+      expect(tag.definitions).toBe(definitions);
+    });
+  });
+
   describe('inline', () => {
     it('is lib/inline', () => {
       const inline = require('../../lib/inline');
@@ -41,6 +49,14 @@ describe('@jsdoc/tag', () => {
       const type = require('../../lib/type');
 
       expect(tag.type).toBe(type);
+    });
+  });
+
+  describe('validate', () => {
+    it('is lib/validator.validate', () => {
+      const { validate } = require('../../lib/validator');
+
+      expect(tag.validate).toBe(validate);
     });
   });
 });

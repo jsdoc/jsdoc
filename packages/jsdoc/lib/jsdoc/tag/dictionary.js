@@ -14,12 +14,12 @@
   limitations under the License.
 */
 /** @module jsdoc/tag/dictionary */
-const definitions = require('jsdoc/tag/dictionary/definitions');
+const { definitions } = require('@jsdoc/tag');
 const { log } = require('@jsdoc/util');
 
 const DEFINITIONS = {
-  closure: 'closureTags',
-  jsdoc: 'jsdocTags',
+  closure: 'closure',
+  jsdoc: 'jsdoc',
 };
 
 /** @private */
@@ -133,7 +133,7 @@ class Dictionary {
           dict.defineTags(tagDefs);
         });
 
-      dict.defineTags(definitions.internalTags);
+      dict.defineTags(definitions.internal);
     }
 
     return dict;

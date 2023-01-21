@@ -1,5 +1,5 @@
 /*
-  Copyright 2020 the JSDoc Authors.
+  Copyright 2010 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,16 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const definitions = require('./lib/definitions');
-const inline = require('./lib/inline');
-const { Tag } = require('./lib/tag');
-const type = require('./lib/type');
-const { validate } = require('./lib/validator');
+const core = require('./core');
 
-module.exports = {
-  definitions,
-  inline,
-  Tag,
-  type,
-  validate,
-};
+module.exports = core;

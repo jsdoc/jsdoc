@@ -13,24 +13,24 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/tag/dictionary/definitions', () => {
-  const definitions = require('jsdoc/tag/dictionary/definitions');
+describe('@jsdoc/tag/lib/definitions', () => {
+  const definitions = require('../../../lib/definitions');
 
-  it('has a baseTags object', () => {
-    expect(definitions.baseTags).toBeObject();
+  it('has a `closure` object', () => {
+    expect(definitions.closure).toBeObject();
   });
 
-  it('has a closureTags object', () => {
-    expect(definitions.closureTags).toBeObject();
+  it('has a `core` object', () => {
+    expect(definitions.core).toBeObject();
   });
 
-  it('has an internalTags object', () => {
-    expect(definitions.internalTags).toBeObject();
+  it('has an `internal` object', () => {
+    expect(definitions.internal).toBeObject();
   });
 
-  it('has a jsdocTags object', () => {
-    expect(definitions.jsdocTags).toBeObject();
+  it('has a `jsdoc` object', () => {
+    expect(definitions.jsdoc).toBeObject();
   });
 
-  // Nothing to test in these objects except which tags are listed, which would duplicate the code.
+  // For additional tests, see packages/jsdoc/test/specs/tags/.
 });
