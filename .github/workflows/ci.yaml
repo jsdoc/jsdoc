@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14, 16, 18]
+        node: [16, 18]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
