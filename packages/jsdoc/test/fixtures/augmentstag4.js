@@ -1,4 +1,4 @@
-// used to test jsdoc/augments module directly
+// used to test @jsdoc/doclet.augments module directly
 
 /**
  * @constructor

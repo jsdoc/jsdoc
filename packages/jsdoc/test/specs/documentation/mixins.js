@@ -13,14 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const augment = require('jsdoc/augment');
+const { augmentAll } = require('@jsdoc/doclet').augment;
 const { SCOPE } = require('@jsdoc/core').name;
 
 describe('mixins', () => {
   describe('doclet augmentation', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/mixintag2.js');
 
-    augment.augmentAll(docSet.doclets);
+    augmentAll(docSet.doclets);
 
     it('should create doclets for mixed-in symbols', () => {
       const objectBMethod = docSet.getByLongname('module:mixy.ObjectB.method')[0];

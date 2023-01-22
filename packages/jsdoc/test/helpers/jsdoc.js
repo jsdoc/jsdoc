@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { augmentAll } = require('jsdoc/augment');
+const { augmentAll } = require('@jsdoc/doclet').augment;
 const { createParser } = require('jsdoc/src/parser');
 const { EventBus } = require('@jsdoc/util');
 const fs = require('fs');

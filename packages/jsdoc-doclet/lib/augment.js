@@ -15,12 +15,11 @@
 */
 /**
  * Provides methods for augmenting the parse results based on their content.
- * @module jsdoc/augment
  */
 
 const _ = require('lodash');
+const { combine: combineDoclets } = require('./doclet');
 const { fromParts, SCOPE, toParts } = require('@jsdoc/core').name;
-const { combineDoclets } = require('@jsdoc/doclet');
 
 function mapDependencies(index, propertyName) {
   const dependencies = {};

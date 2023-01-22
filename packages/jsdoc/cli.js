@@ -338,7 +338,7 @@ module.exports = (() => {
 
   cli.parseFiles = () => {
     // Must be imported after the config is loaded.
-    const augment = require('jsdoc/augment');
+    const { augmentAll } = require('@jsdoc/doclet').augment;
 
     let docs;
     const env = dependencies.get('env');
@@ -353,7 +353,7 @@ module.exports = (() => {
     docs.push(packageDocs);
 
     log.debug('Adding inherited symbols, mixins, and interface implementations...');
-    augment.augmentAll(docs);
+    augmentAll(docs);
     log.debug('Adding borrowed doclets...');
     resolveBorrows(docs);
     log.debug('Post-processing complete.');

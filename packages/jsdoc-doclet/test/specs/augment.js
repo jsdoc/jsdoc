@@ -13,10 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/augment', () => {
+/* global jsdoc */
+describe('@jsdoc/doclet/lib/augment', () => {
   // TODO: more tests
 
-  const augment = require('jsdoc/augment');
+  const augment = require('../../lib/augment');
 
   it('should exist', () => {
     expect(augment).toBeObject();
