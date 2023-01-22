@@ -15,11 +15,13 @@
 */
 const { combine: combineDoclets, Doclet } = require('./lib/doclet');
 const { Package } = require('./lib/package');
+const { resolveBorrows } = require('./lib/borrow');
 const schema = require('./lib/schema');
 
 module.exports = {
   combineDoclets,
   Doclet,
   Package,
+  resolveBorrows,
   schema,
 };

@@ -44,6 +44,14 @@ describe('@jsdoc/doclet', () => {
     });
   });
 
+  describe('resolveBorrows', () => {
+    it('is lib/borrow.resolveBorrows', () => {
+      const { resolveBorrows } = require('../../lib/borrow');
+
+      expect(doclet.resolveBorrows).toBe(resolveBorrows);
+    });
+  });
+
   describe('schema', () => {
     it('is lib/schema', () => {
       const schema = require('../../lib/schema');

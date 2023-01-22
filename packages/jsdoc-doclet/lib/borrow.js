@@ -14,8 +14,7 @@
   limitations under the License.
 */
 /**
- * A collection of functions relating to resolving @borrows tags in JSDoc symbols.
- * @module jsdoc/borrow
+ * Functions that resolve `@borrows` tags in JSDoc comments.
  */
 const _ = require('lodash');
 const { SCOPE } = require('@jsdoc/core').name;
@@ -51,10 +50,10 @@ function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
 }
 
 /**
-    Take a copy of the docs for borrowed symbols and attach them to the
-    docs for the borrowing symbol. This process changes the symbols involved,
-    moving docs from the "borrowed" array and into the general docs, then
-    deleting the "borrowed" array.
+  Take a copy of the docs for borrowed symbols and attach them to the
+  docs for the borrowing symbol. This process changes the symbols involved,
+  moving docs from the "borrowed" array and into the general docs, then
+  deleting the "borrowed" array.
  */
 exports.resolveBorrows = (doclets) => {
   for (let doclet of doclets.index.borrowed) {

@@ -28,10 +28,10 @@ describe('@borrows tag', () => {
   });
 
   it('When a symbol has a @borrows tag, the borrowed symbol is added to the symbol.', () => {
-    const borrow = require('jsdoc/borrow');
+    const { resolveBorrows } = require('@jsdoc/doclet');
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/borrowstag2.js');
 
-    borrow.resolveBorrows(docSet.doclets);
+    resolveBorrows(docSet.doclets);
 
     const strRtrim = docSet
       .getByLongname('str.rtrim')

@@ -21,13 +21,12 @@ const Engine = require('@jsdoc/cli');
 const { EventBus, log } = require('@jsdoc/util');
 const { Filter } = require('jsdoc/src/filter');
 const fs = require('fs');
-const { Package } = require('@jsdoc/doclet');
+const { Package, resolveBorrows } = require('@jsdoc/doclet');
 const path = require('path');
 const { Scanner } = require('jsdoc/src/scanner');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 const { taffy } = require('@jsdoc/salty');
-const Promise = require('bluebird');
 
 /**
  * Helper methods for running JSDoc on the command line.
@@ -340,7 +339,6 @@ module.exports = (() => {
   cli.parseFiles = () => {
     // Must be imported after the config is loaded.
     const augment = require('jsdoc/augment');
-    const borrow = require('jsdoc/borrow');
 
     let docs;
     const env = dependencies.get('env');
@@ -357,7 +355,7 @@ module.exports = (() => {
     log.debug('Adding inherited symbols, mixins, and interface implementations...');
     augment.augmentAll(docs);
     log.debug('Adding borrowed doclets...');
-    borrow.resolveBorrows(docs);
+    resolveBorrows(docs);
     log.debug('Post-processing complete.');
 
     props.parser.fireProcessingComplete(docs);
