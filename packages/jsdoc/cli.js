@@ -19,11 +19,10 @@ const { config, Dependencies } = require('@jsdoc/core');
 const { Dictionary } = require('@jsdoc/tag');
 const Engine = require('@jsdoc/cli');
 const { EventBus, log } = require('@jsdoc/util');
-const { Filter } = require('jsdoc/src/filter');
 const fs = require('fs');
+const { sync: glob } = require('fast-glob');
 const { Package, resolveBorrows } = require('@jsdoc/doclet');
 const path = require('path');
-const { Scanner } = require('jsdoc/src/scanner');
 const stripBom = require('strip-bom');
 const stripJsonComments = require('strip-json-comments');
 const { taffy } = require('@jsdoc/salty');
@@ -254,32 +253,16 @@ module.exports = (() => {
     const conf = dependencies.get('config');
     const options = dependencies.get('options');
     let packageJson;
-    let sourceFile;
     let sourceFiles = options._ ? options._.slice() : [];
 
-    if (conf.source && conf.source.include) {
-      sourceFiles = sourceFiles.concat(config.source.include);
+    if (conf.sourceFiles) {
+      sourceFiles = sourceFiles.concat(conf.sourceFiles);
     }
 
     // load the user-specified package file, if any
     if (options.package) {
       packageJson = readPackageJson(options.package);
-    }
-
-    // source files named `package.json` or `README.md` get special treatment, unless the user
-    // explicitly specified a package and/or README file
-    for (let i = 0, l = sourceFiles.length; i < l; i++) {
-      sourceFile = sourceFiles[i];
-
-      if (!options.package && /\bpackage\.json$/i.test(sourceFile)) {
-        packageJson = readPackageJson(sourceFile);
-        sourceFiles.splice(i--, 1);
-      }
-
-      if (!options.readme && /(\bREADME|\.md)$/i.test(sourceFile)) {
-        options.readme = sourceFile;
-        sourceFiles.splice(i--, 1);
-      }
+      props.packageJson = packageJson;
     }
 
     // Resolve the path to the README.
@@ -287,31 +270,20 @@ module.exports = (() => {
       options.readme = path.resolve(options.readme);
     }
 
-    props.packageJson = packageJson;
-
     return sourceFiles;
   }
 
   // TODO: docs
   cli.scanFiles = () => {
-    const conf = dependencies.get('config');
     const env = dependencies.get('env');
     const options = dependencies.get('options');
-    let filter;
-    let scanner;
 
     options._ = buildSourceList();
-
-    // are there any files to scan and parse?
-    if (conf.source && options._.length) {
-      filter = new Filter(conf.source);
-      scanner = new Scanner();
-
-      env.sourceFiles = scanner.scan(
-        options._,
-        options.recurse ? conf.recurseDepth : undefined,
-        filter
-      );
+    if (options._.length) {
+      env.sourceFiles = glob(options._, {
+        absolute: true,
+        onlyFiles: true,
+      });
     }
 
     return cli;

@@ -95,11 +95,6 @@ module.exports = {
     normalize: true,
     requiresArg: true,
   },
-  recurse: {
-    alias: 'r',
-    boolean: true,
-    description: 'Recurse into subdirectories to find source files.',
-  },
   template: {
     alias: 't',
     description: 'The template package to use.',

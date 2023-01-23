@@ -16,6 +16,7 @@
 const _ = require('lodash');
 const commonPathPrefix = require('common-path-prefix');
 const fs = require('fs');
+const { sync: glob } = require('fast-glob');
 const helper = require('jsdoc/util/templateHelper');
 const { log } = require('@jsdoc/util');
 const { lsSync } = require('@jsdoc/util').fs;
@@ -430,7 +431,6 @@ function sourceToDestination(parentDir, sourcePath, destDir) {
 exports.publish = (taffyData, dependencies) => {
   let classes;
   let config;
-  let cwd;
   let externals;
   let files;
   let fromDir;
@@ -448,12 +448,11 @@ exports.publish = (taffyData, dependencies) => {
   let packages;
   const sourceFilePaths = [];
   let sourceFiles = {};
-  let staticFileFilter;
   let staticFilePaths;
   let staticFiles;
-  let staticFileScanner;
   let templateConfig;
   let templatePath;
+  let userStaticFileOutputDir;
 
   data = taffyData;
   opts = dependencies.get('options');
@@ -585,23 +584,19 @@ exports.publish = (taffyData, dependencies) => {
     // with a bug in JSDoc 3.2.x.
     staticFilePaths =
       templateConfig.default.staticFiles.include || templateConfig.default.staticFiles.paths || [];
-    staticFileFilter = new (require('jsdoc/src/filter').Filter)(templateConfig.default.staticFiles);
-    staticFileScanner = new (require('jsdoc/src/scanner').Scanner)();
-    cwd = process.cwd();
-
-    staticFilePaths.forEach((filePath) => {
-      let extraStaticFiles;
-
-      filePath = path.resolve(cwd, filePath);
-      extraStaticFiles = staticFileScanner.scan([filePath], 10, staticFileFilter);
-
-      extraStaticFiles.forEach((fileName) => {
-        const toPath = sourceToDestination(fromDir, fileName, outdir);
-
-        mkdirpSync(path.dirname(toPath));
-        fs.copyFileSync(fileName, toPath);
-      });
+    staticFilePaths = glob(staticFilePaths, {
+      absolute: true,
+      onlyFiles: true,
     });
+    for (const filepath of staticFilePaths) {
+      userStaticFileOutputDir = sourceToDestination(
+        commonPathPrefix(staticFilePaths),
+        filepath,
+        outdir
+      );
+      mkdirpSync(path.dirname(userStaticFileOutputDir));
+      fs.copyFileSync(filepath, userStaticFileOutputDir);
+    }
   }
 
   if (sourceFilePaths.length) {

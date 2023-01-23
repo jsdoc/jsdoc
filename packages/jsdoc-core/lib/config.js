@@ -36,32 +36,15 @@ const defaults = (exports.defaults = {
    * The JSDoc plugins to load.
    */
   plugins: [],
-  // TODO(hegemonic): Move to `source` or remove.
-  recurseDepth: 10,
   /**
    * Settings for loading and parsing source files.
    */
-  source: {
-    /**
-     * A regular expression that matches source files to exclude from processing.
-     *
-     * To exclude files if any portion of their path begins with an underscore, use the value
-     * `(^|\\/|\\\\)_`.
-     */
-    excludePattern: '',
-    /**
-     * A regular expression that matches source files that JSDoc should process.
-     *
-     * By default, all source files with the extensions `.js`, `.jsdoc`, and `.jsx` are
-     * processed.
-     */
-    includePattern: '.+\\.js(doc|x)?$',
-    /**
-     * The type of source file. In general, you should use the value `module`. If none of your
-     * source files use ECMAScript >=2015 syntax, you can use the value `script`.
-     */
-    type: 'module',
-  },
+  sourceFiles: [],
+  /**
+   * The type of source file. In general, you should use the value `module`. If none of your
+   * source files use ECMAScript >=2015 syntax, you can use the value `script`.
+   */
+  sourceType: 'module',
   /**
    * Settings for interpreting JSDoc tags.
    */

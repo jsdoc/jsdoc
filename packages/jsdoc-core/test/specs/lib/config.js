@@ -134,70 +134,50 @@ describe('@jsdoc/core/lib/config', () => {
       });
     });
 
-    describe('source', () => {
+    describe('sourceFiles', () => {
+      it('is an empty array', () => {
+        expect(defaults.sourceFiles).toBeEmptyArray();
+      });
+    });
+
+    describe('sourceType', () => {
+      it('is a string', () => {
+        expect(defaults.sourceType).toBeString();
+      });
+    });
+
+    describe('tags', () => {
       it('is an object', () => {
-        expect(defaults.source).toBeObject();
+        expect(defaults.tags).toBeObject();
       });
 
-      describe('excludePattern', () => {
-        it('is a string', () => {
-          expect(defaults.source.excludePattern).toBeString();
-        });
-
-        it('represents a valid regexp', () => {
-          expect(() => new RegExp(defaults.source.excludePattern)).not.toThrow();
+      describe('allowUnknownTags', () => {
+        it('is a boolean', () => {
+          expect(defaults.tags.allowUnknownTags).toBeBoolean();
         });
       });
 
-      describe('includePattern', () => {
-        it('is a string', () => {
-          expect(defaults.source.includePattern).toBeString();
+      describe('dictionaries', () => {
+        it('is an array of strings', () => {
+          expect(defaults.tags.dictionaries).toBeArrayOfStrings();
         });
+      });
+    });
 
-        it('represents a valid regexp', () => {
-          expect(() => new RegExp(defaults.source.includePattern)).not.toThrow();
+    describe('templates', () => {
+      it('is an object', () => {
+        expect(defaults.templates).toBeObject();
+      });
+
+      describe('cleverLinks', () => {
+        it('is a boolean', () => {
+          expect(defaults.templates.cleverLinks).toBeBoolean();
         });
       });
 
-      describe('type', () => {
-        it('is a string', () => {
-          expect(defaults.source.type).toBeString();
-        });
-      });
-
-      describe('tags', () => {
-        it('is an object', () => {
-          expect(defaults.tags).toBeObject();
-        });
-
-        describe('allowUnknownTags', () => {
-          it('is a boolean', () => {
-            expect(defaults.tags.allowUnknownTags).toBeBoolean();
-          });
-        });
-
-        describe('dictionaries', () => {
-          it('is an array of strings', () => {
-            expect(defaults.tags.dictionaries).toBeArrayOfStrings();
-          });
-        });
-      });
-
-      describe('templates', () => {
-        it('is an object', () => {
-          expect(defaults.templates).toBeObject();
-        });
-
-        describe('cleverLinks', () => {
-          it('is a boolean', () => {
-            expect(defaults.templates.cleverLinks).toBeBoolean();
-          });
-        });
-
-        describe('monospaceLinks', () => {
-          it('is a boolean', () => {
-            expect(defaults.templates.monospaceLinks).toBeBoolean();
-          });
+      describe('monospaceLinks', () => {
+        it('is a boolean', () => {
+          expect(defaults.templates.monospaceLinks).toBeBoolean();
         });
       });
     });
