@@ -14,7 +14,7 @@
   limitations under the License.
 */
 /* global jsdoc */
-const jsdocPackage = require('../../lib/package');
+const jsdocPackage = require('../../../lib/package');
 const { Package } = jsdocPackage;
 
 describe('@jsdoc/doclet/lib/package', () => {

@@ -16,7 +16,7 @@
 describe('@jsdoc/doclet/lib/schema', () => {
   // We test the content of the schema in the `jsdoc` package, where we validate all of the parse
   // results that were created while running other tests.
-  const schema = require('../../lib/schema');
+  const schema = require('../../../lib/schema');
 
   it('is an object', () => {
     expect(schema).toBeObject();

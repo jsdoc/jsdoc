@@ -17,7 +17,7 @@
 describe('@jsdoc/doclet/lib/doclet', () => {
   // TODO: more tests
   const _ = require('lodash');
-  const doclet = require('../../lib/doclet');
+  const doclet = require('../../../lib/doclet');
   const Doclet = doclet.Doclet;
   const { SCOPE } = require('@jsdoc/core').name;
 

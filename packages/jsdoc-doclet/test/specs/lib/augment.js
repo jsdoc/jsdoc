@@ -17,7 +17,7 @@
 describe('@jsdoc/doclet/lib/augment', () => {
   // TODO: more tests
 
-  const augment = require('../../lib/augment');
+  const augment = require('../../../lib/augment');
 
   it('should exist', () => {
     expect(augment).toBeObject();
