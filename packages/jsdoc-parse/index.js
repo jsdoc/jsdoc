@@ -13,8 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+const { createParser, Parser } = require('./lib/parser');
 const handlers = require('./lib/handlers');
+const { Visitor } = require('./lib/visitor');
 
 module.exports = {
+  createParser,
   handlers,
+  Parser,
+  Visitor,
 };

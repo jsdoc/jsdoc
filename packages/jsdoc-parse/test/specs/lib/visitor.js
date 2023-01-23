@@ -13,11 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/src/visitor', () => {
+/* global jsdoc */
+describe('@jsdoc/parse/lib/visitor', () => {
   // TODO: more tests
 
-  const { Parser } = require('jsdoc/src/parser');
-  const { Visitor } = require('jsdoc/src/visitor');
+  const { Parser } = require('../../../lib/parser');
+  const { Visitor } = require('../../../lib/visitor');
   const parser = new Parser(jsdoc.deps);
   const visitor = new Visitor();
 
@@ -39,7 +40,7 @@ describe('jsdoc/src/visitor', () => {
       events = [];
     });
 
-    it('should ignore line comments', () => {
+    it('ignores line comments', () => {
       const node = {
         leadingComments: [
           {
@@ -60,7 +61,7 @@ describe('jsdoc/src/visitor', () => {
       expect(events).toBeEmptyArray();
     });
 
-    it('should ignore normal, non-JSDoc block comments', () => {
+    it('ignores normal, non-JSDoc block comments', () => {
       const node = {
         leadingComments: [
           {
@@ -81,7 +82,7 @@ describe('jsdoc/src/visitor', () => {
       expect(events).toBeEmptyArray();
     });
 
-    it('should ignore comments that begin with three or more asterisks', () => {
+    it('ignores comments that begin with three or more asterisks', () => {
       const node = {
         leadingComments: [
           {
@@ -102,7 +103,7 @@ describe('jsdoc/src/visitor', () => {
       expect(events).toBeEmptyArray();
     });
 
-    it('should ignore empty block comments', () => {
+    it('ignores empty block comments', () => {
       const node = {
         leadingComments: [
           {
@@ -123,7 +124,7 @@ describe('jsdoc/src/visitor', () => {
       expect(events).toBeEmptyArray();
     });
 
-    it('should fire an event for JSDoc comments', () => {
+    it('emits an event for JSDoc comments', () => {
       const node = {
         leadingComments: [
           {
@@ -166,7 +167,7 @@ describe('jsdoc/src/visitor', () => {
       events = [];
     });
 
-    it('should ignore non-JSDoc leading comments', () => {
+    it('ignores non-JSDoc leading comments', () => {
       const node = {
         type: 'Property',
         key: {
@@ -197,7 +198,7 @@ describe('jsdoc/src/visitor', () => {
       expect(events[0].comment).toBe('');
     });
 
-    it('should include JSDoc leading comments', () => {
+    it('includes JSDoc leading comments', () => {
       const node = {
         type: 'Property',
         key: {

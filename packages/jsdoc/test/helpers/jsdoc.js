@@ -14,7 +14,7 @@
   limitations under the License.
 */
 const { augmentAll } = require('@jsdoc/doclet').augment;
-const { createParser } = require('jsdoc/src/parser');
+const { createParser } = require('@jsdoc/parse');
 const { EventBus } = require('@jsdoc/util');
 const fs = require('fs');
 const { handlers } = require('@jsdoc/parse');

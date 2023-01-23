@@ -20,11 +20,35 @@ describe('@jsdoc/parse', () => {
     expect(parse).toBeObject();
   });
 
+  describe('createParser', () => {
+    it('is lib/parser.createParser', () => {
+      const { createParser } = require('../../lib/parser');
+
+      expect(parse.createParser).toBe(createParser);
+    });
+  });
+
   describe('handlers', () => {
     it('is lib/handlers', () => {
       const handlers = require('../../lib/handlers');
 
       expect(parse.handlers).toBe(handlers);
+    });
+  });
+
+  describe('Parser', () => {
+    it('is lib/parser.Parser', () => {
+      const { Parser } = require('../../lib/parser');
+
+      expect(parse.Parser).toBe(Parser);
+    });
+  });
+
+  describe('Visitor', () => {
+    it('is lib/visitor.Visitor', () => {
+      const { Visitor } = require('../../lib/visitor');
+
+      expect(parse.Visitor).toBe(Visitor);
     });
   });
 });

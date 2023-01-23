@@ -13,10 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/**
- * @module jsdoc/src/visitor
- */
-// TODO: consider exporting more stuff so users can override it
 const { astNode, Syntax } = require('@jsdoc/ast');
 const { combineDoclets } = require('@jsdoc/doclet');
 const { getBasename, LONGNAMES } = require('@jsdoc/core').name;

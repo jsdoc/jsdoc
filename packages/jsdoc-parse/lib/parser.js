@@ -13,21 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/**
- * @module jsdoc/src/parser
- */
 const _ = require('lodash');
 const { AstBuilder, astNode, Syntax, Walker } = require('@jsdoc/ast');
 const { EventEmitter } = require('events');
 const fs = require('fs');
 const { log } = require('@jsdoc/util');
 const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
-const { Visitor } = require('jsdoc/src/visitor');
+const { Visitor } = require('./visitor');
 
-/* eslint-disable no-script-url */
 // Prefix for JavaScript strings that were provided in lieu of a filename.
-const SCHEMA = 'javascript:';
-/* eslint-enable no-script-url */
+const SCHEMA = 'javascript:'; // eslint-disable-line no-script-url
 
 class DocletCache {
   constructor() {
@@ -172,7 +167,7 @@ class Parser extends EventEmitter {
       sourceFile = sourceFiles[i];
 
       if (sourceFile.indexOf(SCHEMA) === 0) {
-        sourceCode = sourceFile.substr(SCHEMA.length);
+        sourceCode = sourceFile.substring(SCHEMA.length);
         filename = `[[string${i}]]`;
       } else {
         filename = sourceFile;
@@ -652,7 +647,7 @@ exports.createParser = (deps) => {
 /**
  * Fired once for each JSDoc comment in the current source code.
  * @event jsdocCommentFound
- * @memberof module:jsdoc/src/parser.Parser
+ * @memberof module:@jsdoc/parse.Parser
  * @type {Object}
  * @property {string} comment The text content of the JSDoc comment
  * @property {number} lineno The line number associated with the found comment.
