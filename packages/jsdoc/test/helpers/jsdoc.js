@@ -17,7 +17,7 @@ const { augmentAll } = require('@jsdoc/doclet').augment;
 const { createParser } = require('jsdoc/src/parser');
 const { EventBus } = require('@jsdoc/util');
 const fs = require('fs');
-const handlers = require('jsdoc/src/handlers');
+const { handlers } = require('@jsdoc/parse');
 const path = require('path');
 
 const bus = new EventBus('jsdoc');

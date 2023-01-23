@@ -14,6 +14,7 @@
   limitations under the License.
 */
 describe('module names', () => {
+  const { handlers } = require('@jsdoc/parse');
   const path = require('path');
 
   let doclets;
@@ -24,7 +25,7 @@ describe('module names', () => {
     env.opts._ = [path.normalize(`${__dirname}/../../fixtures/modules/data`)];
     env.sourceFiles = [];
     srcParser = jsdoc.createParser();
-    require('jsdoc/src/handlers').attachTo(srcParser);
+    handlers.attachTo(srcParser);
   });
 
   it('should create a name from the file path when no documented module name exists', () => {

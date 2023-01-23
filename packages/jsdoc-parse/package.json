@@ -1,0 +1,32 @@
+{
+  "name": "@jsdoc/parse",
+  "version": "0.1.99",
+  "description": "Parses, and extracts information from, source code.",
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://github.com/jsdoc/jsdoc",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@jsdoc/ast": "^0.1.0",
+    "@jsdoc/core": "^0.4.5",
+    "@jsdoc/doclet": "^0.1.1",
+    "@jsdoc/util": "^0.2.8",
+    "escape-string-regexp": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  }
+}

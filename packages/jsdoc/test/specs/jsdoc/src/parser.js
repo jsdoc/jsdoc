@@ -16,7 +16,7 @@
 /* eslint-disable no-script-url */
 describe('jsdoc/src/parser', () => {
   const _ = require('lodash');
-  const { attachTo } = require('jsdoc/src/handlers');
+  const { attachTo } = require('@jsdoc/parse').handlers;
   const fs = require('fs');
   const jsdocParser = require('jsdoc/src/parser');
   const path = require('path');

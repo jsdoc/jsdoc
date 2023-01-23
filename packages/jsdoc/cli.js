@@ -291,7 +291,7 @@ module.exports = (() => {
 
   cli.createParser = () => {
     // Must be imported after the config is loaded.
-    const handlers = require('jsdoc/src/handlers');
+    const { handlers } = require('@jsdoc/parse');
     const parser = require('jsdoc/src/parser');
     const plugins = require('jsdoc/plugins');
 

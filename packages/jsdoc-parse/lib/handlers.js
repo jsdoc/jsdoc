@@ -13,9 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/**
- * @module jsdoc/src/handlers
- */
 const { Doclet } = require('@jsdoc/doclet');
 const escape = require('escape-string-regexp');
 const { log } = require('@jsdoc/util');

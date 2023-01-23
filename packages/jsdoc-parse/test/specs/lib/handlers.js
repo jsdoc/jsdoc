@@ -13,37 +13,38 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('jsdoc/src/handlers', () => {
-  const handlers = require('jsdoc/src/handlers');
+/* global jsdoc */
+describe('@jsdoc/parse/lib/handlers', () => {
+  const handlers = require('../../../lib/handlers');
 
   const testParser = jsdoc.createParser();
 
   handlers.attachTo(testParser);
 
-  it('should exist', () => {
+  it('is an object', () => {
     expect(handlers).toBeObject();
   });
 
-  it('should export an "attachTo" function', () => {
+  it('exports an `attachTo` method', () => {
     expect(handlers.attachTo).toBeFunction();
   });
 
   describe('attachTo', () => {
-    it('should attach a "jsdocCommentFound" handler to the parser', () => {
+    it('attaches a `jsdocCommentFound` handler to the parser', () => {
       const callbacks = testParser.listeners('jsdocCommentFound');
 
       expect(callbacks).toBeArrayOfSize(1);
       expect(callbacks[0]).toBeFunction();
     });
 
-    it('should attach a "symbolFound" handler to the parser', () => {
+    it('attaches a `symbolFound` handler to the parser', () => {
       const callbacks = testParser.listeners('symbolFound');
 
       expect(callbacks).toBeArrayOfSize(1);
       expect(callbacks[0]).toBeFunction();
     });
 
-    it('should attach a "fileComplete" handler to the parser', () => {
+    it('attaches a `fileComplete` handler to the parser', () => {
       const callbacks = testParser.listeners('fileComplete');
 
       expect(callbacks).toBeArrayOfSize(1);
@@ -51,19 +52,18 @@ describe('jsdoc/src/handlers', () => {
     });
   });
 
-  describe('jsdocCommentFound handler', () => {
-    /* eslint-disable no-script-url */
+  describe('`jsdocCommentFound` handler', () => {
+    // eslint-disable-next-line no-script-url
     const sourceCode = 'javascript:/** @name bar */';
-    /* eslint-enable no-script-url */
     const result = testParser.parse(sourceCode);
 
-    it('should create a doclet for comments with "@name" tags', () => {
+    it('creates a doclet for comments with `@name` tags', () => {
       expect(result).toBeArrayOfSize(1);
       expect(result[0].name).toBe('bar');
     });
   });
 
-  xdescribe('symbolFound handler', () => {
+  xdescribe('`symbolFound` handler', () => {
     // TODO
   });
 });

@@ -14,6 +14,7 @@
   limitations under the License.
 */
 describe('@overview tag', () => {
+  const { handlers } = require('@jsdoc/parse');
   const path = require('path');
 
   let doclets;
@@ -27,7 +28,7 @@ describe('@overview tag', () => {
     env.opts._ = [path.normalize(`${__dirname}/../../fixtures`)];
     env.sourceFiles = [];
     srcParser = jsdoc.createParser();
-    require('jsdoc/src/handlers').attachTo(srcParser);
+    handlers.attachTo(srcParser);
   });
 
   afterEach(() => {
