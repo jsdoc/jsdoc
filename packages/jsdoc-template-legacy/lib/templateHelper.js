@@ -13,9 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/**
- * @module jsdoc/util/templateHelper
- */
 const catharsis = require('catharsis');
 const { inline } = require('@jsdoc/tag');
 const { log } = require('@jsdoc/util');

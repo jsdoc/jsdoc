@@ -15,7 +15,6 @@
 */
 /**
  * Wrapper for Lodash's template utility to allow loading templates from files.
- * @module jsdoc/template
  */
 const _ = require('lodash');
 const fs = require('fs');
@@ -55,7 +54,7 @@ class Template {
    * This is low-level function, for rendering full templates use {@link Template.render()}.
    *
    * @param {string} file - Template filename.
-   * @param {object} data - Template variables (doesn't have to be object, but passing variables dictionary is best way and most common use).
+   * @param {object} data - Template variables.
    * @return {string} Rendered template.
    */
   partial(file, data) {
@@ -76,7 +75,7 @@ class Template {
    * This method automaticaly applies layout if set.
    *
    * @param {string} file - Template filename.
-   * @param {object} data - Template variables (doesn't have to be object, but passing variables dictionary is best way and most common use).
+   * @param {object} data - Template variables.
    * @return {string} Rendered template.
    */
   render(file, data) {

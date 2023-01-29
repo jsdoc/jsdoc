@@ -17,25 +17,18 @@ const _ = require('lodash');
 const commonPathPrefix = require('common-path-prefix');
 const fs = require('fs');
 const { sync: glob } = require('fast-glob');
-const helper = require('jsdoc/util/templateHelper');
+const helper = require('./lib/templateHelper');
 const { log } = require('@jsdoc/util');
 const { lsSync } = require('@jsdoc/util').fs;
 const path = require('path');
 const { taffy } = require('@jsdoc/salty');
-const template = require('jsdoc/template');
+const template = require('./lib/template');
 
 const htmlsafe = helper.htmlsafe;
 const linkto = helper.linkto;
 const resolveAuthorLinks = helper.resolveAuthorLinks;
 
-const FONT_NAMES = [
-  'OpenSans-Bold',
-  'OpenSans-BoldItalic',
-  'OpenSans-Italic',
-  'OpenSans-Light',
-  'OpenSans-LightItalic',
-  'OpenSans-Regular',
-];
+const FONT_CSS_FILES = ['variable.css', 'variable-italic.css'];
 const PRETTIFIER_CSS_FILES = ['tomorrow.min.css'];
 const PRETTIFIER_SCRIPT_FILES = ['lang-css.js', 'prettify.js'];
 
@@ -149,7 +142,7 @@ function buildAttribsString(attribs) {
   let attribsString = '';
 
   if (attribs && attribs.length) {
-    htmlsafe(`(${attribs.join(', ')}) `);
+    attribsString = htmlsafe(`(${attribs.join(', ')}) `);
   }
 
   return attribsString;
@@ -539,15 +532,27 @@ exports.publish = (taffyData, dependencies) => {
   });
 
   // copy the fonts used by the template to outdir
-  staticFiles = lsSync(path.join(require.resolve('open-sans-fonts'), '..', 'open-sans'));
+  staticFiles = lsSync(path.join(require.resolve('@fontsource/open-sans'), '..', 'files'));
 
   staticFiles.forEach((fileName) => {
     const toPath = path.join(outdir, 'fonts', path.basename(fileName));
 
-    if (FONT_NAMES.includes(path.parse(fileName).name)) {
+    if (path.parse(fileName).name.includes('variable-wghtOnly')) {
       mkdirpSync(path.dirname(toPath));
       fs.copyFileSync(fileName, toPath);
     }
+  });
+
+  // copy the font CSS to outdir
+  staticFiles = path.join(require.resolve('@fontsource/open-sans'), '..');
+  FONT_CSS_FILES.forEach((fileName) => {
+    const fromPath = path.join(staticFiles, fileName);
+    const toPath = path.join(outdir, 'styles', fileName.replace('variable', 'open-sans'));
+    let source = fs.readFileSync(fromPath, 'utf8');
+
+    source = source.replace(/url\('\.\/files/g, "url('../fonts");
+    mkdirpSync(path.dirname(toPath));
+    fs.writeFileSync(toPath, source);
   });
 
   // copy the prettify script to outdir
@@ -566,8 +571,6 @@ exports.publish = (taffyData, dependencies) => {
       // get the filepath.
       path.join(
         templatePath,
-        '..',
-        '..',
         'node_modules',
         'color-themes-for-google-code-prettify',
         'dist',

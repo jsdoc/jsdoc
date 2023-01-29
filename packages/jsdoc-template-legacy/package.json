@@ -1,0 +1,40 @@
+{
+  "name": "@jsdoc/template-legacy",
+  "version": "0.0.1",
+  "description": "Legacy template from JSDoc 3.x.",
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://github.com/jsdoc/jsdoc",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@fontsource/open-sans": "^4.5.14",
+    "@jsdoc/core": "^0.4.5",
+    "@jsdoc/salty": "^0.2.3",
+    "@jsdoc/tag": "^0.1.5",
+    "@jsdoc/util": "^0.2.8",
+    "catharsis": "^0.9.0",
+    "code-prettify": "^0.1.0",
+    "color-themes-for-google-code-prettify": "^2.0.4",
+    "common-path-prefix": "^3.0.0",
+    "fast-glob": "^3.2.12",
+    "lodash": "^4.17.21",
+    "markdown-it": "^13.0.1",
+    "markdown-it-anchor": "^8.6.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  }
+}

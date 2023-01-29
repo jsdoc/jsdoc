@@ -13,13 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-
-describe('jsdoc/util/templateHelper', () => {
+/* global jsdoc */
+describe('@jsdoc/template-legacy/lib/templateHelper', () => {
   const _ = require('lodash');
   const { Dependencies } = require('@jsdoc/core');
   const { Dictionary } = require('@jsdoc/tag');
   const { Doclet } = require('@jsdoc/doclet');
-  const helper = require('jsdoc/util/templateHelper');
+  const helper = require('../../../lib/templateHelper');
   const { taffy } = require('@jsdoc/salty');
 
   const config = jsdoc.deps.get('config');
