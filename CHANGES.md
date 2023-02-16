@@ -3,6 +3,15 @@
 This file describes notable changes in each version of JSDoc, starting with version 3.0.0.
 
 
+## 4.0.1 (February 2023)
+
+If an inline link tag uses a pipe delimiter, and there are spaces around the pipe delimiter, then
+the HTML link no longer contains `%20` at the end; also, the link text no longer contains extra
+spaces. For example, `{@link https://example.com | link text}` is now rendered as
+`<a href="https://example.com/">link text</a>` rather than
+`<a href="https://example.com/%20"> link text</a>`.
+
+
 ## 4.0.0 (November 2022)
 
 + JSDoc releases now use [semantic versioning](https://semver.org/). If JSDoc makes
