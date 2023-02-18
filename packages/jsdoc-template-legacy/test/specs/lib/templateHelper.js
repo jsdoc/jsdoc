@@ -1396,6 +1396,13 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       expect(output).toBe('Link to <a href="path/to/test.html">Test</a>');
     });
 
+    it('should not add spaces to the href or text when there are spaces around the pipe', () => {
+      const input = 'Link to {@link test | Test}';
+      const output = helper.resolveLinks(input, jsdoc.deps);
+
+      expect(output).toBe('Link to <a href="path/to/test.html">Test</a>');
+    });
+
     it('should allow first space to be used as delimiter between href and text (external link)', () => {
       const input = 'Link to {@link http://github.com Github}';
       const output = helper.resolveLinks(input, jsdoc.deps);
