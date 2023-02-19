@@ -13,7 +13,7 @@
     "url": "https://github.com/jsdoc/jsdoc"
   },
   "dependencies": {
-    "@babel/parser": "^7.9.4",
+    "@babel/parser": "^7.20.15",
     "@jsdoc/salty": "^0.2.1",
     "@types/markdown-it": "^12.2.3",
     "bluebird": "^3.7.2",
