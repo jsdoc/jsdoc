@@ -17,7 +17,7 @@
     "@jsdoc/util": "^0.2.8",
     "ajv": "^8.11.2",
     "c8": "^7.12.0",
-    "eslint": "^8.28.0",
+    "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "execa": "^6.1.0",
