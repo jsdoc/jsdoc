@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc, starting with version 3.0.0.
 
 
+## 4.0.2 (February 2023)
+
+Updates the Babel parser, and enables additional Babel plugins for ECMAScript proposals.
+
+
 ## 4.0.1 (February 2023)
 
 If an inline link tag uses a pipe delimiter, and there are spaces around the pipe delimiter, then
