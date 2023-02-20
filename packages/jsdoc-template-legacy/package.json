@@ -25,7 +25,7 @@
     "fast-glob": "^3.2.12",
     "lodash": "^4.17.21",
     "markdown-it": "^13.0.1",
-    "markdown-it-anchor": "^8.6.6"
+    "markdown-it-anchor": "^8.6.7"
   },
   "repository": {
     "type": "git",
