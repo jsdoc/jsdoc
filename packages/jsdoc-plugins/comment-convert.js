@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2011 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,22 +13,24 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+/* eslint-disable spaced-comment */
 /**
- * Core functionality for JSDoc.
+ * Demonstrate how to modify the source code before the parser sees it.
  *
- * @module @jsdoc/core
+ * @module @jsdoc/plugins/comment-convert
  */
+exports.handlers = {
+  ///
+  /// Convert ///-style comments into jsdoc comments.
+  /// @param e
+  /// @param e.filename
+  /// @param e.source
+  ///
+  beforeParse(e) {
+    e.source = e.source.replace(/(\n[ \t]*\/\/\/[^\n]*)+/g, ($) => {
+      const replacement = `\n/**${$.replace(/^[ \t]*\/\/\//gm, '').replace(/(\n$|$)/, '*/$1')}`;
 
-const config = require('./lib/config');
-const Dependencies = require('./lib/dependencies');
-const env = require('./lib/env');
-const name = require('./lib/name');
-const plugins = require('./lib/plugins');
-
-module.exports = {
-  config,
-  Dependencies,
-  env,
-  name,
-  plugins,
+      return replacement;
+    });
+  },
 };

@@ -22,6 +22,7 @@ const path = require('path');
 
 const bus = new EventBus('jsdoc');
 const originalDictionaries = ['jsdoc', 'closure'];
+const packagePath = path.resolve(__dirname, '../..');
 const parseResults = [];
 
 const helpers = {
@@ -47,8 +48,8 @@ const helpers = {
   },
   getDocSetFromFile: (filename, parser, shouldValidate, augment) => {
     let doclets;
-    const packagePath = path.resolve(__dirname, '../..');
-    const sourceCode = fs.readFileSync(path.join(packagePath, filename), 'utf8');
+    const sourcePath = path.isAbsolute(filename) ? filename : path.join(packagePath, filename);
+    const sourceCode = fs.readFileSync(sourcePath, 'utf8');
     const testParser = parser || helpers.createParser();
 
     handlers.attachTo(testParser);

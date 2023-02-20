@@ -290,17 +290,15 @@ module.exports = (() => {
   };
 
   cli.createParser = () => {
-    // Must be imported after the config is loaded.
-    const { handlers } = require('@jsdoc/parse');
-    const { createParser } = require('@jsdoc/parse');
-    const plugins = require('jsdoc/plugins');
+    const { createParser, handlers } = require('@jsdoc/parse');
+    const { plugins } = require('@jsdoc/core');
 
     const conf = dependencies.get('config');
 
     props.parser = createParser(dependencies);
 
     if (conf.plugins) {
-      plugins.installPlugins(conf.plugins, props.parser);
+      plugins.installPlugins(conf.plugins, props.parser, dependencies);
     }
 
     handlers.attachTo(props.parser);
@@ -309,7 +307,6 @@ module.exports = (() => {
   };
 
   cli.parseFiles = () => {
-    // Must be imported after the config is loaded.
     const { augmentAll } = require('@jsdoc/doclet').augment;
 
     let docs;

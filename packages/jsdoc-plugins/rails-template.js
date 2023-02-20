@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2012 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,21 +14,19 @@
   limitations under the License.
 */
 /**
- * Core functionality for JSDoc.
- *
- * @module @jsdoc/core
+ * Strips the rails template tags from a js.erb file
  */
-
-const config = require('./lib/config');
-const Dependencies = require('./lib/dependencies');
-const env = require('./lib/env');
-const name = require('./lib/name');
-const plugins = require('./lib/plugins');
-
-module.exports = {
-  config,
-  Dependencies,
-  env,
-  name,
-  plugins,
+exports.handlers = {
+  /**
+   * Remove rails tags from the source input (e.g. <% foo bar %>)
+   *
+   * @param e
+   * @param e.filename
+   * @param e.source
+   */
+  beforeParse(e) {
+    if (e.filename.match(/\.erb$/)) {
+      e.source = e.source.replace(/<%.*%>/g, '');
+    }
+  },
 };

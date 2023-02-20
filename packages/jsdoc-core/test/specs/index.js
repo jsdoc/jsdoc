@@ -51,4 +51,12 @@ describe('@jsdoc/core', () => {
       expect(core.name).toBe(name);
     });
   });
+
+  describe('plugins', () => {
+    it('is lib/plugins', () => {
+      const plugins = require('../../lib/plugins');
+
+      expect(core.plugins).toBe(plugins);
+    });
+  });
 });

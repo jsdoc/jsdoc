@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2014 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,21 +14,16 @@
   limitations under the License.
 */
 /**
- * Core functionality for JSDoc.
- *
- * @module @jsdoc/core
+ * Removes all symbols that begin with an underscore from the doc output. If
+ * you're using underscores to denote private variables in modules, this
+ * automatically hides them.
  */
 
-const config = require('./lib/config');
-const Dependencies = require('./lib/dependencies');
-const env = require('./lib/env');
-const name = require('./lib/name');
-const plugins = require('./lib/plugins');
-
-module.exports = {
-  config,
-  Dependencies,
-  env,
-  name,
-  plugins,
+exports.handlers = {
+  newDoclet({ doclet }) {
+    // Ignore comment blocks for all symbols that begin with underscore
+    if (doclet.name.charAt(0) === '_' || doclet.name.substr(0, 6) === 'this._') {
+      doclet.access = 'private';
+    }
+  },
 };

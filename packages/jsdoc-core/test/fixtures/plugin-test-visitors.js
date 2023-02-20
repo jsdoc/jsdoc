@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2023 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,22 +13,28 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/**
- * Core functionality for JSDoc.
- *
- * @module @jsdoc/core
- */
+const EventEmitter = require('events');
 
-const config = require('./lib/config');
-const Dependencies = require('./lib/dependencies');
-const env = require('./lib/env');
-const name = require('./lib/name');
-const plugins = require('./lib/plugins');
+const events = [
+  'parseBegin',
+  'fileBegin',
+  'beforeParse',
+  'jsdocCommentFound',
+  'symbolFound',
+  'newDoclet',
+  'fileComplete',
+  'parseComplete',
+  'processingComplete',
+];
 
-module.exports = {
-  config,
-  Dependencies,
-  env,
-  name,
-  plugins,
-};
+class PluginTestVisitors extends EventEmitter {
+  constructor() {
+    super();
+
+    this.astNodeVisitor = {
+      visitNode: (node) => this.emit('visitNode', node),
+    };
+  }
+}
+
+module.exports = new PluginTestVisitors();

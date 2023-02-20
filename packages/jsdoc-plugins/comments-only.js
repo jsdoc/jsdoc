@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2013 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,21 +14,18 @@
   limitations under the License.
 */
 /**
- * Core functionality for JSDoc.
- *
- * @module @jsdoc/core
+ * Remove everything in a file except JSDoc-style comments. By enabling this plugin, you can
+ * document source files that are not valid JavaScript, including source files for other languages.
  */
+exports.handlers = {
+  beforeParse(e) {
+    // a JSDoc comment looks like: /**[one or more chars]*/
+    const comments = e.source.match(/\/\*\*[\s\S]+?\*\//g);
 
-const config = require('./lib/config');
-const Dependencies = require('./lib/dependencies');
-const env = require('./lib/env');
-const name = require('./lib/name');
-const plugins = require('./lib/plugins');
-
-module.exports = {
-  config,
-  Dependencies,
-  env,
-  name,
-  plugins,
+    if (comments) {
+      e.source = comments.join('\n\n');
+    } else {
+      e.source = ''; // If file has no comments, parser should still receive no code
+    }
+  },
 };
