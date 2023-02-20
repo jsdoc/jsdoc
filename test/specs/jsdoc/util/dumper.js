@@ -71,6 +71,13 @@ describe('jsdoc/util/dumper', () => {
         expect(actual).toBe(expected);
     });
 
+    it('can dump bigints', () => {
+        const actual = dumper.dump({ hello: 0n });
+        const expected = '{\n    "hello": "0n"\n}';
+
+        expect(actual).toBe(expected);
+    });
+
     it('can dump constructed instance values, not displaying prototype members', () => {
         let actual;
         let expected;
