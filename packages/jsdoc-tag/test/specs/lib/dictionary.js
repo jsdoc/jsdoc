@@ -14,7 +14,7 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('jsdoc/tag/dictionary', () => {
+describe('@jsdoc/tag/lib/dictionary', () => {
   const { Dictionary } = require('../../../lib/dictionary');
 
   const env = jsdoc.deps.get('env');

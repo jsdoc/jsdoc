@@ -22,7 +22,6 @@
     "@jsdoc/tag": "^0.1.6",
     "@jsdoc/util": "^0.2.8",
     "lodash": "^4.17.21",
-    "requizzle": "^0.2.3",
     "strip-bom": "^4.0.0",
     "strip-json-comments": "^3.1.1"
   },
