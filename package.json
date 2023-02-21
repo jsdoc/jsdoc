@@ -30,7 +30,7 @@
     "license-check-and-add": "^4.0.5",
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.4",
     "taffydb": "2.6.2"
   },
   "engines": {
