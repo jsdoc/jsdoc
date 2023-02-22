@@ -20,7 +20,7 @@
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "execa": "^6.1.0",
+    "execa": "^7.0.0",
     "hereby": "^1.8.0",
     "jasmine": "^3.99.0",
     "jasmine-console-reporter": "^3.1.0",
