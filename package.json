@@ -22,7 +22,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "execa": "^7.0.0",
     "hereby": "^1.8.0",
-    "jasmine": "^3.99.0",
+    "jasmine": "^4.5.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
     "klaw-sync": "^6.0.0",
