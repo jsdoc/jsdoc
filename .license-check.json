@@ -16,7 +16,8 @@
     "**/coverage",
     "**/test/fixtures",
     "out",
-    "packages/jsdoc/templates/default/static",
+    "packages/jsdoc/test/specs/add-matchers.cjs",
+    "packages/jsdoc-template-legacy/static",
     "tmp"
   ],
   "license": ".license-header.txt",
