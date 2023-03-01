@@ -1,7 +1,6 @@
 {
   "extends": ["config:base"],
   "statusCheckVerify": true,
-  "ignoreDeps": ["taffydb"],
   "automerge": true,
   "automergeType": "branch",
   "rangeStrategy": "bump",

@@ -1,6 +1,6 @@
 {
   "packageAllowlist": [
-    "argparse", // Python-2.0 licensed, which is fine but not on js-green-licenses default list
-    "taffydb" // MIT licensed, per its source code
+    // Python-2.0 licensed, which is fine but not on js-green-licenses default list
+    "argparse"
   ]
 }
