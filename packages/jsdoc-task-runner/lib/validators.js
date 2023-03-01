@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { default: ow } = require('ow');
-const Task = require('./task');
+import ow from 'ow';
+
+import { Task } from './task.js';
 
 function checkTask(t) {
   return {
@@ -23,7 +24,7 @@ function checkTask(t) {
   };
 }
 
-module.exports = {
+export default {
   checkTaskOrString: ow.any(ow.object.validate(checkTask), ow.string),
   DependencyCycleError: class DependencyCycleError extends Error {
     constructor(message, cyclePath) {

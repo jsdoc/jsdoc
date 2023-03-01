@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/ast.Syntax', () => {
-  const { Syntax } = require('../../../index');
+import { Syntax } from '../../../lib/syntax.js';
 
+describe('@jsdoc/ast.Syntax', () => {
   it('is an object', () => {
     expect(Syntax).toBeObject();
   });

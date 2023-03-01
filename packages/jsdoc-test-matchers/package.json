@@ -24,9 +24,8 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "type": "commonjs",
   "dependencies": {
-    "add-matchers": "^0.6.2",
-    "jasmine-expect": "^5.0.0",
     "lodash": "^4.17.21",
     "prettier": "^2.8.4"
   },

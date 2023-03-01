@@ -16,7 +16,7 @@
 /**
  * This plugin creates a summary tag, if missing, from the first sentence in the description.
  */
-exports.handlers = {
+export const handlers = {
   /**
    * Autogenerate summaries, if missing, from the description, if present.
    */

@@ -13,14 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { AstBuilder } = require('./lib/ast-builder');
-const astNode = require('./lib/ast-node');
-const { Syntax } = require('./lib/syntax');
-const { Walker } = require('./lib/walker');
+import { AstBuilder } from './lib/ast-builder.js';
+import * as astNode from './lib/ast-node.js';
+import { Syntax } from './lib/syntax.js';
+import { Walker } from './lib/walker.js';
 
-module.exports = {
-  AstBuilder,
-  astNode,
-  Syntax,
-  Walker,
-};
+export { AstBuilder, astNode, Syntax, Walker };
+export default { AstBuilder, astNode, Syntax, Walker };

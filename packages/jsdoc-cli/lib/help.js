@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const flags = require('./flags');
+import flags from './flags.js';
 
 function padLeft(str, length) {
   return str.padStart(str.length + length);
@@ -109,7 +109,7 @@ function formatHelpInfo({ names, descriptions }, { maxLength }) {
  * @return {string} The formatted help text.
  * @private
  */
-module.exports = ({ maxLength }) => {
+export default function help({ maxLength }) {
   const flagInfo = {
     names: [],
     descriptions: [],
@@ -147,4 +147,4 @@ module.exports = ({ maxLength }) => {
     });
 
   return `${formatHelpInfo(flagInfo, { maxLength }).join('\n')}`;
-};
+}

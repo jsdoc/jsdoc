@@ -37,7 +37,7 @@ const STRING_SCHEMA = {
 };
 
 // information about the code associated with a doclet
-const META_SCHEMA = (exports.META_SCHEMA = {
+export const META_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -99,10 +99,10 @@ const META_SCHEMA = (exports.META_SCHEMA = {
       type: OBJECT,
     },
   },
-});
+};
 
 // type property containing type names
-const TYPE_PROPERTY_SCHEMA = (exports.TYPE_PROPERTY_SCHEMA = {
+export const TYPE_PROPERTY_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -119,10 +119,10 @@ const TYPE_PROPERTY_SCHEMA = (exports.TYPE_PROPERTY_SCHEMA = {
       additionalProperties: true,
     },
   },
-});
+};
 
 // enumeration properties
-const ENUM_PROPERTY_SCHEMA = (exports.ENUM_PROPERTY_SCHEMA = {
+export const ENUM_PROPERTY_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -165,10 +165,10 @@ const ENUM_PROPERTY_SCHEMA = (exports.ENUM_PROPERTY_SCHEMA = {
       type: BOOLEAN_OPTIONAL,
     },
   },
-});
+};
 
 // function parameter, or object property defined with @property tag
-const PARAM_SCHEMA = (exports.PARAM_SCHEMA = {
+export const PARAM_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -197,9 +197,9 @@ const PARAM_SCHEMA = (exports.PARAM_SCHEMA = {
       type: BOOLEAN_OPTIONAL,
     },
   },
-});
+};
 
-const DOCLET_SCHEMA = (exports.DOCLET_SCHEMA = {
+export const DOCLET_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -523,9 +523,9 @@ const DOCLET_SCHEMA = (exports.DOCLET_SCHEMA = {
       items: PARAM_SCHEMA,
     },
   },
-});
+};
 
-const CONTACT_INFO_SCHEMA = (exports.CONTACT_INFO_SCHEMA = {
+export const CONTACT_INFO_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -540,9 +540,9 @@ const CONTACT_INFO_SCHEMA = (exports.CONTACT_INFO_SCHEMA = {
       format: 'uri',
     },
   },
-});
+};
 
-const BUGS_SCHEMA = (exports.BUGS_SCHEMA = {
+export const BUGS_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -554,9 +554,9 @@ const BUGS_SCHEMA = (exports.BUGS_SCHEMA = {
       format: 'uri',
     },
   },
-});
+};
 
-const PACKAGE_SCHEMA = (exports.PACKAGE_SCHEMA = {
+export const PACKAGE_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
@@ -652,9 +652,9 @@ const PACKAGE_SCHEMA = (exports.PACKAGE_SCHEMA = {
       type: STRING,
     },
   },
-});
+};
 
-exports.DOCLETS_SCHEMA = {
+export const DOCLETS_SCHEMA = {
   type: ARRAY,
   items: {
     anyOf: [DOCLET_SCHEMA, PACKAGE_SCHEMA],

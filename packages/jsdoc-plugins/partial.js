@@ -16,10 +16,10 @@
 /**
  * Adds support for reusable partial jsdoc files.
  */
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
 
-exports.handlers = {
+export const handlers = {
   /**
    * Include a partial jsdoc
    *

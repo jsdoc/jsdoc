@@ -14,16 +14,18 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('@jsdoc/core/lib/plugins', () => {
-  const path = require('path');
-  const plugins = require('../../../lib/plugins');
+import path from 'node:path';
 
+import * as plugins from '../../../lib/plugins.js';
+
+const __dirname = jsdoc.dirname(import.meta.url);
+
+describe('@jsdoc/core/lib/plugins', () => {
   it('has an `installPlugins` method', () => {
     expect(plugins.installPlugins).toBeFunction();
   });
 
   describe('installPlugins', () => {
-    let eventCounts;
     let parser;
 
     const events = [
@@ -38,24 +40,17 @@ describe('@jsdoc/core/lib/plugins', () => {
       'processingComplete',
     ];
 
-    function countEvents(emitter) {
-      events.forEach((eventName) => {
-        emitter.on(eventName, () => eventCounts[eventName]++);
-      });
-    }
-
     beforeEach(() => {
-      eventCounts = {};
-      events.forEach((eventName) => (eventCounts[eventName] = 0));
       parser = jsdoc.createParser();
     });
 
-    it('adds event handlers to the parser', () => {
+    it('adds event handlers to the parser', async () => {
       let pluginPath = path.resolve(__dirname, '../../fixtures/plugin-test-handlers.js');
-      const plugin = require(pluginPath);
+      const { eventCounts, init } = await import(pluginPath);
 
-      plugins.installPlugins([pluginPath], parser, jsdoc.deps);
-      countEvents(plugin);
+      init();
+
+      await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
       jsdoc.getDocSetFromFile(
         path.resolve(__dirname, '../../fixtures/plugin-source-file.js'),
         parser
@@ -70,13 +65,13 @@ describe('@jsdoc/core/lib/plugins', () => {
       });
     });
 
-    it('adds AST node visitors to the parser', () => {
-      const nodes = [];
+    it('adds AST node visitors to the parser', async () => {
       let pluginPath = path.resolve(__dirname, '../../fixtures/plugin-test-ast-visitor.js');
-      const plugin = require(pluginPath);
+      const { nodes, init } = await import(pluginPath);
 
-      plugins.installPlugins([pluginPath], parser, jsdoc.deps);
-      plugin.on('visitNode', (node) => nodes.push(node));
+      init();
+
+      await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
       jsdoc.getDocSetFromFile(
         path.resolve(__dirname, '../../fixtures/plugin-source-file.js'),
         parser
@@ -86,11 +81,11 @@ describe('@jsdoc/core/lib/plugins', () => {
       expect(nodes[0].init.value).toBe('bar');
     });
 
-    it('adds tags to the dictionary', () => {
+    it('adds tags to the dictionary', async () => {
       const doclets = [];
       let pluginPath = path.resolve(__dirname, '../../fixtures/plugin-test-tags.js');
 
-      plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+      await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
       parser.on('newDoclet', (e) => {
         if (e.doclet.longname === 'test') {
           doclets.push(e.doclet);

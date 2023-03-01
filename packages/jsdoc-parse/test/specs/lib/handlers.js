@@ -14,9 +14,9 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('@jsdoc/parse/lib/handlers', () => {
-  const handlers = require('../../../lib/handlers');
+import * as handlers from '../../../lib/handlers.js';
 
+describe('@jsdoc/parse/lib/handlers', () => {
   const testParser = jsdoc.createParser();
 
   handlers.attachTo(testParser);
@@ -63,7 +63,5 @@ describe('@jsdoc/parse/lib/handlers', () => {
     });
   });
 
-  xdescribe('`symbolFound` handler', () => {
-    // TODO
-  });
+  // TODO: tests for `symbolFound` handler
 });

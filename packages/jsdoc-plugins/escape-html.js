@@ -16,7 +16,7 @@
 /**
  * Escape HTML tags in descriptions.
  */
-exports.handlers = {
+export const handlers = {
   /**
    * Translate HTML tags in descriptions into safe entities. Replaces <, & and newlines
    */

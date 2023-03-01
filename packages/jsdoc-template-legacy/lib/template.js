@@ -16,14 +16,15 @@
 /**
  * Wrapper for Lodash's template utility to allow loading templates from files.
  */
-const _ = require('lodash');
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+
+import _ from 'lodash';
 
 /**
  * Template helper.
  */
-class Template {
+export class Template {
   /**
    * @param {string} filepath - Templates directory.
    */
@@ -91,4 +92,3 @@ class Template {
     return content;
   }
 }
-exports.Template = Template;

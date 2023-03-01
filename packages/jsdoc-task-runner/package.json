@@ -22,11 +22,20 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./lib/*": {
+      "import": "./lib/*"
+    }
+  },
   "dependencies": {
     "dependency-graph": "^0.11.0",
     "emittery": "^0.13.1",
-    "ow": "^0.28.2",
-    "p-queue": "^6.6.2"
+    "ow": "^1.1.1",
+    "p-queue": "^7.3.4"
   },
   "engines": {
     "node": ">=v18.12.0"

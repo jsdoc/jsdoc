@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const flags = require('../../../lib/flags');
-const { default: ow } = require('ow');
+import ow from 'ow';
+
+import flags from '../../../lib/flags.js';
 
 function validate(name, opts) {
   name = `--${name}`;

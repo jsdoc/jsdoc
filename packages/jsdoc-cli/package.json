@@ -21,11 +21,20 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./lib/*": {
+      "import": "./lib/*"
+    }
+  },
   "dependencies": {
     "@jsdoc/core": "^0.4.6",
     "@jsdoc/util": "^0.2.8",
     "lodash": "^4.17.21",
-    "ow": "^0.28.2",
+    "ow": "^1.1.1",
     "strip-bom": "^4.0.0",
     "yargs-parser": "^21.1.1"
   },

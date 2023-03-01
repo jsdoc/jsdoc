@@ -13,13 +13,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { augmentAll } = require('@jsdoc/doclet').augment;
-const { createParser } = require('@jsdoc/parse');
-const { EventBus } = require('@jsdoc/util');
-const fs = require('fs');
-const { handlers } = require('@jsdoc/parse');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+import { augment } from '@jsdoc/doclet';
+import { createParser, handlers } from '@jsdoc/parse';
+import { EventBus } from '@jsdoc/util';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const bus = new EventBus('jsdoc');
 const originalDictionaries = ['jsdoc', 'closure'];
 const packagePath = path.resolve(__dirname, '../..');
@@ -46,7 +48,8 @@ const helpers = {
 
     return events.length !== 0;
   },
-  getDocSetFromFile: (filename, parser, shouldValidate, augment) => {
+  dirname: (importMetaUrl) => path.dirname(fileURLToPath(importMetaUrl)),
+  getDocSetFromFile: (filename, parser, shouldValidate, shouldAugment) => {
     let doclets;
     const sourcePath = path.isAbsolute(filename) ? filename : path.join(packagePath, filename);
     const sourceCode = fs.readFileSync(sourcePath, 'utf8');
@@ -54,12 +57,10 @@ const helpers = {
 
     handlers.attachTo(testParser);
 
-    /* eslint-disable no-script-url */
-    doclets = testParser.parse(`javascript:${sourceCode}`);
-    /* eslint-enable no-script-url */
+    doclets = testParser.parse(`javascript:${sourceCode}`); // eslint-disable-line no-script-url
 
-    if (augment !== false) {
-      augmentAll(doclets);
+    if (shouldAugment !== false) {
+      augment.augmentAll(doclets);
     }
 
     // tests assume that borrows have not yet been resolved

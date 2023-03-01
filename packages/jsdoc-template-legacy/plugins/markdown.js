@@ -16,7 +16,7 @@
 /**
  * Translate doclet descriptions from Markdown into HTML.
  */
-const { getRenderer } = require('../lib/markdown');
+import { getRenderer } from '../lib/markdown.js';
 
 const tags = [
   'author',
@@ -68,7 +68,7 @@ function process(doclet) {
   });
 }
 
-exports.handlers = {
+export const handlers = {
   /**
    * Translate Markdown syntax within a doclet into HTML.
    */

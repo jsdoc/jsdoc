@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const summarize = require('../../summarize');
+import * as summarize from '../../summarize.js';
 
 describe('summarize', () => {
   it('should export handlers', () => {

@@ -13,18 +13,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const ConsoleReporter = require('jasmine-console-reporter');
-const Jasmine = require('jasmine');
+import Jasmine from 'jasmine';
+import ConsoleReporter from 'jasmine-console-reporter';
 
 const SCHEMA_SPEC = 'packages/jsdoc/test/specs/validate.js';
 const SPEC_FILES = [
   `!${SCHEMA_SPEC}`,
   '!node_modules',
+  'packages/jsdoc/test/specs/add-matchers.cjs',
   'packages/**/test/specs/**/*.js',
   SCHEMA_SPEC,
 ];
 
-module.exports = (deps) => {
+export default function test(deps) {
   const jasmine = new Jasmine();
   const matcher = deps.get('options').matcher;
   const reporter = new ConsoleReporter({
@@ -47,8 +48,8 @@ module.exports = (deps) => {
   jasmine.exitOnCompletion = false;
   jasmine.loadConfig({
     helpers: [
-      'node_modules/jasmine-expect/index.js',
-      'node_modules/@jsdoc/test-matchers/index.js',
+      // 'node_modules/jasmine-expect/index.js',
+      // 'node_modules/@jsdoc/test-matchers/index.js',
       'packages/jsdoc/test/helpers/**/*.js',
     ],
     random: false,
@@ -62,4 +63,4 @@ module.exports = (deps) => {
   global.jsdoc.deps = deps;
 
   return jasmine.execute(SPEC_FILES, matcher);
-};
+}

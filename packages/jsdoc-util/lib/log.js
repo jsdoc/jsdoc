@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const EventBus = require('./bus');
+import EventBus from './bus.js';
 
 const bus = new EventBus('jsdoc');
 const loggerFuncs = {};
@@ -22,4 +22,4 @@ const loggerFuncs = {};
   loggerFuncs[fn] = (...args) => bus.emit(`logger:${fn}`, ...args);
 });
 
-module.exports = loggerFuncs;
+export default loggerFuncs;

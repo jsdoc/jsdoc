@@ -14,14 +14,17 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('@jsdoc/template-legacy/lib/templateHelper', () => {
-  const _ = require('lodash');
-  const { Dependencies } = require('@jsdoc/core');
-  const { Dictionary } = require('@jsdoc/tag');
-  const { Doclet } = require('@jsdoc/doclet');
-  const helper = require('../../../lib/templateHelper');
-  const { taffy } = require('@jsdoc/salty');
+import { Dependencies } from '@jsdoc/core';
+import { Doclet } from '@jsdoc/doclet';
+import salty from '@jsdoc/salty';
+import { Dictionary } from '@jsdoc/tag';
+import _ from 'lodash';
 
+import * as helper from '../../../lib/templateHelper.js';
+
+const { taffy } = salty;
+
+describe('@jsdoc/template-legacy/lib/templateHelper', () => {
   const config = jsdoc.deps.get('config');
   const options = jsdoc.deps.get('options');
 
@@ -1031,9 +1034,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
   });
 
-  xdescribe('getAncestors', () => {
-    // TODO
-  });
+  // TODO: getAncestors tests
 
   describe('getAncestorLinks', () => {
     // make a hierarchy.
@@ -1794,7 +1795,5 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
   });
 
-  xdescribe('longnamesToTree', () => {
-    // TODO
-  });
+  // TODO: longnamesToTree tests
 });

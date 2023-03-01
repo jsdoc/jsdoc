@@ -14,16 +14,20 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('rails-template plugin', () => {
-  const { handlers } = require('@jsdoc/parse');
-  const path = require('path');
-  const { plugins } = require('@jsdoc/core');
+import path from 'node:path';
 
+import { plugins } from '@jsdoc/core';
+import { handlers } from '@jsdoc/parse';
+
+describe('rails-template plugin', () => {
+  const __dirname = jsdoc.dirname(import.meta.url);
   const parser = jsdoc.createParser();
   const pluginPath = path.join(__dirname, '../../rails-template.js');
 
-  plugins.installPlugins([pluginPath], parser, jsdoc.deps);
-  handlers.attachTo(parser);
+  beforeAll(async () => {
+    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    handlers.attachTo(parser);
+  });
 
   it('removes <% %> rails template tags from the source of *.erb files', () => {
     const docSet = parser.parse([path.resolve(__dirname, '../fixtures/rails-template.js.erb')]);

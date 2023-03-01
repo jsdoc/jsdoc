@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/util/lib/cast', () => {
-  const cast = require('../../../lib/cast');
+import cast from '../../../lib/cast.js';
 
+describe('@jsdoc/util/lib/cast', () => {
   it('is a function', () => {
     expect(cast).toBeFunction();
   });

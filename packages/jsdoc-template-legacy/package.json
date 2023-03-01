@@ -36,5 +36,23 @@
   },
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./publish.js"
+    },
+    "./lib/*": {
+      "import": "./lib/*"
+    },
+    "./plugins/*": {
+      "import": "./plugins/*"
+    },
+    "./static/*": {
+      "import": "./static/*"
+    },
+    "./tmpl/*": {
+      "import": "./tmpl/*"
+    }
   }
 }

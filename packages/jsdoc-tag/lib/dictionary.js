@@ -14,8 +14,9 @@
   limitations under the License.
 */
 /** @module @jsdoc/tag/lib/dictionary */
-const definitions = require('./definitions');
-const { log } = require('@jsdoc/util');
+import { log } from '@jsdoc/util';
+
+import definitions from './definitions/index.js';
 
 const DEFINITIONS = {
   closure: 'closure',
@@ -48,10 +49,7 @@ class TagDefinition {
   }
 }
 
-/**
- * @memberof module:jsdoc/tag/dictionary
- */
-class Dictionary {
+export class Dictionary {
   constructor() {
     // TODO: Consider adding internal tags in the constructor, ideally as fallbacks that aren't
     // used to confirm whether a tag is defined/valid, rather than requiring every set of tag
@@ -182,5 +180,3 @@ class Dictionary {
     return canonicalName;
   }
 }
-
-exports.Dictionary = Dictionary;

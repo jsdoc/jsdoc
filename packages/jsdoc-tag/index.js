@@ -13,18 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const definitions = require('./lib/definitions');
-const { Dictionary } = require('./lib/dictionary');
-const inline = require('./lib/inline');
-const { Tag } = require('./lib/tag');
-const type = require('./lib/type');
-const { validate } = require('./lib/validator');
+import definitions from './lib/definitions/index.js';
+import { Dictionary } from './lib/dictionary.js';
+import * as inline from './lib/inline.js';
+import { Tag } from './lib/tag.js';
+import * as type from './lib/type.js';
+import { validate } from './lib/validator.js';
 
-module.exports = {
-  definitions,
-  Dictionary,
-  inline,
-  Tag,
-  type,
-  validate,
-};
+export { definitions, Dictionary, inline, Tag, type, validate };
+export default { definitions, Dictionary, inline, Tag, type, validate };

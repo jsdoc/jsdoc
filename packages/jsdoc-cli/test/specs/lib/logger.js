@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { EventBus } = require('@jsdoc/util');
-const { LEVELS, Logger } = require('../../../lib/logger');
+import { EventBus } from '@jsdoc/util';
+
+import { LEVELS, Logger } from '../../../lib/logger.js';
 
 const ARGUMENT_ERROR = 'ArgumentError';
 const TYPE_ERROR = 'TypeError';

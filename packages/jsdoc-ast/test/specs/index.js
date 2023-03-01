@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const ast = require('../../index');
+import ast from '../../index.js';
 
 describe('@jsdoc/ast', () => {
   it('is an object', () => {
@@ -21,34 +21,34 @@ describe('@jsdoc/ast', () => {
   });
 
   describe('AstBuilder', () => {
-    it('is lib/ast-builder.AstBuilder', () => {
-      const { AstBuilder } = require('../../lib/ast-builder');
+    it('is lib/ast-builder.AstBuilder', async () => {
+      const { AstBuilder } = await import('../../lib/ast-builder.js');
 
-      expect(ast.AstBuilder).toBe(AstBuilder);
+      expect(ast.AstBuilder).toEqual(AstBuilder);
     });
   });
 
   describe('astNode', () => {
-    it('is lib/ast-node', () => {
-      const astNode = require('../../lib/ast-node');
+    it('is lib/ast-node', async () => {
+      const astNode = await import('../../lib/ast-node.js');
 
-      expect(ast.astNode).toBe(astNode);
+      expect(ast.astNode).toEqual(astNode);
     });
   });
 
   describe('Syntax', () => {
-    it('is lib/syntax.Syntax', () => {
-      const { Syntax } = require('../../lib/syntax');
+    it('is lib/syntax.Syntax', async () => {
+      const { Syntax } = await import('../../lib/syntax.js');
 
-      expect(ast.Syntax).toBe(Syntax);
+      expect(ast.Syntax).toEqual(Syntax);
     });
   });
 
   describe('Walker', () => {
-    it('is lib/walker.Walker', () => {
-      const { Walker } = require('../../lib/walker');
+    it('is lib/walker.Walker', async () => {
+      const { Walker } = await import('../../lib/walker.js');
 
-      expect(ast.Walker).toBe(Walker);
+      expect(ast.Walker).toEqual(Walker);
     });
   });
 });

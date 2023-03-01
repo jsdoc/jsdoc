@@ -17,7 +17,7 @@
  * Remove everything in a file except JSDoc-style comments. By enabling this plugin, you can
  * document source files that are not valid JavaScript, including source files for other languages.
  */
-exports.handlers = {
+export const handlers = {
   beforeParse(e) {
     // a JSDoc comment looks like: /**[one or more chars]*/
     const comments = e.source.match(/\/\*\*[\s\S]+?\*\//g);

@@ -13,14 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { augmentAll } = require('@jsdoc/doclet').augment;
-const { SCOPE } = require('@jsdoc/core').name;
+import { name } from '@jsdoc/core';
+import { augment } from '@jsdoc/doclet';
 
 describe('mixins', () => {
   describe('doclet augmentation', () => {
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/mixintag2.js');
 
-    augmentAll(docSet.doclets);
+    augment.augmentAll(docSet.doclets);
 
     it('should create doclets for mixed-in symbols', () => {
       const objectBMethod = docSet.getByLongname('module:mixy.ObjectB.method')[0];
@@ -56,7 +56,7 @@ describe('mixins', () => {
         const classAMethod = docSet.getByLongname('module:mixy.ClassA#method')[0];
 
         expect(classAMethod).toBeObject();
-        expect(classAMethod.scope).toBe(SCOPE.NAMES.INSTANCE);
+        expect(classAMethod.scope).toBe(name.SCOPE.NAMES.INSTANCE);
         expect(classAMethod.memberof).toBe('module:mixy.ClassA');
       });
     });

@@ -15,14 +15,17 @@
 */
 /**
  * Strips the rails template tags from a js.erb file
+ * @module @jsdoc/plugins/railsTemplate
  */
-exports.handlers = {
+/** @alias module:@jsdoc/plugins/railsTemplate.handlers */
+export const handlers = {
   /**
    * Remove rails tags from the source input (e.g. <% foo bar %>)
    *
    * @param e
    * @param e.filename
    * @param e.source
+   * @alias module:@jsdoc/plugins/railsTemplate.handlers.beforeParse
    */
   beforeParse(e) {
     if (e.filename.match(/\.erb$/)) {

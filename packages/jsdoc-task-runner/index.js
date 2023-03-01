@@ -13,10 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const Task = require('./lib/task');
-const TaskRunner = require('./lib/task-runner');
+import { Task } from './lib/task.js';
+import { TaskRunner } from './lib/task-runner.js';
 
-module.exports = {
-  Task,
-  TaskRunner,
-};
+export { Task, TaskRunner };
+export default { Task, TaskRunner };

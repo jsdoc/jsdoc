@@ -13,13 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { createParser, Parser } = require('./lib/parser');
-const handlers = require('./lib/handlers');
-const { Visitor } = require('./lib/visitor');
+import * as handlers from './lib/handlers.js';
+import { createParser, Parser } from './lib/parser.js';
+import { Visitor } from './lib/visitor.js';
 
-module.exports = {
-  createParser,
-  handlers,
-  Parser,
-  Visitor,
-};
+export { createParser, handlers, Parser, Visitor };
+export default { createParser, handlers, Parser, Visitor };

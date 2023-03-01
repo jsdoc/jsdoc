@@ -14,19 +14,22 @@
   limitations under the License.
 */
 /* global jsdoc */
+import { name } from '@jsdoc/core';
+import _ from 'lodash';
+
+import * as doclet from '../../../lib/doclet.js';
+
+const { Doclet } = doclet;
+const { SCOPE } = name;
+
 describe('@jsdoc/doclet/lib/doclet', () => {
   // TODO: more tests
-  const _ = require('lodash');
-  const doclet = require('../../../lib/doclet');
-  const Doclet = doclet.Doclet;
-  const { SCOPE } = require('@jsdoc/core').name;
-
   it('exists', () => {
     expect(doclet).toBeObject();
   });
 
-  it('has a combine method', () => {
-    expect(doclet.combine).toBeFunction();
+  it('has a combineDoclets method', () => {
+    expect(doclet.combineDoclets).toBeFunction();
   });
 
   it('has a Doclet class', () => {
@@ -242,7 +245,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
     });
   });
 
-  describe('combine', () => {
+  describe('combineDoclets', () => {
     it('overrides most properties of the secondary doclet', () => {
       const primaryDoclet = new Doclet(
         '/** New and improved!\n@version 2.0.0 */',
@@ -250,7 +253,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
         jsdoc.deps
       );
       const secondaryDoclet = new Doclet('/** Hello!\n@version 1.0.0 */', null, jsdoc.deps);
-      const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
+      const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
 
       Object.getOwnPropertyNames(newDoclet).forEach((property) => {
         expect(newDoclet[property]).toEqual(primaryDoclet[property]);
@@ -260,7 +263,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
     it('adds properties from the secondary doclet that are missing', () => {
       const primaryDoclet = new Doclet('/** Hello!\n@version 2.0.0 */', null, jsdoc.deps);
       const secondaryDoclet = new Doclet('/** Hello! */', null, jsdoc.deps);
-      const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
+      const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
 
       expect(newDoclet.version).toBe('2.0.0');
     });
@@ -277,7 +280,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
           ' */',
         ].join('\n');
         const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.deps);
-        const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
+        const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
 
         properties.forEach((property) => {
           expect(newDoclet[property]).toEqual(secondaryDoclet[property]);
@@ -299,7 +302,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
           ' */',
         ].join('\n');
         const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.deps);
-        const newDoclet = doclet.combine(primaryDoclet, secondaryDoclet);
+        const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
 
         properties.forEach((property) => {
           expect(newDoclet[property]).toEqual(primaryDoclet[property]);

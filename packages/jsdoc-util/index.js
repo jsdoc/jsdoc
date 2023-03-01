@@ -18,15 +18,10 @@
  *
  * @module @jsdoc/util
  */
+import EventBus from './lib/bus.js';
+import cast from './lib/cast.js';
+import * as fs from './lib/fs.js';
+import log from './lib/log.js';
 
-const cast = require('./lib/cast');
-const EventBus = require('./lib/bus');
-const fs = require('./lib/fs');
-const log = require('./lib/log');
-
-module.exports = {
-  cast,
-  EventBus,
-  fs,
-  log,
-};
+export { cast, EventBus, fs, log };
+export default { cast, EventBus, fs, log };

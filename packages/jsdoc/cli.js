@@ -14,25 +14,33 @@
   limitations under the License.
 */
 /* eslint-disable indent, no-process-exit */
-const _ = require('lodash');
-const { config, Dependencies } = require('@jsdoc/core');
-const { Dictionary } = require('@jsdoc/tag');
-const Engine = require('@jsdoc/cli');
-const { EventBus, log } = require('@jsdoc/util');
-const fs = require('fs');
-const { sync: glob } = require('fast-glob');
-const { Package, resolveBorrows } = require('@jsdoc/doclet');
-const path = require('path');
-const stripBom = require('strip-bom');
-const stripJsonComments = require('strip-json-comments');
-const { taffy } = require('@jsdoc/salty');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import Engine from '@jsdoc/cli';
+import { config, Dependencies, plugins } from '@jsdoc/core';
+import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
+import { createParser, handlers } from '@jsdoc/parse';
+import salty from '@jsdoc/salty';
+import { Dictionary } from '@jsdoc/tag';
+import { EventBus, log } from '@jsdoc/util';
+import fastGlob from 'fast-glob';
+import _ from 'lodash';
+import stripBom from 'strip-bom';
+import stripJsonComments from 'strip-json-comments';
+
+import test from './test/index.js';
+
+const { sync: glob } = fastGlob;
+const { taffy } = salty;
 
 /**
  * Helper methods for running JSDoc on the command line.
  *
  * @private
  */
-module.exports = (() => {
+export default (() => {
   const props = {
     docs: [],
     packageJson: null,
@@ -59,7 +67,7 @@ module.exports = (() => {
   cli.setVersionInfo = () => {
     const env = dependencies.get('env');
 
-    const packageJsonPath = path.join(require.main.path, 'package.json');
+    const packageJsonPath = fileURLToPath(new URL('package.json', import.meta.url));
     // allow this to throw--something is really wrong if we can't read our own package file
     const info = JSON.parse(stripBom(fs.readFileSync(packageJsonPath, 'utf8')));
     const revision = new Date(parseInt(info.revision, 10));
@@ -204,7 +212,7 @@ module.exports = (() => {
 
   // TODO: docs
   cli.runTests = async () => {
-    const result = await require('./test')(dependencies);
+    const result = await test(dependencies);
 
     return result.overallStatus === 'failed' ? 1 : 0;
   };
@@ -217,7 +225,7 @@ module.exports = (() => {
   };
 
   // TODO: docs
-  cli.main = () => {
+  cli.main = async () => {
     const env = dependencies.get('env');
 
     cli.scanFiles();
@@ -227,8 +235,9 @@ module.exports = (() => {
 
       return Promise.resolve(0);
     } else {
+      await cli.createParser();
+
       return cli
-        .createParser()
         .parseFiles()
         .processParseResults()
         .then(() => {
@@ -289,16 +298,13 @@ module.exports = (() => {
     return cli;
   };
 
-  cli.createParser = () => {
-    const { createParser, handlers } = require('@jsdoc/parse');
-    const { plugins } = require('@jsdoc/core');
-
+  cli.createParser = async () => {
     const conf = dependencies.get('config');
 
     props.parser = createParser(dependencies);
 
     if (conf.plugins) {
-      plugins.installPlugins(conf.plugins, props.parser, dependencies);
+      await plugins.installPlugins(conf.plugins, props.parser, dependencies);
     }
 
     handlers.attachTo(props.parser);
@@ -307,8 +313,6 @@ module.exports = (() => {
   };
 
   cli.parseFiles = () => {
-    const { augmentAll } = require('@jsdoc/doclet').augment;
-
     let docs;
     const env = dependencies.get('env');
     const options = dependencies.get('options');
@@ -322,7 +326,7 @@ module.exports = (() => {
     docs.push(packageDocs);
 
     log.debug('Adding inherited symbols, mixins, and interface implementations...');
-    augmentAll(docs);
+    augment.augmentAll(docs);
     log.debug('Adding borrowed doclets...');
     resolveBorrows(docs);
     log.debug('Post-processing complete.');
@@ -350,7 +354,7 @@ module.exports = (() => {
     return cli;
   };
 
-  cli.generateDocs = () => {
+  cli.generateDocs = async () => {
     let message;
     const options = dependencies.get('options');
     let template;
@@ -358,14 +362,12 @@ module.exports = (() => {
     options.template = options.template || path.join(__dirname, 'templates', 'default');
 
     try {
-      // TODO: Just look for a `publish` function in the specified module, not a `publish.js`
-      // file _and_ a `publish` function.
-      template = require(`${options.template}/publish`);
+      template = await import(options.template);
     } catch (e) {
-      log.fatal(`Unable to load template: ${e.message}` || e);
+      log.fatal(`Unable to load template: ${e.message || e}`);
     }
 
-    // templates should include a publish.js file that exports a "publish" function
+    // templates should export a "publish" function
     if (template.publish && typeof template.publish === 'function') {
       let publishPromise;
 

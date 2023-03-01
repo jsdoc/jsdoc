@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const Emittery = require('emittery');
-const Task = require('../../../lib/task');
+import Emittery from 'emittery';
+
+import { Task } from '../../../lib/task.js';
 
 const ARGUMENT_ERROR = 'ArgumentError';
 

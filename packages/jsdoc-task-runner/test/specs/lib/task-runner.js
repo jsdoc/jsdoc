@@ -13,9 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const Emittery = require('emittery');
-const Task = require('../../../lib/task');
-const TaskRunner = require('../../../lib/task-runner');
+import Emittery from 'emittery';
+
+import { Task } from '../../../lib/task.js';
+import { TaskRunner } from '../../../lib/task-runner.js';
 
 const ARGUMENT_ERROR = 'ArgumentError';
 const DEPENDENCY_CYCLE_ERROR = 'DependencyCycleError';

@@ -14,50 +14,47 @@
   limitations under the License.
 */
 // Tags that JSDoc uses internally, and that must always be defined.
-
-// Special separator tag indicating that multiple doclets should be generated for the same comment.
-// Used internally (and by some JSDoc users, although it's not officially supported).
-//
-// In the following example, the parser will replace `//**` with an `@also` tag:
-// /**
-//  * Foo.
-//  *//**
-//  * Foo with a param.
-//  * @param {string} bar
-//  */
-//  function foo(bar) {}
-exports.also = {
-  onTagged() {
-    // Let the parser handle it. We define the tag here to avoid "not a known tag" errors.
+export const tags = {
+  // Special separator tag indicating that multiple doclets should be generated for the same
+  // comment. Used internally (and by some JSDoc users, although it's not officially supported).
+  //
+  // In the following example, the parser will replace `//**` with an `@also` tag:
+  // /**
+  //  * Foo.
+  //  *//**
+  //  * Foo with a param.
+  //  * @param {string} bar
+  //  */
+  //  function foo(bar) {}
+  also: {
+    onTagged() {
+      // Let the parser handle it. We define the tag here to avoid "not a known tag" errors.
+    },
   },
-};
-
-exports.description = {
-  mustHaveValue: true,
-  onTagged: (doclet, { value }) => {
-    doclet.description = value;
+  description: {
+    mustHaveValue: true,
+    onTagged: (doclet, { value }) => {
+      doclet.description = value;
+    },
+    synonyms: ['desc'],
   },
-  synonyms: ['desc'],
-};
-
-exports.kind = {
-  mustHaveValue: true,
-  onTagged: (doclet, { value }) => {
-    doclet.kind = value;
+  kind: {
+    mustHaveValue: true,
+    onTagged: (doclet, { value }) => {
+      doclet.kind = value;
+    },
   },
-};
-
-exports.name = {
-  mustHaveValue: true,
-  onTagged: (doclet, { value }) => {
-    doclet.name = value;
+  name: {
+    mustHaveValue: true,
+    onTagged: (doclet, { value }) => {
+      doclet.name = value;
+    },
   },
-};
-
-exports.undocumented = {
-  mustNotHaveValue: true,
-  onTagged(doclet) {
-    doclet.undocumented = true;
-    doclet.comment = '';
+  undocumented: {
+    mustNotHaveValue: true,
+    onTagged(doclet) {
+      doclet.undocumented = true;
+      doclet.comment = '';
+    },
   },
 };

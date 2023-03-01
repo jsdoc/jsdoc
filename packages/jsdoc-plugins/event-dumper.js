@@ -16,7 +16,7 @@
 /**
  * Dump information about parser events to the console.
  */
-const _ = require('lodash');
+import _ from 'lodash';
 
 const EVENT_TYPES = [
   'parseBegin',
@@ -104,10 +104,10 @@ function cleanse(e, config) {
   return result;
 }
 
-exports.handlers = {};
+const handlers = {};
 
 EVENT_TYPES.forEach((eventType) => {
-  exports.handlers[eventType] = (e, deps) => {
+  handlers[eventType] = (e, deps) => {
     const config = deps.get('config').eventDumper;
 
     if (shouldLog(eventType, config)) {
@@ -122,3 +122,5 @@ EVENT_TYPES.forEach((eventType) => {
     }
   };
 });
+
+export { handlers };

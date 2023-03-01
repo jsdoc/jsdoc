@@ -21,6 +21,12 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "type": "module",
+  "exports": {
+    "./*": {
+      "import": "./*"
+    }
+  },
   "engines": {
     "node": ">=v18.12.0"
   },

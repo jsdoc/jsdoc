@@ -18,17 +18,11 @@
  *
  * @module @jsdoc/core
  */
+import * as config from './lib/config.js';
+import Dependencies from './lib/dependencies.js';
+import env from './lib/env.js';
+import * as name from './lib/name.js';
+import * as plugins from './lib/plugins.js';
 
-const config = require('./lib/config');
-const Dependencies = require('./lib/dependencies');
-const env = require('./lib/env');
-const name = require('./lib/name');
-const plugins = require('./lib/plugins');
-
-module.exports = {
-  config,
-  Dependencies,
-  env,
-  name,
-  plugins,
-};
+export { config, Dependencies, env, name, plugins };
+export default { config, Dependencies, env, name, plugins };

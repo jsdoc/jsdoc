@@ -13,8 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { isFunction } = require('@jsdoc/ast').astNode;
+import path from 'node:path';
+
+import { astNode, Syntax } from '@jsdoc/ast';
+import { name as jsdocName } from '@jsdoc/core';
+import { Tag } from '@jsdoc/tag';
+import _ from 'lodash';
+
 const {
   applyNamespace,
   hasLeadingScope,
@@ -27,10 +32,8 @@ const {
   SCOPE,
   SCOPE_TO_PUNC,
   toParts,
-} = require('@jsdoc/core').name;
-const path = require('path');
-const { Syntax } = require('@jsdoc/ast');
-const { Tag } = require('@jsdoc/tag');
+} = jsdocName;
+const { isFunction } = astNode;
 
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
 
@@ -366,7 +369,7 @@ function copySpecificProperties(primary, secondary, target, include) {
  *
  * @alias module:@jsdoc/doclet.Doclet
  */
-class Doclet {
+export class Doclet {
   /**
    * Create a doclet.
    *
@@ -649,7 +652,6 @@ class Doclet {
     }
   }
 }
-exports.Doclet = Doclet;
 
 /**
  * Combine two doclets into a new doclet.
@@ -660,8 +662,8 @@ exports.Doclet = Doclet;
  * @returns {module:@jsdoc/doclet.Doclet} A new doclet that combines the primary and secondary
  * doclets.
  */
-exports.combine = (primary, secondary) => {
-  const copyMostPropertiesExclude = ['params', 'properties', 'undocumented'];
+export function combineDoclets(primary, secondary) {
+  const copyMostPropertiesExclude = ['dependencies', 'params', 'properties', 'undocumented'];
   const copySpecificPropertiesInclude = ['params', 'properties'];
   const target = new Doclet('', null, secondary.dependencies);
 
@@ -672,4 +674,4 @@ exports.combine = (primary, secondary) => {
   copySpecificProperties(primary, secondary, target, copySpecificPropertiesInclude);
 
   return target;
-};
+}

@@ -13,11 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/util/lib/fs', () => {
-  const mockFs = require('mock-fs');
-  const fsUtil = require('../../../lib/fs');
-  const path = require('path');
+import path from 'node:path';
 
+import mockFs from 'mock-fs';
+
+import * as fsUtil from '../../../lib/fs.js'; // eslint-disable-line sort-imports
+
+describe('@jsdoc/util/lib/fs', () => {
   afterEach(() => mockFs.restore());
 
   it('has an lsSync method', () => {

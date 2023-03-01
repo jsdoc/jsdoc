@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/core.name', () => {
-  const { name } = require('../../../index');
+import * as name from '../../../lib/name.js';
 
+describe('@jsdoc/core.name', () => {
   it('exists', () => {
     expect(name).toBeObject();
   });
@@ -113,9 +113,7 @@ describe('@jsdoc/core.name', () => {
     });
   });
 
-  xdescribe('fromParts', () => {
-    // TODO: tests
-  });
+  // TODO: fromParts tests
 
   describe('getBasename', () => {
     it('returns null on empty input', () => {
@@ -187,19 +185,13 @@ describe('@jsdoc/core.name', () => {
     });
   });
 
-  xdescribe('longnamesToTree', () => {
-    // TODO: tests
-  });
+  // TODO: longnamesToTree tests
 
   // MODULE_NAMESPACE is just a string, so nothing to test.
 
-  xdescribe('nameIsLongname', () => {
-    // TODO(hegemonic)
-  });
+  // TODO: nameIsLongname tests
 
-  xdescribe('prototypeToPunc', () => {
-    // TODO(hegemonic)
-  });
+  // TODO: prototypeToPunc tests
 
   describe('PUNC_TO_SCOPE', () => {
     it('has the same number of properties as SCOPE_TO_PUNC', () => {

@@ -13,11 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import * as schema from '../../../lib/schema.js';
+
 describe('@jsdoc/doclet/lib/schema', () => {
   // We test the content of the schema in the `jsdoc` package, where we validate all of the parse
   // results that were created while running other tests.
-  const schema = require('../../../lib/schema');
-
   it('is an object', () => {
     expect(schema).toBeObject();
   });

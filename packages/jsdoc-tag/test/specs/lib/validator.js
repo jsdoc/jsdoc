@@ -14,12 +14,12 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('@jsdoc/tag/lib/validator', () => {
-  const _ = require('lodash');
-  const { EventBus } = require('@jsdoc/util');
-  const { Tag } = require('../../../lib/tag');
-  const validator = require('../../../lib/validator');
+import { EventBus } from '@jsdoc/util';
 
+import { Tag } from '../../../lib/tag.js';
+import * as validator from '../../../lib/validator.js';
+
+describe('@jsdoc/tag/lib/validator', () => {
   const config = jsdoc.deps.get('config');
 
   it('is an object', () => {
@@ -99,7 +99,7 @@ describe('@jsdoc/tag/lib/validator', () => {
 
     it('logs an error if the tag has no text but is required to', () => {
       function validate() {
-        const missingName = _.cloneDeep(mustHaveValueTag);
+        const missingName = new Tag('name', 'MyDocletName', meta, jsdoc.deps);
 
         missingName.text = null;
         validateTag(missingName);
@@ -110,7 +110,7 @@ describe('@jsdoc/tag/lib/validator', () => {
 
     it('logs a warning if the tag has text but is required not to', () => {
       function validate() {
-        const missingText = _.cloneDeep(mustNotHaveValueTag);
+        const missingText = new Tag('ignore', '', meta, jsdoc.deps);
 
         missingText.mustNotHaveValue = true;
         missingText.text = missingText.text || 'asdf';

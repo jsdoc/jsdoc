@@ -82,7 +82,7 @@ function castString(str) {
  * @param {(string|Object|Array)} item - The item whose type or types will be converted.
  * @return {*?} The converted value.
  */
-const cast = (module.exports = (item) => {
+export default function cast(item) {
   let result;
 
   if (Array.isArray(item)) {
@@ -102,4 +102,4 @@ const cast = (module.exports = (item) => {
   }
 
   return result;
-});
+}

@@ -16,13 +16,13 @@
 /**
  * Functionality related to JSDoc tags.
  */
-const _ = require('lodash');
-const { log } = require('@jsdoc/util');
-const path = require('path');
-const tag = {
-  validator: require('./validator'),
-  type: require('./type'),
-};
+import path from 'node:path';
+
+import { log } from '@jsdoc/util';
+import _ from 'lodash';
+
+import * as type from './type.js';
+import * as tagValidator from './validator.js';
 
 // Check whether the text is the same as a symbol name with leading or trailing whitespace. If so,
 // the whitespace must be preserved, and the text cannot be trimmed.
@@ -68,11 +68,11 @@ function addHiddenProperty(obj, propName, propValue, dependencies) {
 
 function parseType({ text, originalTitle }, { canHaveName, canHaveType }, meta) {
   try {
-    return tag.type.parse(text, canHaveName, canHaveType);
+    return type.parse(text, canHaveName, canHaveType);
   } catch (e) {
     log.error(
       'Unable to parse a tag\'s type expression%s with tag title "%s" and text "%s": %s',
-      meta.filename
+      meta.path && meta.filename
         ? ` for source file ${path.join(meta.path, meta.filename)}${
             meta.lineno ? ` in line ${meta.lineno}` : ''
           }`
@@ -131,7 +131,7 @@ function processTagText(tagInstance, tagDef, meta, dependencies) {
 /**
  * Represents a single doclet tag.
  */
-class Tag {
+export class Tag {
   /**
    * Constructs a new tag object. Calls the tag validator.
    *
@@ -147,7 +147,10 @@ class Tag {
 
     meta = meta || {};
 
-    this.dependencies = dependencies;
+    Object.defineProperty(this, 'dependencies', {
+      enumerable: false,
+      value: dependencies,
+    });
     this.originalTitle = trim(tagTitle);
 
     /** The title of the tag (for example, `title` in `@title text`). */
@@ -183,7 +186,6 @@ class Tag {
       processTagText(this, tagDef, meta, dependencies);
     }
 
-    tag.validator.validate(this, tagDef, meta);
+    tagValidator.validate(this, tagDef, meta);
   }
 }
-exports.Tag = Tag;

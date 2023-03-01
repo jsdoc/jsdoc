@@ -13,32 +13,32 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-function buildText(type, name, desc) {
-  let text = '';
-
-  if (type) {
-    text += `{${type}}`;
-    if (name || desc) {
-      text += ' ';
-    }
-  }
-
-  if (name) {
-    text += name;
-    if (desc) {
-      text += ' ';
-    }
-  }
-
-  if (desc) {
-    text += desc;
-  }
-
-  return text;
-}
+import * as type from '../../../lib/type.js';
 
 describe('@jsdoc/tag/lib/type', () => {
-  const type = require('../../../lib/type');
+  function buildText(typeInfo, name, desc) {
+    let text = '';
+
+    if (typeInfo) {
+      text += `{${typeInfo}}`;
+      if (name || desc) {
+        text += ' ';
+      }
+    }
+
+    if (name) {
+      text += name;
+      if (desc) {
+        text += ' ';
+      }
+    }
+
+    if (desc) {
+      text += desc;
+    }
+
+    return text;
+  }
 
   it('is an object', () => {
     expect(type).toBeObject();

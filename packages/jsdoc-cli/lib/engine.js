@@ -13,13 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { EventBus } = require('@jsdoc/util');
-const flags = require('./flags');
-const help = require('./help');
-const { LEVELS, Logger } = require('./logger');
-const { default: ow } = require('ow');
-const yargs = require('yargs-parser');
+import { EventBus } from '@jsdoc/util';
+import _ from 'lodash';
+import ow from 'ow';
+import yargs from 'yargs-parser';
+
+import flags from './flags.js';
+import help from './help.js';
+import { LEVELS, Logger } from './logger.js';
 
 function validateChoice(flagInfo, choices, values) {
   let flagNames = flagInfo.alias ? `-${flagInfo.alias}/` : '';
@@ -98,7 +99,7 @@ const { KNOWN_FLAGS, YARGS_FLAGS } = (() => {
  *
  * @alias module:@jsdoc/cli
  */
-class Engine {
+export default class Engine {
   /**
    * Create an instance of the CLI engine.
    *
@@ -240,5 +241,3 @@ class Engine {
 }
 
 Engine.LOG_LEVELS = LEVELS;
-
-module.exports = Engine;

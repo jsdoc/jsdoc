@@ -13,14 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const closure = require('./closure');
-const core = require('./core');
-const internal = require('./internal');
-const jsdoc = require('./jsdoc');
+import { tags as closure } from './closure.js';
+import { tags as core } from './core.js';
+import { tags as internal } from './internal.js';
+import { tags as jsdoc } from './jsdoc.js';
 
-module.exports = {
-  closure,
-  core,
-  internal,
-  jsdoc,
-};
+export { closure, core, internal, jsdoc };
+export default { closure, core, internal, jsdoc };

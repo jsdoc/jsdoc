@@ -16,9 +16,10 @@
 /**
  * Traversal utilities for ASTs that are compatible with the ESTree API.
  */
-const astNode = require('./ast-node');
-const { log } = require('@jsdoc/util');
-const { Syntax } = require('./syntax');
+import { log } from '@jsdoc/util';
+
+import * as astNode from './ast-node.js';
+import { Syntax } from './syntax.js';
 
 // TODO: docs
 function getCurrentScope(scopes) {
@@ -57,7 +58,7 @@ function leafNode(node, parent, state, cb) {}
 /* eslint-enable no-empty-function, no-unused-vars */
 
 // TODO: docs
-const walkers = (exports.walkers = {});
+export const walkers = {};
 
 walkers[Syntax.ArrayExpression] = (node, parent, state, cb) => {
   for (let element of node.elements) {
@@ -642,7 +643,7 @@ walkers[Syntax.YieldExpression] = (node, parent, state, cb) => {
 /**
  * A walker that can traverse an ESTree AST.
  */
-class Walker {
+export class Walker {
   // TODO: docs
   constructor(walkerFuncs = walkers) {
     this._walkers = walkerFuncs;
@@ -714,4 +715,3 @@ class Walker {
     return ast;
   }
 }
-exports.Walker = Walker;

@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const Dependencies = require('../../../lib/dependencies');
+import Dependencies from '../../../lib/dependencies.js';
 
 describe('@jsdoc/core/lib/dependencies', () => {
   let container;

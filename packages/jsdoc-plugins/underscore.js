@@ -19,7 +19,7 @@
  * automatically hides them.
  */
 
-exports.handlers = {
+export const handlers = {
   newDoclet({ doclet }) {
     // Ignore comment blocks for all symbols that begin with underscore
     if (doclet.name.charAt(0) === '_' || doclet.name.substr(0, 6) === 'this._') {

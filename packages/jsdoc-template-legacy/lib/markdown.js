@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const MarkdownIt = require('markdown-it');
-const mdAnchor = require('markdown-it-anchor');
+import MarkdownIt from 'markdown-it';
+import mdAnchor from 'markdown-it-anchor';
 
 const inlineTagRegExp = /\{@[^}\r\n]+\}/g;
 
@@ -79,7 +79,7 @@ function highlight(code, language) {
  *
  * @returns {function} A function that converts Markdown to HTML.
  */
-exports.getRenderer = () => {
+export function getRenderer() {
   let renderer;
 
   renderer = new MarkdownIt({
@@ -98,4 +98,4 @@ exports.getRenderer = () => {
 
     return result;
   };
-};
+}

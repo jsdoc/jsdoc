@@ -16,10 +16,12 @@
 /**
  * Provides methods for augmenting the parse results based on their content.
  */
+import { name } from '@jsdoc/core';
+import _ from 'lodash';
 
-const _ = require('lodash');
-const { combine: combineDoclets } = require('./doclet');
-const { fromParts, SCOPE, toParts } = require('@jsdoc/core').name;
+import { combineDoclets } from './doclet.js';
+
+const { fromParts, SCOPE, toParts } = name;
 
 function mapDependencies(index, propertyName) {
   const dependencies = {};
@@ -550,9 +552,9 @@ function augment(doclets, propertyName, docletFinder, jsdocDeps) {
  * @param {!Object} doclets.index - The doclet index.
  * @return {void}
  */
-exports.addInherited = (doclets) => {
+export function addInherited(doclets) {
   augment(doclets, 'augments', getInheritedAdditions);
-};
+}
 
 /**
  * Add doclets to reflect mixins. When a symbol is mixed into a class, the class' version of the
@@ -569,9 +571,9 @@ exports.addInherited = (doclets) => {
  * @param {!Object} doclets.index - The doclet index.
  * @return {void}
  */
-exports.addMixedIn = (doclets) => {
+export function addMixedIn(doclets) {
   augment(doclets, 'mixes', getMixedInAdditions);
-};
+}
 
 /**
  * Add and update doclets to reflect implementations of interfaces.
@@ -590,9 +592,9 @@ exports.addMixedIn = (doclets) => {
  * @param {!Object} doclets.index - The doclet index.
  * @return {void}
  */
-exports.addImplemented = (doclets) => {
+export function addImplemented(doclets) {
   augment(doclets, 'implements', getImplementedAdditions);
-};
+}
 
 /**
  * Add and update doclets to reflect all of the following:
@@ -605,10 +607,10 @@ exports.addImplemented = (doclets) => {
  *
  * @return {void}
  */
-exports.augmentAll = (doclets) => {
-  exports.addMixedIn(doclets);
-  exports.addImplemented(doclets);
-  exports.addInherited(doclets);
+export function augmentAll(doclets) {
+  addMixedIn(doclets);
+  addImplemented(doclets);
+  addInherited(doclets);
   // look for implemented doclets again, in case we inherited an interface
-  exports.addImplemented(doclets);
-};
+  addImplemented(doclets);
+}

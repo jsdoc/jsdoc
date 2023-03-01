@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import { Doclet } from '@jsdoc/doclet';
+
 describe('@lends tag', () => {
   // see also specs/documentation/lends.js for tests on @lends behaviour.
-  const { Doclet } = require('@jsdoc/doclet');
-
   const doc = new Doclet('/** @lends */', {}, jsdoc.deps);
   const doc2 = new Doclet('/** @lends MyClass# */', {}, jsdoc.deps);
 

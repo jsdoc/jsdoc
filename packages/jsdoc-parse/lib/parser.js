@@ -13,13 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { AstBuilder, astNode, Syntax, Walker } = require('@jsdoc/ast');
-const { EventEmitter } = require('events');
-const fs = require('fs');
-const { log } = require('@jsdoc/util');
-const { getBasename, LONGNAMES, SCOPE, toParts } = require('@jsdoc/core').name;
-const { Visitor } = require('./visitor');
+import EventEmitter from 'node:events';
+import fs from 'node:fs';
+
+import { AstBuilder, astNode, Syntax, Walker } from '@jsdoc/ast';
+import { name } from '@jsdoc/core';
+import { log } from '@jsdoc/util';
+import _ from 'lodash';
+
+import { Visitor } from './visitor.js';
+
+const { getBasename, LONGNAMES, SCOPE, toParts } = name;
 
 // Prefix for JavaScript strings that were provided in lieu of a filename.
 const SCHEMA = 'javascript:'; // eslint-disable-line no-script-url
@@ -77,7 +81,7 @@ function definedInScope(doclet, basename) {
  * @alias module:jsdoc/src/parser.Parser
  * @extends module:events.EventEmitter
  */
-class Parser extends EventEmitter {
+export class Parser extends EventEmitter {
   // TODO: docs
   constructor(dependencies) {
     super();
@@ -636,12 +640,11 @@ class Parser extends EventEmitter {
     });
   }
 }
-exports.Parser = Parser;
 
 // TODO: docs
-exports.createParser = (deps) => {
+export function createParser(deps) {
   return new Parser(deps);
-};
+}
 
 // TODO: document other events
 /**

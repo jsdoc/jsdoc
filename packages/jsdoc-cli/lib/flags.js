@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { cast } = require('@jsdoc/util');
-const querystring = require('querystring');
+import querystring from 'node:querystring';
+
+import { cast } from '@jsdoc/util';
 
 // TODO: Document the format of this object, then update the docs for `Engine`.
 /**
@@ -22,7 +23,7 @@ const querystring = require('querystring');
  *
  * @alias module:@jsdoc/cli/lib/flags
  */
-module.exports = {
+export default {
   access: {
     alias: 'a',
     array: true,

@@ -18,8 +18,8 @@
  *
  * @alias @jsdoc/core.name
  */
-const _ = require('lodash');
-const escape = require('escape-string-regexp');
+import escape from 'escape-string-regexp';
+import _ from 'lodash';
 
 /**
  * Longnames that have a special meaning in JSDoc.
@@ -28,7 +28,7 @@ const escape = require('escape-string-regexp');
  * @static
  * @memberof module:jsdoc/name
  */
-exports.LONGNAMES = {
+export const LONGNAMES = {
   /** Longname used for doclets that do not have a longname, such as anonymous functions. */
   ANONYMOUS: '<anonymous>',
   /** Longname that represents global scope. */
@@ -36,7 +36,7 @@ exports.LONGNAMES = {
 };
 
 // Module namespace prefix.
-exports.MODULE_NAMESPACE = 'module:';
+export const MODULE_NAMESPACE = 'module:';
 
 /**
  * Names and punctuation marks that identify doclet scopes.
@@ -45,7 +45,7 @@ exports.MODULE_NAMESPACE = 'module:';
  * @static
  * @memberof module:jsdoc/name
  */
-const SCOPE = (exports.SCOPE = {
+export const SCOPE = {
   NAMES: {
     GLOBAL: 'global',
     INNER: 'inner',
@@ -57,16 +57,16 @@ const SCOPE = (exports.SCOPE = {
     INSTANCE: '#',
     STATIC: '.',
   },
-});
+};
 
 // Keys must be lowercase.
-const SCOPE_TO_PUNC = (exports.SCOPE_TO_PUNC = {
+export const SCOPE_TO_PUNC = {
   inner: SCOPE.PUNC.INNER,
   instance: SCOPE.PUNC.INSTANCE,
   static: SCOPE.PUNC.STATIC,
-});
+};
 
-exports.PUNC_TO_SCOPE = _.invert(SCOPE_TO_PUNC);
+export const PUNC_TO_SCOPE = _.invert(SCOPE_TO_PUNC);
 
 const SCOPE_PUNC = _.values(SCOPE.PUNC);
 const SCOPE_PUNC_STRING = `[${SCOPE_PUNC.join()}]`;
@@ -90,11 +90,11 @@ const REGEXP_NAME_DESCRIPTION = new RegExp(`^(\\[[^\\]]+\\]|\\S+)${DESCRIPTION}`
  * @returns {boolean} `true` if the name represents a complete longname that is a member of the
  * parent; otherwise, `false`.
  */
-exports.nameIsLongname = (name, memberof) => {
+export function nameIsLongname(name, memberof) {
   const regexp = new RegExp(`^${escape(memberof)}${SCOPE_PUNC_STRING}`);
 
   return regexp.test(name);
-};
+}
 
 /**
  * For names that identify a property of a prototype, replace the `prototype` portion of the name
@@ -104,14 +104,14 @@ exports.nameIsLongname = (name, memberof) => {
  * @param {string} name - The name in which to change `prototype` to `#`.
  * @returns {string} The updated name.
  */
-const prototypeToPunc = (exports.prototypeToPunc = (name) => {
+export function prototypeToPunc(name) {
   // Don't mangle symbols named `prototype`.
   if (name === 'prototype') {
     return name;
   }
 
   return name.replace(/(?:^|\.)prototype\.?/g, SCOPE.PUNC.INSTANCE);
-});
+}
 
 /**
  * Check whether a name begins with a character that identifies a scope.
@@ -119,7 +119,7 @@ const prototypeToPunc = (exports.prototypeToPunc = (name) => {
  * @param {string} name - The name to check.
  * @returns {boolean} `true` if the name begins with a scope character; otherwise, `false`.
  */
-exports.hasLeadingScope = (name) => REGEXP_LEADING_SCOPE.test(name);
+export const hasLeadingScope = (name) => REGEXP_LEADING_SCOPE.test(name);
 
 /**
  * Check whether a name ends with a character that identifies a scope.
@@ -127,7 +127,7 @@ exports.hasLeadingScope = (name) => REGEXP_LEADING_SCOPE.test(name);
  * @param {string} name - The name to check.
  * @returns {boolean} `true` if the name ends with a scope character; otherwise, `false`.
  */
-exports.hasTrailingScope = (name) => REGEXP_TRAILING_SCOPE.test(name);
+export const hasTrailingScope = (name) => REGEXP_TRAILING_SCOPE.test(name);
 
 /**
  * Get a symbol's basename, which is the first part of its full name before any punctuation (other
@@ -141,16 +141,16 @@ exports.hasTrailingScope = (name) => REGEXP_TRAILING_SCOPE.test(name);
  * @param {?string} [name] - The symbol's full name.
  * @returns {?string} The symbol's basename.
  */
-exports.getBasename = (name) => {
+export function getBasename(name) {
   if (!name) {
     return null;
   }
 
   return name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
-};
+}
 
 // TODO: docs
-exports.stripNamespace = (longname) => longname.replace(/^[a-zA-Z]+:/, '');
+export const stripNamespace = (longname) => longname.replace(/^[a-zA-Z]+:/, '');
 
 // TODO: docs
 function slice(longname, sliceChars, forcedMemberof) {
@@ -242,7 +242,7 @@ function slice(longname, sliceChars, forcedMemberof) {
  * @param {string} forcedMemberof
  * @returns {object} Representing the properties of the given name.
  */
-exports.toParts = (longname, forcedMemberof) => slice(longname, null, forcedMemberof);
+export const toParts = (longname, forcedMemberof) => slice(longname, null, forcedMemberof);
 
 // TODO: docs
 /**
@@ -250,7 +250,7 @@ exports.toParts = (longname, forcedMemberof) => slice(longname, null, forcedMemb
  * @param {string} ns The namespace to be applied.
  * @returns {string} The longname with the namespace applied.
  */
-exports.applyNamespace = (longname, ns) => {
+export function applyNamespace(longname, ns) {
   const nameParts = slice(longname);
   const name = nameParts.name;
 
@@ -261,7 +261,7 @@ exports.applyNamespace = (longname, ns) => {
   }
 
   return longname;
-};
+}
 
 /**
  * Check whether a parent longname is an ancestor of a child longname.
@@ -270,42 +270,43 @@ exports.applyNamespace = (longname, ns) => {
  * @param {string} child - The child longname.
  * @return {boolean} `true` if the parent is an ancestor of the child; otherwise, `false`.
  */
-exports.hasAncestor = (parent, child) => {
-  let hasAncestor = false;
+export function hasAncestor(parent, child) {
+  let parentIsAncestor = false;
   let memberof = child;
 
   if (!parent || !child) {
-    return hasAncestor;
+    return parentIsAncestor;
   }
 
   // Fast path for obvious non-ancestors.
   if (child.indexOf(parent) !== 0) {
-    return hasAncestor;
+    return parentIsAncestor;
   }
 
   do {
     memberof = slice(memberof).memberof;
 
     if (memberof === parent) {
-      hasAncestor = true;
+      parentIsAncestor = true;
     }
-  } while (!hasAncestor && memberof);
+  } while (!parentIsAncestor && memberof);
 
-  return hasAncestor;
-};
-
-// TODO: docs
-const fromParts = (exports.fromParts = ({ memberof, scope, name, variation }) =>
-  [memberof || '', scope || '', name || '', variation ? `(${variation})` : ''].join(''));
+  return parentIsAncestor;
+}
 
 // TODO: docs
-exports.stripVariation = (name) => {
+export function fromParts({ memberof, scope, name, variation }) {
+  return [memberof || '', scope || '', name || '', variation ? `(${variation})` : ''].join('');
+}
+
+// TODO: docs
+export function stripVariation(name) {
   const parts = slice(name);
 
   parts.variation = '';
 
   return fromParts(parts);
-};
+}
 
 function splitLongname(longname, options) {
   const chunks = [];
@@ -415,7 +416,7 @@ function splitLongname(longname, options) {
  * longname.
  * @return {Object} A tree with information about each longname in the format shown above.
  */
-exports.longnamesToTree = (longnames, doclets) => {
+export function longnamesToTree(longnames, doclets) {
   const splitOptions = { includeVariation: false };
   const tree = {};
 
@@ -453,7 +454,7 @@ exports.longnamesToTree = (longnames, doclets) => {
   });
 
   return tree;
-};
+}
 
 /**
  * Split a string that starts with a name and ends with a description into its parts. Allows the
@@ -494,10 +495,11 @@ function splitNameMatchingBrackets(nameDesc) {
     return null;
   }
 
-  nameDesc.substr(i).match(REGEXP_DESCRIPTION);
+  nameDesc.substring(i).match(REGEXP_DESCRIPTION);
 
   return {
     name: buffer.join(''),
+    // TODO: Don't use global RegExp properties.
     description: RegExp.$1,
   };
 }
@@ -507,7 +509,7 @@ function splitNameMatchingBrackets(nameDesc) {
  * @param {string} str - The string that contains the name and description.
  * @returns {object} An object with `name` and `description` properties.
  */
-exports.splitNameAndDescription = (str) => {
+export function splitNameAndDescription(str) {
   // Like: `name`, `[name]`, `name text`, `[name] text`, `name - text`, or `[name] - text`.
   // To ensure that we don't get confused by leading dashes in Markdown list items, the hyphen
   // must be on the same line as the name.
@@ -525,7 +527,8 @@ exports.splitNameAndDescription = (str) => {
   str.match(REGEXP_NAME_DESCRIPTION);
 
   return {
+    // TODO: Don't use global RegExp properties.
     name: RegExp.$1,
     description: RegExp.$2,
   };
-};
+}

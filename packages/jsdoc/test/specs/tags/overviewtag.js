@@ -13,10 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@overview tag', () => {
-  const { handlers } = require('@jsdoc/parse');
-  const path = require('path');
+import path from 'node:path';
 
+import { Doclet } from '@jsdoc/doclet';
+import { handlers } from '@jsdoc/parse';
+
+const __dirname = jsdoc.dirname(import.meta.url);
+
+describe('@overview tag', () => {
   let doclets;
   const env = jsdoc.deps.get('env');
 
@@ -58,8 +62,6 @@ describe('@overview tag', () => {
     'The name should not include the entire filepath when the source file is outside the ' +
       'JSDoc directory',
     () => {
-      const { Doclet } = require('@jsdoc/doclet');
-
       let doclet;
       let docletMeta;
       let docletSrc;

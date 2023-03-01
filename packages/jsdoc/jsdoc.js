@@ -14,8 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const cli = require('./cli');
-const { env } = require('@jsdoc/core');
+import { env } from '@jsdoc/core';
+
+import cli from './cli.js';
 
 (async () => {
   env.args = process.argv.slice(2);

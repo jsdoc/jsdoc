@@ -21,6 +21,7 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "type": "commonjs",
   "dependencies": {
     "lodash": "^4.17.21"
   },

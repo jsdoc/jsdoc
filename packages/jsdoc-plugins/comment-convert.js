@@ -13,18 +13,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* eslint-disable spaced-comment */
 /**
  * Demonstrate how to modify the source code before the parser sees it.
  *
  * @module @jsdoc/plugins/comment-convert
  */
-exports.handlers = {
+/* eslint-disable spaced-comment */
+/** @alias module:@jsdoc/plugins/comment-convert.handlers */
+export const handlers = {
   ///
   /// Convert ///-style comments into jsdoc comments.
   /// @param e
   /// @param e.filename
   /// @param e.source
+  /// @memberof module:@jsdoc/plugins/comment-convert.handlers
   ///
   beforeParse(e) {
     e.source = e.source.replace(/(\n[ \t]*\/\/\/[^\n]*)+/g, ($) => {

@@ -16,8 +16,10 @@
 /**
  * Functions that resolve `@borrows` tags in JSDoc comments.
  */
-const _ = require('lodash');
-const { SCOPE } = require('@jsdoc/core').name;
+import { name } from '@jsdoc/core';
+import _ from 'lodash';
+
+const { SCOPE } = name;
 
 function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
   borrowed.forEach(({ from, as }) => {
@@ -55,11 +57,11 @@ function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
   moving docs from the "borrowed" array and into the general docs, then
   deleting the "borrowed" array.
  */
-exports.resolveBorrows = (doclets) => {
+export function resolveBorrows(doclets) {
   for (let doclet of doclets.index.borrowed) {
     cloneBorrowedDoclets(doclet, doclets);
     delete doclet.borrowed;
   }
 
   doclets.index.borrowed = [];
-};
+}

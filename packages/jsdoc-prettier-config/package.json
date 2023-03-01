@@ -27,5 +27,6 @@
   },
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
-  }
+  },
+  "type": "commonjs"
 }

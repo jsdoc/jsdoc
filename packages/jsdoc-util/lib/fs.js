@@ -16,12 +16,12 @@
 /**
  * @alias @jsdoc/util.fs
  */
+import path from 'node:path';
 
-const _ = require('lodash');
-const klawSync = require('klaw-sync');
-const path = require('path');
+import klawSync from 'klaw-sync';
+import _ from 'lodash';
 
-exports.lsSync = (dir, opts = {}) => {
+export function lsSync(dir, opts = {}) {
   const depth = _.has(opts, 'depth') ? opts.depth : -1;
 
   const files = klawSync(dir, {
@@ -31,4 +31,4 @@ exports.lsSync = (dir, opts = {}) => {
   });
 
   return files.map((f) => f.path);
-};
+}

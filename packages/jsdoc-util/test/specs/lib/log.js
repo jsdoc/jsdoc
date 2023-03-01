@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/util/lib/log', () => {
-  const EventBus = require('../../../lib/bus');
-  const log = require('../../../lib/log');
+import EventBus from '../../../lib/bus.js';
+import log from '../../../lib/log.js';
 
+describe('@jsdoc/util/lib/log', () => {
   const fns = ['debug', 'error', 'info', 'fatal', 'verbose', 'warn'];
 
   it('is an object', () => {

@@ -19,7 +19,7 @@
  *
  * @alias @jsdoc/core.env
  */
-module.exports = {
+export default {
   /**
    * The times at which JSDoc started and finished.
    *

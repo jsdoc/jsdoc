@@ -13,9 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const EventEmitter = require('events').EventEmitter;
-const { default: ow } = require('ow');
+import EventEmitter from 'node:events';
+
+import _ from 'lodash';
+import ow from 'ow';
 
 let cache = {};
 
@@ -35,7 +36,7 @@ let cache = {};
  * @alias module:@jsdoc/util.EventBus
  * @extends module:events.EventEmitter
  */
-class EventBus extends EventEmitter {
+export default class EventBus extends EventEmitter {
   /**
    * Create a new event bus, or retrieve the cached event bus for the ID you specify.
    *
@@ -62,5 +63,3 @@ class EventBus extends EventEmitter {
     }
   }
 }
-
-module.exports = EventBus;

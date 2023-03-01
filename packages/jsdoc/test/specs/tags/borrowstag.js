@@ -13,6 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import { resolveBorrows } from '@jsdoc/doclet';
+
 function filterUndocumented({ undocumented }) {
   return !undocumented;
 }
@@ -28,7 +30,6 @@ describe('@borrows tag', () => {
   });
 
   it('When a symbol has a @borrows tag, the borrowed symbol is added to the symbol.', () => {
-    const { resolveBorrows } = require('@jsdoc/doclet');
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/borrowstag2.js');
 
     resolveBorrows(docSet.doclets);

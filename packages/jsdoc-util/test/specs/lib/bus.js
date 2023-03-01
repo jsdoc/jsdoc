@@ -13,10 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/util/lib/bus', () => {
-  const EventBus = require('../../../lib/bus');
-  const EventEmitter = require('events').EventEmitter;
+import EventEmitter from 'node:events';
 
+import EventBus from '../../../lib/bus.js';
+
+describe('@jsdoc/util/lib/bus', () => {
   const ignoreCache = { cache: false };
 
   it('inherits from EventEmitter', () => {

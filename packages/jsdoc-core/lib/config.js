@@ -18,15 +18,14 @@
  *
  * @alias module:@jsdoc/core.config
  */
-
-const _ = require('lodash');
-const { cosmiconfigSync, defaultLoaders } = require('cosmiconfig');
-const stripBom = require('strip-bom');
-const stripJsonComments = require('strip-json-comments');
+import { cosmiconfigSync, defaultLoaders } from 'cosmiconfig';
+import _ from 'lodash';
+import stripBom from 'strip-bom';
+import stripJsonComments from 'strip-json-comments';
 
 const MODULE_NAME = 'jsdoc';
 
-const defaults = (exports.defaults = {
+export const defaults = {
   // TODO(hegemonic): Integrate CLI options with other options.
   opts: {
     destination: './out',
@@ -77,7 +76,7 @@ const defaults = (exports.defaults = {
      */
     monospaceLinks: false,
   },
-});
+};
 
 // TODO: Consider exporting this class.
 class Config {
@@ -114,7 +113,7 @@ const explorerSync = cosmiconfigSync(MODULE_NAME, {
   ],
 });
 
-exports.loadSync = (filepath) => {
+export function loadSync(filepath) {
   let loaded;
 
   if (filepath) {
@@ -124,4 +123,4 @@ exports.loadSync = (filepath) => {
   }
 
   return new Config(loaded.filepath, _.defaultsDeep({}, loaded.config, defaults));
-};
+}

@@ -21,6 +21,15 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./lib/*": {
+      "import": "./lib/*"
+    }
+  },
   "dependencies": {
     "@babel/parser": "^7.21.2",
     "@jsdoc/core": "^0.4.6",

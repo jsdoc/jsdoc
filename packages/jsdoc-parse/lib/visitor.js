@@ -13,9 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { astNode, Syntax } = require('@jsdoc/ast');
-const { combineDoclets } = require('@jsdoc/doclet');
-const { getBasename, LONGNAMES } = require('@jsdoc/core').name;
+import { astNode, Syntax } from '@jsdoc/ast';
+import { name } from '@jsdoc/core';
+import { combineDoclets } from '@jsdoc/doclet';
+
+const { getBasename, LONGNAMES } = name;
 
 /**
  * Get the raw comment string for a block comment node.
@@ -725,7 +727,7 @@ function makeSymbolFoundEvent(node, parser, filename) {
 }
 
 // TODO: docs
-class Visitor {
+export class Visitor {
   // TODO: docs
   constructor() {
     this._parser = null;
@@ -850,4 +852,3 @@ class Visitor {
     return true;
   }
 }
-exports.Visitor = Visitor;

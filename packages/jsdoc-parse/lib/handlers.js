@@ -13,11 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { Doclet } = require('@jsdoc/doclet');
-const escape = require('escape-string-regexp');
-const { log } = require('@jsdoc/util');
-const { SCOPE } = require('@jsdoc/core').name;
-const { Syntax } = require('@jsdoc/ast');
+import { Syntax } from '@jsdoc/ast';
+import { name } from '@jsdoc/core';
+import { Doclet } from '@jsdoc/doclet';
+import { log } from '@jsdoc/util';
+import escape from 'escape-string-regexp';
+
+const { SCOPE } = name;
 
 let currentModule = null;
 
@@ -330,7 +332,7 @@ function newSymbolDoclet(parser, docletSrc, e) {
  * Attach these event handlers to a particular instance of a parser.
  * @param parser
  */
-exports.attachTo = (parser) => {
+export function attachTo(parser) {
   // Handle JSDoc "virtual comments" that include one of the following:
   // + A `@name` tag
   // + Another tag that accepts a name, such as `@function`
@@ -371,4 +373,4 @@ exports.attachTo = (parser) => {
   parser.on('fileComplete', () => {
     currentModule = null;
   });
-};
+}

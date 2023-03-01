@@ -14,7 +14,7 @@
   limitations under the License.
 */
 // TODO: docs
-exports.Syntax = {
+export const Syntax = {
   ArrayExpression: 'ArrayExpression',
   ArrayPattern: 'ArrayPattern',
   ArrowFunctionExpression: 'ArrowFunctionExpression',

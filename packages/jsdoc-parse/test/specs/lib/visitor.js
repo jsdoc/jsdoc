@@ -14,11 +14,11 @@
   limitations under the License.
 */
 /* global jsdoc */
+import { Parser } from '../../../lib/parser.js';
+import { Visitor } from '../../../lib/visitor.js';
+
 describe('@jsdoc/parse/lib/visitor', () => {
   // TODO: more tests
-
-  const { Parser } = require('../../../lib/parser');
-  const { Visitor } = require('../../../lib/visitor');
   const parser = new Parser(jsdoc.deps);
   const visitor = new Visitor();
 

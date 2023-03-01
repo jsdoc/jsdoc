@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { log } = require('@jsdoc/util');
+import { log } from '@jsdoc/util';
 
 function buildMessage(tagName, { filename, lineno, comment }, desc) {
   let result = `The @${tagName} tag ${desc}. File: ${filename}, line: ${lineno}`;
@@ -28,7 +28,7 @@ function buildMessage(tagName, { filename, lineno, comment }, desc) {
 /**
  * Validate the given tag.
  */
-exports.validate = ({ dependencies, title, text, value }, tagDef, meta) => {
+export function validate({ dependencies, title, text, value }, tagDef, meta) {
   const config = dependencies.get('config');
   const allowUnknownTags = config.tags.allowUnknownTags;
 
@@ -59,4 +59,4 @@ exports.validate = ({ dependencies, title, text, value }, tagDef, meta) => {
       buildMessage(title, meta, 'does not permit a description; the description will be ignored')
     );
   }
-};
+}

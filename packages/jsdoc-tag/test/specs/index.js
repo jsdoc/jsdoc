@@ -13,7 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const tag = require('../../index');
+import tag from '../../index.js';
+import definitions from '../../lib/definitions/index.js';
+import { Dictionary } from '../../lib/dictionary.js';
+import * as inline from '../../lib/inline.js';
+import { Tag } from '../../lib/tag.js';
+import * as type from '../../lib/type.js';
+import { validate } from '../../lib/validator.js';
 
 describe('@jsdoc/tag', () => {
   it('is an object', () => {
@@ -22,49 +28,37 @@ describe('@jsdoc/tag', () => {
 
   describe('definitions', () => {
     it('is lib/definitions', () => {
-      const definitions = require('../../lib/definitions');
-
-      expect(tag.definitions).toBe(definitions);
+      expect(tag.definitions).toEqual(definitions);
     });
   });
 
   describe('Dictionary', () => {
     it('is lib/dictionary.Dictionary', () => {
-      const { Dictionary } = require('../../lib/dictionary');
-
-      expect(tag.Dictionary).toBe(Dictionary);
+      expect(tag.Dictionary).toEqual(Dictionary);
     });
   });
 
   describe('inline', () => {
     it('is lib/inline', () => {
-      const inline = require('../../lib/inline');
-
-      expect(tag.inline).toBe(inline);
+      expect(tag.inline).toEqual(inline);
     });
   });
 
   describe('Tag', () => {
     it('is lib/tag.Tag', () => {
-      const { Tag } = require('../../lib/tag');
-
-      expect(tag.Tag).toBe(Tag);
+      expect(tag.Tag).toEqual(Tag);
     });
   });
 
   describe('type', () => {
     it('is lib/type', () => {
-      const type = require('../../lib/type');
-
-      expect(tag.type).toBe(type);
+      expect(tag.type).toEqual(type);
     });
   });
 
   describe('validate', () => {
     it('is lib/validator.validate', () => {
-      const { validate } = require('../../lib/validator');
-
-      expect(tag.validate).toBe(validate);
+      expect(tag.validate).toEqual(validate);
     });
   });
 });

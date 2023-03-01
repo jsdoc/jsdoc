@@ -13,7 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const parse = require('../../index');
+import parse from '../../index.js';
+import * as handlers from '../../lib/handlers.js';
+import { createParser, Parser } from '../../lib/parser.js';
+import { Visitor } from '../../lib/visitor.js';
 
 describe('@jsdoc/parse', () => {
   it('is an object', () => {
@@ -22,33 +25,25 @@ describe('@jsdoc/parse', () => {
 
   describe('createParser', () => {
     it('is lib/parser.createParser', () => {
-      const { createParser } = require('../../lib/parser');
-
-      expect(parse.createParser).toBe(createParser);
+      expect(parse.createParser).toEqual(createParser);
     });
   });
 
   describe('handlers', () => {
     it('is lib/handlers', () => {
-      const handlers = require('../../lib/handlers');
-
-      expect(parse.handlers).toBe(handlers);
+      expect(parse.handlers).toEqual(handlers);
     });
   });
 
   describe('Parser', () => {
     it('is lib/parser.Parser', () => {
-      const { Parser } = require('../../lib/parser');
-
-      expect(parse.Parser).toBe(Parser);
+      expect(parse.Parser).toEqual(Parser);
     });
   });
 
   describe('Visitor', () => {
     it('is lib/visitor.Visitor', () => {
-      const { Visitor } = require('../../lib/visitor');
-
-      expect(parse.Visitor).toBe(Visitor);
+      expect(parse.Visitor).toEqual(Visitor);
     });
   });
 });

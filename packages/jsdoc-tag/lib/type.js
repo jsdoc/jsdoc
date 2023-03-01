@@ -17,10 +17,11 @@
  * @module @jsdoc/tag/lib/type
  * @alias @jsdoc/tag.type
  */
-const { cast } = require('@jsdoc/util');
-const catharsis = require('catharsis');
-const { extractInlineTag } = require('./inline');
-const { splitNameAndDescription } = require('@jsdoc/core').name;
+import { name } from '@jsdoc/core';
+import { cast } from '@jsdoc/util';
+import catharsis from 'catharsis';
+
+import { extractInlineTag } from './inline.js';
 
 /**
  * Information about a type expression extracted from tag text.
@@ -92,38 +93,38 @@ function extractTypeExpression(string) {
 
 /** @private */
 function getTagInfo(tagValue, canHaveName, canHaveType) {
-  let name = '';
+  let tagName = '';
   let typeExpression = '';
-  let text = tagValue;
+  let tagText = tagValue;
   let expressionAndText;
   let nameAndDescription;
   let typeOverride;
 
   if (canHaveType) {
-    expressionAndText = extractTypeExpression(text);
+    expressionAndText = extractTypeExpression(tagText);
     typeExpression = expressionAndText.expression;
-    text = expressionAndText.newString;
+    tagText = expressionAndText.newString;
   }
 
   if (canHaveName) {
-    nameAndDescription = splitNameAndDescription(text);
-    name = nameAndDescription.name;
-    text = nameAndDescription.description;
+    nameAndDescription = name.splitNameAndDescription(tagText);
+    tagName = nameAndDescription.name;
+    tagText = nameAndDescription.description;
   }
 
   // an inline @type tag, like {@type Foo}, overrides the type expression
   if (canHaveType) {
-    typeOverride = extractInlineTag(text, 'type');
+    typeOverride = extractInlineTag(tagText, 'type');
     if (typeOverride.tags && typeOverride.tags[0]) {
       typeExpression = typeOverride.tags[0].text;
     }
-    text = typeOverride.newString;
+    tagText = typeOverride.newString;
   }
 
   return {
-    name: name,
+    name: tagName,
     typeExpression: typeExpression,
-    text: text,
+    text: tagText,
   };
 }
 
@@ -290,7 +291,7 @@ const typeParsers = [parseName, parseTypeExpression];
  * @return {module:@jsdoc/tag.type.TagInfo} Information obtained from the tag.
  * @throws {Error} Thrown if a type expression cannot be parsed.
  */
-exports.parse = (tagValue, canHaveName, canHaveType) => {
+export function parse(tagValue, canHaveName, canHaveType) {
   let tagInfo;
 
   if (typeof tagValue !== 'string') {
@@ -310,4 +311,4 @@ exports.parse = (tagValue, canHaveName, canHaveType) => {
   }
 
   return tagInfo;
-};
+}

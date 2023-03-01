@@ -13,13 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mockFs = require('mock-fs');
-const config = require('../../../lib/config');
+import { defaultLoaders } from 'cosmiconfig';
+import mockFs from 'mock-fs';
+
+import * as config from '../../../lib/config.js'; // eslint-disable-line sort-imports
 
 describe('@jsdoc/core/lib/config', () => {
-  // Explicitly require `yaml` before we run any tests. `cosmiconfig` tries to load `yaml` lazily,
-  // but that doesn't work when the file system is mocked.
-  beforeAll(() => require('yaml'));
+  // Ensure that YAML parser is loaded before we run any tests. `cosmiconfig` tries to load it
+  // lazily, but that doesn't work when the file system is mocked.
+  beforeAll(() => {
+    defaultLoaders['.yaml']('fakefile.yaml', 'file: []');
+  });
 
   afterEach(() => mockFs.restore());
 

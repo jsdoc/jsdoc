@@ -13,17 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const augment = require('./lib/augment');
-const { combine: combineDoclets, Doclet } = require('./lib/doclet');
-const { Package } = require('./lib/package');
-const { resolveBorrows } = require('./lib/borrow');
-const schema = require('./lib/schema');
+import * as augment from './lib/augment.js';
+import { resolveBorrows } from './lib/borrow.js';
+import { combineDoclets, Doclet } from './lib/doclet.js';
+import { Package } from './lib/package.js';
+import * as schema from './lib/schema.js';
 
-module.exports = {
-  augment,
-  combineDoclets,
-  Doclet,
-  Package,
-  resolveBorrows,
-  schema,
-};
+export { augment, combineDoclets, Doclet, Package, resolveBorrows, schema };
+export default { augment, combineDoclets, Doclet, Package, resolveBorrows, schema };

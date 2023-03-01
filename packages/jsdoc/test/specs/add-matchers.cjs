@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2023 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-module.exports = {
-  globals: {
-    jsdoc: 'readonly',
-  },
-};
+const matchers = require('@jsdoc/test-matchers');
+
+beforeAll(() => {
+  jasmine.addMatchers(matchers);
+});

@@ -13,12 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/ast/lib/ast-node', () => {
-  const astNode = require('../../../lib/ast-node');
-  const babelParser = require('@babel/parser');
-  const { parserOptions } = require('../../../lib/ast-builder');
-  const { Syntax } = require('../../../lib/syntax');
+import babelParser from '@babel/parser';
 
+import { parserOptions } from '../../../lib/ast-builder.js';
+import * as astNode from '../../../lib/ast-node.js';
+import { Syntax } from '../../../lib/syntax.js';
+
+describe('@jsdoc/ast/lib/ast-node', () => {
   function parse(str) {
     return babelParser.parse(str, parserOptions).program.body[0];
   }

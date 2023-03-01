@@ -15,14 +15,18 @@
 */
 /* eslint-disable no-script-url */
 /* global jsdoc */
-describe('@jsdoc/parse/lib/parser', () => {
-  const _ = require('lodash');
-  const { attachTo } = require('../../../lib/handlers');
-  const fs = require('fs');
-  const jsdocParser = require('../../../lib/parser');
-  const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
 
-  const dirname = path.resolve(path.join(__dirname, '..', '..', '..'));
+import { Syntax, Walker } from '@jsdoc/ast';
+import _ from 'lodash';
+
+import { attachTo } from '../../../lib/handlers.js';
+import * as jsdocParser from '../../../lib/parser.js';
+import { Visitor } from '../../../lib/visitor.js';
+
+describe('@jsdoc/parse/lib/parser', () => {
+  const dirname = path.resolve(path.join(jsdoc.dirname(import.meta.url), '..', '..', '..'));
 
   it('is an object', () => {
     expect(jsdocParser).toBeObject();
@@ -75,16 +79,12 @@ describe('@jsdoc/parse/lib/parser', () => {
 
     describe('visitor', () => {
       it('contains an appropriate visitor by default', () => {
-        const { Visitor } = require('../../../lib/visitor');
-
         expect(parser.visitor instanceof Visitor).toBeTrue();
       });
     });
 
     describe('walker', () => {
       it('contains an appropriate walker by default', () => {
-        const { Walker } = require('@jsdoc/ast');
-
         expect(parser.walker instanceof Walker).toBeTrue();
       });
     });
@@ -158,8 +158,6 @@ describe('@jsdoc/parse/lib/parser', () => {
       });
 
       it('calls AST node visitors', () => {
-        const { Syntax } = require('@jsdoc/ast');
-
         let args;
         const sourceCode = ['javascript:/** foo */var foo;'];
         const visitor = {

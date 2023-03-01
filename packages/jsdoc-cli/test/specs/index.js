@@ -13,12 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const Engine = require('../../index');
+import Engine from '../../index.js';
+import engine from '../../lib/engine.js';
 
 describe('@jsdoc/cli', () => {
   it('is lib/engine', () => {
-    const engine = require('../../lib/engine');
-
-    expect(Engine).toBe(engine);
+    expect(Engine).toEqual(engine);
   });
 });

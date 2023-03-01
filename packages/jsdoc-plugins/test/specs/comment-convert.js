@@ -14,17 +14,20 @@
   limitations under the License.
 */
 /* global jsdoc */
+import path from 'node:path';
+
+import { plugins } from '@jsdoc/core';
 
 describe('comment-convert plugin', () => {
-  const path = require('path');
-  const { plugins } = require('@jsdoc/core');
-
+  const __dirname = jsdoc.dirname(import.meta.url);
   let docSet;
   const parser = jsdoc.createParser();
   const pluginPath = path.join(__dirname, '../../comment-convert.js');
 
-  plugins.installPlugins([pluginPath], parser, jsdoc.deps);
-  docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
+  beforeAll(async () => {
+    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
+  });
 
   it('converts ///-style comments into jsdoc comments', () => {
     const doclet = docSet.getByLongname(

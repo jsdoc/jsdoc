@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { log } = require('@jsdoc/util');
-const stripBom = require('strip-bom');
+import { log } from '@jsdoc/util';
+import stripBom from 'strip-bom';
 
 /**
  * Provides access to information about a JavaScript package.
@@ -76,7 +76,7 @@ function getLicenses(packageInfo) {
  * `package.json` file does not follow the npm specification, some properties of the `Package`
  * object may not use the format documented here.
  */
-class Package {
+export class Package {
   /**
    * @param {string} json - The contents of the `package.json` file.
    */
@@ -256,4 +256,3 @@ class Package {
     }
   }
 }
-exports.Package = Package;

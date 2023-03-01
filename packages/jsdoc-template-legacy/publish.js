@@ -13,20 +13,24 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const commonPathPrefix = require('common-path-prefix');
-const fs = require('fs');
-const { sync: glob } = require('fast-glob');
-const helper = require('./lib/templateHelper');
-const { log } = require('@jsdoc/util');
-const { lsSync } = require('@jsdoc/util').fs;
-const path = require('path');
-const { taffy } = require('@jsdoc/salty');
-const template = require('./lib/template');
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
 
-const htmlsafe = helper.htmlsafe;
-const linkto = helper.linkto;
-const resolveAuthorLinks = helper.resolveAuthorLinks;
+import salty from '@jsdoc/salty';
+import { fs as jsdocFs, log } from '@jsdoc/util';
+import commonPathPrefix from 'common-path-prefix';
+import fastGlob from 'fast-glob';
+import _ from 'lodash';
+
+import { Template } from './lib/template.js';
+import * as helper from './lib/templateHelper.js';
+
+const { htmlsafe, linkto, resolveAuthorLinks } = helper;
+const { lsSync } = jsdocFs;
+const { sync: glob } = fastGlob;
+const { resolve } = createRequire(import.meta.url);
+const { taffy } = salty;
 
 const FONT_CSS_FILES = ['variable.css', 'variable-italic.css'];
 const PRETTIFIER_CSS_FILES = ['tomorrow.min.css'];
@@ -421,7 +425,7 @@ function sourceToDestination(parentDir, sourcePath, destDir) {
     @param {TAFFY} taffyData See <http://taffydb.com/>.
     @param {object} opts
  */
-exports.publish = (taffyData, dependencies) => {
+export function publish(taffyData, dependencies) {
   let classes;
   let config;
   let externals;
@@ -453,8 +457,8 @@ exports.publish = (taffyData, dependencies) => {
   templateConfig = config.templates || {};
   templateConfig.default = templateConfig.default || {};
   outdir = path.normalize(opts.destination);
-  templatePath = path.normalize(opts.template);
-  view = new template.Template(path.join(templatePath, 'tmpl'));
+  templatePath = path.normalize(path.dirname(opts.template));
+  view = new Template(path.join(templatePath, 'tmpl'));
 
   // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
   // doesn't try to hand them out later
@@ -532,7 +536,7 @@ exports.publish = (taffyData, dependencies) => {
   });
 
   // copy the fonts used by the template to outdir
-  staticFiles = lsSync(path.join(require.resolve('@fontsource/open-sans'), '..', 'files'));
+  staticFiles = lsSync(path.join(resolve('@fontsource/open-sans'), '..', 'files'));
 
   staticFiles.forEach((fileName) => {
     const toPath = path.join(outdir, 'fonts', path.basename(fileName));
@@ -544,7 +548,7 @@ exports.publish = (taffyData, dependencies) => {
   });
 
   // copy the font CSS to outdir
-  staticFiles = path.join(require.resolve('@fontsource/open-sans'), '..');
+  staticFiles = path.join(resolve('@fontsource/open-sans'), '..');
   FONT_CSS_FILES.forEach((fileName) => {
     const fromPath = path.join(staticFiles, fileName);
     const toPath = path.join(outdir, 'styles', fileName.replace('variable', 'open-sans'));
@@ -559,7 +563,7 @@ exports.publish = (taffyData, dependencies) => {
   PRETTIFIER_SCRIPT_FILES.forEach((fileName) => {
     const toPath = path.join(outdir, 'scripts', path.basename(fileName));
 
-    fs.copyFileSync(path.join(require.resolve('code-prettify'), '..', fileName), toPath);
+    fs.copyFileSync(path.join(resolve('code-prettify'), '..', fileName), toPath);
   });
 
   // copy the prettify CSS to outdir
@@ -567,7 +571,7 @@ exports.publish = (taffyData, dependencies) => {
     const toPath = path.join(outdir, 'styles', path.basename(fileName));
 
     fs.copyFileSync(
-      // `require.resolve()` has trouble with this package, so we use an extra-hacky way to
+      // `resolve()` has trouble with this package, so we use an extra-hacky way to
       // get the filepath.
       path.join(
         templatePath,
@@ -780,4 +784,4 @@ exports.publish = (taffyData, dependencies) => {
       );
     }
   });
-};
+}

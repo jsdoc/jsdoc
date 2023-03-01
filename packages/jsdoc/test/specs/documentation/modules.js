@@ -13,16 +13,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('module names', () => {
-  const { handlers } = require('@jsdoc/parse');
-  const path = require('path');
+import os from 'node:os';
+import path from 'node:path';
 
+import { Doclet } from '@jsdoc/doclet';
+import { handlers } from '@jsdoc/parse';
+
+const __dirname = jsdoc.dirname(import.meta.url);
+
+describe('module names', () => {
   let doclets;
   const env = jsdoc.deps.get('env');
   let srcParser = null;
 
   beforeEach(() => {
-    env.opts._ = [path.normalize(`${__dirname}/../../fixtures/modules/data`)];
+    env.opts._ = [path.resolve(__dirname, '../../fixtures/modules/data')];
     env.sourceFiles = [];
     srcParser = jsdoc.createParser();
     handlers.attachTo(srcParser);
@@ -39,9 +44,8 @@ describe('module names', () => {
   });
 
   // Windows-specific test
-  if (/^win/.test(require('os').platform())) {
+  if (/^win/.test(os.platform())) {
     it('should always use forward slashes when creating a name from the file path', () => {
-      const { Doclet } = require('@jsdoc/doclet');
       let doclet;
 
       env.sourceFiles = [

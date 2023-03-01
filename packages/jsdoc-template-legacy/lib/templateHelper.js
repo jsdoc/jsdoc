@@ -13,10 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const catharsis = require('catharsis');
-const { inline } = require('@jsdoc/tag');
-const { log } = require('@jsdoc/util');
-const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = require('@jsdoc/core').name;
+import { name } from '@jsdoc/core';
+import { inline } from '@jsdoc/tag';
+import { log } from '@jsdoc/util';
+import catharsis from 'catharsis';
+
+const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = name;
 
 const MODULE_NAMESPACE = 'module:';
 
@@ -26,9 +28,9 @@ const ids = {};
 // each container gets its own html file
 const containers = ['class', 'module', 'external', 'namespace', 'mixin', 'interface'];
 
-exports.globalName = SCOPE.NAMES.GLOBAL;
-exports.fileExtension = '.html';
-exports.SCOPE_TO_PUNC = SCOPE_TO_PUNC;
+export const globalName = SCOPE.NAMES.GLOBAL;
+export const fileExtension = '.html';
+export { SCOPE_TO_PUNC };
 
 const linkMap = {
   // two-way lookup
@@ -39,17 +41,17 @@ const linkMap = {
   longnameToId: {},
 };
 
-const longnameToUrl = (exports.longnameToUrl = linkMap.longnameToUrl);
-const longnameToId = (exports.longnameToId = linkMap.longnameToId);
+export const longnameToUrl = linkMap.longnameToUrl;
+export const longnameToId = linkMap.longnameToId;
 
-const registerLink = (exports.registerLink = (longname, fileUrl) => {
+export function registerLink(longname, fileUrl) {
   linkMap.longnameToUrl[longname] = fileUrl;
   linkMap.urlToLongname[fileUrl] = longname;
-});
+}
 
-const registerId = (exports.registerId = (longname, fragment) => {
+export function registerId(longname, fragment) {
   linkMap.longnameToId[longname] = fragment;
-});
+}
 
 function getNamespace(kind, dictionary) {
   if (dictionary.isNamespace(kind)) {
@@ -114,7 +116,7 @@ function makeUniqueFilename(filename, str) {
  * @param {Object} dependencies The JSDoc dependency container.
  * @return {string} The filename to use for the string.
  */
-const getUniqueFilename = (exports.getUniqueFilename = (str, dependencies) => {
+export function getUniqueFilename(str, dependencies) {
   const dictionary = dependencies.get('tags');
   const namespaces = dictionary.getNamespaces().join('|');
   let basename = (str || '')
@@ -136,8 +138,8 @@ const getUniqueFilename = (exports.getUniqueFilename = (str, dependencies) => {
   // in case we've now stripped the entire basename (uncommon, but possible):
   basename = basename.length ? basename : '_';
 
-  return makeUniqueFilename(basename, str) + exports.fileExtension;
-});
+  return makeUniqueFilename(basename, str) + fileExtension;
+}
 
 /**
  * Get a longname's filename if one has been registered; otherwise, generate a unique filename, then
@@ -230,15 +232,15 @@ function getId(longname, id) {
  * @param {string} doclet - The doclet to convert.
  * @return {string} A unique identifier based on the file and doclet.
  */
-exports.getUniqueId = makeUniqueId;
+export { makeUniqueId as getUniqueId };
 
-const htmlsafe = (exports.htmlsafe = (str) => {
+export function htmlsafe(str) {
   if (typeof str !== 'string') {
     str = String(str);
   }
 
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-});
+}
 
 function parseType(longname) {
   let err;
@@ -254,7 +256,7 @@ function parseType(longname) {
 }
 
 function stringifyType(parsedType, cssClass, stringifyLinkMap) {
-  return require('catharsis').stringify(parsedType, {
+  return catharsis.stringify(parsedType, {
     cssClass: cssClass,
     htmlSafe: true,
     links: stringifyLinkMap,
@@ -370,12 +372,13 @@ function buildLink(longname, linkText, options) {
  * append to the link target.
  * @return {string} The HTML link, or a plain-text string if the link is not available.
  */
-const linkto = (exports.linkto = (longname, linkText, cssClass, fragmentId) =>
-  buildLink(longname, linkText, {
+export function linkto(longname, linkText, cssClass, fragmentId) {
+  return buildLink(longname, linkText, {
     cssClass: cssClass,
     fragmentId: fragmentId,
     linkMap: longnameToUrl,
-  }));
+  });
+}
 
 function useMonospace(tag, text, dependencies) {
   let cleverLinks;
@@ -449,7 +452,7 @@ function shouldShortenLongname(dependencies) {
  * @param {object} dependencies - The JSDoc dependencies container.
  * @return {string} The linkified text.
  */
-exports.resolveLinks = (str, dependencies) => {
+export function resolveLinks(str, dependencies) {
   let replacers;
 
   function extractLeadingText(string, completeTag) {
@@ -507,7 +510,7 @@ exports.resolveLinks = (str, dependencies) => {
   };
 
   return inline.replaceInlineTags(str, replacers).newString;
-};
+}
 
 /**
  * Convert tag text like `Jane Doe <jdoe@example.org>` into a `mailto:` link.
@@ -515,7 +518,7 @@ exports.resolveLinks = (str, dependencies) => {
  * @param {string} str - The tag text.
  * @return {string} The linkified text.
  */
-exports.resolveAuthorLinks = (str) => {
+export function resolveAuthorLinks(str) {
   let author = '';
   let matches;
 
@@ -530,7 +533,7 @@ exports.resolveAuthorLinks = (str) => {
   }
 
   return author;
-};
+}
 
 /**
  * Find items in a TaffyDB database that match the specified key-value pairs.
@@ -542,7 +545,9 @@ exports.resolveAuthorLinks = (str) => {
  * does not match.
  * @return {array<object>} The matching items.
  */
-const find = (exports.find = (data, spec) => data(spec).get());
+export function find(data, spec) {
+  return data(spec).get();
+}
 
 /**
  * Retrieve all of the following types of members from a set of doclets:
@@ -558,7 +563,7 @@ const find = (exports.find = (data, spec) => data(spec).get());
  * @return {object} An object with `classes`, `externals`, `globals`, `mixins`, `modules`,
  * `events`, and `namespaces` properties. Each property contains an array of objects.
  */
-exports.getMembers = (data) => {
+export function getMembers(data) {
   const members = {
     classes: find(data, { kind: 'class' }),
     externals: find(data, { kind: 'external' }),
@@ -587,7 +592,7 @@ exports.getMembers = (data) => {
   members.globals = members.globals.filter((doclet) => !isModuleExports(doclet));
 
   return members;
-};
+}
 
 /**
  * Retrieve the member attributes for a doclet (for example, `virtual`, `static`, and
@@ -595,7 +600,7 @@ exports.getMembers = (data) => {
  * @param {object} d The doclet whose attributes will be retrieved.
  * @return {array<string>} The member attributes for the doclet.
  */
-exports.getAttribs = (d) => {
+export function getAttribs(d) {
   const attribs = [];
 
   if (!d) {
@@ -641,7 +646,7 @@ exports.getAttribs = (d) => {
   }
 
   return attribs;
-};
+}
 
 /**
  * Retrieve links to allowed types for the member.
@@ -650,7 +655,7 @@ exports.getAttribs = (d) => {
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
  * @return {Array.<string>} HTML links to allowed types for the member.
  */
-exports.getSignatureTypes = ({ type }, cssClass) => {
+export function getSignatureTypes({ type }, cssClass) {
   let types = [];
 
   if (type && type.names) {
@@ -662,7 +667,7 @@ exports.getSignatureTypes = ({ type }, cssClass) => {
   }
 
   return types;
-};
+}
 
 /**
  * Retrieve names of the parameters that the member accepts. If a value is provided for `optClass`,
@@ -674,7 +679,7 @@ exports.getSignatureTypes = ({ type }, cssClass) => {
  * @return {array<string>} An array of parameter names, with or without `<span>` tags wrapping the
  * names of optional parameters.
  */
-exports.getSignatureParams = ({ params }, optClass) => {
+export function getSignatureParams({ params }, optClass) {
   const pnames = [];
 
   if (params) {
@@ -690,7 +695,7 @@ exports.getSignatureParams = ({ params }, optClass) => {
   }
 
   return pnames;
-};
+}
 
 /**
  * Retrieve links to types that the member can return or yield.
@@ -699,7 +704,7 @@ exports.getSignatureParams = ({ params }, optClass) => {
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
  * @return {Array.<string>} HTML links to types that the member can return or yield.
  */
-exports.getSignatureReturns = ({ yields, returns }, cssClass) => {
+export function getSignatureReturns({ yields, returns }, cssClass) {
   let returnTypes = [];
 
   if (yields || returns) {
@@ -717,7 +722,7 @@ exports.getSignatureReturns = ({ yields, returns }, cssClass) => {
   }
 
   return returnTypes;
-};
+}
 
 /**
  * Retrieve an ordered list of doclets for a symbol's ancestors.
@@ -727,7 +732,7 @@ exports.getSignatureReturns = ({ yields, returns }, cssClass) => {
  * @return {Array.<module:@jsdoc/doclet.Doclet>} A array of ancestor doclets, sorted from most to
  * least distant.
  */
-exports.getAncestors = (data, doclet) => {
+export function getAncestors(data, doclet) {
   const ancestors = [];
   let doc = doclet;
   let previousDoc;
@@ -747,7 +752,7 @@ exports.getAncestors = (data, doclet) => {
   }
 
   return ancestors;
-};
+}
 
 /**
  * Retrieve links to a member's ancestors.
@@ -757,8 +762,8 @@ exports.getAncestors = (data, doclet) => {
  * @param {string} [cssClass] - The CSS class to include in the `class` attribute for each link.
  * @return {Array.<string>} HTML links to a member's ancestors.
  */
-exports.getAncestorLinks = (data, doclet, cssClass) => {
-  const ancestors = exports.getAncestors(data, doclet);
+export function getAncestorLinks(data, doclet, cssClass) {
+  const ancestors = getAncestors(data, doclet);
   const links = [];
 
   ancestors.forEach((ancestor) => {
@@ -773,7 +778,7 @@ exports.getAncestorLinks = (data, doclet, cssClass) => {
   }
 
   return links;
-};
+}
 
 /**
  * Iterates through all the doclets in `data`, ensuring that if a method `@listens` to an event,
@@ -781,7 +786,7 @@ exports.getAncestorLinks = (data, doclet, cssClass) => {
  *
  * @param {TAFFY} data - The TaffyDB database to search.
  */
-exports.addEventListeners = (data) => {
+export function addEventListeners(data) {
   // just a cache to prevent me doing so many lookups
   const _events = {};
   let doc;
@@ -817,7 +822,7 @@ exports.addEventListeners = (data) => {
       }
     });
   });
-};
+}
 
 /**
  * Remove members that will not be included in the output, including:
@@ -831,7 +836,7 @@ exports.addEventListeners = (data) => {
  * @param {object} dependencies The JSDoc dependencies container.
  * @return {TAFFY} The pruned database.
  */
-exports.prune = (data, dependencies) => {
+export function prune(data, dependencies) {
   const options = dependencies.get('options');
 
   data({ undocumented: true }).remove();
@@ -860,7 +865,7 @@ exports.prune = (data, dependencies) => {
   }
 
   return data;
-};
+}
 
 /**
  * Create a URL that points to the generated documentation for the doclet.
@@ -875,7 +880,7 @@ exports.prune = (data, dependencies) => {
  * @param {Object} dependencies - The JSDoc dependency container.
  * @return {string} The URL to the generated documentation for the doclet.
  */
-exports.createLink = (doclet, dependencies) => {
+export function createLink(doclet, dependencies) {
   let fakeContainer;
   let filename;
   let fileUrl;
@@ -908,7 +913,7 @@ exports.createLink = (doclet, dependencies) => {
   }
   // the doclet is within another HTML file
   else {
-    filename = getFilename(doclet.memberof || exports.globalName, dependencies);
+    filename = getFilename(doclet.memberof || globalName, dependencies);
     if (doclet.name !== doclet.longname || doclet.scope === SCOPE.NAMES.GLOBAL) {
       fragment = formatNameForLink(doclet, dependencies);
       fragment = getId(longname, fragment);
@@ -918,7 +923,7 @@ exports.createLink = (doclet, dependencies) => {
   fileUrl = encodeURI(filename + fragmentHash(fragment));
 
   return fileUrl;
-};
+}
 
 /**
  * Convert an array of doclet longnames into a tree structure, optionally attaching doclets to the
@@ -932,4 +937,4 @@ exports.createLink = (doclet, dependencies) => {
  * longname.
  * @return {Object} A tree with information about each longname.
  */
-exports.longnamesToTree = longnamesToTree;
+export { longnamesToTree };

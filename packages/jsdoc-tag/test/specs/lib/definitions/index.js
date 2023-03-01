@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/tag/lib/definitions', () => {
-  const definitions = require('../../../../lib/definitions');
+import * as definitions from '../../../../lib/definitions/index.js';
 
+describe('@jsdoc/tag/lib/definitions', () => {
   it('has a `closure` object', () => {
     expect(definitions.closure).toBeObject();
   });

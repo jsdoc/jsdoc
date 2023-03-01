@@ -14,16 +14,20 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('underscore plugin', () => {
-  const path = require('path');
-  const { plugins } = require('@jsdoc/core');
+import path from 'node:path';
 
+import { plugins } from '@jsdoc/core';
+
+describe('underscore plugin', () => {
+  const __dirname = jsdoc.dirname(import.meta.url);
   let docSet;
   const parser = jsdoc.createParser();
   const pluginPath = path.resolve(__dirname, '../../underscore.js');
 
-  plugins.installPlugins([pluginPath], parser, jsdoc.deps);
-  docSet = jsdoc.getDocSetFromFile(path.resolve(__dirname, '../fixtures/underscore.js'), parser);
+  beforeAll(async () => {
+    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    docSet = jsdoc.getDocSetFromFile(path.resolve(__dirname, '../fixtures/underscore.js'), parser);
+  });
 
   it('should not mark normal, public properties as private', () => {
     // Base line tests

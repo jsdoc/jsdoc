@@ -13,19 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const EventEmitter = require('events');
-
-const events = [
-  'parseBegin',
-  'fileBegin',
-  'beforeParse',
-  'jsdocCommentFound',
-  'symbolFound',
-  'newDoclet',
-  'fileComplete',
-  'parseComplete',
-  'processingComplete',
-];
+import EventEmitter from 'node:events';
 
 class PluginTestVisitors extends EventEmitter {
   constructor() {
@@ -37,4 +25,4 @@ class PluginTestVisitors extends EventEmitter {
   }
 }
 
-module.exports = new PluginTestVisitors();
+export default new PluginTestVisitors();

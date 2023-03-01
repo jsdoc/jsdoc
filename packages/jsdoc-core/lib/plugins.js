@@ -23,12 +23,12 @@ function addHandlers(handlers, parser, deps) {
   });
 }
 
-exports.installPlugins = (plugins, parser, deps) => {
+export async function installPlugins(plugins, parser, deps) {
   let dictionary;
   let plugin;
 
   for (let pluginModule of plugins) {
-    plugin = require(pluginModule);
+    plugin = await import(pluginModule); // eslint-disable-line no-await-in-loop
 
     // allow user-defined plugins to...
     // ...register event handlers
@@ -47,4 +47,4 @@ exports.installPlugins = (plugins, parser, deps) => {
       parser.addAstNodeVisitor(plugin.astNodeVisitor, deps);
     }
   }
-};
+}

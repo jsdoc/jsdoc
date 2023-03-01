@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/core.env', () => {
-  const { env } = require('../../../index');
+import env from '../../../lib/env.js';
 
+describe('@jsdoc/core.env', () => {
   it('exists', () => {
     expect(env).toBeObject();
   });

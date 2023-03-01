@@ -73,7 +73,9 @@ function regExpFactory(tagName = '\\S+', prefix = '', suffix = '') {
  * @returns {boolean} Set to `true` if the string is a valid inline tag or `false` in all other
  * cases.
  */
-exports.isInlineTag = (string, tagName) => regExpFactory(tagName, '^', '$').test(string);
+export function isInlineTag(string, tagName) {
+  return regExpFactory(tagName, '^', '$').test(string);
+}
 
 /**
  * Replace all instances of multiple inline tags with other text.
@@ -85,7 +87,7 @@ exports.isInlineTag = (string, tagName) => regExpFactory(tagName, '^', '$').test
  * @return {module:@jsdoc/tag.inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
-const replaceInlineTags = (exports.replaceInlineTags = (string, replacers) => {
+export function replaceInlineTags(string, replacers) {
   const tagInfo = [];
 
   function replaceMatch(replacer, tag, match, text) {
@@ -121,7 +123,7 @@ const replaceInlineTags = (exports.replaceInlineTags = (string, replacers) => {
     tags: tagInfo,
     newString: string.trim(),
   };
-});
+}
 
 /**
  * Replace all instances of an inline tag with other text.
@@ -133,13 +135,13 @@ const replaceInlineTags = (exports.replaceInlineTags = (string, replacers) => {
  * @return {module:@jsdoc/tag.inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
-const replaceInlineTag = (exports.replaceInlineTag = (string, tag, replacer) => {
+export function replaceInlineTag(string, tag, replacer) {
   const replacers = {};
 
   replacers[tag] = replacer;
 
   return replaceInlineTags(string, replacers);
-});
+}
 
 /**
  * Extract inline tags from a string, replacing them with an empty string.
@@ -149,5 +151,6 @@ const replaceInlineTag = (exports.replaceInlineTag = (string, tag, replacer) => 
  * @return {module:@jsdoc/tag.inline.InlineTagResult} The updated string, as well as information
  * about the inline tags that were found.
  */
-exports.extractInlineTag = (string, tag) =>
-  replaceInlineTag(string, tag, (str, { completeTag }) => str.replace(completeTag, ''));
+export function extractInlineTag(string, tag) {
+  return replaceInlineTag(string, tag, (str, { completeTag }) => str.replace(completeTag, ''));
+}

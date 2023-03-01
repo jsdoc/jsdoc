@@ -20,10 +20,13 @@ module.exports = {
     node: true,
   },
 
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
+    requireConfigFile: false,
     sourceType: 'module',
   },
+  plugins: ['simple-import-sort'],
 
   rules: {
     // Possible errors
@@ -228,7 +231,7 @@ module.exports = {
     'require-await': 'error',
     'require-unicode-regexp': 'off',
     'require-yield': 'error',
-    'sort-imports': 'error',
+    'sort-imports': 'off', // We use https://github.com/lydell/eslint-plugin-simple-import-sort instead
     'sort-keys': 'off',
     'sort-vars': 'off', // TODO: enable?
     'spaced-comment': ['error', 'always'],
@@ -264,7 +267,7 @@ module.exports = {
     'dot-location': ['error', 'property'],
     'eol-last': 'error',
     'func-call-spacing': ['error', 'never'],
-    'function-call-argument-newline:': 'off',
+    'function-call-argument-newline': 'off',
     'function-paren-newline': 'off',
     'generator-star-spacing': [
       'error',
@@ -371,5 +374,9 @@ module.exports = {
     'wrap-iife': ['error', 'inside'],
     'wrap-regex': 'off',
     'yield-star-spacing': ['error', 'before'],
+
+    // https://github.com/lydell/eslint-plugin-simple-import-sort
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
   },
 };

@@ -176,7 +176,7 @@ function ensureUniqueLongname(newDoclet) {
   return doclets.newDoclet;
 }
 
-exports.handlers = {
+export const handlers = {
   parseBegin() {
     functionDoclets = {};
   },

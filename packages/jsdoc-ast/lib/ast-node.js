@@ -14,10 +14,13 @@
   limitations under the License.
 */
 // TODO: docs
-const _ = require('lodash');
-const { cast } = require('@jsdoc/util');
-const { SCOPE } = require('@jsdoc/core').name;
-const { Syntax } = require('./syntax');
+import { name } from '@jsdoc/core';
+import { cast } from '@jsdoc/util';
+import _ from 'lodash';
+
+import { Syntax } from './syntax.js';
+
+const { SCOPE } = name;
 
 // Counter for generating unique node IDs.
 let uid = 100000000;
@@ -28,7 +31,7 @@ let uid = 100000000;
  * @param {(Object|string)} node - The AST node to check, or the `type` property of a node.
  * @return {boolean} Set to `true` if the node is a function or `false` in all other cases.
  */
-const isFunction = (exports.isFunction = (node) => {
+export function isFunction(node) {
   let type;
 
   if (!node) {
@@ -47,7 +50,7 @@ const isFunction = (exports.isFunction = (node) => {
     type === Syntax.MethodDefinition ||
     type === Syntax.ArrowFunctionExpression
   );
-});
+}
 
 /**
  * Check whether an AST node creates a new scope.
@@ -55,18 +58,20 @@ const isFunction = (exports.isFunction = (node) => {
  * @param {Object} node - The AST node to check.
  * @return {Boolean} Set to `true` if the node creates a new scope, or `false` in all other cases.
  */
-exports.isScope = (
-  node // TODO: handle blocks with "let" declarations
-) =>
-  Boolean(node) &&
-  typeof node === 'object' &&
-  (node.type === Syntax.CatchClause ||
-    node.type === Syntax.ClassDeclaration ||
-    node.type === Syntax.ClassExpression ||
-    isFunction(node));
+// TODO: handle blocks with "let" declarations
+export function isScope(node) {
+  return (
+    Boolean(node) &&
+    typeof node === 'object' &&
+    (node.type === Syntax.CatchClause ||
+      node.type === Syntax.ClassDeclaration ||
+      node.type === Syntax.ClassExpression ||
+      isFunction(node))
+  );
+}
 
 // TODO: docs
-exports.addNodeProperties = (node) => {
+export function addNodeProperties(node) {
   const newProperties = {};
 
   if (!node || typeof node !== 'object') {
@@ -117,10 +122,10 @@ exports.addNodeProperties = (node) => {
   Object.defineProperties(node, newProperties);
 
   return node;
-};
+}
 
 // TODO: docs
-const nodeToValue = (exports.nodeToValue = (node) => {
+export function nodeToValue(node) {
   let key;
   let parent;
   let str;
@@ -326,13 +331,12 @@ const nodeToValue = (exports.nodeToValue = (node) => {
   }
 
   return str;
-});
+}
 
-// backwards compatibility
-exports.nodeToString = nodeToValue;
+export { nodeToValue as nodeToString };
 
 // TODO: docs
-const getParamNames = (exports.getParamNames = (node) => {
+export function getParamNames(node) {
   let params;
 
   if (!node || !node.params) {
@@ -342,26 +346,32 @@ const getParamNames = (exports.getParamNames = (node) => {
   params = node.params.slice();
 
   return params.map((param) => nodeToValue(param));
-});
+}
 
 // TODO: docs
-const isAccessor = (exports.isAccessor = (node) =>
-  Boolean(node) &&
-  typeof node === 'object' &&
-  (node.type === Syntax.Property || node.type === Syntax.MethodDefinition) &&
-  (node.kind === 'get' || node.kind === 'set'));
+export function isAccessor(node) {
+  return (
+    Boolean(node) &&
+    typeof node === 'object' &&
+    (node.type === Syntax.Property || node.type === Syntax.MethodDefinition) &&
+    (node.kind === 'get' || node.kind === 'set')
+  );
+}
 
 // TODO: docs
-exports.isAssignment = (node) =>
-  Boolean(node) &&
-  typeof node === 'object' &&
-  (node.type === Syntax.AssignmentExpression || node.type === Syntax.VariableDeclarator);
+export function isAssignment(node) {
+  return (
+    Boolean(node) &&
+    typeof node === 'object' &&
+    (node.type === Syntax.AssignmentExpression || node.type === Syntax.VariableDeclarator)
+  );
+}
 
 // TODO: docs
 /**
  * Retrieve information about the node, including its name and type.
  */
-exports.getInfo = (node) => {
+export function getInfo(node) {
   const info = {};
 
   switch (node.type) {
@@ -572,4 +582,4 @@ exports.getInfo = (node) => {
   }
 
   return info;
-};
+}

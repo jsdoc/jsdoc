@@ -13,8 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const EventEmitter = require('events');
-
 const events = [
   'parseBegin',
   'fileBegin',
@@ -27,16 +25,14 @@ const events = [
   'processingComplete',
 ];
 
-class PluginTestHandlers extends EventEmitter {
-  constructor() {
-    super();
+export const eventCounts = {};
 
-    this.handlers = events.reduce((h, eventName) => {
-      h[eventName] = () => this.emit(eventName);
-
-      return h;
-    }, {});
-  }
+export function init() {
+  events.forEach((eventName) => (eventCounts[eventName] = 0));
 }
 
-module.exports = new PluginTestHandlers();
+export const handlers = events.reduce((h, eventName) => {
+  h[eventName] = () => eventCounts[eventName]++;
+
+  return h;
+}, {});

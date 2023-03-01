@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('@jsdoc/tag/lib/inline', () => {
-  const inline = require('../../../lib/inline');
+import * as inline from '../../../lib/inline.js';
 
+describe('@jsdoc/tag/lib/inline', () => {
   it('is an object', () => {
     expect(inline).toBeObject();
   });

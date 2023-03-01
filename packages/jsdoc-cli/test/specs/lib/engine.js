@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const RealEngine = require('../../../lib/engine');
-const flags = require('../../../lib/flags');
-const { LEVELS } = require('../../../lib/logger');
+import RealEngine from '../../../lib/engine.js';
+import flags from '../../../lib/flags.js';
+import { LEVELS } from '../../../lib/logger.js';
 
 const TYPE_ERROR = 'TypeError';
 

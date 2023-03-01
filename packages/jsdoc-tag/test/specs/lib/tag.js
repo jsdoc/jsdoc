@@ -14,10 +14,12 @@
   limitations under the License.
 */
 /* global jsdoc */
-const options = jsdoc.deps.get('options');
+import * as jsdocTag from '../../../lib/tag.js';
+import * as type from '../../../lib/type.js';
+
 const jsdocDictionary = jsdoc.deps.get('tags');
-const jsdocTag = require('../../../lib/tag');
-const parseType = require('@jsdoc/tag').type.parse;
+const options = jsdoc.deps.get('options');
+const parseType = type.parse;
 const { Tag } = jsdocTag;
 
 describe('@jsdoc/tag/lib/tag', () => {

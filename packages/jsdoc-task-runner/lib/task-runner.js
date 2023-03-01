@@ -13,17 +13,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { DepGraph } = require('dependency-graph');
-const Emittery = require('emittery');
-const { default: ow } = require('ow');
-const Queue = require('p-queue').default;
-const v = require('./validators');
+import dependencyGraph from 'dependency-graph';
+import Emittery from 'emittery';
+import _ from 'lodash';
+import ow from 'ow';
+import Queue from 'p-queue';
+
+import v from './validators.js';
+
+const { DepGraph } = dependencyGraph;
 
 // Work around an annoying typo in a method name.
 DepGraph.prototype.dependentsOf = DepGraph.prototype.dependantsOf;
 
-module.exports = class TaskRunner extends Emittery {
+export class TaskRunner extends Emittery {
   constructor(context) {
     super();
 
@@ -340,4 +343,4 @@ module.exports = class TaskRunner extends Emittery {
 
     return _.fromPairs(entries);
   }
-};
+}

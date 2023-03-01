@@ -13,7 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const util = require('../../index');
+import util from '../../index.js';
+import bus from '../../lib/bus.js';
+import cast from '../../lib/cast.js';
+import * as fs from '../../lib/fs.js';
 
 describe('@jsdoc/util', () => {
   it('is an object', () => {
@@ -22,25 +25,19 @@ describe('@jsdoc/util', () => {
 
   describe('cast', () => {
     it('is lib/cast', () => {
-      const cast = require('../../lib/cast');
-
-      expect(util.cast).toBe(cast);
+      expect(util.cast).toEqual(cast);
     });
   });
 
   describe('EventBus', () => {
     it('is lib/bus', () => {
-      const bus = require('../../lib/bus');
-
-      expect(util.EventBus).toBe(bus);
+      expect(util.EventBus).toEqual(bus);
     });
   });
 
   describe('fs', () => {
     it('is lib/fs', () => {
-      const fs = require('../../lib/fs');
-
-      expect(util.fs).toBe(fs);
+      expect(util.fs).toEqual(fs);
     });
   });
 });

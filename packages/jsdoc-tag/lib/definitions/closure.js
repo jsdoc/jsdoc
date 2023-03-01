@@ -14,8 +14,9 @@
   limitations under the License.
 */
 // Tag dictionary for Google Closure Compiler.
-const core = require('./core');
-const util = require('./util');
+
+import { tags as core } from './core.js';
+import * as util from './util.js';
 
 const NOOP_TAG = {
   onTagged: () => {
@@ -23,175 +24,139 @@ const NOOP_TAG = {
   },
 };
 
-exports.const = {
-  canHaveType: true,
-  onTagged(doclet, tag) {
-    doclet.kind = 'constant';
-    util.setDocletTypeToValueType(doclet, tag);
+export const tags = {
+  const: {
+    canHaveType: true,
+    onTagged(doclet, tag) {
+      doclet.kind = 'constant';
+      util.setDocletTypeToValueType(doclet, tag);
+    },
+    // Closure Compiler only
+    synonyms: ['define'],
+  },
+  constructor: util.cloneTagDef(core.class),
+  deprecated: util.cloneTagDef(core.deprecated),
+  // Closure Compiler only
+  dict: NOOP_TAG,
+  enum: util.cloneTagDef(core.enum),
+  // Closure Compiler only
+  export: NOOP_TAG,
+  extends: util.cloneTagDef(core.augments),
+  // Closure Compiler only
+  externs: NOOP_TAG,
+  fileoverview: {
+    onTagged(doclet, tag) {
+      util.setNameToFile(doclet);
+      doclet.kind = 'file';
+      util.setDocletDescriptionToValue(doclet, tag);
+
+      doclet.preserveName = true;
+    },
+  },
+  final: util.cloneTagDef(core.readonly),
+  implements: util.cloneTagDef(core.implements),
+  // Closure Compiler only
+  implicitcast: NOOP_TAG,
+  inheritdoc: util.cloneTagDef(core.inheritdoc),
+  interface: util.cloneTagDef(core.interface, {
+    canHaveName: false,
+    mustNotHaveValue: true,
+    // Closure Compiler only
+    synonyms: ['record'],
+  }),
+  lends: util.cloneTagDef(core.lends),
+  license: util.cloneTagDef(core.license),
+  modifies: util.cloneTagDef(core.modifies),
+  // Closure Compiler only
+  noalias: NOOP_TAG,
+  // Closure Compiler only
+  nocollapse: NOOP_TAG,
+  // Closure Compiler only
+  nocompile: NOOP_TAG,
+  // Closure Compiler only
+  nosideeffects: {
+    onTagged(doclet) {
+      doclet.modifies = [];
+    },
   },
   // Closure Compiler only
-  synonyms: ['define'],
-};
-
-exports.constructor = util.cloneTagDef(core.class);
-
-exports.deprecated = util.cloneTagDef(core.deprecated);
-
-// Closure Compiler only
-exports.dict = NOOP_TAG;
-
-exports.enum = util.cloneTagDef(core.enum);
-
-// Closure Compiler only
-exports.export = NOOP_TAG;
-
-exports.extends = util.cloneTagDef(core.augments);
-
-// Closure Compiler only
-exports.externs = NOOP_TAG;
-
-exports.fileoverview = {
-  onTagged(doclet, tag) {
-    util.setNameToFile(doclet);
-    doclet.kind = 'file';
-    util.setDocletDescriptionToValue(doclet, tag);
-
-    doclet.preserveName = true;
+  override: {
+    mustNotHaveValue: true,
+    onTagged(doclet) {
+      doclet.override = true;
+    },
   },
-};
+  package: {
+    canHaveType: true,
+    onTagged(doclet, tag) {
+      doclet.access = 'package';
 
-exports.final = util.cloneTagDef(core.readonly);
-
-exports.implements = util.cloneTagDef(core.implements);
-
-// Closure Compiler only
-exports.implicitcast = NOOP_TAG;
-
-exports.inheritdoc = util.cloneTagDef(core.inheritdoc);
-
-exports.interface = util.cloneTagDef(core.interface, {
-  canHaveName: false,
-  mustNotHaveValue: true,
+      if (tag.value && tag.value.type) {
+        util.setDocletTypeToValueType(doclet, tag);
+      }
+    },
+  },
+  param: util.cloneTagDef(core.param),
   // Closure Compiler only
-  synonyms: ['record'],
-});
+  polymer: NOOP_TAG,
+  // Closure Compiler only
+  polymerBehavior: NOOP_TAG,
+  // Closure Compiler only
+  preserve: util.cloneTagDef(core.license),
+  private: {
+    canHaveType: true,
+    onTagged(doclet, tag) {
+      doclet.access = 'private';
 
-exports.lends = util.cloneTagDef(core.lends);
-
-exports.license = util.cloneTagDef(core.license);
-
-exports.modifies = util.cloneTagDef(core.modifies);
-
-// Closure Compiler only
-exports.noalias = NOOP_TAG;
-
-// Closure Compiler only
-exports.nocollapse = NOOP_TAG;
-
-// Closure Compiler only
-exports.nocompile = NOOP_TAG;
-
-// Closure Compiler only
-exports.nosideeffects = {
-  onTagged(doclet) {
-    doclet.modifies = [];
+      if (tag.value && tag.value.type) {
+        util.setDocletTypeToValueType(doclet, tag);
+      }
+    },
   },
-};
+  protected: {
+    canHaveType: true,
+    onTagged(doclet, tag) {
+      doclet.access = 'protected';
 
-// Closure Compiler only
-exports.override = {
-  mustNotHaveValue: true,
-  onTagged(doclet) {
-    doclet.override = true;
+      if (tag.value && tag.value.type) {
+        util.setDocletTypeToValueType(doclet, tag);
+      }
+    },
   },
-};
+  public: {
+    canHaveType: true,
+    onTagged(doclet, tag) {
+      doclet.access = 'public';
 
-exports.package = {
-  canHaveType: true,
-  onTagged(doclet, tag) {
-    doclet.access = 'package';
-
-    if (tag.value && tag.value.type) {
+      if (tag.value && tag.value.type) {
+        util.setDocletTypeToValueType(doclet, tag);
+      }
+    },
+  },
+  return: util.cloneTagDef(core.returns),
+  // Closure Compiler only
+  struct: NOOP_TAG,
+  // Closure Compiler only
+  suppress: NOOP_TAG,
+  // Closure Compiler only
+  template: NOOP_TAG,
+  this: {
+    canHaveType: true,
+    onTagged(doclet, tag) {
+      doclet.this = util.combineTypes(tag);
+    },
+  },
+  throws: util.cloneTagDef(core.throws),
+  type: util.cloneTagDef(core.type, {
+    mustNotHaveDescription: false,
+  }),
+  typedef: {
+    canHaveType: true,
+    onTagged(doclet, tag) {
+      util.setDocletKindToTitle(doclet, tag);
       util.setDocletTypeToValueType(doclet, tag);
-    }
+    },
   },
+  // Closure Compiler only
+  unrestricted: NOOP_TAG,
 };
-
-exports.param = util.cloneTagDef(core.param);
-
-// Closure Compiler only
-exports.polymer = NOOP_TAG;
-
-// Closure Compiler only
-exports.polymerBehavior = NOOP_TAG;
-
-// Closure Compiler only
-exports.preserve = util.cloneTagDef(core.license);
-
-exports.private = {
-  canHaveType: true,
-  onTagged(doclet, tag) {
-    doclet.access = 'private';
-
-    if (tag.value && tag.value.type) {
-      util.setDocletTypeToValueType(doclet, tag);
-    }
-  },
-};
-
-exports.protected = {
-  canHaveType: true,
-  onTagged(doclet, tag) {
-    doclet.access = 'protected';
-
-    if (tag.value && tag.value.type) {
-      util.setDocletTypeToValueType(doclet, tag);
-    }
-  },
-};
-
-exports.public = {
-  canHaveType: true,
-  onTagged(doclet, tag) {
-    doclet.access = 'public';
-
-    if (tag.value && tag.value.type) {
-      util.setDocletTypeToValueType(doclet, tag);
-    }
-  },
-};
-
-exports.return = util.cloneTagDef(core.returns);
-
-// Closure Compiler only
-exports.struct = NOOP_TAG;
-
-// Closure Compiler only
-exports.suppress = NOOP_TAG;
-
-// Closure Compiler only
-exports.template = NOOP_TAG;
-
-exports.this = {
-  canHaveType: true,
-  onTagged(doclet, tag) {
-    doclet.this = util.combineTypes(tag);
-  },
-};
-
-exports.throws = util.cloneTagDef(core.throws);
-
-exports.type = util.cloneTagDef(core.type, {
-  mustNotHaveDescription: false,
-});
-
-exports.typedef = {
-  canHaveType: true,
-  onTagged(doclet, tag) {
-    util.setDocletKindToTitle(doclet, tag);
-    util.setDocletTypeToValueType(doclet, tag);
-  },
-};
-
-// Closure Compiler only
-exports.unrestricted = NOOP_TAG;

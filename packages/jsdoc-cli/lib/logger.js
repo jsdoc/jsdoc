@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { default: ow } = require('ow');
+import _ from 'lodash';
+import ow from 'ow';
 
 /**
  * Logging levels for the JSDoc logger. The default logging level is
@@ -24,7 +24,7 @@ const { default: ow } = require('ow');
  * @enum
  * @type {number}
  */
-const LEVELS = {
+export const LEVELS = {
   /**
    * Do not log any messages.
    *
@@ -109,7 +109,7 @@ function addPrefix(level, args) {
   return args;
 }
 
-class Logger {
+export class Logger {
   constructor(opts) {
     ow(opts, ow.object);
     // We validate `opts.level` in the setter, so no need to validate it here.
@@ -169,8 +169,3 @@ class Logger {
     this._level = level;
   }
 }
-
-module.exports = {
-  LEVELS,
-  Logger,
-};

@@ -13,23 +13,25 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { applyNamespace } = require('@jsdoc/core').name;
-const commonPathPrefix = require('common-path-prefix');
-const { log } = require('@jsdoc/util');
-const { parse: parseTagType } = require('../type');
-const path = require('path');
+import path from 'node:path';
+
+import { name } from '@jsdoc/core';
+import { log } from '@jsdoc/util';
+import commonPathPrefix from 'common-path-prefix';
+import _ from 'lodash';
+
+import { parse as parseTagType } from '../type.js';
 
 // Clone a tag definition, excluding synonyms.
-exports.cloneTagDef = (tagDef, extras) => {
+export function cloneTagDef(tagDef, extras) {
   const newTagDef = _.cloneDeep(tagDef);
 
   delete newTagDef.synonyms;
 
   return extras ? _.extend(newTagDef, extras) : newTagDef;
-};
+}
 
-const getSourcePaths = (exports.getSourcePaths = (env) => {
+export function getSourcePaths(env) {
   const sourcePaths = env.sourceFiles.slice() || [];
 
   if (env.opts._) {
@@ -43,7 +45,7 @@ const getSourcePaths = (exports.getSourcePaths = (env) => {
   }
 
   return sourcePaths;
-});
+}
 
 function filepathMinusPrefix(filepath, env) {
   let commonPrefix;
@@ -68,19 +70,19 @@ function filepathMinusPrefix(filepath, env) {
   return result;
 }
 
-exports.setDocletKindToTitle = (doclet, { title }) => {
+export function setDocletKindToTitle(doclet, { title }) {
   doclet.addTag('kind', title);
-};
+}
 
-exports.setDocletScopeToTitle = (doclet, { title }) => {
+export function setDocletScopeToTitle(doclet, { title }) {
   try {
     doclet.setScope(title);
   } catch (e) {
     log.error(e.message);
   }
-};
+}
 
-exports.setDocletNameToValue = (doclet, { value, text }) => {
+export function setDocletNameToValue(doclet, { value, text }) {
   if (value && value.description) {
     // as in a long tag
     doclet.addTag('name', value.description);
@@ -88,21 +90,21 @@ exports.setDocletNameToValue = (doclet, { value, text }) => {
     // or a short tag
     doclet.addTag('name', text);
   }
-};
+}
 
-exports.setDocletNameToValueName = (doclet, { value }) => {
+export function setDocletNameToValueName(doclet, { value }) {
   if (value && value.name) {
     doclet.addTag('name', value.name);
   }
-};
+}
 
-exports.setDocletDescriptionToValue = (doclet, { value }) => {
+export function setDocletDescriptionToValue(doclet, { value }) {
   if (value) {
     doclet.addTag('description', value);
   }
-};
+}
 
-exports.setDocletTypeToValueType = (doclet, { value }) => {
+export function setDocletTypeToValueType(doclet, { value }) {
   if (value && value.type) {
     // Add the type names and other type properties (such as `optional`).
     // Don't overwrite existing properties.
@@ -112,9 +114,9 @@ exports.setDocletTypeToValueType = (doclet, { value }) => {
       }
     });
   }
-};
+}
 
-exports.setNameToFile = (doclet) => {
+export function setNameToFile(doclet) {
   let docletName;
 
   if (doclet.meta.filename) {
@@ -122,29 +124,29 @@ exports.setNameToFile = (doclet) => {
       filepathMinusPrefix(doclet.meta.path, doclet.dependencies.get('env')) + doclet.meta.filename;
     doclet.addTag('name', docletName);
   }
-};
+}
 
-exports.setDocletMemberof = (doclet, { value }) => {
+export function setDocletMemberof(doclet, { value }) {
   if (value && value !== '<global>') {
     doclet.setMemberof(value);
   }
-};
+}
 
-exports.applyNamespaceToTag = (docletOrNs, tag) => {
+export function applyNamespaceToTag(docletOrNs, tag) {
   if (typeof docletOrNs === 'string') {
     // ns
-    tag.value = applyNamespace(tag.value, docletOrNs);
+    tag.value = name.applyNamespace(tag.value, docletOrNs);
   } else {
     // doclet
     if (!docletOrNs.name) {
       return; // error?
     }
 
-    docletOrNs.longname = applyNamespace(docletOrNs.name, tag.title);
+    docletOrNs.longname = name.applyNamespace(docletOrNs.name, tag.title);
   }
-};
+}
 
-exports.setDocletNameToFilename = (doclet) => {
+export function setDocletNameToFilename(doclet) {
   let docletName = '';
 
   if (doclet.meta.path) {
@@ -154,15 +156,15 @@ exports.setDocletNameToFilename = (doclet) => {
   docletName += doclet.meta.filename.replace(/\.js$/i, '');
 
   doclet.name = docletName;
-};
+}
 
-exports.parseTypeText = (text) => {
+export function parseTypeText(text) {
   const tagType = parseTagType(text, false, true);
 
   return tagType.typeExpression || text;
-};
+}
 
-exports.parseBorrows = (doclet, { text }) => {
+export function parseBorrows(doclet, { text }) {
   const m = /^([\s\S]+?)(?:\s+as\s+([\s\S]+))?$/.exec(text);
 
   if (m) {
@@ -181,9 +183,9 @@ exports.parseBorrows = (doclet, { text }) => {
   } else {
     return {};
   }
-};
+}
 
-exports.firstWordOf = (string) => {
+export function firstWordOf(string) {
   const m = /^(\S+)/.exec(string);
 
   if (m) {
@@ -191,9 +193,9 @@ exports.firstWordOf = (string) => {
   } else {
     return '';
   }
-};
+}
 
-exports.combineTypes = ({ value }) => {
+export function combineTypes({ value }) {
   let combined;
 
   if (value && value.type) {
@@ -205,4 +207,4 @@ exports.combineTypes = ({ value }) => {
   }
 
   return combined;
-};
+}

@@ -13,20 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const EventEmitter = require('events');
+export const nodes = [];
 
-class PluginTestAstVisitor extends EventEmitter {
-  constructor() {
-    super();
-
-    this.astNodeVisitor = {
-      visitNode: (node) => {
-        if (node.type === 'VariableDeclarator' && node.id.name === 'foo') {
-          this.emit('visitNode', node);
-        }
-      }
-    };
-  }
+export function init() {
+  nodes.length = 0;
 }
 
-module.exports = new PluginTestAstVisitor();
+export const astNodeVisitor = {
+  visitNode: (node) => {
+    if (node.type === 'VariableDeclarator' && node.id.name === 'foo') {
+      nodes.push(node);
+    }
+  }
+}

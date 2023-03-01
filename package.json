@@ -3,6 +3,7 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
+    "@babel/eslint-parser": "7.19.1",
     "@jsdoc/ast": "^0.1.0",
     "@jsdoc/cli": "^0.2.10",
     "@jsdoc/core": "^0.4.5",
@@ -20,9 +21,10 @@
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "execa": "^7.0.0",
     "hereby": "^1.8.0",
-    "jasmine": "^3.99.0",
+    "jasmine": "^4.5.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
     "klaw-sync": "^6.0.0",
@@ -33,6 +35,7 @@
     "prettier": "^2.8.4",
     "taffydb": "2.6.2"
   },
+  "type": "module",
   "engines": {
     "node": ">=v18.12.0"
   },
@@ -45,5 +48,8 @@
     "license-headers": "node_modules/.bin/hereby license-headers",
     "lint": "node_modules/.bin/hereby lint",
     "test": "node_modules/.bin/hereby test"
+  },
+  "dependencies": {
+    "@babel/eslint-parser": "^7.19.1"
   }
 }

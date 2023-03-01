@@ -14,20 +14,25 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('overload-helper plugin', () => {
-  const path = require('path');
-  const { plugins } = require('@jsdoc/core');
+import path from 'node:path';
 
+import { plugins } from '@jsdoc/core';
+
+describe('overload-helper plugin', () => {
+  const __dirname = jsdoc.dirname(import.meta.url);
   let docSet;
   const parser = jsdoc.createParser();
+  let plugin;
   const pluginPath = path.join(__dirname, '../../overload-helper.js');
-  const plugin = require(pluginPath);
 
-  plugins.installPlugins([pluginPath], parser, jsdoc.deps);
-  docSet = jsdoc.getDocSetFromFile(
-    path.resolve(__dirname, '../fixtures/overload-helper.js'),
-    parser
-  );
+  beforeAll(async () => {
+    plugin = await import(pluginPath);
+    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    docSet = jsdoc.getDocSetFromFile(
+      path.resolve(__dirname, '../fixtures/overload-helper.js'),
+      parser
+    );
+  });
 
   it('has a `handlers` object', () => {
     expect(plugin.handlers).toBeDefined();

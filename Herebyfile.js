@@ -13,16 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import { LicenseChecker } from 'js-green-licenses';
+import path from 'node:path';
+
 import { execa } from 'execa';
-import path from 'path';
 import { task } from 'hereby';
+import { LicenseChecker } from 'js-green-licenses';
 
 const BIN_DIR = 'node_modules/.bin';
 const JSDOC_BIN = 'packages/jsdoc/jsdoc.js';
 const NODE_BIN = process.execPath;
 
-const sourceGlob = ['*.js', '*.mjs', 'packages/**/*.js'];
+const sourceGlob = ['*.cjs', '*.js', 'packages/**/*/*.cjs', 'packages/**/*.js'];
 
 function bin(name) {
   return path.join(BIN_DIR, name);
@@ -32,7 +33,7 @@ export const coverage = task({
   name: 'coverage',
   run: async () => {
     await execa(bin('c8'), [
-      '--exclude=Herebyfile.mjs',
+      '--exclude=Herebyfile.js',
       "--exclude='**/test{,s}/**'",
       '--reporter=html',
       bin('hereby'),
@@ -99,7 +100,7 @@ export const licenseCheck = task({
 export const lint = task({
   name: 'lint',
   run: async () => {
-    await execa(bin('eslint'), [...sourceGlob]);
+    await execa(bin('eslint'), [...sourceGlob], { stdout: 'inherit', stderr: 'inherit' });
   },
 });
 

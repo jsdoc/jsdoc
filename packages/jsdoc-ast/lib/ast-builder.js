@@ -13,12 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const babelParser = require('@babel/parser');
-const { log } = require('@jsdoc/util');
+import babelParser from '@babel/parser';
+import { log } from '@jsdoc/util';
+import _ from 'lodash';
 
 // Exported so we can use them in tests.
-const parserOptions = (exports.parserOptions = {
+export const parserOptions = {
   allowAwaitOutsideFunction: true,
   allowImportExportEverywhere: true,
   allowReturnOutsideFunction: true,
@@ -60,7 +60,7 @@ const parserOptions = (exports.parserOptions = {
     'throwExpressions',
   ],
   ranges: true,
-});
+};
 
 function parse(source, filename, sourceType) {
   let ast;
@@ -76,10 +76,9 @@ function parse(source, filename, sourceType) {
 }
 
 // TODO: docs
-class AstBuilder {
+export class AstBuilder {
   // TODO: docs
   static build(source, filename, sourceType) {
     return parse(source, filename, sourceType);
   }
 }
-exports.AstBuilder = AstBuilder;

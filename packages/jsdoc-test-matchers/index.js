@@ -14,8 +14,10 @@
   limitations under the License.
 */
 const _ = require('lodash');
-const { addMatchers } = require('add-matchers');
 const { format } = require('prettier');
+
+// Prettier lazy-loads its parsers, so preload the HTML parser while we know we're not mocked.
+require('prettier/parser-html');
 
 function stripWhitespace(str) {
   // Remove leading whitespace.
@@ -35,67 +37,133 @@ function normalizeHtml(str) {
   return stripWhitespace(str);
 }
 
-// Prettier lazy-loads its parsers, so preload the HTML parser while we know we're not mocked.
-require('prettier/parser-html');
-// Add matchers from https://github.com/JamieMason/Jasmine-Matchers.
-require('jasmine-expect');
+function isInstanceOf(actual, expected) {
+  let actualName;
+  let expectedName;
 
-addMatchers({
-  toBeError(value) {
-    return value instanceof Error;
-  },
-  toBeErrorOfType(other, value) {
-    return value instanceof Error && value.name === other;
-  },
-  toBeInstanceOf(other, value) {
-    let otherName;
-    let valueName;
+  if (!_.isObject(actual)) {
+    throw new TypeError(`Expected object value, got ${typeof value}`);
+  }
 
-    if (typeof value !== 'object') {
-      throw new TypeError(`Expected object value, got ${typeof value}`);
+  actualName = actual.constructor.name;
+
+  if (_.isString(expected)) {
+    // Class name.
+    expectedName = expected;
+  } else if (_.isFunction(expected)) {
+    // Class constructor.
+    expectedName = expected.name;
+  } else {
+    expectedName = expected.constructor.name;
+  }
+
+  return actualName === expectedName;
+}
+
+function matchmaker(name, checker) {
+  return (util) => ({
+    compare: (actual, expected) => {
+      const result = {
+        pass: checker(actual, expected),
+      };
+
+      if (_.isArray(expected) || _.isObject(expected)) {
+        result.message = util.buildFailureMessage(name, result.pass, actual, expected);
+      }
+
+      return result;
+    },
+  });
+}
+
+const matcherFuncs = {
+  toBeArray: (actual) => {
+    return _.isArray(actual);
+  },
+  toBeArrayOfSize: (actual, expected) => {
+    if (_.isArray(actual) && actual.length === expected) {
+      return true;
     }
 
-    valueName = value.constructor.name;
-
-    if (typeof other === 'string') {
-      // Class name.
-      otherName = other;
-    } else if (typeof other === 'function') {
-      // Class constructor.
-      otherName = other.name;
-    } else {
-      otherName = other.constructor.name;
+    return false;
+  },
+  toBeArrayOfStrings: (actual) => {
+    if (!_.isArray(actual) || !actual.length) {
+      return false;
     }
 
-    return valueName === otherName;
+    return !actual.some((item) => !_.isString(item));
   },
-  toContainHtml(other, value) {
-    const otherDiffable = normalizeHtml(other);
-    const valueDiffable = normalizeHtml(value);
+  toBeBoolean: (actual) => {
+    return _.isBoolean(actual);
+  },
+  toBeEmptyArray: (actual) => {
+    return _.isArray(actual) && actual.length === 0;
+  },
+  toBeEmptyObject: (actual) => {
+    return _.isObject(actual) && !Object.keys(actual).length;
+  },
+  toBeEmptyString: (actual) => {
+    return actual === '';
+  },
+  toBeError: (actual) => {
+    return actual instanceof Error;
+  },
+  toBeErrorOfType: (actual, expected) => {
+    return actual instanceof Error && actual.name === expected;
+  },
+  toBeFunction: (actual) => {
+    return _.isFunction(actual);
+  },
+  toBeInstanceOf: isInstanceOf,
+  toBeLessThanOrEqualTo: (actual, expected) => {
+    return actual <= expected;
+  },
+  toBeNonEmptyObject: (actual) => {
+    return _.isObject(actual) && Object.keys(actual).length;
+  },
+  toBeNonEmptyString: (actual) => {
+    return _.isString(actual) && actual.length > 0;
+  },
+  toBeObject: (actual) => {
+    return _.isObject(actual);
+  },
+  toBeString: (actual) => {
+    return _.isString(actual);
+  },
+  toBeWholeNumber: (actual) => {
+    return Number.isInteger(actual);
+  },
+  toContainHtml: (actual, expected) => {
+    const actualDiffable = normalizeHtml(actual);
+    const expectedDiffable = normalizeHtml(expected);
 
-    return valueDiffable.includes(otherDiffable);
+    return actualDiffable.includes(expectedDiffable);
   },
-  toHaveOwnProperty(other, value) {
-    return Object.hasOwn(value, other);
+  toEndWith: (actual, expected) => {
+    return _.isString(actual) && _.isString(expected) && actual.endsWith(expected);
+  },
+  toHaveOwnProperty: (actual, expected) => {
+    return Object.hasOwn(actual, expected);
   },
   // The objects in `value` must have all of the keys and values from the corresponding objects in
   // `other`. The object in `value` can have additional properties as well. For example, if
   // `other[0]` is `{ a: 1 }`, and `value[0]` is `{ a: 1, b: 2 }`, then the objects match.
-  toMatchArrayOfObjects(other, value) {
+  toMatchArrayOfObjects: (actual, expected) => {
     let isMatch = true;
 
-    if (!Array.isArray(value)) {
+    if (!_.isArray(actual)) {
       throw new TypeError(`Expected array value, got ${typeof value}`);
     }
-    if (!Array.isArray(other)) {
-      throw new TypeError(`Expected array value as expected value, got ${typeof other}`);
+    if (!_.isArray(expected)) {
+      throw new TypeError(`Expected the expected value to be an array, got ${typeof other}`);
     }
 
-    if (other.length !== value.length) {
+    if (expected.length !== actual.length) {
       isMatch = false;
     } else {
-      for (let i = 0, l = value.length; i < l; i++) {
-        if (!_.isMatch(value[i], other[i])) {
+      for (let i = 0, l = actual.length; i < l; i++) {
+        if (!_.isMatch(actual[i], expected[i])) {
           isMatch = false;
           break;
         }
@@ -107,7 +175,28 @@ addMatchers({
   // The `value` object must have all of the keys and values from the `other` object. The `value`
   // object can have additional properties as well. For example, if `other` is `{ a: 1 }`, and
   // `value` is `{ a: 1, b: 2 }`, then the objects match.
-  toMatchObject(other, value) {
-    return _.isMatch(value, other);
+  toMatchObject: (actual, expected) => {
+    return _.isMatch(actual, expected);
   },
-});
+  toThrowErrorOfType: (actual, expected) => {
+    let error;
+
+    try {
+      actual();
+    } catch (e) {
+      error = e;
+    }
+
+    return error && error instanceof Error && isInstanceOf(error, expected);
+  },
+};
+
+module.exports = (() => {
+  const result = {};
+
+  Object.keys(matcherFuncs).forEach((key) => {
+    result[key] = matchmaker(key, matcherFuncs[key]);
+  });
+
+  return result;
+})();

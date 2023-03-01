@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const Emittery = require('emittery');
-const { default: ow } = require('ow');
+import Emittery from 'emittery';
+import ow from 'ow';
 
-module.exports = class Task extends Emittery {
+export class Task extends Emittery {
   constructor(opts = {}) {
     let deps;
 
@@ -61,4 +61,4 @@ module.exports = class Task extends Emittery {
       }
     );
   }
-};
+}

@@ -13,7 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const doclet = require('../../index');
+import doclet from '../../index.js';
+import * as augment from '../../lib/augment.js';
+import { resolveBorrows } from '../../lib/borrow.js';
+import { combineDoclets, Doclet } from '../../lib/doclet.js';
+import { Package } from '../../lib/package.js';
+import * as schema from '../../lib/schema.js';
 
 describe('@jsdoc/doclet', () => {
   it('is an object', () => {
@@ -22,49 +27,37 @@ describe('@jsdoc/doclet', () => {
 
   describe('augment', () => {
     it('is lib/augment', () => {
-      const augment = require('../../lib/augment');
-
-      expect(doclet.augment).toBe(augment);
+      expect(doclet.augment).toEqual(augment);
     });
   });
 
   describe('combineDoclets', () => {
-    it('is lib/doclet.combine', () => {
-      const { combine } = require('../../lib/doclet');
-
-      expect(doclet.combineDoclets).toBe(combine);
+    it('is lib/doclet.combineDoclets', () => {
+      expect(doclet.combineDoclets).toEqual(combineDoclets);
     });
   });
 
   describe('Doclet', () => {
     it('is lib/doclet.Doclet', () => {
-      const { Doclet } = require('../../lib/doclet');
-
-      expect(doclet.Doclet).toBe(Doclet);
+      expect(doclet.Doclet).toEqual(Doclet);
     });
   });
 
   describe('Package', () => {
     it('is lib/package.Package', () => {
-      const { Package } = require('../../lib/package');
-
-      expect(doclet.Package).toBe(Package);
+      expect(doclet.Package).toEqual(Package);
     });
   });
 
   describe('resolveBorrows', () => {
     it('is lib/borrow.resolveBorrows', () => {
-      const { resolveBorrows } = require('../../lib/borrow');
-
-      expect(doclet.resolveBorrows).toBe(resolveBorrows);
+      expect(doclet.resolveBorrows).toEqual(resolveBorrows);
     });
   });
 
   describe('schema', () => {
     it('is lib/schema', () => {
-      const schema = require('../../lib/schema');
-
-      expect(doclet.schema).toBe(schema);
+      expect(doclet.schema).toEqual(schema);
     });
   });
 });

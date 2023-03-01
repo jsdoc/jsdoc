@@ -10,6 +10,10 @@
   "homepage": "https://github.com/jsdoc/jsdoc#readme",
   "license": "Apache-2.0",
   "main": "index.js",
+  "dependencies": {
+    "@babel/eslint-parser": "^7.19.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0"
+  },
   "peerDependencies": {
     "eslint": ">= 8.35.0"
   },
@@ -26,6 +30,7 @@
   "bugs": {
     "url": "https://github.com/jsdoc/jsdoc/issues"
   },
+  "type": "commonjs",
   "engines": {
     "node": ">=v18.12.0"
   },

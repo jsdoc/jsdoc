@@ -14,16 +14,20 @@
   limitations under the License.
 */
 /* global jsdoc */
-describe('source-tag plugin', () => {
-  const path = require('path');
-  const { plugins } = require('@jsdoc/core');
+import path from 'node:path';
 
+import { plugins } from '@jsdoc/core';
+
+describe('source-tag plugin', () => {
+  const __dirname = jsdoc.dirname(import.meta.url);
   let docSet;
   const parser = jsdoc.createParser();
   const pluginPath = path.join(__dirname, '../../source-tag.js');
 
-  plugins.installPlugins([pluginPath], parser, jsdoc.deps);
-  docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
+  beforeAll(async () => {
+    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
+  });
 
   it("should set the lineno and filename of the doclet's meta property", () => {
     const doclet = docSet.getByLongname('handlers.newDoclet')[0];
