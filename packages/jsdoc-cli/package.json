@@ -35,7 +35,7 @@
     "@jsdoc/util": "^0.3.0",
     "lodash": "^4.17.21",
     "ow": "^1.1.1",
-    "strip-bom": "^4.0.0",
+    "strip-bom": "^5.0.0",
     "yargs-parser": "^21.1.1"
   },
   "engines": {
