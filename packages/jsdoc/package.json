@@ -22,8 +22,8 @@
     "@jsdoc/tag": "^0.2.0",
     "@jsdoc/util": "^0.3.0",
     "lodash": "^4.17.21",
-    "strip-bom": "^4.0.0",
-    "strip-json-comments": "^3.1.1"
+    "strip-bom": "^5.0.0",
+    "strip-json-comments": "^5.0.0"
   },
   "engines": {
     "node": ">=v18.12.0"

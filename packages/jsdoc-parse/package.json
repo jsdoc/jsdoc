@@ -17,7 +17,7 @@
     "@jsdoc/core": "^0.5.0",
     "@jsdoc/doclet": "^0.2.0",
     "@jsdoc/util": "^0.3.0",
-    "escape-string-regexp": "^4.0.0"
+    "escape-string-regexp": "^5.0.0"
   },
   "repository": {
     "type": "git",
