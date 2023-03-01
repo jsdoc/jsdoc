@@ -47,11 +47,7 @@ export default function test(deps) {
   jasmine.addReporter(reporter);
   jasmine.exitOnCompletion = false;
   jasmine.loadConfig({
-    helpers: [
-      // 'node_modules/jasmine-expect/index.js',
-      // 'node_modules/@jsdoc/test-matchers/index.js',
-      'packages/jsdoc/test/helpers/**/*.js',
-    ],
+    helpers: ['packages/jsdoc/test/helpers/**/*.js'],
     random: false,
     stopSpecOnExpectationFailure: false,
   });
