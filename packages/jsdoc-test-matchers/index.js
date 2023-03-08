@@ -94,6 +94,9 @@ const matcherFuncs = {
 
     return !actual.some((item) => !_.isString(item));
   },
+  toBeArrayOfObjects: (actual) => {
+    return _.isArray(actual) && !actual.some((item) => !_.isObject(item));
+  },
   toBeBoolean: (actual) => {
     return _.isBoolean(actual);
   },
@@ -125,6 +128,9 @@ const matcherFuncs = {
   toBeNonEmptyString: (actual) => {
     return _.isString(actual) && actual.length > 0;
   },
+  toBeNumber: (actual) => {
+    return _.isNumber(actual);
+  },
   toBeObject: (actual) => {
     return _.isObject(actual);
   },
@@ -142,6 +148,9 @@ const matcherFuncs = {
   },
   toEndWith: (actual, expected) => {
     return _.isString(actual) && _.isString(expected) && actual.endsWith(expected);
+  },
+  toHaveMethod: (actual, expected) => {
+    return _.isObject(actual) && _.isFunction(actual[expected]);
   },
   toHaveOwnProperty: (actual, expected) => {
     return Object.hasOwn(actual, expected);
