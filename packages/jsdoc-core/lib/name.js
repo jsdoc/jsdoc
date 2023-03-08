@@ -82,9 +82,9 @@ const REGEXP_NAME_DESCRIPTION = new RegExp(`^(\\[[^\\]]+\\]|\\S+)${DESCRIPTION}`
  * parent.
  *
  * @example
- * exports.nameIsLongname('foo.bar', 'foo');  // true
- * exports.nameIsLongname('foo.bar', 'baz');  // false
- * exports.nameIsLongname('bar', 'foo');      // false
+ * nameIsLongname('foo.bar', 'foo');  // true
+ * nameIsLongname('foo.bar', 'baz');  // false
+ * nameIsLongname('bar', 'foo');      // false
  * @param {string} name - The name to check.
  * @param {string} memberof - The parent of the name.
  * @returns {boolean} `true` if the name represents a complete longname that is a member of the
@@ -321,7 +321,7 @@ function splitLongname(longname, options) {
 
   do {
     if (!options.includeVariation) {
-      previousName = exports.stripVariation(previousName);
+      previousName = stripVariation(previousName);
     }
     currentNameInfo = nameInfo[previousName] = slice(previousName, splitters);
     previousName = currentNameInfo.memberof;
