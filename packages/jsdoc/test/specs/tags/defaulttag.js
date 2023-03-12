@@ -16,8 +16,6 @@
 describe('@default tag', () => {
   const docSet = jsdoc.getDocSetFromFile('test/fixtures/defaulttag.js');
 
-  console.log(`!!!!!!!!!\n${JSON.stringify(docSet, null, 2)}`);
-
   it("When symbol set to null has a @default tag with no text, the doclet's defaultValue property should be: null", () => {
     const request = docSet.getByLongname('request')[0];
 
