@@ -88,7 +88,7 @@ function createSymbolDoclet(comment, e, deps) {
 }
 
 function setCurrentModule(doclet) {
-  if (doclet.kind === 'module') {
+  if (doclet.kind === 'module' && !doclet.isEnum) {
     currentModule = new CurrentModule(doclet);
   }
 }
