@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "bottlejs": "^2.0.1",
-    "cosmiconfig": "^8.1.0",
+    "cosmiconfig": "^8.1.2",
     "escape-string-regexp": "^5.0.0",
     "lodash": "^4.17.21",
     "strip-bom": "^5.0.0",
