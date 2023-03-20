@@ -35,7 +35,10 @@ const {
 } = jsdocName;
 const { isFunction } = astNode;
 
+const ACCESS_LEVELS = ['package', 'private', 'protected', 'public'];
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
+// TODO: `class` should be on this list, right? What are the implications of adding it?
+const GLOBAL_KINDS = ['constant', 'function', 'member', 'typedef'];
 
 function fakeMeta(node) {
   return {
@@ -370,6 +373,9 @@ function copySpecificProperties(primary, secondary, target, include) {
  * @alias module:@jsdoc/doclet.Doclet
  */
 export class Doclet {
+  #accessConfig;
+  #dictionary;
+
   /**
    * Create a doclet.
    *
@@ -381,6 +387,8 @@ export class Doclet {
     let newTags = [];
 
     meta = meta || {};
+    this.#accessConfig = dependencies.get('config')?.opts?.access ?? [];
+    this.#dictionary = dependencies.get('tags');
     /** The original text of the comment from the source code. */
     this.comment = docletSrc;
     Object.defineProperty(this, 'dependencies', {
@@ -441,8 +449,7 @@ export class Doclet {
    * @param {string} [text] - The text of the tag being added.
    */
   addTag(title, text) {
-    const dictionary = this.dependencies.get('tags');
-    const tagDef = dictionary.lookUp(title);
+    const tagDef = this.#dictionary.lookUp(title);
     const newTag = new Tag(title, text, this.meta, this.dependencies);
 
     if (tagDef && tagDef.onTagged) {
@@ -452,6 +459,75 @@ export class Doclet {
     if (!tagDef) {
       this.tags = this.tags || [];
       this.tags.push(newTag);
+    }
+  }
+
+  /**
+   * Check whether the doclet represents a globally available symbol.
+   *
+   * @returns {boolean} `true` if the doclet represents a global; `false` otherwise.
+   */
+  isGlobal() {
+    return this.scope === 'global' && GLOBAL_KINDS.includes(this.kind);
+  }
+
+  /**
+   * Check whether the doclet should be used to generate output.
+   *
+   * @returns {boolean} `true` if the doclet should be used to generate output; `false` otherwise.
+   */
+  isVisible() {
+    const accessConfig = this.#accessConfig;
+
+    // By default, we don't use:
+    //
+    // + Doclets that explicitly declare that they should be ignored
+    // + Doclets that claim to belong to an anonymous scope
+    // + "Undocumented" doclets (usually code with no JSDoc comment; might also include some odd
+    //   artifacts of the parsing process)
+    if (this.ignore === true || this.memberof === '<anonymous>' || this.undocumented === true) {
+      return false;
+    }
+
+    // We also don't use private doclets by default, unless the user told us to use them.
+    if (
+      (!accessConfig.length ||
+        (!accessConfig.includes('all') && !accessConfig.includes('private'))) &&
+      this.access === 'private'
+    ) {
+      return false;
+    }
+
+    if (accessConfig.length && !accessConfig.includes('all')) {
+      // The string `undefined` needs special treatment.
+      if (
+        !accessConfig.includes('undefined') &&
+        (this.access === null || this.access === undefined)
+      ) {
+        return false;
+      }
+      // For other access levels, we can just check whether the user asked us to use that level.
+      if (ACCESS_LEVELS.some((level) => !accessConfig.includes(level) && this.access === level)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Set the doclet's `longname` property.
+   *
+   * @param {string} longname - The longname for the doclet.
+   */
+  setLongname(longname) {
+    /**
+     * The fully resolved symbol name.
+     * @type {string}
+     */
+    this.longname = removeGlobal(longname);
+    if (this.#dictionary.isNamespace(this.kind)) {
+      this.longname = applyNamespace(this.longname, this.kind);
     }
   }
 
@@ -468,24 +544,6 @@ export class Doclet {
     this.memberof = removeGlobal(sid)
       // TODO: Use `prototypeToPunc` instead?
       .replace(/\.prototype/g, SCOPE.PUNC.INSTANCE);
-  }
-
-  /**
-   * Set the doclet's `longname` property.
-   *
-   * @param {string} longname - The longname for the doclet.
-   */
-  setLongname(longname) {
-    const dictionary = this.dependencies.get('tags');
-
-    /**
-     * The fully resolved symbol name.
-     * @type {string}
-     */
-    this.longname = removeGlobal(longname);
-    if (dictionary.isNamespace(this.kind)) {
-      this.longname = applyNamespace(this.longname, this.kind);
-    }
   }
 
   /**
