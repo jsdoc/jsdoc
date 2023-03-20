@@ -27,7 +27,7 @@
   "type": "commonjs",
   "dependencies": {
     "lodash": "^4.17.21",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.5"
   },
   "engines": {
     "node": ">=v18.12.0"
