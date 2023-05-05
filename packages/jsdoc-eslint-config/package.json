@@ -15,7 +15,7 @@
     "eslint-plugin-simple-import-sort": "^10.0.0"
   },
   "peerDependencies": {
-    "eslint": ">= 8.39.0"
+    "eslint": ">= 8.40.0"
   },
   "publishConfig": {
     "access": "public"
