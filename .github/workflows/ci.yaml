@@ -60,5 +60,4 @@ jobs:
           npm install -g npm
           npm install -g lerna
           npm install
-          lerna bootstrap
           npm run test
