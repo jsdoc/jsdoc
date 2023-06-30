@@ -45,8 +45,8 @@
     "format": "node_modules/.bin/hereby format",
     "license-check": "node_modules/.bin/hereby license-check",
     "license-headers": "node_modules/.bin/hereby license-headers",
-    "lint": "node_modules/.bin/hereby hereby lint",
-    "test": "node_modules/.bin/hereby hereby test"
+    "lint": "hereby lint",
+    "test": "hereby test"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.21.8"
