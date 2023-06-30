@@ -28,7 +28,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
     "klaw-sync": "^6.0.0",
-    "lerna": "^6.6.2",
+    "lerna": "^7.0.0",
     "license-check-and-add": "^4.0.5",
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
@@ -45,10 +45,13 @@
     "format": "node_modules/.bin/hereby format",
     "license-check": "node_modules/.bin/hereby license-check",
     "license-headers": "node_modules/.bin/hereby license-headers",
-    "lint": "node_modules/.bin/hereby lint",
-    "test": "node_modules/.bin/hereby test"
+    "lint": "hereby lint",
+    "test": "hereby test"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.21.8"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
