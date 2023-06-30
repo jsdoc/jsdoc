@@ -57,7 +57,5 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Test
         run: |
-          npm install -g npm
-          npm install -g lerna
           npm install
           npm run test
