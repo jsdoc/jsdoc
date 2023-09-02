@@ -12,8 +12,8 @@
   "main": "index.js",
   "peerDependencies": {
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.8"
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3"
   },
   "publishConfig": {
     "access": "public"
