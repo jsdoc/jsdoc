@@ -23,7 +23,7 @@
     "@jsdoc/util": "^0.3.0",
     "lodash": "^4.17.21",
     "strip-bom": "^5.0.0",
-    "strip-json-comments": "^5.0.0"
+    "strip-json-comments": "^5.0.1"
   },
   "engines": {
     "node": ">=v18.12.0"
