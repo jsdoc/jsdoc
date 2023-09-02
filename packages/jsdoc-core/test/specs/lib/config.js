@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import mockFs from 'mock-fs'; // eslint-disable-line simple-import-sort/imports
 import { defaultLoaders } from 'cosmiconfig';
-import mockFs from 'mock-fs';
 
-import * as config from '../../../lib/config.js'; // eslint-disable-line sort-imports
+import * as config from '../../../lib/config.js';
 
 describe('@jsdoc/core/lib/config', () => {
   // Ensure that YAML parser is loaded before we run any tests. `cosmiconfig` tries to load it
