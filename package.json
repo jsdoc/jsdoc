@@ -21,7 +21,7 @@
     "c8": "^7.14.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "execa": "^7.1.1",
     "hereby": "^1.8.1",
@@ -33,7 +33,7 @@
     "license-check-and-add": "^4.0.5",
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
-    "prettier": "^2.8.8"
+    "prettier": "^3.0.3"
   },
   "type": "module",
   "engines": {
