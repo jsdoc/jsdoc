@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/tag",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Tools for working with block and inline JSDoc tags.",
   "keywords": [
     "jsdoc"
@@ -34,8 +34,8 @@
     }
   },
   "dependencies": {
-    "@jsdoc/ast": "^0.2.2",
-    "@jsdoc/core": "^0.5.2",
+    "@jsdoc/ast": "^0.2.3",
+    "@jsdoc/core": "^0.5.3",
     "@jsdoc/util": "^0.3.0",
     "catharsis": "^0.9.0",
     "common-path-prefix": "^3.0.0",
