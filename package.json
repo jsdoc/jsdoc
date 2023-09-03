@@ -6,7 +6,7 @@
     "@babel/eslint-parser": "7.22.11",
     "@jsdoc/ast": "^0.2.2",
     "@jsdoc/cli": "^0.3.2",
-    "@jsdoc/core": "^0.5.0",
+    "@jsdoc/core": "^0.5.2",
     "@jsdoc/doclet": "^0.2.0",
     "@jsdoc/eslint-config": "^1.2.0",
     "@jsdoc/parse": "^0.3.0",
