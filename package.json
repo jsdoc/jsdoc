@@ -12,7 +12,7 @@
     "@jsdoc/parse": "^0.3.3",
     "@jsdoc/prettier-config": "^0.2.3",
     "@jsdoc/salty": "^0.2.5",
-    "@jsdoc/tag": "^0.2.0",
+    "@jsdoc/tag": "^0.2.3",
     "@jsdoc/task-runner": "^0.2.0",
     "@jsdoc/test-matchers": "^0.2.0",
     "@jsdoc/util": "^0.3.0",
