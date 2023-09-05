@@ -14,7 +14,7 @@
     "@jsdoc/salty": "^0.2.5",
     "@jsdoc/tag": "^0.2.3",
     "@jsdoc/task-runner": "^0.2.1",
-    "@jsdoc/test-matchers": "^0.2.0",
+    "@jsdoc/test-matchers": "^0.2.3",
     "@jsdoc/util": "^0.3.0",
     "@lerna/legacy-package-management": "^7.2.0",
     "ajv": "^8.12.0",
