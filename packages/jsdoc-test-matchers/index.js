@@ -14,28 +14,6 @@
   limitations under the License.
 */
 const _ = require('lodash');
-const { format } = require('prettier');
-
-// Prettier lazy-loads its parsers, so preload the HTML parser while we know we're not mocked.
-require('prettier/parser-html');
-
-function stripWhitespace(str) {
-  // Remove leading whitespace.
-  str = str.replace(/^[\s]+/gm, '');
-  // Remove empty lines.
-  str = str.replace(/^\n$/gm, '');
-
-  return str;
-}
-
-function normalizeHtml(str) {
-  str = format(str, {
-    parser: 'html',
-    tabWidth: 2,
-  });
-
-  return stripWhitespace(str);
-}
 
 function isInstanceOf(actual, expected) {
   let actualName;
@@ -139,12 +117,6 @@ const matcherFuncs = {
   },
   toBeWholeNumber: (actual) => {
     return Number.isInteger(actual);
-  },
-  toContainHtml: (actual, expected) => {
-    const actualDiffable = normalizeHtml(actual);
-    const expectedDiffable = normalizeHtml(expected);
-
-    return actualDiffable.includes(expectedDiffable);
   },
   toEndWith: (actual, expected) => {
     return _.isString(actual) && _.isString(expected) && actual.endsWith(expected);
