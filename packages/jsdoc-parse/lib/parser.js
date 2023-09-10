@@ -631,7 +631,7 @@ export class Parser extends EventEmitter {
           e.doclet.type = _.cloneDeep(doclet.type);
         }
 
-        delete e.doclet.undocumented;
+        e.doclet.undocumented = undefined;
         e.doclet.defaultvalue = e.doclet.meta.code.value;
 
         // add the doclet to the parent's properties

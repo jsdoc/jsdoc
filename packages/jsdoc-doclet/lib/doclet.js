@@ -40,6 +40,21 @@ const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
 // TODO: `class` should be on this list, right? What are the implications of adding it?
 const GLOBAL_KINDS = ['constant', 'function', 'member', 'typedef'];
 
+export const WATCHABLE_PROPS = [
+  'access',
+  'augments',
+  'borrowed',
+  'ignore',
+  'implements',
+  'kind',
+  'listens',
+  'longname',
+  'memberof',
+  'mixes',
+  'scope',
+  'undocumented',
+];
+
 function fakeMeta(node) {
   return {
     type: node ? node.type : null,
@@ -242,7 +257,7 @@ function resolve(doclet) {
   if (doclet.scope === SCOPE.NAMES.GLOBAL) {
     // via @global tag?
     doclet.setLongname(doclet.name);
-    delete doclet.memberof;
+    doclet.memberof = undefined;
   } else if (about.scope) {
     if (about.memberof === LONGNAMES.GLOBAL) {
       // via @memberof <global> ?
@@ -375,6 +390,7 @@ function copySpecificProperties(primary, secondary, target, include) {
 export class Doclet {
   #accessConfig;
   #dictionary;
+  #eventBus;
 
   /**
    * Create a doclet.
@@ -389,12 +405,31 @@ export class Doclet {
     meta = meta || {};
     this.#accessConfig = dependencies.get('config')?.opts?.access ?? [];
     this.#dictionary = dependencies.get('tags');
-    /** The original text of the comment from the source code. */
-    this.comment = docletSrc;
+    this.#eventBus = dependencies.get('eventBus');
+
     Object.defineProperty(this, 'dependencies', {
       enumerable: false,
       value: dependencies,
     });
+    Object.defineProperty(this, 'watchableProps', {
+      enumerable: false,
+      value: {},
+      writable: true,
+    });
+    for (const prop of WATCHABLE_PROPS) {
+      Object.defineProperty(this, prop, {
+        enumerable: true,
+        get() {
+          return this.watchableProps[prop];
+        },
+        set(newValue) {
+          this.#setWatchableProperty(prop, newValue);
+        },
+      });
+    }
+
+    /** The original text of the comment from the source code. */
+    this.comment = docletSrc;
     this.setMeta(meta);
 
     docletSrc = unwrap(docletSrc);
@@ -409,6 +444,15 @@ export class Doclet {
     this.postProcess();
   }
 
+  #setWatchableProperty(name, newValue) {
+    const oldValue = this.watchableProps[name];
+
+    if (newValue !== oldValue) {
+      this.watchableProps[name] = newValue;
+      this.#eventBus.emit('docletChanged', { doclet: this, property: name, oldValue, newValue });
+    }
+  }
+
   // TODO: We call this method in the constructor _and_ in `jsdoc/src/handlers`. It appears that
   // if we don't call the method twice, various doclet properties can be incorrect, including name
   // and memberof.
@@ -421,7 +465,7 @@ export class Doclet {
       this.setLongname(this.name);
     }
     if (this.memberof === '') {
-      delete this.memberof;
+      this.memberof = undefined;
     }
 
     if (!this.kind && this.meta && this.meta.code) {

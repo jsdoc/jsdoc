@@ -44,7 +44,7 @@ export const tags = {
       if (/^(package|private|protected|public)$/i.test(value)) {
         doclet.access = value.toLowerCase();
       } else {
-        delete doclet.access;
+        doclet.access = undefined;
       }
     },
   },
@@ -263,7 +263,7 @@ export const tags = {
     mustNotHaveValue: true,
     onTagged(doclet) {
       doclet.scope = SCOPE.NAMES.GLOBAL;
-      delete doclet.memberof;
+      doclet.memberof = undefined;
     },
   },
   hideconstructor: {
@@ -349,7 +349,7 @@ export const tags = {
         doclet.forceMemberof = true;
         if (tag.value === LONGNAMES.GLOBAL) {
           doclet.addTag('global');
-          delete doclet.memberof;
+          doclet.memberof = undefined;
         }
       }
       util.setDocletMemberof(doclet, tag);

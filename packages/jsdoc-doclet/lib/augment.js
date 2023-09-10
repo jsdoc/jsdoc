@@ -17,9 +17,8 @@
  * Provides methods for augmenting the parse results based on their content.
  */
 import { name } from '@jsdoc/core';
-import _ from 'lodash';
 
-import { combineDoclets } from './doclet.js';
+import { combineDoclets, Doclet } from './doclet.js';
 
 const { fromParts, SCOPE, toParts } = name;
 
@@ -37,7 +36,7 @@ function mapDependencies(index, propertyName) {
       if (kinds.includes(doc.kind)) {
         dependencies[indexName] = {};
         if (Object.hasOwn(doc, propertyName)) {
-          len = doc[propertyName].length;
+          len = doc[propertyName]?.length;
           for (let j = 0; j < len; j++) {
             dependencies[indexName][doc[propertyName][j]] = true;
           }
@@ -382,7 +381,8 @@ function getMixedInAdditions(mixinDoclets, allDoclets, { documented, memberof })
             continue;
           }
 
-          mixedDoclet = _.cloneDeep(mixedDoclets[k]);
+          mixedDoclet = new Doclet('', null, mixedDoclets[k].dependencies);
+          mixedDoclet = combineDoclets(mixedDoclets[k], mixedDoclet);
 
           updateMixes(mixedDoclet, mixedDoclet.longname);
           mixedDoclet.mixed = true;
@@ -411,9 +411,7 @@ function updateImplements(implDoclets, implementedLongname) {
   }
 
   implDoclets.forEach((implDoclet) => {
-    if (!Object.hasOwn(implDoclet, 'implements')) {
-      implDoclet.implements = [];
-    }
+    implDoclet.implements ??= [];
 
     if (!implDoclet.implements.includes(implementedLongname)) {
       implDoclet.implements.push(implementedLongname);

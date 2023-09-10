@@ -179,6 +179,8 @@ export default (() => {
     let cmd;
     const options = dependencies.get('options');
 
+    dependencies.registerValue('eventBus', bus);
+
     // If we already need to exit with an error, don't do any more work.
     if (props.shouldExitWithError) {
       cmd = () => Promise.resolve(0);

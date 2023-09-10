@@ -22,7 +22,7 @@ import _ from 'lodash';
 const { SCOPE } = name;
 
 function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
-  borrowed.forEach(({ from, as }) => {
+  borrowed?.forEach(({ from, as }) => {
     const borrowedDoclets = doclets.index.longname[from];
     let borrowedAs = as || from;
     let parts;
@@ -60,7 +60,7 @@ function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
 export function resolveBorrows(doclets) {
   for (let doclet of doclets.index.borrowed) {
     cloneBorrowedDoclets(doclet, doclets);
-    delete doclet.borrowed;
+    doclet.borrowed = undefined;
   }
 
   doclets.index.borrowed = [];

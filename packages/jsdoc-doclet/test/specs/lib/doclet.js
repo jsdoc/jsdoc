@@ -38,6 +38,10 @@ describe('@jsdoc/doclet/lib/doclet', () => {
     expect(doclet.Doclet).toBeFunction();
   });
 
+  it('has a WATCHABLE_PROPS array', () => {
+    expect(doclet.WATCHABLE_PROPS).toBeArrayOfStrings();
+  });
+
   describe('combineDoclets', () => {
     it('overrides most properties of the secondary doclet', () => {
       const primaryDoclet = new Doclet(
@@ -347,6 +351,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
           config.opts.access = access.slice();
         }
         map.set('config', config);
+        map.set('eventBus', jsdoc.deps.get('eventBus'));
         map.set('tags', jsdoc.deps.get('tags'));
 
         return map;
@@ -385,7 +390,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
           const newDoclet = makeDoclet(['@name foo', '@function']);
 
           // Just to be sure.
-          delete newDoclet.access;
+          newDoclet.access = undefined;
 
           expect(newDoclet.isVisible()).toBeTrue();
         });
@@ -402,7 +407,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
             newDoclet = makeDoclet(tags, fakeDeps);
             // Just to be sure.
             if (!value) {
-              delete newDoclet.access;
+              newDoclet.access = undefined;
             }
 
             return newDoclet;
@@ -439,7 +444,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
           const newDoclet = makeDoclet(['@function', '@name foo'], fakeDeps);
 
           // Just to be sure.
-          delete newDoclet.access;
+          newDoclet.access = undefined;
 
           expect(newDoclet.isVisible()).toBeFalse();
         });
@@ -486,6 +491,76 @@ describe('@jsdoc/doclet/lib/doclet', () => {
           }
 
           expect(setScope).toThrow();
+        });
+      });
+
+      describe('watchable properties', () => {
+        const eventBus = jsdoc.deps.get('eventBus');
+        let events;
+
+        function listener(e) {
+          events.push(e);
+        }
+
+        beforeEach(() => {
+          eventBus.on('docletChanged', listener);
+          events = [];
+        });
+
+        afterEach(() => {
+          eventBus.removeListener('docletChanged', listener);
+        });
+
+        it('sends events to the event bus when watchable properties change', () => {
+          const propValues = {
+            access: 'private',
+            augments: 'Foo',
+            borrowed: true,
+            ignore: true,
+            implements: 'Foo',
+            kind: 'class',
+            listens: 'event:foo',
+            longname: 'foo',
+            memberof: 'foo',
+            mixes: 'foo',
+            scope: 'static',
+            undocumented: true,
+          };
+          const keys = Object.keys(propValues);
+
+          // Make sure this test covers all watchable properties.
+          expect(keys).toEqual(doclet.WATCHABLE_PROPS);
+
+          keys.forEach((key) => {
+            const newDoclet = new Doclet('/** Huzzah, a doclet! */', null, jsdoc.deps);
+
+            events = [];
+
+            // Generates first event.
+            newDoclet[key] = propValues[key];
+            // Generates second event.
+            newDoclet[key] = undefined;
+
+            expect(events.length).toBe(2);
+
+            expect(events[0]).toBeObject();
+            expect(events[0].doclet).toBe(newDoclet);
+            expect(events[0].property).toBe(key);
+            if (key === 'kind') {
+              expect(events[0].oldValue).toBe('member');
+            } else if (key === 'longname') {
+              expect(events[0].oldValue).toBeEmptyString();
+            } else {
+              expect(events[0].oldValue).toBeUndefined();
+            }
+            expect(events[0].newValue).toBe(propValues[key]);
+
+            expect(events[1]).toBeObject();
+            expect(events[1].doclet).toBe(newDoclet);
+            expect(events[1].property).toBe(key);
+            expect(events[1].oldValue).toBe(propValues[key]);
+            expect(events[1].newValue).toBeUndefined();
+          });
         });
       });
     });
