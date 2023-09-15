@@ -107,7 +107,10 @@ export const lint = task({
 export const test = task({
   name: 'test',
   run: async () => {
-    await execa(NODE_BIN, [JSDOC_BIN, '-T']);
+    await execa(NODE_BIN, [JSDOC_BIN, '-T'], {
+      stdout: process.stdout,
+      stderr: process.stderr,
+    });
   },
 });
 
