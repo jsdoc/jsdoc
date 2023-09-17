@@ -18,9 +18,14 @@ const _ = require('lodash');
 function isInstanceOf(actual, expected) {
   let actualName;
   let expectedName;
+  let typeErrorMsg = 'Expected object value, got ';
 
-  if (!_.isObject(actual)) {
-    throw new TypeError(`Expected object value, got ${typeof value}`);
+  if (_.isNull(actual)) {
+    throw new TypeError(typeErrorMsg + 'null');
+  } else if (_.isArray(actual)) {
+    throw new TypeError(typeErrorMsg + 'array');
+  } else if (!_.isObject(actual)) {
+    throw new TypeError(typeErrorMsg + typeof value);
   }
 
   actualName = actual.constructor.name;
@@ -81,8 +86,14 @@ const matcherFuncs = {
   toBeEmptyArray: (actual) => {
     return _.isArray(actual) && actual.length === 0;
   },
+  toBeEmptyMap: (actual) => {
+    return _.isMap(actual) && actual.size === 0;
+  },
   toBeEmptyObject: (actual) => {
     return _.isObject(actual) && !Object.keys(actual).length;
+  },
+  toBeEmptySet: (actual) => {
+    return _.isSet(actual) && actual.size === 0;
   },
   toBeEmptyString: (actual) => {
     return actual === '';
@@ -100,6 +111,9 @@ const matcherFuncs = {
   toBeLessThanOrEqualTo: (actual, expected) => {
     return actual <= expected;
   },
+  toBeMap: (actual) => {
+    return _.isMap(actual);
+  },
   toBeNonEmptyObject: (actual) => {
     return _.isObject(actual) && Object.keys(actual).length;
   },
@@ -112,6 +126,9 @@ const matcherFuncs = {
   toBeObject: (actual) => {
     return _.isObject(actual);
   },
+  toBeSet: (actual) => {
+    return _.isSet(actual);
+  },
   toBeString: (actual) => {
     return _.isString(actual);
   },
@@ -121,15 +138,18 @@ const matcherFuncs = {
   toEndWith: (actual, expected) => {
     return _.isString(actual) && _.isString(expected) && actual.endsWith(expected);
   },
+  toHave: (actual, expected) => {
+    return (_.isMap(actual) || _.isSet(actual)) && actual.has(expected);
+  },
   toHaveMethod: (actual, expected) => {
     return _.isObject(actual) && _.isFunction(actual[expected]);
   },
   toHaveOwnProperty: (actual, expected) => {
     return Object.hasOwn(actual, expected);
   },
-  // The objects in `value` must have all of the keys and values from the corresponding objects in
-  // `other`. The object in `value` can have additional properties as well. For example, if
-  // `other[0]` is `{ a: 1 }`, and `value[0]` is `{ a: 1, b: 2 }`, then the objects match.
+  // The objects in `actual` must have all of the keys and values from the corresponding objects in
+  // `expected`. The object in `actual` can have additional properties as well. For example, if
+  // `expected[0]` is `{ a: 1 }`, and `actual[0]` is `{ a: 1, b: 2 }`, then the objects match.
   toMatchArrayOfObjects: (actual, expected) => {
     let isMatch = true;
 
@@ -153,9 +173,9 @@ const matcherFuncs = {
 
     return isMatch;
   },
-  // The `value` object must have all of the keys and values from the `other` object. The `value`
-  // object can have additional properties as well. For example, if `other` is `{ a: 1 }`, and
-  // `value` is `{ a: 1, b: 2 }`, then the objects match.
+  // The `actual` object must have all of the keys and values from the `expected` object. The
+  // `actual` object can have additional properties as well. For example, if `expected` is
+  // `{ a: 1 }`, and `actual` is `{ a: 1, b: 2 }`, then the objects match.
   toMatchObject: (actual, expected) => {
     return _.isMatch(actual, expected);
   },
