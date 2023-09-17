@@ -101,17 +101,12 @@ function setModuleScopeMemberOf(parser, doclet) {
   if (currentModule && currentModule.longname !== doclet.name) {
     if (!doclet.scope) {
       // is this a method definition? if so, we usually get the scope from the node directly
-      if (
-        doclet.meta &&
-        doclet.meta.code &&
-        doclet.meta.code.node &&
-        doclet.meta.code.node.type === Syntax.MethodDefinition
-      ) {
+      if (doclet.meta?.code?.node?.type === Syntax.MethodDefinition) {
         // special case for constructors of classes that have @alias tags
         if (doclet.meta.code.node.kind === 'constructor') {
           parentDoclet = parser._getDocletById(doclet.meta.code.node.parent.parent.nodeId);
 
-          if (parentDoclet && parentDoclet.alias) {
+          if (parentDoclet?.alias) {
             // the constructor should use the same name as the class
             doclet.addTag('alias', parentDoclet.alias);
             doclet.addTag('name', parentDoclet.alias);
@@ -126,13 +121,7 @@ function setModuleScopeMemberOf(parser, doclet) {
         }
       }
       // is this something that the module exports? if so, it's a static member
-      else if (
-        doclet.meta &&
-        doclet.meta.code &&
-        doclet.meta.code.node &&
-        doclet.meta.code.node.parent &&
-        doclet.meta.code.node.parent.type === Syntax.ExportNamedDeclaration
-      ) {
+      else if (doclet.meta?.code?.node?.parent?.type === Syntax.ExportNamedDeclaration) {
         doclet.addTag('static');
       }
       // otherwise, it must be an inner member
@@ -294,7 +283,7 @@ function newSymbolDoclet(parser, docletSrc, e) {
     processAlias(parser, newDoclet, e.astnode);
   }
   // otherwise, get the symbol name from the code
-  else if (e.code && typeof e.code.name !== 'undefined' && e.code.name !== '') {
+  else if (typeof e.code?.name !== 'undefined' && e.code?.name !== '') {
     newDoclet.addTag('name', e.code.name);
     if (!newDoclet.memberof) {
       addSymbolMemberof(parser, newDoclet, e.astnode);
