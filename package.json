@@ -9,7 +9,7 @@
     "@jsdoc/core": "^0.5.4",
     "@jsdoc/doclet": "^0.2.4",
     "@jsdoc/eslint-config": "^1.2.3",
-    "@jsdoc/parse": "^0.3.3",
+    "@jsdoc/parse": "^0.3.4",
     "@jsdoc/prettier-config": "^0.2.3",
     "@jsdoc/salty": "^0.2.5",
     "@jsdoc/tag": "^0.2.3",
