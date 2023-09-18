@@ -19,7 +19,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { Syntax, Walker } from '@jsdoc/ast';
-import _ from 'lodash';
+import { combineDoclets, Doclet } from '@jsdoc/doclet';
 
 import { attachTo } from '../../../lib/handlers.js';
 import * as jsdocParser from '../../../lib/parser.js';
@@ -146,7 +146,7 @@ describe('@jsdoc/parse/lib/parser', () => {
         const sourceCode = 'javascript:/** @class */function Foo() {}';
 
         function handler(e) {
-          e.doclet = _.cloneDeep(e.doclet);
+          e.doclet = combineDoclets(e.doclet, new Doclet('', {}, jsdoc.deps));
           e.doclet.foo = 'bar';
         }
 

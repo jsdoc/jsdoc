@@ -413,7 +413,7 @@ function updateImplements(implDoclets, implementedLongname) {
   implDoclets.forEach((implDoclet) => {
     implDoclet.implements ??= [];
 
-    if (!implDoclet.implements.includes(implementedLongname)) {
+    if (!implDoclet.implements?.includes(implementedLongname)) {
       implDoclet.implements.push(implementedLongname);
     }
   });

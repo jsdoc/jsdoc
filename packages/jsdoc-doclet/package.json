@@ -36,6 +36,7 @@
     "@jsdoc/tag": "^0.2.4",
     "@jsdoc/util": "^0.3.0",
     "lodash": "^4.17.21",
+    "on-change": "^4.0.2",
     "strip-bom": "^5.0.0"
   }
 }

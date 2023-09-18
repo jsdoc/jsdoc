@@ -90,6 +90,7 @@ export class Parser extends EventEmitter {
 
     this._conf = dependencies.get('config');
     this._dependencies = dependencies;
+    this._eventBus = dependencies.get('eventBus');
     this._visitor = new Visitor();
     this._walker = new Walker();
 
@@ -128,6 +129,12 @@ export class Parser extends EventEmitter {
     this._byLongname.put(LONGNAMES.GLOBAL, {
       meta: {},
     });
+  }
+
+  // TODO: update other code to always emit parser events directly to the event bus, then remove
+  emit(...args) {
+    super.emit(...args);
+    this._eventBus.emit(...args);
   }
 
   // TODO: update docs

@@ -44,6 +44,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
 
   describe('combineDoclets', () => {
     it('overrides most properties of the secondary doclet', () => {
+      let descriptors;
       const primaryDoclet = new Doclet(
         '/** New and improved!\n@version 2.0.0 */',
         null,
@@ -52,7 +53,12 @@ describe('@jsdoc/doclet/lib/doclet', () => {
       const secondaryDoclet = new Doclet('/** Hello!\n@version 1.0.0 */', null, jsdoc.deps);
       const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
 
-      Object.getOwnPropertyNames(newDoclet).forEach((property) => {
+      descriptors = Object.getOwnPropertyDescriptors(newDoclet);
+      Object.keys(descriptors).forEach((property) => {
+        if (!descriptors[property].enumerable) {
+          return;
+        }
+
         expect(newDoclet[property]).toEqual(primaryDoclet[property]);
       });
     });
@@ -514,15 +520,15 @@ describe('@jsdoc/doclet/lib/doclet', () => {
         it('sends events to the event bus when watchable properties change', () => {
           const propValues = {
             access: 'private',
-            augments: 'Foo',
+            augments: ['Foo'],
             borrowed: true,
             ignore: true,
-            implements: 'Foo',
+            implements: ['Foo'],
             kind: 'class',
-            listens: 'event:foo',
+            listens: ['event:foo'],
             longname: 'foo',
             memberof: 'foo',
-            mixes: 'foo',
+            mixes: ['foo'],
             scope: 'static',
             undocumented: true,
           };
@@ -553,12 +559,12 @@ describe('@jsdoc/doclet/lib/doclet', () => {
             } else {
               expect(events[0].oldValue).toBeUndefined();
             }
-            expect(events[0].newValue).toBe(propValues[key]);
+            expect(events[0].newValue).toEqual(propValues[key]);
 
             expect(events[1]).toBeObject();
             expect(events[1].doclet).toBe(newDoclet);
             expect(events[1].property).toBe(key);
-            expect(events[1].oldValue).toBe(propValues[key]);
+            expect(events[1].oldValue).toEqual(propValues[key]);
             expect(events[1].newValue).toBeUndefined();
           });
         });
