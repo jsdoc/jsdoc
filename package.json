@@ -5,7 +5,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "7.22.15",
     "@jsdoc/ast": "^0.2.4",
-    "@jsdoc/cli": "^0.3.3",
+    "@jsdoc/cli": "^0.3.4",
     "@jsdoc/core": "^0.5.3",
     "@jsdoc/doclet": "^0.2.3",
     "@jsdoc/eslint-config": "^1.2.2",
