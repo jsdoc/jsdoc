@@ -48,10 +48,7 @@ function isBlockComment({ type }) {
  */
 function isValidJsdoc(commentSrc) {
   return (
-    commentSrc &&
-    commentSrc.length > 4 &&
-    commentSrc.indexOf('/**') === 0 &&
-    commentSrc.indexOf('/***') !== 0
+    commentSrc?.length > 4 && commentSrc?.indexOf('/**') === 0 && commentSrc?.indexOf('/***') !== 0
   );
 }
 
@@ -81,7 +78,7 @@ function getLeadingJsdocComment(node) {
 function makeVarsFinisher(scopeDoclet) {
   return ({ doclet, code }) => {
     // no need to evaluate all things related to scopeDoclet again, just use it
-    if (scopeDoclet && doclet && (doclet.alias || doclet.memberof)) {
+    if (scopeDoclet && (doclet?.alias || doclet?.memberof)) {
       scopeDoclet.meta.vars[code.name] = doclet.longname;
     }
   };
@@ -89,13 +86,7 @@ function makeVarsFinisher(scopeDoclet) {
 
 // Given an event, get the parent node's doclet.
 function getParentDocletFromEvent(parser, { doclet }) {
-  if (
-    doclet &&
-    doclet.meta &&
-    doclet.meta.code &&
-    doclet.meta.code.node &&
-    doclet.meta.code.node.parent
-  ) {
+  if (doclet?.meta?.code?.node?.parent) {
     return parser._getDocletById(doclet.meta.code.node.parent.nodeId);
   }
 
@@ -132,15 +123,15 @@ function makeInlineParamsFinisher(parser) {
       return;
     }
 
-    parentDoclet.params = parentDoclet.params || [];
+    parentDoclet.params ??= [];
     documentedParams = parentDoclet.params;
-    knownParams = parentDoclet.meta.code.paramnames || [];
+    knownParams = parentDoclet.meta.code.paramnames ?? [];
 
     while (true) {
       param = documentedParams[i];
 
       // is the param already documented? if so, we don't need to use the doclet
-      if (param && param.name === e.doclet.name) {
+      if (param?.name === e.doclet.name) {
         e.doclet.undocumented = true;
         break;
       }
@@ -210,10 +201,7 @@ function makeRestParamFinisher() {
 
     documentedParams = doclet.params = doclet.params || [];
     restNode = findRestParam(
-      e.code.node.params ||
-        (e.code.node.value && e.code.node.value.params) ||
-        (e.code.node.init && e.code.node.init.params) ||
-        []
+      e.code.node.params || e.code.node.value?.params || e.code.node.init?.params || []
     );
 
     if (restNode) {
@@ -276,7 +264,7 @@ function makeDefaultParamFinisher() {
     }
 
     documentedParams = doclet.params = doclet.params || [];
-    params = e.code.node.params || (e.code.node.value && e.code.node.value.params) || [];
+    params = e.code.node.params || e.code.node.value?.params || [];
     defaultValues = findDefaultParams(params);
 
     for (let i = 0, j = 0, l = params.length; i < l; i++) {
@@ -295,9 +283,7 @@ function makeDefaultParamFinisher() {
       // add the default value iff a) a literal default value is defined in the code,
       // b) no default value is documented, and c) the default value is not an empty string
       if (
-        defaultValues[i] &&
-        defaultValues[i].right &&
-        defaultValues[i].right.type === Syntax.Literal &&
+        defaultValues[i]?.right?.type === Syntax.Literal &&
         typeof documentedParams[j].defaultvalue === 'undefined' &&
         defaultValues[i].right.value !== ''
       ) {
@@ -323,30 +309,31 @@ function makeDefaultParamFinisher() {
 function makeConstructorFinisher(parser) {
   return (e) => {
     let combined;
+    let doclets;
     const eventDoclet = e.doclet;
+    let nodeId;
     let parentDoclet;
 
     // for class declarations that are named module exports, the node that's documented is the
     // ExportNamedDeclaration, not the ClassDeclaration
-    if (
-      e.code.node.parent.parent.parent &&
-      e.code.node.parent.parent.parent.type === Syntax.ExportNamedDeclaration
-    ) {
-      parentDoclet = parser._getDocletById(e.code.node.parent.parent.parent.nodeId);
+    if (e.code.node.parent.parent.parent?.type === Syntax.ExportNamedDeclaration) {
+      nodeId = e.code.node.parent.parent.parent.nodeId;
     }
     // otherwise, we want the ClassDeclaration
     else {
-      parentDoclet = parser._getDocletById(e.code.node.parent.parent.nodeId);
+      nodeId = e.code.node.parent.parent.nodeId;
     }
+    doclets = parser._docletStore.docletsByNodeId.get(nodeId);
+    // Use the first documented doclet for the parent node.
+    parentDoclet = Array.from(doclets || []).filter((d) => !d.undocumented)[0];
 
-    if (!eventDoclet || !parentDoclet || parentDoclet.undocumented) {
+    if (!eventDoclet || !parentDoclet) {
       return;
     }
 
     // We prefer the parent doclet because it has the correct kind, longname, and memberof.
     // The child doclet might or might not have the correct kind, longname, and memberof.
     combined = combineDoclets(parentDoclet, eventDoclet, parser.dependencies);
-
     parser.addResult(combined);
 
     parentDoclet.undocumented = eventDoclet.undocumented = true;
@@ -367,11 +354,7 @@ function makeAsyncFunctionFinisher() {
       return;
     }
 
-    if (
-      e.code.node.async ||
-      (e.code.node.value && e.code.node.value.async) ||
-      (e.code.node.init && e.code.node.init.async)
-    ) {
+    if (e.code.node.async || e.code.node.value?.async || e.code.node.init?.async) {
       doclet.async = true;
     }
   };
@@ -403,11 +386,7 @@ function makeGeneratorFinisher() {
       return;
     }
 
-    if (
-      e.code.node.generator ||
-      (e.code.node.init && e.code.node.init.generator) ||
-      (e.code.node.value && e.code.node.value.generator)
-    ) {
+    if (e.code.node.generator || e.code.node.init?.generator || e.code.node.value?.generator) {
       doclet.generator = true;
     }
   };
@@ -454,9 +433,7 @@ class JsdocCommentFound {
 // TODO: docs
 function hasComments(node) {
   return (
-    (node && node.leadingComments && node.leadingComments.length) ||
-    (node && node.trailingComments && node.trailingComments.length) ||
-    (node && node.innerComments && node.innerComments.length)
+    node?.leadingComments?.length || node?.trailingComments?.length || node?.innerComments?.length
   );
 }
 
@@ -483,7 +460,7 @@ function trackVars(parser, { enclosingScope }, { code, finishers }) {
   }
 
   if (doclet) {
-    doclet.meta.vars = doclet.meta.vars || {};
+    doclet.meta.vars ??= {};
     doclet.meta.vars[code.name] = null;
     finishers.push(makeVarsFinisher(doclet));
   }
@@ -793,17 +770,17 @@ export class Visitor {
 
     comments = isBlock ? [node] : [];
 
-    if (node.leadingComments && node.leadingComments.length) {
+    if (node.leadingComments?.length) {
       addComments(node.leadingComments);
     }
 
     // trailing comments are always duplicates of leading comments unless they're attached to the
     // Program node
-    if (node.type === Syntax.Program && node.trailingComments && node.trailingComments.length) {
+    if (node.type === Syntax.Program && node.trailingComments?.length) {
       addComments(node.trailingComments);
     }
 
-    if (node.innerComments && node.innerComments.length) {
+    if (node.innerComments?.length) {
       addComments(node.innerComments);
     }
 
@@ -829,7 +806,7 @@ export class Visitor {
   visitNode(node, parser, filename) {
     const e = makeSymbolFoundEvent(node, parser, filename);
 
-    if (this._nodeVisitors && this._nodeVisitors.length) {
+    if (this._nodeVisitors?.length) {
       for (let visitor of this._nodeVisitors) {
         visitor.visitNode(node, e, parser, filename);
         if (e.stopPropagation) {

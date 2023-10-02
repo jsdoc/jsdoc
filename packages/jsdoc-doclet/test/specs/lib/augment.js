@@ -49,8 +49,7 @@ describe('@jsdoc/doclet/lib/augment', () => {
       const docSet = jsdoc.getDocSetFromFile('test/fixtures/augmentall.js', null, null, false);
       let open;
 
-      augment.augmentAll(docSet.doclets);
-
+      augment.augmentAll(docSet.docletStore);
       open = docSet.getByLongname('EncryptedSocket#open').filter(({ ignore }) => !ignore);
 
       expect(open).toBeArrayOfSize(1);
@@ -61,7 +60,7 @@ describe('@jsdoc/doclet/lib/augment', () => {
       const docSet = jsdoc.getDocSetFromFile('test/fixtures/augmentall2.js', null, null, false);
       let open;
 
-      augment.augmentAll(docSet.doclets);
+      augment.augmentAll(docSet.docletStore);
 
       open = docSet.getByLongname('EncryptedSocket#open').filter(({ ignore }) => !ignore);
 

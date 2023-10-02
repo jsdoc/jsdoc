@@ -36,6 +36,9 @@ const {
 } = jsdocName;
 const { isFunction } = astNode;
 
+// Forward-declare Doclet class.
+export let Doclet;
+
 const ACCESS_LEVELS = ['package', 'private', 'protected', 'public'];
 const ALL_SCOPE_NAMES = _.values(SCOPE.NAMES);
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
@@ -353,9 +356,16 @@ function clone(source, target, properties) {
  * @param {Array.<string>} exclude - The names of properties to exclude from copying.
  */
 function copyMostProperties(primary, secondary, target, exclude) {
-  const primaryProperties = _.difference(Object.getOwnPropertyNames(primary), exclude);
+  // Get names of primary and secondary properties that don't contain the value `undefined`.
+  const primaryPropertyNames = Object.getOwnPropertyNames(primary).filter(
+    (name) => !_.isUndefined(primary[name])
+  );
+  const primaryProperties = _.difference(primaryPropertyNames, exclude);
+  const secondaryPropertyNames = Object.getOwnPropertyNames(secondary).filter(
+    (name) => !_.isUndefined(secondary[name])
+  );
   const secondaryProperties = _.difference(
-    Object.getOwnPropertyNames(secondary),
+    secondaryPropertyNames,
     exclude.concat(primaryProperties)
   );
 
@@ -388,6 +398,29 @@ function copySpecificProperties(primary, secondary, target, include) {
   });
 }
 
+/**
+ * Combine two doclets into a new doclet.
+ *
+ * @param {module:@jsdoc/doclet.Doclet} primary - The doclet whose properties will be used.
+ * @param {module:@jsdoc/doclet.Doclet} secondary - The doclet to use as a fallback for properties
+ * that the primary doclet does not have.
+ * @returns {module:@jsdoc/doclet.Doclet} A new doclet that combines the primary and secondary
+ * doclets.
+ */
+export function combineDoclets(primary, secondary) {
+  const copyMostPropertiesExclude = ['dependencies', 'params', 'properties', 'undocumented'];
+  const copySpecificPropertiesInclude = ['params', 'properties'];
+  const target = new Doclet('', null, secondary.dependencies);
+
+  // First, copy most properties to the target doclet.
+  copyMostProperties(primary, secondary, target, copyMostPropertiesExclude);
+  // Then copy a few specific properties to the target doclet, as long as they're not falsy and
+  // have a length greater than 0.
+  copySpecificProperties(primary, secondary, target, copySpecificPropertiesInclude);
+
+  return target;
+}
+
 function defineWatchableProp(doclet, prop) {
   Object.defineProperty(doclet, prop, {
     configurable: false,
@@ -406,7 +439,7 @@ function defineWatchableProp(doclet, prop) {
  *
  * @alias module:@jsdoc/doclet.Doclet
  */
-export class Doclet {
+Doclet = class {
   #dictionary;
 
   /**
@@ -450,33 +483,44 @@ export class Doclet {
     }
     this.postProcess();
 
-    // Now that we've set the doclet's initial properties, listen for changes to those properties.
-    this.watchableProps = onChange(
-      this.watchableProps,
-      (propertyPath, newValue, oldValue) => {
-        let index;
-        let newArray;
-        let oldArray;
-        const property = propertyPath[0];
+    // Now that we've set the doclet's initial properties, listen for changes to those properties,
+    // unless we were told not to.
+    if (meta._watch !== false) {
+      this.watchableProps = onChange(
+        this.watchableProps,
+        (propertyPath, newValue, oldValue) => {
+          let index;
+          let newArray;
+          let oldArray;
+          const property = propertyPath[0];
 
-        // Handle changes to arrays, like: `doclet.listens[0] = 'event:foo';`
-        if (propertyPath.length > 1) {
-          newArray = this.watchableProps[property].slice();
+          // Handle changes to arrays, like: `doclet.listens[0] = 'event:foo';`
+          if (propertyPath.length > 1) {
+            newArray = this.watchableProps[property].slice();
 
-          oldArray = newArray.slice();
-          // Update `oldArray` to contain the original value.
-          index = propertyPath[propertyPath.length - 1];
-          oldArray[index] = oldValue;
+            oldArray = newArray.slice();
+            // Update `oldArray` to contain the original value.
+            index = propertyPath[propertyPath.length - 1];
+            oldArray[index] = oldValue;
 
-          boundEmitDocletChanged(property, oldArray, newArray);
-        }
-        // Handle changes to primitive values.
-        else if (newValue !== oldValue) {
-          boundEmitDocletChanged(property, oldValue, newValue);
-        }
-      },
-      { ignoreDetached: true, pathAsArray: true }
-    );
+            boundEmitDocletChanged(property, oldArray, newArray);
+          }
+          // Handle changes to primitive values.
+          else if (newValue !== oldValue) {
+            boundEmitDocletChanged(property, oldValue, newValue);
+          }
+        },
+        { ignoreDetached: true, pathAsArray: true }
+      );
+    }
+  }
+
+  static clone(doclet) {
+    return combineDoclets(doclet, Doclet.emptyDoclet(doclet.dependencies));
+  }
+
+  static emptyDoclet(dependencies) {
+    return new Doclet('', {}, dependencies);
   }
 
   // TODO: We call this method in the constructor _and_ in `jsdoc/src/handlers`. It appears that
@@ -780,27 +824,4 @@ export class Doclet {
       }
     }
   }
-}
-
-/**
- * Combine two doclets into a new doclet.
- *
- * @param {module:@jsdoc/doclet.Doclet} primary - The doclet whose properties will be used.
- * @param {module:@jsdoc/doclet.Doclet} secondary - The doclet to use as a fallback for properties
- * that the primary doclet does not have.
- * @returns {module:@jsdoc/doclet.Doclet} A new doclet that combines the primary and secondary
- * doclets.
- */
-export function combineDoclets(primary, secondary) {
-  const copyMostPropertiesExclude = ['dependencies', 'params', 'properties', 'undocumented'];
-  const copySpecificPropertiesInclude = ['params', 'properties'];
-  const target = new Doclet('', null, secondary.dependencies);
-
-  // First, copy most properties to the target doclet.
-  copyMostProperties(primary, secondary, target, copyMostPropertiesExclude);
-  // Then copy a few specific properties to the target doclet, as long as they're not falsy and
-  // have a length greater than 0.
-  copySpecificProperties(primary, secondary, target, copySpecificPropertiesInclude);
-
-  return target;
-}
+};

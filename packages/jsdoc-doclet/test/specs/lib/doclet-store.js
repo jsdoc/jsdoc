@@ -14,8 +14,12 @@
   limitations under the License.
 */
 /* global jsdoc */
+import { name } from '@jsdoc/core';
+
 import { Doclet } from '../../../lib/doclet.js';
 import * as docletStore from '../../../lib/doclet-store.js';
+
+const ANONYMOUS_LONGNAME = name.LONGNAMES.ANONYMOUS;
 
 const { DocletStore } = docletStore;
 
@@ -24,7 +28,9 @@ function makeDoclet(comment, meta, deps) {
 
   deps ??= jsdoc.deps;
   doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, deps);
-  deps.get('eventBus').emit('newDoclet', { doclet });
+  if (meta?._emitEvent !== false) {
+    deps.get('eventBus').emit('newDoclet', { doclet });
+  }
 
   return doclet;
 }
@@ -55,6 +61,18 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
 
     it('is constructable when dependencies are passed in', () => {
       expect(() => new DocletStore(jsdoc.deps)).not.toThrow();
+    });
+
+    it('has an `add` method', () => {
+      expect(store.add).toBeFunction();
+    });
+
+    it('has an `allDoclets` property', () => {
+      expect(store.allDoclets).toBeEmptySet();
+    });
+
+    it('has an `allDocletsByLongname` property', () => {
+      expect(store.allDocletsByLongname).toBeEmptyMap();
     });
 
     it('has a `commonPathPrefix` property', () => {
@@ -102,7 +120,46 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
     });
 
     describe('add', () => {
-      describe('visible doclets', () => {
+      describe('method', () => {
+        it('adds a normal doclet normally', () => {
+          // Create a doclet without emitting it, and add it to the store directly.
+          store.add(makeDoclet(['@namespace', '@name Foo'], { _emitEvent: false }));
+
+          expect(Array.from(store.doclets)).toBeArrayOfSize(1);
+          expect(store.docletsByKind).toHave('namespace');
+          expect(store.docletsByLongname).toHave('Foo');
+        });
+
+        it('tracks changes to a normal doclet', () => {
+          // Create a doclet without emitting it.
+          const doclet = makeDoclet(['@namespace', '@name Foo'], { _emitEvent: false });
+
+          store.add(doclet);
+          doclet.longname = doclet.name = 'Bar';
+
+          expect(store.docletsByLongname).not.toHave('Foo');
+          expect(store.docletsByLongname).toHave('Bar');
+        });
+
+        it('tracks anonymous doclets only by node ID', () => {
+          const anonymousDoclet = makeDoclet(['@function', `@name ${ANONYMOUS_LONGNAME}`], {
+            _emitEvent: false,
+            code: {
+              node: {
+                nodeId: 'a',
+              },
+            },
+          });
+
+          anonymousDoclet.longname = ANONYMOUS_LONGNAME;
+          store.add(anonymousDoclet);
+
+          expect(store.docletsByNodeId.get('a')).toHave(anonymousDoclet);
+          expect(store.docletsByLongname).not.toHave(ANONYMOUS_LONGNAME);
+        });
+      });
+
+      describe('events with visible doclets', () => {
         let doclet;
 
         it('adds the doclet to the list of visible doclets when appropriate', () => {
@@ -222,7 +279,7 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
         });
       });
 
-      describe('unused doclets', () => {
+      describe('events with unused doclets', () => {
         let doclet;
 
         it('adds the doclet to the list of unused doclets when appropriate', () => {
@@ -317,6 +374,70 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
           expect(doclet.isVisible()).toBeFalse();
           expect(store.sourcePaths).toBeEmptyArray();
         });
+      });
+    });
+
+    describe('allDoclets', () => {
+      it('contains both visible and hidden doclets', () => {
+        const fooDoclet = makeDoclet(['@function', '@name foo']);
+        const barDoclet = makeDoclet(['@function', '@name bar', '@ignore']);
+
+        expect(store.allDoclets.size).toBe(2);
+        expect(store.allDoclets).toHave(fooDoclet);
+        expect(store.allDoclets).toHave(barDoclet);
+      });
+
+      it('does not contain anonymous doclets that were added directly', () => {
+        const anonymousDoclet = makeDoclet(['@function', `@name ${ANONYMOUS_LONGNAME}`], {
+          _emitEvent: false,
+          code: {
+            node: {
+              nodeId: 'a',
+            },
+          },
+        });
+
+        anonymousDoclet.longname = ANONYMOUS_LONGNAME;
+        store.add(anonymousDoclet);
+
+        makeDoclet(['@function', '@name foo']);
+
+        // Confirm that the anonymous doclet wasn't just ignored.
+        expect(store.docletsByNodeId.get('a')).toHave(anonymousDoclet);
+
+        expect(store.allDoclets.size).toBe(1);
+        expect(store.allDoclets).not.toContain(anonymousDoclet);
+      });
+    });
+
+    describe('allDocletsByLongname', () => {
+      it('contains both visible and hidden doclets', () => {
+        const fooDoclet = makeDoclet(['@function', '@name foo']);
+        const barDoclet = makeDoclet(['@function', '@name bar', '@ignore']);
+
+        expect(store.allDocletsByLongname.get('foo')).toHave(fooDoclet);
+        expect(store.allDocletsByLongname.get('bar')).toHave(barDoclet);
+      });
+
+      it('does not contain anonymous doclets that were added directly', () => {
+        const anonymousDoclet = makeDoclet(['@function', `@name ${ANONYMOUS_LONGNAME}`], {
+          _emitEvent: false,
+          code: {
+            node: {
+              nodeId: 'a',
+            },
+          },
+        });
+
+        anonymousDoclet.longname = ANONYMOUS_LONGNAME;
+        store.add(anonymousDoclet);
+
+        makeDoclet(['@function', '@name foo']);
+
+        // Confirm that the anonymous doclet wasn't just ignored.
+        expect(store.docletsByNodeId.get('a')).toHave(anonymousDoclet);
+
+        expect(store.allDocletsByLongname).not.toHave(ANONYMOUS_LONGNAME);
       });
     });
 

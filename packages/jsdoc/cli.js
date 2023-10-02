@@ -315,25 +315,30 @@ export default (() => {
   };
 
   cli.parseFiles = () => {
-    let docs;
     const env = dependencies.get('env');
     const options = dependencies.get('options');
     let packageDocs;
+    let docletStore;
 
-    props.docs = docs = props.parser.parse(env.sourceFiles, options.encoding);
+    docletStore = props.parser.parse(env.sourceFiles, options.encoding);
 
     // If there is no package.json, just create an empty package
     packageDocs = new Package(props.packageJson);
     packageDocs.files = env.sourceFiles || [];
-    docs.push(packageDocs);
+    docletStore.doclets.add(packageDocs);
 
     log.debug('Adding inherited symbols, mixins, and interface implementations...');
-    augment.augmentAll(docs);
+    augment.augmentAll(docletStore);
     log.debug('Adding borrowed doclets...');
-    resolveBorrows(docs);
+    resolveBorrows(docletStore);
     log.debug('Post-processing complete.');
 
-    props.parser.fireProcessingComplete(docs);
+    // TODO: remove
+    props.docs = Array.from(docletStore.allDoclets);
+
+    if (props.parser.listenerCount('processingComplete')) {
+      props.parser.fireProcessingComplete(Array.from(docletStore.doclets));
+    }
 
     return cli;
   };
@@ -351,6 +356,7 @@ export default (() => {
   };
 
   cli.dumpParseResults = () => {
+    // TODO: update
     console.log(JSON.stringify(props.docs, null, 4));
 
     return cli;

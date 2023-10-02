@@ -33,13 +33,16 @@ describe('module names', () => {
     handlers.attachTo(srcParser);
   });
 
+  afterEach(() => {
+    srcParser._removeListeners();
+  });
+
   it('should create a name from the file path when no documented module name exists', () => {
     const filename = path.resolve(__dirname, '../../fixtures/modules/data/mod-1.js');
 
     env.sourceFiles.push(filename);
-    doclets = srcParser.parse(filename);
+    doclets = Array.from(srcParser.parse(filename).doclets);
 
-    expect(doclets.length).toBeGreaterThan(1);
     expect(doclets[0].longname).toBe('module:mod-1');
   });
 
@@ -71,9 +74,8 @@ describe('module names', () => {
     const filename = path.resolve(__dirname, '../../fixtures/modules/data/mod-2.js');
 
     env.sourceFiles.push(filename);
-    doclets = srcParser.parse(filename);
+    doclets = Array.from(srcParser.parse(filename).doclets);
 
-    expect(doclets.length).toBeGreaterThan(1);
     expect(doclets[0].longname).toBe('module:my/module/name');
   });
 });

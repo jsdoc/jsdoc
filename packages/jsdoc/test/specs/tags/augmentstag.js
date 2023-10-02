@@ -153,11 +153,8 @@ describe('@augments tag', () => {
 
   it("When a symbol overrides an inherited method without documenting the method, it uses the parent's docs", () => {
     const baseMethod1 = docSet4.getByLongname('Base#test1')[0];
-    const derivedMethod1All = docSet4.getByLongname('Derived#test1');
-    const derivedMethod1 = derivedMethod1All[1];
+    const derivedMethod1 = docSet4.getByLongname('Derived#test1').filter((d) => !d.undocumented)[0];
 
-    expect(derivedMethod1All).toBeArrayOfSize(2);
-    expect(derivedMethod1.undocumented).toBeUndefined();
     expect(derivedMethod1.description).toBe(baseMethod1.description);
   });
 

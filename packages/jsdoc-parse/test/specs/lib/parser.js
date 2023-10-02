@@ -42,7 +42,11 @@ describe('@jsdoc/parse/lib/parser', () => {
 
   describe('createParser', () => {
     it('returns a `Parser` when called with dependencies', () => {
-      expect(jsdocParser.createParser(jsdoc.deps)).toBeObject();
+      const parser = jsdocParser.createParser(jsdoc.deps);
+
+      expect(parser).toBeObject();
+
+      parser._removeListeners();
     });
   });
 
@@ -51,6 +55,10 @@ describe('@jsdoc/parse/lib/parser', () => {
 
     beforeEach(() => {
       parser = new jsdocParser.Parser(jsdoc.deps);
+    });
+
+    afterEach(() => {
+      parser._removeListeners();
     });
 
     it('has a `visitor` property', () => {
@@ -142,7 +150,8 @@ describe('@jsdoc/parse/lib/parser', () => {
       });
 
       it('allows `newDoclet` handlers to modify doclets', () => {
-        let results;
+        let doclets;
+        let docletStore;
         const sourceCode = 'javascript:/** @class */function Foo() {}';
 
         function handler(e) {
@@ -151,10 +160,10 @@ describe('@jsdoc/parse/lib/parser', () => {
         }
 
         attachTo(parser);
-        parser.on('newDoclet', handler).parse(sourceCode);
-        results = parser.results();
+        docletStore = parser.on('newDoclet', handler).parse(sourceCode);
+        doclets = Array.from(docletStore.doclets).filter((d) => d.foo === 'bar');
 
-        expect(results[0].foo).toBe('bar');
+        expect(doclets).toBeArrayOfSize(1);
       });
 
       it('calls AST node visitors', () => {

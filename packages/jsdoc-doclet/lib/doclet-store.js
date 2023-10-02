@@ -15,8 +15,11 @@
 */
 import { dirname, join } from 'node:path';
 
+import { name } from '@jsdoc/core';
 import commonPathPrefix from 'common-path-prefix';
 import _ from 'lodash';
+
+const ANONYMOUS_LONGNAME = name.LONGNAMES.ANONYMOUS;
 
 function addToSet(targetMap, key, value) {
   if (!targetMap.has(key)) {
@@ -75,6 +78,8 @@ export class DocletStore {
     this.#eventBus = dependencies.get('eventBus');
     this.#sourcePaths = new Map();
 
+    /** @type Map<string, Set<Doclet>> */
+    this.allDocletsByLongname = new Map();
     /** Doclets that are used to generate output. */
     this.doclets = new Set();
     /** @type Map<string, Set<Doclet>> */
@@ -121,6 +126,7 @@ export class DocletStore {
     };
 
     if (newDoclet) {
+      this.#trackAllDocletsByLongname(doclet);
       this.#trackDocletByNodeId(doclet);
     }
 
@@ -156,6 +162,18 @@ export class DocletStore {
   #toggleVisibility(doclet, { isVisible, setFnName }) {
     this.doclets[setFnName](doclet);
     this.unusedDoclets[isVisible ? 'delete' : 'add'](doclet);
+  }
+
+  // Updates `this.allDocletsByLongname` _only_.
+  #trackAllDocletsByLongname(doclet, oldValue, newValue) {
+    newValue ??= doclet.longname;
+
+    if (oldValue) {
+      removeFromSet(this.allDocletsByLongname, oldValue, doclet);
+    }
+    if (newValue) {
+      addToSet(this.allDocletsByLongname, newValue, doclet);
+    }
   }
 
   #trackDocletByNodeId(doclet) {
@@ -255,6 +273,7 @@ export class DocletStore {
     }
     if (visibilityChanged || property === 'longname') {
       this.#updateMapProperty('longname', oldValue, newValue, doclet, docletInfo);
+      this.#trackAllDocletsByLongname(doclet, oldValue, newValue);
     }
     if (visibilityChanged || property === 'memberof') {
       this.#updateMapProperty('memberof', oldValue, newValue, doclet, docletInfo);
@@ -271,6 +290,29 @@ export class DocletStore {
   _removeListeners() {
     this.#eventBus.removeListener('docletChanged', this.#docletChangedHandler);
     this.#eventBus.removeListener('newDoclet', this.#newDocletHandler);
+  }
+
+  // Adds a doclet to the store directly, rather than by listening to events.
+  add(doclet) {
+    let doclets;
+    let nodeId;
+
+    // Doclets with the `<anonymous>` longname are used only to track variables in the AST node's
+    // scope. Just track the doclet by node ID so the parser can look it up by node ID.
+    if (doclet.longname === ANONYMOUS_LONGNAME) {
+      nodeId = doclet.meta?.code?.node?.nodeId;
+      if (nodeId) {
+        doclets = this.docletsByNodeId.get(nodeId) ?? new Set();
+        doclets.add(doclet);
+        this.docletsByNodeId.set(nodeId, doclets);
+      }
+    } else {
+      this.#newDocletHandler({ doclet });
+    }
+  }
+
+  get allDoclets() {
+    return new Set([...this.doclets, ...this.unusedDoclets]);
   }
 
   get commonPathPrefix() {
