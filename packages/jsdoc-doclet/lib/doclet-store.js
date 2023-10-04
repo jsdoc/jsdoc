@@ -37,7 +37,7 @@ function diffArrays(value, previousValue = []) {
 }
 
 function getSourcePath({ meta }) {
-  return meta.path ? join(meta.path, meta.filename) : meta.filename;
+  return meta?.path ? join(meta.path, meta.filename) : meta?.filename;
 }
 
 function removeFromSet(targetMap, key, value) {

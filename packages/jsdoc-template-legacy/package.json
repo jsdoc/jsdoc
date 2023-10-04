@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@fontsource/open-sans": "^5.0.14",
+    "@fontsource-variable/open-sans": "^5.0.15",
     "@jsdoc/core": "^0.5.4",
     "@jsdoc/salty": "^0.2.5",
     "@jsdoc/tag": "^0.2.4",

@@ -22,7 +22,6 @@ import Engine from '@jsdoc/cli';
 import { config, Dependencies, plugins } from '@jsdoc/core';
 import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
-import salty from '@jsdoc/salty';
 import { Dictionary } from '@jsdoc/tag';
 import { EventBus, log } from '@jsdoc/util';
 import fastGlob from 'fast-glob';
@@ -33,7 +32,6 @@ import stripJsonComments from 'strip-json-comments';
 import test from './test/index.js';
 
 const { sync: glob } = fastGlob;
-const { taffy } = salty;
 
 /**
  * Helper methods for running JSDoc on the command line.
@@ -325,7 +323,7 @@ export default (() => {
     // If there is no package.json, just create an empty package
     packageDocs = new Package(props.packageJson);
     packageDocs.files = env.sourceFiles || [];
-    docletStore.doclets.add(packageDocs);
+    docletStore.add(packageDocs);
 
     log.debug('Adding inherited symbols, mixins, and interface implementations...');
     augment.augmentAll(docletStore);
@@ -333,8 +331,7 @@ export default (() => {
     resolveBorrows(docletStore);
     log.debug('Post-processing complete.');
 
-    // TODO: remove
-    props.docs = Array.from(docletStore.allDoclets);
+    props.docs = docletStore;
 
     if (props.parser.listenerCount('processingComplete')) {
       props.parser.fireProcessingComplete(Array.from(docletStore.doclets));
@@ -356,8 +353,7 @@ export default (() => {
   };
 
   cli.dumpParseResults = () => {
-    // TODO: update
-    console.log(JSON.stringify(props.docs, null, 4));
+    console.log(JSON.stringify(Array.from(props.docs.allDoclets), null, 2));
 
     return cli;
   };
@@ -367,7 +363,7 @@ export default (() => {
     const options = dependencies.get('options');
     let template;
 
-    options.template = options.template || path.join(__dirname, 'templates', 'default');
+    options.template = options.template || '@jsdoc/template-legacy';
 
     try {
       template = await import(options.template);
@@ -380,7 +376,7 @@ export default (() => {
       let publishPromise;
 
       log.info('Generating output files...');
-      publishPromise = template.publish(taffy(props.docs), dependencies);
+      publishPromise = template.publish(props.docs, dependencies);
 
       return Promise.resolve(publishPromise);
     } else {

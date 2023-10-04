@@ -255,4 +255,12 @@ export class Package {
       this.version = packageInfo.version;
     }
   }
+
+  isGlobal() {
+    return false;
+  }
+
+  isVisible() {
+    return true;
+  }
 }

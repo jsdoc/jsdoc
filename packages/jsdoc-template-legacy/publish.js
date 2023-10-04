@@ -16,6 +16,7 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import salty from '@jsdoc/salty';
 import { fs as jsdocFs, log } from '@jsdoc/util';
@@ -32,7 +33,9 @@ const { sync: glob } = fastGlob;
 const { resolve } = createRequire(import.meta.url);
 const { taffy } = salty;
 
-const FONT_CSS_FILES = ['variable.css', 'variable-italic.css'];
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const FONT_CSS_FILES = ['standard.css', 'standard-italic.css'];
 const PRETTIFIER_CSS_FILES = ['tomorrow.min.css'];
 const PRETTIFIER_SCRIPT_FILES = ['lang-css.js', 'prettify.js'];
 
@@ -72,7 +75,7 @@ function needsSignature({ kind, type, meta }) {
     needsSig = true;
   }
   // typedefs that contain functions get a signature, too
-  else if (kind === 'typedef' && type && type.names && type.names.length) {
+  else if (kind === 'typedef' && type?.names?.length) {
     for (let i = 0, l = type.names.length; i < l; i++) {
       if (type.names[i].toLowerCase() === 'function') {
         needsSig = true;
@@ -82,13 +85,7 @@ function needsSignature({ kind, type, meta }) {
   }
   // and namespaces that are functions get a signature (but finding them is a
   // bit messy)
-  else if (
-    kind === 'namespace' &&
-    meta &&
-    meta.code &&
-    meta.code.type &&
-    meta.code.type.match(/[Ff]unction/)
-  ) {
+  else if (kind === 'namespace' && meta?.code?.type?.match(/[Ff]unction/)) {
     needsSig = true;
   }
 
@@ -425,7 +422,7 @@ function sourceToDestination(parentDir, sourcePath, destDir) {
     @param {TAFFY} taffyData See <http://taffydb.com/>.
     @param {object} opts
  */
-export function publish(taffyData, dependencies) {
+export function publish(docletStore, dependencies) {
   let classes;
   let config;
   let externals;
@@ -451,13 +448,12 @@ export function publish(taffyData, dependencies) {
   let templatePath;
   let userStaticFileOutputDir;
 
-  data = taffyData;
   opts = dependencies.get('options');
   config = dependencies.get('config');
   templateConfig = config.templates || {};
   templateConfig.default = templateConfig.default || {};
   outdir = path.normalize(opts.destination);
-  templatePath = path.normalize(path.dirname(opts.template));
+  templatePath = __dirname;
   view = new Template(path.join(templatePath, 'tmpl'));
 
   // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
@@ -473,7 +469,7 @@ export function publish(taffyData, dependencies) {
     ? path.resolve(templateConfig.default.layoutFile)
     : 'layout.tmpl';
 
-  data = helper.prune(data, dependencies);
+  data = taffy(Array.from(docletStore.doclets));
   data.sort('longname, version, since');
   helper.addEventListeners(data);
 
@@ -536,25 +532,26 @@ export function publish(taffyData, dependencies) {
   });
 
   // copy the fonts used by the template to outdir
-  staticFiles = lsSync(path.join(resolve('@fontsource/open-sans'), '..', 'files'));
+  staticFiles = lsSync(path.join(resolve('@fontsource-variable/open-sans'), '..', 'files'));
 
   staticFiles.forEach((fileName) => {
     const toPath = path.join(outdir, 'fonts', path.basename(fileName));
+    const name = path.parse(fileName).name;
 
-    if (path.parse(fileName).name.includes('variable-wghtOnly')) {
+    if (name.includes('standard-normal') || name.includes('standard-italic')) {
       mkdirpSync(path.dirname(toPath));
       fs.copyFileSync(fileName, toPath);
     }
   });
 
   // copy the font CSS to outdir
-  staticFiles = path.join(resolve('@fontsource/open-sans'), '..');
+  staticFiles = path.join(resolve('@fontsource-variable/open-sans'), '..');
   FONT_CSS_FILES.forEach((fileName) => {
     const fromPath = path.join(staticFiles, fileName);
-    const toPath = path.join(outdir, 'styles', fileName.replace('variable', 'open-sans'));
+    const toPath = path.join(outdir, 'styles', fileName.replace('standard', 'open-sans'));
     let source = fs.readFileSync(fromPath, 'utf8');
 
-    source = source.replace(/url\('\.\/files/g, "url('../fonts");
+    source = source.replace(/url\(\.\/files/g, 'url(../fonts');
     mkdirpSync(path.dirname(toPath));
     fs.writeFileSync(toPath, source);
   });
