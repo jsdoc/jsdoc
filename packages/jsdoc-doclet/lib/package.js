@@ -261,6 +261,6 @@ export class Package {
   }
 
   isVisible() {
-    return true;
+    return this.kind === 'package' && this.longname && this.longname !== 'package:undefined';
   }
 }
