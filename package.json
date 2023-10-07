@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/eslint-parser": "7.22.15",
-    "@jsdoc/ast": "^0.2.4",
+    "@jsdoc/ast": "^0.2.5",
     "@jsdoc/cli": "^0.3.4",
     "@jsdoc/core": "^0.5.4",
     "@jsdoc/doclet": "^0.2.4",
