@@ -1,7 +1,7 @@
 {
   "packageAllowlist": [
     // OFL-1.1 licensed; Google-owned
-    "@fontsource/open-sans",
+    "@fontsource-variable/open-sans",
     // Python-2.0 licensed, which is fine but not on js-green-licenses default list
     "argparse"
   ]
