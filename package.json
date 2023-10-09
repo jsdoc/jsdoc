@@ -49,7 +49,7 @@
     "lint": "node_modules/.bin/hereby lint",
     "test": "node_modules/.bin/hereby test"
   },
-  "dependencies": {
-    "@babel/eslint-parser": "^7.22.15"
-  }
+  "workspaces": [
+    "./packages/*"
+  ]
 }
