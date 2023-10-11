@@ -482,10 +482,11 @@ export function publish(docletStore, dependencies) {
       doclet.examples = doclet.examples.map((example) => {
         let caption;
         let code;
+        const match = example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i);
 
-        if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
-          caption = RegExp.$1;
-          code = RegExp.$3;
+        if (match) {
+          caption = match[1];
+          code = match[3];
         }
 
         return {

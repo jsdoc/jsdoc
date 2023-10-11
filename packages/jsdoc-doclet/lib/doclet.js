@@ -23,8 +23,8 @@ import onChange from 'on-change';
 
 const {
   applyNamespace,
-  hasLeadingScope,
-  hasTrailingScope,
+  getLeadingScope,
+  getTrailingScope,
   LONGNAMES,
   MODULE_NAMESPACE,
   nameIsLongname,
@@ -189,6 +189,7 @@ function fixDescription(docletSrc, { code }) {
  */
 function resolve(doclet) {
   let about = {};
+  let leadingScope;
   let memberof = doclet.memberof || '';
   let metaName;
   let name = doclet.name ? String(doclet.name) : '';
@@ -236,7 +237,7 @@ function resolve(doclet) {
       about = toParts(name, doclet.forceMemberof ? memberof : undefined);
     }
     // Like `@memberof foo#` or `@memberof foo~`.
-    else if (name && hasTrailingScope(memberof)) {
+    else if (name && getTrailingScope(memberof)) {
       about = toParts(memberof + name, doclet.forceMemberof ? memberof : undefined);
     } else if (name && doclet.scope) {
       about = toParts(
@@ -273,8 +274,9 @@ function resolve(doclet) {
       doclet.scope = PUNC_TO_SCOPE[about.scope];
     }
   } else if (doclet.name && doclet.memberof && !doclet.longname) {
-    if (hasLeadingScope(doclet.name)) {
-      doclet.scope = PUNC_TO_SCOPE[RegExp.$1];
+    leadingScope = getLeadingScope(doclet.name);
+    if (leadingScope) {
+      doclet.scope = PUNC_TO_SCOPE[leadingScope];
       doclet.name = doclet.name.substr(1);
     } else if (doclet.meta.code && doclet.meta.code.name) {
       // HACK: Handle cases where an ES 2015 class is a static memberof something else, and

@@ -114,20 +114,28 @@ export function prototypeToPunc(name) {
 }
 
 /**
- * Check whether a name begins with a character that identifies a scope.
+ * Gets the leading scope character, if any, from a name.
  *
  * @param {string} name - The name to check.
- * @returns {boolean} `true` if the name begins with a scope character; otherwise, `false`.
+ * @returns {?string} The leading scope character, if one is present.
  */
-export const hasLeadingScope = (name) => REGEXP_LEADING_SCOPE.test(name);
+export const getLeadingScope = (name) => {
+  const match = name.match(REGEXP_LEADING_SCOPE);
+
+  return match?.[1];
+};
 
 /**
- * Check whether a name ends with a character that identifies a scope.
+ * Gets the trailing scope character, if any, from a name.
  *
  * @param {string} name - The name to check.
- * @returns {boolean} `true` if the name ends with a scope character; otherwise, `false`.
+ * @returns {?string} The trailing scope character, if one is present.
  */
-export const hasTrailingScope = (name) => REGEXP_TRAILING_SCOPE.test(name);
+export const getTrailingScope = (name) => {
+  const match = name.match(REGEXP_TRAILING_SCOPE);
+
+  return match?.[1];
+};
 
 /**
  * Get a symbol's basename, which is the first part of its full name before any punctuation (other
@@ -206,9 +214,10 @@ function slice(longname, sliceChars, forcedMemberof) {
   }
 
   // Like `@name foo.bar(2)`.
-  if (/(.+)\(([^)]+)\)$/.test(name)) {
-    name = RegExp.$1;
-    variation = RegExp.$2;
+  parts = name.match(/(.+)\(([^)]+)\)$/);
+  if (parts) {
+    name = parts[1];
+    variation = parts[2];
   }
 
   // Restore quoted strings.
@@ -467,6 +476,7 @@ export function longnamesToTree(longnames, doclets) {
 function splitNameMatchingBrackets(nameDesc) {
   const buffer = [];
   let c;
+  let match;
   let stack = 0;
   let stringEnd = null;
 
@@ -495,12 +505,11 @@ function splitNameMatchingBrackets(nameDesc) {
     return null;
   }
 
-  nameDesc.substring(i).match(REGEXP_DESCRIPTION);
+  match = nameDesc.substring(i).match(REGEXP_DESCRIPTION) ?? [];
 
   return {
     name: buffer.join(''),
-    // TODO: Don't use global RegExp properties.
-    description: RegExp.$1,
+    description: match[1],
   };
 }
 
@@ -514,6 +523,7 @@ export function splitNameAndDescription(str) {
   // To ensure that we don't get confused by leading dashes in Markdown list items, the hyphen
   // must be on the same line as the name.
 
+  let match;
   // Optional values get special treatment,
   let result = null;
 
@@ -524,11 +534,10 @@ export function splitNameAndDescription(str) {
     }
   }
 
-  str.match(REGEXP_NAME_DESCRIPTION);
+  match = str.match(REGEXP_NAME_DESCRIPTION);
 
   return {
-    // TODO: Don't use global RegExp properties.
-    name: RegExp.$1,
-    description: RegExp.$2,
+    name: match?.[1] ?? '',
+    description: match?.[2] ?? '',
   };
 }

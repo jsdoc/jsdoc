@@ -19,6 +19,7 @@ import { Doclet } from '@jsdoc/doclet';
 import { log } from '@jsdoc/util';
 import escape from 'escape-string-regexp';
 
+const PROTOTYPE_OWNER_REGEXP = /^(.+?)(\.prototype|#)$/;
 const { SCOPE } = name;
 
 let currentModule = null;
@@ -160,14 +161,16 @@ function addDoclet(parser, newDoclet) {
 }
 
 function processAlias(parser, doclet, astNode) {
+  let match;
   let memberofName;
 
   if (doclet.alias === '{@thisClass}') {
     memberofName = parser.resolveThis(astNode);
 
     // "class" refers to the owner of the prototype, not the prototype itself
-    if (/^(.+?)(\.prototype|#)$/.test(memberofName)) {
-      memberofName = RegExp.$1;
+    match = memberofName.match(PROTOTYPE_OWNER_REGEXP);
+    if (match) {
+      memberofName = match[1];
     }
     doclet.alias = memberofName;
   }
