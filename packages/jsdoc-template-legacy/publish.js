@@ -572,8 +572,10 @@ export function publish(docletStore, dependencies) {
       // `resolve()` has trouble with this package, so we use an extra-hacky way to
       // get the filepath.
       path.join(
-        templatePath,
-        'node_modules',
+        resolve('fast-glob'),
+        '..',
+        '..',
+        '..',
         'color-themes-for-google-code-prettify',
         'dist',
         'themes',
