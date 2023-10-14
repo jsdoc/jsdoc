@@ -19,17 +19,15 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import salty from '@jsdoc/salty';
-import { fs as jsdocFs, log } from '@jsdoc/util';
+import { log } from '@jsdoc/util';
 import commonPathPrefix from 'common-path-prefix';
-import fastGlob from 'fast-glob';
+import glob from 'fast-glob';
 import _ from 'lodash';
 
 import { Template } from './lib/template.js';
 import * as helper from './lib/templateHelper.js';
 
 const { htmlsafe, linkto, resolveAuthorLinks } = helper;
-const { lsSync } = jsdocFs;
-const { sync: glob } = fastGlob;
 const { resolve } = createRequire(import.meta.url);
 const { taffy } = salty;
 
@@ -415,6 +413,8 @@ function buildNav(members, dependencies) {
 function sourceToDestination(parentDir, sourcePath, destDir) {
   const relativeSource = path.relative(parentDir, sourcePath);
 
+  console.log(`sourcePath: ${sourcePath}\nrelativeSource: ${relativeSource}`);
+
   return path.resolve(path.join(destDir, relativeSource));
 }
 
@@ -453,6 +453,9 @@ export function publish(docletStore, dependencies) {
   templateConfig = config.templates || {};
   templateConfig.default = templateConfig.default || {};
   outdir = path.normalize(opts.destination);
+  if (!path.isAbsolute(outdir)) {
+    outdir = path.resolve(process.cwd(), outdir);
+  }
   templatePath = __dirname;
   view = new Template(path.join(templatePath, 'tmpl'));
 
@@ -523,26 +526,30 @@ export function publish(docletStore, dependencies) {
 
   // copy the template's static files to outdir
   fromDir = path.join(templatePath, 'static');
-  staticFiles = lsSync(fromDir);
+  staticFiles = glob.sync('**/*', {
+    cwd: fromDir,
+    onlyFiles: true,
+  });
 
   staticFiles.forEach((fileName) => {
-    const toPath = sourceToDestination(fromDir, fileName, outdir);
+    const toPath = path.join(outdir, fileName);
 
     mkdirpSync(path.dirname(toPath));
-    fs.copyFileSync(fileName, toPath);
+    fs.copyFileSync(path.join(fromDir, fileName), toPath);
   });
 
   // copy the fonts used by the template to outdir
-  staticFiles = lsSync(path.join(resolve('@fontsource-variable/open-sans'), '..', 'files'));
+  fromDir = path.join(resolve('@fontsource-variable/open-sans'), '..', 'files');
+  staticFiles = glob.sync('**/*standard-{normal,italic}*', {
+    cwd: fromDir,
+    onlyFiles: true,
+  });
 
   staticFiles.forEach((fileName) => {
     const toPath = path.join(outdir, 'fonts', path.basename(fileName));
-    const name = path.parse(fileName).name;
 
-    if (name.includes('standard-normal') || name.includes('standard-italic')) {
-      mkdirpSync(path.dirname(toPath));
-      fs.copyFileSync(fileName, toPath);
-    }
+    mkdirpSync(path.dirname(toPath));
+    fs.copyFileSync(path.join(fromDir, fileName), toPath);
   });
 
   // copy the font CSS to outdir
@@ -591,7 +598,7 @@ export function publish(docletStore, dependencies) {
     // with a bug in JSDoc 3.2.x.
     staticFilePaths =
       templateConfig.default.staticFiles.include || templateConfig.default.staticFiles.paths || [];
-    staticFilePaths = glob(staticFilePaths, {
+    staticFilePaths = glob.sync(staticFilePaths, {
       absolute: true,
       onlyFiles: true,
     });

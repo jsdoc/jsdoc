@@ -20,8 +20,7 @@
  */
 import EventBus from './lib/bus.js';
 import cast from './lib/cast.js';
-import * as fs from './lib/fs.js';
 import log from './lib/log.js';
 
-export { cast, EventBus, fs, log };
-export default { cast, EventBus, fs, log };
+export { cast, EventBus, log };
+export default { cast, EventBus, log };
