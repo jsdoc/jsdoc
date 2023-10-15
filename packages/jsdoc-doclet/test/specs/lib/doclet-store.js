@@ -799,6 +799,15 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
 
           expect(store.globals).toBeEmptySet();
         });
+
+        it('does not treat the values of other properties as kinds', () => {
+          const doclet = makeDoclet(['@function', '@name foo']);
+
+          doclet.ignore = true;
+          doclet.ignore = 'hello';
+
+          expect(store.docletsByKind.get('hello')).toBeUndefined();
+        });
       });
 
       describe('`listens`', () => {
@@ -838,12 +847,19 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
           expect(store.listenersByListensTo.get('event:baz')).toHave(doclet);
           expect(store.listenersByListensTo.get('event:qux')).toBeUndefined();
 
-          global.lorgg = true;
           doclet.listens[0] = 'event:qux';
-          global.lorgg = false;
 
           expect(store.listenersByListensTo.get('event:baz')).toBeUndefined();
           expect(store.listenersByListensTo.get('event:qux')).toHave(doclet);
+        });
+
+        it('does not treat the values of other properties as `listens` values', () => {
+          const doclet = makeDoclet(['@class', '@memberof foo', '@name Bar', '@listens event:baz']);
+
+          doclet.ignore = true;
+          doclet.ignore = 'hello';
+
+          expect(store.listenersByListensTo.get('hello')).toBeUndefined();
         });
       });
 
@@ -860,6 +876,14 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
           expect(store.docletsByLongname.get('foo.Bar')).toBeUndefined();
           expect(store.docletsByLongname.get('zoo.Bar')).toHave(doclet);
         });
+
+        it('does not treat the values of other properties as longnames', () => {
+          const doclet = makeDoclet(['@function', '@name foo']);
+
+          doclet.undocumented = true;
+
+          expect(store.allDocletsByLongname.get(true)).toBeUndefined();
+        });
       });
 
       describe('`memberof`', () => {
@@ -874,6 +898,15 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
 
           expect(store.docletsByMemberof.get('foo')).toBeUndefined();
           expect(store.docletsByMemberof.get('zoo')).toHave(doclet);
+        });
+
+        it('does not treat the values of other properties as `memberof` values', () => {
+          const doclet = makeDoclet(['@function', '@name bar', '@memberof foo']);
+
+          doclet.ignore = true;
+          doclet.ignore = 'hello';
+
+          expect(store.docletsByMemberof.get('hello')).toBeUndefined();
         });
       });
 

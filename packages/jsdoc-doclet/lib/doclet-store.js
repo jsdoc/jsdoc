@@ -165,8 +165,12 @@ export class DocletStore {
   }
 
   // Updates `this.allDocletsByLongname` _only_.
-  #trackAllDocletsByLongname(doclet, oldValue, newValue) {
+  #trackAllDocletsByLongname(doclet, eventProp, oldValue, newValue) {
     newValue ??= doclet.longname;
+
+    if (eventProp && eventProp !== 'longname') {
+      return;
+    }
 
     if (oldValue) {
       removeFromSet(this.allDocletsByLongname, oldValue, doclet);
@@ -184,12 +188,13 @@ export class DocletStore {
     }
   }
 
-  #updateMapProperty(prop, oldKey, newKey, doclet, { isVisible, newDoclet, wasVisible }) {
-    const map = this[DocletStore.#propertyToMapName.get(prop)];
+  #updateMapProperty(realProp, eventProp, oldKey, newKey, doclet, { isVisible, wasVisible }) {
+    const map = this[DocletStore.#propertyToMapName.get(realProp)];
 
-    // For `newDoclet` events, there's no "new key"; just use the one from the doclet.
-    if (newDoclet) {
-      newKey = doclet[prop];
+    // If the event didn't specify the property name that we're interested in, then ignore the new
+    // key; it doesn't apply to this property. Instead, get the key from the doclet.
+    if (realProp !== eventProp) {
+      newKey = doclet[realProp];
     }
 
     if (wasVisible && oldKey) {
@@ -248,7 +253,7 @@ export class DocletStore {
     }
     if (visibilityChanged || property === 'kind') {
       this.#toggleGlobal(doclet, { isGlobal, isVisible });
-      this.#updateMapProperty('kind', oldValue, newValue, doclet, docletInfo);
+      this.#updateMapProperty('kind', property, oldValue, newValue, doclet, docletInfo);
     }
     if (visibilityChanged || property === 'listens') {
       let added;
@@ -272,11 +277,11 @@ export class DocletStore {
       }
     }
     if (visibilityChanged || property === 'longname') {
-      this.#updateMapProperty('longname', oldValue, newValue, doclet, docletInfo);
-      this.#trackAllDocletsByLongname(doclet, oldValue, newValue);
+      this.#updateMapProperty('longname', property, oldValue, newValue, doclet, docletInfo);
+      this.#trackAllDocletsByLongname(doclet, property, oldValue, newValue);
     }
     if (visibilityChanged || property === 'memberof') {
-      this.#updateMapProperty('memberof', oldValue, newValue, doclet, docletInfo);
+      this.#updateMapProperty('memberof', property, oldValue, newValue, doclet, docletInfo);
     }
     if (visibilityChanged || property === 'mixes') {
       this.#updateSetProperty('mixes', doclet, setFnName);
