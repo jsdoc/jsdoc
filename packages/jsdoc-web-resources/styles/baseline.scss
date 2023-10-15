@@ -205,17 +205,18 @@ a {
 
 pre {
   @include source-code();
+
+  > code {
+    background-color: inherit;
+    font-size: $code-font-size;
+    padding: 0;
+  }
 }
 
 code {
   @include code-base();
   border-radius: $border-radius-small;
   padding: 0.125rem 0.25rem;
-}
-
-pre code {
-  background-color: inherit;
-  font-size: $code-font-size;
 }
 
 dt,
@@ -409,6 +410,7 @@ header > .symbol-detail-labels {
 .hljs {
   @include make-col-ready();
   flex-basis: fit-content;
+  padding-left: 0;
 }
 
 // TODO: Use class selectors.

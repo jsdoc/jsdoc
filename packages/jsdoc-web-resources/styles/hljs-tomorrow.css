@@ -17,7 +17,6 @@
 /* Based on https://github.com/chriskempson/tomorrow-theme */
 
 :root {
-  --background-color: #f5f5f5;
   --text-color: #3d3d3c;
   --tomorrow-blue: #4271ae;
   --tomorrow-gray: #8e908c;
@@ -30,7 +29,6 @@
 
 .hljs,
 .no-hljs {
-  background-color: var(--background-color);
   color: var(--text-color);
 }
 
