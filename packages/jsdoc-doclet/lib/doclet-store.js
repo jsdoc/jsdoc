@@ -120,13 +120,14 @@ export class DocletStore {
       newDoclet,
       newValue,
       oldValue,
+      property,
       setFnName: isVisible ? 'add' : 'delete',
       visibilityChanged,
       wasVisible,
     };
 
     if (newDoclet) {
-      this.#trackAllDocletsByLongname(doclet);
+      this.#trackAllDocletsByLongname(doclet, {});
       this.#trackDocletByNodeId(doclet);
     }
 
@@ -143,7 +144,7 @@ export class DocletStore {
     }
 
     // Update all watchable properties.
-    this.#updateWatchableProperties(doclet, property, docletInfo);
+    this.#updateWatchableProperties(doclet, docletInfo);
 
     // Update list of source paths for visible doclets.
     if (visibilityChanged) {
@@ -165,10 +166,10 @@ export class DocletStore {
   }
 
   // Updates `this.allDocletsByLongname` _only_.
-  #trackAllDocletsByLongname(doclet, eventProp, oldValue, newValue) {
+  #trackAllDocletsByLongname(doclet, { property, oldValue, newValue }) {
     newValue ??= doclet.longname;
 
-    if (eventProp && eventProp !== 'longname') {
+    if (property && property !== 'longname') {
       return;
     }
 
@@ -188,13 +189,17 @@ export class DocletStore {
     }
   }
 
-  #updateMapProperty(realProp, eventProp, oldKey, newKey, doclet, { isVisible, wasVisible }) {
-    const map = this[DocletStore.#propertyToMapName.get(realProp)];
+  #updateMapProperty(
+    requestedProp,
+    doclet,
+    { property: eventProp, oldValue: oldKey, newValue: newKey, isVisible, wasVisible }
+  ) {
+    const map = this[DocletStore.#propertyToMapName.get(requestedProp)];
 
     // If the event didn't specify the property name that we're interested in, then ignore the new
     // key; it doesn't apply to this property. Instead, get the key from the doclet.
-    if (realProp !== eventProp) {
-      newKey = doclet[realProp];
+    if (requestedProp !== eventProp) {
+      newKey = doclet[requestedProp];
     }
 
     if (wasVisible && oldKey) {
@@ -205,7 +210,7 @@ export class DocletStore {
     }
   }
 
-  #updateSetProperty(prop, value, setFnName) {
+  #updateSetProperty(prop, value, { setFnName }) {
     const set = this[DocletStore.#propertyToSetName.get(prop)];
 
     if (Object.hasOwn(value, prop) && value[prop]?.length) {
@@ -228,32 +233,32 @@ export class DocletStore {
     this.#commonPathPrefix = null;
   }
 
-  #updateWatchableProperties(doclet, property, docletInfo) {
+  #updateWatchableProperties(doclet, docletInfo) {
     const {
       isGlobal,
       isVisible,
       newDoclet,
       newValue,
       oldValue,
-      setFnName,
+      property,
       visibilityChanged,
       wasVisible,
     } = docletInfo;
 
     // `access` only affects visibility, which is handled above, so we ignore it here.
     if (visibilityChanged || property === 'augments') {
-      this.#updateSetProperty('augments', doclet, setFnName);
+      this.#updateSetProperty('augments', doclet, docletInfo);
     }
     if (visibilityChanged || property === 'borrowed') {
-      this.#updateSetProperty('borrowed', doclet, setFnName);
+      this.#updateSetProperty('borrowed', doclet, docletInfo);
     }
     // `ignore` only affects visibility, which is handled above, so we ignore it here.
     if (visibilityChanged || property === 'implements') {
-      this.#updateSetProperty('implements', doclet, setFnName);
+      this.#updateSetProperty('implements', doclet, docletInfo);
     }
     if (visibilityChanged || property === 'kind') {
       this.#toggleGlobal(doclet, { isGlobal, isVisible });
-      this.#updateMapProperty('kind', property, oldValue, newValue, doclet, docletInfo);
+      this.#updateMapProperty('kind', doclet, docletInfo);
     }
     if (visibilityChanged || property === 'listens') {
       let added;
@@ -277,17 +282,17 @@ export class DocletStore {
       }
     }
     if (visibilityChanged || property === 'longname') {
-      this.#updateMapProperty('longname', property, oldValue, newValue, doclet, docletInfo);
-      this.#trackAllDocletsByLongname(doclet, property, oldValue, newValue);
+      this.#updateMapProperty('longname', doclet, docletInfo);
+      this.#trackAllDocletsByLongname(doclet, docletInfo);
     }
     if (visibilityChanged || property === 'memberof') {
-      this.#updateMapProperty('memberof', property, oldValue, newValue, doclet, docletInfo);
+      this.#updateMapProperty('memberof', doclet, docletInfo);
     }
     if (visibilityChanged || property === 'mixes') {
-      this.#updateSetProperty('mixes', doclet, setFnName);
+      this.#updateSetProperty('mixes', doclet, docletInfo);
     }
     if (visibilityChanged || property === 'scope') {
-      this.#toggleGlobal(doclet, { isGlobal, isVisible });
+      this.#toggleGlobal(doclet, docletInfo);
     }
     // `undocumented` only affects visibility, which is handled above, so we ignore it here.
   }
