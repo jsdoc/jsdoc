@@ -24,7 +24,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "execa": "^8.0.1",
-    "hereby": "^1.8.7",
+    "hereby": "^1.8.8",
     "jasmine": "^5.1.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
