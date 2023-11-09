@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "dependencies": {
-    "@babel/eslint-parser": "^7.22.15",
+    "@babel/eslint-parser": "^7.23.3",
     "eslint-plugin-simple-import-sort": "^10.0.0"
   },
   "peerDependencies": {

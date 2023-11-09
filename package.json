@@ -3,7 +3,7 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/eslint-parser": "7.22.15",
+    "@babel/eslint-parser": "7.23.3",
     "@jsdoc/ast": "^0.2.5",
     "@jsdoc/cli": "^0.3.5",
     "@jsdoc/core": "^0.5.4",
