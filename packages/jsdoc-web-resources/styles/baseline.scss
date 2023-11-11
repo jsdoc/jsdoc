@@ -410,6 +410,7 @@ header > .symbol-detail-labels {
 .hljs {
   @include make-col-ready();
   flex-basis: fit-content;
+  margin-left: 1em;
   padding-left: 0;
 }
 
