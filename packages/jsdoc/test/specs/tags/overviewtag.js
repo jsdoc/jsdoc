@@ -38,7 +38,7 @@ describe('@overview tag', () => {
   afterEach(() => {
     env.opts._ = sourcePaths;
     env.sourceFiles = sourceFiles;
-    srcParser._removeListeners();
+    srcParser._stopListening();
   });
 
   it('When a file overview tag appears in a doclet, the name of the doclet should contain the path to the file.', () => {

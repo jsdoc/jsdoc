@@ -52,7 +52,7 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
     });
 
     afterEach(() => {
-      store._removeListeners();
+      store.stopListening();
     });
 
     it('is not constructable with no arguments', () => {
@@ -113,6 +113,14 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
 
     it('has a `sourcePaths` property', () => {
       expect(store.sourcePaths).toBeEmptyArray();
+    });
+
+    it('has a `startListening` method', () => {
+      expect(store.startListening).toBeFunction();
+    });
+
+    it('has a `stopListening` method', () => {
+      expect(store.stopListening).toBeFunction();
     });
 
     it('has an `unusedDoclets` property', () => {
@@ -1033,6 +1041,44 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
           '/Users/carolr/code/foo.js',
           '/Users/carolr/code/bar.js',
         ]);
+      });
+    });
+
+    describe('startListening', () => {
+      it('starts listening for events if necessary', () => {
+        const foo = makeDoclet(['@class', '@name Foo']);
+        const bar = makeDoclet(['@class', '@name Bar']);
+
+        expect(store.doclets).toHave(foo);
+        expect(store.doclets).toHave(bar);
+
+        // Stop listening for events.
+        store.stopListening();
+        // Change the doclet for `Foo` so that it's not visible.
+        foo.undocumented = true;
+        // Start listening for events.
+        store.startListening();
+        // Change the doclet for `Bar` so that it's not visible.
+        bar.undocumented = true;
+
+        // The doclet store didn't observe the change to `Foo`, but it did observe the change to
+        // `Bar`. Therefore, `Foo` should be treated as if it's still visible, and `Bar` shouldn't.
+        expect(store.doclets).toHave(foo);
+        expect(store.unusedDoclets).not.toHave(foo);
+        expect(store.doclets).not.toHave(bar);
+        expect(store.unusedDoclets).toHave(bar);
+      });
+    });
+
+    describe('stopListening', () => {
+      it('stops listening for events if necessary', () => {
+        makeDoclet(['@class', '@name Foo']);
+        store.stopListening();
+        makeDoclet(['@class', '@name Bar']);
+
+        // The doclet store should know about `Foo`, but not `Bar`.
+        expect(store.docletsByLongname.get('Foo').size).toBe(1);
+        expect(store.docletsByLongname.get('Bar')).toBeUndefined();
       });
     });
   });

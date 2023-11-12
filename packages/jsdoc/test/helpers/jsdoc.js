@@ -76,7 +76,7 @@ const helpers = {
       helpers.addParseResults(filename, docSet.doclets);
     }
 
-    docSet.docletStore._removeListeners();
+    docSet.docletStore.stopListening();
 
     return docSet;
   },

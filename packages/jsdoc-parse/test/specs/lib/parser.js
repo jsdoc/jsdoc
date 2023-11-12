@@ -46,7 +46,7 @@ describe('@jsdoc/parse/lib/parser', () => {
 
       expect(parser).toBeObject();
 
-      parser._removeListeners();
+      parser._stopListening();
     });
   });
 
@@ -58,7 +58,7 @@ describe('@jsdoc/parse/lib/parser', () => {
     });
 
     afterEach(() => {
-      parser._removeListeners();
+      parser._stopListening();
     });
 
     it('has a `visitor` property', () => {

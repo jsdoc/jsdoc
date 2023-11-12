@@ -34,7 +34,7 @@ describe('module names', () => {
   });
 
   afterEach(() => {
-    srcParser._removeListeners();
+    srcParser._stopListening();
   });
 
   it('should create a name from the file path when no documented module name exists', () => {

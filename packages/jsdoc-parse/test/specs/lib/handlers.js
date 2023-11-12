@@ -25,7 +25,7 @@ describe('@jsdoc/parse/lib/handlers', () => {
   });
 
   afterEach(() => {
-    testParser._removeListeners();
+    testParser._stopListening();
   });
 
   it('is an object', () => {

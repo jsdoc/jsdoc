@@ -56,6 +56,7 @@ export class DocletStore {
   #commonPathPrefix;
   #docletChangedHandler;
   #eventBus;
+  #isListening;
   #newDocletHandler;
   #sourcePaths;
 
@@ -76,6 +77,7 @@ export class DocletStore {
   constructor(dependencies) {
     this.#commonPathPrefix = null;
     this.#eventBus = dependencies.get('eventBus');
+    this.#isListening = false;
     this.#sourcePaths = new Map();
 
     /** @type Map<string, Set<Doclet>> */
@@ -103,8 +105,8 @@ export class DocletStore {
 
     this.#docletChangedHandler = (e) => this.#handleDocletChanged(e, {});
     this.#newDocletHandler = (e) => this.#handleDocletChanged(e, { newDoclet: true });
-    this.#eventBus.on('docletChanged', this.#docletChangedHandler);
-    this.#eventBus.on('newDoclet', this.#newDocletHandler);
+
+    this.startListening();
   }
 
   #handleDocletChanged({ doclet, property, oldValue, newValue }, opts) {
@@ -301,11 +303,6 @@ export class DocletStore {
     // `undocumented` only affects visibility, which is handled above, so we ignore it here.
   }
 
-  _removeListeners() {
-    this.#eventBus.removeListener('docletChanged', this.#docletChangedHandler);
-    this.#eventBus.removeListener('newDoclet', this.#newDocletHandler);
-  }
-
   // Adds a doclet to the store directly, rather than by listening to events.
   add(doclet) {
     let doclets;
@@ -356,5 +353,23 @@ export class DocletStore {
 
   get sourcePaths() {
     return Array.from(this.#sourcePaths.values());
+  }
+
+  startListening() {
+    if (!this.#isListening) {
+      this.#eventBus.on('docletChanged', this.#docletChangedHandler);
+      this.#eventBus.on('newDoclet', this.#newDocletHandler);
+
+      this.#isListening = true;
+    }
+  }
+
+  stopListening() {
+    if (this.#isListening) {
+      this.#eventBus.removeListener('docletChanged', this.#docletChangedHandler);
+      this.#eventBus.removeListener('newDoclet', this.#newDocletHandler);
+
+      this.#isListening = false;
+    }
   }
 }

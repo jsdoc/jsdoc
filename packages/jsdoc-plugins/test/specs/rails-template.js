@@ -31,7 +31,7 @@ describe('rails-template plugin', () => {
   });
 
   afterEach(() => {
-    parser._removeListeners();
+    parser._stopListening();
   });
 
   it('removes <% %> rails template tags from the source of *.erb files', () => {

@@ -31,7 +31,7 @@ describe('source-tag plugin', () => {
   });
 
   afterEach(() => {
-    parser._removeListeners();
+    parser._stopListening();
   });
 
   it("should set the lineno and filename of the doclet's meta property", () => {

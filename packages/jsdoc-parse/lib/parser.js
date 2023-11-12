@@ -103,8 +103,8 @@ export class Parser extends EventEmitter {
     });
   }
 
-  _removeListeners() {
-    this._docletStore._removeListeners();
+  _stopListening() {
+    this._docletStore.stopListening();
   }
 
   // TODO: Always emit events from the event bus, never from the parser.
