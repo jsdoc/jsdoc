@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "private": true,
-  "version": "5.0.0-dev.11",
+  "version": "5.0.0-dev.12",
   "revision": "1667509813080",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
@@ -14,13 +14,13 @@
     "url": "https://github.com/jsdoc/jsdoc"
   },
   "dependencies": {
-    "@jsdoc/cli": "^0.3.5",
-    "@jsdoc/core": "^0.5.4",
-    "@jsdoc/doclet": "^0.2.5",
-    "@jsdoc/parse": "^0.3.5",
-    "@jsdoc/tag": "^0.2.5",
-    "@jsdoc/template-legacy": "^0.1.5",
-    "@jsdoc/util": "^0.3.0",
+    "@jsdoc/cli": "^0.3.6",
+    "@jsdoc/core": "^0.5.5",
+    "@jsdoc/doclet": "^0.2.6",
+    "@jsdoc/parse": "^0.3.6",
+    "@jsdoc/tag": "^0.2.6",
+    "@jsdoc/template-legacy": "^0.1.6",
+    "@jsdoc/util": "^0.3.1",
     "lodash": "^4.17.21",
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^5.0.1"

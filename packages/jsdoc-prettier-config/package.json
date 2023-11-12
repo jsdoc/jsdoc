@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/prettier-config",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A Prettier (https://prettier.io/) configuration for JSDoc.",
   "keywords": [
     "prettier",
