@@ -49,6 +49,20 @@
     "test": "node_modules/.bin/hereby test"
   },
   "workspaces": [
-    "./packages/*"
+    "packages/jsdoc",
+    "packages/jsdoc-ast",
+    "packages/jsdoc-cli",
+    "packages/jsdoc-core",
+    "packages/jsdoc-doclet",
+    "packages/jsdoc-eslint-config",
+    "packages/jsdoc-parse",
+    "packages/jsdoc-plugins",
+    "packages/jsdoc-prettier-config",
+    "packages/jsdoc-salty",
+    "packages/jsdoc-tag",
+    "packages/jsdoc-task-runner",
+    "packages/jsdoc-template-legacy",
+    "packages/jsdoc-test-matchers",
+    "packages/jsdoc-util"
   ]
 }
