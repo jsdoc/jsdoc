@@ -884,6 +884,16 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
 
           expect(store.allDocletsByLongname.get(true)).toBeUndefined();
         });
+
+        it('does not track a doclet by longname if it is no longer visible', () => {
+          const doclet = makeDoclet(['@class', '@memberof foo', '@name Bar']);
+
+          expect(store.docletsByLongname.get('foo.Bar')).toHave(doclet);
+
+          doclet.undocumented = true;
+
+          expect(store.docletsByLongname.get('foo.Bar')).toBeUndefined();
+        });
       });
 
       describe('`memberof`', () => {

@@ -202,7 +202,11 @@ export class DocletStore {
       newKey = doclet[requestedProp];
     }
 
-    if (wasVisible && oldKey) {
+    // If the doclet is no longer visible, we must always remove it from the set, using whatever key
+    // we have.
+    if (wasVisible && !isVisible) {
+      removeFromSet(map, oldKey ?? newKey, doclet);
+    } else if (wasVisible && oldKey) {
       removeFromSet(map, oldKey, doclet);
     }
     if (isVisible && newKey) {
