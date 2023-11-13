@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 @import 'bootstrap.scss';
 // TODO: Enable dark theme.
 // @import '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
@@ -28,6 +29,12 @@
 
 sl-tree {
   margin-right: 4.5rem;
+  opacity: 0;
+}
+
+sl-tree.ready {
+  opacity: 1;
+  transition: 0.25s opacity;
 }
 
 sl-tree-item > a {

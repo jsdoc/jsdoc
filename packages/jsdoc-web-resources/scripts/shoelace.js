@@ -16,13 +16,26 @@
 import '../node_modules/@shoelace-style/shoelace/dist/components/tree/tree.js';
 import '../node_modules/@shoelace-style/shoelace/dist/components/tree-item/tree-item.js';
 
+const PREVENT_UNSTYLED_ELEMENTS = ['sl-tree', 'sl-tree-item'];
+
+function stopImmediatePropagation(e) {
+  e.stopImmediatePropagation();
+}
+
 // Prevent expandable tree items from expanding when their link is clicked.
 document.querySelectorAll('sl-tree-item').forEach((item) => {
   const child = item.firstElementChild;
 
   if (child && child.nodeName === 'A') {
-    child.addEventListener('click', (e) => {
-      e.stopImmediatePropagation();
-    });
+    child.addEventListener('click', stopImmediatePropagation);
   }
 });
+
+(async () => {
+  // Prevent a flash of undefined custom elements (FOUCE).
+  await Promise.allSettled(PREVENT_UNSTYLED_ELEMENTS.map((el) => customElements.whenDefined(el)));
+
+  document.querySelectorAll('sl-tree').forEach((tree) => {
+    tree.classList.add('ready');
+  });
+})();
