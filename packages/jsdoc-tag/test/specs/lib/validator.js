@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /* global jsdoc */
-import { EventBus } from '@jsdoc/util';
 
 import { Tag } from '../../../lib/tag.js';
 import * as validator from '../../../lib/validator.js';
@@ -129,10 +129,10 @@ describe('@jsdoc/tag/lib/validator', () => {
     });
 
     it('logs the offending comment for validation errors', () => {
-      const bus = new EventBus('jsdoc');
+      const emitter = jsdoc.deps.get('emitter');
       const events = [];
 
-      bus.once('logger:error', (e) => events.push(e));
+      emitter.once('logger:error', (e) => events.push(e));
       config.tags.allowUnknownTags = false;
       validateTag(badTag);
 

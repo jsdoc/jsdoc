@@ -15,7 +15,6 @@
 */
 import { name } from '@jsdoc/core';
 import { inline } from '@jsdoc/tag';
-import { log } from '@jsdoc/util';
 import catharsis from 'catharsis';
 
 const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = name;
@@ -249,7 +248,7 @@ function parseType(longname) {
     return catharsis.parse(longname, { jsdoc: true });
   } catch (e) {
     err = new Error(`unable to parse ${longname}: ${e.message}`);
-    log.error(err);
+    console.error(err);
 
     return longname;
   }

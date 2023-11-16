@@ -13,7 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import { EventBus } from '@jsdoc/util';
+
+import EventEmitter from 'node:events';
+
+import { getLogFunctions } from '@jsdoc/util';
 import _ from 'lodash';
 import ow from 'ow';
 import yargs from 'yargs-parser';
@@ -116,14 +119,13 @@ export default class Engine {
     ow(opts.revision, ow.optional.date);
     ow(opts.version, ow.optional.string);
 
-    this._bus = new EventBus('jsdoc', {
-      cache: _.isBoolean(opts._cacheEventBus) ? opts._cacheEventBus : true,
-    });
+    this.emitter = new EventEmitter();
+    this.flags = [];
     this._logger = new Logger({
-      emitter: this._bus,
+      emitter: this.emitter,
       level: opts.logLevel,
     });
-    this.flags = [];
+    this.log = getLogFunctions(this.emitter);
     this.revision = opts.revision;
     this.version = opts.version;
   }

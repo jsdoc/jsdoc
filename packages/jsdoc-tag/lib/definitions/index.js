@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import { tags as closure } from './closure.js';
-import { tags as core } from './core.js';
-import { tags as internal } from './internal.js';
-import { tags as jsdoc } from './jsdoc.js';
+import { getTags as getClosureTags } from './closure.js';
+import { getTags as getCoreTags } from './core.js';
+import { getTags as getInternalTags } from './internal.js';
+import { getTags as getJsdocTags } from './jsdoc.js';
 
-export { closure, core, internal, jsdoc };
-export default { closure, core, internal, jsdoc };
+export { getClosureTags, getCoreTags, getInternalTags, getJsdocTags };
+export default { getClosureTags, getCoreTags, getInternalTags, getJsdocTags };

@@ -13,12 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Functionality related to JSDoc tags.
  */
+
 import path from 'node:path';
 
-import { log } from '@jsdoc/util';
 import _ from 'lodash';
 
 import * as type from './type.js';
@@ -66,10 +67,13 @@ function addHiddenProperty(obj, propName, propValue, dependencies) {
   });
 }
 
-function parseType({ text, originalTitle }, { canHaveName, canHaveType }, meta) {
+function parseType({ dependencies, text, originalTitle }, { canHaveName, canHaveType }, meta) {
+  let log;
+
   try {
     return type.parse(text, canHaveName, canHaveType);
   } catch (e) {
+    log = dependencies.get('log');
     log.error(
       'Unable to parse a tag\'s type expression%s with tag title "%s" and text "%s": %s',
       meta.path && meta.filename

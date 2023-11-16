@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import babelParser from '@babel/parser';
-import { log } from '@jsdoc/util';
 import _ from 'lodash';
 
 // Exported so we can use them in tests.
@@ -62,23 +62,24 @@ export const parserOptions = {
   ranges: true,
 };
 
-function parse(source, filename, sourceType) {
-  let ast;
-  const options = _.defaults({}, parserOptions, { sourceType });
-
-  try {
-    ast = babelParser.parse(source, options);
-  } catch (e) {
-    log.error(`Unable to parse ${filename}: ${e.message}`);
-  }
-
-  return ast;
-}
-
 // TODO: docs
 export class AstBuilder {
-  // TODO: docs
-  static build(source, filename, sourceType) {
-    return parse(source, filename, sourceType);
+  #log;
+
+  constructor(deps) {
+    this.#log = deps.get('log');
+  }
+
+  build(source, filename, sourceType) {
+    let ast;
+    const options = _.defaults({}, parserOptions, { sourceType });
+
+    try {
+      ast = babelParser.parse(source, options);
+    } catch (e) {
+      this.#log.error(`Unable to parse ${filename}: ${e.message}`);
+    }
+
+    return ast;
   }
 }

@@ -13,7 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
+/* global jsdoc */
+
 import * as astBuilder from '../../../lib/ast-builder.js';
+
+const { AstBuilder } = astBuilder;
 
 describe('@jsdoc/ast/lib/ast-builder', () => {
   it('is an object', () => {
@@ -29,23 +34,26 @@ describe('@jsdoc/ast/lib/ast-builder', () => {
   });
 
   describe('AstBuilder', () => {
-    const { AstBuilder } = astBuilder;
+    let instance;
+
+    beforeEach(() => {
+      instance = new AstBuilder(jsdoc.deps);
+    });
 
     // TODO: more tests
-    it('has a "build" static method', () => {
-      expect(AstBuilder.build).toBeFunction();
+    it('has a `build` method', () => {
+      expect(instance.build).toBeFunction();
     });
 
     describe('build', () => {
       // TODO: more tests
       it('logs (not throws) an error when a file cannot be parsed', () => {
         function parse() {
-          AstBuilder.build('qwerty!!!!!', 'bad.js');
+          instance.build('qwerty!!!!!', 'bad.js');
         }
 
         expect(parse).not.toThrow();
-        // TODO: figure out why this stopped working
-        // expect(jsdoc.didLog(parse, 'error')).toBeTrue();
+        expect(jsdoc.didLog(parse, 'error')).toBeTrue();
       });
     });
   });

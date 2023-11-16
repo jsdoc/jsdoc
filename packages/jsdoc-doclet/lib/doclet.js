@@ -327,8 +327,8 @@ function getFilepath(doclet) {
   return path.join(doclet.meta.path || '', doclet.meta.filename);
 }
 
-function emitDocletChanged(eventBus, doclet, property, oldValue, newValue) {
-  eventBus.emit('docletChanged', { doclet, property, oldValue, newValue });
+function emitDocletChanged(emitter, doclet, property, oldValue, newValue) {
+  emitter.emit('docletChanged', { doclet, property, oldValue, newValue });
 }
 
 function clone(source, target, properties) {
@@ -453,9 +453,9 @@ Doclet = class {
    */
   constructor(docletSrc, meta, dependencies) {
     const accessConfig = dependencies.get('config')?.opts?.access?.slice() ?? [];
-    const eventBus = dependencies.get('eventBus');
+    const emitter = dependencies.get('emitter');
     const boundDefineWatchableProp = defineWatchableProp.bind(null, this);
-    const boundEmitDocletChanged = emitDocletChanged.bind(null, eventBus, this);
+    const boundEmitDocletChanged = emitDocletChanged.bind(null, emitter, this);
     let newTags = [];
 
     this.#dictionary = dependencies.get('tags');

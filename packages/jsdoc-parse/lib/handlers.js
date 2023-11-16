@@ -16,7 +16,6 @@
 import { Syntax } from '@jsdoc/ast';
 import { name } from '@jsdoc/core';
 import { Doclet } from '@jsdoc/doclet';
-import { log } from '@jsdoc/util';
 import escape from 'escape-string-regexp';
 
 const PROTOTYPE_OWNER_REGEXP = /^(.+?)(\.prototype|#)$/;
@@ -43,6 +42,7 @@ function filterByLongname({ longname }) {
 function createDoclet(comment, e, deps) {
   let doclet;
   let flatComment;
+  let log;
   let msg;
 
   try {
@@ -50,6 +50,7 @@ function createDoclet(comment, e, deps) {
   } catch (error) {
     flatComment = comment.replace(/[\r\n]/g, '');
     msg = `cannot create a doclet for the comment "${flatComment}": ${error.message}`;
+    log = deps.get('log');
     log.error(msg);
     doclet = new Doclet('', e, deps);
   }

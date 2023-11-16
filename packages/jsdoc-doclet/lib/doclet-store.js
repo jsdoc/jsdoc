@@ -55,7 +55,7 @@ function removeFromSet(targetMap, key, value) {
 export class DocletStore {
   #commonPathPrefix;
   #docletChangedHandler;
-  #eventBus;
+  #emitter;
   #isListening;
   #newDocletHandler;
   #sourcePaths;
@@ -76,7 +76,7 @@ export class DocletStore {
 
   constructor(dependencies) {
     this.#commonPathPrefix = null;
-    this.#eventBus = dependencies.get('eventBus');
+    this.#emitter = dependencies.get('emitter');
     this.#isListening = false;
     this.#sourcePaths = new Map();
 
@@ -357,8 +357,8 @@ export class DocletStore {
 
   startListening() {
     if (!this.#isListening) {
-      this.#eventBus.on('docletChanged', this.#docletChangedHandler);
-      this.#eventBus.on('newDoclet', this.#newDocletHandler);
+      this.#emitter.on('docletChanged', this.#docletChangedHandler);
+      this.#emitter.on('newDoclet', this.#newDocletHandler);
 
       this.#isListening = true;
     }
@@ -366,8 +366,8 @@ export class DocletStore {
 
   stopListening() {
     if (this.#isListening) {
-      this.#eventBus.removeListener('docletChanged', this.#docletChangedHandler);
-      this.#eventBus.removeListener('newDoclet', this.#newDocletHandler);
+      this.#emitter.removeListener('docletChanged', this.#docletChangedHandler);
+      this.#emitter.removeListener('newDoclet', this.#newDocletHandler);
 
       this.#isListening = false;
     }

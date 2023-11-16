@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import path from 'node:path';
 
 import { name } from '@jsdoc/core';
-import { log } from '@jsdoc/util';
 import commonPathPrefix from 'common-path-prefix';
 import _ from 'lodash';
 
@@ -74,10 +74,13 @@ export function setDocletKindToTitle(doclet, { title }) {
   doclet.addTag('kind', title);
 }
 
-export function setDocletScopeToTitle(doclet, { title }) {
+export function setDocletScopeToTitle(doclet, { title }, deps) {
+  let log;
+
   try {
     doclet.setScope(title);
   } catch (e) {
+    log = deps.get('log');
     log.error(e.message);
   }
 }

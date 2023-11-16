@@ -13,14 +13,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import EventBus from '../../../lib/bus.js';
-import log from '../../../lib/log.js';
+
+/* global jsdoc */
+
+import getLogFunctions from '../../../lib/log.js';
 
 describe('@jsdoc/util/lib/log', () => {
+  let emitter;
   const fns = ['debug', 'error', 'info', 'fatal', 'verbose', 'warn'];
+  let log;
 
-  it('is an object', () => {
-    expect(log).toBeObject();
+  beforeEach(() => {
+    emitter = jsdoc.deps.get('emitter');
+    log = getLogFunctions(emitter);
+  });
+
+  it('is a function', () => {
+    expect(getLogFunctions).toBeFunction();
   });
 
   it('provides the expected functions', () => {
@@ -30,13 +39,11 @@ describe('@jsdoc/util/lib/log', () => {
   });
 
   describe('functions', () => {
-    const bus = new EventBus('jsdoc');
-
-    it('sends events to the event bus', () => {
+    it('sends events to the emitter', () => {
       fns.forEach((fn) => {
         let event;
 
-        bus.once(`logger:${fn}`, (e) => {
+        emitter.once(`logger:${fn}`, (e) => {
           event = e;
         });
         log[fn]('testing');

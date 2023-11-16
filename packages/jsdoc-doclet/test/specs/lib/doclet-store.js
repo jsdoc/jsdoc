@@ -29,7 +29,7 @@ function makeDoclet(comment, meta, deps) {
   deps ??= jsdoc.deps;
   doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, deps);
   if (meta?._emitEvent !== false) {
-    deps.get('eventBus').emit('newDoclet', { doclet });
+    deps.get('emitter').emit('newDoclet', { doclet });
   }
 
   return doclet;

@@ -357,7 +357,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
           config.opts.access = access.slice();
         }
         map.set('config', config);
-        map.set('eventBus', jsdoc.deps.get('eventBus'));
+        map.set('emitter', jsdoc.deps.get('emitter'));
         map.set('tags', jsdoc.deps.get('tags'));
 
         return map;
@@ -501,7 +501,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
       });
 
       describe('watchable properties', () => {
-        const eventBus = jsdoc.deps.get('eventBus');
+        const emitter = jsdoc.deps.get('emitter');
         let events;
 
         function listener(e) {
@@ -509,12 +509,12 @@ describe('@jsdoc/doclet/lib/doclet', () => {
         }
 
         beforeEach(() => {
-          eventBus.on('docletChanged', listener);
+          emitter.on('docletChanged', listener);
           events = [];
         });
 
         afterEach(() => {
-          eventBus.removeListener('docletChanged', listener);
+          emitter.removeListener('docletChanged', listener);
         });
 
         it('sends events to the event bus when watchable properties change', () => {

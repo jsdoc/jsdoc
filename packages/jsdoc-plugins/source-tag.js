@@ -13,7 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import { log } from '@jsdoc/util';
 
 export const handlers = {
   /**
@@ -46,12 +45,10 @@ export const handlers = {
         try {
           value = JSON.parse(tag.value);
         } catch (ex) {
-          log.error(
+          throw new Error(
             '@source tag expects a valid JSON value, like ' +
               '{ "filename": "myfile.js", "lineno": 123 }.'
           );
-
-          return;
         }
 
         doclet.meta = doclet.meta || {};

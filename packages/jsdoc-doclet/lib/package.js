@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import { log } from '@jsdoc/util';
+
 import stripBom from 'strip-bom';
 
 /**
@@ -79,8 +79,10 @@ function getLicenses(packageInfo) {
 export class Package {
   /**
    * @param {string} json - The contents of the `package.json` file.
+   * @param {Object} deps - The JSDoc dependencies.
    */
-  constructor(json) {
+  constructor(json, deps) {
+    const log = deps.get('log');
     let packageInfo;
 
     /**

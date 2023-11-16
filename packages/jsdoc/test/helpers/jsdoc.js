@@ -19,10 +19,8 @@ import { fileURLToPath } from 'node:url';
 
 import { augment } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
-import { EventBus } from '@jsdoc/util';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const bus = new EventBus('jsdoc');
 const originalDictionaries = ['jsdoc', 'closure'];
 const packagePath = path.resolve(__dirname, '../..');
 const parseResults = [];
@@ -36,15 +34,16 @@ const helpers = {
   },
   createParser: () => createParser(jsdoc.deps),
   didLog: (fn, level) => {
+    const emitter = jsdoc.deps.get('emitter');
     const events = [];
 
     function listener(e) {
       events.push(e);
     }
 
-    bus.on(`logger:${level}`, listener);
+    emitter.on(`logger:${level}`, listener);
     fn();
-    bus.off(`logger:${level}`, listener);
+    emitter.off(`logger:${level}`, listener);
 
     return events.length !== 0;
   },

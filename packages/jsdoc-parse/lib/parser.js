@@ -19,7 +19,6 @@ import fs from 'node:fs';
 import { AstBuilder, astNode, Syntax, Walker } from '@jsdoc/ast';
 import { name } from '@jsdoc/core';
 import { Doclet, DocletStore } from '@jsdoc/doclet';
-import { log } from '@jsdoc/util';
 import _ from 'lodash';
 
 import { Visitor } from './visitor.js';
@@ -73,9 +72,10 @@ export class Parser extends EventEmitter {
     this._conf = dependencies.get('config');
     this._dependencies = dependencies;
     this._docletStore = new DocletStore(dependencies);
-    this._eventBus = dependencies.get('eventBus');
+    this._emitter = dependencies.get('emitter');
+    this._log = dependencies.get('log');
     this._visitor = new Visitor();
-    this._walker = new Walker();
+    this._walker = new Walker(dependencies);
 
     this._visitor.setParser(this);
 
@@ -107,10 +107,10 @@ export class Parser extends EventEmitter {
     this._docletStore.stopListening();
   }
 
-  // TODO: Always emit events from the event bus, never from the parser.
+  // TODO: Always emit events from the dependencies' emitter, never from the parser.
   emit(eventName, event, ...args) {
     super.emit(eventName, event, ...args);
-    this._eventBus.emit(eventName, event, ...args);
+    this._emitter.emit(eventName, event, ...args);
   }
 
   // TODO: update docs
@@ -145,7 +145,7 @@ export class Parser extends EventEmitter {
     }
 
     e.sourcefiles = sourceFiles;
-    log.debug('Parsing source files: %j', sourceFiles);
+    this._log.debug('Parsing source files: %j', sourceFiles);
 
     this.emit('parseBegin', e);
 
@@ -161,7 +161,7 @@ export class Parser extends EventEmitter {
         try {
           sourceCode = fs.readFileSync(filename, encoding);
         } catch (err) {
-          log.error(`Unable to read and parse the source file ${filename}: ${err}`);
+          this._log.error(`Unable to read and parse the source file ${filename}: ${err}`);
         }
       }
 
@@ -177,7 +177,7 @@ export class Parser extends EventEmitter {
         doclets: this.results(),
       });
     }
-    log.debug('Finished parsing source files.');
+    this._log.debug('Finished parsing source files.');
 
     return this._docletStore;
   }
@@ -209,13 +209,14 @@ export class Parser extends EventEmitter {
   /** @private */
   _parseSourceCode(sourceCode, sourceName) {
     let ast;
+    const builder = new AstBuilder(this._dependencies);
     let e = {
       filename: sourceName,
     };
     let sourceType;
 
     this.emit('fileBegin', e);
-    log.info(`Parsing ${sourceName} ...`);
+    this._log.info(`Parsing ${sourceName} ...`);
 
     if (!e.defaultPrevented) {
       e = {
@@ -229,7 +230,7 @@ export class Parser extends EventEmitter {
       sourceCode = pretreat(e.source);
       sourceType = this._conf.source ? this._conf.source.type : undefined;
 
-      ast = AstBuilder.build(sourceCode, sourceName, sourceType);
+      ast = builder.build(sourceCode, sourceName, sourceType);
       if (ast) {
         this._walkAst(ast, this._visitor, sourceName);
       }
