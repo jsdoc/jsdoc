@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/plugins",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Sample plugins for JSDoc.",
   "keywords": [
     "jsdoc"
@@ -32,9 +32,9 @@
   },
   "devDependencies": {
     "@jsdoc/core": "^0.5.5",
-    "@jsdoc/parse": "^0.3.6"
+    "@jsdoc/parse": "^0.3.7"
   },
   "dependencies": {
-    "@jsdoc/util": "^0.3.1"
+    "@jsdoc/util": "^0.3.2"
   }
 }
