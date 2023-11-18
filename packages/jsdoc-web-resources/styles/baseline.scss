@@ -40,13 +40,20 @@ $h-margin-top-small: $line-height-computed;
 $link-color: $primary;
 $link-color-hover: tint-color($link-color, 10%);
 
+$blue-dark: #1e88e5; // Material Design Blue 600
 $blue-light: #90caf9; // Material Design Blue 200
 $code-light-gray: shade-color(#8e908c, 10%);
+$deep-orange-dark: #f4511e; // Material Design Deep Orange 600
 $deep-orange-light: #ffab91; // Material Design Deep Orange 200
+$deep-purple-dark: #5e35b1; // Material Design Deep Purple 600
 $deep-purple-light: #b39ddb; // Material Design Deep Purple 200
+$indigo-dark: #3949ab; // Material Design Indigo 600
 $indigo-light: #9fa8da; // Material Design Indigo 200
+$green-dark: #43a047; // Material Design Green 600
 $green-light: #a5d6a7; // Material Design Green 200
+$light-green-dark: #7cb342; // Material Design Light Green 600
 $light-green-light: #c5e1a5; // Material Design Light Green 200
+$orange-dark: #fb8c00; // Material Design Orange 600
 $orange-light: #ffcc80; // Material Design Orange 200
 
 /* Spacing */
@@ -258,7 +265,7 @@ dd > p {
 }
 
 .badge {
-  color: $gray-700;
+  color: $gray-100;
   font-family: $sans-serif-font;
   font-size: 100%;
   font-weight: bold;
@@ -268,36 +275,36 @@ dd > p {
 }
 
 .badge-async {
-  background-color: $light-green-light;
+  background-color: $light-green-dark;
 }
 
 .badge-generator {
-  background-color: $indigo-light;
+  background-color: $indigo-dark;
 }
 
 .badge-package,
 .badge-private,
 .badge-protected,
 .badge-public {
-  background-color: $blue-light;
+  background-color: $blue-dark;
 }
 
 .badge-constant,
 .badge-readonly {
-  background-color: $deep-orange-light;
+  background-color: $deep-orange-dark;
 }
 
 .badge-kind {
-  background-color: $orange-light;
+  background-color: $orange-dark;
 }
 
 .badge-inner,
 .badge-static {
-  background-color: $green-light;
+  background-color: $green-dark;
 }
 
 .badge-virtual {
-  background-color: $deep-purple-light;
+  background-color: $deep-purple-dark;
 }
 
 .line-number {
