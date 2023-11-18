@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 @import 'bootstrap.scss';
 @import 'shoelace.scss';
 
@@ -256,48 +257,46 @@ dd > p {
   @include p-margin();
 }
 
-// TODO: Reimplement as Bootstrap badges: https://getbootstrap.com/docs/5.2/components/badge/
-.label {
-  color: #ffffff;
+.badge {
+  color: $gray-700;
   font-family: $sans-serif-font;
   font-size: 100%;
-  font-weight: normal;
+  font-weight: bold;
   // TODO: Global: update units.
   padding: 0.1em 0.5em 0.1em;
   border-radius: $border-radius-small * 0.5;
-  text-transform: uppercase;
 }
 
-.label-async {
+.badge-async {
   background-color: $light-green-light;
 }
 
-.label-generator {
+.badge-generator {
   background-color: $indigo-light;
 }
 
-.label-package,
-.label-private,
-.label-protected,
-.label-public {
+.badge-package,
+.badge-private,
+.badge-protected,
+.badge-public {
   background-color: $blue-light;
 }
 
-.label-constant,
-.label-readonly {
+.badge-constant,
+.badge-readonly {
   background-color: $deep-orange-light;
 }
 
-.label-kind {
+.badge-kind {
   background-color: $orange-light;
 }
 
-.label-inner,
-.label-static {
+.badge-inner,
+.badge-static {
   background-color: $green-light;
 }
 
-.label-virtual {
+.badge-virtual {
   background-color: $deep-purple-light;
 }
 
@@ -363,32 +362,33 @@ dd > p {
   font-size: $h4-font-size * 0.9;
 }
 
-.symbol-detail-labels {
+.symbol-detail-badges {
   font-size: $font-size-base * 0.8;
+  font-weight: bold;
   margin-bottom: $font-size-base * 0.25;
   margin-top: $h-margin-top-large;
 }
 
-// Remove whitespace above the first set of labels to follow an h2, and above labels in a header
-h2 + section > .symbol-detail-labels:first-child,
-.h2 + section > .symbol-detail-labels:first-child,
-header > .symbol-detail-labels {
+// Remove whitespace above the first set of badges to follow an h2, and above badges in a header
+h2 + section > .symbol-detail-badges:first-child,
+.h2 + section > .symbol-detail-badges:first-child,
+header > .symbol-detail-badges {
   margin-top: 0;
 }
 
-// Remove whitespace above a heading that follows a set of labels
-.symbol-detail-labels + h1,
-.symbol-detail-labels + .h1,
-.symbol-detail-labels + h2,
-.symbol-detail-labels + .h2,
-.symbol-detail-labels + h3,
-.symbol-detail-labels + .h3,
-.symbol-detail-labels + h4,
-.symbol-detail-labels + .h4,
-.symbol-detail-labels + h5,
-.symbol-detail-labels + .h5,
-.symbol-detail-labels + h6,
-.symbol-detail-labels + .h6 {
+// Remove whitespace above a heading that follows a set of badges
+.symbol-detail-badges + h1,
+.symbol-detail-badges + .h1,
+.symbol-detail-badges + h2,
+.symbol-detail-badges + .h2,
+.symbol-detail-badges + h3,
+.symbol-detail-badges + .h3,
+.symbol-detail-badges + h4,
+.symbol-detail-badges + .h4,
+.symbol-detail-badges + h5,
+.symbol-detail-badges + .h5,
+.symbol-detail-badges + h6,
+.symbol-detail-badges + .h6 {
   margin-top: 0;
 }
 
