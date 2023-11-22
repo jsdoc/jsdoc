@@ -20,6 +20,10 @@ describe('@jsdoc/tag/lib/inline', () => {
     expect(inline).toBeObject();
   });
 
+  it('exports an `includesInlineTag` function', () => {
+    expect(inline.includesInlineTag).toBeFunction();
+  });
+
   it('exports an isInlineTag function', () => {
     expect(inline.isInlineTag).toBeFunction();
   });
@@ -32,8 +36,45 @@ describe('@jsdoc/tag/lib/inline', () => {
     expect(inline.extractInlineTag).toBeFunction();
   });
 
+  describe('includesInlineTag', () => {
+    const { includesInlineTag } = inline;
+
+    it('identifies a string that is an inline tag', () => {
+      expect(includesInlineTag('{@mytag hooray}', 'mytag')).toBeTrue();
+    });
+
+    it('identifies when a string does not include an inline tag', () => {
+      expect(includesInlineTag('mytag hooray', 'mytag')).toBeFalse();
+    });
+
+    it('identifies when a string contains an inline tag, plus extra characters', () => {
+      expect(includesInlineTag('this is {@mytag hooray}', 'mytag')).toBeTrue();
+    });
+
+    it('allows any inline tag by default', () => {
+      expect(includesInlineTag('Hello, {@anyoldtag will do}')).toBeTrue();
+    });
+
+    it('identifies things that are not inline tags when a tag name is not provided', () => {
+      expect(includesInlineTag('mytag hooray')).toBeFalse();
+    });
+
+    it('allows regexp characters in the tag name', () => {
+      expect(includesInlineTag('{@mytags hooray}', 'mytag\\S')).toBeTrue();
+    });
+
+    it('returns false (rather than throwing) with invalid input', () => {
+      function badInput() {
+        return includesInlineTag();
+      }
+
+      expect(badInput).not.toThrow();
+      expect(badInput()).toBeFalse();
+    });
+  });
+
   describe('isInlineTag', () => {
-    const isInlineTag = inline.isInlineTag;
+    const { isInlineTag } = inline;
 
     it('identifies an inline tag', () => {
       expect(isInlineTag('{@mytag hooray}', 'mytag')).toBeTrue();
