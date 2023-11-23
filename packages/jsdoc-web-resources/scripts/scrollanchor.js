@@ -13,40 +13,84 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* global document, window */
-// Function to prevent the top navbar from obscuring the page content.
-(function () {
-  // timeout for scrolling the window
-  var TIMEOUT = 5;
-  // top navbar height
-  var TOP_OFFSET = 50;
 
-  function scrollTo(hash) {
-    var element = document.getElementById(hash.replace(/^#/, ''));
-    var elementOffset;
-    var rect;
+// Prevent the top navbar from obscuring the page content.
+(() => {
+  const KEY_CODES = {
+    PAGE_DOWN: 'PageDown',
+    PAGE_UP: 'PageUp',
+    SPACE: 'Space',
+  };
 
-    if (element) {
-      rect = element.getBoundingClientRect();
-      elementOffset = rect.top + window.pageYOffset;
+  function adjustForNavbar(px) {
+    const navbar = document.getElementById('jsdoc-navbar');
+    const rect = navbar.getBoundingClientRect();
+    // Round height up to the nearest multiple of 5.
+    const adjustedNavbarHeight = Math.ceil(rect.height / 5) * 5;
 
-      setTimeout(function () {
-        window.scrollTo(0, elementOffset - TOP_OFFSET);
-      }, TIMEOUT);
+    return px - adjustedNavbarHeight;
+  }
+
+  function handleHashEvent(event, id, historyItem) {
+    let target;
+
+    if (!id) {
+      return;
+    }
+
+    target = document.getElementById(id);
+    if (target) {
+      event.preventDefault();
+      window.scroll({ top: adjustForNavbar(target.offsetTop) });
+      window.history.pushState(null, null, historyItem);
     }
   }
 
-  window.addEventListener('load', function () {
-    var currentHash = window.location.hash;
+  function hashToId(hash) {
+    return hash.substring(1);
+  }
 
-    // if we're loading a URL with an anchor, scroll appropriately
-    if (currentHash && currentHash !== '#') {
-      scrollTo(currentHash);
+  // If we're loading a URL with an anchor, scroll appropriately.
+  window.addEventListener('load', (event) => {
+    const id = hashToId(document.location.hash);
+
+    handleHashEvent(event, id, document.location.href);
+  });
+
+  // If the user clicks on an in-page anchor tag, scroll appropriately.
+  window.addEventListener('hashchange', (event) => {
+    const url = new URL(event.newURL);
+    const id = hashToId(url.hash);
+
+    handleHashEvent(event, id, url.hash);
+  });
+
+  // If the user pages up or down, scroll appropriately.
+  document.addEventListener('keydown', (event) => {
+    const code = event.code;
+    let scrollBy;
+
+    if (code !== KEY_CODES.SPACE && code !== KEY_CODES.PAGE_DOWN && code !== KEY_CODES.PAGE_UP) {
+      return;
     }
 
-    // if the user clicks on an in-page anchor tag, scroll appropriately
-    window.addEventListener('hashchange', function () {
-      scrollTo(window.location.hash);
-    });
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    scrollBy = adjustForNavbar(window.innerHeight);
+
+    switch (code) {
+      case KEY_CODES.PAGE_UP:
+        window.scroll({
+          top: window.scrollY - scrollBy,
+          behavior: 'auto',
+        });
+        break;
+      default:
+        window.scroll({
+          top: window.scrollY + scrollBy,
+          behavior: 'auto',
+        });
+        break;
+    }
   });
 })();
