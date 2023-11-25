@@ -15,49 +15,47 @@
 */
 
 // Tags that JSDoc uses internally, and that must always be defined.
-export const getTags = () => {
-  return {
-    // Special separator tag indicating that multiple doclets should be generated for the same
-    // comment. Used internally (and by some JSDoc users, although it's not officially supported).
-    //
-    // In the following example, the parser will replace `//**` with an `@also` tag:
-    // /**
-    //  * Foo.
-    //  *//**
-    //  * Foo with a param.
-    //  * @param {string} bar
-    //  */
-    //  function foo(bar) {}
-    also: {
-      onTagged() {
-        // Let the parser handle it. We define the tag here to avoid "not a known tag" errors.
-      },
+export const getTags = () => ({
+  // Special separator tag indicating that multiple doclets should be generated for the same
+  // comment. Used internally (and by some JSDoc users, although it's not officially supported).
+  //
+  // In the following example, the parser will replace `//**` with an `@also` tag:
+  // /**
+  //  * Foo.
+  //  *//**
+  //  * Foo with a param.
+  //  * @param {string} bar
+  //  */
+  //  function foo(bar) {}
+  also: {
+    onTagged() {
+      // Let the parser handle it. We define the tag here to avoid "not a known tag" errors.
     },
-    description: {
-      mustHaveValue: true,
-      onTagged: (doclet, { value }) => {
-        doclet.description = value;
-      },
-      synonyms: ['desc'],
+  },
+  description: {
+    mustHaveValue: true,
+    onTagged: (doclet, { value }) => {
+      doclet.description = value;
     },
-    kind: {
-      mustHaveValue: true,
-      onTagged: (doclet, { value }) => {
-        doclet.kind = value;
-      },
+    synonyms: ['desc'],
+  },
+  kind: {
+    mustHaveValue: true,
+    onTagged: (doclet, { value }) => {
+      doclet.kind = value;
     },
-    name: {
-      mustHaveValue: true,
-      onTagged: (doclet, { value }) => {
-        doclet.name = value;
-      },
+  },
+  name: {
+    mustHaveValue: true,
+    onTagged: (doclet, { value }) => {
+      doclet.name = value;
     },
-    undocumented: {
-      mustNotHaveValue: true,
-      onTagged(doclet) {
-        doclet.undocumented = true;
-        doclet.comment = '';
-      },
+  },
+  undocumented: {
+    mustNotHaveValue: true,
+    onTagged(doclet) {
+      doclet.undocumented = true;
+      doclet.comment = '';
     },
-  };
-};
+  },
+});

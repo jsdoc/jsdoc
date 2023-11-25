@@ -60,9 +60,7 @@ function matchmaker(name, checker) {
 }
 
 const matcherFuncs = {
-  toBeArray: (actual) => {
-    return _.isArray(actual);
-  },
+  toBeArray: (actual) => _.isArray(actual),
   toBeArrayOfSize: (actual, expected) => {
     if (_.isArray(actual) && actual.length === expected) {
       return true;
@@ -77,76 +75,31 @@ const matcherFuncs = {
 
     return !actual.some((item) => !_.isString(item));
   },
-  toBeArrayOfObjects: (actual) => {
-    return _.isArray(actual) && !actual.some((item) => !_.isObject(item));
-  },
-  toBeBoolean: (actual) => {
-    return _.isBoolean(actual);
-  },
-  toBeEmptyArray: (actual) => {
-    return _.isArray(actual) && actual.length === 0;
-  },
-  toBeEmptyMap: (actual) => {
-    return _.isMap(actual) && actual.size === 0;
-  },
-  toBeEmptyObject: (actual) => {
-    return _.isObject(actual) && !Object.keys(actual).length;
-  },
-  toBeEmptySet: (actual) => {
-    return _.isSet(actual) && actual.size === 0;
-  },
-  toBeEmptyString: (actual) => {
-    return actual === '';
-  },
-  toBeError: (actual) => {
-    return actual instanceof Error;
-  },
-  toBeErrorOfType: (actual, expected) => {
-    return actual instanceof Error && actual.name === expected;
-  },
-  toBeFunction: (actual) => {
-    return _.isFunction(actual);
-  },
+  toBeArrayOfObjects: (actual) => _.isArray(actual) && !actual.some((item) => !_.isObject(item)),
+  toBeBoolean: (actual) => _.isBoolean(actual),
+  toBeEmptyArray: (actual) => _.isArray(actual) && actual.length === 0,
+  toBeEmptyMap: (actual) => _.isMap(actual) && actual.size === 0,
+  toBeEmptyObject: (actual) => _.isObject(actual) && !Object.keys(actual).length,
+  toBeEmptySet: (actual) => _.isSet(actual) && actual.size === 0,
+  toBeEmptyString: (actual) => actual === '',
+  toBeError: (actual) => actual instanceof Error,
+  toBeErrorOfType: (actual, expected) => actual instanceof Error && actual.name === expected,
+  toBeFunction: (actual) => _.isFunction(actual),
   toBeInstanceOf: isInstanceOf,
-  toBeLessThanOrEqualTo: (actual, expected) => {
-    return actual <= expected;
-  },
-  toBeMap: (actual) => {
-    return _.isMap(actual);
-  },
-  toBeNonEmptyObject: (actual) => {
-    return _.isObject(actual) && Object.keys(actual).length;
-  },
-  toBeNonEmptyString: (actual) => {
-    return _.isString(actual) && actual.length > 0;
-  },
-  toBeNumber: (actual) => {
-    return _.isNumber(actual);
-  },
-  toBeObject: (actual) => {
-    return _.isObject(actual);
-  },
-  toBeSet: (actual) => {
-    return _.isSet(actual);
-  },
-  toBeString: (actual) => {
-    return _.isString(actual);
-  },
-  toBeWholeNumber: (actual) => {
-    return Number.isInteger(actual);
-  },
-  toEndWith: (actual, expected) => {
-    return _.isString(actual) && _.isString(expected) && actual.endsWith(expected);
-  },
-  toHave: (actual, expected) => {
-    return (_.isMap(actual) || _.isSet(actual)) && actual.has(expected);
-  },
-  toHaveMethod: (actual, expected) => {
-    return _.isObject(actual) && _.isFunction(actual[expected]);
-  },
-  toHaveOwnProperty: (actual, expected) => {
-    return Object.hasOwn(actual, expected);
-  },
+  toBeLessThanOrEqualTo: (actual, expected) => actual <= expected,
+  toBeMap: (actual) => _.isMap(actual),
+  toBeNonEmptyObject: (actual) => _.isObject(actual) && Object.keys(actual).length,
+  toBeNonEmptyString: (actual) => _.isString(actual) && actual.length > 0,
+  toBeNumber: (actual) => _.isNumber(actual),
+  toBeObject: (actual) => _.isObject(actual),
+  toBeSet: (actual) => _.isSet(actual),
+  toBeString: (actual) => _.isString(actual),
+  toBeWholeNumber: (actual) => Number.isInteger(actual),
+  toEndWith: (actual, expected) =>
+    _.isString(actual) && _.isString(expected) && actual.endsWith(expected),
+  toHave: (actual, expected) => (_.isMap(actual) || _.isSet(actual)) && actual.has(expected),
+  toHaveMethod: (actual, expected) => _.isObject(actual) && _.isFunction(actual[expected]),
+  toHaveOwnProperty: (actual, expected) => Object.hasOwn(actual, expected),
   // The objects in `actual` must have all of the keys and values from the corresponding objects in
   // `expected`. The object in `actual` can have additional properties as well. For example, if
   // `expected[0]` is `{ a: 1 }`, and `actual[0]` is `{ a: 1, b: 2 }`, then the objects match.
@@ -176,9 +129,7 @@ const matcherFuncs = {
   // The `actual` object must have all of the keys and values from the `expected` object. The
   // `actual` object can have additional properties as well. For example, if `expected` is
   // `{ a: 1 }`, and `actual` is `{ a: 1, b: 2 }`, then the objects match.
-  toMatchObject: (actual, expected) => {
-    return _.isMatch(actual, expected);
-  },
+  toMatchObject: (actual, expected) => _.isMatch(actual, expected),
   toThrowErrorOfType: (actual, expected) => {
     let error;
 

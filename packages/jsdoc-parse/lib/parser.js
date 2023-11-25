@@ -53,6 +53,7 @@ function getLastValue(set) {
   let value;
 
   if (set) {
+    // eslint-disable-next-line curly
     for (value of set);
   }
 

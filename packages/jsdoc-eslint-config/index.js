@@ -14,6 +14,8 @@
   limitations under the License.
 */
 module.exports = {
+  extends: ['plugin:prettier/recommended'],
+
   env: {
     es6: true,
     jasmine: true,
@@ -26,7 +28,7 @@ module.exports = {
     requireConfigFile: false,
     sourceType: 'module',
   },
-  plugins: ['simple-import-sort'],
+  plugins: ['prettier', 'simple-import-sort'],
 
   rules: {
     // Possible errors
@@ -238,5 +240,8 @@ module.exports = {
     // https://github.com/lydell/eslint-plugin-simple-import-sort
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+
+    // https://github.com/prettier/eslint-plugin-prettier
+    'prettier/prettier': 'error',
   },
 };

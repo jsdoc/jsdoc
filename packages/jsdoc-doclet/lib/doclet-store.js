@@ -62,16 +62,12 @@ export class DocletStore {
 
   static #propertiesWithMaps = ['kind', 'longname', 'memberof'];
   static #propertyToMapName = new Map(
-    DocletStore.#propertiesWithMaps.map((prop) => {
-      return [prop, 'docletsBy' + _.capitalize(prop)];
-    })
+    DocletStore.#propertiesWithMaps.map((prop) => [prop, 'docletsBy' + _.capitalize(prop)])
   );
 
   static #propertiesWithSets = ['augments', 'borrowed', 'implements', 'mixes'];
   static #propertyToSetName = new Map(
-    DocletStore.#propertiesWithSets.map((prop) => {
-      return [prop, 'docletsWith' + _.capitalize(prop)];
-    })
+    DocletStore.#propertiesWithSets.map((prop) => [prop, 'docletsWith' + _.capitalize(prop)])
   );
 
   constructor(dependencies) {
@@ -113,9 +109,8 @@ export class DocletStore {
     const isVisible = doclet.isVisible();
     const newDoclet = opts.newDoclet ?? false;
     const wasVisible = newDoclet ? false : this.doclets.has(doclet);
-    const visibilityChanged = (() => {
-      return newDoclet || (!wasVisible && isVisible) || (wasVisible && !isVisible);
-    })();
+    const visibilityChanged = (() =>
+      newDoclet || (!wasVisible && isVisible) || (wasVisible && !isVisible))();
     const docletInfo = {
       isGlobal: doclet.isGlobal(),
       isVisible,
