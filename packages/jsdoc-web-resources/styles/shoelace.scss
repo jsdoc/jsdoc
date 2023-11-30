@@ -27,14 +27,80 @@
   --sl-font-serif: $body-font;
 }
 
+:host {
+  --indent-size: 0;
+}
+
+sl-details,
 sl-tree {
-  margin-right: 4.5rem;
   opacity: 0;
 }
 
+sl-details.ready,
 sl-tree.ready {
   opacity: 1;
   transition: 0.25s opacity;
+}
+
+sl-details {
+  padding-block-end: 2rem;
+  margin-inline-end: 2.5rem;
+
+  &::part(content) {
+    padding-block-end: 0;
+  }
+}
+
+sl-details > p {
+  margin-block-end: 0;
+}
+
+sl-details > sl-tree {
+  font-size: 1rem;
+  margin-inline-start: -0.95rem;
+  margin-inline-end: 0;
+}
+
+sl-details > sl-tree > sl-tree-item {
+  &::part(expand-button),
+  &::part(indentation) {
+    display: none;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  &::part(item) {
+    border: 0;
+  }
+
+  &::part(item--selected) {
+    background-color: $blue-100 !important;
+    color: $blue-600 !important;
+  }
+
+  > a:any-link {
+    color: inherit !important;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+sl-details::part(base) {
+  background-color: inherit;
+  border: none;
+}
+
+sl-details::part(header) {
+  border-block-end: solid 1px $gray-200;
+  padding: 0 0.5rem;
+}
+
+sl-details::part(summary) {
+  font-family: 'Karla', sans-serif;
+  font-size: 1.125rem;
+}
+
+sl-tree {
+  margin-inline-end: 4.5rem;
 }
 
 sl-tree-item > a {

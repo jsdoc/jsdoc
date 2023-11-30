@@ -13,29 +13,53 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
+import '../node_modules/@shoelace-style/shoelace/dist/components/details/details.js';
 import '../node_modules/@shoelace-style/shoelace/dist/components/tree/tree.js';
 import '../node_modules/@shoelace-style/shoelace/dist/components/tree-item/tree-item.js';
 
-const PREVENT_UNSTYLED_ELEMENTS = ['sl-tree', 'sl-tree-item'];
+import { setDefaultAnimation } from '../node_modules/@shoelace-style/shoelace/dist/utilities/animation-registry.js';
+
+const HIDE_UNTIL_READY = ['sl-details', 'sl-tree'];
 
 function stopImmediatePropagation(e) {
   e.stopImmediatePropagation();
 }
 
 // Prevent expandable tree items from expanding when their link is clicked.
-document.querySelectorAll('sl-tree-item').forEach((item) => {
+document.querySelectorAll(':not(sl-details) > sl-tree > sl-tree-item').forEach((item) => {
   const child = item.firstElementChild;
 
-  if (child && child.nodeName === 'A') {
+  if (child?.nodeName === 'A') {
     child.addEventListener('click', stopImmediatePropagation);
   }
 });
 
+// Prevent a flash of undefined custom elements (FOUCE).
 (async () => {
-  // Prevent a flash of undefined custom elements (FOUCE).
-  await Promise.allSettled(PREVENT_UNSTYLED_ELEMENTS.map((el) => customElements.whenDefined(el)));
+  // Only wait for custom elements that appear on the current page.
+  const waitForElements = HIDE_UNTIL_READY.filter((el) => document.querySelector(el));
 
-  document.querySelectorAll('sl-tree').forEach((tree) => {
-    tree.classList.add('ready');
+  await Promise.allSettled(waitForElements.map((el) => customElements.whenDefined(el)));
+
+  for (const elementName of waitForElements) {
+    for (const element of document.querySelectorAll(elementName)) {
+      element.classList.add('ready');
+    }
+  }
+})();
+
+// Update `<sl-details>` animations.
+(() => {
+  const keyframesShow = [{ height: '0' }, { height: 'auto' }];
+  const options = { duration: 150, easing: 'ease-in-out' };
+
+  setDefaultAnimation('details.show', {
+    keyframes: keyframesShow,
+    options,
+  });
+  setDefaultAnimation('details.hide', {
+    keyframes: keyframesShow.slice().reverse(),
+    options,
   });
 })();
