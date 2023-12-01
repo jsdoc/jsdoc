@@ -25,7 +25,7 @@ const IS_UNDEFINED = {
   isUndefined: true,
 };
 
-const IS_NOTUNDEFINED = {
+const IS_NOT_UNDEFINED = {
   isUndefined: false,
 };
 
@@ -83,7 +83,7 @@ function finderWithMatcher(salty, ...args) {
         matcherValue = matcher[key];
         if (_.isMatch(matcherValue, IS_UNDEFINED)) {
           matches = _.isUndefined(item[key]);
-        } else if (_.isMatch(matcherValue, IS_NOTUNDEFINED)) {
+        } else if (_.isMatch(matcherValue, IS_NOT_UNDEFINED)) {
           matches = !_.isUndefined(item[key]);
         } else if (Array.isArray(matcherValue)) {
           if (!matcherValue.includes(item[key])) {
