@@ -172,6 +172,19 @@ describe('@jsdoc/salty/lib/salty', () => {
         ]);
       });
 
+      it('returns the correct items with the special matcher for defined values', () => {
+        const result = db({ b: { isUndefined: false } }).get();
+
+        expect(result).toMatchArrayOfObjects([
+          { a: 47, b: null, c: true },
+          { a: 100, b: 'hello', c: true },
+          { a: 7, b: 'goodbye', c: false },
+          { a: 42, b: 8, c: null },
+          { a: 22, b: null, c: true },
+          { a: 17, b: 0, c: false },
+        ]);
+      });
+
       it('returns no items if the selection is empty', () => {
         expect(db({ a: 1000000000 }).get()).toBeEmptyArray();
       });
