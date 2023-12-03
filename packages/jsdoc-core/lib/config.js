@@ -18,7 +18,7 @@
  *
  * @alias module:@jsdoc/core.config
  */
-import { cosmiconfigSync, defaultLoaders } from 'cosmiconfig';
+import { cosmiconfig, defaultLoaders } from 'cosmiconfig';
 import _ from 'lodash';
 import stripBom from 'strip-bom';
 import stripJsonComments from 'strip-json-comments';
@@ -94,7 +94,7 @@ function loadYaml(filepath, content) {
   return defaultLoaders['.yaml'](filepath, stripBom(content));
 }
 
-const explorerSync = cosmiconfigSync(MODULE_NAME, {
+const explorer = cosmiconfig(MODULE_NAME, {
   cache: false,
   loaders: {
     '.json': loadJson,
@@ -113,13 +113,13 @@ const explorerSync = cosmiconfigSync(MODULE_NAME, {
   ],
 });
 
-export function loadSync(filepath) {
+export async function load(filepath) {
   let loaded;
 
   if (filepath) {
-    loaded = explorerSync.load(filepath);
+    loaded = await explorer.load(filepath);
   } else {
-    loaded = explorerSync.search() || {};
+    loaded = (await explorer.search()) ?? {};
   }
 
   return new Config(loaded.filepath, _.defaultsDeep({}, loaded.config, defaults));

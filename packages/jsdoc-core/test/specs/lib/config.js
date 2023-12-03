@@ -31,94 +31,94 @@ describe('@jsdoc/core/lib/config', () => {
     expect(config).toBeObject();
   });
 
-  describe('loadSync', () => {
+  describe('load', () => {
     it('is a function', () => {
-      expect(config.loadSync).toBeFunction();
+      expect(config.load).toBeFunction();
     });
 
-    it('returns an object with `config` and `filepath` properties', () => {
+    it('returns an object with `config` and `filepath` properties', async () => {
       mockFs({
         'conf.json': '{}',
       });
 
-      const conf = config.loadSync('conf.json');
+      const conf = await config.load('conf.json');
 
       expect(conf.config).toBeObject();
       expect(conf.filepath).toEndWith('conf.json');
     });
 
-    it('loads settings from the specified filepath if there is one', () => {
+    it('loads settings from the specified filepath if there is one', async () => {
       mockFs({
         'conf.json': '{"foo":"bar"}',
       });
 
-      const conf = config.loadSync('conf.json');
+      const conf = await config.load('conf.json');
 
       expect(conf.config.foo).toBe('bar');
     });
 
-    it('finds the config file when no filepath is specified', () => {
+    it('finds the config file when no filepath is specified', async () => {
       mockFs({
         'package.json': '{"jsdoc":{"foo":"bar"}}',
       });
 
-      const conf = config.loadSync();
+      const conf = await config.load();
 
       expect(conf.config.foo).toBe('bar');
     });
 
-    it('parses JSON config files that have an extension and contain comments', () => {
+    it('parses JSON config files that have an extension and contain comments', async () => {
       mockFs({
         '.jsdocrc.json': '// comment\n{"foo":"bar"}',
       });
 
-      const conf = config.loadSync();
+      const conf = await config.load();
 
       expect(conf.config.foo).toBe('bar');
     });
 
-    it('parses JSON files that start with a BOM', () => {
+    it('parses JSON files that start with a BOM', async () => {
       mockFs({
         '.jsdocrc.json': '\uFEFF{"foo":"bar"}',
       });
 
-      const conf = config.loadSync();
+      const conf = await config.load();
 
       expect(conf.config.foo).toBe('bar');
     });
 
-    it('parses YAML files that start with a BOM', () => {
+    it('parses YAML files that start with a BOM', async () => {
       mockFs({
         '.jsdocrc.yaml': '\uFEFF{"foo":"bar"}',
       });
 
-      const conf = config.loadSync();
+      const conf = await config.load();
 
       expect(conf.config.foo).toBe('bar');
     });
 
-    it('provides the default config if the user config is an empty object', () => {
+    it('provides the default config if the user config is an empty object', async () => {
       mockFs({
         '.jsdocrc.json': '{}',
       });
 
-      const conf = config.loadSync();
+      const conf = await config.load();
 
       expect(conf.config).toEqual(config.defaults);
     });
 
-    it('provides the default config if there is no user config', () => {
-      const conf = config.loadSync();
+    it('provides the default config if there is no user config', async () => {
+      const conf = await config.load();
 
       expect(conf.config).toEqual(config.defaults);
     });
 
-    it('merges nested defaults with nested user settings as expected', () => {
+    it('merges nested defaults with nested user settings as expected', async () => {
       mockFs({
         '.jsdocrc.json': '{"tags":{"foo":"bar"}}',
       });
 
-      const conf = config.loadSync();
+      const conf = await config.load();
 
       expect(conf.config.tags.allowUnknownTags).toBe(config.defaults.tags.allowUnknownTags);
       expect(conf.config.tags.foo).toBe('bar');

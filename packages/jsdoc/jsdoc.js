@@ -20,7 +20,9 @@ import cli from './cli.js';
 
 (async () => {
   env.args = process.argv.slice(2);
-  cli.setEnv(env).setVersionInfo().loadConfig().configureLogger().logStart();
+  cli.setEnv(env).setVersionInfo();
+  await cli.loadConfig();
+  cli.configureLogger().logStart();
 
   await cli.runCommand();
 })();

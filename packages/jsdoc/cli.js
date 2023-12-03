@@ -85,7 +85,7 @@ export default (() => {
   };
 
   // TODO: docs
-  cli.loadConfig = () => {
+  cli.loadConfig = async () => {
     const env = dependencies.get('env');
 
     try {
@@ -98,7 +98,7 @@ export default (() => {
     }
 
     try {
-      env.conf = config.loadSync(env.opts.configure).config;
+      env.conf = (await config.load(env.opts.configure)).config;
     } catch (e) {
       cli.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
 
