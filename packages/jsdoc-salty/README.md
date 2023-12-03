@@ -139,6 +139,8 @@ db({ b: 'hello' }).each((item) => console.log(`'a' property: ${item.a}`));
 db({ a: 7 }).remove(); // returns `1` (the number of items removed)
 // Remove items where `b` is undefined
 db({ b: { isUndefined: true } }).remove(); // returns `1`
+// Remove items where `b` is defined
+db({ b: { isUndefined: false } }).remove(); // returns `1`
 // Remove all items
 db().remove();
 ```
