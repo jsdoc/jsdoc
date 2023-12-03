@@ -94,22 +94,11 @@ describe('@jsdoc/ast/lib/ast-node', () => {
   });
 
   describe('addNodeProperties', () => {
-    it('should return null for undefined input', () => {
+    it('returns `null` for undefined input', () => {
       expect(astNode.addNodeProperties()).toBe(null);
     });
 
-    it('should return null if the input is not an object', () => {
-      expect(astNode.addNodeProperties('foo')).toBe(null);
-    });
-
-    it('should preserve existing properties that are not "node properties"', () => {
-      const node = astNode.addNodeProperties({ foo: 1 });
-
-      expect(node).toBeObject();
-      expect(node.foo).toBe(1);
-    });
-
-    it('should add a nodeId if necessary', () => {
+    it('sets the `nodeId`', () => {
       const node = astNode.addNodeProperties({});
       const descriptor = Object.getOwnPropertyDescriptor(node, 'nodeId');
 
@@ -118,14 +107,7 @@ describe('@jsdoc/ast/lib/ast-node', () => {
       expect(descriptor.enumerable).toBeTrue();
     });
 
-    it('should not overwrite an existing nodeId', () => {
-      const nodeId = 'foo';
-      const node = astNode.addNodeProperties({ nodeId: nodeId });
-
-      expect(node.nodeId).toBe(nodeId);
-    });
-
-    it('should add a non-enumerable, writable parent if necessary', () => {
+    it('sets a non-enumerable, writable `parent`', () => {
       const node = astNode.addNodeProperties({});
       const descriptor = Object.getOwnPropertyDescriptor(node, 'parent');
 
@@ -135,20 +117,7 @@ describe('@jsdoc/ast/lib/ast-node', () => {
       expect(descriptor.writable).toBeTrue();
     });
 
-    it('should not overwrite an existing parent', () => {
-      const parent = {};
-      const node = astNode.addNodeProperties({ parent: parent });
-
-      expect(node.parent).toBe(parent);
-    });
-
-    it('should not overwrite a null parent', () => {
-      const node = astNode.addNodeProperties({ parent: null });
-
-      expect(node.parent).toBeNull();
-    });
-
-    it('should add an enumerable parentId', () => {
+    it('sets an enumerable `parentId`', () => {
       const node = astNode.addNodeProperties({});
       const descriptor = Object.getOwnPropertyDescriptor(node, 'parentId');
 
@@ -156,13 +125,13 @@ describe('@jsdoc/ast/lib/ast-node', () => {
       expect(descriptor.enumerable).toBeTrue();
     });
 
-    it('should provide a null parentId for nodes with no parent', () => {
+    it('sets `parentId` to `null` for nodes with no parent', () => {
       const node = astNode.addNodeProperties({});
 
       expect(node.parentId).toBeNull();
     });
 
-    it('should provide a non-null parentId for nodes with a parent', () => {
+    it('sets a non-null `parentId` for nodes with a parent', () => {
       const node = astNode.addNodeProperties({});
       const parent = astNode.addNodeProperties({});
 
@@ -171,7 +140,7 @@ describe('@jsdoc/ast/lib/ast-node', () => {
       expect(node.parentId).toBe(parent.nodeId);
     });
 
-    it('should add a non-enumerable, writable enclosingScope if necessary', () => {
+    it('sets a non-enumerable, writable `enclosingScope`', () => {
       const node = astNode.addNodeProperties({});
       const descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScope');
 
@@ -181,20 +150,7 @@ describe('@jsdoc/ast/lib/ast-node', () => {
       expect(descriptor.writable).toBeTrue();
     });
 
-    it('should not overwrite an existing enclosingScope', () => {
-      const enclosingScope = {};
-      const node = astNode.addNodeProperties({ enclosingScope: enclosingScope });
-
-      expect(node.enclosingScope).toBe(enclosingScope);
-    });
-
-    it('should not overwrite a null enclosingScope', () => {
-      const node = astNode.addNodeProperties({ enclosingScope: null });
-
-      expect(node.enclosingScope).toBeNull();
-    });
-
-    it('should add an enumerable enclosingScopeId', () => {
+    it('sets an enumerable `enclosingScopeId`', () => {
       const node = astNode.addNodeProperties({});
       const descriptor = Object.getOwnPropertyDescriptor(node, 'enclosingScopeId');
 
@@ -202,13 +158,13 @@ describe('@jsdoc/ast/lib/ast-node', () => {
       expect(descriptor.enumerable).toBeTrue();
     });
 
-    it('should provide a null enclosingScopeId for nodes with no enclosing scope', () => {
+    it('sets `enclosingScopeId` to `null` for nodes with no enclosing scope', () => {
       const node = astNode.addNodeProperties({});
 
       expect(node.enclosingScopeId).toBeNull();
     });
 
-    it('should provide a non-null enclosingScopeId for nodes with an enclosing scope', () => {
+    it('sets a non-null `enclosingScopeId` for nodes with an enclosing scope', () => {
       const node = astNode.addNodeProperties({});
       const enclosingScope = astNode.addNodeProperties({});
 

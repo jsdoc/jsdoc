@@ -13,13 +13,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import EventBus from './bus.js';
 
-const bus = new EventBus('jsdoc');
-const loggerFuncs = {};
+export const LOG_TYPES = ['debug', 'error', 'info', 'fatal', 'verbose', 'warn'];
 
-['debug', 'error', 'info', 'fatal', 'verbose', 'warn'].forEach((fn) => {
-  loggerFuncs[fn] = (...args) => bus.emit(`logger:${fn}`, ...args);
-});
+export default function getLogFunctions(emitter) {
+  const logFunctions = {};
 
-export default loggerFuncs;
+  LOG_TYPES.forEach((type) => {
+    logFunctions[type] = (...args) => emitter.emit(`logger:${type}`, ...args);
+  });
+
+  return logFunctions;
+}

@@ -17,9 +17,16 @@
 import * as handlers from '../../../lib/handlers.js';
 
 describe('@jsdoc/parse/lib/handlers', () => {
-  const testParser = jsdoc.createParser();
+  let testParser;
 
-  handlers.attachTo(testParser);
+  beforeEach(() => {
+    testParser = jsdoc.createParser();
+    handlers.attachTo(testParser);
+  });
+
+  afterEach(() => {
+    testParser._stopListening();
+  });
 
   it('is an object', () => {
     expect(handlers).toBeObject();
@@ -53,13 +60,17 @@ describe('@jsdoc/parse/lib/handlers', () => {
   });
 
   describe('`jsdocCommentFound` handler', () => {
+    let doclets;
     // eslint-disable-next-line no-script-url
     const sourceCode = 'javascript:/** @name bar */';
-    const result = testParser.parse(sourceCode);
+
+    testParser = jsdoc.createParser();
+    handlers.attachTo(testParser);
+    doclets = Array.from(testParser.parse(sourceCode).doclets);
 
     it('creates a doclet for comments with `@name` tags', () => {
-      expect(result).toBeArrayOfSize(1);
-      expect(result[0].name).toBe('bar');
+      expect(doclets).toBeArrayOfSize(1);
+      expect(doclets[0].name).toBe('bar');
     });
   });
 

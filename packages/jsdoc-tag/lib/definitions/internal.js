@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // Tags that JSDoc uses internally, and that must always be defined.
-export const tags = {
+export const getTags = () => ({
   // Special separator tag indicating that multiple doclets should be generated for the same
   // comment. Used internally (and by some JSDoc users, although it's not officially supported).
   //
@@ -57,4 +58,4 @@ export const tags = {
       doclet.comment = '';
     },
   },
-};
+});

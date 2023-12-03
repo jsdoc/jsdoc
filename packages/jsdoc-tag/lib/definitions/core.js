@@ -22,13 +22,14 @@ import * as util from './util.js';
 const { LONGNAMES, SCOPE } = name;
 const MODULE_NAMESPACE = 'module:';
 const MODULE_NAMESPACE_REGEXP = new RegExp('^' + MODULE_NAMESPACE);
+const VARIATION_VALUE_REGEXP = /^\((.+)\)$/;
 
 function stripModuleNamespace(docletName) {
   return docletName.replace(MODULE_NAMESPACE_REGEXP, '');
 }
 
 // Core JSDoc tags that are shared with other tag dictionaries.
-export const tags = {
+export const getTags = (deps) => ({
   abstract: {
     mustNotHaveValue: true,
     onTagged(doclet) {
@@ -44,7 +45,7 @@ export const tags = {
       if (/^(package|private|protected|public)$/i.test(value)) {
         doclet.access = value.toLowerCase();
       } else {
-        delete doclet.access;
+        doclet.access = undefined;
       }
     },
   },
@@ -72,7 +73,7 @@ export const tags = {
   author: {
     mustHaveValue: true,
     onTagged(doclet, { value }) {
-      doclet.author = doclet.author || [];
+      doclet.author ??= [];
       doclet.author.push(value);
     },
   },
@@ -176,13 +177,13 @@ export const tags = {
   deprecated: {
     // value is optional
     onTagged(doclet, { value }) {
-      doclet.deprecated = value || true;
+      doclet.deprecated = value ?? true;
     },
   },
   enum: {
     canHaveType: true,
     onTagged(doclet, tag) {
-      doclet.kind = doclet.kind || 'member';
+      doclet.kind ??= 'member';
       doclet.isEnum = true;
       util.setDocletTypeToValueType(doclet, tag);
     },
@@ -199,7 +200,7 @@ export const tags = {
     removesIndent: true,
     mustHaveValue: true,
     onTagged(doclet, { value }) {
-      doclet.examples = doclet.examples || [];
+      doclet.examples ??= [];
       doclet.examples.push(value);
     },
   },
@@ -240,7 +241,7 @@ export const tags = {
   fires: {
     mustHaveValue: true,
     onTagged(doclet, tag) {
-      doclet.fires = doclet.fires || [];
+      doclet.fires ??= [];
       util.applyNamespaceToTag('event', tag);
       doclet.fires.push(tag.value);
     },
@@ -263,7 +264,7 @@ export const tags = {
     mustNotHaveValue: true,
     onTagged(doclet) {
       doclet.scope = SCOPE.NAMES.GLOBAL;
-      delete doclet.memberof;
+      doclet.memberof = undefined;
     },
   },
   hideconstructor: {
@@ -282,7 +283,7 @@ export const tags = {
     mustHaveValue: true,
     onTagText: util.parseTypeText,
     onTagged(doclet, { value }) {
-      doclet.implements = doclet.implements || [];
+      doclet.implements ??= [];
       doclet.implements.push(value);
     },
   },
@@ -295,12 +296,12 @@ export const tags = {
   },
   inner: {
     onTagged(doclet, tag) {
-      util.setDocletScopeToTitle(doclet, tag);
+      util.setDocletScopeToTitle(doclet, tag, deps);
     },
   },
   instance: {
     onTagged(doclet, tag) {
-      util.setDocletScopeToTitle(doclet, tag);
+      util.setDocletScopeToTitle(doclet, tag, deps);
     },
   },
   interface: {
@@ -314,7 +315,7 @@ export const tags = {
   },
   lends: {
     onTagged(doclet, { value }) {
-      doclet.alias = value || LONGNAMES.GLOBAL;
+      doclet.alias = value ?? LONGNAMES.GLOBAL;
       doclet.addTag('undocumented');
     },
   },
@@ -327,7 +328,7 @@ export const tags = {
   listens: {
     mustHaveValue: true,
     onTagged(doclet, tag) {
-      doclet.listens = doclet.listens || [];
+      doclet.listens ??= [];
       util.applyNamespaceToTag('event', tag);
       doclet.listens.push(tag.value);
     },
@@ -349,7 +350,7 @@ export const tags = {
         doclet.forceMemberof = true;
         if (tag.value === LONGNAMES.GLOBAL) {
           doclet.addTag('global');
-          delete doclet.memberof;
+          doclet.memberof = undefined;
         }
       }
       util.setDocletMemberof(doclet, tag);
@@ -373,7 +374,7 @@ export const tags = {
   modifies: {
     canHaveType: true,
     onTagged(doclet, { value }) {
-      doclet.modifies = doclet.modifies || [];
+      doclet.modifies ??= [];
       doclet.modifies.push(value);
     },
   },
@@ -410,8 +411,8 @@ export const tags = {
     canHaveType: true,
     canHaveName: true,
     onTagged(doclet, { value }) {
-      doclet.params = doclet.params || [];
-      doclet.params.push(value || {});
+      doclet.params ??= [];
+      doclet.params.push(value ?? {});
     },
     synonyms: ['arg', 'argument'],
   },
@@ -426,7 +427,7 @@ export const tags = {
     canHaveType: true,
     canHaveName: true,
     onTagged(doclet, { value }) {
-      doclet.properties = doclet.properties || [];
+      doclet.properties ??= [];
       doclet.properties.push(value);
     },
     synonyms: ['prop'],
@@ -466,7 +467,7 @@ export const tags = {
         }
       }
 
-      doclet.requires = doclet.requires || [];
+      doclet.requires ??= [];
       doclet.requires.push(requiresName);
     },
   },
@@ -474,7 +475,7 @@ export const tags = {
     mustHaveValue: true,
     canHaveType: true,
     onTagged(doclet, { value }) {
-      doclet.returns = doclet.returns || [];
+      doclet.returns ??= [];
       doclet.returns.push(value);
     },
     synonyms: ['return'],
@@ -482,7 +483,7 @@ export const tags = {
   see: {
     mustHaveValue: true,
     onTagged(doclet, { value }) {
-      doclet.see = doclet.see || [];
+      doclet.see ??= [];
       doclet.see.push(value);
     },
   },
@@ -494,7 +495,7 @@ export const tags = {
   },
   static: {
     onTagged(doclet, tag) {
-      util.setDocletScopeToTitle(doclet, tag);
+      util.setDocletScopeToTitle(doclet, tag, deps);
     },
   },
   summary: {
@@ -513,7 +514,7 @@ export const tags = {
     mustHaveValue: true,
     canHaveType: true,
     onTagged(doclet, { value }) {
-      doclet.exceptions = doclet.exceptions || [];
+      doclet.exceptions ??= [];
       doclet.exceptions.push(value);
     },
     synonyms: ['exception'],
@@ -521,7 +522,7 @@ export const tags = {
   todo: {
     mustHaveValue: true,
     onTagged(doclet, { value }) {
-      doclet.todo = doclet.todo || [];
+      doclet.todo ??= [];
       doclet.todo.push(value);
     },
   },
@@ -587,9 +588,10 @@ export const tags = {
     mustHaveValue: true,
     onTagged(doclet, tag) {
       let value = tag.value;
+      const match = value.match(VARIATION_VALUE_REGEXP);
 
-      if (/^\((.+)\)$/.test(value)) {
-        value = RegExp.$1;
+      if (match) {
+        value = match[1];
       }
 
       doclet.variation = value;
@@ -605,9 +607,9 @@ export const tags = {
     mustHaveValue: true,
     canHaveType: true,
     onTagged(doclet, { value }) {
-      doclet.yields = doclet.yields || [];
+      doclet.yields ??= [];
       doclet.yields.push(value);
     },
     synonyms: ['yield'],
   },
-};
+});

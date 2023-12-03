@@ -23,6 +23,9 @@ import catharsis from 'catharsis';
 
 import { extractInlineTag } from './inline.js';
 
+const NAME_AND_DEFAULT_VALUE_REGEXP = /^(.+?)\s*=\s*(.+)$/;
+const NAME_AND_TYPE_REGEXP = /^(\[)?\s*(.+?)\s*(\])?$/;
+
 /**
  * Information about a type expression extracted from tag text.
  *
@@ -159,17 +162,20 @@ function getTagInfo(tagValue, canHaveName, canHaveType) {
 function parseName(tagInfo) {
   // like '[foo]' or '[ foo ]' or '[foo=bar]' or '[ foo=bar ]' or '[ foo = bar ]'
   // or 'foo=bar' or 'foo = bar'
-  if (/^(\[)?\s*(.+?)\s*(\])?$/.test(tagInfo.name)) {
-    tagInfo.name = RegExp.$2;
+  let match = tagInfo.name.match(NAME_AND_TYPE_REGEXP);
+
+  if (match) {
+    tagInfo.name = match[2];
     // were the "optional" brackets present?
-    if (RegExp.$1 && RegExp.$3) {
+    if (match[1] && match[3]) {
       tagInfo.optional = true;
     }
 
     // like 'foo=bar' or 'foo = bar'
-    if (/^(.+?)\s*=\s*(.+)$/.test(tagInfo.name)) {
-      tagInfo.name = RegExp.$1;
-      tagInfo.defaultvalue = cast(RegExp.$2);
+    match = tagInfo.name.match(NAME_AND_DEFAULT_VALUE_REGEXP);
+    if (match) {
+      tagInfo.name = match[1];
+      tagInfo.defaultvalue = cast(match[2]);
     }
   }
 

@@ -32,16 +32,16 @@ describe('@jsdoc/core.name', () => {
     expect(name.getBasename).toBeFunction();
   });
 
+  it('has a getLeadingScope method', () => {
+    expect(name.getLeadingScope).toBeFunction();
+  });
+
+  it('has a getTrailingScope method', () => {
+    expect(name.getTrailingScope).toBeFunction();
+  });
+
   it('has a hasAncestor method', () => {
     expect(name.hasAncestor).toBeFunction();
-  });
-
-  it('has a hasLeadingScope method', () => {
-    expect(name.hasLeadingScope).toBeFunction();
-  });
-
-  it('has a hasTrailingScope method', () => {
-    expect(name.hasTrailingScope).toBeFunction();
   });
 
   it('has a LONGNAMES enum', () => {
@@ -129,6 +129,26 @@ describe('@jsdoc/core.name', () => {
     });
   });
 
+  describe('getLeadingScope', () => {
+    it('returns the scope character if the string starts with a scope character', () => {
+      expect(name.getLeadingScope('#foo')).toBe('#');
+    });
+
+    it('returns undefined if the string does not start with a scope character', () => {
+      expect(name.getLeadingScope('!foo')).toBeUndefined();
+    });
+  });
+
+  describe('getTrailingScope', () => {
+    it('returns the scope character if the string ends with a scope character', () => {
+      expect(name.getTrailingScope('Foo#')).toBe('#');
+    });
+
+    it('returns undefined if the string does not end with a scope character', () => {
+      expect(name.getTrailingScope('Foo!')).toBeUndefined();
+    });
+  });
+
   describe('hasAncestor', () => {
     it('returns false if no parent is specified', () => {
       expect(name.hasAncestor(null, 'foo')).toBe(false);
@@ -152,26 +172,6 @@ describe('@jsdoc/core.name', () => {
 
     it('returns false if the parent and child are the same', () => {
       expect(name.hasAncestor('module:foo', 'module:foo')).toBe(false);
-    });
-  });
-
-  describe('hasLeadingScope', () => {
-    it('returns true if the string starts with a scope character', () => {
-      expect(name.hasLeadingScope('#foo')).toBeTrue();
-    });
-
-    it('returns false if the string does not start with a scope character', () => {
-      expect(name.hasLeadingScope('!foo')).toBeFalse();
-    });
-  });
-
-  describe('hasTrailingScope', () => {
-    it('returns true if the string ends with a scope character', () => {
-      expect(name.hasTrailingScope('Foo#')).toBeTrue();
-    });
-
-    it('returns false if the string does not end with a scope character', () => {
-      expect(name.hasTrailingScope('Foo!')).toBeFalse();
     });
   });
 

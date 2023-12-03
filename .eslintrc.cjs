@@ -14,6 +14,6 @@
   limitations under the License.
 */
 module.exports = {
-  extends: ['@jsdoc', 'plugin:prettier/recommended'],
+  extends: ['@jsdoc'],
   root: true,
 };

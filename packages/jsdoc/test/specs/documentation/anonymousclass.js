@@ -15,13 +15,16 @@
 */
 describe('anonymous class', () => {
   const docSet = jsdoc.getDocSetFromFile('test/fixtures/anonymousclass.js');
-  const klass = docSet.getByLongname('module:test').filter(({ undocumented }) => !undocumented)[1];
+  const klass = docSet
+    .getByLongname('module:test')
+    .filter(({ description }) => Boolean(description))[0];
   const foo = docSet.getByLongname('module:test#foo')[0];
   const klassTest = docSet.getByLongname('module:test#test')[0];
   const klassStaticTest = docSet.getByLongname('module:test.staticTest')[0];
 
   it('should merge the constructor docs with the class docs', () => {
     expect(klass.description).toBe('Test constructor');
+    expect(klass.kind).toBe('class');
   });
 
   it('should use the correct longname for instance properties', () => {

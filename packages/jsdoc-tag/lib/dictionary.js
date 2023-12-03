@@ -13,14 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /** @module @jsdoc/tag/lib/dictionary */
-import { log } from '@jsdoc/util';
 
 import definitions from './definitions/index.js';
 
 const DEFINITIONS = {
-  closure: 'closure',
-  jsdoc: 'jsdoc',
+  closure: 'getClosureTags',
+  jsdoc: 'getJsdocTags',
 };
 
 /** @private */
@@ -103,9 +103,12 @@ export class Dictionary {
     this._tagSynonyms[synonym.toLowerCase()] = this.normalize(title);
   }
 
-  static fromConfig(env) {
-    let dictionaries = env.conf.tags.dictionaries;
+  static fromConfig(deps) {
     const dict = new Dictionary();
+    const env = deps.get('env');
+    const log = deps.get('log');
+    let dictionaries = env.conf.tags.dictionaries;
+    let tagDefs;
 
     if (!dictionaries) {
       log.error(
@@ -117,9 +120,9 @@ export class Dictionary {
         .slice()
         .reverse()
         .forEach((dictName) => {
-          const tagDefs = definitions[DEFINITIONS[dictName]];
-
-          if (!tagDefs) {
+          try {
+            tagDefs = definitions[DEFINITIONS[dictName]](deps);
+          } catch (e) {
             log.error(
               'The configuration setting "tags.dictionaries" contains ' +
                 `the unknown dictionary name ${dictName}. Ignoring the dictionary.`
@@ -131,7 +134,7 @@ export class Dictionary {
           dict.defineTags(tagDefs);
         });
 
-      dict.defineTags(definitions.internal);
+      dict.defineTags(definitions.getInternalTags(deps));
     }
 
     return dict;

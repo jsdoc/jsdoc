@@ -19,10 +19,8 @@ import { fileURLToPath } from 'node:url';
 
 import { augment } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
-import { EventBus } from '@jsdoc/util';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const bus = new EventBus('jsdoc');
 const originalDictionaries = ['jsdoc', 'closure'];
 const packagePath = path.resolve(__dirname, '../..');
 const parseResults = [];
@@ -36,45 +34,50 @@ const helpers = {
   },
   createParser: () => createParser(jsdoc.deps),
   didLog: (fn, level) => {
+    const emitter = jsdoc.deps.get('emitter');
     const events = [];
 
     function listener(e) {
       events.push(e);
     }
 
-    bus.on(`logger:${level}`, listener);
+    emitter.on(`logger:${level}`, listener);
     fn();
-    bus.off(`logger:${level}`, listener);
+    emitter.off(`logger:${level}`, listener);
 
     return events.length !== 0;
   },
   dirname: (importMetaUrl) => path.dirname(fileURLToPath(importMetaUrl)),
   getDocSetFromFile: (filename, parser, shouldValidate, shouldAugment) => {
-    let doclets;
+    const docSet = {
+      get doclets() {
+        return Array.from(docSet.docletStore.allDoclets);
+      },
+      getByLongname(longname) {
+        return docSet.doclets.filter((doclet) => (doclet.longname || doclet.name) === longname);
+      },
+    };
     const sourcePath = path.isAbsolute(filename) ? filename : path.join(packagePath, filename);
     const sourceCode = fs.readFileSync(sourcePath, 'utf8');
     const testParser = parser || helpers.createParser();
 
     handlers.attachTo(testParser);
 
-    doclets = testParser.parse(`javascript:${sourceCode}`); // eslint-disable-line no-script-url
+    docSet.docletStore = testParser.parse(`javascript:${sourceCode}`); // eslint-disable-line no-script-url
 
     if (shouldAugment !== false) {
-      augment.augmentAll(doclets);
+      augment.augmentAll(docSet.docletStore);
     }
 
     // tests assume that borrows have not yet been resolved
 
     if (shouldValidate !== false) {
-      helpers.addParseResults(filename, doclets);
+      helpers.addParseResults(filename, docSet.doclets);
     }
 
-    return {
-      doclets,
-      getByLongname(longname) {
-        return doclets.filter((doclet) => (doclet.longname || doclet.name) === longname);
-      },
-    };
+    docSet.docletStore.stopListening();
+
+    return docSet;
   },
   getParseResults: () => parseResults,
   replaceTagDictionary: (dictionaryNames) => {

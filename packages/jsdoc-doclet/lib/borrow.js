@@ -17,20 +17,26 @@
  * Functions that resolve `@borrows` tags in JSDoc comments.
  */
 import { name } from '@jsdoc/core';
-import _ from 'lodash';
+
+import { combineDoclets, Doclet } from './doclet.js';
 
 const { SCOPE } = name;
 
-function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
-  borrowed.forEach(({ from, as }) => {
-    const borrowedDoclets = doclets.index.longname[from];
+function cloneBorrowedDoclets({ borrowed, longname }, docletStore) {
+  borrowed?.forEach(({ from, as }) => {
+    const borrowedDoclets = docletStore.docletsByLongname.get(from);
     let borrowedAs = as || from;
     let parts;
     let scopePunc;
 
     if (borrowedDoclets) {
       borrowedAs = borrowedAs.replace(/^prototype\./, SCOPE.PUNC.INSTANCE);
-      _.cloneDeep(borrowedDoclets).forEach((clone) => {
+      borrowedDoclets.forEach((borrowedDoclet) => {
+        const clone = combineDoclets(
+          borrowedDoclet,
+          Doclet.emptyDoclet(borrowedDoclet.dependencies)
+        );
+
         // TODO: this will fail on longnames like '"Foo#bar".baz'
         parts = borrowedAs.split(SCOPE.PUNC.INSTANCE);
 
@@ -45,7 +51,7 @@ function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
         clone.name = parts.pop();
         clone.memberof = longname;
         clone.longname = clone.memberof + scopePunc + clone.name;
-        doclets.push(clone);
+        docletStore.add(clone);
       });
     }
   });
@@ -57,11 +63,9 @@ function cloneBorrowedDoclets({ borrowed, longname }, doclets) {
   moving docs from the "borrowed" array and into the general docs, then
   deleting the "borrowed" array.
  */
-export function resolveBorrows(doclets) {
-  for (let doclet of doclets.index.borrowed) {
-    cloneBorrowedDoclets(doclet, doclets);
-    delete doclet.borrowed;
+export function resolveBorrows(docletStore) {
+  for (const doclet of docletStore.docletsWithBorrowed) {
+    cloneBorrowedDoclets(doclet, docletStore);
+    doclet.borrowed = undefined;
   }
-
-  doclets.index.borrowed = [];
 }

@@ -18,7 +18,7 @@ import fs from 'node:fs';
 
 import { AstBuilder, astNode, Syntax, Walker } from '@jsdoc/ast';
 import { name } from '@jsdoc/core';
-import { log } from '@jsdoc/util';
+import { Doclet, DocletStore } from '@jsdoc/doclet';
 import _ from 'lodash';
 
 import { Visitor } from './visitor.js';
@@ -27,29 +27,6 @@ const { getBasename, LONGNAMES, SCOPE, toParts } = name;
 
 // Prefix for JavaScript strings that were provided in lieu of a filename.
 const SCHEMA = 'javascript:'; // eslint-disable-line no-script-url
-
-class DocletCache {
-  constructor() {
-    this._doclets = {};
-  }
-
-  get(itemName) {
-    if (!Object.hasOwn(this._doclets, itemName)) {
-      return null;
-    }
-
-    // always return the most recent doclet
-    return this._doclets[itemName][this._doclets[itemName].length - 1];
-  }
-
-  put(itemName, value) {
-    if (!Object.hasOwn(this._doclets, itemName)) {
-      this._doclets[itemName] = [];
-    }
-
-    this._doclets[itemName].push(value);
-  }
-}
 
 // TODO: docs
 function pretreat(code) {
@@ -68,12 +45,19 @@ function pretreat(code) {
 // TODO: docs
 function definedInScope(doclet, basename) {
   return (
-    Boolean(doclet) &&
-    Boolean(doclet.meta) &&
-    Boolean(doclet.meta.vars) &&
-    Boolean(basename) &&
-    Object.hasOwn(doclet.meta.vars, basename)
+    Boolean(doclet?.meta?.vars) && Boolean(basename) && Object.hasOwn(doclet.meta.vars, basename)
   );
+}
+
+function getLastValue(set) {
+  let value;
+
+  if (set) {
+    // eslint-disable-next-line curly
+    for (value of set);
+  }
+
+  return value;
 }
 
 // TODO: docs
@@ -86,14 +70,20 @@ export class Parser extends EventEmitter {
   constructor(dependencies) {
     super();
 
-    this.clear();
-
     this._conf = dependencies.get('config');
     this._dependencies = dependencies;
+    this._docletStore = new DocletStore(dependencies);
+    this._emitter = dependencies.get('emitter');
+    this._log = dependencies.get('log');
     this._visitor = new Visitor();
-    this._walker = new Walker();
+    this._walker = new Walker(dependencies);
 
     this._visitor.setParser(this);
+
+    // Create a special doclet for the global namespace. Prevent it from emitting events when its
+    // watchable properties change.
+    this._globalDoclet = new Doclet(`@name ${LONGNAMES.GLOBAL}`, { _watch: false }, dependencies);
+    this._globalDoclet.longname = LONGNAMES.GLOBAL;
 
     Object.defineProperties(this, {
       dependencies: {
@@ -114,20 +104,14 @@ export class Parser extends EventEmitter {
     });
   }
 
-  // TODO: docs
-  clear() {
-    this._resultBuffer = [];
-    this._resultBuffer.index = {
-      borrowed: [],
-      documented: {},
-      longname: {},
-      memberof: {},
-    };
-    this._byNodeId = new DocletCache();
-    this._byLongname = new DocletCache();
-    this._byLongname.put(LONGNAMES.GLOBAL, {
-      meta: {},
-    });
+  _stopListening() {
+    this._docletStore.stopListening();
+  }
+
+  // TODO: Always emit events from the dependencies' emitter, never from the parser.
+  emit(eventName, event, ...args) {
+    super.emit(eventName, event, ...args);
+    this._emitter.emit(eventName, event, ...args);
   }
 
   // TODO: update docs
@@ -149,20 +133,20 @@ export class Parser extends EventEmitter {
    * var docs = jsdocParser.parse(myFiles);
    */
   parse(sourceFiles, encoding) {
-    encoding = encoding || this._conf.encoding || 'utf8';
-
     let filename = '';
     let sourceCode = '';
     let sourceFile;
     const parsedFiles = [];
     const e = {};
 
+    encoding ??= this._conf.encoding ?? 'utf8';
+
     if (typeof sourceFiles === 'string') {
       sourceFiles = [sourceFiles];
     }
 
     e.sourcefiles = sourceFiles;
-    log.debug('Parsing source files: %j', sourceFiles);
+    this._log.debug('Parsing source files: %j', sourceFiles);
 
     this.emit('parseBegin', e);
 
@@ -178,7 +162,7 @@ export class Parser extends EventEmitter {
         try {
           sourceCode = fs.readFileSync(filename, encoding);
         } catch (err) {
-          log.error(`Unable to read and parse the source file ${filename}: ${err}`);
+          this._log.error(`Unable to read and parse the source file ${filename}: ${err}`);
         }
       }
 
@@ -188,13 +172,15 @@ export class Parser extends EventEmitter {
       }
     }
 
-    this.emit('parseComplete', {
-      sourcefiles: parsedFiles,
-      doclets: this._resultBuffer,
-    });
-    log.debug('Finished parsing source files.');
+    if (this.listenerCount('parseComplete')) {
+      this.emit('parseComplete', {
+        sourcefiles: parsedFiles,
+        doclets: this.results(),
+      });
+    }
+    this._log.debug('Finished parsing source files.');
 
-    return this._resultBuffer;
+    return this._docletStore;
   }
 
   // TODO: docs
@@ -204,44 +190,11 @@ export class Parser extends EventEmitter {
 
   // TODO: docs
   results() {
-    return this._resultBuffer;
+    return Array.from(this._docletStore.allDoclets);
   }
 
-  // TODO: update docs
-  /**
-   * @param {module:@jsdoc/doclet.Doclet} doclet The parse result to add to the result buffer.
-   */
   addResult(doclet) {
-    const index = this._resultBuffer.index;
-
-    this._resultBuffer.push(doclet);
-
-    // track all doclets by longname
-    if (!Object.hasOwn(index.longname, doclet.longname)) {
-      index.longname[doclet.longname] = [];
-    }
-    index.longname[doclet.longname].push(doclet);
-
-    // track all doclets that have a memberof by memberof
-    if (doclet.memberof) {
-      if (!Object.hasOwn(index.memberof, doclet.memberof)) {
-        index.memberof[doclet.memberof] = [];
-      }
-      index.memberof[doclet.memberof].push(doclet);
-    }
-
-    // track longnames of documented symbols
-    if (!doclet.undocumented) {
-      if (!Object.hasOwn(index.documented, doclet.longname)) {
-        index.documented[doclet.longname] = [];
-      }
-      index.documented[doclet.longname].push(doclet);
-    }
-
-    // track doclets with a `borrowed` property
-    if (Object.hasOwn(doclet, 'borrowed')) {
-      index.borrowed.push(doclet);
-    }
+    this._docletStore.add(doclet);
   }
 
   // TODO: docs
@@ -257,13 +210,14 @@ export class Parser extends EventEmitter {
   /** @private */
   _parseSourceCode(sourceCode, sourceName) {
     let ast;
+    const builder = new AstBuilder(this._dependencies);
     let e = {
       filename: sourceName,
     };
     let sourceType;
 
     this.emit('fileBegin', e);
-    log.info(`Parsing ${sourceName} ...`);
+    this._log.info(`Parsing ${sourceName} ...`);
 
     if (!e.defaultPrevented) {
       e = {
@@ -277,7 +231,7 @@ export class Parser extends EventEmitter {
       sourceCode = pretreat(e.source);
       sourceType = this._conf.source ? this._conf.source.type : undefined;
 
-      ast = AstBuilder.build(sourceCode, sourceName, sourceType);
+      ast = builder.build(sourceCode, sourceName, sourceType);
       if (ast) {
         this._walkAst(ast, this._visitor, sourceName);
       }
@@ -293,38 +247,39 @@ export class Parser extends EventEmitter {
 
   // TODO: docs
   addDocletRef(e) {
-    let fakeDoclet;
-    let node;
+    let anonymousDoclet;
+    const node = e?.code?.node;
 
-    if (e && e.code && e.code.node) {
-      node = e.code.node;
-      if (e.doclet) {
-        // allow lookup from node ID => doclet
-        this._byNodeId.put(node.nodeId, e.doclet);
-        this._byLongname.put(e.doclet.longname, e.doclet);
-      }
-      // keep references to undocumented anonymous functions, too, as they might have scoped vars
-      else if (
-        (node.type === Syntax.FunctionDeclaration ||
-          node.type === Syntax.FunctionExpression ||
-          node.type === Syntax.ArrowFunctionExpression) &&
-        !this._getDocletById(node.nodeId)
-      ) {
-        fakeDoclet = {
-          longname: LONGNAMES.ANONYMOUS,
-          meta: {
-            code: e.code,
-          },
-        };
-        this._byNodeId.put(node.nodeId, fakeDoclet);
-        this._byLongname.put(fakeDoclet.longname, fakeDoclet);
-      }
+    if (!node) {
+      return;
+    }
+
+    // Create a placeholder if the node is an undocumented anonymous function; there might be
+    // variables in its scope.
+    if (
+      (node.type === Syntax.FunctionDeclaration ||
+        node.type === Syntax.FunctionExpression ||
+        node.type === Syntax.ArrowFunctionExpression) &&
+      !this._getDocletById(node.nodeId)
+    ) {
+      anonymousDoclet = new Doclet(
+        `@name ${LONGNAMES.ANONYMOUS}`,
+        {
+          _watch: false,
+          code: e.code,
+        },
+        this._dependencies
+      );
+      anonymousDoclet.longname = LONGNAMES.ANONYMOUS;
+      anonymousDoclet.undocumented = true;
+
+      this._docletStore.add(anonymousDoclet);
     }
   }
 
   // TODO: docs
   _getDocletById(id) {
-    return this._byNodeId.get(id);
+    return getLastValue(this._docletStore.docletsByNodeId.get(id));
   }
 
   /**
@@ -334,7 +289,27 @@ export class Parser extends EventEmitter {
    * @return {module:@jsdoc/doclet.Doclet?} The most recent doclet for the longname.
    */
   _getDocletByLongname(longname) {
-    return this._byLongname.get(longname);
+    let doclets = this._getDocletsByLongname(longname);
+
+    return doclets[doclets.length - 1];
+  }
+
+  /**
+   * Retrieves all doclets with the given longname.
+   *
+   * @param {string} longname - The longname to search for.
+   * @return {Array<module:@jsdoc/doclet.Doclet>} The doclets for the longname.
+   */
+  _getDocletsByLongname(longname) {
+    let doclets;
+
+    if (longname === LONGNAMES.GLOBAL) {
+      return [this._globalDoclet];
+    }
+
+    doclets = this._docletStore.docletsByLongname.get(longname);
+
+    return doclets ? Array.from(doclets) : [];
   }
 
   // TODO: docs
@@ -386,8 +361,7 @@ export class Parser extends EventEmitter {
     // confusing...
     else if (
       type === Syntax.MethodDefinition &&
-      node.parent.parent.parent &&
-      node.parent.parent.parent.type === Syntax.ArrowFunctionExpression
+      node.parent.parent.parent?.type === Syntax.ArrowFunctionExpression
     ) {
       doclet = this._getDocletById(node.enclosingScope.nodeId);
 
@@ -445,7 +419,7 @@ export class Parser extends EventEmitter {
     let scope = enclosingScope;
 
     function isClass(d) {
-      return d && d.kind === 'class';
+      return d?.kind === 'class';
     }
 
     while (scope) {
@@ -462,8 +436,8 @@ export class Parser extends EventEmitter {
         // owning class
         parts = toParts(doclet.longname);
         if (parts.scope === SCOPE.PUNC.INSTANCE) {
-          doclet = this._getDocletByLongname(parts.memberof);
-          if (isClass(doclet)) {
+          doclet = this._getDocletsByLongname(parts.memberof).filter((d) => isClass(d))[0];
+          if (doclet) {
             break;
           }
         }
@@ -490,11 +464,7 @@ export class Parser extends EventEmitter {
     // Properties are handled below.
     if (node.type !== Syntax.Property && node.enclosingScope) {
       // For ES2015 constructor functions, we use the class declaration to resolve `this`.
-      if (
-        node.parent &&
-        node.parent.type === Syntax.MethodDefinition &&
-        node.parent.kind === 'constructor'
-      ) {
+      if (node.parent?.type === Syntax.MethodDefinition && node.parent?.kind === 'constructor') {
         doclet = this._getDocletById(node.parent.parent.parent.nodeId);
       }
       // Otherwise, if there's an enclosing scope, we use the enclosing scope to resolve `this`.
@@ -575,7 +545,7 @@ export class Parser extends EventEmitter {
 
       // if the next ancestor is an assignment expression (for example, `exports.FOO` in
       // `var foo = exports.FOO = { x: 1 }`, keep walking upwards
-      if (nextAncestor && nextAncestor.type === Syntax.AssignmentExpression) {
+      if (nextAncestor?.type === Syntax.AssignmentExpression) {
         nextAncestor = nextAncestor.parent;
         currentAncestor = currentAncestor.parent;
       }
@@ -622,7 +592,7 @@ export class Parser extends EventEmitter {
     const doclets = this.resolvePropertyParents(e.code.node.parent);
 
     doclets.forEach((doclet) => {
-      if (doclet && doclet.isEnum) {
+      if (doclet?.isEnum) {
         doclet.properties = doclet.properties || [];
 
         // members of an enum inherit the enum's type
@@ -631,7 +601,7 @@ export class Parser extends EventEmitter {
           e.doclet.type = _.cloneDeep(doclet.type);
         }
 
-        delete e.doclet.undocumented;
+        e.doclet.undocumented = undefined;
         e.doclet.defaultvalue = e.doclet.meta.code.value;
 
         // add the doclet to the parent's properties

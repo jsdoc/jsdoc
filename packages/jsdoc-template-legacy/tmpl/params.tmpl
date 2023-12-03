@@ -20,6 +20,7 @@
     /* sort subparams under their parent params (like opts.classname) */
     var parentParam = null;
     params.forEach(function(param, i) {
+        var match;
         var paramRegExp;
 
         if (!param) {
@@ -36,8 +37,9 @@
                 return;
             }
 
-            if ( paramRegExp.test(param.name) ) {
-                param.name = RegExp.$1;
+            match = param.name.match(paramRegExp);
+            if ( match ) {
+                param.name = match[1];
                 parentParam.subparams = parentParam.subparams || [];
                 parentParam.subparams.push(param);
                 params[i] = null;

@@ -16,23 +16,24 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import salty from '@jsdoc/salty';
-import { fs as jsdocFs, log } from '@jsdoc/util';
+import { log } from '@jsdoc/util';
 import commonPathPrefix from 'common-path-prefix';
-import fastGlob from 'fast-glob';
+import glob from 'fast-glob';
 import _ from 'lodash';
 
 import { Template } from './lib/template.js';
 import * as helper from './lib/templateHelper.js';
 
 const { htmlsafe, linkto, resolveAuthorLinks } = helper;
-const { lsSync } = jsdocFs;
-const { sync: glob } = fastGlob;
 const { resolve } = createRequire(import.meta.url);
 const { taffy } = salty;
 
-const FONT_CSS_FILES = ['variable.css', 'variable-italic.css'];
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const FONT_CSS_FILES = ['standard.css', 'standard-italic.css'];
 const PRETTIFIER_CSS_FILES = ['tomorrow.min.css'];
 const PRETTIFIER_SCRIPT_FILES = ['lang-css.js', 'prettify.js'];
 
@@ -72,7 +73,7 @@ function needsSignature({ kind, type, meta }) {
     needsSig = true;
   }
   // typedefs that contain functions get a signature, too
-  else if (kind === 'typedef' && type && type.names && type.names.length) {
+  else if (kind === 'typedef' && type?.names?.length) {
     for (let i = 0, l = type.names.length; i < l; i++) {
       if (type.names[i].toLowerCase() === 'function') {
         needsSig = true;
@@ -82,13 +83,7 @@ function needsSignature({ kind, type, meta }) {
   }
   // and namespaces that are functions get a signature (but finding them is a
   // bit messy)
-  else if (
-    kind === 'namespace' &&
-    meta &&
-    meta.code &&
-    meta.code.type &&
-    meta.code.type.match(/[Ff]unction/)
-  ) {
+  else if (kind === 'namespace' && meta?.code?.type?.match(/[Ff]unction/)) {
     needsSig = true;
   }
 
@@ -418,6 +413,8 @@ function buildNav(members, dependencies) {
 function sourceToDestination(parentDir, sourcePath, destDir) {
   const relativeSource = path.relative(parentDir, sourcePath);
 
+  console.log(`sourcePath: ${sourcePath}\nrelativeSource: ${relativeSource}`);
+
   return path.resolve(path.join(destDir, relativeSource));
 }
 
@@ -425,7 +422,7 @@ function sourceToDestination(parentDir, sourcePath, destDir) {
     @param {TAFFY} taffyData See <http://taffydb.com/>.
     @param {object} opts
  */
-export function publish(taffyData, dependencies) {
+export function publish(docletStore, dependencies) {
   let classes;
   let config;
   let externals;
@@ -451,13 +448,15 @@ export function publish(taffyData, dependencies) {
   let templatePath;
   let userStaticFileOutputDir;
 
-  data = taffyData;
   opts = dependencies.get('options');
   config = dependencies.get('config');
   templateConfig = config.templates || {};
   templateConfig.default = templateConfig.default || {};
   outdir = path.normalize(opts.destination);
-  templatePath = path.normalize(path.dirname(opts.template));
+  if (!path.isAbsolute(outdir)) {
+    outdir = path.resolve(process.cwd(), outdir);
+  }
+  templatePath = __dirname;
   view = new Template(path.join(templatePath, 'tmpl'));
 
   // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
@@ -473,7 +472,7 @@ export function publish(taffyData, dependencies) {
     ? path.resolve(templateConfig.default.layoutFile)
     : 'layout.tmpl';
 
-  data = helper.prune(data, dependencies);
+  data = taffy(Array.from(docletStore.doclets));
   data.sort('longname, version, since');
   helper.addEventListeners(data);
 
@@ -486,10 +485,11 @@ export function publish(taffyData, dependencies) {
       doclet.examples = doclet.examples.map((example) => {
         let caption;
         let code;
+        const match = example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i);
 
-        if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
-          caption = RegExp.$1;
-          code = RegExp.$3;
+        if (match) {
+          caption = match[1];
+          code = match[3];
         }
 
         return {
@@ -526,35 +526,40 @@ export function publish(taffyData, dependencies) {
 
   // copy the template's static files to outdir
   fromDir = path.join(templatePath, 'static');
-  staticFiles = lsSync(fromDir);
+  staticFiles = glob.sync('**/*', {
+    cwd: fromDir,
+    onlyFiles: true,
+  });
 
   staticFiles.forEach((fileName) => {
-    const toPath = sourceToDestination(fromDir, fileName, outdir);
+    const toPath = path.join(outdir, fileName);
 
     mkdirpSync(path.dirname(toPath));
-    fs.copyFileSync(fileName, toPath);
+    fs.copyFileSync(path.join(fromDir, fileName), toPath);
   });
 
   // copy the fonts used by the template to outdir
-  staticFiles = lsSync(path.join(resolve('@fontsource/open-sans'), '..', 'files'));
+  fromDir = path.join(resolve('@fontsource-variable/open-sans'), '..', 'files');
+  staticFiles = glob.sync('**/*standard-{normal,italic}*', {
+    cwd: fromDir,
+    onlyFiles: true,
+  });
 
   staticFiles.forEach((fileName) => {
     const toPath = path.join(outdir, 'fonts', path.basename(fileName));
 
-    if (path.parse(fileName).name.includes('variable-wghtOnly')) {
-      mkdirpSync(path.dirname(toPath));
-      fs.copyFileSync(fileName, toPath);
-    }
+    mkdirpSync(path.dirname(toPath));
+    fs.copyFileSync(path.join(fromDir, fileName), toPath);
   });
 
   // copy the font CSS to outdir
-  staticFiles = path.join(resolve('@fontsource/open-sans'), '..');
+  staticFiles = path.join(resolve('@fontsource-variable/open-sans'), '..');
   FONT_CSS_FILES.forEach((fileName) => {
     const fromPath = path.join(staticFiles, fileName);
-    const toPath = path.join(outdir, 'styles', fileName.replace('variable', 'open-sans'));
+    const toPath = path.join(outdir, 'styles', fileName.replace('standard', 'open-sans'));
     let source = fs.readFileSync(fromPath, 'utf8');
 
-    source = source.replace(/url\('\.\/files/g, "url('../fonts");
+    source = source.replace(/url\(\.\/files/g, 'url(../fonts');
     mkdirpSync(path.dirname(toPath));
     fs.writeFileSync(toPath, source);
   });
@@ -574,8 +579,10 @@ export function publish(taffyData, dependencies) {
       // `resolve()` has trouble with this package, so we use an extra-hacky way to
       // get the filepath.
       path.join(
-        templatePath,
-        'node_modules',
+        resolve('fast-glob'),
+        '..',
+        '..',
+        '..',
         'color-themes-for-google-code-prettify',
         'dist',
         'themes',
@@ -591,7 +598,7 @@ export function publish(taffyData, dependencies) {
     // with a bug in JSDoc 3.2.x.
     staticFilePaths =
       templateConfig.default.staticFiles.include || templateConfig.default.staticFiles.paths || [];
-    staticFilePaths = glob(staticFilePaths, {
+    staticFilePaths = glob.sync(staticFilePaths, {
       absolute: true,
       onlyFiles: true,
     });

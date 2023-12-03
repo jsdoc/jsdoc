@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/test-matchers",
-  "version": "0.2.1",
+  "version": "0.2.5",
   "description": "Jasmine matchers that JSDoc uses in its tests.",
   "keywords": [
     "jasmine",
@@ -26,8 +26,7 @@
   },
   "type": "commonjs",
   "dependencies": {
-    "lodash": "^4.17.21",
-    "prettier": "^2.8.8"
+    "lodash": "^4.17.21"
   },
   "engines": {
     "node": ">=v18.12.0"

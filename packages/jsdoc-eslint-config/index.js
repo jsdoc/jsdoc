@@ -14,6 +14,8 @@
   limitations under the License.
 */
 module.exports = {
+  extends: ['plugin:prettier/recommended'],
+
   env: {
     es6: true,
     jasmine: true,
@@ -26,7 +28,7 @@ module.exports = {
     requireConfigFile: false,
     sourceType: 'module',
   },
-  plugins: ['simple-import-sort'],
+  plugins: ['prettier', 'simple-import-sort'],
 
   rules: {
     // Possible errors
@@ -132,7 +134,6 @@ module.exports = {
     'no-bitwise': 'error',
     'no-caller': 'error',
     'no-case-declarations': 'error',
-    'no-confusing-arrow': 'error',
     'no-console': 'off',
     'no-continue': 'off',
     'no-delete-var': 'error',
@@ -146,8 +147,6 @@ module.exports = {
     'no-extra-bind': 'error',
     'no-extra-boolean-cast': 'error',
     'no-extra-label': 'error',
-    'no-extra-semi': 'error',
-    'no-floating-decimal': 'error',
     'no-global-assign': 'error',
     'no-implicit-coercion': 'error',
     'no-implicit-globals': 'error',
@@ -161,14 +160,12 @@ module.exports = {
     'no-lonely-if': 'error',
     'no-loop-func': 'error',
     'no-magic-numbers': 'off', // TODO: enable?
-    'no-mixed-operators': 'error',
     'no-multi-assign': 'off',
     'no-multi-str': 'error',
     'no-negated-condition': 'off',
     'no-nested-ternary': 'error',
     'no-new': 'error',
     'no-new-func': 'error',
-    'no-new-object': 'error',
     'no-new-wrappers': 'error',
     'no-nonoctal-decimal-escape': 'error',
     'no-octal': 'error',
@@ -184,7 +181,6 @@ module.exports = {
     'no-restricted-properties': 'off',
     'no-restricted-syntax': 'off',
     'no-return-assign': 'error',
-    'no-return-await': 'error',
     'no-script-url': 'error',
     'no-sequences': 'error',
     'no-shadow': 'error',
@@ -211,7 +207,6 @@ module.exports = {
     'no-with': 'error',
     'object-shorthand': 'off',
     'one-var': 'off',
-    'one-var-declaration-per-line': 'error',
     'operator-assignment': 'off',
     'prefer-arrow-callback': 'off',
     'prefer-const': 'off',
@@ -226,7 +221,6 @@ module.exports = {
     'prefer-rest-params': 'off',
     'prefer-spread': 'off',
     'prefer-template': 'off',
-    'quote-props': 'off',
     radix: 'error',
     'require-await': 'error',
     'require-unicode-regexp': 'off',
@@ -234,149 +228,20 @@ module.exports = {
     'sort-imports': 'off', // We use https://github.com/lydell/eslint-plugin-simple-import-sort instead
     'sort-keys': 'off',
     'sort-vars': 'off', // TODO: enable?
-    'spaced-comment': ['error', 'always'],
     strict: ['error', 'global'],
     'symbol-description': 'error',
     'vars-on-top': 'off', // TODO: enable
     yoda: 'error',
 
     // Layout and formatting
-    'array-bracket-newline': 'off',
-    'array-bracket-spacing': ['error', 'never'],
-    'array-element-newline': 'off',
-    'arrow-parens': 'off',
-    'arrow-spacing': [
-      'error',
-      {
-        before: true,
-        after: true,
-      },
-    ],
-    'block-spacing': ['error', 'always'],
-    'brace-style': 'off', // TODO: enable with "stroustrup" (or "1tbsp" + lots of cleanup)
-    'comma-dangle': 'error',
-    'comma-spacing': [
-      'error',
-      {
-        before: false,
-        after: true,
-      },
-    ],
-    'comma-style': ['error', 'last'],
-    'computed-property-spacing': ['error', 'never'],
-    'dot-location': ['error', 'property'],
-    'eol-last': 'error',
-    'func-call-spacing': ['error', 'never'],
-    'function-call-argument-newline': 'off',
-    'function-paren-newline': 'off',
-    'generator-star-spacing': [
-      'error',
-      {
-        before: true,
-        after: false,
-      },
-    ],
-    'implicit-arrow-linebreak': 'off',
-    indent: [
-      'error',
-      2,
-      {
-        SwitchCase: 1,
-      },
-    ],
-    'jsx-quotes': ['error', 'prefer-double'],
-    'key-spacing': [
-      'error',
-      {
-        beforeColon: false,
-        afterColon: true,
-      },
-    ],
-    'keyword-spacing': [
-      'error',
-      {
-        before: true,
-        after: true,
-      },
-    ],
     'line-comment-position': 'off',
-    'linebreak-style': 'off',
-    'lines-around-comment': 'off',
-    'lines-between-class-members': 'off',
-    'max-len': 'off', // TODO: enable
-    'max-statements-per-line': 'off',
-    'multiline-ternary': 'off',
-    'new-parens': 'error',
-    'newline-per-chained-call': 'off', // TODO: enable
-    'no-extra-parens': 'off',
-    'no-mixed-spaces-and-tabs': 'error',
-    'no-multi-spaces': 'error',
-    'no-multiple-empty-lines': [
-      'error',
-      {
-        max: 2,
-      },
-    ],
-    'no-tabs': 'error',
-    'no-trailing-spaces': 'error',
-    'no-whitespace-before-property': 'error',
-    'nonblock-statement-body-position': 'off',
-    'object-curly-newline': 'off',
-    'object-curly-spacing': 'off',
-    'object-property-newline': 'error',
-    'operator-linebreak': ['error', 'after'],
-    'padded-blocks': ['error', 'never'],
-    'padding-line-between-statements': [
-      'error',
-      {
-        blankLine: 'always',
-        prev: '*',
-        next: 'return',
-      },
-      {
-        blankLine: 'always',
-        prev: ['const', 'let', 'var'],
-        next: '*',
-      },
-      {
-        blankLine: 'any',
-        prev: ['const', 'let', 'var'],
-        next: ['const', 'let', 'var'],
-      },
-    ],
-    quotes: ['error', 'single', 'avoid-escape'],
-    'rest-spread-spacing': ['error', 'never'],
-    semi: ['error', 'always'],
-    'semi-spacing': 'error',
-    'semi-style': ['error', 'last'],
-    'space-before-blocks': ['error', 'always'],
-    'space-before-function-paren': [
-      'error',
-      {
-        anonymous: 'never',
-        named: 'never',
-        asyncArrow: 'always',
-      },
-    ],
-    'space-in-parens': 'off', // TODO: enable?
-    'space-infix-ops': 'error',
-    'space-unary-ops': 'error',
-    'switch-colon-spacing': [
-      'error',
-      {
-        after: true,
-        before: false,
-      },
-    ],
-    'template-curly-spacing': ['error', 'never'],
-    'template-tag-spacing': ['error', 'never'],
     'unicode-bom': ['error', 'never'],
-    'wrap-iife': ['error', 'inside'],
-    'wrap-regex': 'off',
-    'yield-star-spacing': ['error', 'before'],
 
     // https://github.com/lydell/eslint-plugin-simple-import-sort
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+
+    // https://github.com/prettier/eslint-plugin-prettier
+    'prettier/prettier': 'error',
   },
 };

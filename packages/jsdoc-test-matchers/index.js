@@ -14,35 +14,18 @@
   limitations under the License.
 */
 const _ = require('lodash');
-const { format } = require('prettier');
-
-// Prettier lazy-loads its parsers, so preload the HTML parser while we know we're not mocked.
-require('prettier/parser-html');
-
-function stripWhitespace(str) {
-  // Remove leading whitespace.
-  str = str.replace(/^[\s]+/gm, '');
-  // Remove empty lines.
-  str = str.replace(/^\n$/gm, '');
-
-  return str;
-}
-
-function normalizeHtml(str) {
-  str = format(str, {
-    parser: 'html',
-    tabWidth: 2,
-  });
-
-  return stripWhitespace(str);
-}
 
 function isInstanceOf(actual, expected) {
   let actualName;
   let expectedName;
+  let typeErrorMsg = 'Expected object value, got ';
 
-  if (!_.isObject(actual)) {
-    throw new TypeError(`Expected object value, got ${typeof value}`);
+  if (_.isNull(actual)) {
+    throw new TypeError(typeErrorMsg + 'null');
+  } else if (_.isArray(actual)) {
+    throw new TypeError(typeErrorMsg + 'array');
+  } else if (!_.isObject(actual)) {
+    throw new TypeError(typeErrorMsg + typeof value);
   }
 
   actualName = actual.constructor.name;
@@ -77,9 +60,7 @@ function matchmaker(name, checker) {
 }
 
 const matcherFuncs = {
-  toBeArray: (actual) => {
-    return _.isArray(actual);
-  },
+  toBeArray: (actual) => _.isArray(actual),
   toBeArrayOfSize: (actual, expected) => {
     if (_.isArray(actual) && actual.length === expected) {
       return true;
@@ -94,70 +75,34 @@ const matcherFuncs = {
 
     return !actual.some((item) => !_.isString(item));
   },
-  toBeArrayOfObjects: (actual) => {
-    return _.isArray(actual) && !actual.some((item) => !_.isObject(item));
-  },
-  toBeBoolean: (actual) => {
-    return _.isBoolean(actual);
-  },
-  toBeEmptyArray: (actual) => {
-    return _.isArray(actual) && actual.length === 0;
-  },
-  toBeEmptyObject: (actual) => {
-    return _.isObject(actual) && !Object.keys(actual).length;
-  },
-  toBeEmptyString: (actual) => {
-    return actual === '';
-  },
-  toBeError: (actual) => {
-    return actual instanceof Error;
-  },
-  toBeErrorOfType: (actual, expected) => {
-    return actual instanceof Error && actual.name === expected;
-  },
-  toBeFunction: (actual) => {
-    return _.isFunction(actual);
-  },
+  toBeArrayOfObjects: (actual) => _.isArray(actual) && !actual.some((item) => !_.isObject(item)),
+  toBeBoolean: (actual) => _.isBoolean(actual),
+  toBeEmptyArray: (actual) => _.isArray(actual) && actual.length === 0,
+  toBeEmptyMap: (actual) => _.isMap(actual) && actual.size === 0,
+  toBeEmptyObject: (actual) => _.isObject(actual) && !Object.keys(actual).length,
+  toBeEmptySet: (actual) => _.isSet(actual) && actual.size === 0,
+  toBeEmptyString: (actual) => actual === '',
+  toBeError: (actual) => actual instanceof Error,
+  toBeErrorOfType: (actual, expected) => actual instanceof Error && actual.name === expected,
+  toBeFunction: (actual) => _.isFunction(actual),
   toBeInstanceOf: isInstanceOf,
-  toBeLessThanOrEqualTo: (actual, expected) => {
-    return actual <= expected;
-  },
-  toBeNonEmptyObject: (actual) => {
-    return _.isObject(actual) && Object.keys(actual).length;
-  },
-  toBeNonEmptyString: (actual) => {
-    return _.isString(actual) && actual.length > 0;
-  },
-  toBeNumber: (actual) => {
-    return _.isNumber(actual);
-  },
-  toBeObject: (actual) => {
-    return _.isObject(actual);
-  },
-  toBeString: (actual) => {
-    return _.isString(actual);
-  },
-  toBeWholeNumber: (actual) => {
-    return Number.isInteger(actual);
-  },
-  toContainHtml: (actual, expected) => {
-    const actualDiffable = normalizeHtml(actual);
-    const expectedDiffable = normalizeHtml(expected);
-
-    return actualDiffable.includes(expectedDiffable);
-  },
-  toEndWith: (actual, expected) => {
-    return _.isString(actual) && _.isString(expected) && actual.endsWith(expected);
-  },
-  toHaveMethod: (actual, expected) => {
-    return _.isObject(actual) && _.isFunction(actual[expected]);
-  },
-  toHaveOwnProperty: (actual, expected) => {
-    return Object.hasOwn(actual, expected);
-  },
-  // The objects in `value` must have all of the keys and values from the corresponding objects in
-  // `other`. The object in `value` can have additional properties as well. For example, if
-  // `other[0]` is `{ a: 1 }`, and `value[0]` is `{ a: 1, b: 2 }`, then the objects match.
+  toBeLessThanOrEqualTo: (actual, expected) => actual <= expected,
+  toBeMap: (actual) => _.isMap(actual),
+  toBeNonEmptyObject: (actual) => _.isObject(actual) && Object.keys(actual).length,
+  toBeNonEmptyString: (actual) => _.isString(actual) && actual.length > 0,
+  toBeNumber: (actual) => _.isNumber(actual),
+  toBeObject: (actual) => _.isObject(actual),
+  toBeSet: (actual) => _.isSet(actual),
+  toBeString: (actual) => _.isString(actual),
+  toBeWholeNumber: (actual) => Number.isInteger(actual),
+  toEndWith: (actual, expected) =>
+    _.isString(actual) && _.isString(expected) && actual.endsWith(expected),
+  toHave: (actual, expected) => (_.isMap(actual) || _.isSet(actual)) && actual.has(expected),
+  toHaveMethod: (actual, expected) => _.isObject(actual) && _.isFunction(actual[expected]),
+  toHaveOwnProperty: (actual, expected) => Object.hasOwn(actual, expected),
+  // The objects in `actual` must have all of the keys and values from the corresponding objects in
+  // `expected`. The object in `actual` can have additional properties as well. For example, if
+  // `expected[0]` is `{ a: 1 }`, and `actual[0]` is `{ a: 1, b: 2 }`, then the objects match.
   toMatchArrayOfObjects: (actual, expected) => {
     let isMatch = true;
 
@@ -181,12 +126,10 @@ const matcherFuncs = {
 
     return isMatch;
   },
-  // The `value` object must have all of the keys and values from the `other` object. The `value`
-  // object can have additional properties as well. For example, if `other` is `{ a: 1 }`, and
-  // `value` is `{ a: 1, b: 2 }`, then the objects match.
-  toMatchObject: (actual, expected) => {
-    return _.isMatch(actual, expected);
-  },
+  // The `actual` object must have all of the keys and values from the `expected` object. The
+  // `actual` object can have additional properties as well. For example, if `expected` is
+  // `{ a: 1 }`, and `actual` is `{ a: 1, b: 2 }`, then the objects match.
+  toMatchObject: (actual, expected) => _.isMatch(actual, expected),
   toThrowErrorOfType: (actual, expected) => {
     let error;
 

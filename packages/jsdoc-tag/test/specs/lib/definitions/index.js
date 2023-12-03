@@ -16,20 +16,20 @@
 import * as definitions from '../../../../lib/definitions/index.js';
 
 describe('@jsdoc/tag/lib/definitions', () => {
-  it('has a `closure` object', () => {
-    expect(definitions.closure).toBeObject();
+  it('has a `getClosureTags` function', () => {
+    expect(definitions.getClosureTags).toBeFunction();
   });
 
-  it('has a `core` object', () => {
-    expect(definitions.core).toBeObject();
+  it('has a `getCoreTags` function', () => {
+    expect(definitions.getCoreTags).toBeFunction();
   });
 
-  it('has an `internal` object', () => {
-    expect(definitions.internal).toBeObject();
+  it('has a `getInternalTags` function', () => {
+    expect(definitions.getInternalTags).toBeFunction();
   });
 
-  it('has a `jsdoc` object', () => {
-    expect(definitions.jsdoc).toBeObject();
+  it('has a `getJsdocTags` function', () => {
+    expect(definitions.getJsdocTags).toBeFunction();
   });
 
   // For additional tests, see packages/jsdoc/test/specs/tags/.

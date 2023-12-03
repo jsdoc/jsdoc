@@ -19,7 +19,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { Syntax, Walker } from '@jsdoc/ast';
-import _ from 'lodash';
+import { combineDoclets, Doclet } from '@jsdoc/doclet';
 
 import { attachTo } from '../../../lib/handlers.js';
 import * as jsdocParser from '../../../lib/parser.js';
@@ -42,7 +42,11 @@ describe('@jsdoc/parse/lib/parser', () => {
 
   describe('createParser', () => {
     it('returns a `Parser` when called with dependencies', () => {
-      expect(jsdocParser.createParser(jsdoc.deps)).toBeObject();
+      const parser = jsdocParser.createParser(jsdoc.deps);
+
+      expect(parser).toBeObject();
+
+      parser._stopListening();
     });
   });
 
@@ -51,6 +55,10 @@ describe('@jsdoc/parse/lib/parser', () => {
 
     beforeEach(() => {
       parser = new jsdocParser.Parser(jsdoc.deps);
+    });
+
+    afterEach(() => {
+      parser._stopListening();
     });
 
     it('has a `visitor` property', () => {
@@ -142,19 +150,20 @@ describe('@jsdoc/parse/lib/parser', () => {
       });
 
       it('allows `newDoclet` handlers to modify doclets', () => {
-        let results;
+        let doclets;
+        let docletStore;
         const sourceCode = 'javascript:/** @class */function Foo() {}';
 
         function handler(e) {
-          e.doclet = _.cloneDeep(e.doclet);
+          e.doclet = combineDoclets(e.doclet, new Doclet('', {}, jsdoc.deps));
           e.doclet.foo = 'bar';
         }
 
         attachTo(parser);
-        parser.on('newDoclet', handler).parse(sourceCode);
-        results = parser.results();
+        docletStore = parser.on('newDoclet', handler).parse(sourceCode);
+        doclets = Array.from(docletStore.doclets).filter((d) => d.foo === 'bar');
 
-        expect(results[0].foo).toBe('bar');
+        expect(doclets).toBeArrayOfSize(1);
       });
 
       it('calls AST node visitors', () => {

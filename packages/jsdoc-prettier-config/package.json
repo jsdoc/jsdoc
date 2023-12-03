@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/prettier-config",
-  "version": "0.2.1",
+  "version": "0.2.5",
   "description": "A Prettier (https://prettier.io/) configuration for JSDoc.",
   "keywords": [
     "prettier",
@@ -11,9 +11,9 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "peerDependencies": {
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.8"
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.1.0"
   },
   "publishConfig": {
     "access": "public"

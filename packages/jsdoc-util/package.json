@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/util",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Utility modules for JSDoc.",
   "keywords": [
     "jsdoc"
@@ -31,7 +31,6 @@
     }
   },
   "dependencies": {
-    "klaw-sync": "^6.0.0",
     "lodash": "^4.17.21",
     "ow": "^1.1.1"
   },

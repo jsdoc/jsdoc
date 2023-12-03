@@ -13,7 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /* global jsdoc */
+
 import { Dependencies } from '@jsdoc/core';
 import { Doclet } from '@jsdoc/doclet';
 import salty from '@jsdoc/salty';
@@ -398,11 +400,19 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
 
     it('does not try to parse a longname starting with <anonymous> as a type application', () => {
-      function linkto() {
-        helper.linkto('<anonymous>~foo');
+      const emitter = jsdoc.deps.get('emitter');
+      const events = [];
+
+      function storeEvent(e) {
+        events.push(e);
       }
 
-      expect(jsdoc.didLog(linkto, 'error')).toBeFalse();
+      emitter.on('logger:error', storeEvent);
+      helper.linkto('<anonymous>~foo');
+
+      expect(events).toBeEmptyArray();
+
+      emitter.off('logger:error', storeEvent);
     });
 
     it('does not treat a longname with a variation as a type application', () => {

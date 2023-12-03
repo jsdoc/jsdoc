@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/eslint-config",
-  "version": "1.2.0",
+  "version": "1.2.6",
   "description": "Default ESLint configuration for JSDoc packages.",
   "keywords": [
     "eslint",
@@ -11,11 +11,14 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "dependencies": {
-    "@babel/eslint-parser": "^7.21.8",
+    "@babel/eslint-parser": "^7.23.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-simple-import-sort": "^10.0.0"
   },
   "peerDependencies": {
-    "eslint": ">= 8.40.0"
+    "eslint": ">= 8.55.0",
+    "prettier": ">= 3.1.0"
   },
   "publishConfig": {
     "access": "public"

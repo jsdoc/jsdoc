@@ -13,21 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import RealEngine from '../../../lib/engine.js';
+import Engine from '../../../lib/engine.js';
 import flags from '../../../lib/flags.js';
 import { LEVELS } from '../../../lib/logger.js';
 
 const TYPE_ERROR = 'TypeError';
-
-// Wrapper to prevent reuse of the event bus, which leads to `MaxListenersExceededWarning` messages.
-class Engine extends RealEngine {
-  constructor(opts) {
-    opts = opts || {};
-    opts._cacheEventBus = false;
-
-    super(opts);
-  }
-}
 
 describe('@jsdoc/cli/lib/engine', () => {
   it('exists', () => {

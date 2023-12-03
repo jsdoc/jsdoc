@@ -21,12 +21,17 @@ import { plugins } from '@jsdoc/core';
 describe('source-tag plugin', () => {
   const __dirname = jsdoc.dirname(import.meta.url);
   let docSet;
-  const parser = jsdoc.createParser();
+  let parser;
   const pluginPath = path.join(__dirname, '../../source-tag.js');
 
-  beforeAll(async () => {
+  beforeEach(async () => {
+    parser = jsdoc.createParser();
     await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
     docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
+  });
+
+  afterEach(() => {
+    parser._stopListening();
   });
 
   it("should set the lineno and filename of the doclet's meta property", () => {

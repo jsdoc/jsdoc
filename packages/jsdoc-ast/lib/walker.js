@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Traversal utilities for ASTs that are compatible with the ESTree API.
  */
-import { log } from '@jsdoc/util';
 
 import * as astNode from './ast-node.js';
 import { Syntax } from './syntax.js';
@@ -645,7 +645,8 @@ walkers[Syntax.YieldExpression] = (node, parent, state, cb) => {
  */
 export class Walker {
   // TODO: docs
-  constructor(walkerFuncs = walkers) {
+  constructor(deps, walkerFuncs = walkers) {
+    this._log = deps.get('log');
     this._walkers = walkerFuncs;
   }
 
@@ -659,7 +660,7 @@ export class Walker {
     };
 
     function logUnknownNodeType({ type }) {
-      log.debug(
+      self._log.debug(
         `Found a node with unrecognized type ${type}. Ignoring the node and its descendants.`
       );
     }

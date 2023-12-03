@@ -78,6 +78,20 @@ export function isInlineTag(string, tagName) {
 }
 
 /**
+ * Check whether a string includes one or more inline tags. You can check for a specific inline tag
+ * or for any valid inline tag.
+ *
+ * @param {string} string - The string to check.
+ * @param {?string} tagName - The inline tag to match. May contain regexp characters. If this
+ * parameter is omitted, this method returns `true` for any valid inline tag.
+ * @returns {boolean} Set to `true` if the string includes at least one valid inline tag or `false`
+ * in all other cases.
+ */
+export function includesInlineTag(string, tagName) {
+  return regExpFactory(tagName).test(string);
+}
+
+/**
  * Replace all instances of multiple inline tags with other text.
  *
  * @param {string} string - The string in which to replace the inline tags.

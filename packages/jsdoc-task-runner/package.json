@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/task-runner",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Task runner for JSDoc templates.",
   "keywords": [
     "jsdoc",
@@ -35,7 +35,7 @@
     "dependency-graph": "^0.11.0",
     "emittery": "^1.0.1",
     "ow": "^1.1.1",
-    "p-queue": "^7.3.4"
+    "p-queue": "^7.4.1"
   },
   "engines": {
     "node": ">=v18.12.0"

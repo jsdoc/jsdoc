@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/template-legacy",
-  "version": "0.1.1",
+  "version": "0.1.8",
   "description": "Legacy template from JSDoc 3.x.",
   "keywords": [
     "jsdoc"
@@ -13,18 +13,18 @@
     "access": "public"
   },
   "dependencies": {
-    "@fontsource/open-sans": "^4.5.14",
-    "@jsdoc/core": "^0.5.1",
-    "@jsdoc/salty": "^0.2.5",
-    "@jsdoc/tag": "^0.2.1",
-    "@jsdoc/util": "^0.3.0",
+    "@fontsource-variable/open-sans": "^5.0.18",
+    "@jsdoc/core": "^0.5.5",
+    "@jsdoc/salty": "^0.2.6",
+    "@jsdoc/tag": "^0.2.8",
+    "@jsdoc/util": "^0.3.2",
     "catharsis": "^0.9.0",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
     "common-path-prefix": "^3.0.0",
-    "fast-glob": "^3.2.12",
+    "fast-glob": "^3.3.2",
     "lodash": "^4.17.21",
-    "markdown-it": "^13.0.1",
+    "markdown-it": "^13.0.2",
     "markdown-it-anchor": "^8.6.7"
   },
   "repository": {

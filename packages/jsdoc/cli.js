@@ -22,9 +22,7 @@ import Engine from '@jsdoc/cli';
 import { config, Dependencies, plugins } from '@jsdoc/core';
 import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
-import salty from '@jsdoc/salty';
 import { Dictionary } from '@jsdoc/tag';
-import { EventBus, log } from '@jsdoc/util';
 import fastGlob from 'fast-glob';
 import _ from 'lodash';
 import stripBom from 'strip-bom';
@@ -33,7 +31,6 @@ import stripJsonComments from 'strip-json-comments';
 import test from './test/index.js';
 
 const { sync: glob } = fastGlob;
-const { taffy } = salty;
 
 /**
  * Helper methods for running JSDoc on the command line.
@@ -49,13 +46,17 @@ export default (() => {
     tmpdir: null,
   };
 
-  const bus = new EventBus('jsdoc');
   const cli = {};
   const dependencies = new Dependencies();
   const engine = new Engine();
+  const emitter = engine.emitter;
+  const log = engine.log;
   const FATAL_ERROR_MESSAGE =
     'Exiting JSDoc because an error occurred. See the previous log messages for details.';
   const LOG_LEVELS = Engine.LOG_LEVELS;
+
+  dependencies.registerValue('emitter', emitter);
+  dependencies.registerValue('log', engine.log);
 
   cli.setEnv = (env) => {
     dependencies.registerValue('env', env);
@@ -109,9 +110,7 @@ export default (() => {
     // Now that we're done loading and merging things, register dependencies.
     dependencies.registerValue('config', env.conf);
     dependencies.registerValue('options', env.opts);
-    dependencies.registerSingletonFactory('tags', () =>
-      Dictionary.fromConfig(dependencies.get('env'))
-    );
+    dependencies.registerSingletonFactory('tags', () => Dictionary.fromConfig(dependencies));
 
     return cli;
   };
@@ -138,13 +137,13 @@ export default (() => {
       }
 
       if (options.pedantic) {
-        bus.once('logger:warn', recoverableError);
-        bus.once('logger:error', fatalError);
+        emitter.once('logger:warn', recoverableError);
+        emitter.once('logger:error', fatalError);
       } else {
-        bus.once('logger:error', recoverableError);
+        emitter.once('logger:error', recoverableError);
       }
 
-      bus.once('logger:fatal', fatalError);
+      emitter.once('logger:fatal', fatalError);
     }
 
     return cli;
@@ -313,25 +312,29 @@ export default (() => {
   };
 
   cli.parseFiles = () => {
-    let docs;
     const env = dependencies.get('env');
     const options = dependencies.get('options');
     let packageDocs;
+    let docletStore;
 
-    props.docs = docs = props.parser.parse(env.sourceFiles, options.encoding);
+    docletStore = props.parser.parse(env.sourceFiles, options.encoding);
 
     // If there is no package.json, just create an empty package
-    packageDocs = new Package(props.packageJson);
+    packageDocs = new Package(props.packageJson, dependencies);
     packageDocs.files = env.sourceFiles || [];
-    docs.push(packageDocs);
+    docletStore.add(packageDocs);
 
     log.debug('Adding inherited symbols, mixins, and interface implementations...');
-    augment.augmentAll(docs);
+    augment.augmentAll(docletStore);
     log.debug('Adding borrowed doclets...');
-    resolveBorrows(docs);
+    resolveBorrows(docletStore);
     log.debug('Post-processing complete.');
 
-    props.parser.fireProcessingComplete(docs);
+    props.docs = docletStore;
+
+    if (props.parser.listenerCount('processingComplete')) {
+      props.parser.fireProcessingComplete(Array.from(docletStore.doclets));
+    }
 
     return cli;
   };
@@ -349,7 +352,7 @@ export default (() => {
   };
 
   cli.dumpParseResults = () => {
-    console.log(JSON.stringify(props.docs, null, 4));
+    console.log(JSON.stringify(Array.from(props.docs.allDoclets), null, 2));
 
     return cli;
   };
@@ -359,7 +362,7 @@ export default (() => {
     const options = dependencies.get('options');
     let template;
 
-    options.template = options.template || path.join(__dirname, 'templates', 'default');
+    options.template = options.template || '@jsdoc/template-legacy';
 
     try {
       template = await import(options.template);
@@ -372,7 +375,7 @@ export default (() => {
       let publishPromise;
 
       log.info('Generating output files...');
-      publishPromise = template.publish(taffy(props.docs), dependencies);
+      publishPromise = template.publish(props.docs, dependencies);
 
       return Promise.resolve(publishPromise);
     } else {

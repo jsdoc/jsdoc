@@ -21,12 +21,9 @@ describe('@inheritdoc tag', () => {
   }
 
   it('should cause the symbol to be documented', () => {
-    const open = docSet.getByLongname('Socket#open');
+    const open = docSet.getByLongname('Socket#open').filter(ignored)[0];
 
-    expect(open).toBeArrayOfSize(2);
-    expect(open[0].ignore).toBeTrue();
-    expect(open[1].ignore).toBeUndefined();
-    expect(open[1].description).toBe('Open the connection.');
+    expect(open.description).toBe('Open the connection.');
   });
 
   it('should cause all other tags to be ignored', () => {
