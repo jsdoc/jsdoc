@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // TODO: docs
 import { name } from '@jsdoc/core';
 import { cast } from '@jsdoc/util';
-import _ from 'lodash';
 
 import { Syntax } from './syntax.js';
 
@@ -72,54 +72,38 @@ export function isScope(node) {
 
 // TODO: docs
 export function addNodeProperties(node) {
-  const newProperties = {};
-
-  if (!node || typeof node !== 'object') {
+  if (!node) {
     return null;
   }
 
-  if (!node.nodeId) {
-    newProperties.nodeId = {
-      value: `astnode${uid++}`,
-      enumerable: true,
-    };
-  }
-
-  if (_.isUndefined(node.parent)) {
-    newProperties.parent = {
-      // `null` means 'no parent', so use `undefined` for now
+  Object.defineProperties(node, {
+    enclosingScope: {
+      // `null` means 'no enclosing scope', so use `undefined` for now.
       value: undefined,
       writable: true,
-    };
-  }
-
-  if (_.isUndefined(node.enclosingScope)) {
-    newProperties.enclosingScope = {
-      // `null` means 'no enclosing scope', so use `undefined` for now
-      value: undefined,
-      writable: true,
-    };
-  }
-
-  if (_.isUndefined(node.parentId)) {
-    newProperties.parentId = {
-      enumerable: true,
-      get() {
-        return this.parent ? this.parent.nodeId : null;
-      },
-    };
-  }
-
-  if (_.isUndefined(node.enclosingScopeId)) {
-    newProperties.enclosingScopeId = {
+    },
+    enclosingScopeId: {
       enumerable: true,
       get() {
         return this.enclosingScope ? this.enclosingScope.nodeId : null;
       },
-    };
-  }
-
-  Object.defineProperties(node, newProperties);
+    },
+    nodeId: {
+      value: `astnode${uid++}`,
+      enumerable: true,
+    },
+    parent: {
+      // `null` means 'no parent', so use `undefined` for now.
+      value: undefined,
+      writable: true,
+    },
+    parentId: {
+      enumerable: true,
+      get() {
+        return this.parent ? this.parent.nodeId : null;
+      },
+    },
+  });
 
   return node;
 }
