@@ -104,6 +104,15 @@ const { KNOWN_FLAGS, YARGS_FLAGS } = (() => {
  */
 export default class Engine {
   /**
+   * The log levels that JSDoc's logger accepts. The key is an identifier, like `ERROR` or `WARN`.
+   * The value is an integer, with higher numbers denoting more important messages.
+   *
+   * @type {Object<string, number>}
+   */
+  static LOG_LEVELS = LEVELS;
+  #logger;
+
+  /**
    * Create an instance of the CLI engine.
    *
    * @param {Object} opts - Options for the CLI engine.
@@ -121,27 +130,25 @@ export default class Engine {
 
     this.emitter = new EventEmitter();
     this.flags = [];
-    this._logger = new Logger({
+    this.log = getLogFunctions(this.emitter);
+    this.#logger = new Logger({
       emitter: this.emitter,
       level: opts.logLevel,
     });
-    this.log = getLogFunctions(this.emitter);
     this.revision = opts.revision;
     this.version = opts.version;
   }
 
   /**
-   * The log level to use. Messages are logged only if they are at or above this level.
-   * Must be an enumerated value of {@link module:@jsdoc/cli.LOG_LEVELS}.
+   * Gets the specified property of this `Engine` instance.
    *
-   * The default value is `module:@jsdoc/cli.LOG_LEVELS.WARN`.
+   * @private
+   * @deprecated Do not use this method in new code. It provides backwards compatibility with an
+   * earlier approach to dependency management.
+   * @returns {?} The value of the specified property.
    */
-  get logLevel() {
-    return this._logger.level;
-  }
-
-  set logLevel(level) {
-    this._logger.level = level;
+  get(name) {
+    return this[name];
   }
 
   /**
@@ -160,7 +167,7 @@ export default class Engine {
     ow(opts, ow.object);
     ow(opts.maxLength, ow.optional.number);
 
-    const maxLength = opts.maxLength || Infinity;
+    const maxLength = opts.maxLength ?? Infinity;
 
     return `Options:\n${help({ maxLength })}\n\nVisit https://jsdoc.app/ for more information.`;
   }
@@ -173,13 +180,27 @@ export default class Engine {
   }
 
   /**
+   * The log level to use. Messages are logged only if they are at or above this level.
+   * Must be an enumerated value of {@link module:@jsdoc/cli.LOG_LEVELS}.
+   *
+   * The default value is `module:@jsdoc/cli.LOG_LEVELS.WARN`.
+   */
+  get logLevel() {
+    return this.#logger.level;
+  }
+
+  set logLevel(level) {
+    this.#logger.level = level;
+  }
+
+  /**
    * Parse an array of command-line flags (also known as "options").
    *
    * Use the instance's `flags` property to retrieve the parsed flags later.
    *
    * @param {Array<string>} cliFlags - The command-line flags to parse.
    * @returns {Object} The name and value for each flag. The `_` property contains all arguments
-   * other than flags and their values.
+   * other than flags and flag values.
    */
   parseFlags(cliFlags) {
     ow(cliFlags, ow.array);
@@ -241,5 +262,3 @@ export default class Engine {
     return `JSDoc ${this.version} ${revision}`.trim();
   }
 }
-
-Engine.LOG_LEVELS = LEVELS;
