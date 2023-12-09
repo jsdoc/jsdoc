@@ -13,10 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import core from '../../index.js';
 import * as config from '../../lib/config.js';
 import Dependencies from '../../lib/dependencies.js';
-import env from '../../lib/env.js';
+import Env from '../../lib/env.js';
 import * as name from '../../lib/name.js';
 import * as plugins from '../../lib/plugins.js';
 
@@ -33,9 +34,9 @@ describe('@jsdoc/core', () => {
     });
   });
 
-  describe('env', () => {
+  describe('Env', () => {
     it('is lib/env', () => {
-      expect(core.env).toEqual(env);
+      expect(core.Env).toEqual(Env);
     });
   });
 

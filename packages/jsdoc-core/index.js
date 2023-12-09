@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Core functionality for JSDoc.
  *
@@ -20,9 +21,9 @@
  */
 import * as config from './lib/config.js';
 import Dependencies from './lib/dependencies.js';
-import env from './lib/env.js';
+import Env from './lib/env.js';
 import * as name from './lib/name.js';
 import * as plugins from './lib/plugins.js';
 
-export { config, Dependencies, env, name, plugins };
-export default { config, Dependencies, env, name, plugins };
+export { config, Dependencies, Env, name, plugins };
+export default { config, Dependencies, Env, name, plugins };

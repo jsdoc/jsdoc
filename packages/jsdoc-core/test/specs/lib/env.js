@@ -13,38 +13,47 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import env from '../../../lib/env.js';
 
-describe('@jsdoc/core.env', () => {
-  it('exists', () => {
-    expect(env).toBeObject();
+import Env from '../../../lib/env.js';
+
+describe('@jsdoc/core.Env', () => {
+  it('is a constructor', () => {
+    function factory() {
+      return new Env();
+    }
+
+    expect(factory).not.toThrow();
   });
 
-  it('has an `args` property', () => {
-    expect(env.args).toBeArray();
-  });
+  describe('properties', () => {
+    const env = new Env();
 
-  it('has a `conf` property', () => {
-    expect(env.conf).toBeObject();
-  });
+    it('has an `args` property', () => {
+      expect(env.args).toBeArray();
+    });
 
-  it('has an `opts` property', () => {
-    expect(env.opts).toBeObject();
-  });
+    it('has a `conf` property', () => {
+      expect(env.conf).toBeObject();
+    });
 
-  it('has a `run` object with `start` and `finish` properties', () => {
-    expect(env.run).toBeObject();
-    expect(env.run.finish).toBeNull();
-    expect(env.run.start).toBeInstanceOf(Date);
-  });
+    it('has an `opts` property', () => {
+      expect(env.opts).toBeObject();
+    });
 
-  it('has a `sourceFiles` property', () => {
-    expect(env.sourceFiles).toBeArray();
-  });
+    it('has a `run` object with `start` and `finish` properties', () => {
+      expect(env.run).toBeObject();
+      expect(env.run.finish).toBeNull();
+      expect(env.run.start).toBeInstanceOf(Date);
+    });
 
-  it('has a `version` object with `number` and `revision` properties', () => {
-    expect(env.version).toBeObject();
-    expect(Object.hasOwn(env.version, 'number')).toBeTrue();
-    expect(Object.hasOwn(env.version, 'revision')).toBeTrue();
+    it('has a `sourceFiles` property', () => {
+      expect(env.sourceFiles).toBeArray();
+    });
+
+    it('has a `version` object with `number` and `revision` properties', () => {
+      expect(env.version).toBeObject();
+      expect(Object.hasOwn(env.version, 'number')).toBeTrue();
+      expect(Object.hasOwn(env.version, 'revision')).toBeTrue();
+    });
   });
 });
