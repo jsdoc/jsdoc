@@ -31,7 +31,6 @@
     }
   },
   "dependencies": {
-    "bottlejs": "^2.0.1",
     "cosmiconfig": "^9.0.0",
     "escape-string-regexp": "^5.0.0",
     "lodash": "^4.17.21",

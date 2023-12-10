@@ -20,7 +20,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import Engine from '@jsdoc/cli';
-import { config, Dependencies, Env, plugins } from '@jsdoc/core';
+import { config as jsdocConfig, Env, plugins } from '@jsdoc/core';
 import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
 import { Dictionary } from '@jsdoc/tag';
@@ -48,18 +48,12 @@ export default (() => {
   };
 
   const cli = {};
-  const dependencies = new Dependencies();
-  const engine = new Engine();
-  const emitter = engine.emitter;
   const env = new Env();
-  const log = engine.log;
+  const { emitter, log } = env;
+  const engine = new Engine(env);
   const FATAL_ERROR_MESSAGE =
     'Exiting JSDoc because an error occurred. See the previous log messages for details.';
   const LOG_LEVELS = Engine.LOG_LEVELS;
-
-  dependencies.registerValue('emitter', emitter);
-  dependencies.registerValue('env', env);
-  dependencies.registerValue('log', engine.log);
 
   // TODO: docs
   cli.setVersionInfo = () => {
@@ -92,7 +86,7 @@ export default (() => {
 
     try {
       // eslint-disable-next-line require-atomic-updates
-      env.conf = (await config.load(env.opts.configure)).config;
+      env.conf = (await jsdocConfig.load(env.opts.configure)).config;
     } catch (e) {
       cli.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
 
@@ -101,17 +95,14 @@ export default (() => {
 
     // Look for options on the command line, then in the config.
     env.opts = _.defaults(env.opts, env.conf.opts);
-    // Now that we're done loading and merging things, register dependencies.
-    dependencies.registerValue('config', env.conf);
-    dependencies.registerValue('options', env.opts);
-    dependencies.registerSingletonFactory('tags', () => Dictionary.fromConfig(dependencies));
+    env.tags = Dictionary.fromConfig(env);
 
     return cli;
   };
 
   // TODO: docs
   cli.configureLogger = () => {
-    const options = dependencies.get('options');
+    const { options } = env;
 
     function recoverableError() {
       props.shouldExitWithError = true;
@@ -148,8 +139,8 @@ export default (() => {
     log.debug(engine.versionDetails);
     log.debug('Environment info: %j', {
       env: {
-        conf: dependencies.get('config'),
-        opts: dependencies.get('options'),
+        conf: env.config,
+        opts: env.options,
       },
     });
   };
@@ -169,7 +160,7 @@ export default (() => {
   // TODO: docs
   cli.runCommand = () => {
     let cmd;
-    const options = dependencies.get('options');
+    const { options } = env;
 
     // If we already need to exit with an error, don't do any more work.
     if (props.shouldExitWithError) {
@@ -204,7 +195,7 @@ export default (() => {
 
   // TODO: docs
   cli.runTests = async () => {
-    const result = await test(dependencies);
+    const result = await test(env);
 
     return result.overallStatus === 'failed' ? 1 : 0;
   };
@@ -249,13 +240,12 @@ export default (() => {
   }
 
   function buildSourceList() {
-    const conf = dependencies.get('config');
-    const options = dependencies.get('options');
+    const { config, options } = env;
     let packageJson;
     let sourceFiles = options._ ? options._.slice() : [];
 
-    if (conf.sourceFiles) {
-      sourceFiles = sourceFiles.concat(conf.sourceFiles);
+    if (config.sourceFiles) {
+      sourceFiles = sourceFiles.concat(config.sourceFiles);
     }
 
     // load the user-specified package file, if any
@@ -274,7 +264,7 @@ export default (() => {
 
   // TODO: docs
   cli.scanFiles = () => {
-    const options = dependencies.get('options');
+    const { options } = env;
 
     options._ = buildSourceList();
     if (options._.length) {
@@ -288,12 +278,12 @@ export default (() => {
   };
 
   cli.createParser = async () => {
-    const conf = dependencies.get('config');
+    const { config } = env;
 
-    props.parser = createParser(dependencies);
+    props.parser = createParser(env);
 
-    if (conf.plugins) {
-      await plugins.installPlugins(conf.plugins, props.parser, dependencies);
+    if (config.plugins) {
+      await plugins.installPlugins(config.plugins, props.parser, env);
     }
 
     handlers.attachTo(props.parser);
@@ -302,14 +292,14 @@ export default (() => {
   };
 
   cli.parseFiles = () => {
-    const options = dependencies.get('options');
+    const { options } = env;
     let packageDocs;
     let docletStore;
 
     docletStore = props.parser.parse(env.sourceFiles, options.encoding);
 
     // If there is no package.json, just create an empty package
-    packageDocs = new Package(props.packageJson, dependencies);
+    packageDocs = new Package(props.packageJson, env);
     packageDocs.files = env.sourceFiles || [];
     docletStore.add(packageDocs);
 
@@ -329,9 +319,7 @@ export default (() => {
   };
 
   cli.processParseResults = () => {
-    const options = dependencies.get('options');
-
-    if (options.explain) {
+    if (env.options.explain) {
       cli.dumpParseResults();
 
       return Promise.resolve();
@@ -348,15 +336,15 @@ export default (() => {
 
   cli.generateDocs = async () => {
     let message;
-    const options = dependencies.get('options');
+    const { options } = env;
     let template;
 
-    options.template = options.template || '@jsdoc/template-legacy';
+    options.template ??= '@jsdoc/template-legacy';
 
     try {
       template = await import(options.template);
     } catch (e) {
-      log.fatal(`Unable to load template: ${e.message || e}`);
+      log.fatal(`Unable to load template: ${e.message ?? e}`);
     }
 
     // templates should export a "publish" function
@@ -364,7 +352,7 @@ export default (() => {
       let publishPromise;
 
       log.info('Generating output files...');
-      publishPromise = template.publish(props.docs, dependencies);
+      publishPromise = template.publish(props.docs, env);
 
       return Promise.resolve(publishPromise);
     } else {

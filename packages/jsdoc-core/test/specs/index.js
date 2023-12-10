@@ -16,7 +16,6 @@
 
 import core from '../../index.js';
 import * as config from '../../lib/config.js';
-import Dependencies from '../../lib/dependencies.js';
 import Env from '../../lib/env.js';
 import * as name from '../../lib/name.js';
 import * as plugins from '../../lib/plugins.js';
@@ -25,12 +24,6 @@ describe('@jsdoc/core', () => {
   describe('config', () => {
     it('is lib/config', () => {
       expect(core.config).toEqual(config);
-    });
-  });
-
-  describe('Dependencies', () => {
-    it('is lib/dependencies', () => {
-      expect(core.Dependencies).toEqual(Dependencies);
     });
   });
 

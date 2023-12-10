@@ -20,10 +20,9 @@
  * @module @jsdoc/core
  */
 import * as config from './lib/config.js';
-import Dependencies from './lib/dependencies.js';
 import Env from './lib/env.js';
 import * as name from './lib/name.js';
 import * as plugins from './lib/plugins.js';
 
-export { config, Dependencies, Env, name, plugins };
-export default { config, Dependencies, Env, name, plugins };
+export { config, Env, name, plugins };
+export default { config, Env, name, plugins };

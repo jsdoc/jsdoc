@@ -25,9 +25,9 @@ const SPEC_FILES = [
   SCHEMA_SPEC,
 ];
 
-export default function test(deps) {
+export default function test(env) {
   const jasmine = new Jasmine();
-  const matcher = deps.get('options').matcher;
+  const matcher = env.options.matcher;
   const reporter = new ConsoleReporter({
     beep: false,
     verbosity: {
@@ -56,7 +56,7 @@ export default function test(deps) {
   if (!global.jsdoc) {
     global.jsdoc = {};
   }
-  global.jsdoc.deps = deps;
+  global.jsdoc.deps = global.jsdoc.env = env;
 
   return jasmine.execute(SPEC_FILES, matcher);
 }

@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import Engine from '../../../lib/engine.js';
 import flags from '../../../lib/flags.js';
 import { LEVELS } from '../../../lib/logger.js';
@@ -223,6 +224,15 @@ describe('@jsdoc/cli/lib/engine', () => {
       const instance = new Engine({
         version: '1.2.3',
         revision,
+      });
+
+      expect(instance.versionDetails).toBe(`JSDoc 1.2.3 (${revision.toUTCString()})`);
+    });
+
+    it('works when `opts.version` is an object', () => {
+      const revision = new Date();
+      const instance = new Engine({
+        version: { number: '1.2.3', revision: revision.toUTCString() },
       });
 
       expect(instance.versionDetails).toBe(`JSDoc 1.2.3 (${revision.toUTCString()})`);

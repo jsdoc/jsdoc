@@ -124,19 +124,27 @@ export default class Engine {
    */
   constructor(opts = {}) {
     ow(opts, ow.object);
+    ow(opts.emitter, ow.optional.object);
     // The `Logger` class validates `opts.level`, so no need to validate it here.
     ow(opts.revision, ow.optional.date);
-    ow(opts.version, ow.optional.string);
+    ow(opts.version, ow.any(ow.optional.string, ow.optional.object));
 
-    this.emitter = new EventEmitter();
+    this.emitter = opts.emitter ?? new EventEmitter();
     this.flags = [];
-    this.log = getLogFunctions(this.emitter);
+    this.log = opts.log ?? getLogFunctions(this.emitter);
     this.#logger = new Logger({
       emitter: this.emitter,
       level: opts.logLevel,
     });
-    this.revision = opts.revision;
-    this.version = opts.version;
+    // Support the format used by `Env`.
+    // TODO: Make the formats consistent.
+    if (_.isObject(opts.version)) {
+      this.version = opts.version.number;
+      this.revision = new Date(opts.version.revision);
+    } else {
+      this.version = opts.version;
+      this.revision = opts.revision;
+    }
   }
 
   /**

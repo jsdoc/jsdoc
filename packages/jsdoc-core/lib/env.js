@@ -14,6 +14,10 @@
   limitations under the License.
 */
 
+import EventEmitter from 'node:events';
+
+import { getLogFunctions } from '@jsdoc/util';
+
 /**
  * Data about the environment in which JSDoc is running, including the configuration settings that
  * were used to run JSDoc.
@@ -22,18 +26,6 @@
  */
 export default class Env {
   constructor() {
-    /**
-     * The times at which JSDoc started and finished.
-     *
-     * @type {Object}
-     * @property {Date} start - The time at which JSDoc started running.
-     * @property {Date} finish - The time at which JSDoc finished running.
-     */
-    this.run = {
-      start: new Date(),
-      finish: null,
-    };
-
     /**
      * The command-line arguments passed to JSDoc.
      *
@@ -49,6 +41,20 @@ export default class Env {
     this.conf = {};
 
     /**
+     * The event emitter shared across JSDoc.
+     *
+     * @type {Object}
+     */
+    this.emitter = new EventEmitter();
+
+    /**
+     * Logging functions shared across JSDoc.
+     *
+     * @type {Object<string, function>}
+     */
+    this.log = getLogFunctions(this.emitter);
+
+    /**
      * The command-line arguments, parsed into a key/value hash.
      *
      * @type {Object}
@@ -57,11 +63,30 @@ export default class Env {
     this.opts = {};
 
     /**
+     * The times at which JSDoc started and finished.
+     *
+     * @type {Object}
+     * @property {Date} start - The time at which JSDoc started running.
+     * @property {Date} finish - The time at which JSDoc finished running.
+     */
+    this.run = {
+      start: new Date(),
+      finish: null,
+    };
+
+    /**
      * The source files that JSDoc will parse.
      *
      * @type {Array<string>}
      */
     this.sourceFiles = [];
+
+    /**
+     * The dictionary of tags recognized by JSDoc.
+     *
+     * @type {module:@jsdoc/tags.Dictionary}
+     */
+    this.tags = null;
 
     /**
      * The JSDoc version number and revision date.
@@ -74,5 +99,21 @@ export default class Env {
       number: null,
       revision: null,
     };
+  }
+
+  get config() {
+    return this.conf;
+  }
+
+  get env() {
+    return this;
+  }
+
+  get(key) {
+    return this[key];
+  }
+
+  get options() {
+    return this.opts;
   }
 }

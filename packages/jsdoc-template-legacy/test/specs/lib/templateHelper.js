@@ -16,7 +16,7 @@
 
 /* global jsdoc */
 
-import { Dependencies } from '@jsdoc/core';
+import { Env } from '@jsdoc/core';
 import { Doclet } from '@jsdoc/doclet';
 import salty from '@jsdoc/salty';
 import { Dictionary } from '@jsdoc/tag';
@@ -218,16 +218,16 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
 
     it('should generate the correct filename for user-specified namespaces', () => {
-      const deps = new Dependencies();
+      const env = new Env();
       const dict = new Dictionary();
       let filename;
 
       dict.defineTag('anaphylaxis', {
         isNamespace: true,
       });
-      deps.registerSingletonFactory('tags', () => dict);
+      env.tags = dict;
 
-      filename = helper.getUniqueFilename('anaphylaxis:peanut', deps);
+      filename = helper.getUniqueFilename('anaphylaxis:peanut', env);
 
       expect(filename).toBe('anaphylaxis-peanut.html');
     });
