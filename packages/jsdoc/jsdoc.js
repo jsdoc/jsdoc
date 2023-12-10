@@ -14,15 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import { Env } from '@jsdoc/core';
 
 import cli from './cli.js';
 
 (async () => {
-  const env = new Env();
-
-  env.args = process.argv.slice(2);
-  cli.setEnv(env).setVersionInfo();
+  cli.setVersionInfo();
   await cli.loadConfig();
   cli.configureLogger().logStart();
 

@@ -140,18 +140,6 @@ export default class Engine {
   }
 
   /**
-   * Gets the specified property of this `Engine` instance.
-   *
-   * @private
-   * @deprecated Do not use this method in new code. It provides backwards compatibility with an
-   * earlier approach to dependency management.
-   * @returns {?} The value of the specified property.
-   */
-  get(name) {
-    return this[name];
-  }
-
-  /**
    * Get help text for JSDoc.
    *
    * You can specify the maximum line length for the help text. This method attempts to fit each

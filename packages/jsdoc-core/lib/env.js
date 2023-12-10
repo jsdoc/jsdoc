@@ -39,7 +39,7 @@ export default class Env {
      *
      * @type {Array<*>}
      */
-    this.args = [];
+    this.args = process.argv.slice(2);
 
     /**
      * The data parsed from JSDoc's configuration file.

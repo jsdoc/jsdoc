@@ -13,13 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* eslint-disable indent, no-process-exit */
+
+/* eslint-disable no-process-exit */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import Engine from '@jsdoc/cli';
-import { config, Dependencies, plugins } from '@jsdoc/core';
+import { config, Dependencies, Env, plugins } from '@jsdoc/core';
 import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
 import { Dictionary } from '@jsdoc/tag';
@@ -50,24 +51,18 @@ export default (() => {
   const dependencies = new Dependencies();
   const engine = new Engine();
   const emitter = engine.emitter;
+  const env = new Env();
   const log = engine.log;
   const FATAL_ERROR_MESSAGE =
     'Exiting JSDoc because an error occurred. See the previous log messages for details.';
   const LOG_LEVELS = Engine.LOG_LEVELS;
 
   dependencies.registerValue('emitter', emitter);
+  dependencies.registerValue('env', env);
   dependencies.registerValue('log', engine.log);
-
-  cli.setEnv = (env) => {
-    dependencies.registerValue('env', env);
-
-    return cli;
-  };
 
   // TODO: docs
   cli.setVersionInfo = () => {
-    const env = dependencies.get('env');
-
     const packageJsonPath = fileURLToPath(new URL('package.json', import.meta.url));
     // allow this to throw--something is really wrong if we can't read our own package file
     const info = JSON.parse(stripBom(fs.readFileSync(packageJsonPath, 'utf8')));
@@ -86,8 +81,6 @@ export default (() => {
 
   // TODO: docs
   cli.loadConfig = async () => {
-    const env = dependencies.get('env');
-
     try {
       env.opts = engine.parseFlags(env.args);
     } catch (e) {
@@ -98,6 +91,7 @@ export default (() => {
     }
 
     try {
+      // eslint-disable-next-line require-atomic-updates
       env.conf = (await config.load(env.opts.configure)).config;
     } catch (e) {
       cli.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
@@ -164,7 +158,6 @@ export default (() => {
   cli.logFinish = () => {
     let delta;
     let deltaSeconds;
-    const env = dependencies.get('env');
 
     if (env.run.finish && env.run.start) {
       delta = env.run.finish.getTime() - env.run.start.getTime();
@@ -225,8 +218,6 @@ export default (() => {
 
   // TODO: docs
   cli.main = async () => {
-    const env = dependencies.get('env');
-
     cli.scanFiles();
 
     if (env.sourceFiles.length === 0) {
@@ -283,7 +274,6 @@ export default (() => {
 
   // TODO: docs
   cli.scanFiles = () => {
-    const env = dependencies.get('env');
     const options = dependencies.get('options');
 
     options._ = buildSourceList();
@@ -312,7 +302,6 @@ export default (() => {
   };
 
   cli.parseFiles = () => {
-    const env = dependencies.get('env');
     const options = dependencies.get('options');
     let packageDocs;
     let docletStore;
