@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/template-legacy",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Legacy template from JSDoc 3.x.",
   "keywords": [
     "jsdoc"
@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@fontsource-variable/open-sans": "^5.0.19",
-    "@jsdoc/core": "^0.5.6",
+    "@jsdoc/core": "^0.5.7",
     "@jsdoc/salty": "^0.2.7",
-    "@jsdoc/tag": "^0.2.9",
+    "@jsdoc/tag": "^0.2.10",
     "@jsdoc/util": "^0.3.2",
     "catharsis": "^0.9.0",
     "code-prettify": "^0.1.0",
