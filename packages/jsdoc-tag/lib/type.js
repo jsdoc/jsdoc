@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * @module @jsdoc/tag/lib/type
  * @alias @jsdoc/tag.type
@@ -20,11 +21,14 @@
 import { name } from '@jsdoc/core';
 import { cast } from '@jsdoc/util';
 import catharsis from 'catharsis';
+import memize from 'memize';
 
 import { extractInlineTag } from './inline.js';
 
+const MEMIZE_OPTS = { maxSize: 500 };
 const NAME_AND_DEFAULT_VALUE_REGEXP = /^(.+?)\s*=\s*(.+)$/;
 const NAME_AND_TYPE_REGEXP = /^(\[)?\s*(.+?)\s*(\])?$/;
+const TYPES = catharsis.Types;
 
 /**
  * Information about a type expression extracted from tag text.
@@ -34,6 +38,11 @@ const NAME_AND_TYPE_REGEXP = /^(\[)?\s*(.+?)\s*(\])?$/;
  * @property {string} expression - The type expression.
  * @property {string} text - The updated tag text.
  */
+
+/** @private */
+function memoize(fn) {
+  return memize(fn, MEMIZE_OPTS);
+}
 
 /** @private */
 function unescapeBraces(text) {
@@ -47,7 +56,7 @@ function unescapeBraces(text) {
  * @param {string} string - The tag text.
  * @return {module:@jsdoc/tag.type.TypeExpressionInfo} The type expression and updated tag text.
  */
-function extractTypeExpression(string) {
+function _extractTypeExpression(string) {
   let completeExpression;
   let count = 0;
   let position = 0;
@@ -94,8 +103,10 @@ function extractTypeExpression(string) {
   };
 }
 
+const extractTypeExpression = memoize(_extractTypeExpression);
+
 /** @private */
-function getTagInfo(tagValue, canHaveName, canHaveType) {
+function _getTagInfo(tagValue, canHaveName, canHaveType) {
   let tagName = '';
   let typeExpression = '';
   let tagText = tagValue;
@@ -130,6 +141,8 @@ function getTagInfo(tagValue, canHaveName, canHaveType) {
     text: tagText,
   };
 }
+
+const getTagInfo = memoize(_getTagInfo);
 
 /**
  * Information provided in a JSDoc tag.
@@ -182,14 +195,14 @@ function parseName(tagInfo) {
   return tagInfo;
 }
 
+let getTypeStrings;
+
 /** @private */
-function getTypeStrings(parsedType, isOutermostType) {
+function _getTypeStrings(parsedType, isOutermostType) {
   let applications;
   let typeString;
 
   let types = [];
-
-  const TYPES = catharsis.Types;
 
   switch (parsedType.type) {
     case TYPES.AllLiteral:
@@ -238,6 +251,8 @@ function getTypeStrings(parsedType, isOutermostType) {
 
   return types;
 }
+
+getTypeStrings = memoize(_getTypeStrings);
 
 /**
  * Extract JSDoc-style and Closure Compiler-style type information from the type expression
@@ -297,7 +312,7 @@ const typeParsers = [parseName, parseTypeExpression];
  * @return {module:@jsdoc/tag.type.TagInfo} Information obtained from the tag.
  * @throws {Error} Thrown if a type expression cannot be parsed.
  */
-export function parse(tagValue, canHaveName, canHaveType) {
+function _parse(tagValue, canHaveName, canHaveType) {
   let tagInfo;
 
   if (typeof tagValue !== 'string') {
@@ -318,3 +333,5 @@ export function parse(tagValue, canHaveName, canHaveType) {
 
   return tagInfo;
 }
+
+export const parse = memoize(_parse);
