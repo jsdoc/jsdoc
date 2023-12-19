@@ -44,6 +44,7 @@ describe('@jsdoc/ast/lib/ast-node', () => {
   const methodDefinition1 = parse('class Foo { bar() {} }').body.body[0];
   const methodDefinition2 = parse('var foo = () => class { bar() {} };').declarations[0].init.body
     .body[0];
+  const privateName = parse('class MyClass { #myPrivateMethod() {} }').body.body[0].key;
   const propertyGet = parse('var foo = { get bar() {} };').declarations[0].init.properties[0];
   const propertyInit = parse('var foo = { bar: {} };').declarations[0].init.properties[0];
   const propertySet = parse('var foo = { set bar(a) {} };').declarations[0].init.properties[0];
@@ -506,6 +507,10 @@ describe('@jsdoc/ast/lib/ast-node', () => {
         expect(astNode.nodeToValue(methodDefinition2)).toBe('<anonymous>');
       }
     );
+
+    it('returns the name, including the `#` prefix, for private names', () => {
+      expect(astNode.nodeToValue(privateName)).toBe('#myPrivateMethod');
+    });
 
     it('should return "this" for this expressions', () => {
       expect(astNode.nodeToValue(thisExpression)).toBe('this');

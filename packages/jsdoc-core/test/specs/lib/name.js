@@ -370,6 +370,14 @@ describe('@jsdoc/core.name', () => {
       expect(parts.scope).toEqual('#');
     });
 
+    it('handles private members', () => {
+      const parts = name.toParts('MyClass##myPrivateMethod');
+
+      expect(parts.name).toBe('#myPrivateMethod');
+      expect(parts.memberof).toBe('MyClass');
+      expect(parts.scope).toBe('#');
+    });
+
     it('handles inner names', () => {
       const parts = name.toParts('Button~_onclick');
 

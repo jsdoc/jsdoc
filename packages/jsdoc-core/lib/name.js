@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Methods for manipulating symbol names in JSDoc.
  *
@@ -168,11 +169,17 @@ function slice(longname, sliceChars, forcedMemberof) {
   let parts;
   let partsRegExp;
   let scopePunc = '';
+  let sliceCharsPrefix = '';
   let token;
   const tokens = [];
   let variation;
 
-  sliceChars = sliceChars || SCOPE_PUNC;
+  sliceChars ??= SCOPE_PUNC;
+  // For longnames like `MyClass##myPrivateMethod`, use a negative lookbehind assertion to prevent
+  // the leading `#` in `#myPrivateMethod` from being treated as a scope character.
+  if (sliceChars.includes(SCOPE.PUNC.INSTANCE)) {
+    sliceCharsPrefix = `(?<!${SCOPE.PUNC.INSTANCE})`;
+  }
 
   // Quoted strings in a longname are atomic, so we convert them to tokens:
   // foo["bar"] => foo.@{1}@
@@ -196,21 +203,23 @@ function slice(longname, sliceChars, forcedMemberof) {
   longname = prototypeToPunc(longname);
 
   if (typeof forcedMemberof !== 'undefined') {
-    partsRegExp = new RegExp(`^(.*?)([${sliceChars.join()}]?)$`);
+    partsRegExp = new RegExp(`^(.*?)(${sliceCharsPrefix}[${sliceChars.join()}]?)$`);
     name = longname.substr(forcedMemberof.length);
     parts = forcedMemberof.match(partsRegExp);
 
     if (parts[1]) {
-      memberof = parts[1] || forcedMemberof;
+      memberof = parts[1] ?? forcedMemberof;
     }
     if (parts[2]) {
       scopePunc = parts[2];
     }
   } else if (longname) {
-    parts = longname.match(new RegExp(`^(:?(.+)([${sliceChars.join()}]))?(.+?)$`)) || [];
-    name = parts.pop() || '';
-    scopePunc = parts.pop() || '';
-    memberof = parts.pop() || '';
+    parts =
+      longname.match(new RegExp(`^(:?(.+)(${sliceCharsPrefix}[${sliceChars.join()}]))?(.+?)$`)) ??
+      [];
+    name = parts.pop() ?? '';
+    scopePunc = parts.pop() ?? '';
+    memberof = parts.pop() ?? '';
   }
 
   // Like `@name foo.bar(2)`.
@@ -305,7 +314,7 @@ export function hasAncestor(parent, child) {
 
 // TODO: docs
 export function fromParts({ memberof, scope, name, variation }) {
-  return [memberof || '', scope || '', name || '', variation ? `(${variation})` : ''].join('');
+  return [memberof ?? '', scope ?? '', name ?? '', variation ? `(${variation})` : ''].join('');
 }
 
 // TODO: docs
@@ -324,7 +333,7 @@ function splitLongname(longname, options) {
   let previousName = longname;
   const splitters = SCOPE_PUNC.concat('/');
 
-  options = _.defaults(options || {}, {
+  options = _.defaults(options ?? {}, {
     includeVariation: true,
   });
 
@@ -447,7 +456,7 @@ export function longnamesToTree(longnames, doclets) {
       currentLongname += chunk;
 
       if (currentParent !== tree) {
-        currentParent.children = currentParent.children || {};
+        currentParent.children ??= {};
         currentParent = currentParent.children;
       }
 

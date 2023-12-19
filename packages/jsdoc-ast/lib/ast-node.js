@@ -147,13 +147,7 @@ export function nodeToValue(node) {
       break;
 
     case Syntax.ClassPrivateProperty:
-      // TODO: Strictly speaking, the name should be '#' plus node.key, but because we
-      // already use '#' as scope punctuation, that causes JSDoc to get extremely confused.
-      // The solution probably involves quoting part or all of the name, but JSDoc doesn't
-      // deal with quoted names very nicely right now, and most people probably won't want to
-      // document class private properties anyhow. So for now, we'll just cheat and omit the
-      // leading '#'.
-      str = nodeToValue(node.key.id);
+      str = SCOPE.PUNC.INSTANCE + nodeToValue(node.key.id);
       break;
 
     case Syntax.ClassProperty:
@@ -283,6 +277,10 @@ export function nodeToValue(node) {
       });
 
       str = JSON.stringify(tempObject);
+      break;
+
+    case Syntax.PrivateName:
+      str = SCOPE.PUNC.INSTANCE + nodeToValue(node.id);
       break;
 
     case Syntax.RestElement:
