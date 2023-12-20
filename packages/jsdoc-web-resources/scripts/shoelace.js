@@ -22,9 +22,19 @@ import { setDefaultAnimation } from '../node_modules/@shoelace-style/shoelace/di
 
 const HIDE_UNTIL_READY = ['sl-details', 'sl-tree'];
 
+function preventDefault(e) {
+  e.preventDefault();
+}
+
 function stopImmediatePropagation(e) {
   e.stopImmediatePropagation();
 }
+
+// Prevent always-open accordions from being closed and reopened.
+document.querySelectorAll('sl-details').forEach((item) => {
+  item.addEventListener('sl-hide', preventDefault);
+  item.addEventListener('sl-show', preventDefault);
+});
 
 // Prevent expandable tree items from expanding when their link is clicked.
 document.querySelectorAll(':not(sl-details) > sl-tree > sl-tree-item').forEach((item) => {

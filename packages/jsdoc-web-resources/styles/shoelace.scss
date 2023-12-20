@@ -51,6 +51,22 @@ sl-details {
   }
 }
 
+sl-details[keep-open] {
+  &::part(header) {
+    cursor: inherit;
+    user-select: inherit;
+    -webkit-user-select: inherit;
+
+    &:focus-visible {
+      outline: inherit;
+    }
+  }
+
+  &::part(summary-icon) {
+    display: none;
+  }
+}
+
 sl-details > p {
   margin-block-end: 0;
 }
