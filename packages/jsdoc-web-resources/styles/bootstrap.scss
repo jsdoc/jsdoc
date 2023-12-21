@@ -13,12 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 @import '../node_modules/bootstrap/scss/functions'; // required
 
 // Override default variables here as needed.
-$font-size-base: 0.875rem;
-$info: #5bc0de;
-$primary: #337ab7;
+@import 'variables.scss';
 
 @import '../node_modules/bootstrap/scss/variables'; // required
 @import '../node_modules/bootstrap/scss/variables-dark';
@@ -29,7 +28,6 @@ $primary: #337ab7;
 @import '../node_modules/bootstrap/scss/mixins'; // required
 @import '../node_modules/bootstrap/scss/root'; // required
 
-// TODO: Remove some of these if possible.
 @import '../node_modules/bootstrap/scss/utilities';
 @import '../node_modules/bootstrap/scss/navbar';
 @import '../node_modules/bootstrap/scss/tables';
