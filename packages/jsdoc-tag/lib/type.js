@@ -27,7 +27,7 @@ import { extractInlineTag } from './inline.js';
 
 const MEMIZE_OPTS = { maxSize: 500 };
 const NAME_AND_DEFAULT_VALUE_REGEXP = /^(.+?)\s*=\s*(.+)$/;
-const NAME_AND_TYPE_REGEXP = /^(\[)?\s*(.+?)\s*(\])?$/;
+const OPTIONAL_REGEXP = /^(\[)(.+?)(\])$/;
 const TYPES = catharsis.Types;
 
 /**
@@ -173,23 +173,24 @@ const getTagInfo = memoize(_getTagInfo);
  * @return {module:@jsdoc/tag.type.TagInfo} Updated information from the tag.
  */
 function parseName(tagInfo) {
-  // like '[foo]' or '[ foo ]' or '[foo=bar]' or '[ foo=bar ]' or '[ foo = bar ]'
-  // or 'foo=bar' or 'foo = bar'
-  let match = tagInfo.name.match(NAME_AND_TYPE_REGEXP);
+  // Like '[foo]' or '[ foo ]' or '[foo=bar]' or '[ foo=bar ]' or '[ foo = bar ]'
+  let match = tagInfo.name.match(OPTIONAL_REGEXP);
 
   if (match) {
     tagInfo.name = match[2];
-    // were the "optional" brackets present?
+    // Were the optional brackets present?
     if (match[1] && match[3]) {
       tagInfo.optional = true;
     }
+  }
 
-    // like 'foo=bar' or 'foo = bar'
-    match = tagInfo.name.match(NAME_AND_DEFAULT_VALUE_REGEXP);
-    if (match) {
-      tagInfo.name = match[1];
-      tagInfo.defaultvalue = cast(match[2]);
-    }
+  tagInfo.name = tagInfo.name.trim();
+
+  // Like 'foo=bar' or 'foo = bar'
+  match = tagInfo.name.match(NAME_AND_DEFAULT_VALUE_REGEXP);
+  if (match) {
+    tagInfo.name = match[1];
+    tagInfo.defaultvalue = cast(match[2]);
   }
 
   return tagInfo;
