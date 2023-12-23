@@ -78,8 +78,8 @@ export default (() => {
     try {
       env.opts = engine.parseFlags(env.args);
     } catch (e) {
-      props.shouldPrintHelp = true;
-      cli.exit(1, `${e.message}\n`);
+      engine.shouldPrintHelp = true;
+      engine.exit(1, `${e.message}\n`);
 
       return cli;
     }
@@ -88,7 +88,7 @@ export default (() => {
       // eslint-disable-next-line require-atomic-updates
       env.conf = (await jsdocConfig.load(env.opts.configure)).config;
     } catch (e) {
-      cli.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
+      engine.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
 
       return cli;
     }
@@ -105,11 +105,11 @@ export default (() => {
     const { options } = env;
 
     function recoverableError() {
-      props.shouldExitWithError = true;
+      engine.shouldExitWithError = true;
     }
 
     function fatalError() {
-      cli.exit(1);
+      engine.exit(1);
     }
 
     if (options.test) {
@@ -163,34 +163,26 @@ export default (() => {
     const { options } = env;
 
     // If we already need to exit with an error, don't do any more work.
-    if (props.shouldExitWithError) {
+    if (engine.shouldExitWithError) {
       cmd = () => Promise.resolve(0);
     } else if (options.help) {
-      cmd = cli.printHelp;
+      cmd = () => engine.printHelp();
     } else if (options.test) {
       cmd = cli.runTests;
     } else if (options.version) {
-      cmd = cli.printVersion;
+      cmd = () => engine.printVersion();
     } else {
       cmd = cli.main;
     }
 
     return cmd().then((errorCode) => {
-      if (!errorCode && props.shouldExitWithError) {
+      if (!errorCode && engine.shouldExitWithError) {
         errorCode = 1;
       }
 
       cli.logFinish();
-      cli.exit(errorCode || 0);
+      engine.exit(errorCode || 0);
     });
-  };
-
-  // TODO: docs
-  cli.printHelp = () => {
-    cli.printVersion();
-    console.log(engine.help({ maxLength: process.stdout.columns }));
-
-    return Promise.resolve(0);
   };
 
   // TODO: docs
@@ -198,13 +190,6 @@ export default (() => {
     const result = await test(env);
 
     return result.overallStatus === 'failed' ? 1 : 0;
-  };
-
-  // TODO: docs
-  cli.printVersion = () => {
-    console.log(engine.versionDetails);
-
-    return Promise.resolve(0);
   };
 
   // TODO: docs
@@ -363,25 +348,6 @@ export default (() => {
 
       return Promise.reject(new Error(message));
     }
-  };
-
-  // TODO: docs
-  cli.exit = (exitCode, message) => {
-    if (exitCode > 0) {
-      props.shouldExitWithError = true;
-
-      if (message) {
-        console.error(message);
-      }
-    }
-
-    process.on('exit', () => {
-      if (props.shouldPrintHelp) {
-        cli.printHelp();
-      }
-
-      process.exit(exitCode);
-    });
   };
 
   return cli;

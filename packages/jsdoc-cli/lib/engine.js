@@ -14,6 +14,7 @@
   limitations under the License.
 */
 
+/* eslint-disable no-process-exit */
 import EventEmitter from 'node:events';
 
 import { getLogFunctions } from '@jsdoc/util';
@@ -136,6 +137,9 @@ export default class Engine {
       emitter: this.emitter,
       level: opts.logLevel,
     });
+    // TODO: Make these private when `cli.js` no longer needs them.
+    this.shouldExitWithError = false;
+    this.shouldPrintHelp = false;
     // Support the format used by `Env`.
     // TODO: Make the formats consistent.
     if (_.isObject(opts.version)) {
@@ -145,6 +149,28 @@ export default class Engine {
       this.version = opts.version;
       this.revision = opts.revision;
     }
+  }
+
+  exit(exitCode, message) {
+    ow(exitCode, ow.number);
+    ow(message, ow.optional.string);
+
+    if (exitCode > 0) {
+      this.shouldExitWithError = true;
+
+      process.on('exit', () => {
+        if (message) {
+          console.error(message);
+        }
+      });
+    }
+
+    process.on('exit', () => {
+      if (this.shouldPrintHelp) {
+        this.printHelp();
+      }
+      process.exit(exitCode);
+    });
   }
 
   /**
@@ -239,6 +265,19 @@ export default class Engine {
     this.flags = _.pick(parsedFlags, normalizedFlags.concat(['_']));
 
     return this.flags;
+  }
+
+  printHelp() {
+    this.printVersion();
+    console.log(this.help({ maxLength: process.stdout.columns }));
+
+    return Promise.resolve(0);
+  }
+
+  printVersion() {
+    console.log(this.versionDetails);
+
+    return Promise.resolve(0);
   }
 
   /**

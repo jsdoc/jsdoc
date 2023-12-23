@@ -45,6 +45,10 @@ describe('@jsdoc/cli/lib/engine', () => {
     expect(new Engine().logLevel).toBe(LEVELS.WARN);
   });
 
+  it('has a shouldExitWithError property that defaults to false', () => {
+    expect(new Engine().shouldExitWithError).toBeFalse();
+  });
+
   it('has an undefined revision property by default', () => {
     expect(new Engine().revision).toBeUndefined();
   });
@@ -128,6 +132,26 @@ describe('@jsdoc/cli/lib/engine', () => {
     });
   });
 
+  describe('exit', () => {
+    // TODO: This is testing implementation details, not behavior. Refactor the method, then rewrite
+    // this test to test the behavior.
+    it('adds one listener for `exit` events if the exit code is 0', () => {
+      spyOn(process, 'on');
+
+      new Engine().exit(0);
+
+      expect(process.on).toHaveBeenCalledTimes(1);
+    });
+
+    it('adds two listeners for `exit` events if the exit code is >0', () => {
+      spyOn(process, 'on');
+
+      new Engine().exit(1);
+
+      expect(process.on).toHaveBeenCalledTimes(2);
+    });
+  });
+
   describe('parseFlags', () => {
     it('throws with no input', () => {
       expect(() => new Engine().parseFlags()).toThrow();
@@ -202,6 +226,59 @@ describe('@jsdoc/cli/lib/engine', () => {
         foo: 'bar',
         baz: true,
       });
+    });
+  });
+
+  describe('printHelp', () => {
+    beforeEach(() => {
+      spyOn(console, 'log');
+    });
+
+    it('returns a promise that resolves to 0', async () => {
+      const instance = new Engine({ version: '1.2.3' });
+      const returnValue = await instance.printHelp();
+
+      expect(returnValue).toBe(0);
+    });
+
+    it('prints the version number, then the help text', () => {
+      const instance = new Engine({ version: '1.2.3' });
+
+      instance.printHelp();
+
+      expect(console.log.calls.argsFor(0)[0]).toContain('JSDoc 1.2.3');
+      expect(console.log.calls.argsFor(1)[0]).not.toContain('JSDoc 1.2.3');
+      expect(console.log.calls.argsFor(1)[0]).toContain('-v, --version');
+    });
+  });
+
+  describe('printVersion', () => {
+    beforeEach(() => {
+      spyOn(console, 'log');
+    });
+
+    it('returns a promise that resolves to 0', async () => {
+      const instance = new Engine({ version: '1.2.3' });
+      const returnValue = await instance.printVersion();
+
+      expect(returnValue).toBe(0);
+    });
+
+    it('prints the version number', () => {
+      const instance = new Engine({ version: '1.2.3' });
+
+      instance.printVersion();
+
+      expect(console.log).toHaveBeenCalledOnceWith('JSDoc 1.2.3');
+    });
+
+    it('prints the revision if present', () => {
+      const date = new Date(1700000000000);
+      const instance = new Engine({ version: '1.2.3', revision: date });
+
+      instance.printVersion();
+
+      expect(console.log).toHaveBeenCalledOnceWith('JSDoc 1.2.3 (Tue, 14 Nov 2023 22:13:20 GMT)');
     });
   });
 
