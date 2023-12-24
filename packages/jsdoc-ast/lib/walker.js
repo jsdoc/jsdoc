@@ -640,69 +640,62 @@ walkers[Syntax.YieldExpression] = (node, parent, state, cb) => {
   }
 };
 
+function handleNode(node, parent, cbState) {
+  let currentScope;
+  const isScope = astNode.isScope(node);
+  let { walker } = cbState;
+
+  astNode.addNodeProperties(node);
+  node.parent = parent || null;
+
+  currentScope = getCurrentScope(cbState.scopes);
+  if (currentScope) {
+    node.enclosingScope = currentScope;
+  }
+
+  if (isScope) {
+    cbState.scopes.push(node);
+  }
+  cbState.nodes.push(node);
+
+  if (!walker._walkers[node.type]) {
+    walker._logUnknownNodeType(node);
+  } else {
+    walker._walkers[node.type](node, parent, cbState, handleNode);
+  }
+
+  if (isScope) {
+    cbState.scopes.pop();
+  }
+}
+
 /**
  * A walker that can traverse an ESTree AST.
  */
 export class Walker {
   // TODO: docs
-  constructor(deps, walkerFuncs = walkers) {
-    this._log = deps.get('log');
+  constructor(env, walkerFuncs = walkers) {
+    this._log = env.log;
     this._walkers = walkerFuncs;
   }
 
-  // TODO: docs
-  _recurse(filename, ast) {
-    const self = this;
-    const state = {
-      filename: filename,
-      nodes: [],
-      scopes: [],
-    };
-
-    function logUnknownNodeType({ type }) {
-      self._log.debug(
-        `Found a node with unrecognized type ${type}. Ignoring the node and its descendants.`
-      );
-    }
-
-    function cb(node, parent, cbState) {
-      let currentScope;
-
-      const isScope = astNode.isScope(node);
-
-      astNode.addNodeProperties(node);
-      node.parent = parent || null;
-
-      currentScope = getCurrentScope(cbState.scopes);
-      if (currentScope) {
-        node.enclosingScope = currentScope;
-      }
-
-      if (isScope) {
-        cbState.scopes.push(node);
-      }
-      cbState.nodes.push(node);
-
-      if (!self._walkers[node.type]) {
-        logUnknownNodeType(node);
-      } else {
-        self._walkers[node.type](node, parent, cbState, cb);
-      }
-
-      if (isScope) {
-        cbState.scopes.pop();
-      }
-    }
-
-    cb(ast, null, state);
-
-    return state;
+  _logUnknownNodeType({ type }) {
+    this._log.debug(
+      `Found a node with unrecognized type ${type}. Ignoring the node and its descendants.`
+    );
   }
 
   // TODO: docs
   recurse(ast, visitor, filename) {
     let shouldContinue;
-    const state = this._recurse(filename, ast);
+    const state = {
+      filename: filename,
+      nodes: [],
+      scopes: [],
+      walker: this,
+    };
+
+    handleNode(ast, null, state);
 
     if (visitor) {
       for (let node of state.nodes) {
