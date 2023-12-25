@@ -642,6 +642,7 @@ walkers[Syntax.YieldExpression] = (node, parent, state, cb) => {
 function handleNode(node, parent, cbState) {
   let currentScope;
   const isScope = astNode.isScope(node);
+  let moduleType;
   const { walker } = cbState;
 
   astNode.addNodeProperties(node);
@@ -657,7 +658,12 @@ function handleNode(node, parent, cbState) {
   }
   cbState.nodes.push(node);
 
-  cbState.moduleType ??= astNode.detectModuleType(node);
+  if (!cbState.moduleType) {
+    moduleType = cbState.moduleType = astNode.detectModuleType(node);
+    if (moduleType) {
+      cbState.moduleTypes.set(cbState.filename, moduleType);
+    }
+  }
 
   if (!walker._walkers[node.type]) {
     walker._logUnknownNodeType(node);
@@ -675,8 +681,9 @@ function handleNode(node, parent, cbState) {
  */
 export class Walker {
   // TODO: docs
-  constructor(env, walkerFuncs = walkers) {
+  constructor(env, { moduleTypes }, walkerFuncs = walkers) {
     this._log = env.log;
+    this._moduleTypes = moduleTypes;
     this._walkers = walkerFuncs;
   }
 
@@ -692,6 +699,7 @@ export class Walker {
     const state = {
       filename: filename,
       moduleType: null,
+      moduleTypes: this._moduleTypes,
       nodes: [],
       scopes: [],
       walker: this,

@@ -28,7 +28,7 @@ let uid = 100000000;
 
 export const MODULE_TYPES = {
   AMD: 'amd',
-  COMMON_JS: 'commonJs',
+  COMMON_JS: 'commonjs',
   ES6: 'es6',
 };
 

@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import EventEmitter from 'node:events';
 import fs from 'node:fs';
 
@@ -75,8 +76,9 @@ export class Parser extends EventEmitter {
     this._docletStore = new DocletStore(dependencies);
     this._emitter = dependencies.get('emitter');
     this._log = dependencies.get('log');
+    this.moduleTypes = new Map();
     this._visitor = new Visitor();
-    this._walker = new Walker(dependencies);
+    this._walker = new Walker(dependencies, this);
 
     this._visitor.setParser(this);
 
@@ -242,7 +244,9 @@ export class Parser extends EventEmitter {
 
   /** @private */
   _walkAst(ast, visitor, sourceName) {
-    this._walker.recurse(ast, visitor, sourceName);
+    const { filename, moduleType } = this._walker.recurse(ast, visitor, sourceName);
+
+    this.moduleTypes.set(filename, moduleType);
   }
 
   // TODO: docs
