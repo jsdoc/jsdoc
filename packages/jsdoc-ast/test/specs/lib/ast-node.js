@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import babelParser from '@babel/parser';
 
 import { parserOptions } from '../../../lib/ast-builder.js';
@@ -24,7 +25,7 @@ describe('@jsdoc/ast/lib/ast-node', () => {
     return babelParser.parse(str, parserOptions).program.body[0];
   }
 
-  // create the AST nodes we'll be testing
+  // Create the AST nodes we'll be testing.
   const arrayExpression = parse('[,]').expression;
   const arrowFunctionExpression = parse('var foo = () => {};').declarations[0].init;
   const assignmentExpression = parse('foo = 1;').expression;
@@ -54,12 +55,24 @@ describe('@jsdoc/ast/lib/ast-node', () => {
   const variableDeclarator1 = parse('var foo = 1;').declarations[0];
   const variableDeclarator2 = parse('var foo;').declarations[0];
 
+  // Create AST nodes that we can use to autodetect the module type.
+  const amdDefine = parse('define("foo", ["node:fs"], function (fs) { fs; });').expression;
+  const amdDriverScript = parse('require(["foo"], function (foo) {});').expression;
+  const commonJsExports = parse('exports.foo = () => {};').expression;
+  const commonJsRequire = parse('const fs = require("node:fs");').declarations[0].init;
+  const es6Export = parse('export function foo() {}');
+  const es6Import = parse('import { readFile } from "node:fs/promises";');
+
   it('should exist', () => {
     expect(astNode).toBeObject();
   });
 
   it('should export an addNodeProperties method', () => {
     expect(astNode.addNodeProperties).toBeFunction();
+  });
+
+  it('exports a detectModuleType method', () => {
+    expect(astNode.detectModuleType).toBeFunction();
   });
 
   it('should export a getInfo method', () => {
@@ -84,6 +97,10 @@ describe('@jsdoc/ast/lib/ast-node', () => {
 
   it('should export an isScope method', () => {
     expect(astNode.isScope).toBeFunction();
+  });
+
+  it('exports a MODULE_TYPES enum', () => {
+    expect(astNode.MODULE_TYPES).toBeObject();
   });
 
   it('should export a nodeToString method', () => {
@@ -172,6 +189,38 @@ describe('@jsdoc/ast/lib/ast-node', () => {
       node.enclosingScope = enclosingScope;
 
       expect(node.enclosingScopeId).toBe(enclosingScope.nodeId);
+    });
+  });
+
+  describe('detectModuleType', () => {
+    const { detectModuleType, MODULE_TYPES } = astNode;
+
+    it('returns `null` if the module type cannot be inferred from the node', () => {
+      expect(detectModuleType(identifier)).toBeNull();
+    });
+
+    it('detects AMD modules that use `define()`', () => {
+      expect(detectModuleType(amdDefine)).toBe(MODULE_TYPES.AMD);
+    });
+
+    it('detects AMD driver scripts', () => {
+      expect(detectModuleType(amdDriverScript)).toBe(MODULE_TYPES.AMD);
+    });
+
+    it('detects CommonJS modules that assign to `exports`', () => {
+      expect(detectModuleType(commonJsExports)).toBe(MODULE_TYPES.COMMON_JS);
+    });
+
+    it('detects CommonJS modules that call `require()`', () => {
+      expect(detectModuleType(commonJsRequire)).toBe(MODULE_TYPES.COMMON_JS);
+    });
+
+    it('detects ES6 modules that use `export`', () => {
+      expect(detectModuleType(es6Export)).toBe(MODULE_TYPES.ES6);
+    });
+
+    it('detects ES6 modules that use `import`', () => {
+      expect(detectModuleType(es6Import)).toBe(MODULE_TYPES.ES6);
     });
   });
 

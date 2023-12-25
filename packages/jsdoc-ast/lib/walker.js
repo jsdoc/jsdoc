@@ -53,9 +53,8 @@ function moveTrailingComments(source, target, count) {
   }
 }
 
-/* eslint-disable no-empty-function, no-unused-vars */
+// eslint-disable-next-line no-empty-function, no-unused-vars
 function leafNode(node, parent, state, cb) {}
-/* eslint-enable no-empty-function, no-unused-vars */
 
 // TODO: docs
 export const walkers = {};
@@ -643,7 +642,7 @@ walkers[Syntax.YieldExpression] = (node, parent, state, cb) => {
 function handleNode(node, parent, cbState) {
   let currentScope;
   const isScope = astNode.isScope(node);
-  let { walker } = cbState;
+  const { walker } = cbState;
 
   astNode.addNodeProperties(node);
   node.parent = parent || null;
@@ -657,6 +656,8 @@ function handleNode(node, parent, cbState) {
     cbState.scopes.push(node);
   }
   cbState.nodes.push(node);
+
+  cbState.moduleType ??= astNode.detectModuleType(node);
 
   if (!walker._walkers[node.type]) {
     walker._logUnknownNodeType(node);
@@ -690,6 +691,7 @@ export class Walker {
     let shouldContinue;
     const state = {
       filename: filename,
+      moduleType: null,
       nodes: [],
       scopes: [],
       walker: this,
@@ -706,6 +708,10 @@ export class Walker {
       }
     }
 
-    return ast;
+    return {
+      ast,
+      filename: state.filename,
+      moduleType: state.moduleType,
+    };
   }
 }

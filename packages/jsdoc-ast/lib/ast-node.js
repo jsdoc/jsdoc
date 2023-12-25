@@ -17,6 +17,7 @@
 // TODO: docs
 import { name } from '@jsdoc/core';
 import { cast } from '@jsdoc/util';
+import moduleTypes from 'ast-module-types';
 
 import { Syntax } from './syntax.js';
 
@@ -24,6 +25,12 @@ const { SCOPE } = name;
 
 // Counter for generating unique node IDs.
 let uid = 100000000;
+
+export const MODULE_TYPES = {
+  AMD: 'amd',
+  COMMON_JS: 'commonJs',
+  ES6: 'es6',
+};
 
 /**
  * Check whether an AST node represents a function.
@@ -564,4 +571,23 @@ export function getInfo(node) {
   }
 
   return info;
+}
+
+export function detectModuleType(node) {
+  if (moduleTypes.isES6Export(node) || moduleTypes.isES6Import(node)) {
+    return MODULE_TYPES.ES6;
+  }
+
+  if (moduleTypes.isDefineAMD(node) || moduleTypes.isAMDDriverScriptRequire(node)) {
+    return MODULE_TYPES.AMD;
+  }
+
+  if (
+    moduleTypes.isExports(node) ||
+    (moduleTypes.isRequire(node) && !moduleTypes.isDefineAMD(node))
+  ) {
+    return MODULE_TYPES.COMMON_JS;
+  }
+
+  return null;
 }

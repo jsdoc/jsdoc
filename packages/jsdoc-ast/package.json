@@ -34,6 +34,7 @@
     "@babel/parser": "^7.23.6",
     "@jsdoc/core": "^0.5.7",
     "@jsdoc/util": "^0.3.2",
+    "ast-module-types": "^5.0.0",
     "lodash": "^4.17.21"
   },
   "engines": {
