@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import mockFs from 'mock-fs'; // eslint-disable-line simple-import-sort/imports
 import { defaultLoaders } from 'cosmiconfig';
 
@@ -104,13 +105,13 @@ describe('@jsdoc/core/lib/config', () => {
 
       const conf = await config.load();
 
-      expect(conf.config).toEqual(config.defaults);
+      expect(conf.config).toEqual(config.defaultConfig);
     });
 
     it('provides the default config if there is no user config', async () => {
       const conf = await config.load();
 
-      expect(conf.config).toEqual(config.defaults);
+      expect(conf.config).toEqual(config.defaultConfig);
     });
 
     it('merges nested defaults with nested user settings as expected', async () => {
@@ -120,68 +121,68 @@ describe('@jsdoc/core/lib/config', () => {
 
       const conf = await config.load();
 
-      expect(conf.config.tags.allowUnknownTags).toBe(config.defaults.tags.allowUnknownTags);
+      expect(conf.config.tags.allowUnknownTags).toBe(config.defaultConfig.tags.allowUnknownTags);
       expect(conf.config.tags.foo).toBe('bar');
     });
   });
 
-  describe('defaults', () => {
-    const { defaults } = config;
+  describe('defaultConfig', () => {
+    const { defaultConfig } = config;
 
     it('is an object', () => {
-      expect(defaults).toBeObject();
+      expect(defaultConfig).toBeObject();
     });
 
     describe('plugins', () => {
       it('is an array', () => {
-        expect(defaults.plugins).toBeArray();
+        expect(defaultConfig.plugins).toBeArray();
       });
     });
 
     describe('sourceFiles', () => {
       it('is an empty array', () => {
-        expect(defaults.sourceFiles).toBeEmptyArray();
+        expect(defaultConfig.sourceFiles).toBeEmptyArray();
       });
     });
 
     describe('sourceType', () => {
       it('is a string', () => {
-        expect(defaults.sourceType).toBeString();
+        expect(defaultConfig.sourceType).toBeString();
       });
     });
 
     describe('tags', () => {
       it('is an object', () => {
-        expect(defaults.tags).toBeObject();
+        expect(defaultConfig.tags).toBeObject();
       });
 
       describe('allowUnknownTags', () => {
         it('is a boolean', () => {
-          expect(defaults.tags.allowUnknownTags).toBeBoolean();
+          expect(defaultConfig.tags.allowUnknownTags).toBeBoolean();
         });
       });
 
       describe('dictionaries', () => {
         it('is an array of strings', () => {
-          expect(defaults.tags.dictionaries).toBeArrayOfStrings();
+          expect(defaultConfig.tags.dictionaries).toBeArrayOfStrings();
         });
       });
     });
 
     describe('templates', () => {
       it('is an object', () => {
-        expect(defaults.templates).toBeObject();
+        expect(defaultConfig.templates).toBeObject();
       });
 
       describe('cleverLinks', () => {
         it('is a boolean', () => {
-          expect(defaults.templates.cleverLinks).toBeBoolean();
+          expect(defaultConfig.templates.cleverLinks).toBeBoolean();
         });
       });
 
       describe('monospaceLinks', () => {
         it('is a boolean', () => {
-          expect(defaults.templates.monospaceLinks).toBeBoolean();
+          expect(defaultConfig.templates.monospaceLinks).toBeBoolean();
         });
       });
     });

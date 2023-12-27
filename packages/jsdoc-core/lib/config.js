@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Manages configuration settings for JSDoc.
  *
@@ -25,7 +26,7 @@ import stripJsonComments from 'strip-json-comments';
 
 const MODULE_NAME = 'jsdoc';
 
-export const defaults = {
+export const defaultConfig = {
   // TODO(hegemonic): Integrate CLI options with other options.
   opts: {
     destination: './out',
@@ -122,5 +123,5 @@ export async function load(filepath) {
     loaded = (await explorer.search()) ?? {};
   }
 
-  return new Config(loaded.filepath, _.defaultsDeep({}, loaded.config, defaults));
+  return new Config(loaded.filepath, _.defaultsDeep({}, loaded.config, defaultConfig));
 }
