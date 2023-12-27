@@ -15,8 +15,7 @@
 */
 
 /* eslint-disable no-process-exit */
-import EventEmitter from 'node:events';
-
+import { Api } from '@jsdoc/core';
 import { getLogFunctions } from '@jsdoc/util';
 import _ from 'lodash';
 import ow from 'ow';
@@ -130,7 +129,8 @@ export default class Engine {
     ow(opts.revision, ow.optional.date);
     ow(opts.version, ow.any(ow.optional.string, ow.optional.object));
 
-    this.emitter = opts.emitter ?? new EventEmitter();
+    this.api = opts.api ?? new Api({ emitter: opts.emitter });
+    this.emitter = this.api.emitter;
     this.flags = [];
     this.log = opts.log ?? getLogFunctions(this.emitter);
     this.#logger = new Logger({

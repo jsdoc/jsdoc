@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2023 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,16 +14,20 @@
   limitations under the License.
 */
 
-/**
- * Core functionality for JSDoc.
- *
- * @module @jsdoc/core
- */
-import Api from './lib/api.js';
-import * as config from './lib/config.js';
-import Env from './lib/env.js';
-import * as name from './lib/name.js';
-import * as plugins from './lib/plugins.js';
+import EventEmitter from 'node:events';
 
-export { Api, config, Env, name, plugins };
-export default { Api, config, Env, name, plugins };
+/**
+ * The API for programmatically generating documentation with JSDoc.
+ */
+export default class Api {
+  /**
+   * Creates an instance of the API.
+   *
+   * @param {?Object} opts - Options for the API instance.
+   * @param {?node:events.EventEmitter} opts.eventEmitter - The event emitter to use as a message
+   * bus for JSDoc.
+   */
+  constructor(opts) {
+    this.emitter = opts?.emitter ?? new EventEmitter();
+  }
+}

@@ -14,6 +14,8 @@
   limitations under the License.
 */
 
+import EventEmitter from 'node:events';
+
 import Engine from '../../../lib/engine.js';
 import flags from '../../../lib/flags.js';
 import { LEVELS } from '../../../lib/logger.js';
@@ -31,6 +33,14 @@ describe('@jsdoc/cli/lib/engine', () => {
 
   it('has a static LOG_LEVELS property', () => {
     expect(Engine.LOG_LEVELS).toBeObject();
+  });
+
+  it('has an `api` property that contains the API instance', () => {
+    expect(new Engine().api).toBeObject();
+  });
+
+  it('has an `emitter` property that contains a shared event emitter', () => {
+    expect(new Engine().emitter).toBeObject();
   });
 
   it('has an empty array of flags by default', () => {
@@ -97,6 +107,49 @@ describe('@jsdoc/cli/lib/engine', () => {
     expect(() => new Engine({ version: 1 })).toThrow();
   });
 
+  describe('emitter', () => {
+    it('creates an `EventEmitter` instance by default', () => {
+      expect(new Engine().emitter).toBeInstanceOf(EventEmitter);
+    });
+
+    it('lets you provide the emitter', () => {
+      const fakeEmitter = {
+        off: () => null,
+        on: () => null,
+        once: () => null,
+      };
+      const instance = new Engine({ emitter: fakeEmitter });
+
+      expect(instance.emitter).toBe(fakeEmitter);
+    });
+
+    it('shares one emitter between the `Api` instance and the `Engine` instance', () => {
+      const instance = new Engine();
+
+      expect(instance.emitter).toBe(instance.api.emitter);
+    });
+  });
+
+  describe('exit', () => {
+    // TODO: This is testing implementation details, not behavior. Refactor the method, then rewrite
+    // this test to test the behavior.
+    it('adds one listener for `exit` events if the exit code is 0', () => {
+      spyOn(process, 'on');
+
+      new Engine().exit(0);
+
+      expect(process.on).toHaveBeenCalledTimes(1);
+    });
+
+    it('adds two listeners for `exit` events if the exit code is >0', () => {
+      spyOn(process, 'on');
+
+      new Engine().exit(1);
+
+      expect(process.on).toHaveBeenCalledTimes(2);
+    });
+  });
+
   describe('help', () => {
     const instance = new Engine();
 
@@ -129,26 +182,6 @@ describe('@jsdoc/cli/lib/engine', () => {
   describe('LOG_LEVELS', () => {
     it('is lib/logger.LEVELS', () => {
       expect(Engine.LOG_LEVELS).toBe(LEVELS);
-    });
-  });
-
-  describe('exit', () => {
-    // TODO: This is testing implementation details, not behavior. Refactor the method, then rewrite
-    // this test to test the behavior.
-    it('adds one listener for `exit` events if the exit code is 0', () => {
-      spyOn(process, 'on');
-
-      new Engine().exit(0);
-
-      expect(process.on).toHaveBeenCalledTimes(1);
-    });
-
-    it('adds two listeners for `exit` events if the exit code is >0', () => {
-      spyOn(process, 'on');
-
-      new Engine().exit(1);
-
-      expect(process.on).toHaveBeenCalledTimes(2);
     });
   });
 
