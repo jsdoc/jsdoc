@@ -16,22 +16,19 @@
 
 /* eslint-disable no-process-exit */
 import fs from 'node:fs';
-import path from 'node:path';
+import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 import Engine from '@jsdoc/cli';
-import { config as jsdocConfig, Env, plugins } from '@jsdoc/core';
+import { config as jsdocConfig, plugins } from '@jsdoc/core';
 import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
 import { Dictionary } from '@jsdoc/tag';
-import fastGlob from 'fast-glob';
 import _ from 'lodash';
 import stripBom from 'strip-bom';
 import stripJsonComments from 'strip-json-comments';
 
 import test from './test/index.js';
-
-const { sync: glob } = fastGlob;
 
 /**
  * Helper methods for running JSDoc on the command line.
@@ -48,9 +45,8 @@ export default (() => {
   };
 
   const cli = {};
-  const env = new Env();
-  const { emitter, log } = env;
-  const engine = new Engine(env);
+  const engine = new Engine();
+  const { api, emitter, env, log } = engine;
   const FATAL_ERROR_MESSAGE =
     'Exiting JSDoc because an error occurred. See the previous log messages for details.';
   const LOG_LEVELS = Engine.LOG_LEVELS;
@@ -194,7 +190,7 @@ export default (() => {
 
   // TODO: docs
   cli.main = async () => {
-    cli.scanFiles();
+    await api.findSourceFiles();
 
     if (env.sourceFiles.length === 0) {
       console.log('There are no input files to process.');
@@ -202,65 +198,29 @@ export default (() => {
       return Promise.resolve(0);
     } else {
       await cli.createParser();
+      await cli.parseFiles();
 
-      return cli
-        .parseFiles()
-        .processParseResults()
-        .then(() => {
-          env.run.finish = new Date();
+      return cli.processParseResults().then(() => {
+        env.run.finish = new Date();
 
-          return 0;
-        });
+        return 0;
+      });
     }
   };
 
-  function readPackageJson(filepath) {
+  async function readPackageJson(filepath) {
+    let data;
+
     try {
-      return stripJsonComments(fs.readFileSync(filepath, 'utf8'));
+      data = await readFile(filepath, 'utf8');
+
+      return stripJsonComments(data);
     } catch (e) {
       log.error(`Unable to read the package file ${filepath}`);
 
       return null;
     }
   }
-
-  function buildSourceList() {
-    const { config, options } = env;
-    let packageJson;
-    let sourceFiles = options._ ? options._.slice() : [];
-
-    if (config.sourceFiles) {
-      sourceFiles = sourceFiles.concat(config.sourceFiles);
-    }
-
-    // load the user-specified package file, if any
-    if (options.package) {
-      packageJson = readPackageJson(options.package);
-      props.packageJson = packageJson;
-    }
-
-    // Resolve the path to the README.
-    if (options.readme) {
-      options.readme = path.resolve(options.readme);
-    }
-
-    return sourceFiles;
-  }
-
-  // TODO: docs
-  cli.scanFiles = () => {
-    const { options } = env;
-
-    options._ = buildSourceList();
-    if (options._.length) {
-      env.sourceFiles = glob(options._, {
-        absolute: true,
-        onlyFiles: true,
-      });
-    }
-
-    return cli;
-  };
 
   cli.createParser = async () => {
     const { config } = env;
@@ -276,15 +236,18 @@ export default (() => {
     return cli;
   };
 
-  cli.parseFiles = () => {
+  cli.parseFiles = async () => {
     const { options } = env;
+    let packageData = '';
     let packageDocs;
     let docletStore;
 
-    docletStore = props.parser.parse(env.sourceFiles, options.encoding);
+    docletStore = props.docs = props.parser.parse(env.sourceFiles, options.encoding);
 
-    // If there is no package.json, just create an empty package
-    packageDocs = new Package(props.packageJson, env);
+    if (props.packageJson) {
+      packageData = await readPackageJson(props.packageJson);
+    }
+    packageDocs = new Package(packageData, env);
     packageDocs.files = env.sourceFiles || [];
     docletStore.add(packageDocs);
 
@@ -293,9 +256,6 @@ export default (() => {
     log.debug('Adding borrowed doclets...');
     resolveBorrows(docletStore);
     log.debug('Post-processing complete.');
-
-    props.docs = docletStore;
-
     if (props.parser.listenerCount('processingComplete')) {
       props.parser.fireProcessingComplete(Array.from(docletStore.doclets));
     }

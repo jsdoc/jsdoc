@@ -14,9 +14,15 @@
   limitations under the License.
 */
 
+/* global jsdoc */
+
 import EventEmitter from 'node:events';
+import path from 'node:path';
 
 import Api from '../../../lib/api.js';
+import Env from '../../../lib/env.js';
+
+const __dirname = jsdoc.dirname(import.meta.url);
 
 describe('Api', () => {
   let instance;
@@ -33,21 +39,138 @@ describe('Api', () => {
     expect(factory).not.toThrow();
   });
 
-  it('has an `emitter` property', () => {
-    expect(instance.emitter).toBeObject();
+  it('has an `emitter` property that contains an `EventEmitter` instance', () => {
+    expect(instance.emitter).toBeInstanceOf(EventEmitter);
+  });
+
+  it('has an `env` property that contains an `Env` instance', () => {
+    expect(instance.env).toBeInstanceOf(Env);
+  });
+
+  it('has a `findSourceFiles` method', () => {
+    expect(instance.findSourceFiles).toBeFunction();
   });
 
   describe('emitter', () => {
-    it('is an instance of `EventEmitter` by default', () => {
-      expect(instance.emitter).toBeInstanceOf(EventEmitter);
-    });
-
     it('lets you provide your own emitter', () => {
       const fakeEmitter = {};
 
       instance = new Api({ emitter: fakeEmitter });
 
       expect(instance.emitter).toBe(fakeEmitter);
+    });
+  });
+
+  describe('env', () => {
+    it('lets you provide your own JSDoc environment', () => {
+      const fakeEnv = {};
+
+      instance = new Api({ env: fakeEnv });
+
+      expect(instance.env).toBe(fakeEnv);
+    });
+  });
+
+  describe('findSourceFiles', () => {
+    it('returns an empty array if no patterns are specified', async () => {
+      const sourceFiles = await instance.findSourceFiles();
+
+      expect(sourceFiles).toBeEmptyArray();
+    });
+
+    it('stores a copy of the return value in `env.sourceFiles`', async () => {
+      const actual = await instance.findSourceFiles([
+        path.join(__dirname, '../../fixtures/source-files/**/*.cjs'),
+      ]);
+      const expected = [path.resolve(path.join(__dirname, '../../fixtures/source-files/baz.cjs'))];
+
+      expect(actual).toEqual(expected);
+      expect(instance.env.sourceFiles).toEqual(actual);
+    });
+
+    it('resolves the path in `env.options.package`', async () => {
+      const filepath = path.join(__dirname, '../../fixtures/source-files/package.json');
+      const expected = path.resolve(filepath);
+
+      instance.env.options.package = filepath;
+      await instance.findSourceFiles();
+
+      expect(instance.env.options.package).toEqual(expected);
+    });
+
+    it('resolves the path in `env.options.readme`', async () => {
+      const filepath = path.join(__dirname, '../../fixtures/source-files/README.md');
+      const expected = path.resolve(filepath);
+
+      instance.env.options.readme = filepath;
+      await instance.findSourceFiles();
+
+      expect(instance.env.options.readme).toEqual(expected);
+    });
+
+    describe('with `globPatterns` param', () => {
+      it('uses the glob patterns to return absolute paths to files', async () => {
+        const actual = await instance.findSourceFiles([
+          path.join(__dirname, '../../fixtures/source-files/**/*.js'),
+        ]);
+        const expected = [
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/bar.js')),
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/foo.js')),
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/subdir/qux.js')),
+        ];
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('ignores `env.options._` if glob patterns are passed in', async () => {
+        let actual;
+        const expected = [
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/baz.cjs')),
+        ];
+
+        instance.env.options._ = [path.join(__dirname, '../../fixtures/source-files/**/*.js')];
+
+        actual = await instance.findSourceFiles([
+          path.join(__dirname, '../../fixtures/source-files/*.cjs'),
+        ]);
+
+        expect(actual).toEqual(expected);
+      });
+    });
+
+    describe('without `globPatterns` param', () => {
+      it('uses `env.options._` if glob patterns are not passed in', async () => {
+        let actual;
+        const expected = [
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/bar.js')),
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/foo.js')),
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/subdir/qux.js')),
+        ];
+
+        instance.env.options._ = [path.join(__dirname, '../../fixtures/source-files/**/*.js')];
+
+        actual = await instance.findSourceFiles();
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('folds `env.options._` into `env.config.sourceFiles`', async () => {
+        let actual;
+        const expected = [
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/bar.js')),
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/foo.js')),
+          path.resolve(path.join(__dirname, '../../fixtures/source-files/subdir/qux.js')),
+        ];
+
+        instance.env.config.sourceFiles = [
+          path.join(__dirname, '../../fixtures/source-files/subdir/*.js'),
+        ];
+        instance.env.options._ = [path.join(__dirname, '../../fixtures/source-files/*.js')];
+
+        actual = await instance.findSourceFiles();
+
+        expect(actual).toEqual(expected);
+      });
     });
   });
 });

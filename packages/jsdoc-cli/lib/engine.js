@@ -131,6 +131,7 @@ export default class Engine {
 
     this.api = opts.api ?? new Api({ emitter: opts.emitter });
     this.emitter = this.api.emitter;
+    this.env = this.api.env;
     this.flags = [];
     this.log = opts.log ?? getLogFunctions(this.emitter);
     this.#logger = new Logger({
