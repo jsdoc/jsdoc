@@ -127,6 +127,14 @@ describe('@jsdoc/core.name', () => {
     it('returns the basename if the original value has punctuation', () => {
       expect(name.getBasename('foo.Bar#baz')).toBe('foo');
     });
+
+    it('returns the basename if the original value starts with a namespace', () => {
+      expect(name.getBasename('module:foo.Bar')).toBe('module:foo');
+    });
+
+    it('returns the basename if the original value is a module identifier with `@` and `/`', () => {
+      expect(name.getBasename('module:@foo/bar.Baz')).toBe('module:@foo/bar');
+    });
   });
 
   describe('getLeadingScope', () => {

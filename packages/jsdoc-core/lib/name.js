@@ -139,13 +139,15 @@ export const getTrailingScope = (name) => {
 };
 
 /**
- * Get a symbol's basename, which is the first part of its full name before any punctuation (other
- * than an underscore). For example, all of the following names have the basename `Foo`:
+ * Get a symbol's basename, which is the first part of its full name before any scope punctuation.
+ * For example, all of the following names have the basename `Foo`:
  *
  * + `Foo`
  * + `Foo.bar`
  * + `Foo.prototype.bar`
  * + `Foo#bar`
+ *
+ * Similarly, the longname `module:@foo/bar.Baz` has the basename `module:@foo/bar`.
  *
  * @param {?string} [name] - The symbol's full name.
  * @returns {?string} The symbol's basename.
@@ -155,7 +157,7 @@ export function getBasename(name) {
     return null;
   }
 
-  return name.replace(/^([$a-z_][$a-z_0-9]*).*?$/i, '$1');
+  return name.replace(/^((?:[a-z]+:)?[$a-z@_][$a-z_/0-9]*).*?$/i, '$1');
 }
 
 // TODO: docs
