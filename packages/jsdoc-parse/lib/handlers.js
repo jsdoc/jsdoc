@@ -22,14 +22,16 @@ const PROTOTYPE_OWNER_REGEXP = /^(.+?)(\.prototype|#)$/;
 const { SCOPE } = name;
 
 let currentModule = null;
+// Modules inferred from the value of an `@alias` tag, like `@alias module:foo.bar`.
+let inferredModules = [];
 
-class CurrentModule {
+class ModuleInfo {
   constructor(doclet) {
-    this.doclet = doclet;
     this.longname = doclet.longname;
-    this.originalName = doclet.meta.code.name || '';
+    this.originalName = doclet.meta?.code?.name ?? '';
   }
 }
+
 function filterByLongname({ longname }) {
   // you can't document prototypes
   if (/#$/.test(longname)) {
@@ -89,37 +91,46 @@ function createSymbolDoclet(comment, e, deps) {
   return doclet;
 }
 
-function setCurrentModule(doclet) {
+function getModule() {
+  return inferredModules.length ? inferredModules[inferredModules.length - 1] : currentModule;
+}
+
+function setModule(doclet) {
   if (doclet.kind === 'module') {
-    currentModule = new CurrentModule(doclet);
+    currentModule = new ModuleInfo(doclet);
+  } else if (doclet.longname.startsWith('module:')) {
+    inferredModules.push(
+      new ModuleInfo({
+        longname: name.getBasename(doclet.longname),
+      })
+    );
   }
 }
 
 function setModuleScopeMemberOf(parser, doclet) {
+  const moduleInfo = getModule();
   let parentDoclet;
   let skipMemberof;
 
   // handle module symbols that are _not_ assigned to module.exports
-  if (currentModule && currentModule.longname !== doclet.name) {
+  if (moduleInfo && moduleInfo.longname !== doclet.name) {
     if (!doclet.scope) {
       // is this a method definition? if so, we usually get the scope from the node directly
       if (doclet.meta?.code?.node?.type === Syntax.MethodDefinition) {
+        parentDoclet = parser._getDocletById(doclet.meta.code.node.parent.parent.nodeId);
         // special case for constructors of classes that have @alias tags
-        if (doclet.meta.code.node.kind === 'constructor') {
-          parentDoclet = parser._getDocletById(doclet.meta.code.node.parent.parent.nodeId);
-
-          if (parentDoclet?.alias) {
-            // the constructor should use the same name as the class
-            doclet.addTag('alias', parentDoclet.alias);
-            doclet.addTag('name', parentDoclet.alias);
-
-            // and we shouldn't try to set a memberof value
-            skipMemberof = true;
-          }
-        } else if (doclet.meta.code.node.static) {
-          doclet.addTag('static');
+        if (doclet.meta.code.node.kind === 'constructor' && parentDoclet?.alias) {
+          // the constructor should use the same name as the class
+          doclet.addTag('alias', parentDoclet.alias);
+          doclet.addTag('name', parentDoclet.alias);
+          // and we shouldn't try to set a memberof value
+          skipMemberof = true;
         } else {
-          doclet.addTag('instance');
+          doclet.addTag(doclet.meta.code.node.static ? 'static' : 'instance');
+          // The doclet should be a member of the parent doclet's alias.
+          if (parentDoclet?.alias) {
+            doclet.memberof = parentDoclet.alias;
+          }
         }
       }
       // is this something that the module exports? if so, it's a static member
@@ -135,7 +146,7 @@ function setModuleScopeMemberOf(parser, doclet) {
     // if the doclet isn't a memberof anything yet, and it's not a global, it must be a memberof
     // the current module (unless we were told to skip adding memberof)
     if (!doclet.memberof && doclet.scope !== SCOPE.NAMES.GLOBAL && !skipMemberof) {
-      doclet.addTag('memberof', currentModule.longname);
+      doclet.addTag('memberof', moduleInfo.longname);
     }
   }
 }
@@ -151,7 +162,7 @@ function addDoclet(parser, newDoclet) {
   let e;
 
   if (newDoclet) {
-    setCurrentModule(newDoclet);
+    setModule(newDoclet);
     e = { doclet: newDoclet };
     parser.emit('newDoclet', e);
 
@@ -365,5 +376,6 @@ export function attachTo(parser) {
 
   parser.on('fileComplete', () => {
     currentModule = null;
+    inferredModules = [];
   });
 }
