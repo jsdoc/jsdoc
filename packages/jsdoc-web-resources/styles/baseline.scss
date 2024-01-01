@@ -17,59 +17,6 @@
 @import 'bootstrap.scss';
 @import 'shoelace.scss';
 
-// TODO: Make the Sass variable names more consistent with Bootstrap.
-
-$body-font: 'Noto Serif';
-$code-font: 'Inconsolata';
-$code-font-size: $font-size-base;
-$dl-horizontal-offset: $font-size-base * 10;
-$h-font: 'Karla';
-$h1-font-size: $font-size-base * 2.4;
-$h2-font-size: $font-size-base * 2;
-$h3-font-size: $font-size-base * 1.5;
-$sans-serif-font: $h-font;
-$serif-font: $body-font;
-
-$border-radius-small: 0.25rem;
-$navbar-height: 3rem;
-$footer-height: $navbar-height;
-$line-height-computed: $font-size-base * $line-height-base;
-$h-margin-top-large: $line-height-computed * 2;
-$h-margin-top-small: $line-height-computed;
-
-$link-color: $primary;
-$link-color-hover: tint-color($link-color, 10%);
-
-$blue-dark: #1e88e5; // Material Design Blue 600
-$blue-light: #90caf9; // Material Design Blue 200
-$code-light-gray: shade-color(#8e908c, 10%);
-$deep-orange-dark: #f4511e; // Material Design Deep Orange 600
-$deep-orange-light: #ffab91; // Material Design Deep Orange 200
-$deep-purple-dark: #5e35b1; // Material Design Deep Purple 600
-$deep-purple-light: #b39ddb; // Material Design Deep Purple 200
-$indigo-dark: #3949ab; // Material Design Indigo 600
-$indigo-light: #9fa8da; // Material Design Indigo 200
-$green-dark: #43a047; // Material Design Green 600
-$green-light: #a5d6a7; // Material Design Green 200
-$light-green-dark: #7cb342; // Material Design Light Green 600
-$light-green-light: #c5e1a5; // Material Design Light Green 200
-$orange-dark: #fb8c00; // Material Design Orange 600
-$orange-light: #ffcc80; // Material Design Orange 200
-
-/* Spacing */
-
-// TODO: Reimplement margins/padding/etc. in terms of these variables.
-$spacer-3x-small: 0.125rem; // 2px
-$spacer-2x-small: 0.25rem; // 4px
-$spacer-x-small: 0.5rem; // 8px
-$spacer-small: 0.75rem; // 12px
-$spacer-medium: 1rem; // 16px
-$spacer-large: 1.25rem; // 20px
-$spacer-x-large: 1.75rem; // 28px
-$spacer-2x-large: 2.25rem; // 36px
-$spacer-3x-large: 3rem; // 48px
-$spacer-4x-large: 4.5rem; // 72px
-
 /* Typography */
 
 @mixin p-margin() {
@@ -87,6 +34,7 @@ $spacer-4x-large: 4.5rem; // 72px
 @mixin code-base() {
   font-family: $code-font, monospace;
   font-size: 100%;
+  font-variant-ligatures: none;
   background-color: tint-color($code-color, 95%);
 }
 
@@ -514,6 +462,7 @@ header > .symbol-detail-badges {
 
 .jsdoc-navbar-package-name {
   @extend .navbar-brand;
+  font-family: $h-font, sans-serif;
 }
 
 /* Tables */

@@ -111,8 +111,12 @@ sl-details::part(header) {
 }
 
 sl-details::part(summary) {
-  font-family: 'Karla', sans-serif;
+  font-family: $h-font, sans-serif;
   font-size: 1.125rem;
+}
+
+sl-details::part(content) {
+  padding: 0.5rem 1rem 0 1rem;
 }
 
 sl-tree {
