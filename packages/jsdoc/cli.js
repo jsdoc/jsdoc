@@ -246,7 +246,16 @@ export default (() => {
   };
 
   cli.dumpParseResults = () => {
-    console.log(JSON.stringify(Array.from(props.docs.allDoclets), null, 2));
+    let doclets;
+    const { options } = env;
+
+    if (options.debug || options.verbose) {
+      doclets = props.docs.allDoclets;
+    } else {
+      doclets = props.docs.doclets;
+    }
+
+    console.log(JSON.stringify(Array.from(doclets), null, 2));
 
     return cli;
   };
