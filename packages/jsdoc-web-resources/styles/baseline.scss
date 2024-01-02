@@ -175,6 +175,11 @@ code {
   padding: 0.125rem 0.25rem;
 }
 
+b,
+strong {
+  font-weight: $font-weight-semibold;
+}
+
 dt,
 th {
   font-family: $sans-serif-font;
