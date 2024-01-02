@@ -173,4 +173,100 @@ describe('Api', () => {
       });
     });
   });
+
+  describe('generateDocs', () => {
+    let env;
+    let options;
+
+    beforeEach(() => {
+      env = instance.env;
+      options = env.options;
+      options.template = path.resolve(
+        path.join(__dirname, '../../fixtures/templates/fake-template.js')
+      );
+    });
+
+    it('calls the `publish` function from the specified template', async () => {
+      await instance.generateDocs();
+
+      expect(env.foo).toBe('bar');
+    });
+
+    it('passes the `DocletStore` and `Env` to the template', async () => {
+      const fakeDocletStore = {};
+
+      await instance.generateDocs(fakeDocletStore);
+
+      expect(env.docletStore).toBe(fakeDocletStore);
+    });
+
+    it('uses the legacy template by default', async () => {
+      options.template = null;
+
+      try {
+        await instance.generateDocs();
+
+        // We shouldn't get here.
+        expect(false).toBeTrue();
+      } catch (e) {
+        expect(e.message).toContain('default template');
+        expect(e.message).toContain('@jsdoc/template-legacy');
+      }
+    });
+
+    it('rejects the promise and logs a fatal error if the template cannot be found', async () => {
+      spyOn(env.log, 'fatal');
+      options.template = 'fleeble';
+
+      try {
+        await instance.generateDocs();
+
+        // We shouldn't get here.
+        expect(false).toBeTrue();
+      } catch (e) {
+        expect(e.message).toContain('fleeble');
+      }
+
+      expect(env.log.fatal).toHaveBeenCalled();
+      expect(env.log.fatal.calls.first().args[0]).toContain('fleeble');
+    });
+
+    it('rejects the promise and logs a fatal error if `publish` is undefined', async () => {
+      spyOn(env.log, 'fatal');
+      options.template = path.resolve(
+        path.join(__dirname, '../../fixtures/templates/no-publish-template.js')
+      );
+
+      try {
+        await instance.generateDocs();
+
+        // We shouldn't get here.
+        expect(false).toBeTrue();
+      } catch (e) {
+        expect(e.message).toContain('no-publish-template.js');
+      }
+
+      expect(env.log.fatal).toHaveBeenCalled();
+      expect(env.log.fatal.calls.first().args[0]).toContain('no-publish-template.js');
+    });
+
+    it('rejects the promise and logs a fatal error if `publish` is not a function', async () => {
+      spyOn(env.log, 'fatal');
+      options.template = path.resolve(
+        path.join(__dirname, '../../fixtures/templates/bad-publish-template.js')
+      );
+
+      try {
+        await instance.generateDocs();
+
+        // We shouldn't get here.
+        expect(false).toBeTrue();
+      } catch (e) {
+        expect(e.message).toContain('bad-publish-template.js');
+      }
+
+      expect(env.log.fatal).toHaveBeenCalled();
+      expect(env.log.fatal.calls.first().args[0]).toContain('bad-publish-template.js');
+    });
+  });
 });

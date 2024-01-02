@@ -260,36 +260,7 @@ export default (() => {
     return cli;
   };
 
-  cli.generateDocs = async () => {
-    let message;
-    const { options } = env;
-    let template;
-
-    options.template ??= '@jsdoc/template-legacy';
-
-    try {
-      template = await import(options.template);
-    } catch (e) {
-      log.fatal(`Unable to load template: ${e.message ?? e}`);
-    }
-
-    // templates should export a "publish" function
-    if (template.publish && typeof template.publish === 'function') {
-      let publishPromise;
-
-      log.info('Generating output files...');
-      publishPromise = template.publish(props.docs, env);
-
-      return Promise.resolve(publishPromise);
-    } else {
-      message =
-        `${options.template} does not export a "publish" function. ` +
-        'Global "publish" functions are no longer supported.';
-      log.fatal(message);
-
-      return Promise.reject(new Error(message));
-    }
-  };
+  cli.generateDocs = () => api.generateDocs(props.docs);
 
   return cli;
 })();

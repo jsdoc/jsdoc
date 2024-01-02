@@ -20,6 +20,8 @@ import path from 'node:path';
 import { Env } from '@jsdoc/core';
 import glob from 'fast-glob';
 
+const DEFAULT_TEMPLATE = '@jsdoc/template-legacy';
+
 /**
  * The API for programmatically generating documentation with JSDoc.
  *
@@ -38,10 +40,14 @@ export default class Api {
   constructor(opts) {
     /**
      * An event emitter that acts as a message bus for all JSDoc modules.
+     *
+     * @type {node:events.EventEmitter}
      */
     this.emitter = opts?.emitter ?? new EventEmitter();
     /**
      * The JSDoc environment, including configuration settings, for this API instance.
+     *
+     * @type {module:@jsdoc/core.Env}
      */
     this.env = opts?.env ?? new Env();
   }
@@ -96,5 +102,53 @@ export default class Api {
     }
 
     return this.env.sourceFiles?.slice() ?? [];
+  }
+
+  /**
+   * Generates documentation with the template specified in the JSDoc environment, or with
+   * `@jsdoc/template-legacy` if no template is specified.
+   *
+   * The template must export a `publish` function that generates output when called and returns a
+   * `Promise`.
+   *
+   * @param {module:@jsdoc/doclet.DocletStore} docletStore - The doclet store obtained by parsing
+   * the source files.
+   * @returns {Promise<*>} A promise that is fulfilled after the template runs.
+   */
+  async generateDocs(docletStore) {
+    let message;
+    const { log, options } = this.env;
+    let template;
+
+    options.template ??= DEFAULT_TEMPLATE;
+
+    try {
+      template = await import(options.template);
+    } catch (e) {
+      if (options.template === DEFAULT_TEMPLATE) {
+        message =
+          `Unable to load the default template, \`${DEFAULT_TEMPLATE}\`. You can install ` +
+          'the default template, or you can install a different template and configure JSDoc to ' +
+          'use that template.';
+      } else {
+        message = `Unable to load the template \`${options.template}\`: ${e.message ?? e}`;
+      }
+
+      log.fatal(message);
+
+      return Promise.reject(new Error(message));
+    }
+
+    // Templates must export a `publish` function.
+    if (template.publish && typeof template.publish === 'function') {
+      log.info('Generating output files...');
+
+      return template.publish(docletStore, this.env);
+    } else {
+      message = `\`${options.template}\` does not export a \`publish\` function.`;
+      log.fatal(message);
+
+      return Promise.reject(new Error(message));
+    }
   }
 }
