@@ -152,6 +152,36 @@ export default class Engine {
     }
   }
 
+  configureLogger() {
+    const fatalError = () => {
+      this.exit(1);
+    };
+    const { LOG_LEVELS } = Engine;
+    const { options } = this.env;
+    const recoverableError = () => {
+      this.shouldExitWithError = true;
+    };
+
+    if (options.test) {
+      this.logLevel = LOG_LEVELS.SILENT;
+    } else {
+      if (options.debug) {
+        this.logLevel = LOG_LEVELS.DEBUG;
+      } else if (options.verbose) {
+        this.logLevel = LOG_LEVELS.INFO;
+      }
+
+      if (options.pedantic) {
+        this.emitter.once('logger:warn', recoverableError);
+        this.emitter.once('logger:error', fatalError);
+      } else {
+        this.emitter.once('logger:error', recoverableError);
+      }
+
+      this.emitter.once('logger:fatal', fatalError);
+    }
+  }
+
   exit(exitCode, message) {
     ow(exitCode, ow.number);
     ow(message, ow.optional.string);

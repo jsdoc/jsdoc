@@ -46,10 +46,9 @@ export default (() => {
 
   const cli = {};
   const engine = new Engine();
-  const { api, emitter, env, log } = engine;
+  const { api, env, log } = engine;
   const FATAL_ERROR_MESSAGE =
     'Exiting JSDoc because an error occurred. See the previous log messages for details.';
-  const LOG_LEVELS = Engine.LOG_LEVELS;
 
   // TODO: docs
   cli.setVersionInfo = () => {
@@ -98,34 +97,7 @@ export default (() => {
 
   // TODO: docs
   cli.configureLogger = () => {
-    const { options } = env;
-
-    function recoverableError() {
-      engine.shouldExitWithError = true;
-    }
-
-    function fatalError() {
-      engine.exit(1);
-    }
-
-    if (options.test) {
-      engine.logLevel = LOG_LEVELS.SILENT;
-    } else {
-      if (options.debug) {
-        engine.logLevel = LOG_LEVELS.DEBUG;
-      } else if (options.verbose) {
-        engine.logLevel = LOG_LEVELS.INFO;
-      }
-
-      if (options.pedantic) {
-        emitter.once('logger:warn', recoverableError);
-        emitter.once('logger:error', fatalError);
-      } else {
-        emitter.once('logger:error', recoverableError);
-      }
-
-      emitter.once('logger:fatal', fatalError);
-    }
+    engine.configureLogger();
 
     return cli;
   };

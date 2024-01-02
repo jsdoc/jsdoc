@@ -107,6 +107,92 @@ describe('@jsdoc/cli/lib/engine', () => {
     expect(() => new Engine({ version: 1 })).toThrow();
   });
 
+  describe('configureLogger', () => {
+    let instance;
+    const { LOG_LEVELS } = Engine;
+
+    beforeEach(() => {
+      instance = new Engine();
+    });
+
+    it('changes the log level to `DEBUG` if the `debug` option is enabled', () => {
+      const { options } = instance.env;
+
+      options.debug = true;
+      instance.configureLogger();
+
+      expect(instance.logLevel).toBe(LOG_LEVELS.DEBUG);
+    });
+
+    it('changes the log level to `INFO` if the `verbose` option is enabled', () => {
+      const { options } = instance.env;
+
+      options.verbose = true;
+      instance.configureLogger();
+
+      expect(instance.logLevel).toBe(LOG_LEVELS.INFO);
+    });
+
+    it('changes the log level to `SILENT` while running tests', () => {
+      const { options } = instance.env;
+
+      options.test = true;
+      instance.configureLogger();
+
+      expect(instance.logLevel).toBe(LOG_LEVELS.SILENT);
+    });
+
+    it('tells the engine to exit later, with an error, if an `ERROR` log entry is emitted', () => {
+      const emitter = instance.emitter;
+
+      instance.configureLogger();
+      instance.logLevel = LOG_LEVELS.SILENT;
+      emitter.emit('logger:error', 'oh no!');
+
+      expect(instance.shouldExitWithError).toBeTrue();
+    });
+
+    it('tells the engine to exit now, with an error, if a `FATAL` log entry is emitted', () => {
+      const emitter = instance.emitter;
+
+      instance.configureLogger();
+      instance.logLevel = LOG_LEVELS.SILENT;
+      spyOn(instance, 'exit');
+      emitter.emit('logger:fatal', 'oh no!');
+
+      expect(instance.exit).toHaveBeenCalledOnceWith(1);
+    });
+
+    describe('pedantic', () => {
+      beforeEach(() => {
+        const { options } = instance.env;
+
+        options.pedantic = true;
+      });
+
+      it('tells the engine to exit later, with an error, if a `WARN` log entry is emitted', () => {
+        const emitter = instance.emitter;
+
+        instance.configureLogger();
+        instance.logLevel = LOG_LEVELS.SILENT;
+        emitter.emit('logger:warn', 'oh no!');
+
+        expect(instance.shouldExitWithError).toBeTrue();
+      });
+
+      it('tells the engine to exit now, with an error, if an `ERROR` log entry is emitted', () => {
+        const emitter = instance.emitter;
+
+        instance.configureLogger();
+        instance.logLevel = LOG_LEVELS.SILENT;
+        spyOn(instance, 'exit');
+        emitter.emit('logger:error', 'oh no!');
+
+        expect(instance.exit).toHaveBeenCalledOnceWith(1);
+      });
+    });
+  });
+
   describe('emitter', () => {
     it('creates an `EventEmitter` instance by default', () => {
       expect(new Engine().emitter).toBeInstanceOf(EventEmitter);
