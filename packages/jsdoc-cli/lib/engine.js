@@ -15,7 +15,7 @@
 */
 
 /* eslint-disable no-process-exit */
-import { Api } from '@jsdoc/core';
+import { Api, config as jsdocConfig } from '@jsdoc/core';
 import { getLogFunctions } from '@jsdoc/util';
 import _ from 'lodash';
 import ow from 'ow';
@@ -36,6 +36,9 @@ function validateChoice(flagInfo, choices, values) {
     }
   }
 }
+
+const FATAL_ERROR_MESSAGE =
+  'Exiting JSDoc because an error occurred. See the previous log messages for details.';
 
 /**
  * `KNOWN_FLAGS` is a set of all known flag names, including the long and short forms.
@@ -225,11 +228,46 @@ export default class Engine {
     return `Options:\n${help({ maxLength })}\n\nVisit https://jsdoc.app/ for more information.`;
   }
 
+  // TODO: Add a typedef for this.
   /**
    * Details about the command-line flags that JSDoc recognizes.
    */
   get knownFlags() {
     return flags;
+  }
+
+  // TODO: Add details about the directory and filenames that this method looks for.
+  /**
+   * Parses command-line flags; loads the JSDoc configuration file; and adds configuration details
+   * to the JSDoc environment.
+   *
+   * For details about supported command-line flags, see the value of the
+   * {@link module:@jsdoc/cli#knownFlags} property.
+   *
+   * @returns {Promise<undefined>} A promise that is fulfilled after the configuration is loaded.
+   */
+  loadConfig() {
+    const { env } = this;
+
+    try {
+      env.opts = _.defaults({}, this.parseFlags(env.args), env.opts);
+    } catch (e) {
+      this.shouldPrintHelp = true;
+      this.exit(1, `${e.message}\n`);
+
+      return Promise.reject(e);
+    }
+
+    return jsdocConfig.load(env.opts.configure).then(
+      (conf) => {
+        env.conf = conf.config;
+        // Look for options on the command line, then in the config.
+        env.opts = _.defaults(env.opts, env.conf.opts);
+      },
+      (e) => {
+        this.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
+      }
+    );
   }
 
   /**

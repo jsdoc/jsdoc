@@ -20,11 +20,10 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 import Engine from '@jsdoc/cli';
-import { config as jsdocConfig, plugins } from '@jsdoc/core';
+import { plugins } from '@jsdoc/core';
 import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
 import { Dictionary } from '@jsdoc/tag';
-import _ from 'lodash';
 import stripBom from 'strip-bom';
 import stripJsonComments from 'strip-json-comments';
 
@@ -47,8 +46,6 @@ export default (() => {
   const cli = {};
   const engine = new Engine();
   const { api, env, log } = engine;
-  const FATAL_ERROR_MESSAGE =
-    'Exiting JSDoc because an error occurred. See the previous log messages for details.';
 
   // TODO: docs
   cli.setVersionInfo = () => {
@@ -69,31 +66,7 @@ export default (() => {
   };
 
   // TODO: docs
-  cli.loadConfig = async () => {
-    try {
-      env.opts = engine.parseFlags(env.args);
-    } catch (e) {
-      engine.shouldPrintHelp = true;
-      engine.exit(1, `${e.message}\n`);
-
-      return cli;
-    }
-
-    try {
-      // eslint-disable-next-line require-atomic-updates
-      env.conf = (await jsdocConfig.load(env.opts.configure)).config;
-    } catch (e) {
-      engine.exit(1, `Cannot parse the config file: ${e}\n${FATAL_ERROR_MESSAGE}`);
-
-      return cli;
-    }
-
-    // Look for options on the command line, then in the config.
-    env.opts = _.defaults(env.opts, env.conf.opts);
-    env.tags = Dictionary.fromConfig(env);
-
-    return cli;
-  };
+  cli.loadConfig = () => engine.loadConfig();
 
   // TODO: docs
   cli.configureLogger = () => {
@@ -129,6 +102,9 @@ export default (() => {
   cli.runCommand = () => {
     let cmd;
     const { options } = env;
+
+    // TODO: Move to `Api`.
+    env.tags = Dictionary.fromConfig(env);
 
     // If we already need to exit with an error, don't do any more work.
     if (engine.shouldExitWithError) {

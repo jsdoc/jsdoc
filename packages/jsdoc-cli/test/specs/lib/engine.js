@@ -14,7 +14,10 @@
   limitations under the License.
 */
 
+/* global jsdoc */
+
 import EventEmitter from 'node:events';
+import path from 'node:path';
 
 import Engine from '../../../lib/engine.js';
 import flags from '../../../lib/flags.js';
@@ -262,6 +265,61 @@ describe('@jsdoc/cli/lib/engine', () => {
 
     it('throws on a bad maxLength option', () => {
       expect(() => instance.help({ maxLength: 'long' })).toThrow();
+    });
+  });
+
+  describe('loadConfig', () => {
+    const configPath = path.resolve(
+      path.join(jsdoc.dirname(import.meta.url), '../../fixtures/configs/conf.json')
+    );
+    let instance;
+
+    beforeEach(() => {
+      instance = new Engine();
+      instance.env.options.configure = configPath;
+    });
+
+    it('parses the command-line flags', async () => {
+      instance.env.args = ['-p', '-v'];
+
+      await instance.loadConfig();
+
+      expect(instance.env.options.private).toBeTrue();
+      expect(instance.env.options.version).toBeTrue();
+    });
+
+    it('exits if the command-line flags cannot be parsed', async () => {
+      instance.env.args = ['--not-a-real-flag'];
+
+      spyOn(instance, 'exit');
+      try {
+        await instance.loadConfig();
+
+        // We shouldn't get here.
+        expect(false).toBeTrue();
+      } catch (e) {
+        // Expected exit code.
+        expect(instance.exit.calls.argsFor(0)[0]).toBe(1);
+        // Expected error message.
+        expect(instance.exit.calls.argsFor(0)[1]).toContain(
+          'Unknown command-line option: --not-a-real-flag'
+        );
+      }
+    });
+
+    it('adds the config info to the JSDoc environment', async () => {
+      await instance.loadConfig();
+
+      expect(instance.env.config.sourceType).toBe('script');
+    });
+
+    it('merges the command-line flags from the config file with the real flags', async () => {
+      instance.env.args = ['-p'];
+
+      await instance.loadConfig();
+
+      expect(instance.env.options.private).toBeTrue();
+      expect(instance.env.options.version).toBeTrue();
     });
   });
 
