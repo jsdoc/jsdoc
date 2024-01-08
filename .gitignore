@@ -44,9 +44,6 @@ jspm_packages/
 .env
 .env.test
 
-# User-specific files
-conf.json
-
 # Generated files
 test/tutorials/out
 out/
