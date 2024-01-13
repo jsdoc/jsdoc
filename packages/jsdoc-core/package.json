@@ -31,8 +31,11 @@
     }
   },
   "dependencies": {
+    "@jsdoc/doclet": "^0.2.10",
+    "@jsdoc/parse": "^0.3.10",
     "cosmiconfig": "^9.0.0",
     "escape-string-regexp": "^5.0.0",
+    "fast-glob": "^3.3.2",
     "lodash": "^4.17.21",
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^5.0.1"

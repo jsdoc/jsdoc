@@ -15,10 +15,16 @@
 */
 
 import EventEmitter from 'node:events';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { Env } from '@jsdoc/core';
+import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
+import { createParser, handlers } from '@jsdoc/parse';
 import glob from 'fast-glob';
+import stripJsonComments from 'strip-json-comments';
+
+import Env from './env.js';
+import { installPlugins } from './plugins.js';
 
 const DEFAULT_TEMPLATE = '@jsdoc/template-legacy';
 
@@ -61,6 +67,18 @@ export default class Api {
     }
 
     return sourceFiles;
+  }
+
+  async #createParser() {
+    const parser = createParser(this.env);
+
+    if (this.env.config.plugins) {
+      await installPlugins(this.env.config.plugins, parser, this.env);
+    }
+
+    handlers.attachTo(parser);
+
+    return parser;
   }
 
   /**
@@ -149,6 +167,49 @@ export default class Api {
       log.fatal(message);
 
       return Promise.reject(new Error(message));
+    }
+  }
+
+  // TODO: docs; mention that filepaths overrides env.sourceFiles
+  async parseSourceFiles(filepaths) {
+    const { log, options } = this.env;
+    const parser = await this.#createParser();
+    let packageData = '';
+    let packageDocs;
+    let docletStore;
+
+    docletStore = parser.parse(filepaths ?? this.env.sourceFiles, options.encoding);
+
+    if (options.package) {
+      packageData = await this.#readPackageJson(options.package);
+    }
+    packageDocs = new Package(packageData, this.env);
+    packageDocs.files = this.env.sourceFiles || [];
+    docletStore.add(packageDocs);
+
+    log.debug('Adding inherited symbols, mixins, and interface implementations...');
+    augment.augmentAll(docletStore);
+    log.debug('Adding borrowed doclets...');
+    resolveBorrows(docletStore);
+    log.debug('Post-processing complete.');
+    if (parser.listenerCount('processingComplete')) {
+      parser.fireProcessingComplete(Array.from(docletStore.doclets));
+    }
+
+    return docletStore;
+  }
+
+  async #readPackageJson(filepath) {
+    let data;
+
+    try {
+      data = await readFile(filepath, 'utf8');
+
+      return stripJsonComments(data);
+    } catch (e) {
+      this.env.log.error(`Unable to read the package file ${filepath}`);
+
+      return null;
     }
   }
 }

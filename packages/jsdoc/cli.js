@@ -16,16 +16,11 @@
 
 /* eslint-disable no-process-exit */
 import fs from 'node:fs';
-import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 import Engine from '@jsdoc/cli';
-import { plugins } from '@jsdoc/core';
-import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
-import { createParser, handlers } from '@jsdoc/parse';
 import { Dictionary } from '@jsdoc/tag';
 import stripBom from 'strip-bom';
-import stripJsonComments from 'strip-json-comments';
 
 import test from './test/index.js';
 
@@ -36,7 +31,7 @@ import test from './test/index.js';
  */
 export default (() => {
   const props = {
-    docs: [],
+    docs: null,
     packageJson: null,
     shouldExitWithError: false,
     shouldPrintHelp: false,
@@ -145,8 +140,7 @@ export default (() => {
 
       return Promise.resolve(0);
     } else {
-      await cli.createParser();
-      await cli.parseFiles();
+      props.docs = await api.parseSourceFiles();
 
       return cli.processParseResults().then(() => {
         env.run.finish = new Date();
@@ -154,61 +148,6 @@ export default (() => {
         return 0;
       });
     }
-  };
-
-  async function readPackageJson(filepath) {
-    let data;
-
-    try {
-      data = await readFile(filepath, 'utf8');
-
-      return stripJsonComments(data);
-    } catch (e) {
-      log.error(`Unable to read the package file ${filepath}`);
-
-      return null;
-    }
-  }
-
-  cli.createParser = async () => {
-    const { config } = env;
-
-    props.parser = createParser(env);
-
-    if (config.plugins) {
-      await plugins.installPlugins(config.plugins, props.parser, env);
-    }
-
-    handlers.attachTo(props.parser);
-
-    return cli;
-  };
-
-  cli.parseFiles = async () => {
-    const { options } = env;
-    let packageData = '';
-    let packageDocs;
-    let docletStore;
-
-    docletStore = props.docs = props.parser.parse(env.sourceFiles, options.encoding);
-
-    if (props.packageJson) {
-      packageData = await readPackageJson(props.packageJson);
-    }
-    packageDocs = new Package(packageData, env);
-    packageDocs.files = env.sourceFiles || [];
-    docletStore.add(packageDocs);
-
-    log.debug('Adding inherited symbols, mixins, and interface implementations...');
-    augment.augmentAll(docletStore);
-    log.debug('Adding borrowed doclets...');
-    resolveBorrows(docletStore);
-    log.debug('Post-processing complete.');
-    if (props.parser.listenerCount('processingComplete')) {
-      props.parser.fireProcessingComplete(Array.from(docletStore.doclets));
-    }
-
-    return cli;
   };
 
   cli.processParseResults = () => {
