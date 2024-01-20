@@ -27,6 +27,9 @@
     "markdown-it": "^14.0.0",
     "markdown-it-anchor": "^8.6.7"
   },
+  "engines": {
+    "node": ">=v18.12.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jsdoc/jsdoc.git"

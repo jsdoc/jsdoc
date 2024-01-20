@@ -38,5 +38,8 @@
     "lodash": "^4.17.21",
     "on-change": "^5.0.1",
     "strip-bom": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=v18.12.0"
   }
 }
