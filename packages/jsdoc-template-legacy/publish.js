@@ -19,7 +19,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import salty from '@jsdoc/salty';
-import { log } from '@jsdoc/util';
 import commonPathPrefix from 'common-path-prefix';
 import glob from 'fast-glob';
 import _ from 'lodash';
@@ -38,6 +37,7 @@ const PRETTIFIER_CSS_FILES = ['tomorrow.min.css'];
 const PRETTIFIER_SCRIPT_FILES = ['lang-css.js', 'prettify.js'];
 
 let data;
+let log;
 let view;
 
 function mkdirpSync(filepath) {
@@ -418,11 +418,7 @@ function sourceToDestination(parentDir, sourcePath, destDir) {
   return path.resolve(path.join(destDir, relativeSource));
 }
 
-/**
-    @param {TAFFY} taffyData See <http://taffydb.com/>.
-    @param {object} opts
- */
-export function publish(docletStore, dependencies) {
+export function publish(docletStore, env) {
   let classes;
   let config;
   let externals;
@@ -448,8 +444,9 @@ export function publish(docletStore, dependencies) {
   let templatePath;
   let userStaticFileOutputDir;
 
-  opts = dependencies.get('options');
-  config = dependencies.get('config');
+  opts = env.options;
+  config = env.config;
+  log = env.log;
   templateConfig = config.templates || {};
   templateConfig.default = templateConfig.default || {};
   outdir = path.normalize(opts.destination);
@@ -461,10 +458,10 @@ export function publish(docletStore, dependencies) {
 
   // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
   // doesn't try to hand them out later
-  indexUrl = helper.getUniqueFilename('index', dependencies);
+  indexUrl = helper.getUniqueFilename('index', env);
   // don't call registerLink() on this one! 'index' is also a valid longname
 
-  globalUrl = helper.getUniqueFilename('global', dependencies);
+  globalUrl = helper.getUniqueFilename('global', env);
   helper.registerLink('global', globalUrl);
 
   // set up templating
@@ -500,7 +497,7 @@ export function publish(docletStore, dependencies) {
     }
     if (doclet.see) {
       doclet.see.forEach((seeItem, i) => {
-        doclet.see[i] = hashToLink(doclet, seeItem, dependencies);
+        doclet.see[i] = hashToLink(doclet, seeItem, env);
       });
     }
 
@@ -618,7 +615,7 @@ export function publish(docletStore, dependencies) {
   }
   data().each((doclet) => {
     let docletPath;
-    const url = helper.createLink(doclet, dependencies);
+    const url = helper.createLink(doclet, env);
 
     helper.registerLink(doclet.longname, url);
 
@@ -677,16 +674,16 @@ export function publish(docletStore, dependencies) {
   view.outputSourceFiles = outputSourceFiles;
 
   // once for all
-  view.nav = buildNav(members, dependencies);
+  view.nav = buildNav(members, env);
   attachModuleSymbols(find({ longname: { left: 'module:' } }), members.modules);
 
   // generate the pretty-printed source files first so other pages can link to them
   if (outputSourceFiles) {
-    generateSourceFiles(sourceFiles, opts.encoding, outdir, dependencies);
+    generateSourceFiles(sourceFiles, opts.encoding, outdir, env);
   }
 
   if (members.globals.length) {
-    generate('Global', [{ kind: 'globalobj' }], globalUrl, true, outdir, dependencies);
+    generate('Global', [{ kind: 'globalobj' }], globalUrl, true, outdir, env);
   }
 
   // index page displays information from package.json and lists files
@@ -706,7 +703,7 @@ export function publish(docletStore, dependencies) {
     indexUrl,
     true,
     outdir,
-    dependencies
+    env
   );
 
   // set up the lists that we'll use to generate pages
@@ -732,7 +729,7 @@ export function publish(docletStore, dependencies) {
         helper.longnameToUrl[longname],
         true,
         outdir,
-        dependencies
+        env
       );
     }
 
@@ -743,7 +740,7 @@ export function publish(docletStore, dependencies) {
         helper.longnameToUrl[longname],
         true,
         outdir,
-        dependencies
+        env
       );
     }
 
@@ -754,7 +751,7 @@ export function publish(docletStore, dependencies) {
         helper.longnameToUrl[longname],
         true,
         outdir,
-        dependencies
+        env
       );
     }
 
@@ -765,7 +762,7 @@ export function publish(docletStore, dependencies) {
         helper.longnameToUrl[longname],
         true,
         outdir,
-        dependencies
+        env
       );
     }
 
@@ -776,7 +773,7 @@ export function publish(docletStore, dependencies) {
         helper.longnameToUrl[longname],
         true,
         outdir,
-        dependencies
+        env
       );
     }
 
@@ -787,7 +784,7 @@ export function publish(docletStore, dependencies) {
         helper.longnameToUrl[longname],
         true,
         outdir,
-        dependencies
+        env
       );
     }
   });
