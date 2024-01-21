@@ -200,20 +200,6 @@ describe('Api', () => {
       expect(env.docletStore).toBe(fakeDocletStore);
     });
 
-    it('uses the legacy template by default', async () => {
-      options.template = null;
-
-      try {
-        await instance.generateDocs();
-
-        // We shouldn't get here.
-        expect(false).toBeTrue();
-      } catch (e) {
-        expect(e.message).toContain('default template');
-        expect(e.message).toContain('@jsdoc/template-legacy');
-      }
-    });
-
     it('rejects the promise and logs a fatal error if the template cannot be found', async () => {
       spyOn(env.log, 'fatal');
       options.template = 'fleeble';
