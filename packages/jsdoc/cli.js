@@ -30,15 +30,8 @@ import test from './test/index.js';
  * @private
  */
 export default (() => {
-  const props = {
-    docs: null,
-    packageJson: null,
-    shouldExitWithError: false,
-    shouldPrintHelp: false,
-    tmpdir: null,
-  };
-
   const cli = {};
+  let docs = null;
   const engine = new Engine();
   const { api, env, log } = engine;
 
@@ -140,7 +133,7 @@ export default (() => {
 
       return Promise.resolve(0);
     } else {
-      props.docs = await api.parseSourceFiles();
+      docs = await api.parseSourceFiles();
 
       return cli.processParseResults().then(() => {
         env.run.finish = new Date();
@@ -165,9 +158,9 @@ export default (() => {
     const { options } = env;
 
     if (options.debug || options.verbose) {
-      doclets = props.docs.allDoclets;
+      doclets = docs.allDoclets;
     } else {
-      doclets = props.docs.doclets;
+      doclets = docs.doclets;
     }
 
     console.log(JSON.stringify(Array.from(doclets), null, 2));
@@ -175,7 +168,7 @@ export default (() => {
     return cli;
   };
 
-  cli.generateDocs = () => api.generateDocs(props.docs);
+  cli.generateDocs = () => api.generateDocs(docs);
 
   return cli;
 })();
