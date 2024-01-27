@@ -19,86 +19,13 @@ import { Api, config as jsdocConfig } from '@jsdoc/core';
 import { getLogFunctions } from '@jsdoc/util';
 import _ from 'lodash';
 import ow from 'ow';
-import yargs from 'yargs-parser';
 
-import flags from './flags.js';
+import { flags, parseFlags } from './flags.js';
 import help from './help.js';
 import { LEVELS, Logger } from './logger.js';
 
-function validateChoice(flagInfo, choices, values) {
-  let flagNames = flagInfo.alias ? `-${flagInfo.alias}/` : '';
-
-  flagNames += `--${flagInfo.name}`;
-
-  for (let value of values) {
-    if (!choices.includes(value)) {
-      throw new TypeError(`The flag ${flagNames} accepts only these values: ${choices.join(', ')}`);
-    }
-  }
-}
-
 const FATAL_ERROR_MESSAGE =
   'Exiting JSDoc because an error occurred. See the previous log messages for details.';
-
-/**
- * `KNOWN_FLAGS` is a set of all known flag names, including the long and short forms.
- *
- * `YARGS_FLAGS` is details about the known command-line flags, but in a form that `yargs-parser`
- * understands. (That form is relatively hard to read, so we build this object from the more
- * readable `flags` object.)
- *
- * @private
- */
-const { KNOWN_FLAGS, YARGS_FLAGS } = (() => {
-  const names = new Set();
-  const opts = {
-    alias: {},
-    array: [],
-    boolean: [],
-    coerce: {},
-    narg: {},
-    normalize: [],
-  };
-
-  // `_` contains unparsed arguments.
-  names.add('_');
-
-  Object.keys(flags).forEach((flag) => {
-    const value = flags[flag];
-
-    names.add(flag);
-
-    if (value.alias) {
-      names.add(value.alias);
-      opts.alias[flag] = [value.alias];
-    }
-
-    if (value.array) {
-      opts.array.push(flag);
-    }
-
-    if (value.boolean) {
-      opts.boolean.push(flag);
-    }
-
-    if (value.coerce) {
-      opts.coerce[flag] = value.coerce;
-    }
-
-    if (value.normalize) {
-      opts.normalize.push(flag);
-    }
-
-    if (value.requiresArg) {
-      opts.narg[flag] = 1;
-    }
-  });
-
-  return {
-    KNOWN_FLAGS: names,
-    YARGS_FLAGS: opts,
-  };
-})();
 
 /**
  * CLI engine for JSDoc.
@@ -290,48 +217,11 @@ export default class Engine {
    * Use the instance's `flags` property to retrieve the parsed flags later.
    *
    * @param {Array<string>} cliFlags - The command-line flags to parse.
-   * @returns {Object} The name and value for each flag. The `_` property contains all arguments
-   * other than flags and flag values.
+   * @returns {Object<string, *>} The long name and value for each flag. The `_` property contains
+   * all arguments other than flags and flag values.
    */
   parseFlags(cliFlags) {
-    ow(cliFlags, ow.array);
-
-    let normalizedFlags;
-    let parsed;
-    let parsedFlags;
-    let parsedFlagNames;
-
-    normalizedFlags = Object.keys(flags);
-    parsed = yargs.detailed(cliFlags, YARGS_FLAGS);
-    if (parsed.error) {
-      throw parsed.error;
-    }
-    parsedFlags = parsed.argv;
-    parsedFlagNames = new Set(Object.keys(parsedFlags));
-
-    // Check all parsed flags for unknown flag names.
-    for (let flag of parsedFlagNames) {
-      if (!KNOWN_FLAGS.has(flag)) {
-        throw new TypeError(
-          'Unknown command-line option: ' + (flag.length === 1 ? `-${flag}` : `--${flag}`)
-        );
-      }
-    }
-
-    // Validate the values of known flags.
-    for (let flag of normalizedFlags) {
-      if (parsedFlags[flag] && flags[flag].choices) {
-        let flagInfo = {
-          name: flag,
-          alias: flags[flag].alias,
-        };
-
-        validateChoice(flagInfo, flags[flag].choices, parsedFlags[flag]);
-      }
-    }
-
-    // Only keep the long name of each flag.
-    this.flags = _.pick(parsedFlags, normalizedFlags.concat(['_']));
+    this.flags = parseFlags(cliFlags);
 
     return this.flags;
   }

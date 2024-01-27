@@ -20,7 +20,7 @@ import EventEmitter from 'node:events';
 import path from 'node:path';
 
 import Engine from '../../../lib/engine.js';
-import flags from '../../../lib/flags.js';
+import { flags } from '../../../lib/flags.js';
 import { LEVELS } from '../../../lib/logger.js';
 
 const TYPE_ERROR = 'TypeError';

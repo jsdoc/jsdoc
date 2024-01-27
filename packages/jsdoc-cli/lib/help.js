@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import flags from './flags.js';
+import { flags } from './flags.js';
 
 function padLeft(str, length) {
   return str.padStart(str.length + length);
