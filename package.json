@@ -29,7 +29,7 @@
     "license-check-and-add": "^4.0.5",
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
-    "prettier": "^3.2.4"
+    "prettier": "^3.2.5"
   },
   "type": "module",
   "engines": {
