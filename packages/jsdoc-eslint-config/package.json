@@ -14,7 +14,7 @@
     "@babel/eslint-parser": "^7.23.10",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
-    "eslint-plugin-simple-import-sort": "^11.0.0"
+    "eslint-plugin-simple-import-sort": "^12.0.0"
   },
   "peerDependencies": {
     "eslint": ">= 8.56.0",
