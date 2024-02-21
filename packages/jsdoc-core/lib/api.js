@@ -20,6 +20,7 @@ import path from 'node:path';
 
 import { augment, Package, resolveBorrows } from '@jsdoc/doclet';
 import { createParser, handlers } from '@jsdoc/parse';
+import { Dictionary } from '@jsdoc/tag';
 import glob from 'fast-glob';
 import stripJsonComments from 'strip-json-comments';
 
@@ -173,11 +174,13 @@ export default class Api {
   // TODO: docs; mention that filepaths overrides env.sourceFiles
   async parseSourceFiles(filepaths) {
     const { log, options } = this.env;
-    const parser = await this.#createParser();
+    let parser;
     let packageData = '';
     let packageDocs;
     let docletStore;
 
+    this.env.tags = Dictionary.fromConfig(this.env);
+    parser = await this.#createParser();
     docletStore = parser.parse(filepaths ?? this.env.sourceFiles, options.encoding);
 
     if (options.package) {

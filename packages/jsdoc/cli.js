@@ -91,9 +91,6 @@ export default (() => {
     let cmd;
     const { options } = env;
 
-    // TODO: Move to `Api`.
-    env.tags = Dictionary.fromConfig(env);
-
     // If we already need to exit with an error, don't do any more work.
     if (engine.shouldExitWithError) {
       cmd = () => Promise.resolve(0);
@@ -119,7 +116,10 @@ export default (() => {
 
   // TODO: docs
   cli.runTests = async () => {
-    const result = await test(env);
+    let result;
+
+    env.tags = Dictionary.fromConfig(env);
+    result = await test(env);
 
     return result.overallStatus === 'failed' ? 1 : 0;
   };

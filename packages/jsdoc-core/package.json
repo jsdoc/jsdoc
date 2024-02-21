@@ -33,6 +33,7 @@
   "dependencies": {
     "@jsdoc/doclet": "^0.2.10",
     "@jsdoc/parse": "^0.3.10",
+    "@jsdoc/tag": "^0.2.10",
     "cosmiconfig": "^9.0.0",
     "escape-string-regexp": "^5.0.0",
     "fast-glob": "^3.3.2",
