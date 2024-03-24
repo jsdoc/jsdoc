@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('function expressions', () => {
   function checkLongnames(docSet, namespace) {
     const memberName = `${namespace || ''}Foo#member1`;
@@ -30,14 +31,14 @@ describe('function expressions', () => {
   }
 
   describe('standard', () => {
-    checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcExpression.js'));
+    checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcexpression.js'));
   });
 
   describe('global', () => {
-    checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcExpression2.js'));
+    checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcexpression2.js'));
   });
 
   describe('as object literal property', () => {
-    checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcExpression3.js'), 'ns.');
+    checkLongnames(jsdoc.getDocSetFromFile('test/fixtures/funcexpression3.js'), 'ns.');
   });
 });
