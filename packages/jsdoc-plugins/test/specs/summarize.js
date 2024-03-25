@@ -121,12 +121,32 @@ describe('summarize', () => {
 
       handler({ doclet: doclet });
 
-      expect(doclet.summary).toBe('This description has <em>a tag.</em>');
+      expect(doclet.summary).toBe('This description has <em>a tag</em>.');
     });
 
     it('should not include a <p> tag in the summary', () => {
       const doclet = {
         description: '<p>This description contains HTML.</p><p>And plenty of it!</p>',
+      };
+
+      handler({ doclet: doclet });
+
+      expect(doclet.summary).toBe('This description contains HTML.');
+    });
+
+    it('should not include a <p> tag in the summary when first sentence ends without .', () => {
+      const doclet = {
+        description: '<p>This description contains HTML</p>',
+      };
+
+      handler({ doclet: doclet });
+
+      expect(doclet.summary).toBe('This description contains HTML.');
+    });
+
+    it('should be no more than 1 line', () => {
+      const doclet = {
+        description: 'This description contains HTML\n\nFollow-up part of the description.',
       };
 
       handler({ doclet: doclet });
