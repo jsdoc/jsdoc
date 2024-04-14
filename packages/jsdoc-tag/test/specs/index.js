@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import tag from '../../index.js';
 import definitions from '../../lib/definitions/index.js';
 import { Dictionary } from '../../lib/dictionary.js';

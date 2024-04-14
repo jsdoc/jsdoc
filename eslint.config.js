@@ -13,7 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-module.exports = {
-  extends: ['@jsdoc'],
-  root: true,
-};
+
+import jsdoc from '@jsdoc/eslint-config';
+
+export default [
+  {
+    files: ['packages/**/test/**'],
+    languageOptions: {
+      globals: {
+        jsdoc: 'readonly',
+      },
+    },
+  },
+  ...jsdoc,
+];

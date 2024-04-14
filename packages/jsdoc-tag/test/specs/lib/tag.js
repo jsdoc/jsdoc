@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* global jsdoc */
+
 import * as jsdocTag from '../../../lib/tag.js';
 import * as type from '../../../lib/type.js';
 

@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import * as name from '../../../lib/name.js';
 
 describe('@jsdoc/core.name', () => {

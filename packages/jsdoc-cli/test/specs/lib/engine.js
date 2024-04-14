@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-/* global jsdoc */
-
 import EventEmitter from 'node:events';
 import path from 'node:path';
 

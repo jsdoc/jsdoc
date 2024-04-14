@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* global jsdoc */
+
 import * as handlers from '../../../lib/handlers.js';
 
 describe('@jsdoc/parse/lib/handlers', () => {

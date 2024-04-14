@@ -13,4 +13,5 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // `@jsdoc/cli/lib/help` is tested indirectly by the tests for `@jsdoc/cli/lib/engine`.

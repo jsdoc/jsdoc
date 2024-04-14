@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-/* global jsdoc */
-
 import { Env } from '@jsdoc/core';
 import { Doclet } from '@jsdoc/doclet';
 import salty from '@jsdoc/salty';

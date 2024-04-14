@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-/* global jsdoc */
-
 import * as astBuilder from '../../../lib/ast-builder.js';
 
 const { AstBuilder } = astBuilder;

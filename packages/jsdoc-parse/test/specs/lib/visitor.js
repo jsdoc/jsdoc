@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* global jsdoc */
+
 import { Parser } from '../../../lib/parser.js';
 import { Visitor } from '../../../lib/visitor.js';
 

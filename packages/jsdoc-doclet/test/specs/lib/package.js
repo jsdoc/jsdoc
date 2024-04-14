@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-/* global jsdoc */
-
 import * as jsdocPackage from '../../../lib/package.js';
 
 const { Package } = jsdocPackage;

@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-/* global jsdoc */
-
 import { Tag } from '../../../lib/tag.js';
 import * as validator from '../../../lib/validator.js';
 

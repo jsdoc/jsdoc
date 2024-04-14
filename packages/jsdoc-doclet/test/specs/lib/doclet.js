@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* global jsdoc */
+
 import { name } from '@jsdoc/core';
 import _ from 'lodash';
 

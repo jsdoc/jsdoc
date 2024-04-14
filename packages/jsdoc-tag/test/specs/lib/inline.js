@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import * as inline from '../../../lib/inline.js';
 
 describe('@jsdoc/tag/lib/inline', () => {

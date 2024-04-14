@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-/* global jsdoc */
-
 import getLogFunctions from '../../../lib/log.js';
 
 describe('@jsdoc/util/lib/log', () => {
