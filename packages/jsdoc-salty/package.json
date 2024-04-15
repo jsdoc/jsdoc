@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/salty",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "A drop-in replacement for (some of) TaffyDB.",
   "keywords": [
     "jsdoc"
