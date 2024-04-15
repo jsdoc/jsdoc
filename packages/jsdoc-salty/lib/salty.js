@@ -69,6 +69,8 @@ function applyMatcherObject(value, matcherObject) {
   if (matcherObject.right) {
     return value && value.endsWith && value.endsWith(matcherObject.right);
   }
+
+  return false;
 }
 
 function finderWithMatcher(salty, ...args) {
