@@ -17,20 +17,21 @@ describe('@jsdoc/salty/lib/salty', () => {
   const _ = require('lodash');
   const Salty = require('../../../lib/salty');
 
-  const data = [
-    { a: 2, b: undefined, c: true },
-    { a: 47, b: null, c: true },
-    { a: 100, b: 'hello', c: true },
-    { a: 7, b: 'goodbye', c: false },
-    { a: 42, b: 8, c: null },
-    { a: 35, b: undefined, c: true },
-    { a: 22, b: null, c: true },
-    { a: 17, b: 0, c: false },
-    { a: 66, c: true },
-  ];
+  let data;
   let db;
 
   beforeEach(() => {
+    data = [
+      { a: 2, b: undefined, c: true },
+      { a: 47, b: null, c: true },
+      { a: 100, b: 'hello', c: true },
+      { a: 7, b: 'goodbye', c: false },
+      { a: 42, b: 8, c: null },
+      { a: 35, b: undefined, c: true },
+      { a: 22, b: null, c: true },
+      { a: 17, b: 0, c: false },
+      { a: 66, c: true },
+    ];
     db = new Salty(_.cloneDeep(data));
   });
 
@@ -162,29 +163,6 @@ describe('@jsdoc/salty/lib/salty', () => {
         ]);
       });
 
-      it('returns the correct items with the special matcher for undefined values', () => {
-        const result = db({ b: { isUndefined: true } }).get();
-
-        expect(result).toMatchArrayOfObjects([
-          { a: 2, b: undefined, c: true },
-          { a: 35, b: undefined, c: true },
-          { a: 66, c: true },
-        ]);
-      });
-
-      it('returns the correct items with the special matcher for defined values', () => {
-        const result = db({ b: { isUndefined: false } }).get();
-
-        expect(result).toMatchArrayOfObjects([
-          { a: 47, b: null, c: true },
-          { a: 100, b: 'hello', c: true },
-          { a: 7, b: 'goodbye', c: false },
-          { a: 42, b: 8, c: null },
-          { a: 22, b: null, c: true },
-          { a: 17, b: 0, c: false },
-        ]);
-      });
-
       it('returns no items if the selection is empty', () => {
         expect(db({ a: 1000000000 }).get()).toBeEmptyArray();
       });
@@ -202,6 +180,43 @@ describe('@jsdoc/salty/lib/salty', () => {
           { a: 22, b: null, c: true },
           { a: 66, c: true },
         ]);
+      });
+
+      describe('matcher objects', () => {
+        it('returns the correct items for `isUndefined: true`', () => {
+          const result = db({ b: { isUndefined: true } }).get();
+
+          expect(result).toMatchArrayOfObjects([
+            { a: 2, b: undefined, c: true },
+            { a: 35, b: undefined, c: true },
+            { a: 66, c: true },
+          ]);
+        });
+
+        it('returns the correct items for `isUndefined: false`', () => {
+          const result = db({ b: { isUndefined: false } }).get();
+
+          expect(result).toMatchArrayOfObjects([
+            { a: 47, b: null, c: true },
+            { a: 100, b: 'hello', c: true },
+            { a: 7, b: 'goodbye', c: false },
+            { a: 42, b: 8, c: null },
+            { a: 22, b: null, c: true },
+            { a: 17, b: 0, c: false },
+          ]);
+        });
+
+        it('returns the correct items for `left`', () => {
+          const result = db({ b: { left: 'good' } }).get();
+
+          expect(result).toMatchArrayOfObjects([{ a: 7, b: 'goodbye', c: false }]);
+        });
+
+        it('returns the correct items for `right`', () => {
+          const result = db({ b: { right: 'bye' } }).get();
+
+          expect(result).toMatchArrayOfObjects([{ a: 7, b: 'goodbye', c: false }]);
+        });
       });
     });
 

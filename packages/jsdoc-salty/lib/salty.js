@@ -21,14 +21,6 @@ if (!Object.hasOwn) {
   Object.hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-const IS_UNDEFINED = {
-  isUndefined: true,
-};
-
-const IS_NOT_UNDEFINED = {
-  isUndefined: false,
-};
-
 function addToSelection(salty, item, i) {
   salty._selectedItems.push(item);
   salty._selectedIndexes.push(i);
@@ -61,6 +53,24 @@ function finderWithFunction(salty, func) {
   return salty;
 }
 
+function applyMatcherObject(value, matcherObject) {
+  if (matcherObject.isUndefined === true) {
+    return _.isUndefined(value);
+  }
+
+  if (matcherObject.isUndefined === false) {
+    return !_.isUndefined(value);
+  }
+
+  if (matcherObject.left) {
+    return value && value.startsWith && value.startsWith(matcherObject.left);
+  }
+
+  if (matcherObject.right) {
+    return value && value.endsWith && value.endsWith(matcherObject.right);
+  }
+}
+
 function finderWithMatcher(salty, ...args) {
   let item;
   let matches;
@@ -81,14 +91,12 @@ function finderWithMatcher(salty, ...args) {
       item = salty._items[i];
       for (const key of matcherKeys) {
         matcherValue = matcher[key];
-        if (_.isMatch(matcherValue, IS_UNDEFINED)) {
-          matches = _.isUndefined(item[key]);
-        } else if (_.isMatch(matcherValue, IS_NOT_UNDEFINED)) {
-          matches = !_.isUndefined(item[key]);
-        } else if (Array.isArray(matcherValue)) {
+        if (Array.isArray(matcherValue)) {
           if (!matcherValue.includes(item[key])) {
             matches = false;
           }
+        } else if (_.isObject(matcherValue)) {
+          matches = applyMatcherObject(item[key], matcherValue);
         } else if (matcherValue !== item[key]) {
           matches = false;
         }

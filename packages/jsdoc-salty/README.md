@@ -107,6 +107,10 @@ const arrayMatcher = db({ a: [1, 3] }).get();
 const multiMatcher = db({ a: 1 }, { b: 'hello' }).get();
 // Get array of items where `b` is undefined
 const undefinedMatcher = db({ b: { isUndefined: true } }).get();
+// Get array of items where `b` starts with `he`
+const leftMatcher = db({ b: { left: 'he' } }).get();
+// Get array of items where `b` ends with `lo`
+const rightMatcher = db({ b: { right: 'lo' } }).get();
 ```
 
 ### Get items with a custom query function
