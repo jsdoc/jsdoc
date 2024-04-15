@@ -16,6 +16,9 @@
 
 import EventEmitter from 'node:events';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { DocletStore } from '@jsdoc/doclet';
 
 import Engine from '../../../lib/engine.js';
 import { flags } from '../../../lib/flags.js';
@@ -94,6 +97,7 @@ describe('@jsdoc/cli/lib/engine', () => {
     const instance = new Engine({ revision });
 
     expect(instance.revision).toBe(revision);
+    expect(instance.env.version.revision).toBe(revision.toUTCString());
   });
 
   it('throws if the revision is not a date', () => {
@@ -101,7 +105,10 @@ describe('@jsdoc/cli/lib/engine', () => {
   });
 
   it('sets the version if provided', () => {
-    expect(new Engine({ version: '1.2.3' }).version).toBe('1.2.3');
+    const instance = new Engine({ version: '1.2.3' });
+
+    expect(instance.version).toBe('1.2.3');
+    expect(instance.env.version.number).toBe('1.2.3');
   });
 
   it('throws if the version is not a string', () => {
@@ -194,6 +201,68 @@ describe('@jsdoc/cli/lib/engine', () => {
     });
   });
 
+  describe('dumpParseResults', () => {
+    let api;
+    let docletStore;
+    let env;
+    let instance;
+    let jsonDoclets;
+    let reparsedDoclets;
+    const sourceFile = fileURLToPath(new URL('../../fixtures/ignored-doclet.js', import.meta.url));
+
+    beforeEach(() => {
+      docletStore = null;
+      instance = new Engine();
+      api = instance.api;
+      env = instance.env;
+      env.conf.tags = {
+        dictionaries: ['jsdoc'],
+      };
+      jsonDoclets = null;
+      spyOn(console, 'log').and.callFake((value) => {
+        jsonDoclets = value;
+      });
+    });
+
+    afterEach(() => {
+      if (docletStore) {
+        docletStore.stopListening();
+      }
+    });
+
+    it('only dumps visible doclets by default', async () => {
+      docletStore = await api.parseSourceFiles([sourceFile]);
+      instance.dumpParseResults(docletStore);
+      reparsedDoclets = JSON.parse(jsonDoclets);
+
+      expect(reparsedDoclets.length).toBe(1);
+      expect(reparsedDoclets[0].kind).toBe('class');
+      expect(reparsedDoclets[0].name).toBe('NiceClass');
+    });
+
+    it('dumps all doclets when the `debug` option is set', async () => {
+      env.opts.debug = true;
+      docletStore = await api.parseSourceFiles([sourceFile]);
+      instance.dumpParseResults(docletStore);
+      reparsedDoclets = JSON.parse(jsonDoclets).filter((d) => d.kind === 'class');
+
+      expect(reparsedDoclets.length).toBe(2);
+      expect(reparsedDoclets[0].name).toBe('NiceClass');
+      expect(reparsedDoclets[1].name).toBe('NotSoNiceClass');
+    });
+
+    it('dumps all doclets when the `verbose` option is set', async () => {
+      env.opts.verbose = true;
+      docletStore = await api.parseSourceFiles([sourceFile]);
+      instance.dumpParseResults(docletStore);
+      reparsedDoclets = JSON.parse(jsonDoclets).filter((d) => d.kind === 'class');
+
+      expect(reparsedDoclets.length).toBe(2);
+      expect(reparsedDoclets[0].name).toBe('NiceClass');
+      expect(reparsedDoclets[1].name).toBe('NotSoNiceClass');
+    });
+  });
+
   describe('emitter', () => {
     it('creates an `EventEmitter` instance by default', () => {
       expect(new Engine().emitter).toBeInstanceOf(EventEmitter);
@@ -234,6 +303,83 @@ describe('@jsdoc/cli/lib/engine', () => {
       new Engine().exit(1);
 
       expect(process.on).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('generate', () => {
+    let api;
+    let docletStore;
+    let env;
+    let instance;
+
+    beforeEach(() => {
+      instance = new Engine();
+      env = instance.env;
+      env.sourceFiles = [
+        fileURLToPath(new URL('../../fixtures/ignored-doclet.js', import.meta.url)),
+      ];
+      api = instance.api;
+      docletStore = new DocletStore(jsdoc.env);
+
+      spyOn(api, 'findSourceFiles');
+      spyOn(api, 'generateDocs');
+      spyOn(api, 'parseSourceFiles').and.returnValue(docletStore);
+    });
+
+    afterEach(() => {
+      docletStore.stopListening();
+    });
+
+    it('looks for source files', async () => {
+      await instance.generate();
+
+      expect(api.findSourceFiles).toHaveBeenCalled();
+    });
+
+    it('logs a message if no source files are found', async () => {
+      env.sourceFiles = [];
+      spyOn(console, 'log');
+      await instance.generate();
+
+      expect(api.findSourceFiles).toHaveBeenCalled();
+      expect(console.log).toHaveBeenCalled();
+      expect(api.parseSourceFiles).not.toHaveBeenCalled();
+    });
+
+    it('parses the source files', async () => {
+      await instance.generate();
+
+      expect(api.parseSourceFiles).toHaveBeenCalled();
+    });
+
+    it('generates output files by default', async () => {
+      await instance.generate();
+
+      expect(api.generateDocs).toHaveBeenCalled();
+      expect(api.generateDocs.calls.argsFor(0)[0]).toBeInstanceOf(DocletStore);
+    });
+
+    it('dumps the parse results if requested', async () => {
+      env.options.explain = true;
+      spyOn(instance, 'dumpParseResults');
+      await instance.generate();
+
+      expect(instance.dumpParseResults).toHaveBeenCalled();
+      expect(instance.dumpParseResults.calls.argsFor(0)[0]).toBeInstanceOf(DocletStore);
+    });
+
+    it('sets env.run.finish if there are no source files', async () => {
+      env.sourceFiles = [];
+      spyOn(console, 'log');
+      await instance.generate();
+
+      expect(env.run.finish).toBeInstanceOf(Date);
+    });
+
+    it('sets env.run.finish if there are source files', async () => {
+      await instance.generate();
+
+      expect(env.run.finish).toBeInstanceOf(Date);
     });
   });
 

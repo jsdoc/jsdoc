@@ -14,7 +14,6 @@
   limitations under the License.
 */
 
-/* eslint-disable no-process-exit */
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -24,6 +23,16 @@ import stripBom from 'strip-bom';
 
 import test from './test/index.js';
 
+function createEngine() {
+  const packageJsonPath = fileURLToPath(new URL('package.json', import.meta.url));
+  // Allow this to throw; if we can't read our own package file, something is really wrong.
+  const packageInfo = JSON.parse(stripBom(fs.readFileSync(packageJsonPath, 'utf8')));
+  const revision = new Date(parseInt(packageInfo.revision, 10));
+  const { version } = packageInfo;
+
+  return new Engine({ revision, version });
+}
+
 /**
  * Helper methods for running JSDoc on the command line.
  *
@@ -31,36 +40,18 @@ import test from './test/index.js';
  */
 export default (() => {
   const cli = {};
-  let docs = null;
-  const engine = new Engine();
-  const { api, env, log } = engine;
+  let engine;
+  let env;
+  let log;
 
-  // TODO: docs
-  cli.setVersionInfo = () => {
-    const packageJsonPath = fileURLToPath(new URL('package.json', import.meta.url));
-    // allow this to throw--something is really wrong if we can't read our own package file
-    const info = JSON.parse(stripBom(fs.readFileSync(packageJsonPath, 'utf8')));
-    const revision = new Date(parseInt(info.revision, 10));
+  cli.initialize = () => {
+    engine = createEngine();
+    env = engine.env;
+    log = engine.log;
 
-    env.version = {
-      number: info.version,
-      revision: revision.toUTCString(),
-    };
-
-    engine.version = env.version.number;
-    engine.revision = revision;
-
-    return cli;
-  };
-
-  // TODO: docs
-  cli.loadConfig = () => engine.loadConfig();
-
-  // TODO: docs
-  cli.configureLogger = () => {
     engine.configureLogger();
 
-    return cli;
+    return engine.loadConfig();
   };
 
   // TODO: docs
@@ -91,9 +82,11 @@ export default (() => {
     let cmd;
     const { options } = env;
 
+    cli.logStart();
+
     // If we already need to exit with an error, don't do any more work.
     if (engine.shouldExitWithError) {
-      cmd = () => Promise.resolve(0);
+      cmd = () => Promise.resolve(1);
     } else if (options.help) {
       cmd = () => engine.printHelp();
     } else if (options.test) {
@@ -101,14 +94,11 @@ export default (() => {
     } else if (options.version) {
       cmd = () => engine.printVersion();
     } else {
-      cmd = cli.main;
+      cmd = () => engine.generate();
     }
 
+    // TODO: Await the promise and use try-catch.
     return cmd().then((errorCode) => {
-      if (!errorCode && engine.shouldExitWithError) {
-        errorCode = 1;
-      }
-
       cli.logFinish();
       engine.exit(errorCode || 0);
     });
@@ -123,52 +113,6 @@ export default (() => {
 
     return result.overallStatus === 'failed' ? 1 : 0;
   };
-
-  // TODO: docs
-  cli.main = async () => {
-    await api.findSourceFiles();
-
-    if (env.sourceFiles.length === 0) {
-      console.log('There are no input files to process.');
-
-      return Promise.resolve(0);
-    } else {
-      docs = await api.parseSourceFiles();
-
-      return cli.processParseResults().then(() => {
-        env.run.finish = new Date();
-
-        return 0;
-      });
-    }
-  };
-
-  cli.processParseResults = () => {
-    if (env.options.explain) {
-      cli.dumpParseResults();
-
-      return Promise.resolve();
-    } else {
-      return cli.generateDocs();
-    }
-  };
-
-  cli.dumpParseResults = () => {
-    let doclets;
-    const { options } = env;
-
-    if (options.debug || options.verbose) {
-      doclets = docs.allDoclets;
-    } else {
-      doclets = docs.doclets;
-    }
-
-    console.log(JSON.stringify(Array.from(doclets), null, 2));
-
-    return cli;
-  };
-
-  cli.generateDocs = () => api.generateDocs(docs);
 
   return cli;
 })();

@@ -14,7 +14,6 @@
   limitations under the License.
 */
 
-/* eslint-disable no-process-exit */
 import { Api, config as jsdocConfig } from '@jsdoc/core';
 import { getLogFunctions } from '@jsdoc/util';
 import _ from 'lodash';
@@ -74,11 +73,15 @@ export default class Engine {
     // Support the format used by `Env`.
     // TODO: Make the formats consistent.
     if (_.isObject(opts.version)) {
+      this.env.version = opts.version;
       this.version = opts.version.number;
       this.revision = new Date(opts.version.revision);
+      this.env.version.revision = opts.version.revision;
     } else {
-      this.version = opts.version;
+      this.env.version = {};
+      this.version = this.env.version.number = opts.version;
       this.revision = opts.revision;
+      this.env.version.revision = opts.revision?.toUTCString();
     }
   }
 
@@ -112,6 +115,19 @@ export default class Engine {
     }
   }
 
+  dumpParseResults(docletStore) {
+    let doclets;
+    const { options } = this.env;
+
+    if (options.debug || options.verbose) {
+      doclets = docletStore.allDoclets;
+    } else {
+      doclets = docletStore.doclets;
+    }
+
+    console.log(JSON.stringify(Array.from(doclets), null, 2));
+  }
+
   exit(exitCode, message) {
     ow(exitCode, ow.number);
     ow(message, ow.optional.string);
@@ -130,8 +146,31 @@ export default class Engine {
       if (this.shouldPrintHelp) {
         this.printHelp();
       }
+      // eslint-disable-next-line no-process-exit
       process.exit(exitCode);
     });
+  }
+
+  async generate() {
+    let docletStore;
+    const { api, env } = this;
+
+    await api.findSourceFiles();
+    if (env.sourceFiles.length === 0) {
+      console.log('There are no input files to process.');
+    } else {
+      docletStore = await api.parseSourceFiles();
+
+      if (env.options.explain) {
+        this.dumpParseResults(docletStore);
+      } else {
+        await api.generateDocs(docletStore);
+      }
+    }
+
+    env.run.finish = new Date();
+
+    return 0;
   }
 
   /**
@@ -185,6 +224,7 @@ export default class Engine {
       return Promise.reject(e);
     }
 
+    // TODO: Await the promise and use try-catch.
     return jsdocConfig.load(env.opts.configure).then(
       (conf) => {
         env.conf = conf.config;

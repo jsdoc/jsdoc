@@ -18,9 +18,6 @@
 import cli from './cli.js';
 
 (async () => {
-  cli.setVersionInfo();
-  await cli.loadConfig();
-  cli.configureLogger().logStart();
-
+  await cli.initialize();
   await cli.runCommand();
 })();
