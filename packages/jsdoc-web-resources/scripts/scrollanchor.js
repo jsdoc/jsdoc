@@ -14,6 +14,8 @@
   limitations under the License.
 */
 
+import ease from 'easy-ease';
+
 // Prevent the top navbar from obscuring the page content.
 (() => {
   const KEY_CODES = {
@@ -31,6 +33,19 @@
     return px - adjustedNavbarHeight;
   }
 
+  function easeToY(endValue) {
+    ease({
+      durationMs: 200,
+      startValue: window.scrollY,
+      endValue,
+      onStep: (value) =>
+        window.scroll({
+          behavior: 'instant',
+          top: value,
+        }),
+    });
+  }
+
   function handleHashEvent(event, id, historyItem) {
     let target;
 
@@ -41,7 +56,7 @@
     target = document.getElementById(id);
     if (target) {
       event.preventDefault();
-      window.scroll({ top: adjustForNavbar(target.offsetTop) });
+      easeToY(adjustForNavbar(target.offsetTop));
       window.history.pushState(null, null, historyItem);
     }
   }
@@ -80,16 +95,10 @@
 
     switch (code) {
       case KEY_CODES.PAGE_UP:
-        window.scroll({
-          top: window.scrollY - scrollBy,
-          behavior: 'auto',
-        });
+        easeToY(window.scrollY - scrollBy);
         break;
       default:
-        window.scroll({
-          top: window.scrollY + scrollBy,
-          behavior: 'auto',
-        });
+        easeToY(window.scrollY + scrollBy);
         break;
     }
   });
