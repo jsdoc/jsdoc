@@ -4,6 +4,8 @@
     "append": ""
   },
   "ignore": [
+    ".husky/_/**/*",
+    ".husky/pre-commit",
     ".parcel-cache",
     "**/.*",
     "!**/.*.js",
