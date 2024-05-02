@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc, starting with version 3.0.0.
 
 
+## 4.0.3 (May 2024)
+
+Updates dependencies.
+
+
 ## 4.0.2 (February 2023)
 
 Updates the Babel parser, and enables additional Babel plugins for ECMAScript proposals.
