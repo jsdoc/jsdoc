@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "ow": "^1.1.1"
+    "ow": "^2.0.0"
   },
   "engines": {
     "node": ">=v18.12.0"
