@@ -71,7 +71,7 @@ and customize your documentation. Here are a few of them:
 
 ### Servers
 
-- [doc-server](https://github.com/doga/doc-server) — A [Gemini](https://geminiprotocol.net/) server for serving JSDoc documentation. Written in TypeScript, runs on [Deno](https://deno.com/). Motivation: developers are big terminal users, and Gemini is a better platform than the Web for browsing content from the terminal.
+- [doc-server](https://github.com/doga/doc-server) — A [Gemini](https://geminiprotocol.net/) server for serving JSDoc documentation. Written in TypeScript, runs on [Deno](https://deno.com/). Motivation: developers are big terminal users, and Gemini is a more convenient platform than the Web for browsing content from the terminal.
 
 ### Other tools
 
