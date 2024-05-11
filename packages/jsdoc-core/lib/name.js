@@ -34,6 +34,8 @@ export const LONGNAMES = {
   ANONYMOUS: '<anonymous>',
   /** Longname that represents global scope. */
   GLOBAL: '<global>',
+  /** Longname for the default export in an ES2015 module. */
+  MODULE_DEFAULT_EXPORT: '<moduleDefaultExport>',
 };
 
 // Module namespace prefix.

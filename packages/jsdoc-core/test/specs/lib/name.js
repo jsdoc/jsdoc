@@ -192,6 +192,10 @@ describe('@jsdoc/core.name', () => {
     it('has a GLOBAL property', () => {
       expect(name.LONGNAMES.GLOBAL).toBeString();
     });
+
+    it('has a MODULE_DEFAULT_EXPORT property', () => {
+      expect(name.LONGNAMES.MODULE_DEFAULT_EXPORT).toBeString();
+    });
   });
 
   // TODO: longnamesToTree tests

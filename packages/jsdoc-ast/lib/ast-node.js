@@ -22,7 +22,7 @@ import moduleTypes from 'ast-module-types';
 
 import { Syntax } from './syntax.js';
 
-const { SCOPE } = name;
+const { LONGNAMES, SCOPE } = name;
 
 // Counter for generating unique node IDs.
 let uid = 100000000;
@@ -166,7 +166,7 @@ export function nodeToValue(node) {
     // falls through
 
     case Syntax.ExportDefaultDeclaration:
-      str = 'module.exports';
+      str = LONGNAMES.MODULE_DEFAULT_EXPORT;
       break;
 
     case Syntax.ExportNamedDeclaration:
@@ -232,7 +232,7 @@ export function nodeToValue(node) {
         parent.parent &&
         parent.parent.type === Syntax.ExportDefaultDeclaration
       ) {
-        str = 'module.exports';
+        str = LONGNAMES.MODULE_DEFAULT_EXPORT;
       }
       // for the constructor of a module's named export, use the name of the export
       // declaration
@@ -399,7 +399,7 @@ export function getInfo(node) {
       info.node = node;
       // if this class is the default export, we need to use a special name
       if (node.parent && node.parent.type === Syntax.ExportDefaultDeclaration) {
-        info.name = 'module.exports';
+        info.name = LONGNAMES.MODULE_DEFAULT_EXPORT;
       } else {
         info.name = node.id ? nodeToValue(node.id) : '';
       }

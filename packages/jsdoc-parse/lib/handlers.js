@@ -19,7 +19,9 @@ import { Doclet } from '@jsdoc/doclet';
 import escape from 'escape-string-regexp';
 
 const PROTOTYPE_OWNER_REGEXP = /^(.+?)(\.prototype|#)$/;
-const { SCOPE } = name;
+const { LONGNAMES, SCOPE } = name;
+const ESCAPED_MODULE_LONGNAMES =
+  escape(LONGNAMES.MODULE_DEFAULT_EXPORT) + '|' + escape('module.exports');
 
 let currentModule = null;
 // Modules inferred from the value of an `@alias` tag, like `@alias module:foo.bar`.
@@ -107,13 +109,17 @@ function setModule(doclet) {
   }
 }
 
+function isModuleExports(module, doclet) {
+  return module.longname === doclet.name;
+}
+
 function setModuleScopeMemberOf(parser, doclet) {
   const moduleInfo = getModule();
   let parentDoclet;
   let skipMemberof;
 
-  // handle module symbols that are _not_ assigned to module.exports
-  if (moduleInfo && moduleInfo.longname !== doclet.name) {
+  // Handle CommonJS module symbols that are _not_ assigned to `module.exports`.
+  if (moduleInfo && !isModuleExports(moduleInfo, doclet)) {
     if (!doclet.scope) {
       // is this a method definition? if so, we usually get the scope from the node directly
       if (doclet.meta?.code?.node?.type === Syntax.MethodDefinition) {
@@ -191,8 +197,13 @@ function processAlias(parser, doclet, astNode) {
   doclet.postProcess();
 }
 
+function isModuleObject(doclet) {
+  return doclet.name === LONGNAMES.MODULE_DEFAULT_EXPORT || doclet.name === 'module.exports';
+}
+
 // TODO: separate code that resolves `this` from code that resolves the module object
 function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPunc) {
+  const docletIsModuleObject = isModuleObject(doclet);
   let memberof = '';
   let nameAndPunc;
   let scopePunc = '';
@@ -205,9 +216,9 @@ function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPun
 
   nameAndPunc = nameStartsWith + (trailingPunc || '');
 
-  // remove stuff that indicates module membership (but don't touch the name `module.exports`,
-  // which identifies the module object itself)
-  if (doclet.name !== 'module.exports') {
+  // Remove parts of the name that indicate module membership. Don't touch the name if it identifies
+  // the module object itself.
+  if (!docletIsModuleObject) {
     doclet.name = doclet.name.replace(nameAndPunc, '');
   }
 
@@ -215,12 +226,12 @@ function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPun
   //   exports.bar = 1;
   //   module.exports.bar = 1;
   //   module.exports = MyModuleObject; MyModuleObject.bar = 1;
-  if (nameStartsWith !== 'this' && currentModule && doclet.name !== 'module.exports') {
+  if (nameStartsWith !== 'this' && currentModule && !docletIsModuleObject) {
     memberof = currentModule.longname;
     scopePunc = SCOPE.PUNC.STATIC;
   }
   // like: module.exports = 1;
-  else if (doclet.name === 'module.exports' && currentModule) {
+  else if (docletIsModuleObject && currentModule) {
     doclet.addTag('name', currentModule.longname);
     doclet.postProcess();
   } else {
@@ -260,7 +271,9 @@ function addSymbolMemberof(parser, doclet, astNode) {
   if (currentModule) {
     moduleOriginalName = `|${currentModule.originalName}`;
   }
-  resolveTargetRegExp = new RegExp(`^((?:module.)?exports|this${moduleOriginalName})(\\.|\\[|$)`);
+  resolveTargetRegExp = new RegExp(
+    `^((?:module\\.)?exports|${ESCAPED_MODULE_LONGNAMES}|this${moduleOriginalName})(\\.|\\[|$)`
+  );
   unresolved = resolveTargetRegExp.exec(doclet.name);
 
   if (unresolved) {
@@ -309,14 +322,15 @@ function newSymbolDoclet(parser, docletSrc, e) {
     return false;
   }
 
-  // set the scope to global unless any of the following are true:
-  // a) the doclet is a memberof something
-  // b) the doclet represents a module
-  // c) we're in a module that exports only this symbol
+  // Set the scope to `global` unless any of the following are true:
+  //
+  // + The doclet is a `memberof` something.
+  // + The doclet represents a module.
+  // + We're in a CommonJS module that exports only this symbol.
   if (
     !newDoclet.memberof &&
     newDoclet.kind !== 'module' &&
-    (!currentModule || currentModule.longname !== newDoclet.name)
+    (!currentModule || !isModuleExports(currentModule, newDoclet))
   ) {
     newDoclet.scope = SCOPE.NAMES.GLOBAL;
   }
