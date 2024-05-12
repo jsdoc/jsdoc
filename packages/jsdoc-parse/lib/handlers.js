@@ -20,8 +20,11 @@ import escape from 'escape-string-regexp';
 
 const PROTOTYPE_OWNER_REGEXP = /^(.+?)(\.prototype|#)$/;
 const { LONGNAMES, SCOPE } = name;
-const ESCAPED_MODULE_LONGNAMES =
-  escape(LONGNAMES.MODULE_DEFAULT_EXPORT) + '|' + escape('module.exports');
+const ESCAPED_MODULE_LONGNAMES = [
+  escape(LONGNAMES.MODULE_DEFAULT_EXPORT),
+  escape(LONGNAMES.MODULE_EXPORT),
+  escape('module.exports'),
+].join('|');
 
 let currentModule = null;
 // Modules inferred from the value of an `@alias` tag, like `@alias module:foo.bar`.

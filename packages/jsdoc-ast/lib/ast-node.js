@@ -171,20 +171,19 @@ export function nodeToValue(node) {
 
     case Syntax.ExportNamedDeclaration:
       if (node.declaration) {
-        // like `var` in: export var foo = 'bar';
-        // we need a single value, so we use the first variable name
+        // Like the declaration in: `export const foo = 'bar';`
+        // We need a single value, so we use the first variable name.
         if (node.declaration.declarations) {
-          str = `exports.${nodeToValue(node.declaration.declarations[0])}`;
+          str = `${LONGNAMES.MODULE_EXPORT}.${nodeToValue(node.declaration.declarations[0])}`;
         } else {
-          str = `exports.${nodeToValue(node.declaration)}`;
+          str = `${LONGNAMES.MODULE_EXPORT}.${nodeToValue(node.declaration)}`;
         }
       }
 
-      // otherwise we'll use the ExportSpecifier nodes
       break;
 
     case Syntax.ExportSpecifier:
-      str = `exports.${nodeToValue(node.exported)}`;
+      str = `${LONGNAMES.MODULE_EXPORT}.${nodeToValue(node.exported)}`;
       break;
 
     case Syntax.ArrowFunctionExpression:

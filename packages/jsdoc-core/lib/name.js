@@ -36,6 +36,8 @@ export const LONGNAMES = {
   GLOBAL: '<global>',
   /** Longname for the default export in an ES2015 module. */
   MODULE_DEFAULT_EXPORT: '<moduleDefaultExport>',
+  /** Longname prefix for an export in an ES2015 module. */
+  MODULE_EXPORT: '<moduleExport>',
 };
 
 // Module namespace prefix.
