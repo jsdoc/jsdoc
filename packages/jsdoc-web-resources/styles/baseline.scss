@@ -374,9 +374,8 @@ header > .symbol-detail-badges {
   padding-left: 0;
 }
 
-// TODO: Use class selectors.
-#jsdoc-footer-container,
-#jsdoc-navbar-container {
+.jsdoc-footer-container,
+.jsdoc-navbar-container {
   @include make-container();
 }
 
@@ -419,14 +418,12 @@ header > .symbol-detail-badges {
 }
 
 // TODO: Use breakpoints to set width.
-// TODO: Use class selectors.
-#jsdoc-content-container {
+.jsdoc-content-container {
   @include make-container();
   margin-top: $spacer-2x-large;
 }
 
-// TODO: Use class selectors.
-#jsdoc-content,
+.jsdoc-content,
 .summary-content,
 .symbol-index-section {
   @include make-row();
@@ -440,15 +437,13 @@ header > .symbol-detail-badges {
 }
 
 // TODO: Use breakpoints to set width.
-// TODO: Use class selectors.
-#jsdoc-main {
+.jsdoc-main {
   @extend .order-2;
   @include make-col(9);
 }
 
 // TODO: Use breakpoints to set width.
-// TODO: Use class selectors.
-#jsdoc-toc-nav {
+.jsdoc-toc-nav {
   @include make-col(3);
   @extend .order-1;
   font-family: $h-font, sans-serif;
