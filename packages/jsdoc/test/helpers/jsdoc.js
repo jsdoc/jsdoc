@@ -65,7 +65,7 @@ const helpers = {
 
     handlers.attachTo(testParser);
 
-    docSet.docletStore = testParser.parse(`javascript:${sourceCode}`); // eslint-disable-line no-script-url
+    docSet.docletStore = testParser.parse(`javascript:${sourceCode}`);
 
     if (shouldAugment !== false) {
       augment.augmentAll(docSet.docletStore);

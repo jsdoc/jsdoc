@@ -774,7 +774,6 @@ export class Visitor {
     return true;
   }
 
-  /* eslint-disable class-methods-use-this */
   // TODO: docs
   visitNodeComments(node, parser, filename) {
     let comments;
@@ -822,7 +821,6 @@ export class Visitor {
 
     return true;
   }
-  /* eslint-enable class-methods-use-this */
 
   // TODO: docs
   visitNode(node, parser, filename) {

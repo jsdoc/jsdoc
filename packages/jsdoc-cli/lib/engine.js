@@ -146,7 +146,6 @@ export default class Engine {
       if (this.shouldPrintHelp) {
         this.printHelp();
       }
-      // eslint-disable-next-line no-process-exit
       process.exit(exitCode);
     });
   }

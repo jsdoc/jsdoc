@@ -13,12 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Demonstrate how to modify the source code before the parser sees it.
  *
  * @module @jsdoc/plugins/comment-convert
  */
-/* eslint-disable spaced-comment */
+
 /** @alias module:@jsdoc/plugins/comment-convert.handlers */
 export const handlers = {
   ///

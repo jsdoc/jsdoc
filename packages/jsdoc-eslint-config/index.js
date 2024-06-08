@@ -106,7 +106,7 @@ export default [
       'no-unsafe-negation': 'error',
       'no-unsafe-optional-chaining': 'error',
       'no-unused-private-class-members': 'error',
-      'no-unused-vars': 'error',
+      'no-unused-vars': ['error', { caughtErrors: 'none' }],
       'no-use-before-define': 'error',
       'no-useless-backreference': 'error',
       'require-atomic-updates': 'error',
