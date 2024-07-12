@@ -16,7 +16,7 @@
     "@jsdoc/task-runner": "^0.2.2",
     "@jsdoc/test-matchers": "^0.2.4",
     "@jsdoc/util": "^0.3.0",
-    "ajv": "^8.16.0",
+    "ajv": "^8.17.1",
     "c8": "^10.1.2",
     "eslint": "^9.6.0",
     "execa": "^9.3.0",
