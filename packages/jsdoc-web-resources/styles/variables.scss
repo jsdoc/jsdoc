@@ -32,8 +32,8 @@ $border-radius-small: 0.25rem;
 $navbar-height: 3rem;
 $footer-height: $navbar-height;
 $line-height-computed: $font-size-base * $line-height-base;
-$h-margin-top-large: $line-height-computed * 2;
-$h-margin-top-small: $line-height-computed;
+$h-margin-block-start-large: $line-height-computed * 2;
+$h-margin-block-start-small: $line-height-computed;
 
 $info: #5bc0de;
 $primary: #337ab7;

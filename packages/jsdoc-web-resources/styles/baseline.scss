@@ -19,57 +19,6 @@
 
 /* Typography */
 
-@mixin p-margin() {
-  margin-bottom: 0;
-}
-
-@mixin h-base() {
-  font-family: $h-font, sans-serif;
-}
-
-@mixin h-border() {
-  border-bottom: 1px solid $gray-300;
-}
-
-@mixin code-base() {
-  font-family: $code-font, monospace;
-  font-size: 100%;
-  font-variant-ligatures: none;
-  background-color: tint-color($code-color, 95%);
-}
-
-@mixin dl-horizontal() {
-  dd {
-    @extend .clearfix;
-  }
-
-  @include media-breakpoint-up(md) {
-    dt {
-      @include text-truncate();
-      float: left;
-      width: $dl-horizontal-offset;
-      clear: left;
-      text-align: right;
-    }
-
-    dd {
-      margin-left: $dl-horizontal-offset;
-    }
-  }
-}
-
-@mixin lead() {
-  margin-bottom: $line-height-computed * 1.1;
-  font-size: $font-size-base * 1.1;
-  font-weight: 300;
-  line-height: $line-height-computed * 1.1;
-
-  @include media-breakpoint-up(md) {
-    font-size: $font-size-base * 1.5;
-    line-height: $line-height-computed * 1.5;
-  }
-}
-
 @mixin source-code() {
   @extend pre;
   @include border-radius(0.2rem);
@@ -85,23 +34,76 @@ html {
 }
 
 body {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100vh;
+  gap: 1rem;
   font-family: $body-font, serif;
-  // Leave space for the header and footer.
-  margin-bottom: $footer-height;
-  padding-top: $navbar-height * 1.5;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  font-family: $h-font, sans-serif;
+}
+
+h1,
+.h1,
+h2,
+.h2 {
+  border-block-end: 1px solid $gray-300;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+  margin-block-start: $h-margin-block-start-large;
 }
 
 h1,
 .h1 {
-  @include h-base();
-  @include h-border();
-  font-size: $h1-font-size;
-  margin-top: $h-margin-top-large;
-
-  + section h2:first-child,
-  + section .h2:first-child {
-    margin-top: $h-margin-top-small;
+  + section {
+    h2:first-child,
+    .h2:first-child {
+      margin-block-start: $h-margin-block-start-small;
+    }
   }
+}
+
+h2,
+.h2 {
+  + section {
+    h3:first-child,
+    .h3:first-child {
+      margin-block-start: $h-margin-block-start-small;
+    }
+  }
+}
+
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  margin-block-start: $h-margin-block-start-small;
+}
+
+h1,
+.h1 {
+  font-size: $h1-font-size;
 
   > small {
     font-size: $h1-font-size * 0.65;
@@ -110,43 +112,27 @@ h1,
 
 h2,
 .h2 {
-  @include h-base();
-  @include h-border();
   font-size: $h2-font-size;
-  margin-top: $h-margin-top-large;
-
-  + section h3:first-child,
-  + section .h3:first-child {
-    margin-top: $h-margin-top-small;
-  }
 }
 
 h3,
 .h3 {
-  @include h-base();
   font-size: $h3-font-size;
-  margin-top: $h-margin-top-large;
 }
 
 h4,
 .h4 {
-  @include h-base();
   font-size: $h4-font-size;
-  margin-top: $h-margin-top-small;
 }
 
 h5,
 .h5 {
-  @include h-base();
   font-size: $h5-font-size;
-  margin-top: $h-margin-top-small;
 }
 
 h6,
 .h6 {
-  @include h-base();
   font-size: $h6-font-size;
-  margin-top: $h-margin-top-small;
 }
 
 a {
@@ -170,7 +156,10 @@ pre {
 }
 
 code {
-  @include code-base();
+  font-family: $code-font, monospace;
+  font-size: 100%;
+  font-variant-ligatures: none;
+  background-color: tint-color($code-color, 95%);
   border-radius: $border-radius-small;
   padding: 0.125rem 0.25rem;
 }
@@ -186,13 +175,26 @@ th {
 }
 
 .dl-compact {
-  @include dl-horizontal();
+  @include media-breakpoint-up(md) {
+    dt {
+      @include text-truncate();
+      float: inline-start;
+      width: $dl-horizontal-offset;
+      clear: inline-end;
+      text-align: end;
+    }
+
+    dd {
+      margin-inline-start: $dl-horizontal-offset;
+    }
+  }
 
   dt {
     text-align: left;
   }
 
   dd {
+    @extend .clearfix;
     line-height: $line-height-computed * 0.75;
 
     p {
@@ -200,7 +202,7 @@ th {
     }
 
     pre {
-      margin-bottom: 0;
+      margin-block-end: 0;
     }
   }
 }
@@ -210,11 +212,11 @@ th {
 }
 
 .dl-summary-callout dd {
-  margin-bottom: $line-height-computed * 0.5;
+  margin-block-end: $line-height-computed * 0.5;
 }
 
 dd > p {
-  @include p-margin();
+  margin-block-end: 0;
 }
 
 .badge {
@@ -270,13 +272,13 @@ dd > p {
 }
 
 .page-header {
-  border-bottom: 0;
+  border-block-end: 0;
   margin: 0 0 1.25rem;
-  padding-bottom: 0.5rem;
+  padding-block-end: 0.5rem;
 }
 
 .property-type {
-  margin-left: $font-size-base;
+  margin-inline-start: $font-size-base;
 }
 
 .signature-params,
@@ -291,7 +293,7 @@ dd > p {
 
 .source-link {
   font-size: $font-size-base * 0.9;
-  margin-top: -0.5rem;
+  margin-block-start: -0.5rem;
 }
 
 .summary-callout,
@@ -305,15 +307,23 @@ dd > p {
   // TODO: Change color scheme
   color: $info;
   font-size: 1.125rem;
-  margin-top: $h-margin-top-small;
-  border-bottom: 0;
+  margin-block-start: $h-margin-block-start-small;
+  border-block-end: 0;
 }
 
 // Use larger text in the first paragraph of the description
 .symbol-classdesc,
 .symbol-description {
   p:first-child {
-    @include lead();
+    margin-block-end: $line-height-computed * 1.1;
+    font-size: $font-size-base * 1.1;
+    font-weight: 300;
+    line-height: $line-height-computed * 1.1;
+
+    @include media-breakpoint-up(md) {
+      font-size: $font-size-base * 1.5;
+      line-height: $line-height-computed * 1.5;
+    }
   }
 }
 
@@ -325,40 +335,42 @@ dd > p {
 .symbol-detail-badges {
   font-size: $font-size-base * 0.8;
   font-weight: bold;
-  margin-bottom: $font-size-base * 0.25;
-  margin-top: $h-margin-top-large;
+  margin-block-start: $h-margin-block-start-large;
+  margin-block-end: $font-size-base * 0.25;
 }
 
-// Remove whitespace above the first set of badges to follow an h2, and above badges in a header
+// Remove whitespace before the first set of badges to follow an h2, and before badges in a header.
 h2 + section > .symbol-detail-badges:first-child,
 .h2 + section > .symbol-detail-badges:first-child,
 header > .symbol-detail-badges {
-  margin-top: 0;
+  margin-block-start: 0;
 }
 
-// Remove whitespace above a heading that follows a set of badges
-.symbol-detail-badges + h1,
-.symbol-detail-badges + .h1,
-.symbol-detail-badges + h2,
-.symbol-detail-badges + .h2,
-.symbol-detail-badges + h3,
-.symbol-detail-badges + .h3,
-.symbol-detail-badges + h4,
-.symbol-detail-badges + .h4,
-.symbol-detail-badges + h5,
-.symbol-detail-badges + .h5,
-.symbol-detail-badges + h6,
-.symbol-detail-badges + .h6 {
-  margin-top: 0;
+// Remove whitespace before a heading that follows a set of badges.
+.symbol-detail-badges {
+  + h1,
+  + .h1,
+  + h2,
+  + .h2,
+  + h3,
+  + .h3,
+  + h4,
+  + .h4,
+  + h5,
+  + .h5,
+  + h6,
+  + .h6 {
+    margin-block-start: 0;
+  }
 }
 
 .symbol-index-list > dd {
-  margin-bottom: 0.75em;
+  margin-block-end: 0.75em;
 }
 
 .symbol-index-name {
   text-indent: -1em;
-  margin-left: 1em;
+  margin-inline-start: 1em;
 }
 
 .symbol-name {
@@ -370,24 +382,19 @@ header > .symbol-detail-badges {
 .hljs {
   @include make-col-ready();
   flex-basis: fit-content;
-  margin-left: 1em;
-  padding-left: 0;
-}
-
-.jsdoc-footer-container,
-.jsdoc-navbar-container {
-  @include make-container();
+  margin-inline-start: 1em;
+  padding-inline-start: 0;
 }
 
 .jsdoc-footer {
-  position: absolute;
-  bottom: 0;
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
   width: 100%;
   height: $footer-height;
   margin: auto;
-  padding: $navbar-padding-y $navbar-padding-x;
+  padding: $navbar-padding-y $navbar-padding-x 0 $navbar-padding-x;
   background-color: $gray-100;
-  border-top: 1px solid $gray-300;
+  border-block-start: 1px solid $gray-300;
 
   p {
     margin: 0;
@@ -398,7 +405,7 @@ header > .symbol-detail-badges {
 .line-number {
   @include make-col-ready();
   flex-basis: fit-content;
-  padding-right: 1rem;
+  padding-inline-end: 1rem;
 }
 
 .source-code {
@@ -406,7 +413,6 @@ header > .symbol-detail-badges {
 }
 
 .source-code-numbered {
-  @include make-row();
   margin: 0.75rem 0;
   padding: 1.5rem 0.5rem;
 }
@@ -417,52 +423,51 @@ header > .symbol-detail-badges {
   padding: 0;
 }
 
-// TODO: Use breakpoints to set width.
-.jsdoc-content-container {
-  @include make-container();
-  margin-top: $spacer-2x-large;
+.jsdoc-content {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 3.75rem minmax(max-content, 1fr) 3rem;
+  gap: 1rem;
 }
 
-.jsdoc-content,
 .summary-content,
 .symbol-index-section {
-  @include make-row();
-  padding: 0 1rem;
+  padding: 0 1rem 0 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
 }
 
-// TODO: Use breakpoints to set width.
-.summary-column,
-.symbol-index-column {
-  @include make-col(4);
-}
-
-// TODO: Use breakpoints to set width.
 .jsdoc-main {
-  @extend .order-2;
-  @include make-col(9);
-}
-
-// TODO: Use breakpoints to set width.
-.jsdoc-toc-nav {
-  @include make-col(3);
-  @extend .order-1;
-  font-family: $h-font, sans-serif;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  margin-block-start: $spacer-2x-large;
+  padding: 0 $spacer-medium 0 0;
 }
 
 /* Navigation */
 
 .jsdoc-navbar {
-  @extend .navbar;
-  @extend .fixed-top;
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
   background-color: $gray-100;
-  margin-bottom: 0;
-  border-bottom: 1px solid $gray-300;
-  padding: 0.9rem;
+  margin-block-end: 0;
+  border-block-end: 1px solid $gray-300;
+  padding: $spacer-medium $spacer-medium $spacer-medium $spacer-large;
 }
 
 .jsdoc-navbar-package-name {
   @extend .navbar-brand;
   font-family: $h-font, sans-serif;
+  font-size: 1.1rem;
+}
+
+.jsdoc-toc-nav {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  font-family: $h-font, sans-serif;
+  margin-block-start: $spacer-2x-large;
+  margin-inline-start: $spacer-small;
 }
 
 /* Tables */
@@ -473,21 +478,21 @@ header > .symbol-detail-badges {
 }
 
 .jsdoc-details-table > thead > tr {
-  border-bottom-width: 2px;
+  border-block-end-width: 2px;
 }
 
 .jsdoc-details-table > tbody > tr:last-child {
-  border-bottom-color: #fff0;
+  border-block-end-color: #fff0;
 }
 
 td > p:last-child {
-  @include p-margin();
+  margin-block-end: 0;
 }
 
 article td,
 article th {
   @extend .table-sm;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 /* Callouts */
@@ -497,6 +502,6 @@ article th {
   padding: 0 1em 0 1em;
   margin: 1em 0 1em 0;
   border: 1px solid $gray-300;
-  border-left-width: 1em;
-  border-left-color: $info;
+  border-inline-start-width: 1em;
+  border-inline-start-color: $info;
 }
