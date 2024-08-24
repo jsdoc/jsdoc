@@ -263,7 +263,6 @@ dd > p {
 .line-number {
   @extend .text-end;
   color: $code-light-gray;
-  min-width: $line-height-computed;
   user-select: none;
   white-space: pre-line;
   border: none;
@@ -376,8 +375,6 @@ header > .symbol-detail-badges {
 }
 
 .hljs {
-  @include make-col-ready();
-  flex-basis: fit-content;
   margin-inline-start: 1em;
   padding-inline-start: 0;
 }
@@ -398,18 +395,22 @@ header > .symbol-detail-badges {
 }
 
 .line-number {
-  @include make-col-ready();
-  flex-basis: fit-content;
+  grid-area: linenum;
   padding-inline-end: $spacer-medium;
 }
 
 .source-code {
-  @include make-container();
+  grid-area: code;
+  width: 100%;
+  margin: auto;
 }
 
-.source-code-numbered {
+.source-code.source-code-numbered {
+  display: grid;
+  grid:
+    [row1-start] 'linenum code' max-content [row1-end]
+    / max-content max-content;
   margin: $spacer-small 0;
-  // TODO: Use standard padding value.
   padding: 1.5rem $spacer-x-small;
 }
 
