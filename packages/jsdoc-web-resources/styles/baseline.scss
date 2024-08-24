@@ -17,8 +17,6 @@
 @import 'bootstrap.scss';
 @import 'shoelace.scss';
 
-/* Typography */
-
 @mixin source-code() {
   @extend pre;
   @include border-radius(0.2rem);
@@ -35,9 +33,9 @@ html {
 
 body {
   display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 100vh;
-  gap: 1rem;
+  grid:
+    [row1-start] 'body' 100vh [row1-end]
+    / 100%;
   font-family: $body-font, serif;
 }
 
@@ -161,7 +159,7 @@ code {
   font-variant-ligatures: none;
   background-color: tint-color($code-color, 95%);
   border-radius: $border-radius-small;
-  padding: 0.125rem 0.25rem;
+  padding: $spacer-3x-small $spacer-2x-small;
 }
 
 b,
@@ -273,8 +271,8 @@ dd > p {
 
 .page-header {
   border-block-end: 0;
-  margin: 0 0 1.25rem;
-  padding-block-end: 0.5rem;
+  margin: 0 0 $spacer-large;
+  padding-block-end: $spacer-x-small;
 }
 
 .property-type {
@@ -293,7 +291,7 @@ dd > p {
 
 .source-link {
   font-size: $font-size-base * 0.9;
-  margin-block-start: -0.5rem;
+  margin-block-start: -$spacer-x-small;
 }
 
 .summary-callout,
@@ -377,8 +375,6 @@ header > .symbol-detail-badges {
   font-weight: bold;
 }
 
-/* Grid */
-
 .hljs {
   @include make-col-ready();
   flex-basis: fit-content;
@@ -387,10 +383,9 @@ header > .symbol-detail-badges {
 }
 
 .jsdoc-footer {
-  grid-column: 1 / 3;
-  grid-row: 3 / 4;
+  grid-area: footer;
+  justify-self: stretch;
   width: 100%;
-  height: $footer-height;
   margin: auto;
   padding: $navbar-padding-y $navbar-padding-x 0 $navbar-padding-x;
   background-color: $gray-100;
@@ -405,7 +400,7 @@ header > .symbol-detail-badges {
 .line-number {
   @include make-col-ready();
   flex-basis: fit-content;
-  padding-inline-end: 1rem;
+  padding-inline-end: $spacer-medium;
 }
 
 .source-code {
@@ -413,8 +408,9 @@ header > .symbol-detail-badges {
 }
 
 .source-code-numbered {
-  margin: 0.75rem 0;
-  padding: 1.5rem 0.5rem;
+  margin: $spacer-small 0;
+  // TODO: Use standard padding value.
+  padding: 1.5rem $spacer-x-small;
 }
 
 .summary-callout,
@@ -425,22 +421,24 @@ header > .symbol-detail-badges {
 
 .jsdoc-content {
   display: grid;
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: 3.75rem minmax(max-content, 1fr) 3rem;
-  gap: 1rem;
+  grid:
+    [row1-start] 'header header' $navbar-height [row1-end]
+    [row2-start] 'toc content' minmax(max-content, 1fr) [row2-end]
+    [row3-start] 'footer footer' $footer-height [row3-end]
+    / 1fr 3fr;
+  gap: $spacer-medium;
 }
 
 .summary-content,
 .symbol-index-section {
-  padding: 0 1rem 0 0;
+  padding: 0 $spacer-medium 0 0;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
 }
 
 .jsdoc-main {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
+  grid-area: content;
   margin-block-start: $spacer-2x-large;
   padding: 0 $spacer-medium 0 0;
 }
@@ -448,8 +446,7 @@ header > .symbol-detail-badges {
 /* Navigation */
 
 .jsdoc-navbar {
-  grid-column: 1 / 3;
-  grid-row: 1 / 2;
+  grid-area: header;
   background-color: $gray-100;
   margin-block-end: 0;
   border-block-end: 1px solid $gray-300;
@@ -463,8 +460,7 @@ header > .symbol-detail-badges {
 }
 
 .jsdoc-toc-nav {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
+  grid-area: toc;
   font-family: $h-font, sans-serif;
   margin-block-start: $spacer-2x-large;
   margin-inline-start: $spacer-small;
