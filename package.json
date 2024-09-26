@@ -29,7 +29,7 @@
     "lerna": "^8.1.8",
     "license-check-and-add": "^4.0.5",
     "lodash": "^4.17.21",
-    "mock-fs": "^5.2.0",
+    "mock-fs": "^5.3.0",
     "prettier": "^3.3.3"
   },
   "type": "module",
