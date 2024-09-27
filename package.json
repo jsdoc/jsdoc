@@ -20,7 +20,7 @@
     "c8": "^10.1.2",
     "eslint": "^9.11.1",
     "execa": "^9.4.0",
-    "hereby": "^1.9.0",
+    "hereby": "^1.10.0",
     "husky": "^9.1.6",
     "jasmine": "^5.3.0",
     "jasmine-console-reporter": "^3.1.0",
