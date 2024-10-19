@@ -7,7 +7,6 @@ const _ = require('underscore');
 const doop = require('jsdoc/util/doop');
 const dump = require('jsdoc/util/dumper').dump;
 const env = require('jsdoc/env');
-const util = require('util');
 
 const conf = env.conf.eventDumper || {};
 
@@ -68,7 +67,7 @@ function cleanse(e) {
 
     Object.keys(e).forEach(prop => {
         // by default, don't stringify properties that contain an array of functions
-        if (!conf.includeFunctions && util.isArray(e[prop]) && e[prop][0] &&
+        if (!conf.includeFunctions && _.isArray(e[prop]) && e[prop][0] &&
             String(typeof e[prop][0]) === 'function') {
             result[prop] = `function[${e[prop].length}]`;
         }
