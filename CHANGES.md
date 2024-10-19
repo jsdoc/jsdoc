@@ -3,6 +3,11 @@
 This file describes notable changes in each version of JSDoc, starting with version 3.0.0.
 
 
+## 4.0.4 (October 2024)
+
+Fixes a compatibility issue with Node.js 23.
+
+
 ## 4.0.3 (May 2024)
 
 Updates dependencies.
