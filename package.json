@@ -21,7 +21,7 @@
     "eslint": "^9.15.0",
     "execa": "^9.5.1",
     "hereby": "^1.10.0",
-    "husky": "^9.1.6",
+    "husky": "^9.1.7",
     "jasmine": "^5.4.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
