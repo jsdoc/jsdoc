@@ -16,12 +16,15 @@
 
 @import 'bootstrap.scss';
 @import 'shoelace.scss';
+@import 'hljs.scss';
+@import 'themes/hljs/tomorrow.css';
 
 @mixin source-code() {
   @extend pre;
   @include border-radius(0.2rem);
   background-color: $gray-100;
   border: 1px solid $gray-300;
+  // TODO: increase bottom margin
   margin: 0 0 0.7rem;
   padding: 0.6rem;
 }

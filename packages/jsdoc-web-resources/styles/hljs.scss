@@ -13,33 +13,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-/* Tomorrow theme for Highlight.js */
-/* Based on https://github.com/chriskempson/tomorrow-theme */
 
-:root {
-  --text-color: #3d3d3c;
-  --tomorrow-blue: #4271ae;
-  --tomorrow-gray: #8e908c;
-  --tomorrow-green: #718c00;
-  --tomorrow-orange: #f5871f;
-  --tomorrow-purple: #8959a8;
-  --tomorrow-red: #c82829;
-  --tomorrow-yellow: #c99e00;
-}
+// Styles for Highlight.js code blocks.
 
 .hljs,
 .no-hljs {
-  color: var(--text-color);
+  color: var(--hljs-text-color);
 }
 
 .hljs-code,
 .hljs-formula {
-  color: var(--text-color);
+  color: var(--hljs-text-color);
 }
 
 .hljs-comment,
 .hljs-quote {
-  color: var(--tomorrow-gray);
+  color: var(--hljs-comment);
 }
 
 .hljs-deletion,
@@ -57,7 +46,7 @@
 .hljs-template-variable,
 .hljs-variable,
 .hljs-variable.language_ {
-  color: var(--tomorrow-red);
+  color: var(--hljs-variable);
 }
 
 .hljs-built_in,
@@ -69,11 +58,11 @@
 .hljs-operator,
 .hljs-params,
 .hljs-type {
-  color: var(--tomorrow-orange);
+  color: var(--hljs-params);
 }
 
 .hljs-attribute {
-  color: var(--tomorrow-yellow);
+  color: var(--hljs-attribute);
 }
 
 .hljs-addition,
@@ -85,20 +74,20 @@
 .hljs-symbol,
 .hljs-title.class_.inherited__,
 .hljs-title.function_ {
-  color: var(--tomorrow-green);
+  color: var(--hljs-string);
 }
 
 .hljs-punctuation,
 .hljs-section,
 .hljs-title {
-  color: var(--tomorrow-blue);
+  color: var(--hljs-title);
 }
 
 .hljs-keyword,
 .hljs-meta.hljs-keyword,
 .hljs-selector-tag,
 .hljs-title.class_ {
-  color: var(--tomorrow-purple);
+  color: var(--hljs-keyword);
 }
 
 .hljs-emphasis {
