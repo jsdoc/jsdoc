@@ -14,6 +14,22 @@
   limitations under the License.
 */
 
+@use 'sass:color';
+
+/* Spacing */
+
+// TODO: Reimplement margins/padding/etc. in terms of these variables.
+$spacer-3x-small: 0.125rem; // 2px
+$spacer-2x-small: 0.25rem; // 4px
+$spacer-x-small: 0.5rem; // 8px
+$spacer-small: 0.75rem; // 12px
+$spacer-medium: 1rem; // 16px
+$spacer-large: 1.25rem; // 20px
+$spacer-x-large: 1.75rem; // 28px
+$spacer-2x-large: 2.25rem; // 36px
+$spacer-3x-large: 3rem; // 48px
+$spacer-4x-large: 4.5rem; // 72px
+
 $font-size-base: 0.875rem;
 $line-height-base: 1.5;
 
@@ -30,11 +46,47 @@ $serif-font: $body-font;
 
 $border-radius-small: 0.25rem;
 $navbar-height: 3.75rem;
+$navbar-z-index: 100;
+$toc-nav-z-index: $navbar-z-index - 1;
+$toc-nav-margin-inline-start: $spacer-small;
 $footer-height: 3rem;
 $line-height-computed: $font-size-base * $line-height-base;
 $h-margin-block-start-large: $line-height-computed * 2;
 $h-margin-block-start-small: $line-height-computed;
 
+$box-shadow-offset-x-primary: 0;
+$box-shadow-offset-x-secondary: 0;
+$box-shadow-offset-y-primary: calc(1rem / 8);
+$box-shadow-offset-y-secondary: calc($box-shadow-offset-y-primary * 2);
+$box-shadow-blur-radius-primary: calc(1rem / 4);
+$box-shadow-blur-radius-secondary: calc($box-shadow-blur-radius-primary * 2);
+$box-shadow-spread-radius-primary: 0;
+$box-shadow-spread-radius-secondary: calc(1rem / 4);
+
+/* Color palettes */
+
+// TODO: Flesh out color palettes.
+$color-amber-50: #fffbeb;
+
+$color-gray-200: #e4e4e7;
+$color-gray-300: #d4d4d8;
+$color-gray-400: #a1a1aa;
+
+$color-gray-225: mix($color-gray-200, $color-gray-300, 75%);
+$color-gray-325: mix($color-gray-300, $color-gray-400, 75%);
+
+/* Colors */
+
+$navbar-background-color: #fff;
+$toc-background-color: $navbar-background-color;
+
+$scrollbar-background-color: $toc-background-color;
+$scrollbar-color: $color-gray-325;
+
+$box-shadow-color: $color-gray-225;
+$box-shadow-alpha-primary: 0.3;
+$box-shadow-alpha-secondary: calc($box-shadow-alpha-primary / 2);
+// TODO: Redo the following colors to match the Shoelace/Tailwind color palette.
 $info: #5bc0de;
 $primary: #337ab7;
 
@@ -56,17 +108,3 @@ $light-green-dark: #7cb342; // Material Design Light Green 600
 $light-green-light: #c5e1a5; // Material Design Light Green 200
 $orange-dark: #fb8c00; // Material Design Orange 600
 $orange-light: #ffcc80; // Material Design Orange 200
-
-/* Spacing */
-
-// TODO: Reimplement margins/padding/etc. in terms of these variables.
-$spacer-3x-small: 0.125rem; // 2px
-$spacer-2x-small: 0.25rem; // 4px
-$spacer-x-small: 0.5rem; // 8px
-$spacer-small: 0.75rem; // 12px
-$spacer-medium: 1rem; // 16px
-$spacer-large: 1.25rem; // 20px
-$spacer-x-large: 1.75rem; // 28px
-$spacer-2x-large: 2.25rem; // 36px
-$spacer-3x-large: 3rem; // 48px
-$spacer-4x-large: 4.5rem; // 72px

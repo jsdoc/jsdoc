@@ -14,7 +14,6 @@
   limitations under the License.
 */
 
-@import 'variables.scss';
 // TODO: Enable dark theme.
 // @import '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
 @import '../node_modules/@shoelace-style/shoelace/dist/themes/light';
@@ -22,9 +21,10 @@
 :root,
 :host,
 .sl-theme-light {
-  --sl-font-mono: $code-font;
-  --sl-font-sans: $h-font;
-  --sl-font-serif: $body-font;
+  // TODO: Find a valid way to share these across this file and variables.scss.
+  --sl-font-mono: 'Fira Code';
+  --sl-font-sans: 'Karla';
+  --sl-font-serif: 'Inter';
 }
 
 :host {

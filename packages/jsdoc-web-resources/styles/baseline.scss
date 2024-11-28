@@ -28,14 +28,14 @@
 
 html {
   position: relative;
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
-  display: grid;
-  grid:
-    [row1-start] 'body' 100vh [row1-end]
-    / 100%;
+  display: flex;
+  flex-flow: column;
+  min-height: 100%;
+  overflow-y: scroll;
   font-family: $body-font, serif;
 }
 
@@ -379,21 +379,6 @@ header > .symbol-detail-badges {
   padding-inline-start: 0;
 }
 
-.jsdoc-footer {
-  grid-area: footer;
-  justify-self: stretch;
-  width: 100%;
-  margin: auto;
-  padding: $navbar-padding-y $navbar-padding-x 0 $navbar-padding-x;
-  background-color: $gray-100;
-  border-block-start: 1px solid $gray-300;
-
-  p {
-    margin: 0;
-    text-align: center;
-  }
-}
-
 .line-number {
   grid-area: linenum;
   padding-inline-end: $spacer-medium;
@@ -416,18 +401,7 @@ header > .symbol-detail-badges {
 
 .summary-callout,
 .symbol-index {
-  @include make-container();
   padding: 0;
-}
-
-.jsdoc-content {
-  display: grid;
-  grid:
-    [row1-start] 'header header' $navbar-height [row1-end]
-    [row2-start] 'toc content' minmax(max-content, 1fr) [row2-end]
-    [row3-start] 'footer footer' $footer-height [row3-end]
-    / 1fr 3fr;
-  gap: $spacer-medium;
 }
 
 .summary-content,
@@ -439,18 +413,52 @@ header > .symbol-detail-badges {
 }
 
 .jsdoc-main {
-  grid-area: content;
-  margin-block-start: $spacer-2x-large;
-  padding: 0 $spacer-medium 0 0;
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  padding-block-start: $navbar-height;
+}
+
+.jsdoc-content {
+  flex: 1 1 auto;
+  height: 100%;
+  padding-block-start: $spacer-2x-large;
+  padding-block-end: $spacer-2x-large;
+  padding-inline-start: $spacer-3x-large;
+}
+
+.jsdoc-summary {
+  margin-inline-end: $spacer-medium;
+}
+
+.jsdoc-footer {
+  align-self: end;
+  justify-self: stretch;
+  width: 100%;
+  padding: $spacer-medium;
+  background-color: $gray-100;
+  border-block-start: 1px solid $gray-300;
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
 }
 
 /* Navigation */
 
 .jsdoc-navbar {
-  grid-area: header;
-  background-color: $gray-100;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: $navbar-z-index;
+  background-color: $toc-background-color;
   margin-block-end: 0;
-  border-block-end: 1px solid $gray-300;
+  box-shadow:
+    $box-shadow-offset-x-primary $box-shadow-offset-y-primary $box-shadow-blur-radius-primary
+      $box-shadow-spread-radius-primary rgba($box-shadow-color, $box-shadow-alpha-primary),
+    $box-shadow-offset-x-secondary $box-shadow-offset-y-secondary $box-shadow-blur-radius-secondary
+      $box-shadow-spread-radius-secondary rgba($box-shadow-color, $box-shadow-alpha-secondary);
   padding: $spacer-medium $spacer-medium $spacer-medium $spacer-large;
 }
 
@@ -461,10 +469,36 @@ header > .symbol-detail-badges {
 }
 
 .jsdoc-toc-nav {
-  grid-area: toc;
+  display: flex;
+  max-height: calc(100vh - $navbar-height);
+  position: sticky;
+  top: $navbar-height;
+  // The TOC's width is 25% of the viewport's width, minus the scrollbar and inline margin.
+  width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
+  z-index: $toc-nav-z-index;
+  overflow-y: auto;
+  scrollbar-color: $scrollbar-color $scrollbar-background-color;
+  scrollbar-width: thin;
   font-family: $h-font, sans-serif;
-  margin-block-start: $spacer-2x-large;
-  margin-inline-start: $spacer-small;
+  padding-block-start: $spacer-2x-large;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $scrollbar-color;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $scrollbar-background-color;
+  }
+}
+
+.jsdoc-toc-nav-content {
+  position: relative;
+  width: 100%;
+  margin-inline-start: $toc-nav-margin-inline-start;
 }
 
 /* Tables */
