@@ -14,6 +14,8 @@
   limitations under the License.
 */
 
+@use 'sass:color';
+
 @import 'bootstrap.scss';
 @import 'shoelace.scss';
 @import 'hljs.scss';
@@ -459,9 +461,11 @@ header > .symbol-detail-badges {
   margin-block-end: 0;
   box-shadow:
     $box-shadow-offset-x-primary $box-shadow-offset-y-primary $box-shadow-blur-radius-primary
-      $box-shadow-spread-radius-primary rgba($box-shadow-color, $box-shadow-alpha-primary),
+      $box-shadow-spread-radius-primary
+      color.change($box-shadow-color, $alpha: $box-shadow-alpha-primary),
     $box-shadow-offset-x-secondary $box-shadow-offset-y-secondary $box-shadow-blur-radius-secondary
-      $box-shadow-spread-radius-secondary rgba($box-shadow-color, $box-shadow-alpha-secondary);
+      $box-shadow-spread-radius-secondary
+      color.change($box-shadow-color, $alpha: $box-shadow-alpha-secondary);
   padding: $spacer-medium $spacer-medium $spacer-medium $spacer-large;
 }
 
