@@ -51,19 +51,26 @@ body {
   font-family: $body-font, serif;
 }
 
-h1,
-.h1,
-h2,
-.h2,
-h3,
-.h3,
-h4,
-.h4,
-h5,
-.h5,
-h6,
-.h6 {
-  font-family: $h-font, sans-serif;
+$h-font-sizes: (
+  1: $h1-font-size,
+  2: $h2-font-size,
+  3: $h3-font-size,
+  4: $h4-font-size,
+  5: $h5-font-size,
+  6: $h6-font-size,
+);
+
+@each $level in (1, 2, 3, 4, 5, 6) {
+  h#{$level},
+  .h#{$level} {
+    font-family: $h-font, sans-serif;
+    font-size: map-get($map: $h-font-sizes, $key: $level);
+  }
+}
+
+h1 > small,
+.h1 > small {
+  font-size: $h1-font-size * 0.65;
 }
 
 h1,
@@ -73,76 +80,30 @@ h2,
   border-block-end: 1px solid $gray-300;
 }
 
-h1,
-.h1,
-h2,
-.h2,
-h3,
-.h3 {
-  margin-block-start: $h-margin-block-start-large;
+@each $level in (1, 2, 3) {
+  h#{$level},
+  .h#{$level} {
+    margin-block-start: $h-margin-block-start-large;
+  }
 }
 
-h1,
-.h1 {
-  + section {
-    h2:first-child,
-    .h2:first-child {
-      margin-block-start: $h-margin-block-start-small;
+@each $level in (4, 5, 6) {
+  h#{$level},
+  .h#{$level} {
+    margin-block-start: $h-margin-block-start-small;
+  }
+}
+
+@each $level in (1, 2) {
+  h#{$level},
+  .h#{$level} {
+    + section {
+      h#{$level + 1}:first-child,
+      .h#{$level + 1}:first-child {
+        margin-block-start: $h-margin-block-start-small;
+      }
     }
   }
-}
-
-h2,
-.h2 {
-  + section {
-    h3:first-child,
-    .h3:first-child {
-      margin-block-start: $h-margin-block-start-small;
-    }
-  }
-}
-
-h4,
-.h4,
-h5,
-.h5,
-h6,
-.h6 {
-  margin-block-start: $h-margin-block-start-small;
-}
-
-h1,
-.h1 {
-  font-size: $h1-font-size;
-
-  > small {
-    font-size: $h1-font-size * 0.65;
-  }
-}
-
-h2,
-.h2 {
-  font-size: $h2-font-size;
-}
-
-h3,
-.h3 {
-  font-size: $h3-font-size;
-}
-
-h4,
-.h4 {
-  font-size: $h4-font-size;
-}
-
-h5,
-.h5 {
-  font-size: $h5-font-size;
-}
-
-h6,
-.h6 {
-  font-size: $h6-font-size;
 }
 
 a {
@@ -313,19 +274,8 @@ header > .symbol-detail-badges {
 }
 
 // Remove whitespace before a heading that follows a set of badges.
-.symbol-detail-badges {
-  + h1,
-  + .h1,
-  + h2,
-  + .h2,
-  + h3,
-  + .h3,
-  + h4,
-  + .h4,
-  + h5,
-  + .h5,
-  + h6,
-  + .h6 {
+@each $level in (1, 2, 3, 4, 5, 6) {
+  .symbol-detail-badges + h#{$level} {
     margin-block-start: 0;
   }
 }
