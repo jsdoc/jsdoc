@@ -17,14 +17,55 @@
 // TODO: Enable dark theme.
 // @import '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
 @import '../node_modules/@shoelace-style/shoelace/dist/themes/light';
+@import 'variables/colors';
+@import 'variables/fonts';
+@import 'variables/navbar';
+@import 'variables/spacers';
+
+$toc-nav-z-index: $navbar-z-index - 1;
+$toc-nav-margin-inline-start: $spacer-small;
+
+.jsdoc-toc-nav {
+  display: flex;
+  max-height: calc(100vh - $navbar-height);
+  position: sticky;
+  top: $navbar-height;
+  // The TOC's width is 25% of the viewport's width, minus the scrollbar and inline margin.
+  width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
+  z-index: $toc-nav-z-index;
+  overflow-y: auto;
+  scrollbar-color: $scrollbar-color $scrollbar-background-color;
+  scrollbar-width: thin;
+  font-family: $h-font, sans-serif;
+  padding-block-start: $spacer-2x-large;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $scrollbar-color;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $scrollbar-background-color;
+  }
+}
+
+.jsdoc-toc-nav-content {
+  position: relative;
+  width: 100%;
+  margin-inline-start: $toc-nav-margin-inline-start;
+}
+
+// Shoelace component styles
 
 :root,
 :host,
 .sl-theme-light {
-  // TODO: Find a valid way to share these across this file and variables.scss.
-  --sl-font-mono: 'Fira Code';
-  --sl-font-sans: 'Karla';
-  --sl-font-serif: 'Inter';
+  --sl-font-mono: $code-font;
+  --sl-font-sans: $h-font;
+  --sl-font-serif: $body-font;
 }
 
 :host {
@@ -106,6 +147,7 @@ sl-details::part(base) {
 }
 
 sl-details::part(header) {
+  // TODO: Use color from palette.scss.
   border-block-end: solid 1px $gray-200;
   padding: 0 0.5rem;
 }
@@ -144,12 +186,14 @@ sl-tree-item::part(item) {
 }
 
 sl-tree-item::part(item):hover {
+  // TODO: Use color from palette.scss.
   background-color: $gray-100;
 }
 
 sl-tree-item::part(item--selected),
 sl-tree-item::part(item--selected):hover {
   @extend .shadow-sm;
+  // TODO: Use color from palette.scss.
   background-color: $gray-300;
   border: none;
 }

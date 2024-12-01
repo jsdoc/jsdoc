@@ -17,7 +17,7 @@
 @import '../node_modules/bootstrap/scss/functions'; // required
 
 // Override default variables here as needed.
-@import 'variables.scss';
+@import 'variables/bootstrap';
 
 @import '../node_modules/bootstrap/scss/variables'; // required
 @import '../node_modules/bootstrap/scss/variables-dark';
