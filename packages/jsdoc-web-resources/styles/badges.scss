@@ -61,3 +61,24 @@
 .badge-virtual {
   background-color: $deep-purple-dark;
 }
+
+.symbol-detail-badges {
+  font-size: $font-size-base * 0.8;
+  font-weight: bold;
+  margin-block-start: $h-margin-block-start-large;
+  margin-block-end: $font-size-base * 0.25;
+}
+
+// Remove whitespace before the first set of badges to follow an h2, and before badges in a header.
+h2 + section > .symbol-detail-badges:first-child,
+.h2 + section > .symbol-detail-badges:first-child,
+header > .symbol-detail-badges {
+  margin-block-start: 0;
+}
+
+// Remove whitespace before a heading that follows a set of badges.
+@each $level in (1, 2, 3, 4, 5, 6) {
+  .symbol-detail-badges + h#{$level} {
+    margin-block-start: 0;
+  }
+}

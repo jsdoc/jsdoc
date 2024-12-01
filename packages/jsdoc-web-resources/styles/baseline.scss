@@ -19,6 +19,7 @@
 @import 'bootstrap';
 
 @import 'badges';
+@import 'code';
 @import 'hljs';
 @import 'themes/hljs/tomorrow';
 @import 'toc';
@@ -26,17 +27,6 @@
 @import 'variables/fonts';
 @import 'variables/navbar';
 @import 'variables/spacers';
-
-@mixin source-code() {
-  @extend pre;
-  @include border-radius(0.2rem);
-  // TODO: Global: Use colors from palette.scss.
-  background-color: $gray-100;
-  border: 1px solid $gray-300;
-  // TODO: increase bottom margin
-  margin: 0 0 0.7rem;
-  padding: 0.6rem;
-}
 
 html {
   position: relative;
@@ -116,25 +106,6 @@ a {
   }
 }
 
-pre {
-  @include source-code();
-
-  > code {
-    background-color: inherit;
-    font-size: $code-font-size;
-    padding: 0;
-  }
-}
-
-code {
-  font-family: $code-font, monospace;
-  font-size: 100%;
-  font-variant-ligatures: none;
-  background-color: tint-color($code-color, 95%);
-  border-radius: 0.25rem;
-  padding: $spacer-3x-small $spacer-2x-small;
-}
-
 b,
 strong {
   font-weight: $font-weight-semibold;
@@ -190,14 +161,6 @@ dd > p {
   margin-block-end: 0;
 }
 
-.line-number {
-  @extend .text-end;
-  color: $code-light-gray;
-  user-select: none;
-  white-space: pre-line;
-  border: none;
-}
-
 .page-header {
   border-block-end: 0;
   margin: 0 0 $spacer-large;
@@ -211,11 +174,6 @@ dd > p {
 .signature-params,
 .signature-returns {
   color: $code-light-gray;
-}
-
-.source-code {
-  @include source-code();
-  overflow-x: auto;
 }
 
 .source-link {
@@ -259,27 +217,6 @@ dd > p {
   font-size: $h4-font-size * 0.9;
 }
 
-.symbol-detail-badges {
-  font-size: $font-size-base * 0.8;
-  font-weight: bold;
-  margin-block-start: $h-margin-block-start-large;
-  margin-block-end: $font-size-base * 0.25;
-}
-
-// Remove whitespace before the first set of badges to follow an h2, and before badges in a header.
-h2 + section > .symbol-detail-badges:first-child,
-.h2 + section > .symbol-detail-badges:first-child,
-header > .symbol-detail-badges {
-  margin-block-start: 0;
-}
-
-// Remove whitespace before a heading that follows a set of badges.
-@each $level in (1, 2, 3, 4, 5, 6) {
-  .symbol-detail-badges + h#{$level} {
-    margin-block-start: 0;
-  }
-}
-
 .symbol-index-list > dd {
   margin-block-end: 0.75em;
 }
@@ -291,31 +228,6 @@ header > .symbol-detail-badges {
 
 .symbol-name {
   font-weight: bold;
-}
-
-.hljs {
-  margin-inline-start: 1em;
-  padding-inline-start: 0;
-}
-
-.line-number {
-  grid-area: linenum;
-  padding-inline-end: $spacer-medium;
-}
-
-.source-code {
-  grid-area: code;
-  width: 100%;
-  margin: auto;
-}
-
-.source-code.source-code-numbered {
-  display: grid;
-  grid:
-    [row1-start] 'linenum code' max-content [row1-end]
-    / max-content max-content;
-  margin: $spacer-small 0;
-  padding: 1.5rem $spacer-x-small;
 }
 
 .summary-callout,
