@@ -17,6 +17,8 @@
 @use 'sass:color';
 
 @import 'bootstrap';
+
+@import 'badges';
 @import 'hljs';
 @import 'themes/hljs/tomorrow';
 @import 'toc';
@@ -225,49 +227,6 @@ th {
 
 dd > p {
   margin-block-end: 0;
-}
-
-.badge {
-  color: $gray-100;
-  font-family: $sans-serif-font;
-  font-size: 100%;
-  font-weight: bold;
-  // TODO: Global: update units.
-  padding: 0.1em 0.5em 0.1em;
-  border-radius: 0.125rem;
-}
-
-.badge-async {
-  background-color: $light-green-dark;
-}
-
-.badge-generator {
-  background-color: $indigo-dark;
-}
-
-.badge-package,
-.badge-private,
-.badge-protected,
-.badge-public {
-  background-color: $blue-dark;
-}
-
-.badge-constant,
-.badge-readonly {
-  background-color: $deep-orange-dark;
-}
-
-.badge-kind {
-  background-color: $orange-dark;
-}
-
-.badge-inner,
-.badge-static {
-  background-color: $green-dark;
-}
-
-.badge-virtual {
-  background-color: $deep-purple-dark;
 }
 
 .line-number {

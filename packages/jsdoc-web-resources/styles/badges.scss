@@ -1,0 +1,63 @@
+/*
+  Copyright 2022 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+@import 'variables/colors';
+@import 'variables/fonts';
+
+// TODO: Global: Use colors from palette.scss.
+
+.badge {
+  color: $gray-100;
+  font-family: $sans-serif-font;
+  font-size: 100%;
+  font-weight: bold;
+  // TODO: Global: update units.
+  padding: 0.1em 0.5em 0.1em;
+  border-radius: 0.125rem;
+}
+
+.badge-async {
+  background-color: $light-green-dark;
+}
+
+.badge-generator {
+  background-color: $indigo-dark;
+}
+
+.badge-package,
+.badge-private,
+.badge-protected,
+.badge-public {
+  background-color: $blue-dark;
+}
+
+.badge-constant,
+.badge-readonly {
+  background-color: $deep-orange-dark;
+}
+
+.badge.badge-kind {
+  background-color: $orange-dark;
+}
+
+.badge-inner,
+.badge-static {
+  background-color: $green-dark;
+}
+
+.badge-virtual {
+  background-color: $deep-purple-dark;
+}
