@@ -16,15 +16,15 @@
 
 @use 'variables/colors';
 @use 'variables/fonts';
+@use 'variables/spacers';
 
 // TODO: Enable dark theme.
 // @import '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
 @import '../node_modules/@shoelace-style/shoelace/dist/themes/light';
 @import 'variables/navbar';
-@import 'variables/spacers';
 
 $toc-nav-z-index: $navbar-z-index - 1;
-$toc-nav-margin-inline-start: $spacer-small;
+$toc-nav-margin-inline-start: spacers.$small;
 
 .jsdoc-toc-nav {
   display: flex;
@@ -38,7 +38,7 @@ $toc-nav-margin-inline-start: $spacer-small;
   scrollbar-color: colors.$scrollbar-color colors.$scrollbar-background-color;
   scrollbar-width: thin;
   font-family: fonts.$h-font, sans-serif;
-  padding-block-start: $spacer-2x-large;
+  padding-block-start: spacers.$xx-large;
 
   &::-webkit-scrollbar {
     width: 0.5rem;
@@ -64,9 +64,9 @@ $toc-nav-margin-inline-start: $spacer-small;
 :root,
 :host,
 .sl-theme-light {
-  --sl-font-mono: $code-font;
-  --sl-font-sans: $h-font;
-  --sl-font-serif: $body-font;
+  --sl-font-mono: fonts.$code-font;
+  --sl-font-sans: fonts.$h-font;
+  --sl-font-serif: fonts.$body-font;
 }
 
 :host {

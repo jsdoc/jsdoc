@@ -16,9 +16,7 @@
 
 @use 'variables/colors';
 @use 'variables/fonts';
-
-@import 'variables/fonts';
-@import 'variables/spacers';
+@use 'variables/spacers';
 
 @mixin source() {
   @extend pre;
@@ -41,12 +39,13 @@ pre {
 }
 
 code {
-  font-family: $code-font, monospace;
+  font-family: fonts.$code-font, monospace;
   font-size: 100%;
   font-variant-ligatures: none;
+  // TODO: Use color from standard palette.
   background-color: tint-color($code-color, 95%);
   border-radius: 0.25rem;
-  padding: $spacer-3x-small $spacer-2x-small;
+  padding: spacers.$xxx-small spacers.$xx-small;
 }
 
 .hljs {
@@ -56,7 +55,7 @@ code {
 
 .line-number {
   grid-area: linenum;
-  padding-inline-end: $spacer-medium;
+  padding-inline-end: spacers.$medium;
   color: colors.$code-light-gray;
   user-select: none;
   text-align: end;
@@ -77,6 +76,6 @@ code {
   grid:
     [row1-start] 'linenum code' max-content [row1-end]
     / max-content max-content;
-  margin: $spacer-small 0;
-  padding: 1.5rem $spacer-x-small;
+  margin: spacers.$small 0;
+  padding: 1.5rem spacers.$x-small;
 }

@@ -17,6 +17,7 @@
 @use 'sass:color' as sass-color;
 @use 'variables/colors';
 @use 'variables/fonts';
+@use 'variables/spacers';
 
 @import 'bootstrap';
 
@@ -26,7 +27,6 @@
 @import 'themes/hljs/tomorrow';
 @import 'toc';
 @import 'variables/navbar';
-@import 'variables/spacers';
 
 html {
   position: relative;
@@ -64,14 +64,14 @@ h2,
 @each $level in (1, 2, 3) {
   h#{$level},
   .h#{$level} {
-    margin-block-start: $h-margin-block-start-large;
+    margin-block-start: fonts.$h-margin-block-start-large;
   }
 }
 
 @each $level in (4, 5, 6) {
   h#{$level},
   .h#{$level} {
-    margin-block-start: $h-margin-block-start-small;
+    margin-block-start: fonts.$h-margin-block-start-small;
   }
 }
 
@@ -81,7 +81,7 @@ h2,
     + section {
       h#{$level + 1}:first-child,
       .h#{$level + 1}:first-child {
-        margin-block-start: $h-margin-block-start-small;
+        margin-block-start: fonts.$h-margin-block-start-small;
       }
     }
   }
@@ -99,12 +99,13 @@ a {
 
 b,
 strong {
+  // TODO: Define `$font-weight-semibold` in font (and Bootstrap) variables.
   font-weight: $font-weight-semibold;
 }
 
 dt,
 th {
-  font-family: $sans-serif-font;
+  font-family: fonts.$sans-serif-font;
 }
 
 .dl-compact {
@@ -112,13 +113,13 @@ th {
     dt {
       @include text-truncate();
       float: inline-start;
-      width: $dl-horizontal-offset;
+      width: fonts.$dl-horizontal-offset;
       clear: inline-end;
       text-align: end;
     }
 
     dd {
-      margin-inline-start: $dl-horizontal-offset;
+      margin-inline-start: fonts.$dl-horizontal-offset;
     }
   }
 
@@ -154,8 +155,8 @@ dd > p {
 
 .page-header {
   border-block-end: 0;
-  margin: 0 0 $spacer-large;
-  padding-block-end: $spacer-x-small;
+  margin: 0 0 spacers.$large;
+  padding-block-end: spacers.$x-small;
 }
 
 .property-type {
@@ -169,7 +170,7 @@ dd > p {
 
 .source-link {
   font-size: fonts.$font-size-base * 0.9;
-  margin-block-start: -$spacer-x-small;
+  margin-block-start: calc(spacers.$x-small * -1);
 }
 
 .summary-callout,
@@ -183,7 +184,7 @@ dd > p {
   // TODO: Change color scheme
   color: $info;
   font-size: 1.125rem;
-  margin-block-start: $h-margin-block-start-small;
+  margin-block-start: fonts.$h-margin-block-start-small;
   border-block-end: 0;
 }
 
@@ -228,7 +229,7 @@ dd > p {
 
 .summary-content,
 .symbol-index-section {
-  padding: 0 $spacer-medium 0 0;
+  padding: 0 spacers.$medium 0 0;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
@@ -244,20 +245,20 @@ dd > p {
 .jsdoc-content {
   flex: 1 1 auto;
   height: 100%;
-  padding-block-start: $spacer-2x-large;
-  padding-block-end: $spacer-2x-large;
-  padding-inline-start: $spacer-3x-large;
+  padding-block-start: spacers.$xx-large;
+  padding-block-end: spacers.$xx-large;
+  padding-inline-start: spacers.$xxx-large;
 }
 
 .jsdoc-summary {
-  margin-inline-end: $spacer-medium;
+  margin-inline-end: spacers.$medium;
 }
 
 .jsdoc-footer {
   align-self: end;
   justify-self: stretch;
   width: 100%;
-  padding: $spacer-medium;
+  padding: spacers.$medium;
   background-color: colors.$zinc-100;
   border-block-start: 1px solid colors.$zinc-300;
 
@@ -281,12 +282,12 @@ dd > p {
       sass-color.change($shadow-color, $alpha: $shadow-alpha-primary),
     $shadow-offset-x-secondary $shadow-offset-y-secondary $shadow-blur-secondary
       $shadow-spread-secondary sass-color.change($shadow-color, $alpha: $shadow-alpha-secondary);
-  padding: $spacer-medium $spacer-medium $spacer-medium $spacer-large;
+  padding: spacers.$medium spacers.$medium spacers.$medium spacers.$large;
 }
 
 .jsdoc-navbar-package-name {
   @extend .navbar-brand;
-  font-family: $h-font, sans-serif;
+  font-family: fonts.$h-font, sans-serif;
   font-size: 1.1rem;
 }
 
