@@ -14,6 +14,8 @@
   limitations under the License.
 */
 
+@use 'sass:map';
+
 $font-size-base: 0.875rem;
 $line-height-base: 1.5;
 $line-height-computed: $font-size-base * $line-height-base;
@@ -26,8 +28,17 @@ $code-font: 'Fira Code';
 $code-font-size: $font-size-base;
 $dl-horizontal-offset: $font-size-base * 10;
 $h-font: 'Karla';
-$h1-font-size: $font-size-base * 2.4;
-$h2-font-size: $font-size-base * 2;
-$h3-font-size: $font-size-base * 1.5;
+$h-font-sizes: (
+  1: calc($font-size-base * 2.4),
+  2: calc($font-size-base * 2),
+  3: calc($font-size-base * 1.5),
+  4: calc($font-size-base * 1.5),
+  5: calc($font-size-base * 1.25),
+  6: $font-size-base,
+);
 $sans-serif-font: $h-font;
 $serif-font: $body-font;
+
+@function h-font-size($level) {
+  @return map.get($map: $h-font-sizes, $key: $level);
+}

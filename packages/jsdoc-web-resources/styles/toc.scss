@@ -15,11 +15,11 @@
 */
 
 @use 'variables/colors';
+@use 'variables/fonts';
 
 // TODO: Enable dark theme.
 // @import '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
 @import '../node_modules/@shoelace-style/shoelace/dist/themes/light';
-@import 'variables/fonts';
 @import 'variables/navbar';
 @import 'variables/spacers';
 
@@ -37,7 +37,7 @@ $toc-nav-margin-inline-start: $spacer-small;
   overflow-y: auto;
   scrollbar-color: colors.$scrollbar-color colors.$scrollbar-background-color;
   scrollbar-width: thin;
-  font-family: $h-font, sans-serif;
+  font-family: fonts.$h-font, sans-serif;
   padding-block-start: $spacer-2x-large;
 
   &::-webkit-scrollbar {
@@ -132,6 +132,7 @@ sl-details > sl-tree > sl-tree-item {
   }
 
   &::part(item--selected) {
+    // TODO: Use standard color palette.
     background-color: $blue-100 !important;
     color: $blue-600 !important;
   }
@@ -153,7 +154,7 @@ sl-details::part(header) {
 }
 
 sl-details::part(summary) {
-  font-family: $h-font, sans-serif;
+  font-family: fonts.$h-font, sans-serif;
   font-size: 1.125rem;
 }
 
@@ -197,7 +198,7 @@ sl-tree-item::part(item--selected):hover {
 }
 
 sl-tree-item::part(label) {
-  font-size: $font-size-base;
+  font-size: fonts.$font-size-base;
   width: 100%;
   height: 100%;
 }

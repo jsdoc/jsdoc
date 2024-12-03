@@ -16,6 +16,7 @@
 
 @use 'sass:color' as sass-color;
 @use 'variables/colors';
+@use 'variables/fonts';
 
 @import 'bootstrap';
 
@@ -24,8 +25,6 @@
 @import 'hljs';
 @import 'themes/hljs/tomorrow';
 @import 'toc';
-@import 'variables/colors';
-@import 'variables/fonts';
 @import 'variables/navbar';
 @import 'variables/spacers';
 
@@ -39,29 +38,20 @@ body {
   flex-flow: column;
   min-height: 100%;
   overflow-y: scroll;
-  font-family: $body-font, serif;
+  font-family: fonts.$body-font, serif;
 }
-
-$h-font-sizes: (
-  1: $h1-font-size,
-  2: $h2-font-size,
-  3: $h3-font-size,
-  4: $h4-font-size,
-  5: $h5-font-size,
-  6: $h6-font-size,
-);
 
 @each $level in (1, 2, 3, 4, 5, 6) {
   h#{$level},
   .h#{$level} {
-    font-family: $h-font, sans-serif;
-    font-size: map-get($map: $h-font-sizes, $key: $level);
+    font-family: fonts.$h-font, sans-serif;
+    font-size: fonts.h-font-size($level);
   }
 }
 
 h1 > small,
 .h1 > small {
-  font-size: $h1-font-size * 0.65;
+  font-size: calc(fonts.h-font-size(1) * 0.65);
 }
 
 h1,
@@ -138,10 +128,10 @@ th {
 
   dd {
     @extend .clearfix;
-    line-height: $line-height-computed * 0.75;
+    line-height: fonts.$line-height-computed * 0.75;
 
     p {
-      line-height: $line-height-computed;
+      line-height: fonts.$line-height-computed;
     }
 
     pre {
@@ -155,7 +145,7 @@ th {
 }
 
 .dl-summary-callout dd {
-  margin-block-end: $line-height-computed * 0.5;
+  margin-block-end: fonts.$line-height-computed * 0.5;
 }
 
 dd > p {
@@ -169,7 +159,7 @@ dd > p {
 }
 
 .property-type {
-  margin-inline-start: $font-size-base;
+  margin-inline-start: fonts.$font-size-base;
 }
 
 .signature-params,
@@ -178,13 +168,13 @@ dd > p {
 }
 
 .source-link {
-  font-size: $font-size-base * 0.9;
+  font-size: fonts.$font-size-base * 0.9;
   margin-block-start: -$spacer-x-small;
 }
 
 .summary-callout,
 .symbol-index-section {
-  font-size: $font-size-base * 0.9;
+  font-size: fonts.$font-size-base * 0.9;
 }
 
 .summary-callout-heading,
@@ -201,21 +191,21 @@ dd > p {
 .symbol-classdesc,
 .symbol-description {
   p:first-child {
-    margin-block-end: $line-height-computed * 1.1;
-    font-size: $font-size-base * 1.1;
+    margin-block-end: fonts.$line-height-computed * 1.1;
+    font-size: fonts.$font-size-base * 1.1;
     font-weight: 300;
-    line-height: $line-height-computed * 1.1;
+    line-height: fonts.$line-height-computed * 1.1;
 
     @include media-breakpoint-up(md) {
-      font-size: $font-size-base * 1.5;
-      line-height: $line-height-computed * 1.5;
+      font-size: fonts.$font-size-base * 1.5;
+      line-height: fonts.$line-height-computed * 1.5;
     }
   }
 }
 
 .h.symbol-params,
 .h.symbol-properties {
-  font-size: $h4-font-size * 0.9;
+  font-size: fonts.h-font-size(4) * 0.9;
 }
 
 .symbol-index-list > dd {
@@ -284,7 +274,7 @@ dd > p {
   top: 0;
   width: 100%;
   z-index: $navbar-z-index;
-  background-color: $toc-background-color;
+  background-color: colors.$toc-background-color;
   margin-block-end: 0;
   box-shadow:
     $shadow-offset-x-primary $shadow-offset-y-primary $shadow-blur-primary $shadow-spread-primary

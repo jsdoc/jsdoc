@@ -14,11 +14,13 @@
   limitations under the License.
 */
 
+@use 'fonts';
+
 // TODO: Use colors from palette.scss.
 $info: #5bc0de;
 $primary: #337ab7;
 $link-color: $primary;
 $link-color-hover: tint-color($link-color, 10%);
 
-$font-size-base: 0.875rem;
-$line-height-base: 1.5;
+$font-size-base: fonts.$font-size-base;
+$line-height-base: fonts.$line-height-base;

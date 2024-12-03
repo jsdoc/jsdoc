@@ -15,6 +15,7 @@
 */
 
 @use 'variables/colors';
+@use 'variables/fonts';
 
 @import 'variables/fonts';
 @import 'variables/spacers';
@@ -34,7 +35,7 @@ pre {
 
   > code {
     background-color: inherit;
-    font-size: $code-font-size;
+    font-size: fonts.$code-font-size;
     padding: 0;
   }
 }

@@ -20,8 +20,7 @@
 @use 'sass:string';
 
 @use 'variables/colors';
-
-@import 'variables/fonts';
+@use 'variables/fonts';
 
 $palette: meta.module-variables('colors');
 
@@ -35,7 +34,7 @@ $palette: meta.module-variables('colors');
 
 .badge {
   color: colors.$gray-100;
-  font-family: $sans-serif-font;
+  font-family: fonts.$sans-serif-font;
   font-size: 100%;
   font-weight: bold;
   // TODO: Global: update units.
@@ -67,10 +66,10 @@ $badge-types: (
 }
 
 .symbol-detail-badges {
-  font-size: $font-size-base * 0.8;
+  font-size: fonts.$font-size-base * 0.8;
   font-weight: bold;
-  margin-block-start: $h-margin-block-start-large;
-  margin-block-end: $font-size-base * 0.25;
+  margin-block-start: fonts.$h-margin-block-start-large;
+  margin-block-end: fonts.$font-size-base * 0.25;
 }
 
 // Remove whitespace before the first set of badges to follow an h2, and before badges in a header.
