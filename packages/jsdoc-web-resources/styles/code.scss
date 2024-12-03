@@ -14,16 +14,16 @@
   limitations under the License.
 */
 
-@import 'variables/colors';
+@use 'variables/colors';
+
 @import 'variables/fonts';
 @import 'variables/spacers';
 
 @mixin source() {
   @extend pre;
   border-radius: 0.2rem;
-  // TODO: Global: Use colors from palette.scss.
-  background-color: $gray-100;
-  border: 1px solid $gray-300;
+  background-color: colors.$zinc-100;
+  border: 1px solid colors.$zinc-300;
   // TODO: increase bottom margin
   margin: 0 0 0.7rem;
   padding: 0.6rem;
@@ -56,7 +56,7 @@ code {
 .line-number {
   grid-area: linenum;
   padding-inline-end: $spacer-medium;
-  color: $code-light-gray;
+  color: colors.$code-light-gray;
   user-select: none;
   text-align: end;
   white-space: pre-line;

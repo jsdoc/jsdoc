@@ -14,6 +14,8 @@
   limitations under the License.
 */
 
+@use 'colors';
+
 $navbar-height: 3.75rem;
 $navbar-z-index: 100;
 
@@ -26,6 +28,6 @@ $shadow-blur-secondary: calc($shadow-blur-primary * 2);
 $shadow-spread-primary: 0;
 $shadow-spread-secondary: calc(1rem / 4);
 
-$shadow-color: $color-zinc-225;
+$shadow-color: colors.$zinc-225;
 $shadow-alpha-primary: 0.3;
 $shadow-alpha-secondary: calc($shadow-alpha-primary / 2);

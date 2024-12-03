@@ -14,13 +14,27 @@
   limitations under the License.
 */
 
-@import 'variables/colors';
+@use 'sass:color' as sass-color;
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:string';
+
+@use 'variables/colors';
+
 @import 'variables/fonts';
 
-// TODO: Global: Use colors from palette.scss.
+$palette: meta.module-variables('colors');
+
+@function max-lighten($color-name) {
+  $idx: string.index($color-name, '-');
+  $light-color-name: string.slice($color-name, 1, $idx - 1) + '-100';
+  $light-color: map.get($palette, $light-color-name);
+
+  @return sass-color.mix($light-color, colors.$white, 50%, $method: oklch);
+}
 
 .badge {
-  color: $gray-100;
+  color: colors.$gray-100;
   font-family: $sans-serif-font;
   font-size: 100%;
   font-weight: bold;
@@ -29,37 +43,27 @@
   border-radius: 0.125rem;
 }
 
-.badge-async {
-  background-color: $light-green-dark;
-}
+// Maps badge types to background colors.
+$badge-types: (
+  'async': 'lime-600',
+  'constant': 'orange-600',
+  'generator': 'indigo-600',
+  'inner': 'green-600',
+  'kind': 'orange-400',
+  'package': 'blue-600',
+  'private': 'blue-600',
+  'protected': 'blue-600',
+  'public': 'blue-600',
+  'readonly': 'orange-600',
+  'static': 'green-600',
+  'virtual': 'violet-600',
+);
 
-.badge-generator {
-  background-color: $indigo-dark;
-}
-
-.badge-package,
-.badge-private,
-.badge-protected,
-.badge-public {
-  background-color: $blue-dark;
-}
-
-.badge-constant,
-.badge-readonly {
-  background-color: $deep-orange-dark;
-}
-
-.badge.badge-kind {
-  background-color: $orange-dark;
-}
-
-.badge-inner,
-.badge-static {
-  background-color: $green-dark;
-}
-
-.badge-virtual {
-  background-color: $deep-purple-dark;
+@each $badge-type, $color-name in $badge-types {
+  .badge-#{$badge-type} {
+    background-color: map.get($palette, $color-name);
+    color: max-lighten($color-name);
+  }
 }
 
 .symbol-detail-badges {

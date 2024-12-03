@@ -14,7 +14,8 @@
   limitations under the License.
 */
 
-@use 'sass:color';
+@use 'sass:color' as sass-color;
+@use 'variables/colors';
 
 @import 'bootstrap';
 
@@ -67,7 +68,7 @@ h1,
 .h1,
 h2,
 .h2 {
-  border-block-end: 1px solid $gray-300;
+  border-block-end: 1px solid colors.$zinc-300;
 }
 
 @each $level in (1, 2, 3) {
@@ -173,7 +174,7 @@ dd > p {
 
 .signature-params,
 .signature-returns {
-  color: $code-light-gray;
+  color: colors.$code-light-gray;
 }
 
 .source-link {
@@ -267,8 +268,8 @@ dd > p {
   justify-self: stretch;
   width: 100%;
   padding: $spacer-medium;
-  background-color: $gray-100;
-  border-block-start: 1px solid $gray-300;
+  background-color: colors.$zinc-100;
+  border-block-start: 1px solid colors.$zinc-300;
 
   p {
     margin: 0;
@@ -287,9 +288,9 @@ dd > p {
   margin-block-end: 0;
   box-shadow:
     $shadow-offset-x-primary $shadow-offset-y-primary $shadow-blur-primary $shadow-spread-primary
-      color.change($shadow-color, $alpha: $shadow-alpha-primary),
+      sass-color.change($shadow-color, $alpha: $shadow-alpha-primary),
     $shadow-offset-x-secondary $shadow-offset-y-secondary $shadow-blur-secondary
-      $shadow-spread-secondary color.change($shadow-color, $alpha: $shadow-alpha-secondary);
+      $shadow-spread-secondary sass-color.change($shadow-color, $alpha: $shadow-alpha-secondary);
   padding: $spacer-medium $spacer-medium $spacer-medium $spacer-large;
 }
 
@@ -330,7 +331,7 @@ article th {
   @include border-radius(0.2rem);
   padding: 0 1em 0 1em;
   margin: 1em 0 1em 0;
-  border: 1px solid $gray-300;
+  border: 1px solid colors.$zinc-300;
   border-inline-start-width: 1em;
   border-inline-start-color: $info;
 }
