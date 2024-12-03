@@ -16,26 +16,29 @@
 
 @use 'variables/colors';
 @use 'variables/fonts';
+@use 'variables/navbar';
 @use 'variables/spacers';
 
 // TODO: Enable dark theme.
 // @import '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
 @import '../node_modules/@shoelace-style/shoelace/dist/themes/light';
-@import 'variables/navbar';
 
-$toc-nav-z-index: $navbar-z-index - 1;
+$toc-nav-z-index: navbar.$z-index - 1;
 $toc-nav-margin-inline-start: spacers.$small;
+
+$scrollbar-background-color: transparent;
+$scrollbar-color: colors.$zinc-325;
 
 .jsdoc-toc-nav {
   display: flex;
-  max-height: calc(100vh - $navbar-height);
+  max-height: calc(100vh - navbar.$height);
   position: sticky;
-  top: $navbar-height;
+  top: navbar.$height;
   // The TOC's width is 25% of the viewport's width, minus the scrollbar and inline margin.
   width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
   z-index: $toc-nav-z-index;
   overflow-y: auto;
-  scrollbar-color: colors.$scrollbar-color colors.$scrollbar-background-color;
+  scrollbar-color: $scrollbar-color $scrollbar-background-color;
   scrollbar-width: thin;
   font-family: fonts.$h-font, sans-serif;
   padding-block-start: spacers.$xx-large;
@@ -45,11 +48,11 @@ $toc-nav-margin-inline-start: spacers.$small;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: colors.$scrollbar-color;
+    background: $scrollbar-color;
   }
 
   &::-webkit-scrollbar-track {
-    background: colors.$scrollbar-background-color;
+    background: $scrollbar-background-color;
   }
 }
 

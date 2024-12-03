@@ -15,6 +15,8 @@
 */
 
 @use 'sass:color' as sass-color;
+
+@use 'navbar';
 @use 'variables/colors';
 @use 'variables/fonts';
 @use 'variables/spacers';
@@ -26,7 +28,6 @@
 @import 'hljs';
 @import 'themes/hljs/tomorrow';
 @import 'toc';
-@import 'variables/navbar';
 
 html {
   position: relative;
@@ -239,7 +240,7 @@ dd > p {
   display: flex;
   flex: 1 1 auto;
   width: 100%;
-  padding-block-start: $navbar-height;
+  padding-block-start: navbar.$height;
 }
 
 .jsdoc-content {
@@ -266,29 +267,6 @@ dd > p {
     margin: 0;
     text-align: center;
   }
-}
-
-/* Navigation */
-
-.jsdoc-navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: $navbar-z-index;
-  background-color: colors.$toc-background-color;
-  margin-block-end: 0;
-  box-shadow:
-    $shadow-offset-x-primary $shadow-offset-y-primary $shadow-blur-primary $shadow-spread-primary
-      sass-color.change($shadow-color, $alpha: $shadow-alpha-primary),
-    $shadow-offset-x-secondary $shadow-offset-y-secondary $shadow-blur-secondary
-      $shadow-spread-secondary sass-color.change($shadow-color, $alpha: $shadow-alpha-secondary);
-  padding: spacers.$medium spacers.$medium spacers.$medium spacers.$large;
-}
-
-.jsdoc-navbar-package-name {
-  @extend .navbar-brand;
-  font-family: fonts.$h-font, sans-serif;
-  font-size: 1.1rem;
 }
 
 /* Tables */

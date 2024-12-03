@@ -288,13 +288,5 @@ $white: #fff;
 $zinc-225: mix($zinc-200, $zinc-300, $weight: 75%, $method: oklch);
 $zinc-325: mix($zinc-300, $zinc-400, $weight: 75%, $method: oklch);
 
-// TODO: Find better homes for these variables.
-
-$navbar-background-color: $white;
-$toc-background-color: $navbar-background-color;
-
-$scrollbar-background-color: $toc-background-color;
-$scrollbar-color: $zinc-325;
-
-// TODO: Use a standard color.
+// TODO: Find a better home for this variable, and use a standard color.
 $code-light-gray: shade-color(#8e908c, 10%);
