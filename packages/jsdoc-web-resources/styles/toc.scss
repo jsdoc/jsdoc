@@ -14,6 +14,7 @@
   limitations under the License.
 */
 
+@use 'variables/bootstrap';
 @use 'variables/colors';
 @use 'variables/fonts';
 @use 'variables/navbar';
@@ -135,9 +136,9 @@ sl-details > sl-tree > sl-tree-item {
   }
 
   &::part(item--selected) {
-    // TODO: Use standard color palette.
-    background-color: $blue-100 !important;
-    color: $blue-600 !important;
+    background-color: colors.$blue-100 !important;
+    // TODO: Use a standard color.
+    color: bootstrap.$link-color !important;
   }
 
   > a:any-link {
@@ -186,7 +187,7 @@ sl-tree-item::part(expand-button) {
 }
 
 sl-tree-item::part(item) {
-  @include border-radius(0.2rem);
+  border-radius: 0.2rem;
 }
 
 sl-tree-item::part(item):hover {
@@ -195,7 +196,7 @@ sl-tree-item::part(item):hover {
 
 sl-tree-item::part(item--selected),
 sl-tree-item::part(item--selected):hover {
-  @extend .shadow-sm;
+  box-shadow: navbar.$shadow-primary !important;
   background-color: colors.$zinc-300;
   border: none;
 }
