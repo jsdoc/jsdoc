@@ -21,8 +21,8 @@
 @use 'variables/spacers';
 
 // TODO: Enable dark theme.
-// @import '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
-@import '../node_modules/@shoelace-style/shoelace/dist/themes/light';
+// @use '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
+@use '../node_modules/@shoelace-style/shoelace/dist/themes/light';
 
 $toc-nav-z-index: navbar.$z-index - 1;
 $toc-nav-margin-inline-start: spacers.$small;
