@@ -18,16 +18,15 @@
 
 @use 'badges';
 @use 'code';
+@use 'hljs';
 @use 'navbar';
+@use 'themes/hljs/tomorrow';
 @use 'toc';
 @use 'variables/colors';
 @use 'variables/fonts';
 @use 'variables/spacers';
 
 @import 'bootstrap';
-
-@import 'hljs';
-@import 'themes/hljs/tomorrow';
 
 html {
   position: relative;
