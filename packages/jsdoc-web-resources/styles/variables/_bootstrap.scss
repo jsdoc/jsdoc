@@ -18,6 +18,8 @@
 
 @use 'fonts';
 
+// Variables that override Bootstrap's default variables.
+
 // TODO: Use colors from palette.scss.
 $info: #5bc0de;
 $primary: #337ab7;
@@ -31,3 +33,5 @@ $code-font-size: fonts.$code-font-size;
 
 $font-size-base: fonts.$font-size-base;
 $line-height-base: fonts.$line-height-base;
+
+$font-weight-semibold: fonts.$font-weight-semibold;

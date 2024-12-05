@@ -17,6 +17,7 @@
 @use 'sass:color' as sass-color;
 
 @use 'badges';
+@use 'bootstrap';
 @use 'code';
 @use 'hljs';
 @use 'navbar';
@@ -26,7 +27,13 @@
 @use 'variables/fonts';
 @use 'variables/spacers';
 
-@import 'bootstrap';
+@mixin clearfix() {
+  &::after {
+    display: block;
+    clear: both;
+    content: '';
+  }
+}
 
 html {
   position: relative;
@@ -99,8 +106,7 @@ a {
 
 b,
 strong {
-  // TODO: Define `$font-weight-semibold` in font (and Bootstrap) variables.
-  font-weight: $font-weight-semibold;
+  font-weight: fonts.$font-weight-semibold;
 }
 
 dt,
@@ -109,27 +115,20 @@ th {
 }
 
 .dl-compact {
-  @include media-breakpoint-up(md) {
-    dt {
-      @include text-truncate();
-      float: inline-start;
-      width: fonts.$dl-horizontal-offset;
-      clear: inline-end;
-      text-align: end;
-    }
-
-    dd {
-      margin-inline-start: fonts.$dl-horizontal-offset;
-    }
-  }
-
   dt {
-    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    float: inline-start;
+    width: fonts.$dl-horizontal-offset;
+    clear: inline-end;
+    text-align: start;
   }
 
   dd {
-    @extend .clearfix;
+    @include clearfix;
     line-height: fonts.$line-height-computed * 0.75;
+    margin-inline-start: fonts.$dl-horizontal-offset;
 
     p {
       line-height: fonts.$line-height-computed;
@@ -181,8 +180,8 @@ dd > p {
 .summary-callout-heading,
 .symbol-index-section-heading {
   @extend .h4;
-  // TODO: Change color scheme
-  color: $info;
+  // TODO: Use color from standard palette.
+  color: bootstrap.$info;
   font-size: 1.125rem;
   margin-block-start: fonts.$h-margin-block-start-small;
   border-block-end: 0;
@@ -193,14 +192,9 @@ dd > p {
 .symbol-description {
   p:first-child {
     margin-block-end: fonts.$line-height-computed * 1.1;
-    font-size: fonts.$font-size-base * 1.1;
+    font-size: fonts.$font-size-base * 1.5;
+    line-height: fonts.$line-height-computed * 1.5;
     font-weight: 300;
-    line-height: fonts.$line-height-computed * 1.1;
-
-    @include media-breakpoint-up(md) {
-      font-size: fonts.$font-size-base * 1.5;
-      line-height: fonts.$line-height-computed * 1.5;
-    }
   }
 }
 
@@ -296,10 +290,11 @@ article th {
 /* Callouts */
 
 .summary-callout {
-  @include border-radius(0.2rem);
+  border-radius: 0.2rem;
   padding: 0 1em 0 1em;
   margin: 1em 0 1em 0;
   border: 1px solid colors.$zinc-300;
   border-inline-start-width: 1em;
-  border-inline-start-color: $info;
+  // TODO: Use color from standard palette.
+  border-inline-start-color: bootstrap.$info;
 }

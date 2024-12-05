@@ -39,6 +39,8 @@ $h-font-sizes: (
 $sans-serif-font: $h-font;
 $serif-font: $body-font;
 
+$font-weight-semibold: 600;
+
 @function h-font-size($level) {
   @return map.get($map: $h-font-sizes, $key: $level);
 }
