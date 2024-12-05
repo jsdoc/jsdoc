@@ -14,15 +14,20 @@
   limitations under the License.
 */
 
+@use 'sass:color' as sass-color;
+
 @use 'variables/colors';
 @use 'variables/fonts';
 @use 'variables/spacers';
 
+// TODO: Use a standard color.
+$code-color: #d63384;
+
 @mixin source() {
   @extend pre;
   border-radius: 0.2rem;
-  background-color: colors.$zinc-100;
-  border: 1px solid colors.$zinc-300;
+  background-color: sass-color.mix(colors.$white, colors.$zinc-100, 50%, $method: oklch);
+  border: 1px solid colors.$zinc-200;
   // TODO: increase bottom margin
   margin: 0 0 0.7rem;
   padding: 0.6rem;
@@ -43,7 +48,7 @@ code {
   font-size: 100%;
   font-variant-ligatures: none;
   // TODO: Use color from standard palette.
-  background-color: tint-color($code-color, 95%);
+  background-color: sass-color.mix(colors.$white, $code-color, 95%);
   border-radius: 0.25rem;
   padding: spacers.$xxx-small spacers.$xx-small;
 }
@@ -56,7 +61,6 @@ code {
 .line-number {
   grid-area: linenum;
   padding-inline-end: spacers.$medium;
-  color: colors.$code-light-gray;
   user-select: none;
   text-align: end;
   white-space: pre-line;

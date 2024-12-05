@@ -17,6 +17,7 @@
 @use 'sass:color' as sass-color;
 
 @use 'badges';
+@use 'code';
 @use 'navbar';
 @use 'variables/colors';
 @use 'variables/fonts';
@@ -24,7 +25,6 @@
 
 @import 'bootstrap';
 
-@import 'code';
 @import 'hljs';
 @import 'themes/hljs/tomorrow';
 @import 'toc';

@@ -14,13 +14,20 @@
   limitations under the License.
 */
 
+@use 'sass:color' as sass-color;
+
 @use 'fonts';
 
 // TODO: Use colors from palette.scss.
 $info: #5bc0de;
 $primary: #337ab7;
 $link-color: $primary;
-$link-color-hover: tint-color($link-color, 10%);
+$link-color-hover: sass-color.mix(#fff, $link-color, 10%);
+$code-color: #d63384;
+
+$code-font: fonts.$code-font;
+$font-family-monospace: fonts.$code-font, monospace;
+$code-font-size: fonts.$code-font-size;
 
 $font-size-base: fonts.$font-size-base;
 $line-height-base: fonts.$line-height-base;
