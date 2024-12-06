@@ -36,7 +36,7 @@ $scrollbar-color: colors.$zinc-325;
   position: sticky;
   top: navbar.$height;
   // The TOC's width is 25% of the viewport's width, minus the scrollbar and inline margin.
-  width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
+  min-width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
   z-index: $toc-nav-z-index;
   overflow-y: auto;
   scrollbar-color: $scrollbar-color $scrollbar-background-color;
