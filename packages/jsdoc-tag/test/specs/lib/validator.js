@@ -32,7 +32,7 @@ describe('@jsdoc/tag/lib/validator', () => {
     const dictionary = jsdoc.env.tags;
 
     const allowUnknown = Boolean(config.tags.allowUnknownTags);
-    const badTag = { dependencies: jsdoc.env, title: 'lkjasdlkjfb' };
+    const badTag = { env: jsdoc.env, title: 'lkjasdlkjfb' };
     const badTag2 = new Tag('type', '{string} I am a string!', null, jsdoc.env);
     const meta = {
       filename: 'asdf.js',

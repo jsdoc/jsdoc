@@ -27,10 +27,9 @@ function buildMessage(tagName, { filename, lineno, comment }, desc) {
 /**
  * Validate the given tag.
  */
-export function validate({ dependencies, title, text, value }, tagDef, meta) {
-  const config = dependencies.get('config');
-  const log = dependencies.get('log');
-  const allowUnknownTags = config.tags.allowUnknownTags;
+export function validate({ env, title, text, value }, tagDef, meta) {
+  const { conf, log } = env;
+  const allowUnknownTags = conf.tags.allowUnknownTags;
 
   // handle cases where the tag definition does not exist
   if (!tagDef) {

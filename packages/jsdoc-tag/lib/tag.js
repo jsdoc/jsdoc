@@ -56,8 +56,8 @@ function trim(text, opts, meta) {
   return text;
 }
 
-function addHiddenProperty(obj, propName, propValue, dependencies) {
-  const options = dependencies.get('options');
+function addHiddenProperty(obj, propName, propValue, env) {
+  const { options } = env;
 
   Object.defineProperty(obj, propName, {
     value: propValue,
@@ -67,13 +67,13 @@ function addHiddenProperty(obj, propName, propValue, dependencies) {
   });
 }
 
-function parseType({ dependencies, text, originalTitle }, { canHaveName, canHaveType }, meta) {
+function parseType({ env, text, originalTitle }, { canHaveName, canHaveType }, meta) {
   let log;
 
   try {
     return type.parse(text, canHaveName, canHaveType);
   } catch (e) {
-    log = dependencies.get('log');
+    log = env.log;
     log.error(
       'Unable to parse a tag\'s type expression%s with tag title "%s" and text "%s": %s',
       meta.path && meta.filename
@@ -90,7 +90,7 @@ function parseType({ dependencies, text, originalTitle }, { canHaveName, canHave
   }
 }
 
-function processTagText(tagInstance, tagDef, meta, dependencies) {
+function processTagText(tagInstance, tagDef, meta, env) {
   let tagType;
 
   if (tagDef.onTagText) {
@@ -107,7 +107,7 @@ function processTagText(tagInstance, tagDef, meta, dependencies) {
         tagInstance.value.type = {
           names: tagType.type,
         };
-        addHiddenProperty(tagInstance.value.type, 'parsedType', tagType.parsedType, dependencies);
+        addHiddenProperty(tagInstance.value.type, 'parsedType', tagType.parsedType, env);
       }
 
       ['optional', 'nullable', 'variable', 'defaultvalue'].forEach((prop) => {
@@ -142,18 +142,18 @@ export class Tag {
    * @param {string} tagTitle
    * @param {string} tagBody
    * @param {object} meta
-   * @param {object} dependencies
+   * @param {object} env
    */
-  constructor(tagTitle, tagBody, meta, dependencies) {
-    const dictionary = dependencies.get('tags');
+  constructor(tagTitle, tagBody, meta, env) {
+    const dictionary = env.tags;
     let tagDef;
     let trimOpts;
 
     meta = meta || {};
 
-    Object.defineProperty(this, 'dependencies', {
+    Object.defineProperty(this, 'env', {
       enumerable: false,
-      value: dependencies,
+      value: env,
     });
     this.originalTitle = trim(tagTitle);
 
@@ -187,7 +187,7 @@ export class Tag {
     this.text = trim(tagBody, trimOpts, meta);
 
     if (this.text) {
-      processTagText(this, tagDef, meta, dependencies);
+      processTagText(this, tagDef, meta, env);
     }
 
     tagValidator.validate(this, tagDef, meta);
