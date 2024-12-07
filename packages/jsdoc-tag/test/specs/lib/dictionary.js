@@ -131,7 +131,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       function defineTags() {
         env.conf.tags.dictionaries = undefined;
         jsdoc.env = env;
-        Dictionary.fromConfig(jsdoc.deps);
+        Dictionary.fromEnv(jsdoc.env);
       }
 
       expect(jsdoc.didLog(defineTags, 'error')).toBeTrue();
@@ -141,7 +141,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       function defineTags() {
         env.conf.tags.dictionaries = ['jsmarmoset'];
         jsdoc.env = env;
-        Dictionary.fromConfig(jsdoc.deps);
+        Dictionary.fromEnv(jsdoc.env);
       }
 
       expect(jsdoc.didLog(defineTags, 'error')).toBeTrue();
@@ -150,7 +150,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
     it('adds both JSDoc and Closure tags by default', () => {
       env.conf.tags.dictionaries = dictionaryConfig.slice();
       jsdoc.env = env;
-      testDictionary = Dictionary.fromConfig(jsdoc.deps);
+      testDictionary = Dictionary.fromEnv(jsdoc.env);
 
       expect(testDictionary.lookup(JSDOC_TAGNAME)).toBeObject();
       expect(testDictionary.lookup(CLOSURE_TAGNAME)).toBeObject();
@@ -159,7 +159,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
     it('adds only the JSDoc tags if requested', () => {
       env.conf.tags.dictionaries = ['jsdoc'];
       jsdoc.env = env;
-      testDictionary = Dictionary.fromConfig(jsdoc.deps);
+      testDictionary = Dictionary.fromEnv(jsdoc.env);
 
       expect(testDictionary.lookup(JSDOC_TAGNAME)).toBeObject();
       expect(testDictionary.lookup(CLOSURE_TAGNAME)).toBeFalse();
@@ -168,7 +168,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
     it('adds only the Closure tags if requested', () => {
       env.conf.tags.dictionaries = ['closure'];
       jsdoc.env = env;
-      testDictionary = Dictionary.fromConfig(jsdoc.deps);
+      testDictionary = Dictionary.fromEnv(jsdoc.env);
 
       expect(testDictionary.lookup(JSDOC_TAGNAME)).toBeFalse();
       expect(testDictionary.lookup(CLOSURE_TAGNAME)).toBeObject();
@@ -177,7 +177,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
     it('prefers tagdefs from the first dictionary on the list', () => {
       env.conf.tags.dictionaries = ['closure', 'jsdoc'];
       jsdoc.env = env;
-      testDictionary = Dictionary.fromConfig(jsdoc.deps);
+      testDictionary = Dictionary.fromEnv(jsdoc.env);
 
       expect(testDictionary.lookup('deprecated').synonyms).not.toBeDefined();
     });
@@ -185,7 +185,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
     it('adds tag synonyms', () => {
       env.conf.tags.dictionaries = ['jsdoc'];
       jsdoc.env = env;
-      testDictionary = Dictionary.fromConfig(jsdoc.deps);
+      testDictionary = Dictionary.fromEnv(jsdoc.env);
 
       expect(testDictionary.lookup('extends')).toBeObject();
       expect(testDictionary.normalize('extends')).toBe('augments');

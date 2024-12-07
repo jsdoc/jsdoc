@@ -103,11 +103,10 @@ export class Dictionary {
     this._tagSynonyms[synonym.toLowerCase()] = this.normalize(title);
   }
 
-  static fromConfig(deps) {
+  static fromEnv(env) {
     const dict = new Dictionary();
-    const env = deps.get('env');
-    const log = deps.get('log');
-    let dictionaries = env.conf.tags.dictionaries;
+    const { conf, log } = env;
+    let dictionaries = conf.tags.dictionaries;
     let tagDefs;
 
     if (!dictionaries) {
@@ -121,7 +120,7 @@ export class Dictionary {
         .reverse()
         .forEach((dictName) => {
           try {
-            tagDefs = definitions[DEFINITIONS[dictName]](deps);
+            tagDefs = definitions[DEFINITIONS[dictName]](env);
           } catch (e) {
             log.error(
               'The configuration setting "tags.dictionaries" contains ' +
@@ -134,7 +133,7 @@ export class Dictionary {
           dict.defineTags(tagDefs);
         });
 
-      dict.defineTags(definitions.getInternalTags(deps));
+      dict.defineTags(definitions.getInternalTags());
     }
 
     return dict;

@@ -179,7 +179,7 @@ export default class Api {
     let packageDocs;
     let docletStore;
 
-    this.env.tags = Dictionary.fromConfig(this.env);
+    this.env.tags = Dictionary.fromEnv(this.env);
     parser = await this.#createParser();
     docletStore = parser.parse(filepaths ?? this.env.sourceFiles, options.encoding);
 

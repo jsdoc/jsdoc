@@ -57,7 +57,7 @@ export default function test() {
   });
 
   env.conf = DEFAULT_CONFIG;
-  env.tags = Dictionary.fromConfig(env);
+  env.tags = Dictionary.fromEnv(env);
   // Make JSDoc environment available to all tests.
   if (!global.jsdoc) {
     global.jsdoc = {};

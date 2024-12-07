@@ -90,13 +90,13 @@ const helpers = {
     }
 
     config.tags.dictionaries = dictionaryNames;
-    jsdoc.env.tags = Dictionary.fromConfig(jsdoc.env);
+    jsdoc.env.tags = Dictionary.fromEnv(jsdoc.env);
   },
   restoreTagDictionary: () => {
     const { config } = jsdoc.env;
 
     config.tags.dictionaries = originalDictionaries.slice();
-    jsdoc.env.tags = Dictionary.fromConfig(jsdoc.env);
+    jsdoc.env.tags = Dictionary.fromEnv(jsdoc.env);
   },
 };
 
