@@ -13,15 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import path from 'node:path';
 
 import { execa } from 'execa';
 import { task } from 'hereby';
 import { LicenseChecker } from 'js-green-licenses';
 
+import runTests from './packages/jsdoc/test/index.js';
+
 const BIN_DIR = 'node_modules/.bin';
-const JSDOC_BIN = 'packages/jsdoc/jsdoc.js';
-const NODE_BIN = process.execPath;
 
 const sourceGlob = ['*.cjs', '*.js', 'packages/**/*/*.cjs', 'packages/**/*.js'];
 
@@ -107,10 +108,7 @@ export const lint = task({
 export const test = task({
   name: 'test',
   run: async () => {
-    await execa(NODE_BIN, [JSDOC_BIN, '-T'], {
-      stdout: process.stdout,
-      stderr: process.stderr,
-    });
+    await runTests();
   },
 });
 

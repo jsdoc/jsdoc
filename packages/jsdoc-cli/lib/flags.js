@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import querystring from 'node:querystring';
 
 import { cast } from '@jsdoc/util';
@@ -68,10 +69,6 @@ export const flags = {
     boolean: true,
     description: 'Print help information and exit.',
   },
-  match: {
-    description: 'Run only tests whose names contain this value.',
-    requiresArg: true,
-  },
   package: {
     alias: 'P',
     description: 'The path to the `package.json` file to use.',
@@ -103,11 +100,6 @@ export const flags = {
     alias: 't',
     description: 'The template package to use.',
     requiresArg: true,
-  },
-  test: {
-    alias: 'T',
-    boolean: true,
-    description: 'Run all tests and exit.',
   },
   verbose: {
     boolean: true,

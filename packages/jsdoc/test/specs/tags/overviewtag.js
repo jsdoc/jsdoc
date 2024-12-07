@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import path from 'node:path';
 
 import { Doclet } from '@jsdoc/doclet';
@@ -26,7 +27,7 @@ describe('@overview tag', () => {
 
   let srcParser;
   const sourceFiles = env.sourceFiles.slice();
-  const sourcePaths = env.opts._.slice();
+  const sourcePaths = env.opts._?.slice();
 
   beforeEach(() => {
     env.opts._ = [path.normalize(`${__dirname}/../../fixtures`)];

@@ -18,10 +18,7 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import Engine from '@jsdoc/cli';
-import { Dictionary } from '@jsdoc/tag';
 import stripBom from 'strip-bom';
-
-import test from './test/index.js';
 
 function createEngine() {
   const packageJsonPath = fileURLToPath(new URL('package.json', import.meta.url));
@@ -67,16 +64,6 @@ export function logFinish() {
   }
 }
 
-export async function runTests() {
-  const { env } = engine;
-  let result;
-
-  env.tags = Dictionary.fromConfig(env);
-  result = await test(env);
-
-  return result.overallStatus === 'failed' ? 1 : 0;
-}
-
 export function runCommand() {
   let cmd;
   const { options } = engine.env;
@@ -89,8 +76,6 @@ export function runCommand() {
   } else if (options.help) {
     // TODO: Can we just pass the function directly?
     cmd = () => engine.printHelp();
-  } else if (options.test) {
-    cmd = runTests;
   } else if (options.version) {
     cmd = () => engine.printVersion();
   } else {
