@@ -307,7 +307,7 @@ function addSymbolMemberof(parser, doclet, astNode) {
 }
 
 function newSymbolDoclet(parser, docletSrc, e) {
-  const newDoclet = createSymbolDoclet(docletSrc, e, parser.dependencies);
+  const newDoclet = createSymbolDoclet(docletSrc, e, parser.env);
 
   // if there's an alias, use that as the symbol name
   if (newDoclet.alias) {
@@ -362,7 +362,7 @@ export function attachTo(parser) {
     let newDoclet;
 
     for (let i = 0, l = comments.length; i < l; i++) {
-      newDoclet = createDoclet(comments[i], e, parser.dependencies);
+      newDoclet = createDoclet(comments[i], e, parser.env);
 
       // we're only interested in virtual comments here
       if (!newDoclet.name) {

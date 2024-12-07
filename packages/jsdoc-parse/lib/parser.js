@@ -67,29 +67,29 @@ function getLastValue(set) {
  */
 export class Parser extends EventEmitter {
   // TODO: docs
-  constructor(dependencies) {
+  constructor(env) {
     super();
 
-    this._conf = dependencies.get('config');
-    this._dependencies = dependencies;
-    this._docletStore = new DocletStore(dependencies);
-    this._emitter = dependencies.get('emitter');
-    this._log = dependencies.get('log');
+    this._conf = env.conf;
+    this._docletStore = new DocletStore(env);
+    this._emitter = env.emitter;
+    this._env = env;
+    this._log = env.log;
     this.moduleTypes = new Map();
     this._visitor = new Visitor();
-    this._walker = new Walker(dependencies, this);
+    this._walker = new Walker(env, this);
 
     this._visitor.setParser(this);
 
     // Create a special doclet for the global namespace. Prevent it from emitting events when its
     // watchable properties change.
-    this._globalDoclet = new Doclet(`@name ${LONGNAMES.GLOBAL}`, { _watch: false }, dependencies);
+    this._globalDoclet = new Doclet(`@name ${LONGNAMES.GLOBAL}`, { _watch: false }, env);
     this._globalDoclet.longname = LONGNAMES.GLOBAL;
 
     Object.defineProperties(this, {
-      dependencies: {
+      env: {
         get() {
-          return this._dependencies;
+          return this._env;
         },
       },
       visitor: {
@@ -109,7 +109,7 @@ export class Parser extends EventEmitter {
     this._docletStore.stopListening();
   }
 
-  // TODO: Always emit events from the dependencies' emitter, never from the parser.
+  // TODO: Always emit events from the env's emitter, never from the parser.
   emit(eventName, event, ...args) {
     super.emit(eventName, event, ...args);
     this._emitter.emit(eventName, event, ...args);
@@ -211,7 +211,7 @@ export class Parser extends EventEmitter {
   /** @private */
   _parseSourceCode(sourceCode, sourceName) {
     let ast;
-    const builder = new AstBuilder(this._dependencies);
+    const builder = new AstBuilder(this._env);
     let e = {
       filename: sourceName,
     };
@@ -271,7 +271,7 @@ export class Parser extends EventEmitter {
           _watch: false,
           code: e.code,
         },
-        this._dependencies
+        this._env
       );
       anonymousDoclet.longname = LONGNAMES.ANONYMOUS;
       anonymousDoclet.undocumented = true;

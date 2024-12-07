@@ -66,8 +66,8 @@ export const parserOptions = {
 export class AstBuilder {
   #log;
 
-  constructor(deps) {
-    this.#log = deps.get('log');
+  constructor(env) {
+    this.#log = env.log;
   }
 
   build(source, filename, sourceType) {

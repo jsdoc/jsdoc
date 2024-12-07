@@ -42,7 +42,7 @@ describe('@jsdoc/parse/lib/parser', () => {
   });
 
   describe('createParser', () => {
-    it('returns a `Parser` when called with dependencies', () => {
+    it('returns a `Parser` when called with valid environment', () => {
       const parser = jsdocParser.createParser(jsdoc.env);
 
       expect(parser).toBeObject();
