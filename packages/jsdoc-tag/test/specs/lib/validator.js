@@ -18,7 +18,7 @@ import { Tag } from '../../../lib/tag.js';
 import * as validator from '../../../lib/validator.js';
 
 describe('@jsdoc/tag/lib/validator', () => {
-  const config = jsdoc.deps.get('config');
+  const config = jsdoc.env.config;
 
   it('is an object', () => {
     expect(validator).toBeObject();
@@ -29,18 +29,18 @@ describe('@jsdoc/tag/lib/validator', () => {
   });
 
   describe('validate', () => {
-    const dictionary = jsdoc.deps.get('tags');
+    const dictionary = jsdoc.env.tags;
 
     const allowUnknown = Boolean(config.tags.allowUnknownTags);
-    const badTag = { dependencies: jsdoc.deps, title: 'lkjasdlkjfb' };
-    const badTag2 = new Tag('type', '{string} I am a string!', null, jsdoc.deps);
+    const badTag = { dependencies: jsdoc.env, title: 'lkjasdlkjfb' };
+    const badTag2 = new Tag('type', '{string} I am a string!', null, jsdoc.env);
     const meta = {
       filename: 'asdf.js',
       lineno: 1,
       comment: 'Better luck next time.',
     };
-    const mustHaveValueTag = new Tag('name', 'MyDocletName', meta, jsdoc.deps);
-    const mustNotHaveValueTag = new Tag('ignore', '', meta, jsdoc.deps);
+    const mustHaveValueTag = new Tag('name', 'MyDocletName', meta, jsdoc.env);
+    const mustNotHaveValueTag = new Tag('ignore', '', meta, jsdoc.env);
 
     function validateTag(theTag) {
       validator.validate(theTag, dictionary.lookUp(theTag.title), meta);
@@ -97,7 +97,7 @@ describe('@jsdoc/tag/lib/validator', () => {
 
     it('logs an error if the tag has no text but is required to', () => {
       function validate() {
-        const missingName = new Tag('name', 'MyDocletName', meta, jsdoc.deps);
+        const missingName = new Tag('name', 'MyDocletName', meta, jsdoc.env);
 
         missingName.text = null;
         validateTag(missingName);
@@ -108,7 +108,7 @@ describe('@jsdoc/tag/lib/validator', () => {
 
     it('logs a warning if the tag has text but is required not to', () => {
       function validate() {
-        const missingText = new Tag('ignore', '', meta, jsdoc.deps);
+        const missingText = new Tag('ignore', '', meta, jsdoc.env);
 
         missingText.mustNotHaveValue = true;
         missingText.text = missingText.text || 'asdf';
@@ -127,7 +127,7 @@ describe('@jsdoc/tag/lib/validator', () => {
     });
 
     it('logs the offending comment for validation errors', () => {
-      const emitter = jsdoc.deps.get('emitter');
+      const emitter = jsdoc.env.emitter;
       const events = [];
 
       emitter.once('logger:error', (e) => events.push(e));

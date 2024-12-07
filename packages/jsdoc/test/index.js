@@ -62,8 +62,7 @@ export default function test() {
   if (!global.jsdoc) {
     global.jsdoc = {};
   }
-  // TODO: remove `global.jsdoc.deps`
-  global.jsdoc.deps = global.jsdoc.env = env;
+  global.jsdoc.env = env;
 
   return jasmine.execute(SPEC_FILES);
 }

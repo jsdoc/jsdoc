@@ -25,8 +25,7 @@ import * as helper from '../../../lib/templateHelper.js';
 const { taffy } = salty;
 
 describe('@jsdoc/template-legacy/lib/templateHelper', () => {
-  const config = jsdoc.deps.get('config');
-  const options = jsdoc.deps.get('options');
+  const { config, options } = jsdoc.env;
 
   helper.registerLink('test', 'path/to/test.html');
 
@@ -156,31 +155,31 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     // TODO: needs more tests for unusual values and things that get special treatment (such as
     // inner members)
     it('should convert a simple string into the string plus the default extension', () => {
-      const filename = helper.getUniqueFilename('BackusNaur', jsdoc.deps);
+      const filename = helper.getUniqueFilename('BackusNaur', jsdoc.env);
 
       expect(filename).toBe('BackusNaur.html');
     });
 
     it('should replace slashes with underscores', () => {
-      const filename = helper.getUniqueFilename('tick/tock', jsdoc.deps);
+      const filename = helper.getUniqueFilename('tick/tock', jsdoc.env);
 
       expect(filename).toBe('tick_tock.html');
     });
 
     it('should replace other problematic characters with underscores', () => {
-      const filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename', jsdoc.deps);
+      const filename = helper.getUniqueFilename('a very strange \\/?*:|\'"<> filename', jsdoc.env);
 
       expect(filename).toBe('a very strange __________ filename.html');
     });
 
     it('should not allow a filename to start with an underscore', () => {
-      expect(helper.getUniqueFilename('', jsdoc.deps)).toBe('-_.html');
+      expect(helper.getUniqueFilename('', jsdoc.env)).toBe('-_.html');
     });
 
     it('should not return the same filename twice', () => {
       const name = 'polymorphic';
-      const filename1 = helper.getUniqueFilename(name, jsdoc.deps);
-      const filename2 = helper.getUniqueFilename(name, jsdoc.deps);
+      const filename1 = helper.getUniqueFilename(name, jsdoc.env);
+      const filename2 = helper.getUniqueFilename(name, jsdoc.env);
 
       expect(filename1).not.toBe(filename2);
     });
@@ -188,25 +187,25 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     it('should not consider the same name with different letter case to be unique', () => {
       const camel = 'myJavaScriptIdentifier';
       const pascal = 'MyJavaScriptIdentifier';
-      const filename1 = helper.getUniqueFilename(camel, jsdoc.deps);
-      const filename2 = helper.getUniqueFilename(pascal, jsdoc.deps);
+      const filename1 = helper.getUniqueFilename(camel, jsdoc.env);
+      const filename2 = helper.getUniqueFilename(pascal, jsdoc.env);
 
       expect(filename1.toLowerCase()).not.toBe(filename2.toLowerCase());
     });
 
     it('should remove variations from the longname before generating the filename', () => {
-      const filename = helper.getUniqueFilename('MyClass(foo, bar)', jsdoc.deps);
+      const filename = helper.getUniqueFilename('MyClass(foo, bar)', jsdoc.env);
 
       expect(filename).toBe('MyClass.html');
     });
 
     it('should generate the correct filename for built-in namespaces', () => {
-      const filenameEvent = helper.getUniqueFilename('event:userDidSomething', jsdoc.deps);
-      const filenameExternal = helper.getUniqueFilename('external:NotInThisPackage', jsdoc.deps);
-      const filenameModule = helper.getUniqueFilename('module:some/sort/of/module', jsdoc.deps);
+      const filenameEvent = helper.getUniqueFilename('event:userDidSomething', jsdoc.env);
+      const filenameExternal = helper.getUniqueFilename('external:NotInThisPackage', jsdoc.env);
+      const filenameModule = helper.getUniqueFilename('module:some/sort/of/module', jsdoc.env);
       const filenamePackage = helper.getUniqueFilename(
         'package:node-solve-all-your-problems',
-        jsdoc.deps
+        jsdoc.env
       );
 
       expect(filenameEvent).toBe('event-userDidSomething.html');
@@ -398,7 +397,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
 
     it('does not try to parse a longname starting with <anonymous> as a type application', () => {
-      const emitter = jsdoc.deps.get('emitter');
+      const emitter = jsdoc.env.emitter;
       const events = [];
 
       function storeEvent(e) {
@@ -697,7 +696,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     let attribs;
 
     it('should return an array', () => {
-      doc = new Doclet('/** ljklajsdf */', {}, jsdoc.deps);
+      doc = new Doclet('/** ljklajsdf */', {}, jsdoc.env);
       attribs = helper.getAttribs(doc);
 
       expect(attribs).toBeEmptyArray();
@@ -709,7 +708,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     function doTests(tests, whatNotToContain) {
       for (const src in tests) {
         if (Object.hasOwn(tests, src)) {
-          doc = new Doclet(`/** ${src} */`, {}, jsdoc.deps);
+          doc = new Doclet(`/** ${src} */`, {}, jsdoc.env);
           attribs = helper.getAttribs(doc);
 
           if (tests[src]) {
@@ -813,7 +812,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const fdsaFoo = new Doclet(
         '/** @const module:fdsa~FOO\n@readonly\n@private */',
         {},
-        jsdoc.deps
+        jsdoc.env
       );
 
       attribs = helper.getAttribs(fdsaFoo);
@@ -846,14 +845,14 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     // returns links to allowed types for a doclet.
     it('returns an empty array if the doclet has no specified type', () => {
-      const doc = new Doclet('/** @const ASDF */', {}, jsdoc.deps);
+      const doc = new Doclet('/** @const ASDF */', {}, jsdoc.env);
       const types = helper.getSignatureTypes(doc);
 
       expect(types).toBeEmptyArray();
     });
 
     it("returns a string array of the doclet's types", () => {
-      const doc = new Doclet('/** @const {number|Array.<boolean>} ASDF */', {}, jsdoc.deps);
+      const doc = new Doclet('/** @const {number|Array.<boolean>} ASDF */', {}, jsdoc.env);
       const types = helper.getSignatureTypes(doc);
 
       expect(types).toBeArrayOfSize(2);
@@ -868,7 +867,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       // make some links.
       helper.longnameToUrl.MyClass = 'MyClass.html';
 
-      doc = new Doclet('/** @const {MyClass} ASDF */', {}, jsdoc.deps);
+      doc = new Doclet('/** @const {MyClass} ASDF */', {}, jsdoc.env);
       types = helper.getSignatureTypes(doc);
 
       expect(types).toBeArrayOfSize(1);
@@ -882,7 +881,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       // make some links.
       helper.longnameToUrl.MyClass = 'MyClass.html';
 
-      doc = new Doclet('/** @const {MyClass} ASDF */', {}, jsdoc.deps);
+      doc = new Doclet('/** @const {MyClass} ASDF */', {}, jsdoc.env);
       types = helper.getSignatureTypes(doc, 'myCSSClass');
 
       expect(types).toBeArrayOfSize(1);
@@ -894,7 +893,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     // retrieves parameter names.
     // if css class is provided, optional parameters are wrapped in a <span> with that class.
     it('returns an empty array if the doclet has no specified type', () => {
-      const doc = new Doclet('/** @function myFunction */', {}, jsdoc.deps);
+      const doc = new Doclet('/** @function myFunction */', {}, jsdoc.env);
       const params = helper.getSignatureParams(doc);
 
       expect(params).toBeEmptyArray();
@@ -904,7 +903,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const doc = new Doclet(
         '/** @function myFunction\n @param {string} foo - asdf. */',
         {},
-        jsdoc.deps
+        jsdoc.env
       );
       const params = helper.getSignatureParams(doc);
 
@@ -920,7 +919,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
           ' * @param {string} [baz] - another explanation.\n' +
           ' */',
         {},
-        jsdoc.deps
+        jsdoc.env
       );
       const params = helper.getSignatureParams(doc, 'cssClass');
 
@@ -938,7 +937,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
           ' * @param {string} [baz] - another explanation.\n' +
           ' */',
         {},
-        jsdoc.deps
+        jsdoc.env
       );
       const params = helper.getSignatureParams(doc);
 
@@ -971,7 +970,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
 
     it('returns an empty array if the doclet has no returns', () => {
-      const doc = new Doclet('/** @function myFunction */', {}, jsdoc.deps);
+      const doc = new Doclet('/** @function myFunction */', {}, jsdoc.env);
       const returns = helper.getSignatureReturns(doc);
 
       expect(returns).toBeEmptyArray();
@@ -981,7 +980,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const doc = new Doclet(
         '/** @function myFunction\n@returns an interesting result.*/',
         {},
-        jsdoc.deps
+        jsdoc.env
       );
       const returns = helper.getSignatureReturns(doc);
 
@@ -989,14 +988,14 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
 
     it('uses the value of the `yields` property', () => {
-      const doc = new Doclet('/** @yields {string} A string. */', {}, jsdoc.deps);
+      const doc = new Doclet('/** @yields {string} A string. */', {}, jsdoc.env);
       const html = helper.getSignatureReturns(doc);
 
       expect(html).toContain('string');
     });
 
     it('prefers `yields` over `returns`', () => {
-      const doc = new Doclet('/** @yields {string}\n@returns {number} */', {}, jsdoc.deps);
+      const doc = new Doclet('/** @yields {string}\n@returns {number} */', {}, jsdoc.env);
       const html = helper.getSignatureReturns(doc);
 
       expect(html).toContain('string');
@@ -1013,7 +1012,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       doc = new Doclet(
         '/** @function myFunction\n@returns {number|MyClass} an interesting result.*/',
         {},
-        jsdoc.deps
+        jsdoc.env
       );
       returns = helper.getSignatureReturns(doc);
 
@@ -1032,7 +1031,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       doc = new Doclet(
         '/** @function myFunction\n@returns {number|MyClass} an interesting result.*/',
         {},
-        jsdoc.deps
+        jsdoc.env
       );
       returns = helper.getSignatureReturns(doc, 'myCssClass');
 
@@ -1049,15 +1048,15 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     const lackeys = new Doclet(
       '/** @member lackeys\n@memberof module:mafia/gangs.Sharks~Henchman\n@instance*/',
       {},
-      jsdoc.deps
+      jsdoc.env
     );
     const henchman = new Doclet(
       '/** @class Henchman\n@memberof module:mafia/gangs.Sharks\n@inner */',
       {},
-      jsdoc.deps
+      jsdoc.env
     );
-    const gang = new Doclet('/** @namespace module:mafia/gangs.Sharks */', {}, jsdoc.deps);
-    const mafia = new Doclet('/** @module mafia/gangs */', {}, jsdoc.deps);
+    const gang = new Doclet('/** @namespace module:mafia/gangs.Sharks */', {}, jsdoc.env);
+    const mafia = new Doclet('/** @module mafia/gangs */', {}, jsdoc.env);
     const data = taffy([lackeys, henchman, gang, mafia]);
 
     afterEach(() => {
@@ -1194,7 +1193,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     ];
 
     it('should prune the correct members', () => {
-      const pruned = helper.prune(taffy(array), jsdoc.deps)().get();
+      const pruned = helper.prune(taffy(array), jsdoc.env)().get();
 
       compareObjectArrays(keep, pruned);
     });
@@ -1203,7 +1202,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let pruned;
 
       options.private = false;
-      pruned = helper.prune(taffy(arrayPrivate), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayPrivate), jsdoc.env)().get();
 
       compareObjectArrays([], pruned);
     });
@@ -1213,7 +1212,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const keepPackage = [{ access: 'package' }];
 
       options.access = 'package';
-      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.env)().get();
 
       compareObjectArrays(keepPackage, pruned);
     });
@@ -1223,7 +1222,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const keepPublic = [{ access: 'public' }];
 
       options.access = 'public';
-      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.env)().get();
 
       compareObjectArrays(keepPublic, pruned);
     });
@@ -1233,7 +1232,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const keepUndefined = [{ asdf: true }];
 
       options.access = 'undefined';
-      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.env)().get();
 
       compareObjectArrays(keepUndefined, pruned);
     });
@@ -1243,7 +1242,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const keepProtected = [{ access: 'protected' }];
 
       options.access = 'protected';
-      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.env)().get();
 
       compareObjectArrays(keepProtected, pruned);
     });
@@ -1253,7 +1252,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       const keepPrivate = [{ access: 'private' }];
 
       options.access = 'private';
-      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.env)().get();
 
       compareObjectArrays(keepPrivate, pruned);
     });
@@ -1270,7 +1269,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       ];
 
       options.access = ['public', 'protected'];
-      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.env)().get();
 
       compareObjectArrays(keepPublicProtected, pruned);
     });
@@ -1279,7 +1278,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let pruned;
 
       options.access = 'all';
-      pruned = helper.prune(taffy(arrayMixed), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayMixed), jsdoc.env)().get();
 
       compareObjectArrays(arrayMixed, pruned);
     });
@@ -1288,7 +1287,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let pruned;
 
       options.private = true;
-      pruned = helper.prune(taffy(arrayPrivate), jsdoc.deps)().get();
+      pruned = helper.prune(taffy(arrayPrivate), jsdoc.env)().get();
 
       compareObjectArrays(arrayPrivate, pruned);
     });
@@ -1326,21 +1325,21 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should translate {@link test} into a HTML link.', () => {
       const input = 'This is a {@link test}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
 
     it('should translate {@link unknown} into a simple text.', () => {
       const input = 'This is a {@link unknown}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is a unknown.');
     });
 
     it('should translate {@link test} into a HTML links multiple times.', () => {
       const input = 'This is a {@link test} and {@link test}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe(
         'This is a <a href="path/to/test.html">test</a> and <a href="path/to/test.html">test</a>.'
@@ -1349,21 +1348,21 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should translate [hello there]{@link test} into a HTML link with the custom content.', () => {
       const input = 'This is a [hello there]{@link test}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is a <a href="path/to/test.html">hello there</a>.');
     });
 
     it('should translate [dummy text] and [hello there]{@link test} into an HTML link with the custom content.', () => {
       const input = 'This is [dummy text] and [hello there]{@link test}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is [dummy text] and <a href="path/to/test.html">hello there</a>.');
     });
 
     it('should translate [dummy text] and [more] and [hello there]{@link test} into an HTML link with the custom content.', () => {
       const input = 'This is [dummy text] and [more] and [hello there]{@link test}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe(
         'This is [dummy text] and [more] and <a href="path/to/test.html">hello there</a>.'
@@ -1372,112 +1371,112 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should ignore [hello there].', () => {
       const input = 'This is a [hello there].';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe(input);
     });
 
     it('should translate http links in the tag', () => {
       const input = 'Link to {@link http://github.com}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
     });
 
     it('should translate ftp links in the tag', () => {
       const input = 'Link to {@link ftp://foo.bar}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="ftp://foo.bar">ftp://foo.bar</a>');
     });
 
     it('should allow pipe to be used as delimiter between href and text (external link)', () => {
       const input = 'Link to {@link http://github.com|Github}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="http://github.com">Github</a>');
     });
 
     it('should allow pipe to be used as delimiter between href and text (symbol link)', () => {
       const input = 'Link to {@link test|Test}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html">Test</a>');
     });
 
     it('should not add spaces to the href or text when there are spaces around the pipe', () => {
       const input = 'Link to {@link test | Test}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html">Test</a>');
     });
 
     it('should allow first space to be used as delimiter between href and text (external link)', () => {
       const input = 'Link to {@link http://github.com Github}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="http://github.com">Github</a>');
     });
 
     it('should allow first space to be used as delimiter between href and text (symbol link)', () => {
       const input = 'Link to {@link test My Caption}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
     });
 
     it('if pipe and space are present in link tag, use pipe as the delimiter', () => {
       const input = 'Link to {@link test|My Caption}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html">My Caption</a>');
     });
 
     it('Test of {@linkcode } which should be in monospace', () => {
       const input = 'Link to {@linkcode test}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
 
     it('Test of {@linkplain } which should be in normal font', () => {
       const input = 'Link to {@linkplain test}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
     });
 
     it('should be careful with linking to links whose names are reserved JS keywords', () => {
       const input = 'Link to {@link constructor}';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to constructor');
     });
 
     it('should allow linebreaks between link tag and content', () => {
       const input = 'This is a {@link\ntest}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
 
     it('should allow linebreaks to separate url from link text', () => {
       const input = 'This is a {@link\ntest\ntest}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
 
     it('should normalize additional newlines to spaces', () => {
       const input = 'This is a {@link\ntest\ntest\n\ntest}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test test</a>.');
     });
 
     it('should allow tabs between link tag and content', () => {
       const input = 'This is a {@link\ttest}.';
-      const output = helper.resolveLinks(input, jsdoc.deps);
+      const output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('This is a <a href="path/to/test.html">test</a>.');
     });
@@ -1489,7 +1488,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let output;
 
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1500,7 +1499,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let output;
 
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1510,7 +1509,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let output;
 
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
     });
@@ -1522,7 +1521,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1532,7 +1531,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="http://github.com">http://github.com</a>');
     });
@@ -1543,7 +1542,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html"><code>test</code></a>');
     });
@@ -1553,7 +1552,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       let output;
 
       config.templates.cleverLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="path/to/test.html">test</a>');
     });
@@ -1566,7 +1565,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
       config.templates.cleverLinks = true;
       config.templates.monospaceLinks = true;
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe(
         'Link to <a href="path/to/test.html"><code>test</code></a> and ' +
@@ -1580,7 +1579,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
       config.templates.useShortNamesInLinks = true;
       helper.registerLink('my.long.namespace', 'asdf.html');
-      output = helper.resolveLinks(input, jsdoc.deps);
+      output = helper.resolveLinks(input, jsdoc.env);
 
       expect(output).toBe('Link to <a href="asdf.html">namespace</a>');
     });
@@ -1589,44 +1588,44 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
   describe('createLink', () => {
     it('should create a url for a simple global.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         longname: 'foo',
         name: 'foo',
         scope: 'global',
       };
-      const url = helper.createLink(mockDoclet, jsdoc.deps);
+      const url = helper.createLink(mockDoclet, jsdoc.env);
 
       expect(url).toBe('global.html#foo');
     });
 
     it('should create a url for a namespace.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'namespace',
         longname: 'foo',
         name: 'foo',
       };
-      const url = helper.createLink(mockDoclet, jsdoc.deps);
+      const url = helper.createLink(mockDoclet, jsdoc.env);
 
       expect(url).toBe('foo.html');
     });
 
     it('should create a url for a member of a namespace.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         longname: 'ns.foo',
         name: 'foo',
         memberof: 'ns',
       };
-      const url = helper.createLink(mockDoclet, jsdoc.deps);
+      const url = helper.createLink(mockDoclet, jsdoc.env);
 
       expect(url).toBe('ns.html#foo');
     });
 
     const nestedNamespaceDoclet = {
-      dependencies: jsdoc.deps,
+      dependencies: jsdoc.env,
       kind: 'function',
       longname: 'ns1.ns2.foo',
       name: 'foo',
@@ -1635,57 +1634,57 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     let nestedNamespaceUrl;
 
     it('should create a url for a member of a nested namespace.', () => {
-      nestedNamespaceUrl = helper.createLink(nestedNamespaceDoclet, jsdoc.deps);
+      nestedNamespaceUrl = helper.createLink(nestedNamespaceDoclet, jsdoc.env);
 
       expect(nestedNamespaceUrl).toBe('ns1.ns2.html#foo');
     });
 
     it('should return the same value when called twice with the same doclet.', () => {
-      const newUrl = helper.createLink(nestedNamespaceDoclet, jsdoc.deps);
+      const newUrl = helper.createLink(nestedNamespaceDoclet, jsdoc.env);
 
       expect(newUrl).toBe(nestedNamespaceUrl);
     });
 
     it('should create a url for a name with invalid characters.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         longname: 'ns1."!"."*foo"',
         name: '"*foo"',
         memberof: 'ns1."!"',
       };
-      const url = helper.createLink(mockDoclet, jsdoc.deps);
+      const url = helper.createLink(mockDoclet, jsdoc.env);
 
       expect(url).toEqual('ns1._!_.html#%22*foo%22');
     });
 
     it('should create a url for a function that is the only symbol exported by a module.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         longname: 'module:bar',
         name: 'module:bar',
       };
-      const url = helper.createLink(mockDoclet, jsdoc.deps);
+      const url = helper.createLink(mockDoclet, jsdoc.env);
 
       expect(url).toEqual('module-bar.html');
     });
 
     it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', () => {
       const moduleDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'module',
         longname: 'module:baz',
         name: 'module:baz',
       };
       const badDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'member',
         longname: 'module:baz',
         name: 'module:baz',
       };
-      const moduleDocletUrl = helper.createLink(moduleDoclet, jsdoc.deps);
-      const badDocletUrl = helper.createLink(badDoclet, jsdoc.deps);
+      const moduleDocletUrl = helper.createLink(moduleDoclet, jsdoc.env);
+      const badDocletUrl = helper.createLink(badDoclet, jsdoc.env);
 
       expect(moduleDocletUrl).toBe('module-baz.html');
       expect(badDocletUrl).toBe('module-baz.html');
@@ -1693,21 +1692,21 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should create a url for a function that is a member of a doclet with the wrong kind', () => {
       const badModuleDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'member',
         longname: 'module:qux',
         name: 'module:qux',
       };
       const memberDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         name: 'frozzle',
         memberof: 'module:qux',
         scope: 'instance',
         longname: 'module:qux#frozzle',
       };
-      const badModuleDocletUrl = helper.createLink(badModuleDoclet, jsdoc.deps);
-      const memberDocletUrl = helper.createLink(memberDoclet, jsdoc.deps);
+      const badModuleDocletUrl = helper.createLink(badModuleDoclet, jsdoc.env);
+      const memberDocletUrl = helper.createLink(memberDoclet, jsdoc.env);
 
       expect(badModuleDocletUrl).toBe('module-qux.html');
       expect(memberDocletUrl).toBe('module-qux.html#frozzle');
@@ -1715,49 +1714,49 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should include the scope punctuation in the fragment ID for static members', () => {
       const functionDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         longname: 'Milk.pasteurize',
         name: 'pasteurize',
         memberof: 'Milk',
         scope: 'static',
       };
-      const docletUrl = helper.createLink(functionDoclet, jsdoc.deps);
+      const docletUrl = helper.createLink(functionDoclet, jsdoc.env);
 
       expect(docletUrl).toBe('Milk.html#.pasteurize');
     });
 
     it('should include the scope punctuation in the fragment ID for inner members', () => {
       const functionDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         longname: 'Milk~removeSticksAndLeaves',
         name: 'removeSticksAndLeaves',
         memberof: 'Milk',
         scope: 'inner',
       };
-      const docletUrl = helper.createLink(functionDoclet, jsdoc.deps);
+      const docletUrl = helper.createLink(functionDoclet, jsdoc.env);
 
       expect(docletUrl).toBe('Milk.html#~removeSticksAndLeaves');
     });
 
     it('should omit the scope punctuation from the fragment ID for instance members', () => {
       const propertyDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'member',
         longname: 'Milk#calcium',
         name: 'calcium',
         memberof: 'Milk',
         scope: 'instance',
       };
-      const docletUrl = helper.createLink(propertyDoclet, jsdoc.deps);
+      const docletUrl = helper.createLink(propertyDoclet, jsdoc.env);
 
       expect(docletUrl).toBe('Milk.html#calcium');
     });
 
     it('should include the variation, if present, in the fragment ID', () => {
       const variationDoclet = {
-        dependencies: jsdoc.deps,
+        dependencies: jsdoc.env,
         kind: 'function',
         longname: 'Milk#fat(percent)',
         name: 'fat',
@@ -1765,7 +1764,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
         scope: 'instance',
         variation: '(percent)',
       };
-      const docletUrl = helper.createLink(variationDoclet, jsdoc.deps);
+      const docletUrl = helper.createLink(variationDoclet, jsdoc.env);
 
       expect(docletUrl).toBe('Milk.html#fat(percent)');
     });

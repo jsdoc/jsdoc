@@ -19,7 +19,7 @@ import { Visitor } from '../../../lib/visitor.js';
 
 describe('@jsdoc/parse/lib/visitor', () => {
   // TODO: more tests
-  const parser = new Parser(jsdoc.deps);
+  const parser = new Parser(jsdoc.env);
   const visitor = new Visitor();
 
   describe('visitNodeComments', () => {

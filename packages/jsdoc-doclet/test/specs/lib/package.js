@@ -26,7 +26,7 @@ describe('@jsdoc/doclet/lib/package', () => {
     const obj = {};
 
     obj[name] = value;
-    myPackage = new Package(JSON.stringify(obj), jsdoc.deps);
+    myPackage = new Package(JSON.stringify(obj), jsdoc.env);
     // Add the package object to the cached parse results, so we can validate it against the
     // doclet schema.
     jsdoc.addParseResults(`package-property-${name}.js`, [myPackage]);
@@ -44,12 +44,12 @@ describe('@jsdoc/doclet/lib/package', () => {
 
   describe('Package', () => {
     beforeEach(() => {
-      emptyPackage = new Package(null, jsdoc.deps);
+      emptyPackage = new Package(null, jsdoc.env);
     });
 
     it('accepts a JSON-format string', () => {
       function newPackage() {
-        return new Package('{"foo": "bar"}', jsdoc.deps);
+        return new Package('{"foo": "bar"}', jsdoc.env);
       }
 
       expect(newPackage).not.toThrow();
@@ -57,7 +57,7 @@ describe('@jsdoc/doclet/lib/package', () => {
 
     it('accepts a JSON-format string with a leading BOM', () => {
       function newPackage() {
-        return new Package('\uFEFF{}', jsdoc.deps);
+        return new Package('\uFEFF{}', jsdoc.env);
       }
 
       expect(newPackage).not.toThrow();
@@ -65,7 +65,7 @@ describe('@jsdoc/doclet/lib/package', () => {
 
     it('logs an error when called with bad input', () => {
       function newPackage() {
-        return new Package('abcdefg', jsdoc.deps);
+        return new Package('abcdefg', jsdoc.env);
       }
 
       expect(newPackage).not.toThrow();
@@ -156,7 +156,7 @@ describe('@jsdoc/doclet/lib/package', () => {
       });
 
       it('ignores the value from the package file', () => {
-        const myPackage = new Package('{"files": ["foo", "bar"]}', jsdoc.deps);
+        const myPackage = new Package('{"files": ["foo", "bar"]}', jsdoc.env);
 
         expect(myPackage.files).toBeEmptyArray();
       });
@@ -197,7 +197,7 @@ describe('@jsdoc/doclet/lib/package', () => {
       });
 
       it('contains the value of `license` from the package file', () => {
-        const myPackage = new Package('{"license": "My-OSS-License"}', jsdoc.deps);
+        const myPackage = new Package('{"license": "My-OSS-License"}', jsdoc.env);
 
         expect(myPackage.license).toBeUndefined();
         expect(myPackage.licenses).toBeArrayOfSize(1);
@@ -214,7 +214,7 @@ describe('@jsdoc/doclet/lib/package', () => {
             },
           ],
         };
-        const myPackage = new Package(JSON.stringify(packageInfo), jsdoc.deps);
+        const myPackage = new Package(JSON.stringify(packageInfo), jsdoc.env);
 
         expect(myPackage.licenses).toBeArrayOfSize(2);
       });
@@ -226,7 +226,7 @@ describe('@jsdoc/doclet/lib/package', () => {
       });
 
       it('reflects the value of the `name` property', () => {
-        const myPackage = new Package('{"name": "foo"}', jsdoc.deps);
+        const myPackage = new Package('{"name": "foo"}', jsdoc.env);
 
         expect(myPackage.longname).toBe('package:foo');
       });

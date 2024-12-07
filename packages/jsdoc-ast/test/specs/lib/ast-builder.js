@@ -35,7 +35,7 @@ describe('@jsdoc/ast/lib/ast-builder', () => {
     let instance;
 
     beforeEach(() => {
-      instance = new AstBuilder(jsdoc.deps);
+      instance = new AstBuilder(jsdoc.env);
     });
 
     // TODO: more tests

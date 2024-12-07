@@ -13,9 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('@define tag', () => {
   describe('JSDoc tags', () => {
-    const config = jsdoc.deps.get('config');
+    const { config } = jsdoc.env;
 
     const allowUnknownTags = Boolean(config.tags.allowUnknownTags);
 

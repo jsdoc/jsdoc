@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import os from 'node:os';
 import path from 'node:path';
 
@@ -23,7 +24,7 @@ const __dirname = jsdoc.dirname(import.meta.url);
 
 describe('module names', () => {
   let doclets;
-  const env = jsdoc.deps.get('env');
+  const env = jsdoc.env;
   let srcParser = null;
 
   beforeEach(() => {
@@ -63,7 +64,7 @@ describe('module names', () => {
           lineno: 1,
           filename: 'C:\\Users\\Jane Smith\\myproject\\lib\\mymodule.js',
         },
-        jsdoc.deps
+        jsdoc.env
       );
 
       expect(doclet.name).toBe('lib/mymodule');

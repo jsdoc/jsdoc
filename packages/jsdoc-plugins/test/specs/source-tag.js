@@ -26,7 +26,7 @@ describe('source-tag plugin', () => {
 
   beforeEach(async () => {
     parser = jsdoc.createParser();
-    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    await plugins.installPlugins([pluginPath], parser, jsdoc.env);
     docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
   });
 

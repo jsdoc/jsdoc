@@ -17,8 +17,8 @@
 import * as jsdocTag from '../../../lib/tag.js';
 import * as type from '../../../lib/type.js';
 
-const jsdocDictionary = jsdoc.deps.get('tags');
-const options = jsdoc.deps.get('options');
+const jsdocDictionary = jsdoc.env.tags;
+const options = jsdoc.env.options;
 const parseType = type.parse;
 const { Tag } = jsdocTag;
 
@@ -61,17 +61,17 @@ describe('@jsdoc/tag/lib/tag', () => {
 
     function createTags() {
       // Synonym for @param; space in the title
-      tagArg = new Tag('arg  ', text, meta, jsdoc.deps);
+      tagArg = new Tag('arg  ', text, meta, jsdoc.env);
       // @param with no type, but with optional and defaultvalue
-      tagParam = new Tag('param', '[foo=1]', meta, jsdoc.deps);
+      tagParam = new Tag('param', '[foo=1]', meta, jsdoc.env);
       // @param with type and no type modifiers (such as optional)
-      tagParamWithType = new Tag('param', '{string} foo', meta, jsdoc.deps);
+      tagParamWithType = new Tag('param', '{string} foo', meta, jsdoc.env);
       // @example that does not need indentation to be removed
-      tagExample = new Tag('example', textExample, meta, jsdoc.deps);
+      tagExample = new Tag('example', textExample, meta, jsdoc.env);
       // @example that needs indentation to be removed
-      tagExampleIndented = new Tag('example', textExampleIndented, meta, jsdoc.deps);
+      tagExampleIndented = new Tag('example', textExampleIndented, meta, jsdoc.env);
       // For testing that `onTagText` is called when necessary
-      tagType = new Tag('type', 'MyType ', meta, jsdoc.deps);
+      tagType = new Tag('type', 'MyType ', meta, jsdoc.env);
     }
 
     beforeEach(() => {
@@ -130,10 +130,10 @@ describe('@jsdoc/tag/lib/tag', () => {
         let wsTrailing;
 
         function newTags() {
-          wsOnly = new Tag('name', ' ', { code: { name: ' ' } }, jsdoc.deps);
-          wsLeading = new Tag('name', '  foo', { code: { name: '  foo' } }, jsdoc.deps);
-          wsTrailing = new Tag('name', 'foo  ', { code: { name: 'foo  ' } }, jsdoc.deps);
-          wsBoth = new Tag('name', '  foo  ', { code: { name: '  foo  ' } }, jsdoc.deps);
+          wsOnly = new Tag('name', ' ', { code: { name: ' ' } }, jsdoc.env);
+          wsLeading = new Tag('name', '  foo', { code: { name: '  foo' } }, jsdoc.env);
+          wsTrailing = new Tag('name', 'foo  ', { code: { name: 'foo  ' } }, jsdoc.env);
+          wsBoth = new Tag('name', '  foo  ', { code: { name: '  foo  ' } }, jsdoc.env);
         }
 
         expect(jsdoc.didLog(newTags, 'error')).toBeFalse();
@@ -228,7 +228,7 @@ describe('@jsdoc/tag/lib/tag', () => {
     describe('tag validating', () => {
       it('logs an error for tags with bad type expressions', () => {
         function newTag() {
-          return new Tag('param', '{!*!*!*!} foo', null, jsdoc.deps);
+          return new Tag('param', '{!*!*!*!} foo', null, jsdoc.env);
         }
 
         expect(jsdoc.didLog(newTag, 'error')).toBeTrue();
@@ -236,7 +236,7 @@ describe('@jsdoc/tag/lib/tag', () => {
 
       it('validates tags with no text', () => {
         function newTag() {
-          return new Tag('copyright', null, null, jsdoc.deps);
+          return new Tag('copyright', null, null, jsdoc.env);
         }
 
         expect(jsdoc.didLog(newTag, 'error')).toBeTrue();

@@ -22,7 +22,7 @@ describe('@jsdoc/util/lib/log', () => {
   let log;
 
   beforeEach(() => {
-    emitter = jsdoc.deps.get('emitter');
+    emitter = jsdoc.env.emitter;
     log = getLogFunctions(emitter);
   });
 

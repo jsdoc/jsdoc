@@ -25,7 +25,7 @@ describe('escape-html plugin', () => {
   const pluginPath = path.join(__dirname, '../../escape-html.js');
 
   beforeAll(async () => {
-    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    await plugins.installPlugins([pluginPath], parser, jsdoc.env);
     docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
   });
 

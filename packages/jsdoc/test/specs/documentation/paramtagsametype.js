@@ -13,7 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const options = jsdoc.deps.get('options');
+
+const { options } = jsdoc.env;
 
 describe('multiple @param tags with the same type expression', () => {
   const debug = Boolean(options.debug);

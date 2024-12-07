@@ -23,13 +23,13 @@ const ANONYMOUS_LONGNAME = name.LONGNAMES.ANONYMOUS;
 
 const { DocletStore } = docletStore;
 
-function makeDoclet(comment, meta, deps) {
+function makeDoclet(comment, meta, env) {
   let doclet;
 
-  deps ??= jsdoc.deps;
-  doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, deps);
+  env ??= jsdoc.env;
+  doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, env);
   if (meta?._emitEvent !== false) {
-    deps.get('emitter').emit('newDoclet', { doclet });
+    env.get('emitter').emit('newDoclet', { doclet });
   }
 
   return doclet;
@@ -48,7 +48,7 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
     let store;
 
     beforeEach(() => {
-      store = new DocletStore(jsdoc.deps);
+      store = new DocletStore(jsdoc.env);
     });
 
     afterEach(() => {
@@ -60,7 +60,7 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
     });
 
     it('is constructable when dependencies are passed in', () => {
-      expect(() => new DocletStore(jsdoc.deps)).not.toThrow();
+      expect(() => new DocletStore(jsdoc.env)).not.toThrow();
     });
 
     it('has an `add` method', () => {

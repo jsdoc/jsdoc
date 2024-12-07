@@ -23,7 +23,7 @@ const __dirname = jsdoc.dirname(import.meta.url);
 
 describe('@overview tag', () => {
   let doclets;
-  const env = jsdoc.deps.get('env');
+  const env = jsdoc.env;
 
   let srcParser;
   const sourceFiles = env.sourceFiles.slice();
@@ -78,7 +78,7 @@ describe('@overview tag', () => {
         lineno: 1,
         filename: fakePath,
       };
-      doclet = new Doclet(docletSrc, docletMeta, jsdoc.deps);
+      doclet = new Doclet(docletSrc, docletMeta, jsdoc.env);
       doclet.addTag('file', 'A random file.');
 
       expect(doclet.name).toBe('somefile.js');

@@ -50,7 +50,7 @@ describe('@jsdoc/core/lib/plugins', () => {
 
       init();
 
-      await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+      await plugins.installPlugins([pluginPath], parser, jsdoc.env);
       jsdoc.getDocSetFromFile(
         path.resolve(__dirname, '../../fixtures/plugin-source-file.js'),
         parser
@@ -71,7 +71,7 @@ describe('@jsdoc/core/lib/plugins', () => {
 
       init();
 
-      await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+      await plugins.installPlugins([pluginPath], parser, jsdoc.env);
       jsdoc.getDocSetFromFile(
         path.resolve(__dirname, '../../fixtures/plugin-source-file.js'),
         parser
@@ -85,7 +85,7 @@ describe('@jsdoc/core/lib/plugins', () => {
       const doclets = [];
       let pluginPath = path.resolve(__dirname, '../../fixtures/plugin-test-tags.js');
 
-      await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+      await plugins.installPlugins([pluginPath], parser, jsdoc.env);
       parser.on('newDoclet', (e) => {
         if (e.doclet.longname === 'test') {
           doclets.push(e.doclet);

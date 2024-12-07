@@ -17,7 +17,7 @@
 import { Dictionary } from '../../../lib/dictionary.js';
 
 describe('@jsdoc/tag/lib/dictionary', () => {
-  const env = jsdoc.deps.get('env');
+  const env = jsdoc.env;
   let testDictionary;
   const tagOptions = {
     canHaveValue: true,

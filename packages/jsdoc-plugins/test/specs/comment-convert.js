@@ -25,7 +25,7 @@ describe('comment-convert plugin', () => {
   const pluginPath = path.join(__dirname, '../../comment-convert.js');
 
   beforeAll(async () => {
-    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    await plugins.installPlugins([pluginPath], parser, jsdoc.env);
     docSet = jsdoc.getDocSetFromFile(pluginPath, parser);
   });
 

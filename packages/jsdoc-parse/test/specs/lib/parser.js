@@ -43,7 +43,7 @@ describe('@jsdoc/parse/lib/parser', () => {
 
   describe('createParser', () => {
     it('returns a `Parser` when called with dependencies', () => {
-      const parser = jsdocParser.createParser(jsdoc.deps);
+      const parser = jsdocParser.createParser(jsdoc.env);
 
       expect(parser).toBeObject();
 
@@ -55,7 +55,7 @@ describe('@jsdoc/parse/lib/parser', () => {
     let parser;
 
     beforeEach(() => {
-      parser = new jsdocParser.Parser(jsdoc.deps);
+      parser = new jsdocParser.Parser(jsdoc.env);
     });
 
     afterEach(() => {
@@ -156,7 +156,7 @@ describe('@jsdoc/parse/lib/parser', () => {
         const sourceCode = 'javascript:/** @class */function Foo() {}';
 
         function handler(e) {
-          e.doclet = combineDoclets(e.doclet, new Doclet('', {}, jsdoc.deps));
+          e.doclet = combineDoclets(e.doclet, new Doclet('', {}, jsdoc.env));
           e.doclet.foo = 'bar';
         }
 

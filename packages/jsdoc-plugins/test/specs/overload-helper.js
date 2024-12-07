@@ -27,7 +27,7 @@ describe('overload-helper plugin', () => {
 
   beforeAll(async () => {
     plugin = await import(pluginPath);
-    await plugins.installPlugins([pluginPath], parser, jsdoc.deps);
+    await plugins.installPlugins([pluginPath], parser, jsdoc.env);
     docSet = jsdoc.getDocSetFromFile(
       path.resolve(__dirname, '../fixtures/overload-helper.js'),
       parser
