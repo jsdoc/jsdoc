@@ -15,7 +15,7 @@
   limitations under the License.
 */
 
-import cli from './cli.js';
+import * as cli from './cli.js';
 
 (async () => {
   await cli.initialize();

@@ -33,86 +33,72 @@ function createEngine() {
   return new Engine({ revision, version });
 }
 
-/**
- * Helper methods for running JSDoc on the command line.
- *
- * @private
- */
-export default (() => {
-  const cli = {};
-  let engine;
-  let env;
-  let log;
+let engine;
 
-  cli.initialize = () => {
-    engine = createEngine();
-    env = engine.env;
-    log = engine.log;
+export function initialize() {
+  engine = createEngine();
 
-    engine.configureLogger();
+  engine.configureLogger();
 
-    return engine.loadConfig();
-  };
+  return engine.loadConfig();
+}
 
-  // TODO: docs
-  cli.logStart = () => {
-    log.debug(engine.versionDetails);
-    log.debug('Environment info: %j', {
-      env: {
-        conf: env.config,
-        opts: env.options,
-      },
-    });
-  };
+export function logStart() {
+  const { env, log } = engine;
 
-  // TODO: docs
-  cli.logFinish = () => {
-    let delta;
-    let deltaSeconds;
+  log.debug(engine.versionDetails);
+  log.debug('Environment info: %j', {
+    env: {
+      conf: env.config,
+      opts: env.options,
+    },
+  });
+}
 
-    if (env.run.finish && env.run.start) {
-      delta = env.run.finish.getTime() - env.run.start.getTime();
-      deltaSeconds = (delta / 1000).toFixed(2);
-      log.info(`Finished running in ${deltaSeconds} seconds.`);
-    }
-  };
+export function logFinish() {
+  let delta;
+  let deltaSeconds;
+  const { env, log } = engine;
 
-  // TODO: docs
-  cli.runCommand = () => {
-    let cmd;
-    const { options } = env;
+  if (env.run.finish && env.run.start) {
+    delta = env.run.finish.getTime() - env.run.start.getTime();
+    deltaSeconds = (delta / 1000).toFixed(2);
+    log.info(`Finished running in ${deltaSeconds} seconds.`);
+  }
+}
 
-    cli.logStart();
+export async function runTests() {
+  const { env } = engine;
+  let result;
 
-    // If we already need to exit with an error, don't do any more work.
-    if (engine.shouldExitWithError) {
-      cmd = () => Promise.resolve(1);
-    } else if (options.help) {
-      cmd = () => engine.printHelp();
-    } else if (options.test) {
-      cmd = cli.runTests;
-    } else if (options.version) {
-      cmd = () => engine.printVersion();
-    } else {
-      cmd = () => engine.generate();
-    }
+  env.tags = Dictionary.fromConfig(env);
+  result = await test(env);
 
-    // TODO: Await the promise and use try-catch.
-    return cmd().then((errorCode) => {
-      cli.logFinish();
-      engine.exit(errorCode || 0);
-    });
-  };
+  return result.overallStatus === 'failed' ? 1 : 0;
+}
 
-  // TODO: docs
-  cli.runTests = async () => {
-    let result;
+export function runCommand() {
+  let cmd;
+  const { options } = engine.env;
 
-    env.tags = Dictionary.fromConfig(env);
-    result = await test(env);
+  logStart();
 
-    return result.overallStatus === 'failed' ? 1 : 0;
-  };
+  // If we already need to exit with an error, don't do any more work.
+  if (engine.shouldExitWithError) {
+    cmd = () => Promise.resolve(1);
+  } else if (options.help) {
+    // TODO: Can we just pass the function directly?
+    cmd = () => engine.printHelp();
+  } else if (options.test) {
+    cmd = runTests;
+  } else if (options.version) {
+    cmd = () => engine.printVersion();
+  } else {
+    cmd = () => engine.generate();
+  }
 
-  return cli;
-})();
+  return cmd().then((errorCode) => {
+    logFinish();
+    engine.exit(errorCode || 0);
+  });
+}
