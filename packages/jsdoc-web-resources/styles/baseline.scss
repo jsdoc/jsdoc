@@ -239,13 +239,7 @@ dd > p {
 .jsdoc-content {
   flex: 1 1 auto;
   height: 100%;
-  padding-block-start: spacers.$xx-large;
-  padding-block-end: spacers.$xx-large;
-  padding-inline-start: spacers.$xxx-large;
-}
-
-.jsdoc-summary {
-  margin-inline-end: spacers.$medium;
+  padding: 0 spacers.$xx-large spacers.$xx-large spacers.$xx-large;
 }
 
 .jsdoc-footer {

@@ -80,7 +80,6 @@ code {
   grid:
     [row1-start] 'linenum code' max-content [row1-end]
     / max-content max-content;
-  width: calc(100% - spacers.$xx-large);
   margin: spacers.$small 0;
   padding: 1.5rem spacers.$x-small;
 }
