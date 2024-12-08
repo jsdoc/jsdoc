@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -52,14 +53,14 @@ function getAncestorLinks(doclet) {
   return helper.getAncestorLinks(data, doclet);
 }
 
-function hashToLink(doclet, hash, dependencies) {
+function hashToLink(doclet, hash, env) {
   let url;
 
   if (!/^(#.+)/.test(hash)) {
     return hash;
   }
 
-  url = helper.createLink(doclet, dependencies);
+  url = helper.createLink(doclet, env);
   url = url.replace(/(#.+|$)/, hash);
 
   return `<a href="${url}">${hash}</a>`;
@@ -231,9 +232,8 @@ function getPathFromDoclet({ meta }) {
   return meta.path && meta.path !== 'null' ? path.join(meta.path, meta.filename) : meta.filename;
 }
 
-function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
+function generate(title, docs, filename, resolveLinks, outdir, env) {
   let docData;
-  const env = dependencies.get('env');
   let html;
   let outpath;
 
@@ -249,19 +249,19 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   html = view.render('container.tmpl', docData);
 
   if (resolveLinks) {
-    html = helper.resolveLinks(html, dependencies); // turn {@link foo} into <a href="foodoc.html">foo</a>
+    html = helper.resolveLinks(html, env); // turn {@link foo} into <a href="foodoc.html">foo</a>
   }
 
   fs.writeFileSync(outpath, html, 'utf8');
 }
 
-function generateSourceFiles(sourceFiles, encoding, outdir, dependencies) {
+function generateSourceFiles(sourceFiles, encoding, outdir, env) {
   encoding = encoding || 'utf8';
 
   Object.keys(sourceFiles).forEach((file) => {
     let source;
     // links are keyed to the shortened path in each doclet's `meta.shortpath` property
-    const sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened, dependencies);
+    const sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened, env);
 
     helper.registerLink(sourceFiles[file].shortened, sourceOutfile);
 
@@ -274,14 +274,7 @@ function generateSourceFiles(sourceFiles, encoding, outdir, dependencies) {
       log.error(`Error while generating source file ${file}: ${e.message}`);
     }
 
-    generate(
-      `Source: ${sourceFiles[file].shortened}`,
-      [source],
-      sourceOutfile,
-      false,
-      outdir,
-      dependencies
-    );
+    generate(`Source: ${sourceFiles[file].shortened}`, [source], sourceOutfile, false, outdir, env);
   });
 }
 
@@ -324,8 +317,7 @@ function attachModuleSymbols(doclets, modules) {
   });
 }
 
-function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, dependencies) {
-  const config = dependencies.get('config');
+function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, { config }) {
   let nav = '';
 
   if (items.length) {
@@ -376,18 +368,18 @@ function linktoExternal(longName, name) {
  * @param {array<object>} members.interfaces
  * @return {string} The HTML for the navigation sidebar.
  */
-function buildNav(members, dependencies) {
+function buildNav(members, env) {
   let globalNav;
   let nav = '<h2><a href="index.html">Home</a></h2>';
   const seen = {};
 
-  nav += buildMemberNav(members.modules, 'Modules', {}, linkto, dependencies);
-  nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal, dependencies);
-  nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto, dependencies);
-  nav += buildMemberNav(members.classes, 'Classes', seen, linkto, dependencies);
-  nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto, dependencies);
-  nav += buildMemberNav(members.events, 'Events', seen, linkto, dependencies);
-  nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto, dependencies);
+  nav += buildMemberNav(members.modules, 'Modules', {}, linkto, env);
+  nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal, env);
+  nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto, env);
+  nav += buildMemberNav(members.classes, 'Classes', seen, linkto, env);
+  nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto, env);
+  nav += buildMemberNav(members.events, 'Events', seen, linkto, env);
+  nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto, env);
 
   if (members.globals.length) {
     globalNav = '';
