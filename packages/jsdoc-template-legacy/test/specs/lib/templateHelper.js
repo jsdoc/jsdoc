@@ -1588,7 +1588,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
   describe('createLink', () => {
     it('should create a url for a simple global.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         longname: 'foo',
         name: 'foo',
@@ -1601,7 +1601,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should create a url for a namespace.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'namespace',
         longname: 'foo',
         name: 'foo',
@@ -1613,7 +1613,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should create a url for a member of a namespace.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         longname: 'ns.foo',
         name: 'foo',
@@ -1625,7 +1625,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     });
 
     const nestedNamespaceDoclet = {
-      dependencies: jsdoc.env,
+      env: jsdoc.env,
       kind: 'function',
       longname: 'ns1.ns2.foo',
       name: 'foo',
@@ -1647,7 +1647,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should create a url for a name with invalid characters.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         longname: 'ns1."!"."*foo"',
         name: '"*foo"',
@@ -1660,7 +1660,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should create a url for a function that is the only symbol exported by a module.', () => {
       const mockDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         longname: 'module:bar',
         name: 'module:bar',
@@ -1672,13 +1672,13 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should create a url for a doclet with the wrong kind (caused by incorrect JSDoc tags', () => {
       const moduleDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'module',
         longname: 'module:baz',
         name: 'module:baz',
       };
       const badDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'member',
         longname: 'module:baz',
         name: 'module:baz',
@@ -1692,13 +1692,13 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should create a url for a function that is a member of a doclet with the wrong kind', () => {
       const badModuleDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'member',
         longname: 'module:qux',
         name: 'module:qux',
       };
       const memberDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         name: 'frozzle',
         memberof: 'module:qux',
@@ -1714,7 +1714,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should include the scope punctuation in the fragment ID for static members', () => {
       const functionDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         longname: 'Milk.pasteurize',
         name: 'pasteurize',
@@ -1728,7 +1728,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should include the scope punctuation in the fragment ID for inner members', () => {
       const functionDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         longname: 'Milk~removeSticksAndLeaves',
         name: 'removeSticksAndLeaves',
@@ -1742,7 +1742,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should omit the scope punctuation from the fragment ID for instance members', () => {
       const propertyDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'member',
         longname: 'Milk#calcium',
         name: 'calcium',
@@ -1756,7 +1756,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
     it('should include the variation, if present, in the fragment ID', () => {
       const variationDoclet = {
-        dependencies: jsdoc.env,
+        env: jsdoc.env,
         kind: 'function',
         longname: 'Milk#fat(percent)',
         name: 'fat',

@@ -79,10 +79,10 @@ function getLicenses(packageInfo) {
 export class Package {
   /**
    * @param {string} json - The contents of the `package.json` file.
-   * @param {Object} deps - The JSDoc dependencies.
+   * @param {Object} env - The JSDoc environment.
    */
-  constructor(json, deps) {
-    const log = deps.get('log');
+  constructor(json, env) {
+    const log = env.log;
     let packageInfo;
 
     /**

@@ -74,13 +74,10 @@ export function setDocletKindToTitle(doclet, { title }) {
   doclet.addTag('kind', title);
 }
 
-export function setDocletScopeToTitle(doclet, { title }, deps) {
-  let log;
-
+export function setDocletScopeToTitle(doclet, { title }, { log }) {
   try {
     doclet.setScope(title);
   } catch (e) {
-    log = deps.get('log');
     log.error(e.message);
   }
 }
@@ -123,8 +120,7 @@ export function setNameToFile(doclet) {
   let docletName;
 
   if (doclet.meta.filename) {
-    docletName =
-      filepathMinusPrefix(doclet.meta.path, doclet.dependencies.get('env')) + doclet.meta.filename;
+    docletName = filepathMinusPrefix(doclet.meta.path, doclet.env) + doclet.meta.filename;
     doclet.addTag('name', docletName);
   }
 }
@@ -153,7 +149,7 @@ export function setDocletNameToFilename(doclet) {
   let docletName = '';
 
   if (doclet.meta.path) {
-    docletName = filepathMinusPrefix(doclet.meta.path, doclet.dependencies.get('env'));
+    docletName = filepathMinusPrefix(doclet.meta.path, doclet.env);
   }
   // TODO: Drop the file extension regardless of what it is.
   docletName += doclet.meta.filename.replace(/\.js$/i, '');

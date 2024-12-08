@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Functions that resolve `@borrows` tags in JSDoc comments.
  */
@@ -32,10 +33,7 @@ function cloneBorrowedDoclets({ borrowed, longname }, docletStore) {
     if (borrowedDoclets) {
       borrowedAs = borrowedAs.replace(/^prototype\./, SCOPE.PUNC.INSTANCE);
       borrowedDoclets.forEach((borrowedDoclet) => {
-        const clone = combineDoclets(
-          borrowedDoclet,
-          Doclet.emptyDoclet(borrowedDoclet.dependencies)
-        );
+        const clone = combineDoclets(borrowedDoclet, Doclet.emptyDoclet(borrowedDoclet.env));
 
         // TODO: this will fail on longnames like '"Foo#bar".baz'
         parts = borrowedAs.split(SCOPE.PUNC.INSTANCE);

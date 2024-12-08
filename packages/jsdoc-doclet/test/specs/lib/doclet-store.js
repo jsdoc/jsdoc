@@ -59,7 +59,7 @@ describe('@jsdoc/doclet/lib/doclet-store', () => {
       expect(() => new DocletStore()).toThrow();
     });
 
-    it('is constructable when dependencies are passed in', () => {
+    it('is constructable when JSDoc environment is passed in', () => {
       expect(() => new DocletStore(jsdoc.env)).not.toThrow();
     });
 

@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import path from 'node:path';
 
 import { astNode, Syntax } from '@jsdoc/ast';
@@ -410,9 +411,9 @@ function copySpecificProperties(primary, secondary, target, include) {
  * doclets.
  */
 export function combineDoclets(primary, secondary) {
-  const copyMostPropertiesExclude = ['dependencies', 'params', 'properties', 'undocumented'];
+  const copyMostPropertiesExclude = ['env', 'params', 'properties', 'undocumented'];
   const copySpecificPropertiesInclude = ['params', 'properties'];
-  const target = new Doclet('', null, secondary.dependencies);
+  const target = new Doclet('', null, secondary.env);
 
   // First, copy most properties to the target doclet.
   copyMostProperties(primary, secondary, target, copyMostPropertiesExclude);
@@ -449,23 +450,23 @@ Doclet = class {
    *
    * @param {string} docletSrc - The raw source code of the jsdoc comment.
    * @param {object} meta - Properties describing the code related to this comment.
-   * @param {object} dependencies - JSDoc dependencies.
+   * @param {object} env - JSDoc environment.
    */
-  constructor(docletSrc, meta, dependencies) {
-    const accessConfig = dependencies.get('config')?.opts?.access?.slice() ?? [];
-    const emitter = dependencies.get('emitter');
+  constructor(docletSrc, meta, env) {
+    const accessConfig = env.config?.opts?.access?.slice() ?? [];
+    const emitter = env.emitter;
     const boundDefineWatchableProp = defineWatchableProp.bind(null, this);
     const boundEmitDocletChanged = emitDocletChanged.bind(null, emitter, this);
     let newTags = [];
 
-    this.#dictionary = dependencies.get('tags');
+    this.#dictionary = env.tags;
 
     Object.defineProperty(this, 'accessConfig', {
       value: accessConfig,
       writable: true,
     });
-    Object.defineProperty(this, 'dependencies', {
-      value: dependencies,
+    Object.defineProperty(this, 'env', {
+      value: env,
     });
     Object.defineProperty(this, 'watchableProps', {
       value: {},
@@ -518,11 +519,11 @@ Doclet = class {
   }
 
   static clone(doclet) {
-    return combineDoclets(doclet, Doclet.emptyDoclet(doclet.dependencies));
+    return combineDoclets(doclet, Doclet.emptyDoclet(doclet.env));
   }
 
-  static emptyDoclet(dependencies) {
-    return new Doclet('', {}, dependencies);
+  static emptyDoclet(env) {
+    return new Doclet('', {}, env);
   }
 
   // TODO: We call this method in the constructor _and_ in `jsdoc/src/handlers`. It appears that
@@ -566,7 +567,7 @@ Doclet = class {
    */
   addTag(title, text) {
     const tagDef = this.#dictionary.lookUp(title);
-    const newTag = new Tag(title, text, this.meta, this.dependencies);
+    const newTag = new Tag(title, text, this.meta, this.env);
 
     if (tagDef && tagDef.onTagged) {
       tagDef.onTagged(this, newTag);

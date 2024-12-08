@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import { dirname, join } from 'node:path';
 
 import { name } from '@jsdoc/core';
@@ -70,9 +71,9 @@ export class DocletStore {
     DocletStore.#propertiesWithSets.map((prop) => [prop, 'docletsWith' + _.capitalize(prop)])
   );
 
-  constructor(dependencies) {
+  constructor(env) {
     this.#commonPathPrefix = null;
-    this.#emitter = dependencies.get('emitter');
+    this.#emitter = env.emitter;
     this.#isListening = false;
     this.#sourcePaths = new Map();
 

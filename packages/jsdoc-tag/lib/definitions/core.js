@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import { astNode, Syntax } from '@jsdoc/ast';
 import { name } from '@jsdoc/core';
 
@@ -29,7 +30,7 @@ function stripModuleNamespace(docletName) {
 }
 
 // Core JSDoc tags that are shared with other tag dictionaries.
-export const getTags = (deps) => ({
+export const getTags = (env) => ({
   abstract: {
     mustNotHaveValue: true,
     onTagged(doclet) {
@@ -296,12 +297,12 @@ export const getTags = (deps) => ({
   },
   inner: {
     onTagged(doclet, tag) {
-      util.setDocletScopeToTitle(doclet, tag, deps);
+      util.setDocletScopeToTitle(doclet, tag, env);
     },
   },
   instance: {
     onTagged(doclet, tag) {
-      util.setDocletScopeToTitle(doclet, tag, deps);
+      util.setDocletScopeToTitle(doclet, tag, env);
     },
   },
   interface: {
@@ -495,7 +496,7 @@ export const getTags = (deps) => ({
   },
   static: {
     onTagged(doclet, tag) {
-      util.setDocletScopeToTitle(doclet, tag, deps);
+      util.setDocletScopeToTitle(doclet, tag, env);
     },
   },
   summary: {

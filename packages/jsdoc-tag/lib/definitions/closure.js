@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // Tag dictionary for Google Closure Compiler.
 
 import { getTags as getCoreTags } from './core.js';
@@ -24,8 +25,8 @@ const NOOP_TAG = {
   },
 };
 
-export const getTags = (deps) => {
-  const coreTags = getCoreTags(deps);
+export const getTags = (env) => {
+  const coreTags = getCoreTags(env);
 
   return {
     const: {

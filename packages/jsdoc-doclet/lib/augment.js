@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Provides methods for augmenting the parse results based on their content.
  */
@@ -458,12 +459,12 @@ function getImplementedAdditions(implDoclets, docletStore) {
   return additions;
 }
 
-function augment(docletStore, propertyName, docletFinder, jsdocDeps) {
+function augment(docletStore, propertyName, docletFinder, env) {
   const dependencies = sort(mapDependencies(docletStore.docletsByLongname, propertyName));
 
   dependencies.forEach((depName) => {
     const depDoclets = Array.from(docletStore.docletsByLongname.get(depName) || []);
-    const additions = docletFinder(depDoclets, docletStore, jsdocDeps);
+    const additions = docletFinder(depDoclets, docletStore, env);
 
     additions.forEach((addition) => {
       docletStore.add(addition);
