@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import { Syntax } from '@jsdoc/ast';
 import { name } from '@jsdoc/core';
 import { Doclet } from '@jsdoc/doclet';
@@ -46,20 +47,18 @@ function filterByLongname({ longname }) {
   return false;
 }
 
-function createDoclet(comment, e, deps) {
+function createDoclet(comment, e, env) {
   let doclet;
   let flatComment;
-  let log;
   let msg;
 
   try {
-    doclet = new Doclet(comment, e, deps);
+    doclet = new Doclet(comment, e, env);
   } catch (error) {
     flatComment = comment.replace(/[\r\n]/g, '');
     msg = `cannot create a doclet for the comment "${flatComment}": ${error.message}`;
-    log = deps.get('log');
-    log.error(msg);
-    doclet = new Doclet('', e, deps);
+    env.log.error(msg);
+    doclet = new Doclet('', e, env);
   }
 
   return doclet;
@@ -84,13 +83,13 @@ function createDoclet(comment, e, deps) {
  *
  * @private
  */
-function createSymbolDoclet(comment, e, deps) {
-  let doclet = createDoclet(comment, e, deps);
+function createSymbolDoclet(comment, e, env) {
+  let doclet = createDoclet(comment, e, env);
 
   if (doclet.name) {
     // try again, without the comment
     e.comment = '@undocumented';
-    doclet = createDoclet(e.comment, e, deps);
+    doclet = createDoclet(e.comment, e, env);
   }
 
   return doclet;

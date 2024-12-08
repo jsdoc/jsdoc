@@ -614,9 +614,9 @@ export class Parser extends EventEmitter {
   }
 }
 
-// TODO: docs
-export function createParser(deps) {
-  return new Parser(deps);
+// TODO: remove
+export function createParser(env) {
+  return new Parser(env);
 }
 
 // TODO: document other events

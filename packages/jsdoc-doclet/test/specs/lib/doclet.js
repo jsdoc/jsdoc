@@ -111,10 +111,10 @@ describe('@jsdoc/doclet/lib/doclet', () => {
   });
 
   describe('Doclet', () => {
-    function makeDoclet(tagStrings, deps) {
+    function makeDoclet(tagStrings, env) {
       const comment = `/**\n${tagStrings.join('\n')}\n*/`;
 
-      return new Doclet(comment, {}, deps || jsdoc.env);
+      return new Doclet(comment, {}, env || jsdoc.env);
     }
 
     const docSet = jsdoc.getDocSetFromFile('test/fixtures/doclet.js');
@@ -394,7 +394,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
         });
 
         it('always returns `true` based on `doclet.access` when `access` config includes `all`', () => {
-          const fakeDeps = makeEnv(['all']);
+          const fakeEnv = makeEnv(['all']);
           const doclets = ACCESS_VALUES.map((value) => {
             let newDoclet;
             const tags = ['@function', '@name foo'];
@@ -402,7 +402,7 @@ describe('@jsdoc/doclet/lib/doclet', () => {
             if (value) {
               tags.push('@' + value);
             }
-            newDoclet = makeDoclet(tags, fakeDeps);
+            newDoclet = makeDoclet(tags, fakeEnv);
             // Just to be sure.
             if (!value) {
               newDoclet.access = undefined;
@@ -417,29 +417,29 @@ describe('@jsdoc/doclet/lib/doclet', () => {
         });
 
         it('returns `false` for `package` doclets when config omits `package`', () => {
-          const fakeDeps = makeEnv(['public']);
-          const newDoclet = makeDoclet(['@function', '@name foo', '@package'], fakeDeps);
+          const fakeEnv = makeEnv(['public']);
+          const newDoclet = makeDoclet(['@function', '@name foo', '@package'], fakeEnv);
 
           expect(newDoclet.isVisible()).toBeFalse();
         });
 
         it('returns `false` for `protected` doclets when config omits `protected`', () => {
-          const fakeDeps = makeEnv(['public']);
-          const newDoclet = makeDoclet(['@function', '@name foo', '@protected'], fakeDeps);
+          const fakeEnv = makeEnv(['public']);
+          const newDoclet = makeDoclet(['@function', '@name foo', '@protected'], fakeEnv);
 
           expect(newDoclet.isVisible()).toBeFalse();
         });
 
         it('returns `false` for `public` doclets when config omits `public`', () => {
-          const fakeDeps = makeEnv(['private']);
-          const newDoclet = makeDoclet(['@function', '@name foo', '@public'], fakeDeps);
+          const fakeEnv = makeEnv(['private']);
+          const newDoclet = makeDoclet(['@function', '@name foo', '@public'], fakeEnv);
 
           expect(newDoclet.isVisible()).toBeFalse();
         });
 
         it('returns `false` for undefined-access doclets when config omits `undefined`', () => {
-          const fakeDeps = makeEnv(['public']);
-          const newDoclet = makeDoclet(['@function', '@name foo'], fakeDeps);
+          const fakeEnv = makeEnv(['public']);
+          const newDoclet = makeDoclet(['@function', '@name foo'], fakeEnv);
 
           // Just to be sure.
           newDoclet.access = undefined;

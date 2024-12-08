@@ -13,17 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 /**
  * Utility functions to support the JSDoc plugin framework.
  */
 
-function addHandlers(handlers, parser, deps) {
+function addHandlers(handlers, parser, env) {
   Object.keys(handlers).forEach((eventName) => {
-    parser.on(eventName, handlers[eventName], deps);
+    parser.on(eventName, handlers[eventName], env);
   });
 }
 
-export async function installPlugins(plugins, parser, deps) {
+export async function installPlugins(plugins, parser, env) {
   let dictionary;
   let plugin;
 
@@ -33,18 +34,18 @@ export async function installPlugins(plugins, parser, deps) {
     // allow user-defined plugins to...
     // ...register event handlers
     if (plugin.handlers) {
-      addHandlers(plugin.handlers, parser, deps);
+      addHandlers(plugin.handlers, parser, env);
     }
 
     // ...define tags
     if (plugin.defineTags) {
-      dictionary = deps.get('tags');
-      plugin.defineTags(dictionary, deps);
+      dictionary = env.tags;
+      plugin.defineTags(dictionary, env);
     }
 
     // ...add an ESTree node visitor
     if (plugin.astNodeVisitor) {
-      parser.addAstNodeVisitor(plugin.astNodeVisitor, deps);
+      parser.addAstNodeVisitor(plugin.astNodeVisitor, env);
     }
   }
 }

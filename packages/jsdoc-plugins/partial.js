@@ -26,13 +26,11 @@ export const handlers = {
    * @param e
    * @param e.filename
    * @param e.source
-   * @param e.deps
+   * @param env
    * @example
    *     @partial "partial_doc.jsdoc"
    */
-  beforeParse(e, deps) {
-    const options = deps.get('options');
-
+  beforeParse(e, { options }) {
     e.source = e.source.replace(/(@partial ".*")+/g, ($) => {
       const pathArg = $.match(/".*"/)[0].replace(/"/g, '');
       const fullPath = path.join(e.filename, '..', pathArg);

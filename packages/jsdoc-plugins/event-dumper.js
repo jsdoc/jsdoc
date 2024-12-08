@@ -107,14 +107,14 @@ function cleanse(e, config) {
 const handlers = {};
 
 EVENT_TYPES.forEach((eventType) => {
-  handlers[eventType] = (e, deps) => {
-    const config = deps.get('config').eventDumper;
+  handlers[eventType] = (e, { config }) => {
+    const pluginConfig = config.eventDumper;
 
-    if (shouldLog(eventType, config)) {
+    if (shouldLog(eventType, pluginConfig)) {
       console.log(
         JSON.stringify({
           type: eventType,
-          content: cleanse(e, config),
+          content: cleanse(e, pluginConfig),
         }),
         null,
         4
