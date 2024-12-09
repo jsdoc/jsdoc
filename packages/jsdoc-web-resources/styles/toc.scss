@@ -41,6 +41,7 @@ $scrollbar-color: colors.$zinc-325;
   overflow-y: auto;
   scrollbar-color: $scrollbar-color $scrollbar-background-color;
   scrollbar-width: thin;
+  overscroll-behavior: contain;
   font-family: fonts.$h-font, sans-serif;
   padding-block-start: spacers.$xx-large;
 
