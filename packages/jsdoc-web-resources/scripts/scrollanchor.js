@@ -25,7 +25,7 @@ import ease from 'easy-ease';
   };
 
   function adjustForNavbar(px) {
-    const navbar = document.getElementById('jsdoc-navbar');
+    const navbar = document.getElementsByClassName('jsdoc-navbar')[0];
     const rect = navbar.getBoundingClientRect();
     // Round height up to the nearest multiple of 5.
     const adjustedNavbarHeight = Math.ceil(rect.height / 5) * 5;
