@@ -23,14 +23,33 @@ import ease from 'easy-ease';
     PAGE_UP: 'PageUp',
     SPACE: 'Space',
   };
+  const NAVBAR_SCROLL_MARGIN_VAR = '--navbar-scroll-margin';
 
-  function adjustForNavbar(px) {
-    const navbar = document.getElementsByClassName('jsdoc-navbar')[0];
-    const rect = navbar.getBoundingClientRect();
-    // Round height up to the nearest multiple of 5.
-    const adjustedNavbarHeight = Math.ceil(rect.height / 5) * 5;
+  function remToPx(rem, bodyStyle) {
+    rem = Number(rem.replace('rem', ''));
 
-    return px - adjustedNavbarHeight;
+    return rem * parseFloat(bodyStyle.fontSize);
+  }
+
+  function adjustForNavbar(target, px) {
+    const bodyStyle = getComputedStyle(document.body);
+    let scrollMargin;
+
+    // Use the element-specific margin if one is defined.
+    if (target) {
+      scrollMargin = getComputedStyle(target).getPropertyValue(NAVBAR_SCROLL_MARGIN_VAR);
+    }
+    // Fall back on the standard margin if necessary.
+    if (!scrollMargin) {
+      scrollMargin = bodyStyle.getPropertyValue(NAVBAR_SCROLL_MARGIN_VAR);
+    }
+
+    // Get margin in pixels.
+    scrollMargin = remToPx(scrollMargin, bodyStyle);
+    // Round margin up to the nearest multiple of 5.
+    scrollMargin = Math.ceil(scrollMargin / 5) * 5;
+
+    return px - scrollMargin;
   }
 
   function easeToY(endValue) {
@@ -56,7 +75,7 @@ import ease from 'easy-ease';
     target = document.getElementById(id);
     if (target) {
       event.preventDefault();
-      easeToY(adjustForNavbar(target.offsetTop));
+      easeToY(adjustForNavbar(target, target.offsetTop));
       window.history.pushState(null, null, historyItem);
     }
   }
@@ -91,7 +110,7 @@ import ease from 'easy-ease';
 
     event.preventDefault();
     event.stopImmediatePropagation();
-    scrollBy = adjustForNavbar(window.innerHeight);
+    scrollBy = adjustForNavbar(null, window.innerHeight);
 
     switch (code) {
       case KEY_CODES.PAGE_UP:

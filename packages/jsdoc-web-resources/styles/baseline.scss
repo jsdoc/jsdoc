@@ -35,6 +35,11 @@
   }
 }
 
+:root {
+  --navbar-scroll-margin: #{navbar.$height + spacers.$medium};
+  --navbar-scroll-margin-large: #{navbar.$height + spacers.$xx-large};
+}
+
 html {
   position: relative;
   height: 100%;
@@ -238,6 +243,12 @@ dd > p {
   flex: 1 1 auto;
   height: 100%;
   padding: spacers.$xx-large;
+
+  // If there are badges before an element, then make sure the navbar doesn't cover the badges when
+  // the user scrolls to that element.
+  .symbol-detail-badges + [id] {
+    --navbar-scroll-margin: var(--navbar-scroll-margin-large);
+  }
 }
 
 .jsdoc-footer {
