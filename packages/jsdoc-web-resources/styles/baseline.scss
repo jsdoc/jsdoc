@@ -71,7 +71,7 @@ h2,
   margin-block-end: spacers.$medium;
 }
 
-@each $level in (1, 2, 3) {
+@each $level in (2, 3) {
   h#{$level},
   .h#{$level} {
     margin-block-start: fonts.$h-margin-block-start-large;
