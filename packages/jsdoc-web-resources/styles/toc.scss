@@ -143,7 +143,7 @@ sl-details > sl-tree > sl-tree-item {
 
   > a:any-link {
     color: inherit !important;
-    padding: 0.25rem 0.5rem;
+    padding: spacers.$xxx-small spacers.$x-small spacers.$xx-small spacers.$x-small;
   }
 }
 
@@ -153,8 +153,7 @@ sl-details::part(base) {
 }
 
 sl-details::part(header) {
-  border-block-end: solid 1px colors.$zinc-200;
-  padding: 0 0.5rem;
+  padding: 0 spacers.$x-small;
 }
 
 sl-details::part(summary) {
@@ -163,11 +162,11 @@ sl-details::part(summary) {
 }
 
 sl-details::part(content) {
-  padding: 0.5rem 1rem 0 1rem;
+  padding: spacers.$xxx-small spacers.$medium 0 spacers.$medium;
 }
 
 sl-tree {
-  margin-inline-end: 4.5rem;
+  margin-inline-end: spacers.$xxxx-large;
 }
 
 sl-tree-item > a {

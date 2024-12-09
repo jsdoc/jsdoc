@@ -21,6 +21,7 @@
 
 @use 'variables/colors';
 @use 'variables/fonts';
+@use 'variables/spacers';
 
 $palette: meta.module-variables('colors');
 
@@ -79,9 +80,14 @@ header > .symbol-detail-badges {
   margin-block-start: 0;
 }
 
-// Remove whitespace before a heading that follows a set of badges.
-@each $level in (1, 2, 3, 4, 5, 6) {
+// Tighten up whitespace between badges and headings.
+.symbol-detail-badges + h1,
+.symbol-detail-badges + .h1 {
+  margin-block-start: calc(spacers.$xx-small * -1);
+}
+
+@each $level in (2, 3, 4, 5, 6) {
   .symbol-detail-badges + h#{$level} {
-    margin-block-start: 0;
+    margin-block-start: calc(spacers.$xxx-small * -1);
   }
 }

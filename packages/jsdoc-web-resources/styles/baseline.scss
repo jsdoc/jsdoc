@@ -61,11 +61,9 @@ h1 > small,
   font-size: calc(fonts.h-font-size(1) * 0.65);
 }
 
-h1,
-.h1,
 h2,
 .h2 {
-  border-block-end: 1px solid colors.$zinc-300;
+  margin-block-end: spacers.$medium;
 }
 
 @each $level in (1, 2, 3) {
