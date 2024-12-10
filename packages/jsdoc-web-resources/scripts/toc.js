@@ -14,11 +14,11 @@
   limitations under the License.
 */
 
-import '../node_modules/@shoelace-style/shoelace/dist/components/details/details.js';
-import '../node_modules/@shoelace-style/shoelace/dist/components/tree/tree.js';
-import '../node_modules/@shoelace-style/shoelace/dist/components/tree-item/tree-item.js';
+import '@shoelace-style/shoelace/dist/components/details/details.js';
+import '@shoelace-style/shoelace/dist/components/tree/tree.js';
+import '@shoelace-style/shoelace/dist/components/tree-item/tree-item.js';
 
-import { setDefaultAnimation } from '../node_modules/@shoelace-style/shoelace/dist/utilities/animation-registry.js';
+import { setDefaultAnimation } from '@shoelace-style/shoelace/dist/utilities/animation-registry.js';
 
 const HIDE_UNTIL_READY = ['sl-details', 'sl-tree'];
 
