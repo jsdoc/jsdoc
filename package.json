@@ -8,7 +8,7 @@
     "@jsdoc/cli": "^0.3.5",
     "@jsdoc/core": "^0.5.4",
     "@jsdoc/doclet": "^0.2.5",
-    "@jsdoc/eslint-config": "^1.2.4",
+    "@jsdoc/eslint-config": "^2.0.0",
     "@jsdoc/parse": "^0.3.5",
     "@jsdoc/prettier-config": "^0.2.3",
     "@jsdoc/salty": "^0.2.5",
