@@ -18,8 +18,8 @@
     "globals": "^15.13.0"
   },
   "peerDependencies": {
-    "eslint": ">= 9.16.0",
-    "prettier": ">= 3.4.2"
+    "eslint": "^9.16.0",
+    "prettier": "^3.4.2"
   },
   "publishConfig": {
     "access": "public"
