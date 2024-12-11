@@ -22,6 +22,7 @@
     "execa": "^9.5.2",
     "hereby": "^1.10.0",
     "husky": "^9.1.7",
+    "installed-check": "^9.3.0",
     "jasmine": "^5.5.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
@@ -39,6 +40,8 @@
   "scripts": {
     "coverage": "node_modules/.bin/hereby coverage",
     "default": "node_modules/.bin/hereby",
+    "dependencies": "node_modules/.bin/hereby dependencies",
+    "dependency-engines": "node_modules/.bin/hereby dependency-engines",
     "dependency-licenses": "node_modules/.bin/hereby dependency-licenses",
     "format": "node_modules/.bin/hereby format",
     "license-check": "node_modules/.bin/hereby license-check",

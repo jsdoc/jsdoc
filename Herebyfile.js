@@ -43,6 +43,16 @@ export const coverage = task({
   },
 });
 
+export const dependencyEngines = task({
+  name: 'dependency-engines',
+  run: async () => {
+    await execa(bin('installed-check'), ['--no-include-workspace-root'], {
+      stdout: 'inherit',
+      stderr: 'inherit',
+    });
+  },
+});
+
 export const dependencyLicenses = task({
   name: 'dependency-licenses',
   run: () => {
@@ -77,6 +87,11 @@ export const dependencyLicenses = task({
       checker.checkLocalDirectory('.');
     });
   },
+});
+
+export const dependencies = task({
+  name: 'dependencies',
+  dependencies: [dependencyEngines, dependencyLicenses],
 });
 
 export const format = task({
