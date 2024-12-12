@@ -110,8 +110,7 @@ export class DocletStore {
     const isVisible = doclet.isVisible();
     const newDoclet = opts.newDoclet ?? false;
     const wasVisible = newDoclet ? false : this.doclets.has(doclet);
-    const visibilityChanged = (() =>
-      newDoclet || (!wasVisible && isVisible) || (wasVisible && !isVisible))();
+    const visibilityChanged = newDoclet || wasVisible !== isVisible;
     const docletInfo = {
       isGlobal: doclet.isGlobal(),
       isVisible,
@@ -323,24 +322,27 @@ export class DocletStore {
   }
 
   get commonPathPrefix() {
-    let commonPrefix = '';
-    const sourcePaths = this.sourcePaths;
+    let commonPrefix;
+    let sourcePaths;
 
     if (this.#commonPathPrefix !== null) {
       return this.#commonPathPrefix;
     }
 
+    sourcePaths = this.sourcePaths;
     if (sourcePaths.length === 1) {
       // If there's only one filepath, then the common prefix is just its dirname.
       commonPrefix = dirname(sourcePaths[0]);
     } else if (sourcePaths.length > 1) {
       // Remove the trailing slash if present.
       commonPrefix = commonPathPrefix(sourcePaths).replace(/[\\/]$/, '');
+    } else {
+      commonPrefix = null;
     }
 
     this.#commonPathPrefix = commonPrefix;
 
-    return commonPrefix;
+    return commonPrefix ?? '';
   }
 
   get longnames() {
