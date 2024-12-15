@@ -15,10 +15,11 @@
 */
 
 /**
- * Methods for manipulating symbol names in JSDoc.
+ * Methods for working with namepaths in JSDoc.
  *
- * @alias @jsdoc/core.name
+ * @alias module:@jsdoc/name
  */
+
 import escape from 'escape-string-regexp';
 import _ from 'lodash';
 
@@ -27,7 +28,6 @@ import _ from 'lodash';
  *
  * @enum {string}
  * @static
- * @memberof module:jsdoc/name
  */
 export const LONGNAMES = {
   /** Longname used for doclets that do not have a longname, such as anonymous functions. */
@@ -48,7 +48,6 @@ export const MODULE_NAMESPACE = 'module:';
  *
  * @enum {string}
  * @static
- * @memberof module:jsdoc/name
  */
 export const SCOPE = {
   NAMES: {

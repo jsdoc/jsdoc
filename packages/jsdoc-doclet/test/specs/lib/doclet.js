@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-import { name } from '@jsdoc/core';
+import { SCOPE } from '@jsdoc/name';
 import _ from 'lodash';
 
 import * as doclet from '../../../lib/doclet.js';
@@ -22,7 +22,6 @@ import { DOCLET_SCHEMA } from '../../../lib/schema.js';
 
 const ACCESS_VALUES = DOCLET_SCHEMA.properties.access.enum.concat([undefined]);
 const { Doclet } = doclet;
-const { SCOPE } = name;
 
 describe('@jsdoc/doclet/lib/doclet', () => {
   // TODO: more tests

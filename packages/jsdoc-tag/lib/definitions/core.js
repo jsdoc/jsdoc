@@ -15,7 +15,7 @@
 */
 
 import { astNode, Syntax } from '@jsdoc/ast';
-import { name } from '@jsdoc/core';
+import * as name from '@jsdoc/name';
 
 import { isInlineTag } from '../inline.js';
 import * as util from './util.js';

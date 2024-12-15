@@ -17,8 +17,8 @@
 import path from 'node:path';
 
 import { astNode, Syntax } from '@jsdoc/ast';
-import { name } from '@jsdoc/core';
 import { combineDoclets } from '@jsdoc/doclet';
+import * as name from '@jsdoc/name';
 
 const { getBasename, LONGNAMES } = name;
 

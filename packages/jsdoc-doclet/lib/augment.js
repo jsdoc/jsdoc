@@ -17,11 +17,10 @@
 /**
  * Provides methods for augmenting the parse results based on their content.
  */
-import { name } from '@jsdoc/core';
+
+import { fromParts, SCOPE, toParts } from '@jsdoc/name';
 
 import { combineDoclets, Doclet } from './doclet.js';
-
-const { fromParts, SCOPE, toParts } = name;
 
 const DEPENDENCY_KINDS = ['class', 'external', 'interface', 'mixin'];
 

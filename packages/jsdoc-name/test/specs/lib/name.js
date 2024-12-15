@@ -16,7 +16,7 @@
 
 import * as name from '../../../lib/name.js';
 
-describe('@jsdoc/core.name', () => {
+describe('@jsdoc/name', () => {
   it('exists', () => {
     expect(name).toBeObject();
   });

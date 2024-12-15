@@ -18,7 +18,8 @@
  * @module @jsdoc/tag/lib/type
  * @alias @jsdoc/tag.type
  */
-import { name } from '@jsdoc/core';
+
+import * as name from '@jsdoc/name';
 import { cast } from '@jsdoc/util';
 import catharsis from 'catharsis';
 import memize from 'memize';

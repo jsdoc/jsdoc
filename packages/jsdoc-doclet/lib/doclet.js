@@ -17,12 +17,7 @@
 import path from 'node:path';
 
 import { astNode, Syntax } from '@jsdoc/ast';
-import { name as jsdocName } from '@jsdoc/core';
-import { Tag } from '@jsdoc/tag';
-import _ from 'lodash';
-import onChange from 'on-change';
-
-const {
+import {
   applyNamespace,
   getLeadingScope,
   getTrailingScope,
@@ -34,7 +29,11 @@ const {
   SCOPE,
   SCOPE_TO_PUNC,
   toParts,
-} = jsdocName;
+} from '@jsdoc/name';
+import { Tag } from '@jsdoc/tag';
+import _ from 'lodash';
+import onChange from 'on-change';
+
 const { isFunction } = astNode;
 
 // Forward-declare Doclet class.
@@ -667,7 +666,7 @@ Doclet = class {
 
   /**
    * Set the doclet's `scope` property. Must correspond to a scope name that is defined in
-   * {@link module:@jsdoc/core.name.SCOPE.NAMES}.
+   * {@link module:@jsdoc/name.SCOPE.NAMES}.
    *
    * @param {string} scope - The scope for the doclet relative to the symbol's parent.
    * @throws {Error} If the scope name is not recognized.

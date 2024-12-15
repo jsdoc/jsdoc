@@ -57,6 +57,7 @@
     "packages/jsdoc-core",
     "packages/jsdoc-doclet",
     "packages/jsdoc-eslint-config",
+    "packages/jsdoc-name",
     "packages/jsdoc-parse",
     "packages/jsdoc-plugins",
     "packages/jsdoc-prettier-config",

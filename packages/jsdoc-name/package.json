@@ -1,26 +1,15 @@
 {
-  "name": "@jsdoc/parse",
-  "version": "0.3.11",
-  "description": "Parses, and extracts information from, source code.",
+  "name": "@jsdoc/name",
+  "version": "0.0.1",
+  "description": "Methods for working with namepaths in JSDoc.",
   "keywords": [
     "jsdoc"
   ],
   "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
-  "homepage": "https://github.com/jsdoc/jsdoc",
+  "homepage": "https://jsdoc.app/",
   "license": "Apache-2.0",
-  "main": "index.js",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@jsdoc/ast": "^0.2.11",
-    "@jsdoc/doclet": "^0.2.11",
-    "@jsdoc/name": "^0.0.1",
-    "@jsdoc/util": "^0.3.3",
-    "escape-string-regexp": "^5.0.0"
-  },
-  "engines": {
-    "node": ">=v18.12.0"
   },
   "repository": {
     "type": "git",
@@ -40,5 +29,13 @@
     "./lib/*": {
       "import": "./lib/*"
     }
-  }
+  },
+  "dependencies": {
+    "escape-string-regexp": "^5.0.0",
+    "lodash": "^4.17.21"
+  },
+  "engines": {
+    "node": ">=v18.12.0"
+  },
+  "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"
 }

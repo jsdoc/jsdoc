@@ -14,12 +14,12 @@
   limitations under the License.
 */
 
-import { name } from '@jsdoc/core';
+import { LONGNAMES } from '@jsdoc/name';
 
 import { Doclet } from '../../../lib/doclet.js';
 import * as docletStore from '../../../lib/doclet-store.js';
 
-const ANONYMOUS_LONGNAME = name.LONGNAMES.ANONYMOUS;
+const ANONYMOUS_LONGNAME = LONGNAMES.ANONYMOUS;
 
 const { DocletStore } = docletStore;
 

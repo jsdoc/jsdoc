@@ -15,14 +15,9 @@
 */
 
 /**
- * Core functionality for JSDoc.
+ * Methods for working with namepaths in JSDoc.
  *
- * @module @jsdoc/core
+ * @module @jsdoc/name
  */
-import Api from './lib/api.js';
-import * as config from './lib/config.js';
-import Env from './lib/env.js';
-import * as plugins from './lib/plugins.js';
 
-export { Api, config, Env, plugins };
-export default { Api, config, Env, plugins };
+export * from './lib/name.js';

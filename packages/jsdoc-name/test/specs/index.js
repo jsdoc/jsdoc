@@ -14,15 +14,17 @@
   limitations under the License.
 */
 
-/**
- * Core functionality for JSDoc.
- *
- * @module @jsdoc/core
- */
-import Api from './lib/api.js';
-import * as config from './lib/config.js';
-import Env from './lib/env.js';
-import * as plugins from './lib/plugins.js';
+import * as index from '../../index.js';
+import * as name from '../../lib/name.js';
 
-export { Api, config, Env, plugins };
-export default { Api, config, Env, plugins };
+describe('@jsdoc/name', () => {
+  it('is lib/name', () => {
+    const indexKeys = Object.keys(index).sort();
+    const nameKeys = Object.keys(name).sort();
+
+    expect(indexKeys).toEqual(nameKeys);
+    for (const indexKey of indexKeys) {
+      expect(index[indexKey]).toBe(name[indexKey]);
+    }
+  });
+});

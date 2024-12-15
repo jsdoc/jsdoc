@@ -14,11 +14,9 @@
   limitations under the License.
 */
 
-import { name } from '@jsdoc/core';
+import { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } from '@jsdoc/name';
 import { inline } from '@jsdoc/tag';
 import catharsis from 'catharsis';
-
-const { longnamesToTree, SCOPE, SCOPE_TO_PUNC, toParts } = name;
 
 const MODULE_NAMESPACE = 'module:';
 
@@ -930,7 +928,7 @@ export function createLink(doclet, env) {
  * tree.
  *
  * @function
- * @see module:@jsdoc/core.name.longnamesToTree
+ * @see module:@jsdoc/name.longnamesToTree
  * @param {Array<string>} longnames - The longnames to convert into a tree.
  * @param {Object<string, module:@jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
  * Each property should be the longname of a doclet, and each value should be the doclet for that

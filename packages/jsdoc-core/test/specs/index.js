@@ -18,7 +18,6 @@ import core from '../../index.js';
 import Api from '../../lib/api.js';
 import * as config from '../../lib/config.js';
 import Env from '../../lib/env.js';
-import * as name from '../../lib/name.js';
 import * as plugins from '../../lib/plugins.js';
 
 describe('@jsdoc/core', () => {
@@ -37,12 +36,6 @@ describe('@jsdoc/core', () => {
   describe('Env', () => {
     it('is lib/env', () => {
       expect(core.Env).toEqual(Env);
-    });
-  });
-
-  describe('name', () => {
-    it('is lib/name', () => {
-      expect(core.name).toEqual(name);
     });
   });
 

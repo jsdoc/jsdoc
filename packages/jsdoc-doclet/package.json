@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@jsdoc/ast": "^0.2.11",
-    "@jsdoc/core": "^0.5.8",
+    "@jsdoc/name": "^0.0.1",
     "@jsdoc/tag": "^0.2.11",
     "@jsdoc/util": "^0.3.3",
     "lodash": "^4.17.21",

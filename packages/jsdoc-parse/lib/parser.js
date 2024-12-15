@@ -18,8 +18,8 @@ import EventEmitter from 'node:events';
 import fs from 'node:fs';
 
 import { AstBuilder, astNode, Syntax, Walker } from '@jsdoc/ast';
-import { name } from '@jsdoc/core';
 import { Doclet, DocletStore } from '@jsdoc/doclet';
+import * as name from '@jsdoc/name';
 import _ from 'lodash';
 
 import { Visitor } from './visitor.js';

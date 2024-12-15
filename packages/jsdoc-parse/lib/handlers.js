@@ -15,8 +15,8 @@
 */
 
 import { Syntax } from '@jsdoc/ast';
-import { name } from '@jsdoc/core';
 import { Doclet } from '@jsdoc/doclet';
+import * as name from '@jsdoc/name';
 import escape from 'escape-string-regexp';
 
 const PROTOTYPE_OWNER_REGEXP = /^(.+?)(\.prototype|#)$/;

@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.26.3",
-    "@jsdoc/core": "^0.5.8",
+    "@jsdoc/name": "^0.0.1",
     "@jsdoc/util": "^0.3.3",
     "ast-module-types": "^6.0.0",
     "lodash": "^4.17.21"

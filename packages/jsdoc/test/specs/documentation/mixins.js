@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import { name } from '@jsdoc/core';
+
 import { augment } from '@jsdoc/doclet';
+import * as name from '@jsdoc/name';
 
 describe('mixins', () => {
   describe('doclet augmentation', () => {

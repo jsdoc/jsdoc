@@ -15,8 +15,7 @@
 */
 
 // TODO: docs
-// For unknown reasons, `import { name } from '@jsdoc/core'` causes a `ReferenceError` here.
-import * as name from '@jsdoc/core/lib/name.js';
+import * as name from '@jsdoc/name';
 import { cast } from '@jsdoc/util';
 import moduleTypes from 'ast-module-types';
 

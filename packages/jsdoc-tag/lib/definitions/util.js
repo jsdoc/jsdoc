@@ -16,7 +16,7 @@
 
 import path from 'node:path';
 
-import { name } from '@jsdoc/core';
+import * as name from '@jsdoc/name';
 import commonPathPrefix from 'common-path-prefix';
 import _ from 'lodash';
 

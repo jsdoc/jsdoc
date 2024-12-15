@@ -16,11 +16,11 @@
 
 import { dirname, join } from 'node:path';
 
-import { name } from '@jsdoc/core';
+import { LONGNAMES } from '@jsdoc/name';
 import commonPathPrefix from 'common-path-prefix';
 import _ from 'lodash';
 
-const ANONYMOUS_LONGNAME = name.LONGNAMES.ANONYMOUS;
+const ANONYMOUS_LONGNAME = LONGNAMES.ANONYMOUS;
 
 function addToSet(targetMap, key, value) {
   if (!targetMap.has(key)) {

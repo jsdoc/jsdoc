@@ -35,7 +35,6 @@
     "@jsdoc/parse": "^0.3.11",
     "@jsdoc/tag": "^0.2.11",
     "cosmiconfig": "^9.0.0",
-    "escape-string-regexp": "^5.0.0",
     "fast-glob": "^3.3.2",
     "lodash": "^4.17.21",
     "strip-bom": "^5.0.0",

@@ -17,11 +17,10 @@
 /**
  * Functions that resolve `@borrows` tags in JSDoc comments.
  */
-import { name } from '@jsdoc/core';
+
+import { SCOPE } from '@jsdoc/name';
 
 import { combineDoclets, Doclet } from './doclet.js';
-
-const { SCOPE } = name;
 
 function cloneBorrowedDoclets({ borrowed, longname }, docletStore) {
   borrowed?.forEach(({ from, as }) => {
