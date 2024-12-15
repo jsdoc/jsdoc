@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/doclet",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Generates and processes JSDoc doclets.",
   "keywords": [
     "jsdoc"
@@ -31,10 +31,10 @@
     }
   },
   "dependencies": {
-    "@jsdoc/ast": "^0.2.11",
-    "@jsdoc/name": "^0.0.1",
-    "@jsdoc/tag": "^0.2.11",
-    "@jsdoc/util": "^0.3.3",
+    "@jsdoc/ast": "^0.2.12",
+    "@jsdoc/name": "^0.1.0",
+    "@jsdoc/tag": "^0.2.12",
+    "@jsdoc/util": "^0.3.4",
     "lodash": "^4.17.21",
     "on-change": "^5.0.1",
     "strip-bom": "^5.0.0"
