@@ -18,7 +18,7 @@
     "@jsdoc/salty": "^0.2.9",
     "@jsdoc/tag": "^0.2.12",
     "@jsdoc/util": "^0.3.4",
-    "catharsis": "^0.9.0",
+    "catharsis": "^0.10.0",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",
     "common-path-prefix": "^3.0.0",
