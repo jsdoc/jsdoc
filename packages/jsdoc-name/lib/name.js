@@ -357,6 +357,8 @@ function splitLongname(longname, options) {
   };
 }
 
+// TODO: Document this with a typedef.
+// TODO: Add at least one or two basic tests, so we know if this completely breaks.
 /**
  * Convert an array of doclet longnames into a tree structure, optionally attaching doclets to the
  * tree.

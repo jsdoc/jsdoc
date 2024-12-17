@@ -89,15 +89,11 @@ export default class Api {
    * This method also resolves the paths in `this.env.options.package` and `this.env.options.readme`
    * if they are present.
    *
-   * There are a few ways to specify the array of glob patterns:
+   * If you omit the `globPatterns` parameter, then JSDoc looks for glob patterns in the user's
+   * JSDoc configuration settings. If you provide the `globPatterns` parameter, then JSDoc ignores
+   * the glob patterns from the configuration settings.
    *
-   * + **Pass the array to this method.** Values in `this.env.options` are ignored.
-   * + **Assign the array to `this.env.options._` or `this.env.config.sourceFiles`,** then call this
-   *   method.
-   *
-   * @instance
-   * @memberof module:@jsdoc/core.Api
-   * @param {Array<string>} globPatterns - Glob patterns that match the source files to parse. You
+   * @param {?Array<string>} globPatterns - Glob patterns that match the source files to parse. You
    * can use any glob syntax allowed by the
    * [`fast-glob` package](https://www.npmjs.com/package/fast-glob).
    * @returns {Array<string>} The absolute paths to the source files.
@@ -171,9 +167,23 @@ export default class Api {
     }
   }
 
-  // TODO: docs; mention that filepaths overrides env.sourceFiles
+  /**
+   * Parses source files and returns a collection of _doclets_, which contain information about your
+   * code.
+   *
+   * In general, you should allow JSDoc to discover the source filepaths based on the user's
+   * configuration settings. To discover these filepaths automatically, call
+   * {@link module:@jsdoc/core.Api#findSourceFiles Api#findSourceFiles} before you call this method.
+   *
+   * Alternatively, you can provide an array of filepaths when you call this method. If you do so,
+   * any autodiscovered filepaths are ignored.
+   *
+   * @param {?Array<string>} filepaths - The filepaths to parse. Overrides files that were
+   * autodiscovered based on the user's configuration settings.
+   * @returns {module:@jsdoc/doclet.DocletStore} A collection of JSDoc doclets.
+   */
   async parseSourceFiles(filepaths) {
-    const { log, options } = this.env;
+    const { log, options, sourceFiles } = this.env;
     let parser;
     let packageData = '';
     let packageDocs;
@@ -181,13 +191,13 @@ export default class Api {
 
     this.env.tags = Dictionary.fromEnv(this.env);
     parser = await this.#createParser();
-    docletStore = parser.parse(filepaths ?? this.env.sourceFiles, options.encoding);
+    docletStore = parser.parse(filepaths ?? sourceFiles, options.encoding);
 
     if (options.package) {
       packageData = await this.#readPackageJson(options.package);
     }
     packageDocs = new Package(packageData, this.env);
-    packageDocs.files = this.env.sourceFiles || [];
+    packageDocs.files = sourceFiles || [];
     docletStore.add(packageDocs);
 
     log.debug('Adding inherited symbols, mixins, and interface implementations...');

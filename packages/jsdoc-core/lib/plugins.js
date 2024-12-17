@@ -16,6 +16,8 @@
 
 /**
  * Utility functions to support the JSDoc plugin framework.
+ *
+ * @alias module:@jsdoc/core.plugins
  */
 
 function addHandlers(handlers, parser, env) {
@@ -24,6 +26,7 @@ function addHandlers(handlers, parser, env) {
   });
 }
 
+// TODO: docs
 export async function installPlugins(plugins, parser, env) {
   let dictionary;
   let plugin;

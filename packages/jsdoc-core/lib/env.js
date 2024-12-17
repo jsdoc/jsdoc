@@ -22,7 +22,7 @@ import { getLogFunctions } from '@jsdoc/util';
  * Data about the environment in which JSDoc is running, including the configuration settings that
  * were used to run JSDoc.
  *
- * @alias @jsdoc/core.Env
+ * @alias module:@jsdoc/core.Env
  */
 export default class Env {
   constructor() {
@@ -105,10 +105,12 @@ export default class Env {
     return this.conf;
   }
 
+  // TODO: Remove.
   get env() {
     return this;
   }
 
+  // TODO: Remove.
   get(key) {
     return this[key];
   }

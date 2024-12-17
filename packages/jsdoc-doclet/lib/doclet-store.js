@@ -53,6 +53,21 @@ function removeFromSet(targetMap, key, value) {
   }
 }
 
+/**
+ * Stores and classifies the doclets that JSDoc creates as it parses your source files.
+ *
+ * The doclet store categorizes doclets based on their properties, so that the JSDoc template can
+ * efficiently retrieve the doclets that it needs. For example, when the template generates
+ * documentation for a class, it can retrieve all of the doclets that represent members of that
+ * class.
+ *
+ * After you add a doclet to the store, the store automatically tracks changes to a doclet's
+ * properties and recategorizes the doclet as needed. For example, if a doclet's `kind` property
+ * changes from `class` to `interface`, then the doclet store automatically recategorizes the doclet
+ * as an interface.
+ *
+ * @alias @jsdoc/doclet.DocletStore
+ */
 export class DocletStore {
   #commonPathPrefix;
   #docletChangedHandler;
@@ -71,12 +86,22 @@ export class DocletStore {
     DocletStore.#propertiesWithSets.map((prop) => [prop, 'docletsWith' + _.capitalize(prop)])
   );
 
+  /**
+   * Creates a doclet store.
+   *
+   * When you create a doclet store, you provide a JSDoc environment object. The doclet store
+   * listens for new doclets that are created in that environment. When a new doclet is created, the
+   * doclet store tracks it automatically.
+   *
+   * @param {@jsdoc/core.Env} env - The JSDoc environment to use.
+   */
   constructor(env) {
     this.#commonPathPrefix = null;
     this.#emitter = env.emitter;
     this.#isListening = false;
     this.#sourcePaths = new Map();
 
+    // TODO: Add descriptions and types for public properties.
     /** @type Map<string, Set<Doclet>> */
     this.allDocletsByLongname = new Map();
     /** Doclets that are used to generate output. */
