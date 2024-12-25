@@ -283,7 +283,6 @@ function parseTypeExpression(tagInfo) {
   }
 
   tagInfo.type = tagInfo.type.concat(getTypeStrings(parsedType, true));
-  tagInfo.parsedType = parsedType;
 
   // Catharsis and JSDoc use the same names for 'optional' and 'nullable'...
   ['optional', 'nullable'].forEach((key) => {

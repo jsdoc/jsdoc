@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('@type tag containing a newline character', () => {
   const docSet = jsdoc.getDocSetFromFile('test/fixtures/typetagwithnewline.js');
   const mini = docSet.getByLongname('Matryoshka.mini')[0];
@@ -24,7 +25,7 @@ describe('@type tag containing a newline character', () => {
     () => {
       expect(mini).toBeObject();
       expect(mini.type).toBeObject();
-      expect(mini.type.names).toEqual(['!Array.<number>', '!Array.<!Array.<number>>']);
+      expect(mini.type.names).toEqual(['!Array<number>', '!Array<!Array<number>>']);
     }
   );
 
@@ -35,9 +36,9 @@ describe('@type tag containing a newline character', () => {
       expect(mega).toBeObject();
       expect(mega.type).toBeObject();
       expect(mega.type.names).toEqual([
-        '!Array.<number>',
-        '!Array.<!Array.<number>>',
-        '!Array.<!Array.<!Array.<number>>>',
+        '!Array<number>',
+        '!Array<!Array<number>>',
+        '!Array<!Array<!Array<number>>>',
       ]);
     }
   );

@@ -364,27 +364,29 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
     it('works correctly with type applications if only the longname is specified', () => {
       const link = helper.linkto('Array.<LinktoFakeClass>');
 
-      expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
+      expect(link).toBe('Array&lt;<a href="fakeclass.html">LinktoFakeClass</a>&gt;');
     });
 
     it('works correctly with type applications if a class is not specified', () => {
       const link = helper.linkto('Array.<LinktoFakeClass>', 'link text');
 
-      expect(link).toBe('Array.&lt;<a href="fakeclass.html">LinktoFakeClass</a>>');
+      expect(link).toBe('Array&lt;<a href="fakeclass.html">LinktoFakeClass</a>&gt;');
     });
 
     it('works correctly with type applications if a class is specified', () => {
       const link = helper.linkto('Array.<LinktoFakeClass>', 'link text', 'myclass');
 
-      expect(link).toBe('Array.&lt;<a href="fakeclass.html" class="myclass">LinktoFakeClass</a>>');
+      expect(link).toBe(
+        'Array&lt;<a href="fakeclass.html" class="myclass">LinktoFakeClass</a>&gt;'
+      );
     });
 
     it('works correctly with type applications that include a type union', () => {
       const link = helper.linkto('Array.<(linktoTest|LinktoFakeClass)>', 'link text');
 
       expect(link).toBe(
-        'Array.&lt;(<a href="test.html">linktoTest</a>|' +
-          '<a href="fakeclass.html">LinktoFakeClass</a>)>'
+        'Array&lt;(<a href="test.html">linktoTest</a>|' +
+          '<a href="fakeclass.html">LinktoFakeClass</a>)&gt;'
       );
     });
 
@@ -857,7 +859,7 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
 
       expect(types).toBeArrayOfSize(2);
       expect(types).toContain('number');
-      expect(types).toContain(helper.htmlsafe('Array.<boolean>'));
+      expect(types).toContain('Array&lt;boolean&gt;');
     });
 
     it('creates links for types if relevant', () => {
@@ -965,8 +967,8 @@ describe('@jsdoc/template-legacy/lib/templateHelper', () => {
       };
       const html = helper.getSignatureReturns(mockDoclet);
 
-      expect(html).not.toContain('Array.<string>');
-      expect(html).toContain('Array.&lt;string>');
+      expect(html).not.toContain('Array<string>');
+      expect(html).toContain('Array&lt;string&gt;');
     });
 
     it('returns an empty array if the doclet has no returns', () => {

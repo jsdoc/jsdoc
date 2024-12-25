@@ -106,17 +106,16 @@ export const TYPE_PROPERTY_SCHEMA = {
   type: OBJECT,
   additionalProperties: false,
   properties: {
+    // original type expression
+    expression: {
+      type: STRING,
+    },
     names: {
       type: ARRAY,
       minItems: 1,
       items: {
         type: STRING,
       },
-    },
-    // type parser output
-    parsedType: {
-      type: OBJECT,
-      additionalProperties: true,
     },
   },
 };

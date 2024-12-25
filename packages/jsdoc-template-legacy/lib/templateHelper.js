@@ -244,7 +244,7 @@ function parseType(longname) {
   let err;
 
   try {
-    return catharsis.parse(longname, { jsdoc: true });
+    return catharsis.parse(longname, { jsdoc: true, useCache: false });
   } catch (e) {
     err = new Error(`unable to parse ${longname}: ${e.message}`);
     console.error(err);
@@ -253,7 +253,9 @@ function parseType(longname) {
   }
 }
 
-function stringifyType(parsedType, cssClass, stringifyLinkMap) {
+function stringifyType(typeExpression, cssClass, stringifyLinkMap) {
+  const parsedType = parseType(typeExpression);
+
   return catharsis.stringify(parsedType, {
     cssClass: cssClass,
     htmlSafe: true,
@@ -315,8 +317,6 @@ function buildLink(longname, linkText, options) {
   let stripped;
   let text;
 
-  let parsedType;
-
   // handle cases like:
   // @see <http://example.org>
   // @see http://example.org
@@ -333,9 +333,7 @@ function buildLink(longname, linkText, options) {
     /\{@.+\}/.test(longname) === false &&
     /^<[\s\S]+>/.test(longname) === false
   ) {
-    parsedType = parseType(longname);
-
-    return stringifyType(parsedType, options.cssClass, options.linkMap);
+    return stringifyType(longname, options.cssClass, options.linkMap);
   } else {
     fileUrl = Object.hasOwn(options.linkMap, longname) ? options.linkMap[longname] : '';
     text = linkText || (options.shortenName ? getShortName(longname) : longname);

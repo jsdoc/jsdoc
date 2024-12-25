@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('@returns tag', () => {
   const docSet = jsdoc.getDocSetFromFile('test/fixtures/returnstag.js');
 
@@ -20,7 +21,7 @@ describe('@returns tag', () => {
     const find = docSet.getByLongname('find')[0];
 
     expect(find.returns).toBeArrayOfSize(1);
-    expect(find.returns[0].type.names.join(', ')).toBe('string, Array.<string>');
+    expect(find.returns[0].type.names.join(', ')).toBe('string, Array<string>');
     expect(find.returns[0].description).toBe('The names of the found item(s).');
   });
 

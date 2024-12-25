@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('@param tag', () => {
   const docSet = jsdoc.getDocSetFromFile('test/fixtures/paramtag.js');
   const docSet2 = jsdoc.getDocSetFromFile('test/fixtures/paramtag2.js');
@@ -21,7 +22,7 @@ describe('@param tag', () => {
     const find = docSet.getByLongname('find')[0];
 
     expect(find.params).toBeArrayOfSize(1);
-    expect(find.params[0].type.names.join(', ')).toBe('String, Array.<String>');
+    expect(find.params[0].type.names.join(', ')).toBe('String, Array<String>');
     expect(find.params[0].name).toBe('targetName');
     expect(find.params[0].description).toBe('The name (or names) of what to find.');
   });

@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('@type tag', () => {
   const docSet = jsdoc.getDocSetFromFile('test/fixtures/typetag.js');
 
@@ -21,7 +22,7 @@ describe('@type tag', () => {
 
     expect(foo.type).toBeObject();
     expect(foo.type.names).toBeArrayOfStrings();
-    expect(foo.type.names.join(', ')).toBe('string, Array.<string>');
+    expect(foo.type.names.join(', ')).toBe('string, Array<string>');
   });
 
   it("When a symbol has a @type tag set to a plain string, the doclet has a type property set to that value's type.", () => {

@@ -56,17 +56,6 @@ function trim(text, opts, meta) {
   return text;
 }
 
-function addHiddenProperty(obj, propName, propValue, env) {
-  const { options } = env;
-
-  Object.defineProperty(obj, propName, {
-    value: propValue,
-    writable: true,
-    enumerable: Boolean(options.debug),
-    configurable: true,
-  });
-}
-
 function parseType({ env, text, originalTitle }, { canHaveName, canHaveType }, meta) {
   let log;
 
@@ -90,7 +79,7 @@ function parseType({ env, text, originalTitle }, { canHaveName, canHaveType }, m
   }
 }
 
-function processTagText(tagInstance, tagDef, meta, env) {
+function processTagText(tagInstance, tagDef, meta) {
   let tagType;
 
   if (tagDef.onTagText) {
@@ -105,9 +94,9 @@ function processTagText(tagInstance, tagDef, meta, env) {
     if (tagType.type) {
       if (tagType.type.length) {
         tagInstance.value.type = {
+          expression: tagType.typeExpression,
           names: tagType.type,
         };
-        addHiddenProperty(tagInstance.value.type, 'parsedType', tagType.parsedType, env);
       }
 
       ['optional', 'nullable', 'variable', 'defaultvalue'].forEach((prop) => {
@@ -187,7 +176,7 @@ export class Tag {
     this.text = trim(tagBody, trimOpts, meta);
 
     if (this.text) {
-      processTagText(this, tagDef, meta, env);
+      processTagText(this, tagDef, meta);
     }
 
     tagValidator.validate(this, tagDef, meta);
