@@ -41,9 +41,13 @@ export let Doclet;
 
 const ACCESS_LEVELS = ['package', 'private', 'protected', 'public'];
 const ALL_SCOPE_NAMES = _.values(SCOPE.NAMES);
+const CLASSDESC_TAG = '@classdesc';
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
+const DESCRIPTION_TAG = '@description';
 // TODO: `class` should be on this list, right? What are the implications of adding it?
 const GLOBAL_KINDS = ['constant', 'function', 'member', 'typedef'];
+const REGEXP_COMMENT_STARTS_WITH_TAG = /^\s*@/;
+const REGEXP_ONLY_WHITESPACE = /^\s*$/;
 
 export const WATCHABLE_PROPS = [
   'access',
@@ -164,14 +168,18 @@ function toTags(docletSrc) {
   return tagData;
 }
 
+// If no tag is present at the start of the doclet source, then add a JSDoc tag, so that the initial
+// text is treated as a description.
 function fixDescription(docletSrc, { code }) {
-  let isClass;
+  let newTag;
 
-  if (!/^\s*@/.test(docletSrc) && docletSrc.replace(/\s/g, '').length) {
-    isClass =
-      code && (code.type === Syntax.ClassDeclaration || code.type === Syntax.ClassExpression);
+  if (!REGEXP_COMMENT_STARTS_WITH_TAG.test(docletSrc) && !REGEXP_ONLY_WHITESPACE.test(docletSrc)) {
+    newTag =
+      code?.type === Syntax.ClassDeclaration || code?.type === Syntax.ClassExpression
+        ? CLASSDESC_TAG
+        : DESCRIPTION_TAG;
 
-    docletSrc = `${isClass ? '@classdesc' : '@description'} ${docletSrc}`;
+    docletSrc = newTag + ' ' + docletSrc;
   }
 
   return docletSrc;
