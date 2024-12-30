@@ -37,7 +37,7 @@
     "@jsdoc/ast": "^0.2.12",
     "@jsdoc/name": "^0.1.0",
     "@jsdoc/util": "^0.3.4",
-    "catharsis": "^0.10.0",
+    "catharsis": "^0.11.0",
     "common-path-prefix": "^3.0.0",
     "lodash": "^4.17.21",
     "memize": "^2.1.0"
