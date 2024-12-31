@@ -257,8 +257,8 @@ function stringifyType(typeExpression, cssClass, stringifyLinkMap) {
   const parsedType = parseType(typeExpression);
 
   return catharsis.stringify(parsedType, {
-    cssClass: cssClass,
     htmlSafe: true,
+    linkClass: cssClass,
     links: stringifyLinkMap,
   });
 }
