@@ -46,7 +46,12 @@ const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
 const DESCRIPTION_TAG = '@description';
 // TODO: `class` should be on this list, right? What are the implications of adding it?
 const GLOBAL_KINDS = ['constant', 'function', 'member', 'typedef'];
+const ON_CHANGE_OPTIONS = {
+  ignoreDetached: true,
+  pathAsArray: true,
+};
 const REGEXP_COMMENT_STARTS_WITH_TAG = /^\s*@/;
+const REGEXP_GLOBAL = new RegExp(`^${LONGNAMES.GLOBAL}\\.?`);
 const REGEXP_ONLY_WHITESPACE = /^\s*$/;
 
 export const WATCHABLE_PROPS = [
@@ -198,11 +203,16 @@ function fixDescription(docletSrc, { code }) {
 function resolve(doclet) {
   let about = {};
   let leadingScope;
-  let memberof = doclet.memberof || '';
+  let memberof = doclet.memberof ?? '';
+  let forcedMemberof;
   let metaName;
-  let name = doclet.name ? String(doclet.name) : '';
+  let name = doclet.name ?? '';
   let puncAndName;
   let puncAndNameIndex;
+
+  if (doclet.forceMemberof) {
+    forcedMemberof = memberof;
+  }
 
   // Change `MyClass.prototype.instanceMethod` to `MyClass#instanceMethod`
   // (but not in function params, which lack `doclet.kind`).
@@ -221,7 +231,7 @@ function resolve(doclet) {
     }
   }
   // Member of a var in an outer scope?
-  else if (name && !memberof && doclet.meta.code && doclet.meta.code.funcscope) {
+  else if (name && !memberof && doclet.meta.code?.funcscope) {
     name = doclet.longname = doclet.meta.code.funcscope + SCOPE.PUNC.INNER + name;
   }
 
@@ -231,27 +241,24 @@ function resolve(doclet) {
 
     // The name is a complete longname, like `@name foo.bar` with `@memberof foo`.
     if (name && nameIsLongname(name, memberof) && name !== memberof) {
-      about = toParts(name, doclet.forceMemberof ? memberof : undefined);
+      about = toParts(name, forcedMemberof);
     }
     // The name and memberof are identical and refer to a module, like `@name module:foo` with
     // `@memberof module:foo`.
     else if (name && name === memberof && name.indexOf(MODULE_NAMESPACE) === 0) {
-      about = toParts(name, doclet.forceMemberof ? memberof : undefined);
+      about = toParts(name, forcedMemberof);
     }
     // The name and memberof are identical, like `@name foo` with `@memberof foo`.
     else if (name && name === memberof) {
       doclet.scope = doclet.scope || DEFAULT_SCOPE;
       name = memberof + SCOPE_TO_PUNC[doclet.scope] + name;
-      about = toParts(name, doclet.forceMemberof ? memberof : undefined);
+      about = toParts(name, forcedMemberof);
     }
     // Like `@memberof foo#` or `@memberof foo~`.
     else if (name && getTrailingScope(memberof)) {
-      about = toParts(memberof + name, doclet.forceMemberof ? memberof : undefined);
+      about = toParts(memberof + name, forcedMemberof);
     } else if (name && doclet.scope) {
-      about = toParts(
-        memberof + (SCOPE_TO_PUNC[doclet.scope] || '') + name,
-        doclet.forceMemberof ? memberof : undefined
-      );
+      about = toParts(memberof + (SCOPE_TO_PUNC[doclet.scope] ?? '') + name, forcedMemberof);
     }
   } else {
     // No memberof.
@@ -299,7 +306,7 @@ function resolve(doclet) {
       }
     }
 
-    doclet.scope = doclet.scope || DEFAULT_SCOPE;
+    doclet.scope ??= DEFAULT_SCOPE;
     doclet.setLongname(doclet.memberof + SCOPE_TO_PUNC[doclet.scope] + doclet.name);
   }
 
@@ -314,9 +321,7 @@ function resolve(doclet) {
 }
 
 function removeGlobal(longname) {
-  const globalRegexp = new RegExp(`^${LONGNAMES.GLOBAL}\\.?`);
-
-  return longname.replace(globalRegexp, '');
+  return longname.replace(REGEXP_GLOBAL, '');
 }
 
 /**
@@ -328,11 +333,11 @@ function removeGlobal(longname) {
  * available.
  */
 function getFilepath(doclet) {
-  if (!doclet || !doclet.meta || !doclet.meta.filename) {
+  if (!doclet?.meta?.filename) {
     return '';
   }
 
-  return path.join(doclet.meta.path || '', doclet.meta.filename);
+  return path.join(doclet.meta.path ?? '', doclet.meta.filename);
 }
 
 function emitDocletChanged(emitter, doclet, property, oldValue, newValue) {
@@ -431,19 +436,6 @@ export function combineDoclets(primary, secondary) {
   return target;
 }
 
-function defineWatchableProp(doclet, prop) {
-  Object.defineProperty(doclet, prop, {
-    configurable: false,
-    enumerable: true,
-    get() {
-      return doclet.watchableProps[prop];
-    },
-    set(newValue) {
-      doclet.watchableProps[prop] = newValue;
-    },
-  });
-}
-
 /**
  * Represents a single JSDoc comment.
  *
@@ -462,7 +454,6 @@ Doclet = class {
   constructor(docletSrc, meta, env) {
     const accessConfig = env.config?.opts?.access?.slice() ?? [];
     const emitter = env.emitter;
-    const boundDefineWatchableProp = defineWatchableProp.bind(null, this);
     const boundEmitDocletChanged = emitDocletChanged.bind(null, emitter, this);
     let newTags = [];
 
@@ -479,7 +470,7 @@ Doclet = class {
       value: {},
       writable: true,
     });
-    WATCHABLE_PROPS.forEach(boundDefineWatchableProp);
+    WATCHABLE_PROPS.forEach((prop) => this.#defineWatchableProp(prop));
 
     /** The original text of the comment from the source code. */
     this.comment = docletSrc;
@@ -487,7 +478,7 @@ Doclet = class {
     this.setMeta(meta);
     docletSrc = fixDescription(unwrap(docletSrc), meta);
 
-    newTags = toTags.call(this, docletSrc);
+    newTags = toTags(docletSrc);
     for (let i = 0, l = newTags.length; i < l; i++) {
       this.addTag(newTags[i].title, newTags[i].text);
     }
@@ -498,29 +489,9 @@ Doclet = class {
     if (meta._watch !== false) {
       this.watchableProps = onChange(
         this.watchableProps,
-        (propertyPath, newValue, oldValue) => {
-          let index;
-          let newArray;
-          let oldArray;
-          const property = propertyPath[0];
-
-          // Handle changes to arrays, like: `doclet.listens[0] = 'event:foo';`
-          if (propertyPath.length > 1) {
-            newArray = this.watchableProps[property].slice();
-
-            oldArray = newArray.slice();
-            // Update `oldArray` to contain the original value.
-            index = propertyPath[propertyPath.length - 1];
-            oldArray[index] = oldValue;
-
-            boundEmitDocletChanged(property, oldArray, newArray);
-          }
-          // Handle changes to primitive values.
-          else if (newValue !== oldValue) {
-            boundEmitDocletChanged(property, oldValue, newValue);
-          }
-        },
-        { ignoreDetached: true, pathAsArray: true }
+        (property, oldValue, newValue) =>
+          this.#onChangeHandler(boundEmitDocletChanged, property, oldValue, newValue),
+        ON_CHANGE_OPTIONS
       );
     }
   }
@@ -581,7 +552,7 @@ Doclet = class {
     }
 
     if (!tagDef) {
-      this.tags = this.tags || [];
+      this.tags ??= [];
       this.tags.push(newTag);
     }
   }
@@ -637,6 +608,42 @@ Doclet = class {
     }
 
     return true;
+  }
+
+  #defineWatchableProp(prop) {
+    Object.defineProperty(this, prop, {
+      configurable: false,
+      enumerable: true,
+      get() {
+        return this.watchableProps[prop];
+      },
+      set(newValue) {
+        this.watchableProps[prop] = newValue;
+      },
+    });
+  }
+
+  #onChangeHandler(boundEmitDocletChanged, propertyPath, newValue, oldValue) {
+    let index;
+    let newArray;
+    let oldArray;
+    const property = propertyPath[0];
+
+    // Handle changes to arrays, like: `doclet.listens[0] = 'event:foo';`
+    if (propertyPath.length > 1) {
+      newArray = this.watchableProps[property].slice();
+
+      oldArray = newArray.slice();
+      // Update `oldArray` to contain the original value.
+      index = propertyPath[propertyPath.length - 1];
+      oldArray[index] = oldValue;
+
+      boundEmitDocletChanged(property, oldArray, newArray);
+    }
+    // Handle changes to primitive values.
+    else if (newValue !== oldValue) {
+      boundEmitDocletChanged(property, oldValue, newValue);
+    }
   }
 
   /**
@@ -712,22 +719,22 @@ Doclet = class {
       about.as = target;
     }
 
-    if (!this.borrowed) {
-      /**
-       * A list of symbols that are borrowed by this one, if any.
-       * @type {Array.<string>}
-       */
-      this.borrowed = [];
-    }
+    /**
+     * A list of symbols that are borrowed by this one, if any.
+     *
+     * @type {Array<string>}
+     */
+    this.borrowed ??= [];
     this.borrowed.push(about);
   }
 
   mix(source) {
     /**
      * A list of symbols that are mixed into this one, if any.
-     * @type Array.<string>
+     *
+     * @type {Array<string>}
      */
-    this.mixes = this.mixes || [];
+    this.mixes ??= [];
     this.mixes.push(source);
   }
 
@@ -739,9 +746,10 @@ Doclet = class {
   augment(base) {
     /**
      * A list of symbols that are augmented by this one, if any.
-     * @type Array.<string>
+     *
+     * @type {Array<string>}
      */
-    this.augments = this.augments || [];
+    this.augments ??= [];
     this.augments.push(base);
   }
 
@@ -755,14 +763,16 @@ Doclet = class {
 
     /**
      * Information about the source code associated with this doclet.
+     *
      * @namespace
      */
-    this.meta = this.meta || {};
+    this.meta ??= {};
 
     if (meta.range) {
       /**
        * The positions of the first and last characters of the code associated with this doclet.
-       * @type Array.<number>
+       *
+       * @type {Array<number>}
        */
       this.meta.range = meta.range.slice();
     }
@@ -770,17 +780,20 @@ Doclet = class {
     if (meta.lineno) {
       /**
        * The name of the file containing the code associated with this doclet.
-       * @type string
+       *
+       * @type {string}
        */
       this.meta.filename = path.basename(meta.filename);
       /**
        * The line number of the code associated with this doclet.
-       * @type number
+       *
+       * @type {number}
        */
       this.meta.lineno = meta.lineno;
       /**
        * The column number of the code associated with this doclet.
-       * @type number
+       *
+       * @type {number}
        */
       this.meta.columnno = meta.columnno;
 
@@ -792,6 +805,7 @@ Doclet = class {
 
     /**
      * Information about the code symbol.
+     *
      * @namespace
      */
     this.meta.code = this.meta.code || {};
@@ -802,6 +816,7 @@ Doclet = class {
       if (meta.code.name) {
         /**
          * The name of the symbol in the source code.
+         *
          * @type {string}
          */
         this.meta.code.name = meta.code.name;
@@ -809,6 +824,7 @@ Doclet = class {
       if (meta.code.type) {
         /**
          * The type of the symbol in the source code.
+         *
          * @type {string}
          */
         this.meta.code.type = meta.code.type;
@@ -822,9 +838,10 @@ Doclet = class {
       if (meta.code.funcscope) {
         this.meta.code.funcscope = meta.code.funcscope;
       }
-      if (typeof meta.code.value !== 'undefined') {
+      if (!_.isUndefined(meta.code.value)) {
         /**
          * The value of the symbol in the source code.
+         *
          * @type {*}
          */
         this.meta.code.value = meta.code.value;

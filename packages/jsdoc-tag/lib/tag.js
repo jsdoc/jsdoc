@@ -25,35 +25,39 @@ import _ from 'lodash';
 import * as type from './type.js';
 import * as tagValidator from './validator.js';
 
+const REGEXP_LEADING_SPACES_TABS = /^([ \t]+)/;
+const REGEXP_LEADING_TRAILING_LINE_BREAKS = /^[\n\r\f]+|[\n\r\f]+$/g;
+const REGEXP_LEADING_TRAILING_WHITESPACE = /(?:^\s+)|(?:\s+$)/;
+
 // Check whether the text is the same as a symbol name with leading or trailing whitespace. If so,
 // the whitespace must be preserved, and the text cannot be trimmed.
 function mustPreserveWhitespace(text, meta) {
-  return meta && meta.code && meta.code.name === text && text.match(/(?:^\s+)|(?:\s+$)/);
+  return meta?.code?.name === text && text.match(REGEXP_LEADING_TRAILING_WHITESPACE);
 }
 
 function trim(text, opts, meta) {
   let indentMatcher;
   let match;
+  let str = _.isString(text) ? text : String(text ?? '');
 
-  opts = opts || {};
-  text = String(_.isNull(text) || _.isUndefined(text) ? '' : text);
-
-  if (mustPreserveWhitespace(text, meta)) {
-    text = `"${text}"`;
-  } else if (opts.keepsWhitespace) {
-    text = text.replace(/^[\n\r\f]+|[\n\r\f]+$/g, '');
+  if (mustPreserveWhitespace(str, meta)) {
+    str = `"${str}"`;
+  } else if (opts?.keepsWhitespace) {
+    str = str.replace(REGEXP_LEADING_TRAILING_LINE_BREAKS, '');
     if (opts.removesIndent) {
-      match = text.match(/^([ \t]+)/);
+      // Identify leading spaces and tabs on the first line.
+      match = str.match(REGEXP_LEADING_SPACES_TABS);
       if (match && match[1]) {
+        // Remove only those leading spaces and tabs on subsequent lines.
         indentMatcher = new RegExp(`^${match[1]}`, 'gm');
-        text = text.replace(indentMatcher, '');
+        str = str.replace(indentMatcher, '');
       }
     }
   } else {
-    text = text.replace(/^\s+|\s+$/g, '');
+    str = str.trim();
   }
 
-  return text;
+  return str;
 }
 
 function parseType({ env, text, originalTitle }, { canHaveName, canHaveType }, meta) {
@@ -100,13 +104,13 @@ function processTagText(tagInstance, tagDef, meta) {
       }
 
       ['optional', 'nullable', 'variable', 'defaultvalue'].forEach((prop) => {
-        if (typeof tagType[prop] !== 'undefined') {
+        if (!_.isUndefined(tagType[prop])) {
           tagInstance.value[prop] = tagType[prop];
         }
       });
     }
 
-    if (tagType.text && tagType.text.length) {
+    if (tagType.text?.length) {
       tagInstance.value.description = tagType.text;
     }
 

@@ -88,8 +88,8 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       dict1.defineTag('fake', fakeTag);
       dict2.defineTags({ fake: fakeTag });
 
-      expect(dict2.lookup('fake')).toEqual(dict1.lookup('fake'));
-      expect(dict2.lookup('phony')).toEqual(dict1.lookup('phony'));
+      expect(dict2.lookUp('fake')).toEqual(dict1.lookUp('fake'));
+      expect(dict2.lookUp('phony')).toEqual(dict1.lookUp('phony'));
     });
 
     it('returns the tags it added', () => {
@@ -152,8 +152,8 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       jsdoc.env = env;
       testDictionary = Dictionary.fromEnv(jsdoc.env);
 
-      expect(testDictionary.lookup(JSDOC_TAGNAME)).toBeObject();
-      expect(testDictionary.lookup(CLOSURE_TAGNAME)).toBeObject();
+      expect(testDictionary.lookUp(JSDOC_TAGNAME)).toBeObject();
+      expect(testDictionary.lookUp(CLOSURE_TAGNAME)).toBeObject();
     });
 
     it('adds only the JSDoc tags if requested', () => {
@@ -161,8 +161,8 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       jsdoc.env = env;
       testDictionary = Dictionary.fromEnv(jsdoc.env);
 
-      expect(testDictionary.lookup(JSDOC_TAGNAME)).toBeObject();
-      expect(testDictionary.lookup(CLOSURE_TAGNAME)).toBeFalse();
+      expect(testDictionary.lookUp(JSDOC_TAGNAME)).toBeObject();
+      expect(testDictionary.lookUp(CLOSURE_TAGNAME)).toBeFalse();
     });
 
     it('adds only the Closure tags if requested', () => {
@@ -170,8 +170,8 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       jsdoc.env = env;
       testDictionary = Dictionary.fromEnv(jsdoc.env);
 
-      expect(testDictionary.lookup(JSDOC_TAGNAME)).toBeFalse();
-      expect(testDictionary.lookup(CLOSURE_TAGNAME)).toBeObject();
+      expect(testDictionary.lookUp(JSDOC_TAGNAME)).toBeFalse();
+      expect(testDictionary.lookUp(CLOSURE_TAGNAME)).toBeObject();
     });
 
     it('prefers tagdefs from the first dictionary on the list', () => {
@@ -179,7 +179,7 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       jsdoc.env = env;
       testDictionary = Dictionary.fromEnv(jsdoc.env);
 
-      expect(testDictionary.lookup('deprecated').synonyms).not.toBeDefined();
+      expect(testDictionary.lookUp('deprecated').synonyms).not.toBeDefined();
     });
 
     it('adds tag synonyms', () => {
@@ -187,32 +187,32 @@ describe('@jsdoc/tag/lib/dictionary', () => {
       jsdoc.env = env;
       testDictionary = Dictionary.fromEnv(jsdoc.env);
 
-      expect(testDictionary.lookup('extends')).toBeObject();
+      expect(testDictionary.lookUp('extends')).toBeObject();
       expect(testDictionary.normalize('extends')).toBe('augments');
     });
   });
 
-  describe('lookup', () => {
+  describe('lookUp', () => {
     it("retrieves the definition using the tag's canonical name", () => {
-      expect(testDictionary.lookup(TAG_TITLE)).toBe(TAG_DEF);
+      expect(testDictionary.lookUp(TAG_TITLE)).toBe(TAG_DEF);
     });
 
     it('retrieves the definition using a synonym for the tag', () => {
-      expect(testDictionary.lookup(TAG_SYNONYM)).toBe(TAG_DEF);
+      expect(testDictionary.lookUp(TAG_SYNONYM)).toBe(TAG_DEF);
     });
 
     it('returns `false` when a tag is not found', () => {
-      expect(testDictionary.lookup('lkjas1l24jk')).toBeFalse();
+      expect(testDictionary.lookUp('lkjas1l24jk')).toBeFalse();
     });
   });
 
-  describe('lookUp', () => {
-    it('calls `lookup`', () => {
-      const lookupSpy = spyOn(testDictionary, 'lookup');
+  describe('lookup', () => {
+    it('calls `lookUp`', () => {
+      const lookUpSpy = spyOn(testDictionary, 'lookUp');
 
-      testDictionary.lookUp('foo');
+      testDictionary.lookup('foo');
 
-      expect(lookupSpy).toHaveBeenCalled();
+      expect(lookUpSpy).toHaveBeenCalled();
     });
   });
 
