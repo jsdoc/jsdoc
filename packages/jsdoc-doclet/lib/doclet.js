@@ -45,7 +45,7 @@ const CLASSDESC_TAG = '@classdesc';
 const DEFAULT_SCOPE = SCOPE.NAMES.STATIC;
 const DESCRIPTION_TAG = '@description';
 // TODO: `class` should be on this list, right? What are the implications of adding it?
-const GLOBAL_KINDS = ['constant', 'function', 'member', 'typedef'];
+const GLOBAL_KINDS = ['constant', 'enum', 'function', 'member', 'typedef'];
 const ON_CHANGE_OPTIONS = {
   ignoreDetached: true,
   pathAsArray: true,

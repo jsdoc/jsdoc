@@ -13,11 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('@enum tag', () => {
   const docSet = jsdoc.getDocSetFromFile('test/fixtures/enumtag.js');
   const tristate = docSet.getByLongname('TriState')[0];
 
-  it('When a symbol has an @enum tag, it has a properties array.', () => {
+  it('When a symbol has an @enum tag, it has the kind `enum` and a properties array.', () => {
+    expect(tristate.kind).toBe('enum');
     expect(tristate.properties).toBeArray();
   });
 

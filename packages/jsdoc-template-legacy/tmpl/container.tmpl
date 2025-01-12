@@ -146,6 +146,17 @@
     <?js } ?>
 
     <?js
+        var enums = self.find({kind: 'enum', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+        if (enums && enums.length && enums.forEach) {
+    ?>
+        <h3 class="subsection-title">Enums</h3>
+
+        <?js enums.forEach(function(e) { ?>
+            <?js= self.partial('members.tmpl', e) ?>
+        <?js }); ?>
+    <?js } ?>
+
+    <?js
         var members = self.find({kind: 'member', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
 
         // symbols that are assigned to module.exports are not globals, even though they're not a memberof anything

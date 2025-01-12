@@ -49,7 +49,7 @@
             props.hasName = true;
         }
 
-        if (typeof prop.defaultvalue !== 'undefined' && !data.isEnum) {
+        if (typeof prop.defaultvalue !== 'undefined' && !data.kind === 'enum') {
             props.hasDefault = true;
         }
     });

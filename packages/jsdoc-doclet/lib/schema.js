@@ -331,15 +331,13 @@ export const DOCLET_SCHEMA = {
         inherited: true,
       },
     },
-    isEnum: {
-      type: BOOLEAN,
-    },
     // what kind of symbol is this?
     kind: {
       type: STRING,
       enum: [
         'class',
         'constant',
+        'enum',
         'event',
         'external',
         'file',

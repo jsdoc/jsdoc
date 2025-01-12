@@ -595,7 +595,7 @@ export class Parser extends EventEmitter {
     const doclets = this.resolvePropertyParents(e.code.node.parent);
 
     doclets.forEach((doclet) => {
-      if (doclet?.isEnum) {
+      if (doclet.kind === 'enum') {
         doclet.properties = doclet.properties || [];
 
         // members of an enum inherit the enum's type

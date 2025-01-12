@@ -184,8 +184,9 @@ export const getTags = (env) => ({
   enum: {
     canHaveType: true,
     onTagged(doclet, tag) {
-      doclet.kind ??= 'member';
-      doclet.isEnum = true;
+      if (!doclet.kind) {
+        util.setDocletKindToTitle(doclet, tag);
+      }
       util.setDocletTypeToValueType(doclet, tag);
     },
   },

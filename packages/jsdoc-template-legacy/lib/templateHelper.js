@@ -565,7 +565,7 @@ export function getMembers(data) {
     externals: find(data, { kind: 'external' }),
     events: find(data, { kind: 'event' }),
     globals: find(data, {
-      kind: ['member', 'function', 'constant', 'typedef'],
+      kind: ['enum', 'member', 'function', 'constant', 'typedef'],
       memberof: { isUndefined: true },
     }),
     mixins: find(data, { kind: 'mixin' }),
