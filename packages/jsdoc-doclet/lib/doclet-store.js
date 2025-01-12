@@ -183,8 +183,10 @@ export class DocletStore {
   }
 
   #toggleVisibility(doclet, { isVisible, setFnName }) {
+    const action = isVisible ? 'delete' : 'add';
+
     this.doclets[setFnName](doclet);
-    this.unusedDoclets[isVisible ? 'delete' : 'add'](doclet);
+    this.unusedDoclets[action](doclet);
   }
 
   // Updates `this.allDocletsByLongname` _only_.
@@ -216,7 +218,8 @@ export class DocletStore {
     doclet,
     { property: eventProp, oldValue: oldKey, newValue: newKey, isVisible, wasVisible }
   ) {
-    const map = this[DocletStore.#propertyToMapName.get(requestedProp)];
+    const mapName = DocletStore.#propertyToMapName.get(requestedProp);
+    const map = this[mapName];
 
     // If the event didn't specify the property name that we're interested in, then ignore the new
     // key; it doesn't apply to this property. Instead, get the key from the doclet.
@@ -260,16 +263,8 @@ export class DocletStore {
   }
 
   #updateWatchableProperties(doclet, docletInfo) {
-    const {
-      isGlobal,
-      isVisible,
-      newDoclet,
-      newValue,
-      oldValue,
-      property,
-      visibilityChanged,
-      wasVisible,
-    } = docletInfo;
+    const { isVisible, newDoclet, newValue, oldValue, property, visibilityChanged, wasVisible } =
+      docletInfo;
 
     // `access` only affects visibility, which is handled above, so we ignore it here.
     if (visibilityChanged || property === 'augments') {
@@ -283,7 +278,7 @@ export class DocletStore {
       this.#updateSetProperty('implements', doclet, docletInfo);
     }
     if (visibilityChanged || property === 'kind') {
-      this.#toggleGlobal(doclet, { isGlobal, isVisible });
+      this.#toggleGlobal(doclet, docletInfo);
       this.#updateMapProperty('kind', doclet, docletInfo);
     }
     if (visibilityChanged || property === 'listens') {

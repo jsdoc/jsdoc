@@ -73,7 +73,7 @@ WATCHABLE_PROPS.sort();
 
 function fakeMeta(node) {
   return {
-    type: node ? node.type : null,
+    type: node?.type,
     node: node,
   };
 }
@@ -105,7 +105,7 @@ function codeToKind(code) {
   } else if (code.type === Syntax.ExportSpecifier) {
     // this value will often be an Identifier for a variable, which isn't very useful
     kind = codeToKind(fakeMeta(node.local));
-  } else if (node && node.parent && isFunction(node.parent)) {
+  } else if (isFunction(node?.parent)) {
     kind = 'param';
   }
 
@@ -245,7 +245,7 @@ function resolve(doclet) {
     }
     // The name and memberof are identical and refer to a module, like `@name module:foo` with
     // `@memberof module:foo`.
-    else if (name && name === memberof && name.indexOf(MODULE_NAMESPACE) === 0) {
+    else if (name && name === memberof && name.startsWith(MODULE_NAMESPACE)) {
       about = toParts(name, forcedMemberof);
     }
     // The name and memberof are identical, like `@name foo` with `@memberof foo`.
@@ -293,7 +293,7 @@ function resolve(doclet) {
     if (leadingScope) {
       doclet.scope = PUNC_TO_SCOPE[leadingScope];
       doclet.name = doclet.name.substr(1);
-    } else if (doclet.meta.code && doclet.meta.code.name) {
+    } else if (doclet.meta.code?.name) {
       // HACK: Handle cases where an ES 2015 class is a static memberof something else, and
       // the class has instance members. In these cases, we have to detect the instance
       // members' scope by looking at the meta info. There's almost certainly a better way to
@@ -370,7 +370,7 @@ function clone(source, target, properties) {
  * @param {module:@jsdoc/doclet.Doclet} target - The doclet to which properties will be copied.
  * @param {Array.<string>} exclude - The names of properties to exclude from copying.
  */
-function copyMostProperties(primary, secondary, target, exclude) {
+function copyPropsWithExcludelist(primary, secondary, target, exclude) {
   // Get names of primary and secondary properties that don't contain the value `undefined`.
   const primaryPropertyNames = Object.getOwnPropertyNames(primary).filter(
     (name) => !_.isUndefined(primary[name])
@@ -399,15 +399,11 @@ function copyMostProperties(primary, secondary, target, exclude) {
  * @param {module:@jsdoc/doclet.Doclet} target - The doclet to which properties will be copied.
  * @param {Array.<string>} include - The names of properties to copy.
  */
-function copySpecificProperties(primary, secondary, target, include) {
+function copyPropsWithIncludelist(primary, secondary, target, include) {
   include.forEach((property) => {
-    if (Object.hasOwn(primary, property) && primary[property] && primary[property].length) {
+    if (Object.hasOwn(primary, property) && primary[property]?.length) {
       target[property] = _.cloneDeep(primary[property]);
-    } else if (
-      Object.hasOwn(secondary, property) &&
-      secondary[property] &&
-      secondary[property].length
-    ) {
+    } else if (Object.hasOwn(secondary, property) && secondary[property]?.length) {
       target[property] = _.cloneDeep(secondary[property]);
     }
   });
@@ -423,15 +419,15 @@ function copySpecificProperties(primary, secondary, target, include) {
  * doclets.
  */
 export function combineDoclets(primary, secondary) {
-  const copyMostPropertiesExclude = ['env', 'params', 'properties', 'undocumented'];
-  const copySpecificPropertiesInclude = ['params', 'properties'];
-  const target = new Doclet('', null, secondary.env);
+  const excludelist = ['env', 'params', 'properties', 'undocumented'];
+  const includelist = ['params', 'properties'];
+  const target = Doclet.emptyDoclet(secondary.env);
 
   // First, copy most properties to the target doclet.
-  copyMostProperties(primary, secondary, target, copyMostPropertiesExclude);
+  copyPropsWithExcludelist(primary, secondary, target, excludelist);
   // Then copy a few specific properties to the target doclet, as long as they're not falsy and
   // have a length greater than 0.
-  copySpecificProperties(primary, secondary, target, copySpecificPropertiesInclude);
+  copyPropsWithIncludelist(primary, secondary, target, includelist);
 
   return target;
 }
@@ -519,7 +515,7 @@ Doclet = class {
       this.memberof = undefined;
     }
 
-    if (!this.kind && this.meta && this.meta.code) {
+    if (!this.kind && this.meta?.code) {
       this.addTag('kind', codeToKind(this.meta.code));
     }
 
@@ -528,7 +524,7 @@ Doclet = class {
     }
 
     // add in any missing param names
-    if (this.params && this.meta && this.meta.code && this.meta.code.paramnames) {
+    if (this.params && this.meta?.code?.paramnames) {
       for (let i = 0, l = this.params.length; i < l; i++) {
         if (!this.params[i].name) {
           this.params[i].name = this.meta.code.paramnames[i] || '';
@@ -547,7 +543,7 @@ Doclet = class {
     const tagDef = this.#dictionary.lookUp(title);
     const newTag = new Tag(title, text, this.meta, this.env);
 
-    if (tagDef && tagDef.onTagged) {
+    if (tagDef?.onTagged) {
       tagDef.onTagged(this, newTag);
     }
 
@@ -580,7 +576,11 @@ Doclet = class {
     // + Doclets that claim to belong to an anonymous scope
     // + "Undocumented" doclets (usually code with no JSDoc comment; might also include some odd
     //   artifacts of the parsing process)
-    if (this.ignore === true || this.memberof === '<anonymous>' || this.undocumented === true) {
+    if (
+      this.ignore === true ||
+      this.memberof === LONGNAMES.ANONYMOUS ||
+      this.undocumented === true
+    ) {
       return false;
     }
 
@@ -694,8 +694,8 @@ Doclet = class {
       filepath = getFilepath(this);
 
       errorMessage =
-        `The scope name "${scope}" is not recognized. Use one of the ` +
-        `following values: ${ALL_SCOPE_NAMES}`;
+        `The scope name "${scope}" is not recognized. Use one of the following values: ` +
+        `${ALL_SCOPE_NAMES}`;
       if (filepath) {
         errorMessage += ` (Source file: ${filepath})`;
       }
@@ -808,7 +808,7 @@ Doclet = class {
      *
      * @namespace
      */
-    this.meta.code = this.meta.code || {};
+    this.meta.code ??= {};
     if (meta.id) {
       this.meta.code.id = meta.id;
     }
