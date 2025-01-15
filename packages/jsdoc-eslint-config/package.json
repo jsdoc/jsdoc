@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/eslint-config",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Default ESLint configuration for JSDoc packages.",
   "keywords": [
     "eslint",

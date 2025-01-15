@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/name",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Methods for working with namepaths in JSDoc.",
   "keywords": [
     "jsdoc"
