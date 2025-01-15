@@ -42,11 +42,47 @@ describe('@jsdoc/task-runner/lib/task', () => {
     expect(task.name).toBe('foo');
   });
 
+  it('lets you define a name in a subclass', () => {
+    class MyTask extends Task {
+      constructor() {
+        super();
+
+        this._name = 'myTask';
+      }
+
+      get name() {
+        return this._name;
+      }
+    }
+
+    const task = new MyTask();
+
+    expect(task.name).toBe('myTask');
+  });
+
   it('uses the provided function', () => {
     const func = () => Promise.resolve();
     const task = new Task({ func });
 
     expect(task.func).toBe(func);
+  });
+
+  it('lets you define a function in a subclass', async () => {
+    let success;
+    let task;
+
+    class MyTask extends Task {
+      func() {
+        success = true;
+
+        return Promise.resolve();
+      }
+    }
+
+    task = new MyTask({ name: 'myTask' });
+    await task.run();
+
+    expect(success).toBeTrue();
   });
 
   describe('dependsOn', () => {

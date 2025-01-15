@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import Emittery from 'emittery';
 import ow from 'ow';
 
@@ -32,9 +33,13 @@ export class Task extends Emittery {
       deps = opts.dependsOn.slice();
     }
 
-    this.name = opts.name || null;
-    this.func = opts.func || null;
-    this.dependsOn = deps || [];
+    if (opts.name) {
+      this.name = opts.name;
+    }
+    if (opts.func) {
+      this.func = opts.func;
+    }
+    this.dependsOn = deps ?? [];
   }
 
   run(context) {
