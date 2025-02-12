@@ -46,14 +46,6 @@ describe('@jsdoc/core.Env', () => {
       expect(env.emitter).toBeInstanceOf(EventEmitter);
     });
 
-    it('has an `env` getter', () => {
-      expect(env.env).toBe(env);
-    });
-
-    it('has a `get` method that returns the value of the specified property', () => {
-      expect(env.get('sourceFiles')).toBe(env.sourceFiles);
-    });
-
     it('has a `log` property that contains logging functions', () => {
       expect(env.log).toBeObject();
 

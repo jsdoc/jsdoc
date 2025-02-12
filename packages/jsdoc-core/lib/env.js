@@ -105,16 +105,6 @@ export default class Env {
     return this.conf;
   }
 
-  // TODO: Remove.
-  get env() {
-    return this;
-  }
-
-  // TODO: Remove.
-  get(key) {
-    return this[key];
-  }
-
   get options() {
     return this.opts;
   }

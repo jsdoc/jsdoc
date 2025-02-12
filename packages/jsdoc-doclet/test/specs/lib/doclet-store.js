@@ -29,7 +29,7 @@ function makeDoclet(comment, meta, env) {
   env ??= jsdoc.env;
   doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, env);
   if (meta?._emitEvent !== false) {
-    env.get('emitter').emit('newDoclet', { doclet });
+    env.emitter.emit('newDoclet', { doclet });
   }
 
   return doclet;
