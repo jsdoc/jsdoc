@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import dependencyGraph from 'dependency-graph';
 import Emittery from 'emittery';
 import _ from 'lodash';
@@ -23,22 +24,28 @@ import v from './validators.js';
 
 const { DepGraph } = dependencyGraph;
 
-// Work around an annoying typo in a method name.
-DepGraph.prototype.dependentsOf = DepGraph.prototype.dependantsOf;
-
 export class TaskRunner extends Emittery {
+  #context;
+  #deps;
+  #error;
+  #nameToTask;
+  #queue;
+  #running;
+  #taskToName;
+  #unsubscribers;
+
   constructor(context) {
     super();
 
     ow(context, ow.optional.object);
 
-    this._init(context);
+    this.#init(context);
   }
 
-  _addOrRemoveTasks(tasks, func, action) {
+  #addOrRemoveTasks(tasks, func, action) {
     func = _.bind(func, this);
 
-    if (Array.isArray(tasks)) {
+    if (_.isArray(tasks)) {
       tasks.forEach((task, i) => {
         try {
           func(task);
@@ -47,7 +54,7 @@ export class TaskRunner extends Emittery {
           throw e;
         }
       });
-    } else if (tasks !== null && typeof tasks === 'object') {
+    } else if (_.isObject(tasks)) {
       for (const task of Object.keys(tasks)) {
         try {
           func(tasks[task]);
@@ -59,7 +66,7 @@ export class TaskRunner extends Emittery {
     }
   }
 
-  _addTaskEmitters(task) {
+  #addTaskEmitters(task) {
     const u = {};
 
     u.start = task.on('start', (t) => this.emit('taskStart', t));
@@ -70,56 +77,56 @@ export class TaskRunner extends Emittery {
         error: e.error,
       });
 
-      if (!this._error) {
-        this._error = e.error;
+      if (!this.#error) {
+        this.#error = e.error;
       }
     });
 
-    this._unsubscribers.set(task.name, u);
+    this.#unsubscribers.set(task.name, u);
   }
 
-  _bindTaskFunc(task) {
-    return _.bind(task.run, task, this._context);
+  #bindTaskFunc(task) {
+    return _.bind(task.run, task, this.#context);
   }
 
-  _createTaskSequence(tasks) {
+  #createTaskSequence(tasks) {
     if (!tasks.length) {
       return null;
     }
 
     return () =>
       tasks.reduce((p, taskName) => {
-        const task = this._nameToTask.get(taskName);
+        const task = this.#nameToTask.get(taskName);
 
-        return p.then(this._bindTaskFunc(task), (e) => Promise.reject(e));
+        return p.then(this.#bindTaskFunc(task), (e) => Promise.reject(e));
       }, Promise.resolve());
   }
 
-  _init(context) {
-    this._context = context;
-    this._deps = new Map();
-    this._error = null;
-    this._queue = new Queue();
-    this._taskToName = new WeakMap();
-    this._nameToTask = new Map();
-    this._running = false;
-    this._unsubscribers = new Map();
+  #init(context) {
+    this.#context = context;
+    this.#deps = new Map();
+    this.#error = null;
+    this.#nameToTask = new Map();
+    this.#queue = new Queue();
+    this.#running = false;
+    this.#taskToName = new WeakMap();
+    this.#unsubscribers = new Map();
 
-    this._queue.pause();
+    this.#queue.pause();
   }
 
-  _newDependencyCycleError(cyclePath) {
+  #newDependencyCycleError(cyclePath) {
     return new v.DependencyCycleError(
       `Tasks have circular dependencies: ${cyclePath.join(' > ')}`,
       cyclePath
     );
   }
 
-  _newStateError() {
+  #newStateError() {
     return new v.StateError('The task runner is already running.');
   }
 
-  _newUnknownDepsError(dependent, unknownDeps) {
+  #newUnknownDepsError(dependent, unknownDeps) {
     let errorText;
 
     if (unknownDeps.length === 1) {
@@ -133,28 +140,28 @@ export class TaskRunner extends Emittery {
     );
   }
 
-  _orderTasks() {
+  #orderTasks() {
     let error;
     const graph = new DepGraph();
     let parallel;
     let sequential;
 
-    for (const [task] of this._nameToTask) {
+    for (const [task] of this.#nameToTask) {
       graph.addNode(task);
     }
 
-    for (const [dependent] of this._deps) {
+    for (const [dependent] of this.#deps) {
       const unknownDeps = [];
 
-      for (const dependency of this._deps.get(dependent)) {
-        if (!this._nameToTask.has(dependency)) {
+      for (const dependency of this.#deps.get(dependent)) {
+        if (!this.#nameToTask.has(dependency)) {
           unknownDeps.push(dependency);
         } else {
           graph.addDependency(dependent, dependency);
         }
 
         if (unknownDeps.length) {
-          error = this._newUnknownDepsError(dependency, unknownDeps);
+          error = this.#newUnknownDepsError(dependency, unknownDeps);
           break;
         }
       }
@@ -167,7 +174,7 @@ export class TaskRunner extends Emittery {
         // Get tasks with dependencies, in a correctly ordered list.
         sequential = graph.overallOrder().filter((task) => !parallel.includes(task));
       } catch (e) {
-        error = this._newDependencyCycleError(e.cyclePath);
+        error = this.#newDependencyCycleError(e.cyclePath);
       }
     }
 
@@ -178,92 +185,84 @@ export class TaskRunner extends Emittery {
     };
   }
 
-  _rejectIfRunning() {
+  #rejectIfRunning() {
     if (this.running) {
-      return Promise.reject(this._newStateError());
+      return Promise.reject(this.#newStateError());
     }
 
     return null;
   }
 
-  _throwIfRunning() {
+  #throwIfRunning() {
     if (this.running) {
-      throw this._newStateError();
+      throw this.#newStateError();
     }
-  }
-
-  _throwIfUnknownDeps(dependent, unknownDeps) {
-    if (!unknownDeps.length) {
-      return;
-    }
-
-    throw this._newUnknownDepsError(dependent, unknownDeps);
   }
 
   addTask(task) {
     ow(task, v.checkTaskOrString);
 
-    this._throwIfRunning();
+    this.#throwIfRunning();
 
-    this._nameToTask.set(task.name, task);
+    this.#nameToTask.set(task.name, task);
     if (task.dependsOn) {
-      this._deps.set(task.name, task.dependsOn);
+      this.#deps.set(task.name, task.dependsOn);
     }
-    this._taskToName.set(task, task.name);
-    this._addTaskEmitters(task);
+    this.#taskToName.set(task, task.name);
+    this.#addTaskEmitters(task);
 
     return this;
   }
 
   addTasks(tasks) {
     ow(tasks, ow.any(ow.array, ow.object));
-    this._addOrRemoveTasks(tasks, this.addTask, 'add');
+    this.#addOrRemoveTasks(tasks, this.addTask, 'add');
 
     return this;
   }
 
   end() {
     this.emit('end', {
-      error: this._error,
+      error: this.#error,
     });
-    this._queue.clear();
-    this._init();
+    this.#queue.clear();
+    this.#init();
   }
 
   removeTask(task) {
     let unsubscribers;
 
     ow(task, v.checkTaskOrString);
-    this._throwIfRunning();
+    this.#throwIfRunning();
 
-    if (typeof task === 'string') {
-      task = this._nameToTask.get(task);
+    if (_.isString(task)) {
+      task = this.#nameToTask.get(task);
 
       if (!task) {
         throw new v.UnknownTaskError(`Unknown task: ${task}`);
       }
-    } else if (typeof task === 'object') {
-      if (!this._taskToName.has(task)) {
+    } else if (_.isObject(task)) {
+      if (!this.#taskToName.has(task)) {
         throw new v.UnknownTaskError(`Unknown task: ${task}`);
       }
     }
 
-    this._nameToTask.delete(task.name);
-    this._taskToName.delete(task);
-    this._deps.delete(task.name);
+    this.#nameToTask.delete(task.name);
+    this.#taskToName.delete(task);
+    this.#deps.delete(task.name);
 
-    unsubscribers = this._unsubscribers.get(task.name);
+    unsubscribers = this.#unsubscribers.get(task.name);
     for (const u of Object.keys(unsubscribers)) {
       unsubscribers[u]();
     }
-    this._unsubscribers.delete(task.name);
+    this.#unsubscribers.delete(task.name);
 
     return this;
   }
 
   removeTasks(tasks) {
     ow(tasks, ow.any(ow.array, ow.object));
-    this._addOrRemoveTasks(tasks, this.removeTask, 'remove');
+    this.#addOrRemoveTasks(tasks, this.removeTask, 'remove');
 
     return this;
   }
@@ -272,13 +271,13 @@ export class TaskRunner extends Emittery {
     ow(context, ow.optional.object);
 
     let endPromise;
-    const { error, parallel, sequential } = this._orderTasks();
+    const { error, parallel, sequential } = this.#orderTasks();
     let runningPromise;
     let taskFuncs = [];
     let taskSequence;
 
     // First, fail if the runner is already running.
-    runningPromise = this._rejectIfRunning();
+    runningPromise = this.#rejectIfRunning();
     if (runningPromise) {
       return runningPromise;
     }
@@ -288,23 +287,23 @@ export class TaskRunner extends Emittery {
       return Promise.reject(error);
     }
 
-    this._context = context || this._context;
+    this.#context = context || this.#context;
 
     for (const taskName of parallel) {
-      taskFuncs.push(this._bindTaskFunc(this._nameToTask.get(taskName)));
+      taskFuncs.push(this.#bindTaskFunc(this.#nameToTask.get(taskName)));
     }
 
-    taskSequence = this._createTaskSequence(sequential);
+    taskSequence = this.#createTaskSequence(sequential);
     if (taskSequence) {
       taskFuncs.push(taskSequence);
     }
 
-    endPromise = this._queue.addAll(taskFuncs).then(
+    endPromise = this.#queue.addAll(taskFuncs).then(
       () => {
         this.end();
 
-        if (this._error) {
-          return Promise.reject(this._error);
+        if (this.#error) {
+          return Promise.reject(this.#error);
         } else {
           return Promise.resolve();
         }
@@ -317,13 +316,13 @@ export class TaskRunner extends Emittery {
     );
 
     this.emit('start');
-    this._running = true;
+    this.#running = true;
     try {
-      this._queue.start();
+      this.#queue.start();
 
       return endPromise;
     } catch (e) {
-      this._error = e;
+      this.#error = e;
       this.end();
 
       return Promise.reject(e);
@@ -331,13 +330,13 @@ export class TaskRunner extends Emittery {
   }
 
   get running() {
-    return this._running;
+    return this.#running;
   }
 
   get tasks() {
     const entries = [];
 
-    for (const entry of this._nameToTask.entries()) {
+    for (const entry of this.#nameToTask.entries()) {
       entries.push(entry);
     }
 
