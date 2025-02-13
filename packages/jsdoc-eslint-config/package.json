@@ -19,7 +19,7 @@
   },
   "peerDependencies": {
     "eslint": "^9.20.1",
-    "prettier": "^3.5.0"
+    "prettier": "^3.5.1"
   },
   "publishConfig": {
     "access": "public"
