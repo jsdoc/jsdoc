@@ -14,6 +14,7 @@
 
 name: build
 on: [push, pull_request]
+permissions: {}
 env:
   # Don't install Git hooks.
   HUSKY: 0
@@ -26,6 +27,8 @@ jobs:
         node: [20]
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
@@ -42,6 +45,8 @@ jobs:
         node: [20]
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
@@ -58,6 +63,8 @@ jobs:
         node: [18, 20]
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
