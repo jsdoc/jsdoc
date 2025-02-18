@@ -50,7 +50,15 @@ body {
   flex-flow: column;
   min-height: 100%;
   overflow-y: scroll;
+  color: colors.$zinc-900;
   font-family: fonts.$body-font, serif;
+}
+
+// TODO: Remove !important if we remove Bootstrap.
+.link-primary,
+a {
+  color: colors.$sky-700 !important;
+  text-decoration-color: colors.$sky-700 !important;
 }
 
 @each $level in (1, 2, 3, 4, 5, 6) {
@@ -167,7 +175,7 @@ dd > p {
 
 .signature-params,
 .signature-returns {
-  color: colors.$code-light-gray;
+  color: colors.$zinc-500;
 }
 
 .source-link {
@@ -183,8 +191,6 @@ dd > p {
 .summary-callout-heading,
 .symbol-index-section-heading {
   @extend .h4;
-  // TODO: Use color from standard palette.
-  color: bootstrap.$info;
   font-size: 1.125rem;
   margin-block-start: fonts.$h-margin-block-start-small;
   border-block-end: 0;
@@ -245,7 +251,7 @@ dd > p {
   padding: spacers.$xx-large;
 
   // If there are badges before an element, then make sure the navbar doesn't cover the badges when
-  // the user scrolls to that element.
+  // the browser scrolls to that element.
   .symbol-detail-badges + [id] {
     --navbar-scroll-margin: var(--navbar-scroll-margin-large);
   }
@@ -266,6 +272,12 @@ dd > p {
 }
 
 /* Tables */
+
+// TODO: Remove if we get rid of Bootstrap.
+.table > :not(caption) > * > *,
+.jsdoc-details-table > :not(caption) > * > * {
+  color: inherit;
+}
 
 .jsdoc-details-table {
   @extend .table;
@@ -297,6 +309,5 @@ article th {
   margin: 1em 0 1em 0;
   border: 1px solid colors.$zinc-300;
   border-inline-start-width: 1em;
-  // TODO: Use color from standard palette.
-  border-inline-start-color: bootstrap.$info;
+  border-inline-start-color: colors.$sky-600;
 }

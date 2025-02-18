@@ -16,16 +16,16 @@
 
 @use 'sass:color' as sass-color;
 
+@use 'colors';
 @use 'fonts';
 
 // Variables that override Bootstrap's default variables.
 
-// TODO: Use colors from palette.scss.
-$info: #5bc0de;
-$primary: #337ab7;
-$link-color: $primary;
-$link-color-hover: sass-color.mix(#fff, $link-color, 10%);
-$code-color: #d63384;
+// Bootstrap requires these to be RGB colors.
+$info: sass-color.to-space(colors.$sky-700, rgb);
+$primary: $info;
+$link-color: $info;
+$link-color-hover: $info;
 
 $code-font: fonts.$code-font;
 $font-family-monospace: fonts.$code-font, monospace;

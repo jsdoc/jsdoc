@@ -20,13 +20,10 @@
 @use 'variables/fonts';
 @use 'variables/spacers';
 
-// TODO: Use a standard color.
-$code-color: #d63384;
-
 @mixin source() {
   @extend pre;
   border-radius: 0.2rem;
-  background-color: sass-color.mix(colors.$white, colors.$zinc-100, 50%, $method: oklch);
+  background-color: colors.$zinc-50;
   border: 1px solid colors.$zinc-200;
   // TODO: increase bottom margin
   margin: 0 0 0.7rem;
@@ -47,8 +44,8 @@ code {
   font-family: fonts.$code-font, monospace;
   font-size: 100%;
   font-variant-ligatures: none;
-  // TODO: Use color from standard palette.
-  background-color: sass-color.mix(colors.$white, $code-color, 95%);
+  color: colors.$zinc-800;
+  background-color: colors.$zinc-100;
   border-radius: 0.25rem;
   padding: spacers.$xxx-small spacers.$xx-small;
 }

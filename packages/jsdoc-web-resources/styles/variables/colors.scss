@@ -289,6 +289,3 @@ $white: #fff;
 
 $zinc-225: sass-color.mix($zinc-200, $zinc-300, $weight: 75%, $method: oklch);
 $zinc-325: sass-color.mix($zinc-300, $zinc-400, $weight: 75%, $method: oklch);
-
-// TODO: Find a better home for this variable, and use a standard color.
-$code-light-gray: sass-color.mix($black, #8e908c, 10%);
