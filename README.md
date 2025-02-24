@@ -43,6 +43,36 @@ can use the `--destination` (`-d`) option to specify another directory.
 
 Run `jsdoc --help` for a complete list of command-line options.
 
+## Parsing TypeScript Declaration Files
+
+To parse TypeScript declaration files (`.d.ts`) and convert them to JSON, you can use the `parseDTSFile` function from the `@jsdoc/dts-parser` module. Here's an example:
+
+```javascript
+const { parseDTSFile } = require('@jsdoc/dts-parser');
+const path = require('path');
+
+const filePath = path.join(__dirname, 'example.d.ts');
+const parsedDTS = parseDTSFile(filePath);
+
+console.log(parsedDTS);
+```
+
+## Converting TypeScript Declaration Files to C# Sources
+
+To convert parsed TypeScript declaration files (`.d.ts`) to C# sources, you can use the `convertToCSharp` function from the `@jsdoc/dts-to-csharp` module. Here's an example:
+
+```javascript
+const { parseDTSFile } = require('@jsdoc/dts-parser');
+const { convertToCSharp } = require('@jsdoc/dts-to-csharp');
+const path = require('path');
+
+const filePath = path.join(__dirname, 'example.d.ts');
+const parsedDTS = parseDTSFile(filePath);
+const csharpSource = convertToCSharp(parsedDTS);
+
+console.log(csharpSource);
+```
+
 ## Templates and tools
 
 The JSDoc community has created templates and other tools to help you generate

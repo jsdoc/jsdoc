@@ -26,6 +26,8 @@ import stripJsonComments from 'strip-json-comments';
 
 import Env from './env.js';
 import { installPlugins } from './plugins.js';
+import { parseDTSFile } from '@jsdoc/dts-parser';
+import { convertToCSharp } from '@jsdoc/dts-to-csharp';
 
 const DEFAULT_TEMPLATE = '@jsdoc/template-legacy';
 
@@ -224,5 +226,18 @@ export default class Api {
 
       return null;
     }
+  }
+
+  /**
+   * Converts a TypeScript declaration file (.d.ts) to C# source code.
+   *
+   * @param {string} dtsFilePath - The path to the TypeScript declaration file.
+   * @returns {string} The generated C# source code.
+   */
+  async convertDtsToCSharp(dtsFilePath) {
+    const parsedDTS = parseDTSFile(dtsFilePath);
+    const csharpSource = convertToCSharp(parsedDTS);
+
+    return csharpSource;
   }
 }
