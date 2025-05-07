@@ -75,15 +75,12 @@ function isConstructor(node) {
   return node.type === Syntax.MethodDefinition && node.kind === 'constructor';
 }
 
-function isFunctionOrVariableDeclarator(node) {
-  const { type } = node;
-
+function isFunctionOrVariableDeclarator({ type }) {
   return (
-    (type === Syntax.FunctionDeclaration ||
-      type === Syntax.FunctionExpression ||
-      type === Syntax.ArrowFunctionExpression ||
-      type === Syntax.VariableDeclarator) &&
-    node.enclosingScope
+    type === Syntax.FunctionDeclaration ||
+    type === Syntax.FunctionExpression ||
+    type === Syntax.ArrowFunctionExpression ||
+    type === Syntax.VariableDeclarator
   );
 }
 
