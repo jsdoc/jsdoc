@@ -60,6 +60,33 @@ function getLastValue(set) {
   return value;
 }
 
+function isClassMethodFromArrowFunction(node) {
+  return (
+    node.type === Syntax.MethodDefinition &&
+    node.parent.parent.parent?.type === Syntax.ArrowFunctionExpression
+  );
+}
+
+function isClassProperty(node) {
+  return node.type === Syntax.ClassPrivateProperty || node.type === Syntax.ClassProperty;
+}
+
+function isConstructor(node) {
+  return node.type === Syntax.MethodDefinition && node.kind === 'constructor';
+}
+
+function isFunctionOrVariableDeclarator(node) {
+  const { type } = node;
+
+  return (
+    (type === Syntax.FunctionDeclaration ||
+      type === Syntax.FunctionExpression ||
+      type === Syntax.ArrowFunctionExpression ||
+      type === Syntax.VariableDeclarator) &&
+    node.enclosingScope
+  );
+}
+
 // TODO: docs
 /**
  * @alias module:jsdoc/src/parser.Parser
@@ -324,18 +351,14 @@ export class Parser extends EventEmitter {
   astnodeToMemberof(node) {
     let basename;
     let doclet;
-    let scope;
+    let memberof;
 
-    const result = {};
-    const type = node.type;
+    const result = {
+      basename: null,
+      memberof: null,
+    };
 
-    if (
-      (type === Syntax.FunctionDeclaration ||
-        type === Syntax.FunctionExpression ||
-        type === Syntax.ArrowFunctionExpression ||
-        type === Syntax.VariableDeclarator) &&
-      node.enclosingScope
-    ) {
+    if (isFunctionOrVariableDeclarator(node) && node.enclosingScope) {
       doclet = this._getDocletById(node.enclosingScope.nodeId);
 
       if (!doclet) {
@@ -343,7 +366,7 @@ export class Parser extends EventEmitter {
       } else {
         result.memberof = doclet.longname + SCOPE.PUNC.INNER;
       }
-    } else if (type === Syntax.ClassPrivateProperty || type === Syntax.ClassProperty) {
+    } else if (isClassProperty(node)) {
       doclet = this._getDocletById(node.enclosingScope.nodeId);
 
       if (!doclet) {
@@ -351,21 +374,17 @@ export class Parser extends EventEmitter {
       } else {
         result.memberof = doclet.longname + SCOPE.PUNC.INSTANCE;
       }
-    } else if (type === Syntax.MethodDefinition && node.kind === 'constructor') {
+    } else if (isConstructor(node)) {
       doclet = this._getDocletById(node.enclosingScope.nodeId);
 
-      // global classes aren't a member of anything
+      // Global classes aren't a member of anything.
       if (doclet.memberof) {
         result.memberof = doclet.memberof + SCOPE.PUNC.INNER;
       }
     }
-    // special case for methods in classes that are returned by arrow function expressions; for
-    // other method definitions, we get the memberof from the node name elsewhere. yes, this is
-    // confusing...
-    else if (
-      type === Syntax.MethodDefinition &&
-      node.parent.parent.parent?.type === Syntax.ArrowFunctionExpression
-    ) {
+    // Special case for methods in classes that are returned by arrow function expressions. For
+    // other method declarations, we get the memberof from the node name elsewhere.
+    else if (isClassMethodFromArrowFunction(node)) {
       doclet = this._getDocletById(node.enclosingScope.nodeId);
 
       if (doclet) {
@@ -373,35 +392,25 @@ export class Parser extends EventEmitter {
           doclet.longname + (node.static === true ? SCOPE.PUNC.STATIC : SCOPE.PUNC.INSTANCE);
       }
     } else {
-      // check local references for aliases
-      scope = node;
       basename = getBasename(astNode.nodeToValue(node));
-
-      // walk up the scope chain until we find the scope in which the node is defined
-      while (scope.enclosingScope) {
-        doclet = this._getDocletById(scope.enclosingScope.nodeId);
-        if (doclet && definedInScope(doclet, basename)) {
-          result.memberof = doclet.meta.vars[basename];
-          result.basename = basename;
-          break;
-        } else {
-          // move up
-          scope = scope.enclosingScope;
-        }
+      memberof = this._getMemberofFromScopes(node, basename);
+      if (memberof) {
+        result.basename = basename;
+        result.memberof = memberof;
       }
 
-      // do we know that it's a global?
+      // Do we know that it's a global?
       doclet = this._getDocletByLongname(LONGNAMES.GLOBAL);
       if (doclet && definedInScope(doclet, basename)) {
-        result.memberof = doclet.meta.vars[basename];
         result.basename = basename;
+        result.memberof = doclet.meta.vars[basename];
       } else {
         doclet = this._getDocletById(node.parent.nodeId);
 
-        // set the result if we found a doclet. (if we didn't, the AST node may describe a
+        // Set the result if we found a doclet. (If we didn't, then the AST node might represent a
         // global symbol.)
         if (doclet) {
-          result.memberof = doclet.longname || doclet.name;
+          result.memberof = doclet.longname ?? doclet.name;
         }
       }
     }
@@ -451,6 +460,26 @@ export class Parser extends EventEmitter {
     }
 
     return isClass(doclet) ? doclet : null;
+  }
+
+  _getMemberofFromScopes(node, basename) {
+    let doclet;
+    let memberof;
+    let scope = node;
+
+    // Walk up the scope chain until we find the scope in which the node is declared.
+    while (scope.enclosingScope) {
+      doclet = this._getDocletById(scope.enclosingScope.nodeId);
+      if (doclet && definedInScope(doclet, basename)) {
+        memberof = doclet.meta.vars[basename];
+        break;
+      } else {
+        // Move up.
+        scope = scope.enclosingScope;
+      }
+    }
+
+    return memberof;
   }
 
   // TODO: docs
