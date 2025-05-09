@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "peerDependencies": {
-    "eslint-config-prettier": "^10.1.3",
+    "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
     "prettier": "^3.5.3"
   },
