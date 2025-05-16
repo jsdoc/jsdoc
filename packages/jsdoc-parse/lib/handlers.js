@@ -115,12 +115,34 @@ function isModuleExports(module, doclet) {
   return module.longname === doclet.name;
 }
 
+/**
+ * Finds an AST node's closest ancestor with the specified type.
+ *
+ * @private
+ * @param {Object} node - The AST node.
+ * @param {(module:@jsdoc/ast.Syntax|string)} ancestorType - The type of ancestor node to find.
+ * @return {?Object} The closest ancestor with the specified type.
+ */
+function findAncestorWithType(node, ancestorType) {
+  let parent = node?.parent;
+
+  while (parent) {
+    if (parent.type === ancestorType) {
+      return parent;
+    }
+
+    parent = parent.parent;
+  }
+
+  return null;
+}
+
 function setModuleScopeMemberOf(parser, doclet) {
   const moduleInfo = getModule();
   let parentDoclet;
   let skipMemberof;
 
-  // Handle CommonJS module symbols that are _not_ assigned to `module.exports`.
+  // Handle module symbols, excluding CommonJS `module.exports`.
   if (moduleInfo && !isModuleExports(moduleInfo, doclet)) {
     if (!doclet.scope) {
       // is this a method definition? if so, we usually get the scope from the node directly
@@ -141,11 +163,11 @@ function setModuleScopeMemberOf(parser, doclet) {
           }
         }
       }
-      // is this something that the module exports? if so, it's a static member
-      else if (doclet.meta?.code?.node?.parent?.type === Syntax.ExportNamedDeclaration) {
+      // Is this something that the module exports? if so, it's a static member.
+      else if (findAncestorWithType(doclet.meta?.code?.node, Syntax.ExportNamedDeclaration)) {
         doclet.addTag('static');
       }
-      // otherwise, it must be an inner member
+      // Otherwise, it must be an inner member.
       else {
         doclet.addTag('inner');
       }
@@ -153,7 +175,7 @@ function setModuleScopeMemberOf(parser, doclet) {
 
     // if the doclet isn't a memberof anything yet, and it's not a global, it must be a memberof
     // the current module (unless we were told to skip adding memberof)
-    if (!doclet.memberof && doclet.scope !== SCOPE.NAMES.GLOBAL && !skipMemberof) {
+    if (!skipMemberof && !doclet.memberof && doclet.scope !== SCOPE.NAMES.GLOBAL) {
       doclet.addTag('memberof', moduleInfo.longname);
     }
   }
@@ -180,12 +202,12 @@ function addDoclet(parser, newDoclet) {
   }
 }
 
-function processAlias(parser, doclet, astNode) {
+function processAlias(parser, doclet, node) {
   let match;
   let memberofName;
 
   if (doclet.alias === '{@thisClass}') {
-    memberofName = parser.resolveThis(astNode);
+    memberofName = parser.resolveThis(node);
 
     // "class" refers to the owner of the prototype, not the prototype itself
     match = memberofName.match(PROTOTYPE_OWNER_REGEXP);
@@ -204,7 +226,7 @@ function isModuleObject(doclet) {
 }
 
 // TODO: separate code that resolves `this` from code that resolves the module object
-function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPunc) {
+function findSymbolMemberof(parser, doclet, node, nameStartsWith, trailingPunc) {
   const docletIsModuleObject = isModuleObject(doclet);
   let memberof = '';
   let nameAndPunc;
@@ -237,7 +259,7 @@ function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPun
     doclet.addTag('name', currentModule.longname);
     doclet.postProcess();
   } else {
-    memberof = parser.resolveThis(astNode);
+    memberof = parser.resolveThis(node);
 
     // like the following at the top level of a module:
     //   this.foo = 1;
@@ -255,7 +277,7 @@ function findSymbolMemberof(parser, doclet, astNode, nameStartsWith, trailingPun
   };
 }
 
-function addSymbolMemberof(parser, doclet, astNode) {
+function addSymbolMemberof(parser, doclet, node) {
   let basename;
   let memberof;
   let memberofInfo;
@@ -264,7 +286,7 @@ function addSymbolMemberof(parser, doclet, astNode) {
   let scopePunc;
   let unresolved;
 
-  if (!astNode) {
+  if (!node) {
     return;
   }
 
@@ -279,7 +301,7 @@ function addSymbolMemberof(parser, doclet, astNode) {
   unresolved = resolveTargetRegExp.exec(doclet.name);
 
   if (unresolved) {
-    memberofInfo = findSymbolMemberof(parser, doclet, astNode, unresolved[1], unresolved[2]);
+    memberofInfo = findSymbolMemberof(parser, doclet, node, unresolved[1], unresolved[2]);
     memberof = memberofInfo.memberof;
     scopePunc = memberofInfo.scopePunc;
 
@@ -287,7 +309,7 @@ function addSymbolMemberof(parser, doclet, astNode) {
       doclet.name = doclet.name ? memberof + scopePunc + doclet.name : memberof;
     }
   } else {
-    memberofInfo = parser.astnodeToMemberof(astNode);
+    memberofInfo = parser.astnodeToMemberof(node);
     basename = memberofInfo.basename;
     memberof = memberofInfo.memberof;
   }
