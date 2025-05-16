@@ -38,7 +38,7 @@
     "fast-glob": "^3.3.3",
     "lodash": "^4.17.21",
     "strip-bom": "^5.0.0",
-    "strip-json-comments": "^5.0.1"
+    "strip-json-comments": "^5.0.2"
   },
   "engines": {
     "node": ">=v18.12.0"
