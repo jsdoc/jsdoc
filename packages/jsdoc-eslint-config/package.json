@@ -15,7 +15,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "globals": "^16.1.0"
+    "globals": "^16.2.0"
   },
   "peerDependencies": {
     "eslint": "^9.27.0",
