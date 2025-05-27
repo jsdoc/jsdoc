@@ -31,7 +31,7 @@
     }
   },
   "dependencies": {
-    "@babel/parser": "^7.27.2",
+    "@babel/parser": "^7.27.3",
     "@jsdoc/name": "^0.1.1",
     "@jsdoc/util": "^0.3.4",
     "ast-module-types": "^6.0.1",
