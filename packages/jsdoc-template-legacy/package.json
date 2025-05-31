@@ -28,7 +28,7 @@
     "markdown-it-anchor": "^9.2.0"
   },
   "engines": {
-    "node": ">=v18.12.0"
+    "node": "^20.19.0 || ^22.12.0 || >=23.0.0"
   },
   "repository": {
     "type": "git",

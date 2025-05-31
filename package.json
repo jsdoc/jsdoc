@@ -34,7 +34,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=v18.12.0"
+    "node": "^20.19.0 || ^22.12.0 || >=23.0.0"
   },
   "scripts": {
     "coverage": "node_modules/.bin/hereby coverage",

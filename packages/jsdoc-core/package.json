@@ -41,7 +41,7 @@
     "strip-json-comments": "^5.0.2"
   },
   "engines": {
-    "node": ">=v18.12.0"
+    "node": "^20.19.0 || ^22.12.0 || >=23.0.0"
   },
   "gitHead": "a595f7f2a525f32da9a0498a027667af3d938158"
 }
