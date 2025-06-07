@@ -23,7 +23,7 @@
     "hereby": "^1.11.0",
     "husky": "^9.1.7",
     "installed-check": "^9.3.0",
-    "jasmine": "^5.7.1",
+    "jasmine": "^5.8.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
     "klaw-sync": "^7.0.0",
