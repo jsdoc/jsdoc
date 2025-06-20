@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "dependency-graph": "^1.0.0",
-    "emittery": "^1.1.0",
+    "emittery": "^1.2.0",
     "ow": "^2.0.0",
     "p-queue": "^8.1.0"
   },
