@@ -410,8 +410,9 @@ function copyPropsWithIncludelist(primary, secondary, target, include) {
 }
 
 /**
- * Combine two doclets into a new doclet.
+ * Combines two doclets into a new doclet.
  *
+ * @alias module:@jsdoc/doclet.combineDoclets
  * @param {module:@jsdoc/doclet.Doclet} primary - The doclet whose properties will be used.
  * @param {module:@jsdoc/doclet.Doclet} secondary - The doclet to use as a fallback for properties
  * that the primary doclet does not have.
@@ -433,7 +434,7 @@ export function combineDoclets(primary, secondary) {
 }
 
 /**
- * Represents a single JSDoc comment.
+ * Information about a single JSDoc comment, or a single symbol in a source file.
  *
  * @alias module:@jsdoc/doclet.Doclet
  */
@@ -441,7 +442,7 @@ Doclet = class {
   #dictionary;
 
   /**
-   * Create a doclet.
+   * Creates a doclet.
    *
    * @param {string} docletSrc - The raw source code of the jsdoc comment.
    * @param {object} meta - Properties describing the code related to this comment.
@@ -468,7 +469,11 @@ Doclet = class {
     });
     WATCHABLE_PROPS.forEach((prop) => this.#defineWatchableProp(prop));
 
-    /** The original text of the comment from the source code. */
+    /**
+     * The text of the comment from the source code.
+     *
+     * @type {string}
+     */
     this.comment = docletSrc;
     meta ??= {};
     this.setMeta(meta);
@@ -492,10 +497,22 @@ Doclet = class {
     }
   }
 
+  /**
+   * Creates a copy of an existing doclet.
+   *
+   * @param {module:@jsdoc/doclet.Doclet} doclet - The doclet to copy.
+   * @returns {module:@jsdoc/doclet.Doclet} A copy of the doclet.
+   */
   static clone(doclet) {
     return combineDoclets(doclet, Doclet.emptyDoclet(doclet.env));
   }
 
+  /**
+   * Creates an empty doclet.
+   *
+   * @param {module:@jsdoc/core.Env} env - The JSDoc environment to use.
+   * @returns {module:@jsdoc/doclet.Doclet} An empty doclet.
+   */
   static emptyDoclet(env) {
     return new Doclet('', {}, env);
   }
@@ -534,7 +551,7 @@ Doclet = class {
   }
 
   /**
-   * Add a tag to the doclet.
+   * Adds a tag to the doclet.
    *
    * @param {string} title - The title of the tag being added.
    * @param {string} [text] - The text of the tag being added.
@@ -554,7 +571,7 @@ Doclet = class {
   }
 
   /**
-   * Check whether the doclet represents a globally available symbol.
+   * Checks whether the doclet represents a globally available symbol.
    *
    * @returns {boolean} `true` if the doclet represents a global; `false` otherwise.
    */
@@ -563,7 +580,7 @@ Doclet = class {
   }
 
   /**
-   * Check whether the doclet should be used to generate output.
+   * Checks whether the doclet should be used to generate output.
    *
    * @returns {boolean} `true` if the doclet should be used to generate output; `false` otherwise.
    */
@@ -647,20 +664,21 @@ Doclet = class {
   }
 
   /**
-   * Set the doclet's `longname` property.
+   * Sets the doclet's `longname` property.
    *
    * @param {string} longname - The longname for the doclet.
    */
   setLongname(longname) {
-    /**
-     * The fully resolved symbol name.
-     * @type {string}
-     */
     longname = removeGlobal(longname);
     if (this.#dictionary.isNamespace(this.kind)) {
       longname = applyNamespace(longname, this.kind);
     }
 
+    /**
+     * The fully resolved symbol name.
+     *
+     * @type {string}
+     */
     this.longname = longname;
   }
 
@@ -672,6 +690,7 @@ Doclet = class {
   setMemberof(sid) {
     /**
      * The longname of the symbol that contains this one, if any.
+     *
      * @type {string}
      */
     this.memberof = removeGlobal(sid)
@@ -680,7 +699,7 @@ Doclet = class {
   }
 
   /**
-   * Set the doclet's `scope` property. Must correspond to a scope name that is defined in
+   * Sets the doclet's `scope` property. Must correspond to a scope name that is defined in
    * {@link module:@jsdoc/name.SCOPE.NAMES}.
    *
    * @param {string} scope - The scope for the doclet relative to the symbol's parent.
@@ -707,10 +726,10 @@ Doclet = class {
   }
 
   /**
-   * Add a symbol to this doclet's `borrowed` array.
+   * Adds a symbol to the doclet's `borrowed` array.
    *
-   * @param {string} source - The longname of the symbol that is the source.
-   * @param {string} target - The name the symbol is being assigned to.
+   * @param {string} source - The longname of the symbol that is borrowed.
+   * @param {string} target - The name that the borrowed symbol is assigned to.
    */
   borrow(source, target) {
     const about = { from: source };
@@ -728,6 +747,11 @@ Doclet = class {
     this.borrowed.push(about);
   }
 
+  /**
+   * Adds a symbol to the doclet's `mixes` array.
+   *
+   * @param {string} source - The longname of the symbol that is mixed in.
+   */
   mix(source) {
     /**
      * A list of symbols that are mixed into this one, if any.
@@ -739,7 +763,7 @@ Doclet = class {
   }
 
   /**
-   * Add a symbol to the doclet's `augments` array.
+   * Adds a symbol to the doclet's `augments` array.
    *
    * @param {string} base - The longname of the base symbol.
    */
@@ -753,10 +777,12 @@ Doclet = class {
     this.augments.push(base);
   }
 
+  // TODO: Add typedef for `meta`.
   /**
-   * Set the `meta` property of this doclet.
+   * Sets the `meta` property of the doclet, which contains metadata about the source code that the
+   * doclet corresponds to.
    *
-   * @param {object} meta
+   * @param {object} meta - The data to add to the doclet.
    */
   setMeta(meta) {
     let pathname;

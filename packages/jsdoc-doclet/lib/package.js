@@ -16,12 +16,6 @@
 
 import stripBom from 'strip-bom';
 
-/**
- * Provides access to information about a JavaScript package.
- *
- * @see https://www.npmjs.org/doc/files/package.json.html
- */
-
 // Collect all of the license information from a `package.json` file.
 function getLicenses(packageInfo) {
   const licenses = packageInfo.licenses ? packageInfo.licenses.slice() : [];
@@ -75,9 +69,13 @@ function getLicenses(packageInfo) {
  * **Note**: JSDoc does not validate or normalize the contents of `package.json` files. If your
  * `package.json` file does not follow the npm specification, some properties of the `Package`
  * object may not use the format documented here.
+ *
+ * @alias module:@jsdoc/doclet.Package
  */
 export class Package {
   /**
+   * Creates an object that represents a package.
+   *
    * @param {string} json - The contents of the `package.json` file.
    * @param {Object} env - The JSDoc environment.
    */
@@ -142,7 +140,7 @@ export class Package {
       /**
        * The contributors to this package.
        *
-       * @type {Array.<(module:@jsdoc/doclet.Package~PersonInfo|string)>}
+       * @type {Array<(module:@jsdoc/doclet.Package~PersonInfo|string)>}
        */
       this.contributors = packageInfo.contributors;
     }
@@ -195,7 +193,7 @@ export class Package {
      * After JSDoc parses your input files, it sets this property to a list of paths to your input
      * files.
      *
-     * @type {Array.<string>}
+     * @type {Array<string>}
      */
     this.files = [];
 
@@ -212,7 +210,7 @@ export class Package {
       /**
        * Keywords to help users find the package.
        *
-       * @type {Array.<string>}
+       * @type {Array<string>}
        */
       this.keywords = packageInfo.keywords;
     }
@@ -222,7 +220,7 @@ export class Package {
        * The licenses used by this package. Combines information from the `package.json` file's
        * `license` property and the deprecated `licenses` property.
        *
-       * @type {Array.<module:@jsdoc/doclet.Package~LicenseInfo>}
+       * @type {Array<module:@jsdoc/doclet.Package~LicenseInfo>}
        */
       this.licenses = getLicenses(packageInfo);
     }

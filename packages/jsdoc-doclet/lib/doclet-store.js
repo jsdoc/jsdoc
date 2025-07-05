@@ -56,17 +56,25 @@ function removeFromSet(targetMap, key, value) {
 /**
  * Stores and classifies the doclets that JSDoc creates as it parses your source files.
  *
- * The doclet store categorizes doclets based on their properties, so that the JSDoc template can
+ * A doclet store categorizes doclets based on their properties, so that the JSDoc template can
  * efficiently retrieve the doclets that it needs. For example, when the template generates
  * documentation for a class, it can retrieve all of the doclets that represent members of that
  * class.
+ *
+ * To retrieve the doclets that you need, use the doclet store's instance properties. For example,
+ * {@link module:@jsdoc/doclet.DocletStore#docletsByLongname} maps longnames to the doclets with
+ * that longname.
  *
  * After you add a doclet to the store, the store automatically tracks changes to a doclet's
  * properties and recategorizes the doclet as needed. For example, if a doclet's `kind` property
  * changes from `class` to `interface`, then the doclet store automatically recategorizes the doclet
  * as an interface.
  *
- * @alias @jsdoc/doclet.DocletStore
+ * Doclets can be _visible_, meaning that they should be used to generate output, or _hidden_,
+ * meaning that they're ignored when generating output. Except as noted, the doclet store exposes
+ * only visible doclets.
+ *
+ * @alias module:@jsdoc/doclet.DocletStore
  */
 export class DocletStore {
   #commonPathPrefix;
@@ -91,9 +99,9 @@ export class DocletStore {
    *
    * When you create a doclet store, you provide a JSDoc environment object. The doclet store
    * listens for new doclets that are created in that environment. When a new doclet is created, the
-   * doclet store tracks it automatically.
+   * doclet store adds it automatically and tracks updates to the doclet.
    *
-   * @param {@jsdoc/core.Env} env - The JSDoc environment to use.
+   * @param {module:@jsdoc/core.Env} env - The JSDoc environment to use.
    */
   constructor(env) {
     this.#commonPathPrefix = null;
@@ -101,28 +109,85 @@ export class DocletStore {
     this.#isListening = false;
     this.#sourcePaths = new Map();
 
-    // TODO: Add descriptions and types for public properties.
-    /** @type Map<string, Set<Doclet>> */
+    /**
+     * Map of all doclet longnames to a `Set` of all doclets with that longname. Includes both
+     * visible and hidden doclets.
+     *
+     * @type Map<string, Set<module:@jsdoc/doclet.Doclet>>
+     */
     this.allDocletsByLongname = new Map();
-    /** Doclets that are used to generate output. */
+    /**
+     * All visible doclets.
+     *
+     * @type Set<module:@jsdoc/doclet.Doclet>
+     */
     this.doclets = new Set();
-    /** @type Map<string, Set<Doclet>> */
+    /**
+     * Map from a doclet kind to a `Set` of doclets with that kind.
+     *
+     * @type Map<string, Set<module:@jsdoc/doclet.Doclet>>
+     */
     this.docletsByKind = new Map();
-    /** @type Map<string, Set<Doclet>> */
+    /**
+     * Map from a doclet longname to a `Set` of doclets with that longname.
+     *
+     * @type Map<string, Set<module:@jsdoc/doclet.Doclet>>
+     */
     this.docletsByLongname = new Map();
-    /** @type Map<string, Set<Doclet>> */
+    /**
+     * Map from a doclet `memberof` value to a `Set` of doclets with that `memberof`.
+     *
+     * @type Map<string, Set<module:@jsdoc/doclet.Doclet>>
+     */
     this.docletsByMemberof = new Map();
-    /** @type Map<string, Set<Doclet>> */
+    /**
+     * Map from an AST node ID, generated during parsing, to a `Set` of doclets for that node ID.
+     *
+     * @type Map<string, Set<module:@jsdoc/doclet.Doclet>>
+     */
     this.docletsByNodeId = new Map();
+    /**
+     * Doclets that have an `augments` property.
+     *
+     * @type Set<module:@jsdoc/doclet.Doclet>
+     */
     this.docletsWithAugments = new Set();
+    /**
+     * Doclets that have a `borrowed` property.
+     *
+     * @type Set<module:@jsdoc/doclet.Doclet>
+     */
     this.docletsWithBorrowed = new Set();
+    /**
+     * Doclets that have an `implements` property.
+     *
+     * @type Set<module:@jsdoc/doclet.Doclet>
+     */
     this.docletsWithImplements = new Set();
+    /**
+     * Doclets that have a `mixes` property.
+     *
+     * @type Set<module:@jsdoc/doclet.Doclet>
+     */
     this.docletsWithMixes = new Set();
+    /**
+     * Doclets that belong to the global scope.
+     *
+     * @type Set<module:@jsdoc/doclet.Doclet>
+     */
     this.globals = new Set();
-    /** @type Map<string, Set<Doclet>> */
+    /**
+     * Map from an event's longname to a `Set` of doclets that listen to that event.
+     *
+     * @type Map<string, Set<module:@jsdoc/doclet.Doclet>>
+     */
     this.listenersByListensTo = new Map();
 
-    /** Doclets that aren't used to generate output. */
+    /**
+     * Doclets that are hidden and shouldn't be used to generate output.
+     *
+     * @type Set<module:@jsdoc/doclet.Doclet>
+     */
     this.unusedDoclets = new Set();
 
     this.#docletChangedHandler = (e) => this.#handleDocletChanged(e, {});
@@ -318,7 +383,15 @@ export class DocletStore {
     // `undocumented` only affects visibility, which is handled above, so we ignore it here.
   }
 
-  // Adds a doclet to the store directly, rather than by listening to events.
+  /**
+   * Adds a doclet to the store directly, rather than by listening to events from the JSDoc
+   * environment.
+   *
+   * Use this method if you need to track a doclet that's generated outside of JSDoc's parsing
+   * process.
+   *
+   * @param {module:@jsdoc/doclet.Doclet} doclet - The doclet to add.
+   */
   add(doclet) {
     let doclets;
     let nodeId;
@@ -337,10 +410,25 @@ export class DocletStore {
     }
   }
 
+  /**
+   * All known doclets, including both visible and hidden doclets.
+   *
+   * @type Set<module:@jsdoc/doclet.Doclet>
+   */
   get allDoclets() {
     return new Set([...this.doclets, ...this.unusedDoclets]);
   }
 
+  /**
+   * The longest filepath prefix that's shared by the source files that were parsed.
+   *
+   * +  If there's only one source file, then the prefix is the source file's directory name.
+   * +  If the source files don't have a common prefix, then the prefix is an empty string.
+   *
+   * If a doclet is hidden, then its source filepath is ignored when determining the prefix.
+   *
+   * @type {string}
+   */
   get commonPathPrefix() {
     let commonPrefix;
     let sourcePaths;
@@ -365,14 +453,30 @@ export class DocletStore {
     return commonPrefix ?? '';
   }
 
+  /**
+   * The longnames of all visible doclets.
+   *
+   * @type Array<string>
+   */
   get longnames() {
     return Array.from(this.docletsByLongname.keys());
   }
 
+  /**
+   * The source paths associated with all visible doclets.
+   *
+   * @type Array<string>
+   */
   get sourcePaths() {
     return Array.from(this.#sourcePaths.values());
   }
 
+  /**
+   * Start listening to events from the JSDoc environment.
+   *
+   * In general, you don't need to call this method. A `DocletStore` always listens for events by
+   * default.
+   */
   startListening() {
     if (!this.#isListening) {
       this.#emitter.on('docletChanged', this.#docletChangedHandler);
@@ -382,6 +486,12 @@ export class DocletStore {
     }
   }
 
+  /**
+   * Stop listening to events from the JSDoc environment.
+   *
+   * Call this method if you're done using a `DocletStore`, and you don't want it to listen to
+   * future events.
+   */
   stopListening() {
     if (this.#isListening) {
       this.#emitter.removeListener('docletChanged', this.#docletChangedHandler);

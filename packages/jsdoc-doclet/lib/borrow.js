@@ -55,10 +55,15 @@ function cloneBorrowedDoclets({ borrowed, longname }, docletStore) {
 }
 
 /**
-  Take a copy of the docs for borrowed symbols and attach them to the
-  docs for the borrowing symbol. This process changes the symbols involved,
-  moving docs from the "borrowed" array and into the general docs, then
-  deleting the "borrowed" array.
+ * Creates doclets for borrowed symbols, and adds them to the doclet store.
+ *
+ * The `name`, `memberof`, and `longname` properties for the new doclets are rewritten to show that
+ * they belong to the borrowing symbol.
+ *
+ * This method also removes the `borrowed` property from each borrowed doclet.
+ *
+ * @alias module:@jsdoc/doclet.resolveBorrows
+ * @param {!module:@jsdoc/doclet.DocletStore} docletStore - The doclet store to update.
  */
 export function resolveBorrows(docletStore) {
   for (const doclet of docletStore.docletsWithBorrowed) {
