@@ -17,7 +17,7 @@
 import doclet from '../../index.js';
 import * as augment from '../../lib/augment.js';
 import { resolveBorrows } from '../../lib/borrow.js';
-import { combineDoclets, Doclet } from '../../lib/doclet.js';
+import { Doclet } from '../../lib/doclet.js';
 import { DocletStore } from '../../lib/doclet-store.js';
 import { Package } from '../../lib/package.js';
 import * as schema from '../../lib/schema.js';
@@ -30,12 +30,6 @@ describe('@jsdoc/doclet', () => {
   describe('augment', () => {
     it('is lib/augment', () => {
       expect(doclet.augment).toEqual(augment);
-    });
-  });
-
-  describe('combineDoclets', () => {
-    it('is lib/doclet.combineDoclets', () => {
-      expect(doclet.combineDoclets).toEqual(combineDoclets);
     });
   });
 

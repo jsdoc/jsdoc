@@ -410,30 +410,6 @@ function copyPropsWithIncludelist(primary, secondary, target, include) {
 }
 
 /**
- * Combines two doclets into a new doclet.
- *
- * @alias module:@jsdoc/doclet.combineDoclets
- * @param {module:@jsdoc/doclet.Doclet} primary - The doclet whose properties will be used.
- * @param {module:@jsdoc/doclet.Doclet} secondary - The doclet to use as a fallback for properties
- * that the primary doclet does not have.
- * @returns {module:@jsdoc/doclet.Doclet} A new doclet that combines the primary and secondary
- * doclets.
- */
-export function combineDoclets(primary, secondary) {
-  const excludelist = ['env', 'params', 'properties', 'undocumented'];
-  const includelist = ['params', 'properties'];
-  const target = Doclet.emptyDoclet(secondary.env);
-
-  // First, copy most properties to the target doclet.
-  copyPropsWithExcludelist(primary, secondary, target, excludelist);
-  // Then copy a few specific properties to the target doclet, as long as they're not falsy and
-  // have a length greater than 0.
-  copyPropsWithIncludelist(primary, secondary, target, includelist);
-
-  return target;
-}
-
-/**
  * Information about a single JSDoc comment, or a single symbol in a source file.
  *
  * @alias module:@jsdoc/doclet.Doclet
@@ -504,7 +480,30 @@ Doclet = class {
    * @returns {module:@jsdoc/doclet.Doclet} A copy of the doclet.
    */
   static clone(doclet) {
-    return combineDoclets(doclet, Doclet.emptyDoclet(doclet.env));
+    return Doclet.combineDoclets(doclet, Doclet.emptyDoclet(doclet.env));
+  }
+
+  /**
+   * Combines two doclets into a new doclet.
+   *
+   * @param {module:@jsdoc/doclet.Doclet} primary - The doclet whose properties will be used.
+   * @param {module:@jsdoc/doclet.Doclet} secondary - The doclet to use as a fallback for properties
+   * that the primary doclet does not have.
+   * @returns {module:@jsdoc/doclet.Doclet} A new doclet that combines the primary and secondary
+   * doclets.
+   */
+  static combineDoclets(primary, secondary) {
+    const excludelist = ['env', 'params', 'properties', 'undocumented'];
+    const includelist = ['params', 'properties'];
+    const target = Doclet.emptyDoclet(secondary.env);
+
+    // First, copy most properties to the target doclet.
+    copyPropsWithExcludelist(primary, secondary, target, excludelist);
+    // Then copy a few specific properties to the target doclet, as long as they're not falsy and
+    // have a length greater than 0.
+    copyPropsWithIncludelist(primary, secondary, target, includelist);
+
+    return target;
   }
 
   /**

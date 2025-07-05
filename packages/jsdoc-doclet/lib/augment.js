@@ -23,7 +23,7 @@
 
 import { fromParts, SCOPE, toParts } from '@jsdoc/name';
 
-import { combineDoclets, Doclet } from './doclet.js';
+import { Doclet } from './doclet.js';
 
 const DEPENDENCY_KINDS = ['class', 'external', 'interface', 'mixin'];
 
@@ -225,7 +225,7 @@ function getInheritedAdditions(depDoclets, docletStore) {
             childDoclet = {};
           }
 
-          member = combineDoclets(childDoclet, parentDoclet);
+          member = Doclet.combineDoclets(childDoclet, parentDoclet);
 
           if (!member.inherited) {
             member.inherits = member.longname;
@@ -411,7 +411,7 @@ function getImplementedAdditions(implDoclets, docletStore) {
             childDoclet = {};
           }
 
-          implementationDoclet = combineDoclets(childDoclet, parentDoclet);
+          implementationDoclet = Doclet.combineDoclets(childDoclet, parentDoclet);
 
           reparentDoclet(doclet, implementationDoclet);
           updateImplements(implementationDoclet, parentDoclet.longname);

@@ -20,7 +20,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { Syntax, Walker } from '@jsdoc/ast';
-import { combineDoclets, Doclet } from '@jsdoc/doclet';
+import { Doclet } from '@jsdoc/doclet';
 
 import { attachTo } from '../../../lib/handlers.js';
 import * as jsdocParser from '../../../lib/parser.js';
@@ -156,7 +156,7 @@ describe('@jsdoc/parse/lib/parser', () => {
         const sourceCode = 'javascript:/** @class */function Foo() {}';
 
         function handler(e) {
-          e.doclet = combineDoclets(e.doclet, new Doclet('', {}, jsdoc.env));
+          e.doclet = Doclet.combineDoclets(e.doclet, new Doclet('', {}, jsdoc.env));
           e.doclet.foo = 'bar';
         }
 

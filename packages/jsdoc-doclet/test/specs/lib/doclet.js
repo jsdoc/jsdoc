@@ -29,84 +29,12 @@ describe('@jsdoc/doclet/lib/doclet', () => {
     expect(doclet).toBeObject();
   });
 
-  it('has a combineDoclets method', () => {
-    expect(doclet.combineDoclets).toBeFunction();
-  });
-
   it('has a Doclet class', () => {
     expect(doclet.Doclet).toBeFunction();
   });
 
   it('has a WATCHABLE_PROPS array', () => {
     expect(doclet.WATCHABLE_PROPS).toBeArrayOfStrings();
-  });
-
-  describe('combineDoclets', () => {
-    it('overrides most properties of the secondary doclet', () => {
-      let descriptors;
-      const primaryDoclet = new Doclet('/** New and improved!\n@version 2.0.0 */', null, jsdoc.env);
-      const secondaryDoclet = new Doclet('/** Hello!\n@version 1.0.0 */', null, jsdoc.env);
-      const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
-
-      descriptors = Object.getOwnPropertyDescriptors(newDoclet);
-      Object.keys(descriptors).forEach((property) => {
-        if (!descriptors[property].enumerable) {
-          return;
-        }
-
-        expect(newDoclet[property]).toEqual(primaryDoclet[property]);
-      });
-    });
-
-    it('adds properties from the secondary doclet that are missing', () => {
-      const primaryDoclet = new Doclet('/** Hello!\n@version 2.0.0 */', null, jsdoc.env);
-      const secondaryDoclet = new Doclet('/** Hello! */', null, jsdoc.env);
-      const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
-
-      expect(newDoclet.version).toBe('2.0.0');
-    });
-
-    describe('params and properties', () => {
-      const properties = ['params', 'properties'];
-
-      it('uses params and properties from the secondary doclet if the primary lacks them', () => {
-        const primaryDoclet = new Doclet('/** Hello! */', null, jsdoc.env);
-        const secondaryComment = [
-          '/**',
-          ' * @param {string} foo - The foo.',
-          ' * @property {number} bar - The bar.',
-          ' */',
-        ].join('\n');
-        const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.env);
-        const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
-
-        properties.forEach((property) => {
-          expect(newDoclet[property]).toEqual(secondaryDoclet[property]);
-        });
-      });
-
-      it('uses params and properties from the primary doclet, if present', () => {
-        const primaryComment = [
-          '/**',
-          ' * @param {number} baz - The baz.',
-          ' * @property {string} qux - The qux.',
-          ' */',
-        ].join('\n');
-        const primaryDoclet = new Doclet(primaryComment, null, jsdoc.env);
-        const secondaryComment = [
-          '/**',
-          ' * @param {string} foo - The foo.',
-          ' * @property {number} bar - The bar.',
-          ' */',
-        ].join('\n');
-        const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.env);
-        const newDoclet = doclet.combineDoclets(primaryDoclet, secondaryDoclet);
-
-        properties.forEach((property) => {
-          expect(newDoclet[property]).toEqual(primaryDoclet[property]);
-        });
-      });
-    });
   });
 
   describe('Doclet', () => {
@@ -302,6 +230,86 @@ describe('@jsdoc/doclet/lib/doclet', () => {
     });
 
     xdescribe('borrow', () => {
+      xit('TODO: write tests');
+    });
+
+    xdescribe('clone', () => {
+      xit('TODO: write tests');
+    });
+
+    describe('combineDoclets', () => {
+      it('overrides most properties of the secondary doclet', () => {
+        let descriptors;
+        const primaryDoclet = new Doclet(
+          '/** New and improved!\n@version 2.0.0 */',
+          null,
+          jsdoc.env
+        );
+        const secondaryDoclet = new Doclet('/** Hello!\n@version 1.0.0 */', null, jsdoc.env);
+        const newDoclet = Doclet.combineDoclets(primaryDoclet, secondaryDoclet);
+
+        descriptors = Object.getOwnPropertyDescriptors(newDoclet);
+        Object.keys(descriptors).forEach((property) => {
+          if (!descriptors[property].enumerable) {
+            return;
+          }
+
+          expect(newDoclet[property]).toEqual(primaryDoclet[property]);
+        });
+      });
+
+      it('adds properties from the secondary doclet that are missing', () => {
+        const primaryDoclet = new Doclet('/** Hello!\n@version 2.0.0 */', null, jsdoc.env);
+        const secondaryDoclet = new Doclet('/** Hello! */', null, jsdoc.env);
+        const newDoclet = Doclet.combineDoclets(primaryDoclet, secondaryDoclet);
+
+        expect(newDoclet.version).toBe('2.0.0');
+      });
+
+      describe('params and properties', () => {
+        const properties = ['params', 'properties'];
+
+        it('uses params and properties from the secondary doclet if the primary lacks them', () => {
+          const primaryDoclet = new Doclet('/** Hello! */', null, jsdoc.env);
+          const secondaryComment = [
+            '/**',
+            ' * @param {string} foo - The foo.',
+            ' * @property {number} bar - The bar.',
+            ' */',
+          ].join('\n');
+          const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.env);
+          const newDoclet = Doclet.combineDoclets(primaryDoclet, secondaryDoclet);
+
+          properties.forEach((property) => {
+            expect(newDoclet[property]).toEqual(secondaryDoclet[property]);
+          });
+        });
+
+        it('uses params and properties from the primary doclet, if present', () => {
+          const primaryComment = [
+            '/**',
+            ' * @param {number} baz - The baz.',
+            ' * @property {string} qux - The qux.',
+            ' */',
+          ].join('\n');
+          const primaryDoclet = new Doclet(primaryComment, null, jsdoc.env);
+          const secondaryComment = [
+            '/**',
+            ' * @param {string} foo - The foo.',
+            ' * @property {number} bar - The bar.',
+            ' */',
+          ].join('\n');
+          const secondaryDoclet = new Doclet(secondaryComment, null, jsdoc.env);
+          const newDoclet = Doclet.combineDoclets(primaryDoclet, secondaryDoclet);
+
+          properties.forEach((property) => {
+            expect(newDoclet[property]).toEqual(primaryDoclet[property]);
+          });
+        });
+      });
+    });
+
+    xdescribe('emptyDoclet', () => {
       xit('TODO: write tests');
     });
 

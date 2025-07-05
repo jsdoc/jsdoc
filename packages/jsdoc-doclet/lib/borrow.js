@@ -20,7 +20,7 @@
 
 import { SCOPE } from '@jsdoc/name';
 
-import { combineDoclets, Doclet } from './doclet.js';
+import { Doclet } from './doclet.js';
 
 function cloneBorrowedDoclets({ borrowed, longname }, docletStore) {
   borrowed?.forEach(({ from, as }) => {
@@ -32,7 +32,7 @@ function cloneBorrowedDoclets({ borrowed, longname }, docletStore) {
     if (borrowedDoclets) {
       borrowedAs = borrowedAs.replace(/^prototype\./, SCOPE.PUNC.INSTANCE);
       borrowedDoclets.forEach((borrowedDoclet) => {
-        const clone = combineDoclets(borrowedDoclet, Doclet.emptyDoclet(borrowedDoclet.env));
+        const clone = Doclet.clone(borrowedDoclet);
 
         // TODO: this will fail on longnames like '"Foo#bar".baz'
         parts = borrowedAs.split(SCOPE.PUNC.INSTANCE);

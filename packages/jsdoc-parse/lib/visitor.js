@@ -17,7 +17,7 @@
 import path from 'node:path';
 
 import { astNode, Syntax } from '@jsdoc/ast';
-import { combineDoclets } from '@jsdoc/doclet';
+import { Doclet } from '@jsdoc/doclet';
 import * as name from '@jsdoc/name';
 
 const { getBasename, LONGNAMES } = name;
@@ -333,7 +333,7 @@ function makeConstructorFinisher(parser) {
 
     // We prefer the parent doclet because it has the correct kind, longname, and memberof.
     // The child doclet might or might not have the correct kind, longname, and memberof.
-    combined = combineDoclets(parentDoclet, eventDoclet, parser.env);
+    combined = Doclet.combineDoclets(parentDoclet, eventDoclet, parser.env);
     parser.addResult(combined);
 
     parentDoclet.undocumented = eventDoclet.undocumented = true;
