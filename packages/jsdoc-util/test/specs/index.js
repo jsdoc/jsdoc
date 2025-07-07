@@ -15,8 +15,8 @@
 */
 
 import util from '../../index.js';
-import bus from '../../lib/bus.js';
 import cast from '../../lib/cast.js';
+import log from '../../lib/log.js';
 
 describe('@jsdoc/util', () => {
   it('is an object', () => {
@@ -29,9 +29,9 @@ describe('@jsdoc/util', () => {
     });
   });
 
-  describe('EventBus', () => {
-    it('is lib/bus', () => {
-      expect(util.EventBus).toEqual(bus);
+  describe('getLogFunctions', () => {
+    it('is lib/log', () => {
+      expect(util.getLogFunctions).toEqual(log);
     });
   });
 });

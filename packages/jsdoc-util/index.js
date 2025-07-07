@@ -19,9 +19,8 @@
  *
  * @module @jsdoc/util
  */
-import EventBus from './lib/bus.js';
 import cast from './lib/cast.js';
 import getLogFunctions from './lib/log.js';
 
-export { cast, EventBus, getLogFunctions };
-export default { cast, EventBus, getLogFunctions };
+export { cast, getLogFunctions };
+export default { cast, getLogFunctions };
