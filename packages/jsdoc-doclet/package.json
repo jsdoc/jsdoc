@@ -36,7 +36,7 @@
     "@jsdoc/tag": "^0.2.13",
     "@jsdoc/util": "^0.3.4",
     "lodash": "^4.17.21",
-    "on-change": "^5.0.1",
+    "on-change": "^6.0.0",
     "strip-bom": "^5.0.0"
   },
   "engines": {
