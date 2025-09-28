@@ -43,22 +43,21 @@ export default class Env {
     /**
      * The event emitter shared across JSDoc.
      *
-     * @type {Object}
+     * @type {node:events}
      */
     this.emitter = new EventEmitter();
 
     /**
      * Logging functions shared across JSDoc.
      *
-     * @type {Object<string, function>}
+     * @type {module:@jsdoc/util~logFunctions}
      */
     this.log = getLogFunctions(this.emitter);
 
     /**
-     * The command-line arguments, parsed into a key/value hash.
+     * The command-line arguments, expressed as key-value pairs.
      *
-     * @type {Object}
-     * @example if (global.env.opts.help) { console.log('Helpful message.'); }
+     * @type {Object<string, *>}
      */
     this.opts = {};
 
@@ -67,7 +66,7 @@ export default class Env {
      *
      * @type {Object}
      * @property {Date} start - The time at which JSDoc started running.
-     * @property {Date} finish - The time at which JSDoc finished running.
+     * @property {?Date} finish - The time at which JSDoc finished running.
      */
     this.run = {
       start: new Date(),
@@ -101,10 +100,20 @@ export default class Env {
     };
   }
 
+  /**
+   * The data parsed from JSDoc's configuration file.
+   *
+   * @type Object<string, *>
+   */
   get config() {
     return this.conf;
   }
 
+  /**
+   * The command-line arguments, expressed as key-value pairs.
+   *
+   * @type {Object<string, *>}
+   */
   get options() {
     return this.opts;
   }
