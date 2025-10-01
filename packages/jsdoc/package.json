@@ -15,15 +15,7 @@
   },
   "dependencies": {
     "@jsdoc/cli": "^0.3.12",
-    "@jsdoc/core": "^0.5.10",
-    "@jsdoc/doclet": "^0.2.13",
-    "@jsdoc/parse": "^0.3.13",
-    "@jsdoc/tag": "^0.2.13",
-    "@jsdoc/template-legacy": "^0.1.13",
-    "@jsdoc/util": "^0.3.4",
-    "lodash": "^4.17.21",
-    "strip-bom": "^5.0.0",
-    "strip-json-comments": "^5.0.3"
+    "strip-bom": "^5.0.0"
   },
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || >=23.0.0"

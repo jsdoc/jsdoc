@@ -16,7 +16,6 @@
     "@jsdoc/ast": "^0.2.13",
     "@jsdoc/doclet": "^0.2.13",
     "@jsdoc/name": "^0.1.1",
-    "@jsdoc/util": "^0.3.4",
     "escape-string-regexp": "^5.0.0"
   },
   "engines": {

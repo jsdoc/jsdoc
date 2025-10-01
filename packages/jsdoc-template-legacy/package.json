@@ -8,7 +8,7 @@
   "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
   "homepage": "https://github.com/jsdoc/jsdoc",
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "publish.js",
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +17,6 @@
     "@jsdoc/name": "^0.1.1",
     "@jsdoc/salty": "^0.2.9",
     "@jsdoc/tag": "^0.2.13",
-    "@jsdoc/util": "^0.3.4",
     "catharsis": "^0.11.0",
     "code-prettify": "^0.1.0",
     "color-themes-for-google-code-prettify": "^2.0.4",

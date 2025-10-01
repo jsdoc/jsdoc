@@ -1,0 +1,61 @@
+{
+  "workspaces": {
+    ".": {
+      "entry": ["Herebyfile.js"],
+      "ignoreDependencies": ["ajv", "c8", "installed-check", "license-check-and-add", "mock-fs"]
+    },
+    "packages/jsdoc": {
+      "project": ["*.js", "test/index.js"]
+    },
+    "packages/jsdoc-ast": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-cli": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-core": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-doclet": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-eslint-config": {
+      "project": ["*.js"]
+    },
+    "packages/jsdoc-name": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-parse": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-plugins": {
+      "ignore": ["*.js", "test/**/*.js"]
+    },
+    "packages/jsdoc-prettier-config": {
+      "project": ["*.js"]
+    },
+    "packages/jsdoc-salty": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-tag": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-task-runner": {
+      "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-template-legacy": {
+      "project": ["*.js", "lib/**/*.js"],
+      "ignoreDependencies": [
+        "@fontsource-variable/open-sans",
+        "code-prettify",
+        "color-themes-for-google-code-prettify"
+      ]
+    },
+    "packages/jsdoc-test-matchers": {
+      "project": ["*.js"]
+    },
+    "packages/jsdoc-util": {
+      "project": ["lib/**/*.js"]
+    }
+  }
+}

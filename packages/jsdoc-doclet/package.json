@@ -34,7 +34,7 @@
     "@jsdoc/ast": "^0.2.13",
     "@jsdoc/name": "^0.1.1",
     "@jsdoc/tag": "^0.2.13",
-    "@jsdoc/util": "^0.3.4",
+    "common-path-prefix": "^3.0.0",
     "lodash": "^4.17.21",
     "on-change": "^6.0.0",
     "strip-bom": "^5.0.0"
