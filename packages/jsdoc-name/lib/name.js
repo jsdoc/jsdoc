@@ -114,7 +114,8 @@ export function prototypeToPunc(name) {
     return name;
   }
 
-  return name.replace(/(?:^|\.)prototype\.?/g, SCOPE.PUNC.INSTANCE);
+  // If there's a trailing open bracket ([), as in `Foo.prototype['bar']`, keep it.
+  return name.replace(/(?:^|\.)prototype(?:$|\.|(\[))/g, `${SCOPE.PUNC.INSTANCE}$1`);
 }
 
 /**

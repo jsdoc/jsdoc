@@ -20,6 +20,7 @@ describe('documenting symbols with special names', () => {
   const hasOwnProp = docSet.getByLongname('hasOwnProperty')[0];
   const proto = docSet.getByLongname('prototype')[0];
   const protoValueOf = docSet.getByLongname('prototype.valueOf')[0];
+  const protoMethod = docSet.getByLongname('prototypeMethod')[0];
 
   it('When a symbol is named "constructor", the symbol should appear in the docs.', () => {
     expect(construct).toBeObject();
@@ -39,5 +40,9 @@ describe('documenting symbols with special names', () => {
 
   it('When a symbol is named "prototype", its members are resolved correctly.', () => {
     expect(protoValueOf).toBeObject();
+  });
+
+  it('preserves names that start with `prototype`', () => {
+    expect(protoMethod).toBeObject();
   });
 });

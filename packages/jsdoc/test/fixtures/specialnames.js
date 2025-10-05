@@ -12,3 +12,6 @@ var prototype = {
 
 /** document me */
 var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+/** document me */
+function prototypeMethod() {}
