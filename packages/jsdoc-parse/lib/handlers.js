@@ -139,6 +139,7 @@ function findAncestorWithType(node, ancestorType) {
 
 function setModuleScopeMemberOf(parser, doclet) {
   const moduleInfo = getModule();
+  const node = doclet.meta?.code?.node;
   let parentDoclet;
   let skipMemberof;
 
@@ -146,17 +147,17 @@ function setModuleScopeMemberOf(parser, doclet) {
   if (moduleInfo && !isModuleExports(moduleInfo, doclet)) {
     if (!doclet.scope) {
       // is this a method definition? if so, we usually get the scope from the node directly
-      if (doclet.meta?.code?.node?.type === Syntax.MethodDefinition) {
-        parentDoclet = parser._getDocletById(doclet.meta.code.node.parent.parent.nodeId);
+      if (node?.type === Syntax.MethodDefinition) {
+        parentDoclet = parser._getDocletById(node.parent.parent.nodeId);
         // special case for constructors of classes that have @alias tags
-        if (doclet.meta.code.node.kind === 'constructor' && parentDoclet?.alias) {
+        if (node.kind === 'constructor' && parentDoclet?.alias) {
           // the constructor should use the same name as the class
           doclet.addTag('alias', parentDoclet.alias);
           doclet.addTag('name', parentDoclet.alias);
           // and we shouldn't try to set a memberof value
           skipMemberof = true;
         } else {
-          doclet.addTag(doclet.meta.code.node.static ? 'static' : 'instance');
+          doclet.addTag(node.static ? 'static' : 'instance');
           // The doclet should be a member of the parent doclet's alias.
           if (parentDoclet?.alias) {
             doclet.memberof = parentDoclet.alias;
@@ -164,7 +165,10 @@ function setModuleScopeMemberOf(parser, doclet) {
         }
       }
       // Is this something that the module exports? if so, it's a static member.
-      else if (findAncestorWithType(doclet.meta?.code?.node, Syntax.ExportNamedDeclaration)) {
+      else if (
+        node?.type === Syntax.ExportNamedDeclaration ||
+        findAncestorWithType(node, Syntax.ExportNamedDeclaration)
+      ) {
         doclet.addTag('static');
       }
       // Otherwise, it must be an inner member.

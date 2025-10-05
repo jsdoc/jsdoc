@@ -173,9 +173,9 @@ export function nodeToValue(node) {
         // Like the declaration in: `export const foo = 'bar';`
         // We need a single value, so we use the first variable name.
         if (node.declaration.declarations) {
-          str = `${LONGNAMES.MODULE_EXPORT}.${nodeToValue(node.declaration.declarations[0])}`;
+          str = `${nodeToValue(node.declaration.declarations[0])}`;
         } else {
-          str = `${LONGNAMES.MODULE_EXPORT}.${nodeToValue(node.declaration)}`;
+          str = `${nodeToValue(node.declaration)}`;
         }
       }
 
