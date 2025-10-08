@@ -720,6 +720,26 @@ export function getSignatureReturns({ yields, returns }, cssClass) {
   return returnTypes;
 }
 
+// Cache for memberof index to speed up ancestor lookups
+let memberofIndex = null;
+
+function buildMemberofIndex(data) {
+  if (memberofIndex) {
+    return memberofIndex;
+  }
+
+  memberofIndex = new Map();
+  const allDoclets = data().get();
+
+  for (const doclet of allDoclets) {
+    if (doclet.longname) {
+      memberofIndex.set(doclet.longname, doclet);
+    }
+  }
+
+  return memberofIndex;
+}
+
 /**
  * Retrieve an ordered list of doclets for a symbol's ancestors.
  *
@@ -733,9 +753,13 @@ export function getAncestors(data, doclet) {
   let doc = doclet;
   let previousDoc;
 
+  // Build index once for all lookups
+  const index = buildMemberofIndex(data);
+
   while (doc) {
     previousDoc = doc;
-    doc = find(data, { longname: doc.memberof })[0];
+    // Use index instead of database query
+    doc = index.get(doc.memberof);
 
     // prevent infinite loop that can be caused by duplicated module definitions
     if (previousDoc === doc) {
