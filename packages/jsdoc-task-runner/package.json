@@ -34,7 +34,7 @@
   "dependencies": {
     "dependency-graph": "^1.0.0",
     "emittery": "^1.2.0",
-    "ow": "^3.0.0",
+    "ow": "^3.1.0",
     "p-queue": "^9.0.0"
   },
   "engines": {
