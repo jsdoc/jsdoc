@@ -1,0 +1,68 @@
+/*
+  Copyright 2025 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+// TODO: Move styles into the component (requires exposing SASS variables as CSS variables)
+
+@use 'variables/colors';
+@use 'variables/fonts';
+@use 'variables/spacers';
+
+$tooltip-bg-color: colors.$zinc-600;
+
+copy-url {
+  opacity: 0;
+  transform: translate(0, spacers.$xx-small);
+  transition: opacity 0.2s ease-in-out;
+
+  $success: colors.$green-600;
+  $error: colors.$red-800;
+  --success-color: #{$success};
+  --error-color: #{$error};
+
+  &::part(copy-icon) {
+    color: colors.$zinc-800;
+
+    &:hover {
+      color: colors.$blue-700;
+    }
+  }
+
+  &::part(tooltip__base__arrow) {
+    background-color: $tooltip-bg-color;
+  }
+
+  &::part(tooltip__base__popup) {
+    transform: translate(0, 0.5rem);
+  }
+
+  &::part(tooltip__body) {
+    background-color: $tooltip-bg-color;
+    font-size: fonts.$font-size-base * 0.8;
+    font-family: fonts.$sans-serif-font;
+  }
+
+  &:focus,
+  &:hover,
+  :focus > &,
+  :hover > & {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  & > svg {
+    width: spacers.$medium;
+  }
+}

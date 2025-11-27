@@ -14,5 +14,6 @@
   limitations under the License.
 */
 
+import './copy-buttons.js';
 import './navbar.js';
 import './toc.js';

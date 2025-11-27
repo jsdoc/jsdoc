@@ -69,9 +69,9 @@ $scrollbar-color: colors.$zinc-325;
 :root,
 :host,
 .sl-theme-light {
-  --sl-font-mono: fonts.$code-font;
-  --sl-font-sans: fonts.$h-font;
-  --sl-font-serif: fonts.$body-font;
+  --sl-font-mono: #{fonts.$code-font};
+  --sl-font-sans: #{fonts.$h-font};
+  --sl-font-serif: #{fonts.$body-font};
 }
 
 :host {
