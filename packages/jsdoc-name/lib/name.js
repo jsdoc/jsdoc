@@ -17,7 +17,7 @@
 /**
  * Methods for working with namepaths in JSDoc.
  *
- * @alias module:@jsdoc/name
+ * @module @jsdoc/name
  */
 
 import escape from 'escape-string-regexp';
@@ -27,7 +27,6 @@ import _ from 'lodash';
  * Longnames that have a special meaning in JSDoc.
  *
  * @enum {string}
- * @static
  */
 export const LONGNAMES = {
   /** Longname used for doclets that do not have a longname, such as anonymous functions. */
@@ -47,30 +46,89 @@ export const MODULE_NAMESPACE = 'module:';
  * Names and punctuation marks that identify doclet scopes.
  *
  * @enum {string}
- * @static
  */
 export const SCOPE = {
+  /**
+   * Scope names.
+   */
   NAMES: {
+    /**
+     * Global scope. The symbol is available globally.
+     */
     GLOBAL: 'global',
+    /**
+     * Inner scope. The symbol is available only within the enclosing scope.
+     */
     INNER: 'inner',
+    /**
+     * Instance scope. The symbol is available on instances of its parent.
+     */
     INSTANCE: 'instance',
+    /**
+     * Static scope. The symbol is a static property of its parent.
+     */
     STATIC: 'static',
   },
+  /**
+   * Punctuation used in JSDoc namepaths to identify a symbol's scope.
+   *
+   * Global scope does not have a punctuation equivalent.
+   */
   PUNC: {
+    /**
+     * The abbreviation for inner scope: `~`
+     */
     INNER: '~',
+    /**
+     * The abbreviation for instance scope: `#`
+     */
     INSTANCE: '#',
+    /**
+     * The abbreviation for static scope: `.`
+     */
     STATIC: '.',
   },
 };
 
-// Keys must be lowercase.
+/**
+ * Doclet scope identifiers mapped to the equivalent punctuation.
+ *
+ * @enum {string}
+ */
 export const SCOPE_TO_PUNC = {
+  /**
+   * The abbreviation for inner scope.
+   */
   inner: SCOPE.PUNC.INNER,
+  /**
+   * The abbreviation for instance scope.
+   */
   instance: SCOPE.PUNC.INSTANCE,
+  /**
+   * The abbreviation for static scope.
+   */
   static: SCOPE.PUNC.STATIC,
 };
 
-export const PUNC_TO_SCOPE = _.invert(SCOPE_TO_PUNC);
+/**
+ * Doclet scope punctuation mapped to the equivalent identifiers.
+ *
+ * @enum {string}
+ */
+export const PUNC_TO_SCOPE = {
+  /**
+   * The identifier for inner scope.
+   */
+  '~': 'inner',
+  /**
+   * The identifier for instance scope.
+   */
+  '#': 'instance',
+  /**
+   * The identifier for static scope.
+   */
+  '.': 'static',
+};
 
 const SCOPE_PUNC = _.values(SCOPE.PUNC);
 const SCOPE_PUNC_STRING = `[${SCOPE_PUNC.join()}]`;
@@ -82,7 +140,7 @@ const REGEXP_DESCRIPTION = new RegExp(DESCRIPTION);
 const REGEXP_NAME_DESCRIPTION = new RegExp(`^(\\[[^\\]]+\\]|\\S+)${DESCRIPTION}`);
 
 /**
- * Check whether a name appears to represent a complete longname that is a member of the specified
+ * Checks whether a name appears to represent a complete longname that is a member of the specified
  * parent.
  *
  * @example
@@ -101,7 +159,7 @@ export function nameIsLongname(name, memberof) {
 }
 
 /**
- * For names that identify a property of a prototype, replace the `prototype` portion of the name
+ * For names that identify a property of a prototype, replaces the `prototype` portion of the name
  * with `#`, which indicates instance-level scope. For example, `Foo.prototype.bar` becomes
  * `Foo#bar`.
  *
@@ -124,11 +182,11 @@ export function prototypeToPunc(name) {
  * @param {string} name - The name to check.
  * @returns {?string} The leading scope character, if one is present.
  */
-export const getLeadingScope = (name) => {
+export function getLeadingScope(name) {
   const match = name.match(REGEXP_LEADING_SCOPE);
 
   return match?.[1];
-};
+}
 
 /**
  * Gets the trailing scope character, if any, from a name.
@@ -136,14 +194,14 @@ export const getLeadingScope = (name) => {
  * @param {string} name - The name to check.
  * @returns {?string} The trailing scope character, if one is present.
  */
-export const getTrailingScope = (name) => {
+export function getTrailingScope(name) {
   const match = name.match(REGEXP_TRAILING_SCOPE);
 
   return match?.[1];
-};
+}
 
 /**
- * Get a symbol's basename, which is the first part of its full name before any scope punctuation.
+ * Gets a symbol's basename, which is the first part of its full name before any scope punctuation.
  * For example, all of the following names have the basename `Foo`:
  *
  * + `Foo`
@@ -165,7 +223,9 @@ export function getBasename(name) {
 }
 
 // TODO: docs
-export const stripNamespace = (longname) => longname.replace(/^[a-zA-Z]+:/, '');
+export function stripNamespace(longname) {
+  return longname.replace(/^[a-zA-Z]+:/, '');
+}
 
 // TODO: docs
 function slice(longname, sliceChars, forcedMemberof) {
@@ -253,8 +313,9 @@ function slice(longname, sliceChars, forcedMemberof) {
   };
 }
 
+// TODO: Document this with a typedef.
 /**
- * Given a longname like `a.b#c(2)`, split it into the following parts:
+ * Given a longname like `a.b#c(2)`, this method splits it into the following parts:
  *
  * + `longname`
  * + `memberof`
@@ -266,12 +327,17 @@ function slice(longname, sliceChars, forcedMemberof) {
  * @param {string} forcedMemberof
  * @returns {object} Representing the properties of the given name.
  */
-export const toParts = (longname, forcedMemberof) => slice(longname, null, forcedMemberof);
+export function toParts(longname, forcedMemberof) {
+  return slice(longname, null, forcedMemberof);
+}
 
-// TODO: docs
 /**
- * @param {string} longname The full longname of the symbol.
- * @param {string} ns The namespace to be applied.
+ * Applies a namespace to a longname.
+ *
+ * If the longname already has a namespace, then the namespace is not applied.
+ *
+ * @param {string} longname - The longname of the symbol.
+ * @param {string} ns - The namespace to be applied.
  * @returns {string} The longname with the namespace applied.
  */
 export function applyNamespace(longname, ns) {
@@ -288,11 +354,11 @@ export function applyNamespace(longname, ns) {
 }
 
 /**
- * Check whether a parent longname is an ancestor of a child longname.
+ * Checks whether a parent longname is an ancestor of a child longname.
  *
  * @param {string} parent - The parent longname.
  * @param {string} child - The child longname.
- * @return {boolean} `true` if the parent is an ancestor of the child; otherwise, `false`.
+ * @returns {boolean} `true` if the parent is an ancestor of the child; otherwise, `false`.
  */
 export function hasAncestor(parent, child) {
   let parentIsAncestor = false;
@@ -361,19 +427,19 @@ function splitLongname(longname, options) {
 // TODO: Document this with a typedef.
 // TODO: Add at least one or two basic tests, so we know if this completely breaks.
 /**
- * Convert an array of doclet longnames into a tree structure, optionally attaching doclets to the
+ * Converts an array of doclet longnames into a tree structure, optionally attaching doclets to the
  * tree.
  *
  * Each level of the tree is an object with the following properties:
  *
  * + `longname {string}`: The longname.
- * + `memberof {string?}`: The memberof.
- * + `scope {string?}`: The longname's scope, represented as a punctuation mark (for example, `#`
+ * + `memberof {?string}`: The memberof.
+ * + `scope {?string}`: The longname's scope, represented as a punctuation mark (for example, `#`
  * for instance and `.` for static).
  * + `name {string}`: The short name.
- * + `doclet {Object?}`: The doclet associated with the longname, or `null` if the doclet was not
+ * + `doclet {?Object}`: The doclet associated with the longname, or `null` if the doclet was not
  * provided.
- * + `children {Object?}`: The children of the current longname. Not present if there are no
+ * + `children {?Object}`: The children of the current longname. Not present if there are no
  * children.
  *
  * For example, suppose you have the following array of doclet longnames:
@@ -440,7 +506,7 @@ function splitLongname(longname, options) {
  * @param {Object<string, module:@jsdoc/doclet.Doclet>} doclets - The doclets to attach to a tree.
  * Each property should be the longname of a doclet, and each value should be the doclet for that
  * longname.
- * @return {Object} A tree with information about each longname in the format shown above.
+ * @returns {Object} A tree with information about each longname in the format shown above.
  */
 export function longnamesToTree(longnames, doclets) {
   const splitOptions = { includeVariation: false };
@@ -482,13 +548,14 @@ export function longnamesToTree(longnames, doclets) {
   return tree;
 }
 
+// TODO: Document this with a typedef.
 /**
- * Split a string that starts with a name and ends with a description into its parts. Allows the
+ * Splits a string that starts with a name and ends with a description into its parts. Allows the
  * default value (if present) to contain brackets. Returns `null` if the name contains mismatched
  * brackets.
  *
- * @param {string} nameDesc
- * @returns {?Object} Hash with "name" and "description" properties.
+ * @param {string} nameDesc - The combined name and description.
+ * @returns {?Object} An object with `name` and `description` properties.
  */
 function splitNameMatchingBrackets(nameDesc) {
   const buffer = [];
@@ -530,10 +597,12 @@ function splitNameMatchingBrackets(nameDesc) {
   };
 }
 
+// TODO: Document this with a typedef.
 /**
- * Split a string that starts with a name and ends with a description into separate parts.
- * @param {string} str - The string that contains the name and description.
- * @returns {object} An object with `name` and `description` properties.
+ * Splits a string that starts with a name and ends with a description into separate parts.
+ *
+ * @param {string} str - The combined name and description.
+ * @returns {Object} An object with `name` and `description` properties.
  */
 export function splitNameAndDescription(str) {
   // Like: `name`, `[name]`, `name text`, `[name] text`, `name - text`, or `[name] - text`.
@@ -541,7 +610,7 @@ export function splitNameAndDescription(str) {
   // must be on the same line as the name.
 
   let match;
-  // Optional values get special treatment,
+  // Optional values get special treatment.
   let result = null;
 
   if (str[0] === '[') {

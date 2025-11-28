@@ -14,10 +14,4 @@
   limitations under the License.
 */
 
-/**
- * Methods for working with namepaths in JSDoc.
- *
- * @module @jsdoc/name
- */
-
 export * from './lib/name.js';
