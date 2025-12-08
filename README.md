@@ -80,7 +80,6 @@ and customize your documentation. Here are a few of them:
 - Documentation is available at [jsdoc.app](https://jsdoc.app/).
 - Contribute to the docs at
   [jsdoc/jsdoc.github.io](https://github.com/jsdoc/jsdoc.github.io).
-- [Join JSDoc's Slack channel](https://jsdoc-slack.appspot.com/).
 - Ask for help on the
   [JSDoc Users mailing list](http://groups.google.com/group/jsdoc-users).
 - Post questions tagged `jsdoc` to
