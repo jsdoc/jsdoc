@@ -482,6 +482,17 @@ export const getTags = (env) => ({
     },
     synonyms: ['return'],
   },
+  scope: {
+    mustHaveValue: true,
+    onTagged(doclet, { value }) {
+      // only valid scope values are global, instance, static, and inner
+      if (/^(global|instance|static|inner)$/i.test(value)) {
+        doclet.scope = value.toLowerCase();
+      } else {
+        delete doclet.scope;
+      }
+    },
+  },
   see: {
     mustHaveValue: true,
     onTagged(doclet, { value }) {
