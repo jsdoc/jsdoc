@@ -51,7 +51,6 @@ code {
 }
 
 .hljs {
-  margin-inline-start: 1em;
   padding-inline-start: 0;
 }
 
@@ -62,6 +61,10 @@ code {
   text-align: end;
   white-space: pre-line;
   border: none;
+
+  + .hljs {
+    padding-inline-start: 1rem;
+  }
 }
 
 .source-code {
