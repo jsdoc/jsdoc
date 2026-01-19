@@ -56,6 +56,9 @@
     },
     "packages/jsdoc-util": {
       "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-xrefs-generate": {
+      "ignore": ["**/.jsdoc-xrefs-cache/**/*.js"]
     }
   }
 }

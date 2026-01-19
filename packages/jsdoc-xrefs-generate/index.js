@@ -1,5 +1,5 @@
 /*
-  Copyright 2019 the JSDoc Authors.
+  Copyright 2026 the JSDoc Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,18 +14,4 @@
   limitations under the License.
 */
 
-import jsdoc from '@jsdoc/eslint-config';
-import { globalIgnores } from 'eslint/config';
-
-export default [
-  globalIgnores(['packages/jsdoc-xrefs-generate/.jsdoc-xrefs-cache/**/*']),
-  {
-    files: ['packages/**/test/**'],
-    languageOptions: {
-      globals: {
-        jsdoc: 'readonly',
-      },
-    },
-  },
-  ...jsdoc,
-];
+// TODO

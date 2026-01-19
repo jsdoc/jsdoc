@@ -3,6 +3,7 @@
 .eslintrc*
 .gitignore
 .github/
+.jsdoc-xrefs-cache/
 .license-check.json
 .license-header.txt
 .prettierignore

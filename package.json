@@ -57,6 +57,7 @@
     "packages/jsdoc-task-runner",
     "packages/jsdoc-template-legacy",
     "packages/jsdoc-test-matchers",
-    "packages/jsdoc-util"
+    "packages/jsdoc-util",
+    "packages/jsdoc-xrefs-generate"
   ]
 }

@@ -1,0 +1,45 @@
+{
+  "name": "@jsdoc/xrefs-generate",
+  "version": "0.0.1",
+  "description": "Generates cross-references to other JavaScript reference documentation.",
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": "Jeff Williams <jeffrey.l.williams@gmail.com>",
+  "homepage": "https://jsdoc.app/",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdoc/jsdoc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jsdoc/jsdoc/issues"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./lib/*": {
+      "import": "./lib/*"
+    }
+  },
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=23.0.0"
+  },
+  "dependencies": {
+    "@jsdoc/name": "^0.1.1",
+    "js-yaml": "^4.1.1",
+    "lodash": "^4.17.21",
+    "nano-spawn": "^2.0.0",
+    "regex": "^6.0.1",
+    "semver": "^7.7.3",
+    "tinyglobby": "^0.2.15"
+  }
+}

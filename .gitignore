@@ -48,5 +48,8 @@ jspm_packages/
 test/tutorials/out
 out/
 
+# Caches
+.jsdoc-xrefs-cache/
+
 # Dotfile detritus
 .DS_Store
