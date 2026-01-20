@@ -296,7 +296,7 @@ dd > p {
 }
 
 .jsdoc-details-table > tbody > tr:last-child {
-  border-block-end-color: #fff0;
+  border-block-end-color: colors.$white;
 }
 
 td > p:last-child {

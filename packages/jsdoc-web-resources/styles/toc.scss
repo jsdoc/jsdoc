@@ -138,7 +138,6 @@ sl-details > sl-tree > sl-tree-item {
 
   &::part(item--selected) {
     background-color: colors.$blue-100 !important;
-    // TODO: Use a standard color.
     color: bootstrap.$link-color !important;
   }
 
