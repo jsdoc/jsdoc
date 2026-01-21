@@ -14,9 +14,7 @@
   limitations under the License.
 */
 
-import '@shoelace-style/shoelace/dist/components/copy-button/copy-button.js';
-
-import SlCopyButton from '@shoelace-style/shoelace/dist/components/copy-button/copy-button.component.js';
+import WaCopyButton from '@awesome.me/webawesome/dist/components/copy-button/copy-button.js';
 import { createIcons, Link, Unlink } from 'lucide';
 
 const copyUrlIcons = {
@@ -37,7 +35,7 @@ function createIcon([slotName, iconName]) {
   return icon;
 }
 
-class CopyUrl extends SlCopyButton {
+class CopyUrl extends WaCopyButton {
   constructor() {
     super();
   }

@@ -14,13 +14,11 @@
   limitations under the License.
 */
 
-import '@shoelace-style/shoelace/dist/components/details/details.js';
-import '@shoelace-style/shoelace/dist/components/tree/tree.js';
-import '@shoelace-style/shoelace/dist/components/tree-item/tree-item.js';
+import '@awesome.me/webawesome/dist/components/details/details.js';
+import '@awesome.me/webawesome/dist/components/tree/tree.js';
+import '@awesome.me/webawesome/dist/components/tree-item/tree-item.js';
 
-import { setDefaultAnimation } from '@shoelace-style/shoelace/dist/utilities/animation-registry.js';
-
-const HIDE_UNTIL_READY = ['sl-details', 'sl-tree'];
+const HIDE_UNTIL_READY = ['wa-details', 'wa-tree'];
 
 function preventDefault(e) {
   e.preventDefault();
@@ -31,13 +29,13 @@ function stopImmediatePropagation(e) {
 }
 
 // Prevent always-open accordions from being closed and reopened.
-document.querySelectorAll('sl-details').forEach((item) => {
-  item.addEventListener('sl-hide', preventDefault);
-  item.addEventListener('sl-show', preventDefault);
+document.querySelectorAll('wa-details').forEach((item) => {
+  item.addEventListener('wa-hide', preventDefault);
+  item.addEventListener('wa-show', preventDefault);
 });
 
 // Prevent expandable tree items from expanding when their link is clicked.
-document.querySelectorAll(':not(sl-details) > sl-tree > sl-tree-item').forEach((item) => {
+document.querySelectorAll(':not(wa-details) > wa-tree > wa-tree-item').forEach((item) => {
   const child = item.firstElementChild;
 
   if (child?.nodeName === 'A') {
@@ -57,19 +55,4 @@ document.querySelectorAll(':not(sl-details) > sl-tree > sl-tree-item').forEach((
       element.classList.add('ready');
     }
   }
-})();
-
-// Update `<sl-details>` animations.
-(() => {
-  const keyframesShow = [{ height: '0' }, { height: 'auto' }];
-  const options = { duration: 150, easing: 'ease-in-out' };
-
-  setDefaultAnimation('details.show', {
-    keyframes: keyframesShow,
-    options,
-  });
-  setDefaultAnimation('details.hide', {
-    keyframes: keyframesShow.slice().reverse(),
-    options,
-  });
 })();

@@ -20,10 +20,6 @@
 @use 'variables/navbar';
 @use 'variables/spacers';
 
-// TODO: Enable dark theme.
-// @use '../node_modules/@shoelace-style/shoelace/dist/themes/dark';
-@use '../node_modules/@shoelace-style/shoelace/dist/themes/light';
-
 $toc-nav-z-index: navbar.$z-index - 1;
 $toc-nav-margin-inline-start: spacers.$small;
 
@@ -68,28 +64,28 @@ $scrollbar-color: colors.$zinc-325;
 
 :root,
 :host,
-.sl-theme-light {
-  --sl-font-mono: #{fonts.$code-font};
-  --sl-font-sans: #{fonts.$h-font};
-  --sl-font-serif: #{fonts.$body-font};
+.wa-theme-light {
+  --wa-font-mono: #{fonts.$code-font};
+  --wa-font-sans: #{fonts.$h-font};
+  --wa-font-serif: #{fonts.$body-font};
 }
 
 :host {
   --indent-size: 0;
 }
 
-sl-details,
-sl-tree {
+wa-details,
+wa-tree {
   opacity: 0;
 }
 
-sl-details.ready,
-sl-tree.ready {
+wa-details.ready,
+wa-tree.ready {
   opacity: 1;
   transition: 0.25s opacity;
 }
 
-sl-details {
+wa-details {
   padding-block-end: 2rem;
   margin-inline-end: 2.5rem;
 
@@ -98,7 +94,7 @@ sl-details {
   }
 }
 
-sl-details[keep-open] {
+wa-details[keep-open] {
   &::part(header) {
     cursor: inherit;
     user-select: inherit;
@@ -109,22 +105,22 @@ sl-details[keep-open] {
     }
   }
 
-  &::part(summary-icon) {
+  &::part(icon) {
     display: none;
   }
 }
 
-sl-details > p {
+wa-details > p {
   margin-block-end: 0;
 }
 
-sl-details > sl-tree {
+wa-details > wa-tree {
   font-size: 1rem;
   margin-inline-start: -0.95rem;
   margin-inline-end: 0;
 }
 
-sl-details > sl-tree > sl-tree-item {
+wa-details > wa-tree > wa-tree-item {
   &::part(expand-button),
   &::part(indentation) {
     display: none;
@@ -136,7 +132,7 @@ sl-details > sl-tree > sl-tree-item {
     border: 0;
   }
 
-  &::part(item--selected) {
+  &:state(selected) {
     background-color: colors.$blue-100 !important;
     color: bootstrap.$link-color !important;
   }
@@ -147,60 +143,60 @@ sl-details > sl-tree > sl-tree-item {
   }
 }
 
-sl-details::part(base) {
+wa-details::part(base) {
   background-color: inherit;
   border: none;
 }
 
-sl-details::part(header) {
+wa-details::part(header) {
   padding: 0 spacers.$x-small;
 }
 
-sl-details::part(summary) {
+wa-details::part(summary) {
   font-family: fonts.$h-font, sans-serif;
   font-size: 1.125rem;
 }
 
-sl-details::part(content) {
+wa-details::part(content) {
   padding: spacers.$xxx-small spacers.$medium 0 spacers.$medium;
 }
 
-sl-tree {
+wa-tree {
   margin-inline-end: spacers.$xxxx-large;
 }
 
-sl-tree-item > a {
+wa-tree-item > a {
   width: 100%;
   height: 100%;
 }
 
-sl-tree-item[selected] > a,
-sl-tree-item[selected]::part(label),
-sl-tree-item[selected]::part(label):hover {
+wa-tree-item:state(selected) > a,
+wa-tree-item:state(selected)::part(label),
+wa-tree-item:state(selected)::part(label):hover {
   font-weight: bold;
 }
 
-sl-tree-item::part(expand-button) {
+wa-tree-item::part(expand-button) {
   min-width: 1rem;
   min-height: 1rem;
 }
 
-sl-tree-item::part(item) {
+wa-tree-item::part(item) {
   border-radius: 0.2rem;
 }
 
-sl-tree-item::part(item):hover {
+wa-tree-item::part(item):hover {
   background-color: colors.$zinc-100;
 }
 
-sl-tree-item::part(item--selected),
-sl-tree-item::part(item--selected):hover {
+wa-tree-item:state(selected),
+wa-tree-item:state(selected):hover {
   box-shadow: navbar.$shadow-primary !important;
   background-color: colors.$zinc-300;
   border: none;
 }
 
-sl-tree-item::part(label) {
+wa-tree-item::part(label) {
   font-size: fonts.$font-size-base;
   width: 100%;
   height: 100%;
