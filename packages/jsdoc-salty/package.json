@@ -23,7 +23,7 @@
   },
   "type": "commonjs",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "engines": {
     "node": ">=v12.0.0"

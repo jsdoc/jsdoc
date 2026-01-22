@@ -22,7 +22,7 @@
     "color-themes-for-google-code-prettify": "^2.0.4",
     "common-path-prefix": "^3.0.0",
     "fast-glob": "^3.3.3",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0"
   },

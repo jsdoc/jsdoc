@@ -35,7 +35,7 @@
     "@jsdoc/name": "^0.1.1",
     "@jsdoc/util": "^0.3.4",
     "ast-module-types": "^6.0.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || >=23.0.0"

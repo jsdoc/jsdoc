@@ -36,7 +36,7 @@
     "@jsdoc/tag": "^0.2.13",
     "cosmiconfig": "^9.0.0",
     "fast-glob": "^3.3.3",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^5.0.3"
   },
