@@ -74,17 +74,6 @@ $scrollbar-color: colors.$zinc-325;
   --indent-size: 0;
 }
 
-wa-details,
-wa-tree {
-  opacity: 0;
-}
-
-wa-details.ready,
-wa-tree.ready {
-  opacity: 1;
-  transition: 0.25s opacity;
-}
-
 wa-details {
   padding-block-end: 2rem;
   margin-inline-end: 2.5rem;

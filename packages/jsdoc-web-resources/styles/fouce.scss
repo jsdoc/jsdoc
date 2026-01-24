@@ -1,5 +1,5 @@
 /*
-  Copyright 2025 the Baseline Authors.
+  Copyright 2022 the Baseline Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,7 +14,17 @@
   limitations under the License.
 */
 
-import './copy-buttons.js';
-import './fouce.js';
-import './navbar.js';
-import './toc.js';
+// Prevent a flash of undefined custom elements (FOUCE).
+
+$elements: 'copy-url', 'wa-details', 'wa-icon', 'wa-tree', 'wa-tree-item';
+
+@each $element in $elements {
+  #{$element} {
+    opacity: 0;
+
+    &.ready {
+      opacity: 1;
+      transition: 0.25s opacity;
+    }
+  }
+}

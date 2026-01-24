@@ -18,8 +18,6 @@ import '@awesome.me/webawesome/dist/components/details/details.js';
 import '@awesome.me/webawesome/dist/components/tree/tree.js';
 import '@awesome.me/webawesome/dist/components/tree-item/tree-item.js';
 
-const HIDE_UNTIL_READY = ['wa-details', 'wa-tree'];
-
 function preventDefault(e) {
   e.preventDefault();
 }
@@ -42,17 +40,3 @@ document.querySelectorAll(':not(wa-details) > wa-tree > wa-tree-item').forEach((
     child.addEventListener('click', stopImmediatePropagation);
   }
 });
-
-// Prevent a flash of undefined custom elements (FOUCE).
-(async () => {
-  // Only wait for custom elements that appear on the current page.
-  const waitForElements = HIDE_UNTIL_READY.filter((el) => document.querySelector(el));
-
-  await Promise.allSettled(waitForElements.map((el) => customElements.whenDefined(el)));
-
-  for (const elementName of waitForElements) {
-    for (const element of document.querySelectorAll(elementName)) {
-      element.classList.add('ready');
-    }
-  }
-})();
