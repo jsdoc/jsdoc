@@ -68,6 +68,7 @@ export const getTags = (env) => {
       // Closure Compiler only
       synonyms: ['record'],
     }),
+    legacy: util.cloneTagDef(coreTags.legacy),
     lends: util.cloneTagDef(coreTags.lends),
     license: util.cloneTagDef(coreTags.license),
     modifies: util.cloneTagDef(coreTags.modifies),
