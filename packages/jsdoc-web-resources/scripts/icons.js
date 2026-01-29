@@ -14,8 +14,26 @@
   limitations under the License.
 */
 
-import './copy-buttons.js';
-import './fouce.js';
-import './icons.js';
-import './navbar.js';
-import './toc.js';
+import { ChevronRight, createIcons, Link, Unlink } from 'lucide';
+
+export const ICON_ATTR = 'data-icon';
+
+export function createIcon([slotName, iconName]) {
+  const icon = document.createElement('span');
+
+  icon.setAttribute(ICON_ATTR, iconName);
+  icon.setAttribute('slot', slotName);
+
+  return icon;
+}
+
+export function initializeIcons() {
+  createIcons({
+    icons: {
+      ChevronRight,
+      Link,
+      Unlink,
+    },
+    nameAttr: ICON_ATTR,
+  });
+}

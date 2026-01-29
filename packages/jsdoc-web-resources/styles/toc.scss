@@ -26,6 +26,9 @@ $toc-nav-margin-inline-start: spacers.$small;
 $scrollbar-background-color: transparent;
 $scrollbar-color: colors.$zinc-325;
 
+$border-accent-inline-start: 3px;
+$selected-item-background-color: colors.$blue-100;
+
 .jsdoc-toc-nav {
   display: flex;
   max-height: calc(100vh - navbar.$height);
@@ -76,6 +79,7 @@ $scrollbar-color: colors.$zinc-325;
 
 wa-details {
   padding-block-end: 2rem;
+  padding-inline-start: spacers.$small;
   margin-inline-end: 2.5rem;
 
   &::part(content) {
@@ -103,13 +107,14 @@ wa-details > p {
   margin-block-end: 0;
 }
 
-wa-details > wa-tree {
+wa-details > jsdoc-tree {
   font-size: 1rem;
   margin-inline-start: -0.95rem;
   margin-inline-end: 0;
 }
 
-wa-details > wa-tree > wa-tree-item {
+wa-details > jsdoc-tree > jsdoc-tree-item {
+  margin-inline-start: -$border-accent-inline-start;
   &::part(expand-button),
   &::part(indentation) {
     display: none;
@@ -117,13 +122,13 @@ wa-details > wa-tree > wa-tree-item {
     min-height: 0;
   }
 
-  &::part(item) {
-    border: 0;
-  }
-
   &:state(selected) {
-    background-color: colors.$blue-100 !important;
+    background-color: $selected-item-background-color !important;
     color: bootstrap.$link-color !important;
+
+    &:hover {
+      background-color: $selected-item-background-color !important;
+    }
   }
 
   > a:any-link {
@@ -150,42 +155,71 @@ wa-details::part(content) {
   padding: spacers.$xxx-small spacers.$medium 0 spacers.$medium;
 }
 
-wa-tree {
+jsdoc-tree {
+  --indent-size: #{spacers.$large};
+  font-size: 0;
   margin-inline-end: spacers.$xxxx-large;
 }
 
-wa-tree-item > a {
+jsdoc-tree-item {
+  --wa-space-m: #{spacers.$medium};
+  --wa-transition-easing: ease;
+  --wa-transition-slow: 250ms;
+  --wa-transition-normal: 150ms;
+  --wa-transition-fast: 50ms;
+}
+
+jsdoc-tree-item > a {
   width: 100%;
   height: 100%;
 }
 
-wa-tree-item:state(selected) > a,
-wa-tree-item:state(selected)::part(label),
-wa-tree-item:state(selected)::part(label):hover {
+jsdoc-tree-item > svg {
+  stroke-width: 1.5px;
+}
+
+jsdoc-tree-item:state(selected) > a,
+jsdoc-tree-item:state(selected)::part(label),
+jsdoc-tree-item:state(selected)::part(label):hover {
   font-weight: bold;
 }
 
-wa-tree-item::part(expand-button) {
+jsdoc-tree-item::part(base) {
+  color: colors.$neutral-700;
+  cursor: pointer;
+}
+
+jsdoc-tree-item::part(expand-button) {
+  color: colors.$neutral-600;
+  font-size: 1rem;
   min-width: 1rem;
   min-height: 1rem;
+  width: 2rem;
+  height: 2rem;
+  stroke-width: 1px;
 }
 
-wa-tree-item::part(item) {
-  border-radius: 0.2rem;
+jsdoc-tree-item::part(indentation) {
+  width: 1em;
 }
 
-wa-tree-item::part(item):hover {
+jsdoc-tree-item::part(item):hover {
   background-color: colors.$zinc-100;
 }
 
-wa-tree-item:state(selected),
-wa-tree-item:state(selected):hover {
-  box-shadow: navbar.$shadow-primary !important;
-  background-color: colors.$zinc-300;
-  border: none;
+jsdoc-tree-item::part(item),
+jsdoc-tree-item:state(selected) {
+  border-radius: 0.2rem;
 }
 
-wa-tree-item::part(label) {
+jsdoc-tree-item:state(selected)::part(item),
+jsdoc-tree-item:state(selected)::part(item):hover {
+  background-color: $selected-item-background-color;
+  box-shadow: navbar.$shadow-primary !important;
+  border-inline-start-color: colors.$sky-700;
+}
+
+jsdoc-tree-item::part(label) {
   font-size: fonts.$font-size-base;
   width: 100%;
   height: 100%;

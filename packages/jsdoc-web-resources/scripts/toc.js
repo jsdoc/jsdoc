@@ -15,8 +15,16 @@
 */
 
 import '@awesome.me/webawesome/dist/components/details/details.js';
-import '@awesome.me/webawesome/dist/components/tree/tree.js';
-import '@awesome.me/webawesome/dist/components/tree-item/tree-item.js';
+
+import WaTree from '@awesome.me/webawesome/dist/components/tree/tree.js';
+import WaTreeItem from '@awesome.me/webawesome/dist/components/tree-item/tree-item.js';
+
+import { createIcon, initializeIcons } from './icons.js';
+
+const slotToIcon = {
+  'expand-icon': 'chevron-right',
+  'collapse-icon': 'chevron-right',
+};
 
 function preventDefault(e) {
   e.preventDefault();
@@ -26,6 +34,52 @@ function stopImmediatePropagation(e) {
   e.stopImmediatePropagation();
 }
 
+class JsdocTree extends WaTree {
+  // Renaming <wa-tree-item> breaks handleClick(), so we provide our own version.
+  handleClick(event) {
+    const target = event.target;
+    const treeItem = target.closest('jsdoc-tree-item');
+    const isExpandButton = event
+      .composedPath()
+      .some((el) => el?.classList?.contains('expand-button'));
+
+    if (!treeItem || treeItem.disabled || target !== this.clickTarget) {
+      return;
+    }
+
+    if (isExpandButton) {
+      treeItem.expanded = !treeItem.expanded;
+    } else {
+      this.selectItem(treeItem);
+    }
+  }
+}
+
+class JsdocTreeItem extends WaTreeItem {
+  connectedCallback() {
+    super.connectedCallback();
+
+    Object.entries(slotToIcon).forEach(([slotName, iconName]) => {
+      const icon = createIcon([slotName, iconName]);
+
+      this.prepend(icon);
+    });
+
+    initializeIcons();
+  }
+
+  firstUpdated() {
+    super.firstUpdated();
+
+    for (const waIcon of this.shadowRoot.querySelectorAll('wa-icon')) {
+      waIcon.remove();
+    }
+  }
+}
+
+customElements.define('jsdoc-tree', JsdocTree);
+customElements.define('jsdoc-tree-item', JsdocTreeItem);
+
 // Prevent always-open accordions from being closed and reopened.
 document.querySelectorAll('wa-details').forEach((item) => {
   item.addEventListener('wa-hide', preventDefault);
@@ -33,10 +87,10 @@ document.querySelectorAll('wa-details').forEach((item) => {
 });
 
 // Prevent expandable tree items from expanding when their link is clicked.
-document.querySelectorAll(':not(wa-details) > wa-tree > wa-tree-item').forEach((item) => {
+document.querySelectorAll(':not(wa-details) > jsdoc-tree > jsdoc-tree-item').forEach((item) => {
   const child = item.firstElementChild;
 
-  if (child?.nodeName === 'A') {
+  if (child?.localName === 'a') {
     child.addEventListener('click', stopImmediatePropagation);
   }
 });

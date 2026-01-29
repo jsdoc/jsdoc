@@ -15,25 +15,16 @@
 */
 
 import WaCopyButton from '@awesome.me/webawesome/dist/components/copy-button/copy-button.js';
-import { createIcons, Link, Unlink } from 'lucide';
 
-const copyUrlIcons = {
+import { createIcon, initializeIcons } from './icons.js';
+
+const slotToIcon = {
   'copy-icon': 'link',
   'success-icon': 'link',
   'error-icon': 'unlink',
 };
 
 const HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
-const ICON_ATTR = 'data-icon';
-
-function createIcon([slotName, iconName]) {
-  const icon = document.createElement('span');
-
-  icon.setAttribute(ICON_ATTR, iconName);
-  icon.setAttribute('slot', slotName);
-
-  return icon;
-}
 
 class CopyUrl extends WaCopyButton {
   constructor() {
@@ -41,15 +32,9 @@ class CopyUrl extends WaCopyButton {
   }
 
   connectedCallback() {
-    let heading;
+    super.connectedCallback();
 
-    createIcons({
-      icons: {
-        Link,
-        Unlink,
-      },
-      nameAttr: ICON_ATTR,
-    });
+    let heading;
 
     this.copyLabel = 'Copy link';
     this.successLabel = 'Copied';
@@ -57,12 +42,12 @@ class CopyUrl extends WaCopyButton {
 
     heading = this.closest(HEADING_SELECTOR);
     if (heading) {
-      Object.entries(copyUrlIcons).forEach((props) => {
+      Object.entries(slotToIcon).forEach((props) => {
         this.appendChild(createIcon(props));
       });
     }
 
-    super.connectedCallback();
+    initializeIcons();
   }
 
   /*
