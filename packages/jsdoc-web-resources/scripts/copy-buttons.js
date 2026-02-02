@@ -15,6 +15,7 @@
 */
 
 import WaCopyButton from '@awesome.me/webawesome/dist/components/copy-button/copy-button.js';
+import { css } from 'lit';
 
 import { createIcon, initializeIcons } from './icons.js';
 
@@ -27,6 +28,25 @@ const slotToIcon = {
 const HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
 
 class CopyUrl extends WaCopyButton {
+  static styles = [
+    css`
+      :host {
+        --wa-tooltip-arrow-size: 0.5rem;
+        --wa-tooltip-background-color: oklch(0.442 0.017 285.786); /* $zinc-600 */
+      }
+
+      :host wa-tooltip::part(base__arrow) {
+        --arrow-size-diagonal: calc(var(--arrow-size) * 0.6);
+        z-index: -1;
+      }
+
+      :host wa-tooltip::part(body) {
+        --wa-tooltip-border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+      }
+    `,
+    super.styles,
+  ];
   constructor() {
     super();
   }

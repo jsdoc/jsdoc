@@ -16,7 +16,7 @@
 
 // Prevent a flash of undefined custom elements (FOUCE).
 
-$elements: 'copy-url', 'wa-details', 'wa-icon', 'wa-tree', 'wa-tree-item';
+$elements: 'wa-details', 'wa-icon', 'wa-tree', 'wa-tree-item';
 
 @each $element in $elements {
   #{$element} {

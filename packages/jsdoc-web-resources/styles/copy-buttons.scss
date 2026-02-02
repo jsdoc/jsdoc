@@ -32,6 +32,10 @@ copy-url {
   --success-color: #{$success};
   --error-color: #{$error};
 
+  &.ready {
+    opacity: 0;
+  }
+
   &::part(copy-icon) {
     color: colors.$zinc-800;
 
@@ -40,16 +44,13 @@ copy-url {
     }
   }
 
-  &::part(tooltip__base__arrow) {
-    background-color: $tooltip-bg-color;
-  }
-
   &::part(tooltip__base__popup) {
     transform: translate(0, 0.5rem);
   }
 
   &::part(tooltip__body) {
     background-color: $tooltip-bg-color;
+    color: colors.$white;
     font-size: fonts.$font-size-base * 0.8;
     font-family: fonts.$sans-serif-font;
   }
