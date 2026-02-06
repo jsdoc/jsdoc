@@ -28,7 +28,7 @@ $code-font: 'Fira Code';
 $code-font-size: 100%;
 $dl-horizontal-offset: $font-size-base * 10;
 $h-font: 'Karla';
-$h-font-sizes: (
+$_h-font-sizes: (
   1: calc($font-size-base * 2.4),
   2: calc($font-size-base * 2),
   3: calc($font-size-base * 1.5),
@@ -42,5 +42,5 @@ $serif-font: $body-font;
 $font-weight-semibold: 600;
 
 @function h-font-size($level) {
-  @return map.get($map: $h-font-sizes, $key: $level);
+  @return map.get($map: $_h-font-sizes, $key: $level);
 }

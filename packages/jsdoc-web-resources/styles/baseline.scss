@@ -15,6 +15,8 @@
 */
 
 @use 'sass:color' as sass-color;
+@use 'sass:meta' as meta;
+@use 'sass:string' as string;
 
 @use 'badges';
 @use 'bootstrap';
@@ -40,6 +42,15 @@
 :root {
   --navbar-scroll-margin: #{navbar.$height + spacers.$medium};
   --navbar-scroll-margin-large: #{navbar.$height + spacers.$xx-large};
+
+  // Expose selected SASS variables as CSS custom properties.
+  @each $module in (colors fonts spacers) {
+    @each $name, $value in meta.module-variables($module) {
+      // Omit the module's trailing `s` from the custom property name.
+      $bucket: string.slice($module, 1, -2);
+      --jsdoc-#{$bucket}-#{$name}: #{$value};
+    }
+  }
 }
 
 html {
