@@ -13,7 +13,7 @@
     "execa": "^9.6.1",
     "hereby": "^1.11.1",
     "husky": "^9.1.7",
-    "installed-check": "^9.3.0",
+    "installed-check": "^10.0.0",
     "jasmine": "^6.0.0",
     "jasmine-console-reporter": "^3.1.0",
     "js-green-licenses": "^4.0.0",
