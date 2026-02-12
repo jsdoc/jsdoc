@@ -19,7 +19,7 @@ ones.
     We're gonna call this your `<tracking branch>`. You will only ever update
     this branch by pulling from the 'base' remote. (as opposed to 'origin')
 
-         git branch --track pullpost base/master
+         git branch --track pullpost base/main
          git checkout pullpost
 
     Here 'pullpost' is the name of the branch. Fell free to use whatever you want.
