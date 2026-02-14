@@ -17,6 +17,11 @@
 import { ChevronRight, createIcons, Link, Unlink } from 'lucide';
 
 export const ICON_ATTR = 'data-icon';
+export const ICONS = {
+  ChevronRight,
+  Link,
+  Unlink,
+};
 
 export function createIcon([slotName, iconName]) {
   const icon = document.createElement('span');
@@ -27,13 +32,18 @@ export function createIcon([slotName, iconName]) {
   return icon;
 }
 
-export function initializeIcons() {
+export function initializeIcons(options) {
   createIcons({
     icons: {
       ChevronRight,
       Link,
       Unlink,
     },
+    attrs: {
+      width: 16,
+      height: 16,
+    },
     nameAttr: ICON_ATTR,
+    root: options?.root,
   });
 }

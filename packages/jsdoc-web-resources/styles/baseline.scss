@@ -21,7 +21,6 @@
 @use 'badges';
 @use 'bootstrap';
 @use 'code';
-@use 'copy-buttons';
 @use 'fouce';
 @use 'hljs';
 @use 'navbar';
@@ -40,6 +39,9 @@
 }
 
 :root {
+  --jsdoc-copy-icon-color: var(--jsdoc-color-zinc-800);
+  --jsdoc-copy-icon-color-hover: var(--jsdoc-color-blue-700);
+  --jsdoc-copy-icon-opacity: 0;
   --navbar-scroll-margin: #{navbar.$height + spacers.$medium};
   --navbar-scroll-margin-large: #{navbar.$height + spacers.$xx-large};
 
@@ -77,8 +79,14 @@ a {
 @each $level in (1, 2, 3, 4, 5, 6) {
   h#{$level},
   .h#{$level} {
+    display: inline-block;
     font-family: fonts.$h-font, sans-serif;
     font-size: fonts.h-font-size($level);
+
+    &:focus,
+    &:hover {
+      --jsdoc-copy-icon-opacity: 1;
+    }
   }
 }
 

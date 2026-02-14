@@ -14,7 +14,8 @@
   limitations under the License.
 */
 
-import './copy-buttons.js';
+import './copy-url-animations.js';
+import './copy-url.js';
 import './fouce.js';
 import './icons.js';
 import './navbar.js';
