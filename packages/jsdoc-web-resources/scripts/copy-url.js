@@ -25,7 +25,6 @@ import { initializeIcons } from './icons.js';
 
 @customElement('copy-url')
 export class CopyUrl extends LitElement {
-  /* eslint-disable no-undef */
   @query('slot[name="copy-icon"]')
   accessor copyIcon;
 
