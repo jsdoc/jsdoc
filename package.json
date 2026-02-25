@@ -24,7 +24,7 @@
     "prettier": "^3.8.1"
   },
   "overrides": {
-    "minimatch": "^10.2.2"
+    "minimatch": "^10.2.4"
   },
   "type": "module",
   "engines": {
