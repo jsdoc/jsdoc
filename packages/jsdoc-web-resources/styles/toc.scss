@@ -14,6 +14,7 @@
   limitations under the License.
 */
 
+@use 'mixins';
 @use 'variables/bootstrap';
 @use 'variables/colors';
 @use 'variables/fonts';
@@ -23,38 +24,22 @@
 $toc-nav-z-index: navbar.$z-index - 1;
 $toc-nav-margin-inline-start: spacers.$small;
 
-$scrollbar-background-color: transparent;
-$scrollbar-color: colors.$zinc-325;
-
 $border-accent-inline-start: 3px;
 $selected-item-background-color: colors.$blue-100;
 
 .jsdoc-toc-nav {
+  @include mixins.scrollable-vertical;
+  @include mixins.sticky-top;
+
   display: flex;
   max-height: calc(100vh - navbar.$height);
-  position: sticky;
-  top: navbar.$height;
+
   // The TOC's width is 25% of the viewport's width, minus the scrollbar and inline margin.
+  // TODO: Adjust based on screen size.
   min-width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
   z-index: $toc-nav-z-index;
-  overflow-y: auto;
-  scrollbar-color: $scrollbar-color $scrollbar-background-color;
-  scrollbar-width: thin;
-  overscroll-behavior: contain;
   font-family: fonts.$h-font, sans-serif;
   padding-block-start: spacers.$xx-large;
-
-  &::-webkit-scrollbar {
-    width: 0.5rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $scrollbar-color;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $scrollbar-background-color;
-  }
 }
 
 .jsdoc-toc-nav-content {

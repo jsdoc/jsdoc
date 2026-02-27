@@ -23,6 +23,7 @@
 @use 'code';
 @use 'fouce';
 @use 'hljs';
+@use 'mixins';
 @use 'navbar';
 @use 'themes/hljs/tomorrow';
 @use 'toc';
@@ -276,12 +277,25 @@ dd > p {
 .jsdoc-content {
   flex: 1 1 auto;
   height: 100%;
-  padding: spacers.$xx-large;
+  max-width: 90ch;
+  padding: spacers.$xx-large spacers.$medium spacers.$xx-large;
 
   // If there are badges before an element, then make sure the navbar doesn't cover the badges when
   // the browser scrolls to that element.
   .symbol-detail-badges + [id] {
     --navbar-scroll-margin: var(--navbar-scroll-margin-large);
+  }
+}
+
+.jsdoc-on-this-page {
+  flex: 1 1 auto;
+  padding-block-start: spacers.$xx-large;
+  z-index: navbar.$z-index - 2;
+
+  // TODO: make sticky styling consistent with the left nav (or vice-versa)
+  jsdoc-outline {
+    position: sticky;
+    top: calc(var(--navbar-scroll-margin) + spacers.$xx-large);
   }
 }
 

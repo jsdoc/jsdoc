@@ -19,4 +19,5 @@ import './copy-url.js';
 import './fouce.js';
 import './icons.js';
 import './navbar.js';
+import './outline.js';
 import './toc.js';

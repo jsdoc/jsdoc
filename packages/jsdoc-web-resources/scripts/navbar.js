@@ -16,6 +16,28 @@
 
 import ease from 'easy-ease';
 
+const NAVBAR_SCROLL_MARGIN_VAR = '--navbar-scroll-margin';
+
+export function getNavbarMargin(target) {
+  const bodyStyle = getComputedStyle(document.body);
+  let navbarMargin;
+
+  // Use the element-specific margin if one is defined.
+  if (target) {
+    navbarMargin = getComputedStyle(target).getPropertyValue(NAVBAR_SCROLL_MARGIN_VAR);
+  }
+  // Fall back on the standard margin if necessary.
+  if (!navbarMargin) {
+    navbarMargin = bodyStyle.getPropertyValue(NAVBAR_SCROLL_MARGIN_VAR);
+  }
+
+  // Convert the margin to px.
+  navbarMargin = Number(navbarMargin.replace('rem', '')) * parseFloat(bodyStyle.fontSize);
+
+  // Round margin up to the nearest multiple of 5.
+  return Math.ceil(navbarMargin / 5) * 5;
+}
+
 // Prevent the top navbar from obscuring the page content.
 (() => {
   const KEY_CODES = {
@@ -23,31 +45,9 @@ import ease from 'easy-ease';
     PAGE_UP: 'PageUp',
     SPACE: 'Space',
   };
-  const NAVBAR_SCROLL_MARGIN_VAR = '--navbar-scroll-margin';
-
-  function remToPx(rem, bodyStyle) {
-    rem = Number(rem.replace('rem', ''));
-
-    return rem * parseFloat(bodyStyle.fontSize);
-  }
 
   function adjustForNavbar(target, px) {
-    const bodyStyle = getComputedStyle(document.body);
-    let scrollMargin;
-
-    // Use the element-specific margin if one is defined.
-    if (target) {
-      scrollMargin = getComputedStyle(target).getPropertyValue(NAVBAR_SCROLL_MARGIN_VAR);
-    }
-    // Fall back on the standard margin if necessary.
-    if (!scrollMargin) {
-      scrollMargin = bodyStyle.getPropertyValue(NAVBAR_SCROLL_MARGIN_VAR);
-    }
-
-    // Get margin in pixels.
-    scrollMargin = remToPx(scrollMargin, bodyStyle);
-    // Round margin up to the nearest multiple of 5.
-    scrollMargin = Math.ceil(scrollMargin / 5) * 5;
+    let scrollMargin = getNavbarMargin(target);
 
     return px - scrollMargin;
   }
