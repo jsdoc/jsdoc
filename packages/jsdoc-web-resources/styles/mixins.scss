@@ -15,7 +15,9 @@
 */
 
 @use 'variables/colors';
+@use 'variables/footer';
 @use 'variables/navbar';
+@use 'variables/spacers';
 
 $scrollbar-background-color: transparent;
 $scrollbar-color: colors.$zinc-325;
@@ -44,7 +46,16 @@ $scrollbar-color: colors.$zinc-325;
   overscroll-behavior: contain;
 }
 
+@mixin sidebar {
+  @include scrollable-vertical;
+  @include sticky-top;
+
+  display: flex;
+  max-height: calc(100vh - navbar.$height - footer.$height);
+  padding-block-start: spacers.$xx-large;
+}
+
 @mixin sticky-top {
   position: sticky;
-  top: navbar.$height;
+  inset-block-start: navbar.$height;
 }

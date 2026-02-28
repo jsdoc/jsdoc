@@ -288,21 +288,11 @@ dd > p {
 }
 
 .jsdoc-on-this-page {
-  flex: 1 1 auto;
-  padding-block-start: spacers.$xx-large;
+  @include mixins.sidebar;
   z-index: navbar.$z-index - 2;
-
-  // TODO: make sticky styling consistent with the left nav (or vice-versa)
-  jsdoc-outline {
-    position: sticky;
-    top: calc(var(--navbar-scroll-margin) + spacers.$xx-large);
-  }
 }
 
 .jsdoc-footer {
-  align-self: end;
-  justify-self: stretch;
-  width: 100%;
   padding: spacers.$medium;
   background-color: colors.$zinc-100;
   border-block-start: 1px solid colors.$zinc-300;
