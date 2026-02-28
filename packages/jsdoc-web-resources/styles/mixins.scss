@@ -39,15 +39,8 @@ $scrollbar-color: colors.$zinc-325;
   }
 }
 
-@mixin scrollable-vertical {
-  @include scrollbar;
-
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
 @mixin sidebar {
-  @include scrollable-vertical;
+  @include scrollbar;
   @include sticky-top;
 
   display: flex;

@@ -30,6 +30,8 @@ $selected-item-background-color: colors.$blue-100;
 .jsdoc-toc-nav {
   @include mixins.sidebar;
 
+  overflow-y: auto;
+  overscroll-behavior: contain;
   // The TOC's width is 25% of the viewport's width, minus the scrollbar and inline margin.
   // TODO: Adjust based on screen size.
   min-width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
