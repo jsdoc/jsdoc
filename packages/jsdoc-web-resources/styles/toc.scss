@@ -15,7 +15,6 @@
 */
 
 @use 'mixins';
-@use 'variables/bootstrap';
 @use 'variables/colors';
 @use 'variables/fonts';
 @use 'variables/navbar';
@@ -106,7 +105,7 @@ wa-details > jsdoc-tree > jsdoc-tree-item {
 
   &:state(selected) {
     background-color: $selected-item-background-color !important;
-    color: bootstrap.$link-color !important;
+    color: colors.$sky-600;
 
     &:hover {
       background-color: $selected-item-background-color !important;

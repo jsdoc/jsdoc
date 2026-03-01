@@ -33,8 +33,6 @@
 
 // TODO: Change to `.jsdoc-navbar.package-name`.
 .jsdoc-navbar-package-name {
-  // TODO: Drop Bootstrap extension.
-  @extend .navbar-brand !optional;
   font-family: fonts.$h-font, sans-serif;
   font-size: 1.1rem;
 }
