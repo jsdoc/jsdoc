@@ -34,7 +34,7 @@
     "@jsdoc/doclet": "^0.2.14",
     "@jsdoc/parse": "^0.3.14",
     "@jsdoc/tag": "^0.2.14",
-    "cosmiconfig": "^9.0.0",
+    "cosmiconfig": "^9.0.1",
     "fast-glob": "^3.3.3",
     "lodash": "^4.17.23",
     "strip-bom": "^5.0.0",
