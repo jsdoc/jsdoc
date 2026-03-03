@@ -177,24 +177,32 @@ export class Outline extends LitElement {
     this.#visibleLinkTargets = new WeakSet();
   }
 
-  #buildHeadingTree(headings) {
-    let tree = [];
+  #buildHeadingTree(headings, headingCount = 0) {
+    const tree = [];
 
     while (headings.length) {
       const firstHeading = headings.shift();
+      let nestedHeadings;
+      let node;
 
       if (this.isHidden(firstHeading)) {
         continue;
       }
 
-      const node = new TreeItem(firstHeading, this);
-      const nestedHeadings = this.#takeNestedHeadings(headings, firstHeading);
+      node = new TreeItem(firstHeading, this);
+      headingCount++;
 
+      nestedHeadings = this.#takeNestedHeadings(headings, firstHeading);
       if (nestedHeadings.length) {
-        node.children = this.#buildHeadingTree(nestedHeadings);
+        node.children = this.#buildHeadingTree(nestedHeadings, headingCount);
       }
 
       tree.push(node);
+    }
+
+    // Discard the tree unless there's more than one heading to show.
+    if (headingCount <= 1) {
+      return null;
     }
 
     return tree;
@@ -260,6 +268,10 @@ export class Outline extends LitElement {
   }
 
   render() {
+    if (!this.tree) {
+      return html``;
+    }
+
     return html`
       <nav class="container" aria-labelledby="title">
         <slot name="title">
@@ -267,7 +279,7 @@ export class Outline extends LitElement {
         </slot>
         <slot name="contents">
           <ul part="contents" class="contents">
-            ${this.#renderTreeItems(this.tree ?? [])}
+            ${this.#renderTreeItems(this.tree)}
           </ul>
         </slot>
         <slot></slot>
