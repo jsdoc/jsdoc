@@ -127,6 +127,7 @@ export class Outline extends LitElement {
       }
 
       .contents {
+        color: var(--jsdoc-color-zinc-700);
         font-family: var(--jsdoc-font-body-font);
         font-size: var(--outline-font-size);
         line-height: var(--outline-line-height);
@@ -155,7 +156,7 @@ export class Outline extends LitElement {
       }
 
       .nested {
-        padding-inline-start: 0.625rem;
+        margin-inline-start: 0.75rem;
       }
 
       .title {

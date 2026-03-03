@@ -110,6 +110,7 @@ lucide.createIcons({icons});\``);if(typeof a>"u")throw new Error("`createIcons()
       }
 
       .contents {
+        color: var(--jsdoc-color-zinc-700);
         font-family: var(--jsdoc-font-body-font);
         font-size: var(--outline-font-size);
         line-height: var(--outline-line-height);
@@ -138,7 +139,7 @@ lucide.createIcons({icons});\``);if(typeof a>"u")throw new Error("`createIcons()
       }
 
       .nested {
-        padding-inline-start: 0.625rem;
+        margin-inline-start: 0.75rem;
       }
 
       .title {
