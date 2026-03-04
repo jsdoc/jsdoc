@@ -23,7 +23,7 @@ import throttle from 'lodash-es/throttle.js';
 
 import { getNavbarMargin } from './navbar.js';
 
-const DEFAULT_HEADING_SELECTOR = 'h2, h3, h4, h5, h6';
+const DEFAULT_HEADING_SELECTOR = 'h2, h3';
 
 function extractText(childNodes, childSelector, headingParts = []) {
   for (const child of childNodes) {
