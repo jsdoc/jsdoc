@@ -350,9 +350,12 @@ export class Outline extends LitElement {
   }
 
   #updateTree() {
-    this.tree = this.#buildHeadingTree(
-      Array.from(document.querySelectorAll(`.jsdoc-content ${this.levels}`))
-    );
+    const headingLevels = this.levels.split(',').map((level) => level.trim());
+    // We only want to query headings in the content area.
+    // TODO: Don't hard-code `.jsdoc-content` class.
+    const selector = headingLevels.map((level) => `.jsdoc-content ${level}`).join(', ');
+
+    this.tree = this.#buildHeadingTree(Array.from(document.querySelectorAll(selector)));
   }
 
   updateTree() {
