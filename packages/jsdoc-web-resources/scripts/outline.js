@@ -178,9 +178,10 @@ export class Outline extends LitElement {
     this.#visibleLinkTargets = new WeakSet();
   }
 
-  #buildHeadingTree(headings, headingCount = 0) {
+  #buildHeadingTree(headings, counter) {
     const tree = [];
 
+    counter ??= { count: 0 };
     while (headings.length) {
       const firstHeading = headings.shift();
       let nestedHeadings;
@@ -191,18 +192,18 @@ export class Outline extends LitElement {
       }
 
       node = new TreeItem(firstHeading, this);
-      headingCount++;
+      counter.count++;
 
       nestedHeadings = this.#takeNestedHeadings(headings, firstHeading);
       if (nestedHeadings.length) {
-        node.children = this.#buildHeadingTree(nestedHeadings, headingCount);
+        node.children = this.#buildHeadingTree(nestedHeadings, counter);
       }
 
       tree.push(node);
     }
 
     // Discard the tree unless there's more than one heading to show.
-    if (headingCount <= 1) {
+    if (counter.count <= 1) {
       return null;
     }
 
