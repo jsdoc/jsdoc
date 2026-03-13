@@ -14,7 +14,14 @@
   limitations under the License.
 */
 
-const HIDE_UNTIL_READY = ['copy-url', 'wa-details', 'wa-icon', 'wa-tree', 'wa-tree-item'];
+const HIDE_UNTIL_READY = [
+  'copy-url',
+  'jsdoc-outline',
+  'wa-details',
+  'wa-icon',
+  'wa-tree',
+  'wa-tree-item',
+];
 
 // Prevent a flash of undefined custom elements (FOUCE).
 (async () => {

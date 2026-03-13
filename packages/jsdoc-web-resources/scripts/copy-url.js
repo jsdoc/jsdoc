@@ -14,6 +14,8 @@
   limitations under the License.
 */
 
+// eslint-disable-next-line no-unused-vars
+import WaTooltip from '@awesome.me/webawesome/dist/components/tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators/custom-element.js';
 import { property } from 'lit/decorators/property.js';
@@ -22,6 +24,11 @@ import { state } from 'lit/decorators/state.js';
 
 import * as animations from './copy-url-animations.js';
 import { initializeIcons } from './icons.js';
+
+const STATUS = {
+  REST: 'rest',
+  SUCCESS: 'success',
+};
 
 @customElement('copy-url')
 export class CopyUrl extends LitElement {
@@ -34,16 +41,32 @@ export class CopyUrl extends LitElement {
   @property()
   accessor from = '';
 
+  @property({ attribute: 'copy-label' })
+  accessor copyLabel = 'Copy link';
+
+  @property()
+  accessor feedbackDuration = 1000;
+
   @property()
   accessor showAnimation = animations.pop;
 
   @property()
   accessor showAnimationReducedMotion = animations.bloom;
 
+  @property({ attribute: 'success-label' })
+  accessor successLabel = 'Copied';
+
+  @property({ attribute: 'tooltip-placement' })
+  accessor tooltipPlacement = 'top';
+
   @state()
   accessor isCopying = false;
 
+  @state()
+  accessor status = STATUS.REST;
+
   static styles = [
+    // Copy button styles.
     css`
       :host {
         --jsdoc-copy-icon-scale: 1;
@@ -115,6 +138,39 @@ export class CopyUrl extends LitElement {
         display: inline-flex;
       }
     `,
+    // Tooltip styles.
+    css`
+      :host {
+        --wa-tooltip-arrow-size: 0.5rem;
+        --wa-tooltip-background-color: var(--jsdoc-color-zinc-600);
+      }
+
+      :host wa-tooltip {
+        translatey: -0.5rem;
+      }
+
+      :host wa-tooltip::part(base__arrow) {
+        --arrow-size-diagonal: calc(var(--arrow-size) * 0.6);
+        --arrow-size-div: var(--arrow-size-diagonal);
+        bottom: calc(var(--arrow-size-diagonal) * -1);
+        height: calc(var(--arrow-size-diagonal) * 2);
+        width: calc(var(--arrow-size-diagonal) * 2);
+        z-index: -1;
+      }
+
+      :host wa-tooltip::part(base__popup) {
+        transform: translate(0, -0.25rem);
+      }
+
+      :host wa-tooltip::part(body) {
+        --wa-tooltip-border-radius: 0.25rem;
+        background-color: var(--jsdoc-color-zinc-600);
+        color: var(--jsdoc-color-white);
+        font-size: calc(var(--jsdoc-font-font-size-base) * 0.8);
+        font-family: var(--jsdoc-font-sans-serif-font);
+        padding: 0.25rem 0.5rem;
+      }
+    `,
   ];
 
   async handleCopy() {
@@ -142,15 +198,42 @@ export class CopyUrl extends LitElement {
     initializeIcons({ root: this.shadowRoot });
   }
 
+  get label() {
+    if (this.status === STATUS.SUCCESS) {
+      return this.successLabel;
+    }
+
+    return this.copyLabel;
+  }
+
   render() {
     return html`
-      <button class="copy-button__button" part="button" type="button" @click=${this.handleCopy}>
+      <button
+        id="copy-button"
+        class="copy-button__button"
+        part="button"
+        type="button"
+        @click=${this.handleCopy}
+      >
         <slot part="copy-icon" name="copy-icon">
           <span data-icon="link" slot="copy-icon"></span>
         </slot>
         <slot part="success-icon" name="success-icon">
           <span data-icon="link" slot="success-icon"></span>
         </slot>
+        <wa-tooltip
+          class="copy-url"
+          for="copy-button"
+          placement=${this.tooltipPlacement}
+          ?disabled=${this.disabled}
+          exportparts="
+            base:tooltip__base,
+            base__popup:tooltip__base__popup,
+            base__arrow:tooltip__base__arrow,
+            body:tooltip__body
+          "
+          >${this.label}</wa-tooltip
+        >
       </button>
     `;
   }
@@ -158,10 +241,16 @@ export class CopyUrl extends LitElement {
   async animateIcon() {
     const { matches: prefersReducedMotion } = window.matchMedia('(prefers-reduced-motion: reduce)');
     const animation = prefersReducedMotion ? this.showAnimationReducedMotion : this.showAnimation;
+
     this.copyIcon.hidden = false;
+    this.status = STATUS.SUCCESS;
     await this.successIcon.animate(animation.keyframes, animation.options).finished;
-    document.documentElement.style.setProperty('--jsdoc-copy-icon-opacity', 0);
-    this.copyIcon.hidden = true;
-    this.isCopying = false;
+
+    setTimeout(() => {
+      document.documentElement.style.setProperty('--jsdoc-copy-icon-opacity', 0);
+      this.copyIcon.hidden = true;
+      this.isCopying = false;
+      this.status = STATUS.REST;
+    }, this.feedbackDuration);
   }
 }
