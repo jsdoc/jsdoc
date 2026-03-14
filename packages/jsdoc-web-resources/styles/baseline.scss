@@ -56,6 +56,11 @@
     @each $name, $value in meta.module-variables($module) {
       // Omit the module's trailing `s` from the custom property name.
       $bucket: string.slice($module, 1, -2);
+      // Prevent duplicative names like `--jsdoc-font-font-size-base`.
+      $bucket-with-dash: $bucket + '-';
+      @if string.index($name, $bucket-with-dash) == 1 {
+        $name: string.slice($name, string.length($bucket-with-dash) + 1);
+      }
       --jsdoc-#{$bucket}-#{$name}: #{$value};
     }
   }
