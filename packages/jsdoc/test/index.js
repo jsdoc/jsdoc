@@ -42,6 +42,7 @@ export default function test() {
     },
   });
 
+  jasmine.exitOnCompletion = false;
   // Treat an unhandled promise rejection as an error.
   process.on('unhandledRejection', (e) => {
     throw e;

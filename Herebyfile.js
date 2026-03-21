@@ -133,7 +133,11 @@ export const lint = task({
 export const test = task({
   name: 'test',
   run: async () => {
-    await runTests();
+    const result = await runTests();
+
+    if (result.overallStatus === 'failed') {
+      throw new Error('Test failed.');
+    }
   },
 });
 
