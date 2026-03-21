@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: ['20']
+        node: ['22']
     steps:
       - uses: actions/checkout@v6
         with:
@@ -42,7 +42,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: ['20']
+        node: ['22']
     steps:
       - uses: actions/checkout@v6
         with:
@@ -60,7 +60,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: ['20.19.0', '22.12.0', '24']
+        node: ['22.13.0', '24']
     steps:
       - uses: actions/checkout@v6
         with:
