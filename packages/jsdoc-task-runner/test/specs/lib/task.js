@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import Emittery from 'emittery';
 
 import { Task } from '../../../lib/task.js';
@@ -204,8 +205,8 @@ describe('@jsdoc/task-runner/lib/task', () => {
           func: () => Promise.resolve(),
         });
 
-        task.on('start', (e) => {
-          event = e;
+        task.on('start', ({ data }) => {
+          event = data;
         });
 
         await task.run();
@@ -220,8 +221,8 @@ describe('@jsdoc/task-runner/lib/task', () => {
           func: () => Promise.resolve(),
         });
 
-        task.on('end', (e) => {
-          event = e;
+        task.on('end', ({ data }) => {
+          event = data;
         });
 
         await task.run();
@@ -237,8 +238,8 @@ describe('@jsdoc/task-runner/lib/task', () => {
           func: () => Promise.reject(error),
         });
 
-        task.on('error', (e) => {
-          event = e;
+        task.on('error', ({ data }) => {
+          event = data;
         });
 
         try {

@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import Emittery from 'emittery';
 
 import { Task } from '../../../lib/task.js';
@@ -134,8 +135,8 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
       promise = runner.once('taskStart');
 
       foo.run();
-      await promise.then((event) => {
-        expect(event).toBe(foo);
+      await promise.then(({ data }) => {
+        expect(data).toBe(foo);
       });
     });
 
@@ -149,10 +150,11 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
       foo.run();
       event = await promise;
 
-      expect(event).toBe(foo);
+      expect(event.data).toBe(foo);
     });
 
     it('causes an error to be emitted if the task errors', async () => {
+      let data;
       let error;
       let event;
       let promise;
@@ -167,11 +169,12 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
       }
 
       event = await promise;
+      data = event.data;
 
-      expect(event).toBeObject();
-      expect(rethrower(event.error)).toThrowError();
-      expect(event.error).toBe(error);
-      expect(event.task).toBe(badTask);
+      expect(data).toBeObject();
+      expect(rethrower(data.error)).toThrowError();
+      expect(data.error).toBe(error);
+      expect(data.task).toBe(badTask);
     });
   });
 
@@ -355,11 +358,11 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
       runner.addTask(badTask);
       runner.removeTask(badTask);
 
-      badTask.on('error', (e) => {
-        errorEvent = e;
+      badTask.on('error', ({ data }) => {
+        errorEvent = data;
       });
-      runner.on('taskError', (e) => {
-        taskErrorEvent = e;
+      runner.on('taskError', ({ data }) => {
+        taskErrorEvent = data;
       });
 
       try {
@@ -743,8 +746,8 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
         let emitted;
 
         runner.addTask(foo);
-        runner.on('end', (e) => {
-          emitted = e;
+        runner.on('end', ({ data }) => {
+          emitted = data;
         });
         await runner.run();
 
@@ -757,8 +760,8 @@ describe('@jsdoc/task-runner/lib/task-runner', () => {
         let error;
 
         runner.addTask(badTask);
-        runner.on('end', (e) => {
-          endError = e.error;
+        runner.on('end', ({ data }) => {
+          endError = data.error;
         });
 
         try {

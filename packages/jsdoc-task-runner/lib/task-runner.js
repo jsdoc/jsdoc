@@ -69,16 +69,16 @@ export class TaskRunner extends Emittery {
   #addTaskEmitters(task) {
     const u = {};
 
-    u.start = task.on('start', (t) => this.emit('taskStart', t));
-    u.end = task.on('end', (t) => this.emit('taskEnd', t));
-    u.error = task.on('error', (e) => {
+    u.start = task.on('start', ({ data }) => this.emit('taskStart', data));
+    u.end = task.on('end', ({ data }) => this.emit('taskEnd', data));
+    u.error = task.on('error', ({ data }) => {
       this.emit('taskError', {
-        task: e.task,
-        error: e.error,
+        task: data.task,
+        error: data.error,
       });
 
       if (!this.#error) {
-        this.#error = e.error;
+        this.#error = data.error;
       }
     });
 
