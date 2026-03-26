@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/ast",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "JSDoc tools for working with abstract syntax trees (ASTs).",
   "keywords": [
     "jsdoc"
@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "@babel/parser": "^7.29.2",
-    "@jsdoc/name": "^0.1.2",
-    "@jsdoc/util": "^0.3.5",
+    "@jsdoc/name": "^0.1.3",
+    "@jsdoc/util": "^0.3.6",
     "ast-module-types": "^6.0.1",
     "lodash": "^4.17.23"
   },
