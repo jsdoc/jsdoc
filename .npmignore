@@ -5,6 +5,7 @@
 .github/
 .license-check.json
 .license-header.txt
+.licensee.json
 .prettierignore
 .prettierrc*
 .renovaterc.json
@@ -12,8 +13,8 @@ CHANGES.md
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 Herebyfile*
-js-green-licenses.json
 knip.json
 lerna.json
+lerna-debug.log*
 packages/
 test/

@@ -2,7 +2,14 @@
   "workspaces": {
     ".": {
       "entry": ["Herebyfile.js"],
-      "ignoreDependencies": ["ajv", "c8", "installed-check", "license-check-and-add", "mock-fs"]
+      "ignoreDependencies": [
+        "ajv",
+        "c8",
+        "installed-check",
+        "license-check-and-add",
+        "licensee",
+        "mock-fs"
+      ]
     },
     "packages/jsdoc": {
       "project": ["*.js", "test/index.js"]
