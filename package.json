@@ -18,7 +18,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "knip": "^6.1.0",
     "license-check-and-add": "^4.0.5",
-    "licensee": "^11.1.1",
+    "licensee": "^12.0.1",
     "lodash": "^4.17.23",
     "mock-fs": "^5.5.0",
     "prettier": "^3.8.1"
