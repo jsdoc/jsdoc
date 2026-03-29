@@ -18,7 +18,6 @@ import path from 'node:path';
 
 import { execa } from 'execa';
 import { task } from 'hereby';
-import { LicenseChecker } from 'js-green-licenses';
 
 import runTests from './packages/jsdoc/test/index.js';
 
@@ -65,37 +64,8 @@ export const dependencyEngines = task({
 
 export const dependencyLicenses = task({
   name: 'dependency-licenses',
-  run: () => {
-    const checker = new LicenseChecker({ verbose: false });
-    const log = console.log;
-
-    return new Promise((resolve, reject) => {
-      // Temporarily silence console.log() to prevent unnecessary output.
-      console.log = () => {}; // eslint-disable-line no-empty-function
-
-      checker.on('end', () => {
-        console.log = log;
-        resolve();
-      });
-      checker.on('error', (e) => {
-        const message =
-          `Error while processing ${e.packageName}@${e.versionSpec}: ${e.err}. ` +
-          `Parent packages: ${JSON.stringify(e.parentPackages, null, 0)}`;
-
-        console.log = log;
-        reject(new Error(message));
-      });
-      checker.on('non-green-license', (e) => {
-        const message =
-          `${e.packageName}@${e.version} has an invalid license: ${e.licenseName}. ` +
-          `Parent packages: ${JSON.stringify(e.parentPackages, null, 0)}`;
-
-        console.log = log;
-        reject(new Error(message));
-      });
-
-      checker.checkLocalDirectory('.');
-    });
+  run: async () => {
+    await execa(bin('licensee'), ['--errors-only']);
   },
 });
 
