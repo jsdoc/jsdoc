@@ -1,0 +1,93 @@
+/*
+  Copyright 2022 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+@use 'sass:color' as sass-color;
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:string';
+
+@use 'variables/colors';
+@use 'variables/fonts';
+@use 'variables/spacers';
+
+$palette: meta.module-variables('colors');
+
+@function max-lighten($color-name) {
+  $idx: string.index($color-name, '-');
+  $light-color-name: string.slice($color-name, 1, $idx - 1) + '-100';
+  $light-color: map.get($palette, $light-color-name);
+
+  @return sass-color.mix($light-color, colors.$white, 50%, $method: oklch);
+}
+
+.badge {
+  color: colors.$gray-100;
+  font-family: fonts.$sans-serif-font;
+  font-size: 100%;
+  font-weight: bold;
+  // TODO: Global: update units.
+  padding: 0.1em 0.5em 0.1em;
+  border-radius: 0.125rem;
+}
+
+// Maps badge types to background colors.
+$badge-types: (
+  'async': 'lime-600',
+  'constant': 'orange-600',
+  'generator': 'indigo-600',
+  'inner': 'green-600',
+  'kind': 'orange-400',
+  'package': 'blue-600',
+  'private': 'blue-600',
+  'protected': 'blue-600',
+  'public': 'blue-600',
+  'readonly': 'orange-600',
+  'static': 'green-600',
+  'virtual': 'violet-600',
+);
+
+@each $badge-type, $color-name in $badge-types {
+  .badge-#{$badge-type} {
+    background-color: map.get($palette, $color-name);
+    color: max-lighten($color-name);
+  }
+}
+
+.symbol-detail-badges {
+  font-size: fonts.$font-size-base * 0.8;
+  font-weight: bold;
+  margin-block-start: fonts.$h-margin-block-start-large;
+  margin-block-end: fonts.$font-size-base * 0.25;
+}
+
+// Remove whitespace before the first set of badges to follow an h2, and before badges in a header.
+h2 + section > .symbol-detail-badges:first-child,
+.h2 + section > .symbol-detail-badges:first-child,
+header > .symbol-detail-badges {
+  margin-block-start: 0;
+}
+
+// Tighten up whitespace between badges and headings.
+.symbol-detail-badges + h1,
+.symbol-detail-badges + .h1 {
+  margin-block-start: calc(spacers.$xx-small * -1);
+}
+
+@each $level in (2, 3, 4, 5, 6) {
+  .symbol-detail-badges + h#{$level} {
+    margin-block-start: calc(spacers.$xxx-small * -1);
+  }
+}

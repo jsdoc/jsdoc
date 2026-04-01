@@ -1,0 +1,46 @@
+/*
+  Copyright 2022 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+@use 'sass:map';
+
+$font-size-base: 0.875rem;
+$line-height-base: 1.5;
+$line-height-computed: $font-size-base * $line-height-base;
+
+$h-margin-block-start-large: $line-height-computed * 2;
+$h-margin-block-start-small: $line-height-computed;
+
+$body-font: 'Inter';
+$code-font: 'Fira Code';
+$code-font-size: 100%;
+$dl-horizontal-offset: $font-size-base * 10;
+$h-font: 'Karla';
+$_h-font-sizes: (
+  1: calc($font-size-base * 2.4),
+  2: calc($font-size-base * 2),
+  3: calc($font-size-base * 1.5),
+  4: calc($font-size-base * 1.5),
+  5: calc($font-size-base * 1.25),
+  6: $font-size-base,
+);
+$sans-serif-font: $h-font;
+$serif-font: $body-font;
+
+$font-weight-semibold: 600;
+
+@function h-font-size($level) {
+  @return map.get($map: $_h-font-sizes, $key: $level);
+}

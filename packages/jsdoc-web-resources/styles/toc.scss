@@ -1,0 +1,207 @@
+/*
+  Copyright 2022 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+@use 'mixins';
+@use 'variables/colors';
+@use 'variables/fonts';
+@use 'variables/navbar';
+@use 'variables/spacers';
+
+$toc-nav-z-index: navbar.$z-index - 1;
+$toc-nav-margin-inline-start: spacers.$small;
+
+$border-accent-inline-start: 3px;
+$selected-item-background-color: colors.$blue-100;
+
+.jsdoc-toc-nav {
+  @include mixins.sidebar;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  // The TOC's width is 25% of the viewport's width, minus the scrollbar and inline margin.
+  // TODO: Adjust based on screen size.
+  min-width: calc(25vw - (25vw - 25%) - $toc-nav-margin-inline-start);
+  z-index: $toc-nav-z-index;
+  font-family: fonts.$h-font, sans-serif;
+}
+
+.jsdoc-toc-nav-content {
+  position: relative;
+  width: 100%;
+  margin-inline-start: $toc-nav-margin-inline-start;
+}
+
+// Shoelace component styles
+
+:root,
+:host,
+.wa-theme-light {
+  --wa-font-mono: #{fonts.$code-font};
+  --wa-font-sans: #{fonts.$h-font};
+  --wa-font-serif: #{fonts.$body-font};
+}
+
+:host {
+  --indent-size: 0;
+}
+
+wa-details {
+  padding-block-end: 2rem;
+  padding-inline-start: spacers.$small;
+  margin-inline-end: 2.5rem;
+
+  &::part(content) {
+    padding-block-end: 0;
+  }
+}
+
+wa-details[keep-open] {
+  &::part(header) {
+    cursor: inherit;
+    user-select: inherit;
+    -webkit-user-select: inherit;
+
+    &:focus-visible {
+      outline: inherit;
+    }
+  }
+
+  &::part(icon) {
+    display: none;
+  }
+}
+
+wa-details > p {
+  margin-block-end: 0;
+}
+
+wa-details > jsdoc-tree {
+  font-size: 1rem;
+  margin-inline-start: -0.95rem;
+  margin-inline-end: 0;
+}
+
+wa-details > jsdoc-tree > jsdoc-tree-item {
+  margin-inline-start: -$border-accent-inline-start;
+  &::part(expand-button),
+  &::part(indentation) {
+    display: none;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  &:state(selected) {
+    background-color: $selected-item-background-color !important;
+    color: colors.$sky-600;
+
+    &:hover {
+      background-color: $selected-item-background-color !important;
+    }
+  }
+
+  > a:any-link {
+    color: inherit !important;
+    padding: spacers.$xxx-small spacers.$x-small spacers.$xx-small spacers.$x-small;
+  }
+}
+
+wa-details::part(base) {
+  background-color: inherit;
+  border: none;
+}
+
+wa-details::part(header) {
+  padding: 0 spacers.$x-small;
+}
+
+wa-details::part(summary) {
+  font-family: fonts.$h-font, sans-serif;
+  font-size: 1.125rem;
+}
+
+wa-details::part(content) {
+  padding: spacers.$xxx-small spacers.$medium 0 spacers.$medium;
+}
+
+jsdoc-tree {
+  --indent-size: #{spacers.$large};
+  font-size: 0;
+  margin-inline-end: spacers.$xxxx-large;
+}
+
+jsdoc-tree-item {
+  --wa-space-m: #{spacers.$medium};
+  --wa-transition-easing: ease;
+  --wa-transition-slow: 250ms;
+  --wa-transition-normal: 150ms;
+  --wa-transition-fast: 50ms;
+}
+
+jsdoc-tree-item > a {
+  width: 100%;
+  height: 100%;
+}
+
+jsdoc-tree-item > svg {
+  stroke-width: 1.5px;
+}
+
+jsdoc-tree-item:state(selected) > a,
+jsdoc-tree-item:state(selected)::part(label),
+jsdoc-tree-item:state(selected)::part(label):hover {
+  font-weight: bold;
+}
+
+jsdoc-tree-item::part(base) {
+  color: colors.$neutral-700;
+  cursor: pointer;
+}
+
+jsdoc-tree-item::part(expand-button) {
+  color: colors.$neutral-600;
+  font-size: 1rem;
+  min-width: 1rem;
+  min-height: 1rem;
+  width: 2rem;
+  height: 2rem;
+  stroke-width: 1px;
+}
+
+jsdoc-tree-item::part(indentation) {
+  width: 1em;
+}
+
+jsdoc-tree-item::part(item):hover {
+  background-color: colors.$zinc-100;
+}
+
+jsdoc-tree-item::part(item),
+jsdoc-tree-item:state(selected) {
+  border-radius: 0.2rem;
+}
+
+jsdoc-tree-item:state(selected)::part(item),
+jsdoc-tree-item:state(selected)::part(item):hover {
+  background-color: $selected-item-background-color;
+  box-shadow: navbar.$shadow-primary !important;
+  border-inline-start-color: colors.$sky-700;
+}
+
+jsdoc-tree-item::part(label) {
+  font-size: fonts.$font-size-base;
+  width: 100%;
+  height: 100%;
+}

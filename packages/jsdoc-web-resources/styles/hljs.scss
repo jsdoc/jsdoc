@@ -1,0 +1,100 @@
+/*
+  Copyright 2022 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+// Styles for Highlight.js code blocks.
+
+.hljs,
+.no-hljs {
+  color: var(--hljs-text-color);
+}
+
+.hljs-code,
+.hljs-formula {
+  color: var(--hljs-text-color);
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--hljs-comment);
+}
+
+.hljs-deletion,
+.hljs-meta .hljs-keyword,
+.hljs-name,
+.hljs-property,
+.hljs-regexp,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id,
+.hljs-selector-pseudo,
+.hljs-substr,
+.hljs-tag,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-variable,
+.hljs-variable.language_ {
+  color: var(--hljs-variable);
+}
+
+.hljs-built_in,
+.hljs-char.escape_,
+.hljs-link,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-params,
+.hljs-type {
+  color: var(--hljs-params);
+}
+
+.hljs-attribute {
+  color: var(--hljs-attribute);
+}
+
+.hljs-addition,
+.hljs-attr,
+.hljs-bullet,
+.hljs-meta .hljs-string,
+.hljs-string,
+.hljs-subst,
+.hljs-symbol,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  color: var(--hljs-string);
+}
+
+.hljs-punctuation,
+.hljs-section,
+.hljs-title {
+  color: var(--hljs-title);
+}
+
+.hljs-keyword,
+.hljs-meta.hljs-keyword,
+.hljs-selector-tag,
+.hljs-title.class_ {
+  color: var(--hljs-keyword);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-strong {
+  font-weight: bold;
+}

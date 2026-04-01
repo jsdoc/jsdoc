@@ -1,0 +1,421 @@
+/*
+  Copyright 2022 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+@use 'sass:color' as sass-color;
+@use 'sass:meta' as meta;
+@use 'sass:string' as string;
+
+@use 'badges';
+@use 'code';
+@use 'fouce';
+@use 'hljs';
+@use 'mixins';
+@use 'navbar';
+@use 'pico-jsdoc';
+@use 'themes/hljs/tomorrow';
+@use 'toc';
+@use 'variables/colors';
+@use 'variables/fonts';
+@use 'variables/spacers';
+
+@mixin clearfix() {
+  &::after {
+    display: block;
+    clear: both;
+    content: '';
+  }
+}
+
+:root {
+  --jsdoc-copy-icon-opacity: 0;
+  --jsdoc-font-family-code: #{fonts.$code-font}, monospace;
+  --jsdoc-font-family-heading: #{fonts.$h-font}, sans-serif;
+  --jsdoc-font-family-monospace: var(--jsdoc-font-family-code);
+  --jsdoc-font-family-sans-serif: #{fonts.$body-font}, sans-serif;
+  --jsdoc-font-family-text: var(--jsdoc-font-family-sans-serif);
+  --jsdoc-font-size: #{fonts.$font-size-base};
+  --jsdoc-line-height: #{fonts.$line-height-base};
+  --navbar-scroll-margin: #{navbar.$height + spacers.$medium};
+  --navbar-scroll-margin-large: #{navbar.$height + spacers.$xx-large};
+
+  // Expose selected SASS variables as CSS custom properties.
+  @each $module in (colors fonts spacers) {
+    @each $name, $value in meta.module-variables($module) {
+      // Omit the module's trailing `s` from the custom property name.
+      $bucket: string.slice($module, 1, -2);
+      // Prevent duplicative names like `--jsdoc-font-font-size-base`.
+      $bucket-with-dash: $bucket + '-';
+      @if string.index($name, $bucket-with-dash) == 1 {
+        $name: string.slice($name, string.length($bucket-with-dash) + 1);
+      }
+      --jsdoc-#{$bucket}-#{$name}: #{$value};
+    }
+  }
+}
+
+[data-theme='light'],
+:root:not([data-theme='dark']),
+:host(:not([data-theme='dark'])) {
+  --jsdoc-code-background: var(--jsdoc-color-zinc-100);
+  --jsdoc-code-color: var(--jsdoc-color-zinc-900);
+  --jsdoc-copy-icon-color: var(--jsdoc-color-zinc-800);
+  --jsdoc-copy-icon-color-hover: var(--jsdoc-color-blue-700);
+}
+
+html {
+  position: relative;
+  height: 100%;
+  font-size: unset;
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  min-height: 100%;
+  overflow-y: scroll;
+  color: colors.$zinc-900;
+  font-family: fonts.$body-font, serif;
+  font-size: var(--jsdoc-font-size);
+  line-height: var(--jsdoc-line-height);
+
+  > main {
+    padding-inline: 0;
+  }
+}
+
+.link-primary,
+a {
+  color: colors.$sky-700;
+  text-decoration-color: colors.$sky-700;
+
+  > code {
+    color: inherit;
+  }
+}
+
+@each $level in (1, 2, 3, 4, 5, 6) {
+  h#{$level},
+  .h#{$level} {
+    --jsdoc-color: #{colors.$zinc-900};
+    --jsdoc-font-family: #{fonts.$h-font}, sans-serif;
+    --jsdoc-font-size: #{fonts.h-font-size($level)};
+    --jsdoc-font-weight: 500;
+    --jsdoc-typography-spacing-vertical: 0.5rem;
+
+    display: inline-block;
+
+    &:focus,
+    &:hover {
+      --jsdoc-copy-icon-opacity: 1;
+    }
+
+    .symbol-name {
+      --jsdoc-font-weight: 700;
+
+      font-weight: var(--jsdoc-font-weight);
+    }
+  }
+}
+
+h1 > small,
+.h1 > small {
+  --jsdoc-font-size: calc(fonts.h-font-size(1) * 0.65);
+}
+
+h2,
+.h2 {
+  margin-block-end: spacers.$medium;
+}
+
+@each $level in (2, 3) {
+  h#{$level},
+  .h#{$level} {
+    margin-block-start: fonts.$h-margin-block-start-large;
+  }
+}
+
+@each $level in (2, 3) {
+  .symbol-index:first-child h#{$level},
+  .symbol-index:first-child .h#{$level} {
+    margin-block-start: 0;
+  }
+}
+
+@each $level in (4, 5, 6) {
+  h#{$level},
+  .h#{$level} {
+    margin-block-start: fonts.$h-margin-block-start-small;
+  }
+}
+
+@each $level in (1, 2) {
+  h#{$level},
+  .h#{$level} {
+    + section {
+      h#{$level + 1}:first-child,
+      .h#{$level + 1}:first-child {
+        margin-block-start: fonts.$h-margin-block-start-small;
+      }
+    }
+  }
+}
+
+a {
+  @extend .link-primary;
+
+  text-decoration: none;
+
+  :focus,
+  :hover {
+    text-decoration: underline;
+  }
+}
+
+b,
+strong {
+  font-weight: fonts.$font-weight-semibold;
+}
+
+dt {
+  font-weight: 700;
+}
+
+.dl-compact {
+  dt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    float: inline-start;
+    width: fonts.$dl-horizontal-offset;
+    clear: inline-end;
+    text-align: start;
+  }
+
+  dd {
+    @include clearfix;
+
+    line-height: fonts.$line-height-computed * 0.75;
+    margin-inline-start: fonts.$dl-horizontal-offset;
+
+    p {
+      line-height: fonts.$line-height-computed;
+    }
+
+    pre {
+      margin-block-end: 0;
+    }
+  }
+}
+
+.dl-compact > dd::after {
+  display: inline-block;
+}
+
+.dl-summary-callout {
+  --jsdoc-font-weight: 700;
+
+  dd {
+    margin-block-end: fonts.$line-height-computed * 0.5;
+  }
+}
+
+dd > p {
+  margin-block-end: 0;
+}
+
+pre,
+code,
+kbd,
+samp {
+  color: var(--jsdoc-code-color);
+  background: var(--jsdoc-code-background);
+  display: inline;
+}
+
+code {
+  border-radius: 0.25rem;
+  padding: #{spacers.$xxx-small} #{spacers.$xx-small};
+}
+
+.page-header {
+  border-block-end: 0;
+  margin: 0 0 spacers.$large;
+  padding-block-end: spacers.$x-small;
+}
+
+.property-type {
+  margin-inline-start: fonts.$font-size-base;
+}
+
+.signature-params,
+.signature-returns {
+  color: colors.$zinc-500;
+}
+
+.source-link {
+  font-size: fonts.$font-size-base * 0.9;
+  margin-block-start: calc(spacers.$x-small * -1);
+}
+
+.summary-callout,
+.symbol-index-section {
+  font-size: fonts.$font-size-base * 0.9;
+}
+
+.summary-callout-heading,
+.symbol-index-section-heading {
+  @extend .h4;
+
+  font-size: 1.125rem;
+  margin-block-start: fonts.$h-margin-block-start-small;
+  border-block-end: 0;
+}
+
+// Use larger text in the first paragraph of the description
+.symbol-classdesc,
+.symbol-description {
+  p:first-child {
+    margin-block-end: fonts.$line-height-computed * 1.1;
+    font-size: fonts.$font-size-base * 1.5;
+    line-height: fonts.$line-height-computed * 1.5;
+    font-weight: 300;
+  }
+}
+
+.h.symbol-params,
+.h.symbol-properties {
+  font-size: fonts.h-font-size(4) * 0.9;
+}
+
+.symbol-index-list > dd {
+  margin-block-end: 0.75em;
+}
+
+.symbol-index-name {
+  text-indent: -1em;
+  margin-inline-start: 1em;
+}
+
+.summary-callout,
+.symbol-index {
+  padding: 0;
+}
+
+.summary-content,
+.symbol-index-section {
+  padding: 0 spacers.$medium 0 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+
+.jsdoc-main {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  padding-block: navbar.$height 0;
+  margin-inline: 0;
+}
+
+.jsdoc-content {
+  flex: 1 1 auto;
+  height: 100%;
+  max-width: 90ch;
+  padding: spacers.$xx-large spacers.$medium spacers.$xx-large;
+
+  // If there are badges before an element, then make sure the navbar doesn't cover the badges when
+  // the browser scrolls to that element.
+  .symbol-detail-badges + [id] {
+    --navbar-scroll-margin: var(--navbar-scroll-margin-large);
+  }
+}
+
+.jsdoc-on-this-page {
+  @include mixins.sidebar;
+
+  z-index: navbar.$z-index - 2;
+}
+
+.jsdoc-footer {
+  padding: spacers.$medium;
+  background-color: colors.$zinc-100;
+  border-block-start: 1px solid colors.$zinc-300;
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+}
+
+/* Tables */
+
+.jsdoc-details-table {
+  --jsdoc-border-width: 0.0625rem;
+  --jsdoc-table-border-color: #{colors.$zinc-200};
+
+  > thead > tr {
+    border-block-end-width: 2px;
+
+    > th {
+      padding: #{spacers.$x-small};
+    }
+  }
+
+  > tbody {
+    vertical-align: top;
+
+    > tr:last-child {
+      --jsdoc-border-width: 0;
+    }
+
+    > tr > td {
+      padding: #{spacers.$x-small};
+    }
+  }
+}
+
+.details-table-name,
+.details-table-description {
+  padding: #{spacers.$x-small};
+}
+
+thead th,
+thead td,
+tfoot th,
+tfoot td {
+  --jsdoc-border-width: 0.125rem;
+}
+
+td > p:last-child {
+  margin-block-end: 0;
+}
+
+article td,
+article th {
+  padding-inline-start: 0;
+}
+
+/* Callouts */
+
+.summary-callout {
+  border-radius: 0.2rem;
+  padding: 0 0.75rem;
+  margin: 0.75rem 0;
+  border: 1px solid colors.$zinc-300;
+  border-inline-start-width: 0.75rem;
+  border-inline-start-color: colors.$sky-600;
+}
