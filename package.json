@@ -23,7 +23,7 @@
     "knip": "^6.2.0",
     "license-check-and-add": "^4.0.5",
     "licensee": "^12.0.1",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "mock-fs": "^5.5.0",
     "prettier": "^3.8.1"
   },
