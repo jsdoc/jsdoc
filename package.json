@@ -3,6 +3,9 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
+    "@babel/core": "^8.0.0-rc.3",
+    "@babel/eslint-parser": "^8.0.0-rc.3",
+    "@babel/plugin-proposal-decorators": "^8.0.0-rc.3",
     "@jsdoc/core": "^0.5.10",
     "@jsdoc/eslint-config": "^2.0.2",
     "@jsdoc/tag": "^0.2.13",
@@ -11,6 +14,7 @@
     "c8": "^11.0.0",
     "eslint": "^10.1.0",
     "execa": "^9.6.1",
+    "globals": "^17.4.0",
     "hereby": "^1.14.0",
     "husky": "^9.1.7",
     "installed-check": "^10.0.1",
@@ -57,6 +61,7 @@
     "packages/jsdoc-task-runner",
     "packages/jsdoc-template-legacy",
     "packages/jsdoc-test-matchers",
-    "packages/jsdoc-util"
+    "packages/jsdoc-util",
+    "packages/jsdoc-web-resources"
   ]
 }

@@ -3,6 +3,7 @@
     ".": {
       "entry": ["Herebyfile.js"],
       "ignoreDependencies": [
+        "@babel/plugin-proposal-decorators",
         "ajv",
         "c8",
         "installed-check",
@@ -63,6 +64,9 @@
     },
     "packages/jsdoc-util": {
       "project": ["lib/**/*.js"]
+    },
+    "packages/jsdoc-web-resources": {
+      "ignore": ["scripts/**", "static/**"]
     }
   }
 }

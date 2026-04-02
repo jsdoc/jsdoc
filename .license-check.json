@@ -20,6 +20,7 @@
     "out",
     "packages/jsdoc/test/specs/add-matchers.cjs",
     "packages/jsdoc-template-legacy/static",
+    "packages/jsdoc-web-resources/static",
     "tmp"
   ],
   "license": ".license-header.txt",

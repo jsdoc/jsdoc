@@ -14,14 +14,35 @@
   limitations under the License.
 */
 
+import babelParser from '@babel/eslint-parser';
 import jsdoc from '@jsdoc/eslint-config';
+import globals from 'globals';
 
 export default [
   {
-    files: ['packages/**/test/**'],
+    ignores: ['packages/jsdoc-web-resources/static/**/*'],
+  },
+  {
+    files: ['packages/**/test/**/*.js'],
     languageOptions: {
       globals: {
         jsdoc: 'readonly',
+      },
+    },
+  },
+  {
+    files: ['packages/jsdoc-web-resources/scripts/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+      parser: babelParser,
+      parserOptions: {
+        babelOptions: {
+          plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]],
+        },
+        ecmaVersion: 'latest',
+        sourceType: 'module',
       },
     },
   },
