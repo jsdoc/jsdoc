@@ -20,7 +20,7 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['packages/jsdoc-web-resources/static/**/*'],
+    ignores: ['packages/jsdoc-web-assets/static/**/*'],
   },
   {
     files: ['packages/**/test/**/*.js'],
@@ -31,7 +31,7 @@ export default [
     },
   },
   {
-    files: ['packages/jsdoc-web-resources/scripts/**/*.js'],
+    files: ['packages/jsdoc-web-assets/scripts/**/*.js'],
     languageOptions: {
       globals: {
         ...globals.browser,

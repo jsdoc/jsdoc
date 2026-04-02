@@ -65,7 +65,7 @@
     "packages/jsdoc-util": {
       "project": ["lib/**/*.js"]
     },
-    "packages/jsdoc-web-resources": {
+    "packages/jsdoc-web-assets": {
       "ignore": ["scripts/**", "static/**"]
     }
   }

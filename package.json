@@ -62,6 +62,6 @@
     "packages/jsdoc-template-legacy",
     "packages/jsdoc-test-matchers",
     "packages/jsdoc-util",
-    "packages/jsdoc-web-resources"
+    "packages/jsdoc-web-assets"
   ]
 }
