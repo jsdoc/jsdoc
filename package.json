@@ -3,6 +3,7 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
+    "@awesome.me/webawesome": "^3.4.0",
     "@babel/core": "^8.0.0-rc.3",
     "@babel/eslint-parser": "^8.0.0-rc.3",
     "@babel/plugin-proposal-decorators": "^8.0.0-rc.3",
@@ -10,8 +11,14 @@
     "@jsdoc/eslint-config": "^2.0.2",
     "@jsdoc/tag": "^0.2.13",
     "@jsdoc/util": "^0.3.4",
+    "@lit-labs/observers": "^2.1.0",
+    "@picocss/pico": "^2.1.1",
     "ajv": "^8.18.0",
     "c8": "^11.0.0",
+    "easy-ease": "^1.0.9",
+    "esbuild": "^0.28.0",
+    "esbuild-sass-plugin": "^3.7.0",
+    "escape-string-regexp": "^5.0.0",
     "eslint": "^10.1.0",
     "execa": "^9.6.1",
     "globals": "^17.4.0",
@@ -23,15 +30,24 @@
     "knip": "^6.2.0",
     "license-check-and-add": "^4.0.5",
     "licensee": "^12.0.1",
+    "lit": "^3.3.2",
     "lodash": "^4.18.1",
+    "lodash-es": "^4.18.1",
+    "lucide": "^1.7.0",
     "mock-fs": "^5.5.0",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.1",
+    "sass-embedded": "^1.99.0",
+    "tinyglobby": "^0.2.15"
   },
   "type": "module",
   "engines": {
     "node": "^22.13.0 || >=23.0.0"
   },
   "scripts": {
+    "build": "node_modules/.bin/hereby build",
+    "build-css": "node_modules/.bin/hereby css",
+    "build-dev": "node_modules/.bin/hereby dev",
+    "build-js": "node_modules/.bin/hereby js",
     "coverage": "node_modules/.bin/hereby coverage",
     "default": "node_modules/.bin/hereby",
     "dependencies": "node_modules/.bin/hereby dependencies",
