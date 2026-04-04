@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/doclet",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "Generates and processes JSDoc doclets.",
   "keywords": [
     "jsdoc"
@@ -31,9 +31,9 @@
     }
   },
   "dependencies": {
-    "@jsdoc/ast": "^0.2.15",
-    "@jsdoc/name": "^0.1.3",
-    "@jsdoc/tag": "^0.2.15",
+    "@jsdoc/ast": "^0.2.16",
+    "@jsdoc/name": "^0.1.4",
+    "@jsdoc/tag": "^0.2.16",
     "common-path-prefix": "^3.0.0",
     "lodash": "^4.18.1",
     "on-change": "^6.0.2",

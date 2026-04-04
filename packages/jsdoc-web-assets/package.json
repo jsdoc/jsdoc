@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/web-assets",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "CSS and JavaScript files used by JSDoc.",
   "keywords": [
     "jsdoc"
