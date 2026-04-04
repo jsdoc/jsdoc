@@ -245,13 +245,6 @@ export const coverage = task({
   },
 });
 
-export const dependencyCleanup = task({
-  name: 'dependency-cleanup',
-  run: async () => {
-    await execa(bin('knip'), [], EXECA_OUT);
-  },
-});
-
 export const dependencyEngines = task({
   name: 'dependency-engines',
   run: async () => {
@@ -268,7 +261,7 @@ export const dependencyLicenses = task({
 
 export const dependencies = task({
   name: 'dependencies',
-  dependencies: [dependencyCleanup, dependencyEngines, dependencyLicenses],
+  dependencies: [dependencyEngines, dependencyLicenses],
 });
 
 export const format = task({
