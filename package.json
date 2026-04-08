@@ -36,7 +36,7 @@
     "mock-fs": "^5.5.0",
     "prettier": "^3.8.1",
     "sass-embedded": "^1.99.0",
-    "tinyglobby": "^0.2.15"
+    "tinyglobby": "^0.2.16"
   },
   "type": "module",
   "engines": {
