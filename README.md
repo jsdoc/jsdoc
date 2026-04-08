@@ -62,6 +62,8 @@ and customize your documentation. Here are a few of them:
   ([example](https://nhnent.github.io/tui.jsdoc-template/latest/))
 - [better-docs](https://github.com/SoftwareBrothers/better-docs)
   ([example](https://softwarebrothers.github.io/admin-bro-dev/index.html))
+- [clean-jsdoc-theme](https://github.com/ankitskvmdam/clean-jsdoc-theme)
+  ([example](https://ankdev.me/clean-jsdoc-theme))
 
 ### Build tools
 
