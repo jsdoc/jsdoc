@@ -25,7 +25,7 @@
     "hereby": "^1.14.0",
     "husky": "^9.1.7",
     "installed-check": "^10.0.1",
-    "jasmine": "^6.1.0",
+    "jasmine": "^6.2.0",
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
     "licensee": "^12.0.1",
