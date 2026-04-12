@@ -21,7 +21,7 @@
     "escape-string-regexp": "^5.0.0",
     "eslint": "^10.2.0",
     "execa": "^9.6.1",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "hereby": "^1.14.0",
     "husky": "^9.1.7",
     "installed-check": "^10.0.1",
