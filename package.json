@@ -22,7 +22,7 @@
     "eslint": "^10.2.1",
     "execa": "^9.6.1",
     "globals": "^17.5.0",
-    "hereby": "^1.14.0",
+    "hereby": "^1.15.0",
     "husky": "^9.1.7",
     "installed-check": "^10.0.1",
     "jasmine": "^6.2.0",
