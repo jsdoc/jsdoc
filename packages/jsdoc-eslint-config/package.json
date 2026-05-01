@@ -18,7 +18,7 @@
     "globals": "^17.5.0"
   },
   "peerDependencies": {
-    "eslint": "^10.2.1",
+    "eslint": "^10.3.0",
     "prettier": "^3.8.3"
   },
   "publishConfig": {
