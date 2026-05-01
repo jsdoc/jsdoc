@@ -3,7 +3,7 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
-    "@awesome.me/webawesome": "^3.5.0",
+    "@awesome.me/webawesome": "^3.6.0",
     "@babel/core": "^8.0.0-rc.4",
     "@babel/eslint-parser": "^8.0.0-rc.4",
     "@babel/plugin-proposal-decorators": "^8.0.0-rc.4",
