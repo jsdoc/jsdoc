@@ -29,7 +29,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
     "licensee": "^12.0.1",
-    "lit": "^3.3.2",
+    "lit": "^3.3.3",
     "lodash": "^4.18.1",
     "lodash-es": "^4.18.1",
     "lucide": "^1.14.0",
