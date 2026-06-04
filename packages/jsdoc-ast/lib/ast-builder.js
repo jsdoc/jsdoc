@@ -62,6 +62,7 @@ export const parserOptions = {
     'recordAndTuple',
     'sourcePhaseImports',
     'throwExpressions',
+    'typescript',
   ],
   ranges: true,
 };
