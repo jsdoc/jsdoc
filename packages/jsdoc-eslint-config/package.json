@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "dependencies": {
-    "@babel/eslint-parser": "^8.0.0-rc.4",
+    "@babel/eslint-parser": "^8.0.0-rc.6",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-simple-import-sort": "^13.0.0",
@@ -41,7 +41,7 @@
     }
   },
   "engines": {
-    "node": "^22.13.0 || >=23.0.0"
+    "node": "^22.18.0 || >=24.11.0"
   },
   "gitHead": "7f0b802741958e3431edc63b3a9e76412d46b1a2"
 }
