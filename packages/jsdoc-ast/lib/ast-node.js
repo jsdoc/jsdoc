@@ -17,7 +17,7 @@
 // TODO: docs
 import * as name from '@jsdoc/name';
 import { cast } from '@jsdoc/util';
-import moduleTypes from 'ast-module-types';
+import * as moduleTypes from 'ast-module-types';
 
 import { Syntax } from './syntax.js';
 
