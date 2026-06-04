@@ -1,6 +1,6 @@
 {
   "name": "@jsdoc/ast",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "description": "JSDoc tools for working with abstract syntax trees (ASTs).",
   "keywords": [
     "jsdoc"

@@ -1,7 +1,7 @@
 {
   "name": "jsdoc",
   "private": true,
-  "version": "5.0.0-dev.22",
+  "version": "5.0.0-dev.23",
   "revision": "1748665787180",
   "description": "An API documentation generator for JavaScript.",
   "keywords": [
@@ -14,7 +14,7 @@
     "url": "https://github.com/jsdoc/jsdoc"
   },
   "dependencies": {
-    "@jsdoc/cli": "^0.3.15",
+    "@jsdoc/cli": "^0.3.16",
     "strip-bom": "^5.0.0"
   },
   "engines": {
