@@ -290,6 +290,19 @@ describe('@jsdoc/parse/lib/parser', () => {
 
         expect(parse).not.toThrow();
       });
+
+      it('parses TypeScript syntax after a POSIX hashbang at the start of the file', () => {
+        const parserSrc =
+          'javascript:#!/usr/bin/env node\n' +
+          'type Foo = string;\n' +
+          '/** @class */function Bar() {}';
+
+        attachTo(parser);
+        parser.parse(parserSrc);
+
+        expect(parser.results()).toBeArrayOfSize(1);
+        expect(parser.results()[0].longname).toBe('Bar');
+      });
     });
 
     describe('results', () => {
