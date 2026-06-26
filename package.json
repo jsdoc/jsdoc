@@ -19,7 +19,7 @@
     "esbuild": "^0.28.1",
     "esbuild-sass-plugin": "^3.7.0",
     "escape-string-regexp": "^5.0.0",
-    "eslint": "^10.5.0",
+    "eslint": "^10.6.0",
     "execa": "^9.6.1",
     "globals": "^17.7.0",
     "hereby": "^1.15.1",
