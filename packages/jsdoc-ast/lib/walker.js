@@ -159,8 +159,6 @@ walkers[Syntax.ClassDeclaration] = (node, parent, state, cb) => {
 
 walkers[Syntax.ClassExpression] = walkers[Syntax.ClassDeclaration];
 
-// walkers[Syntax.ClassPrivateProperty] is defined later
-
 // walkers[Syntax.ClassProperty] is defined later
 
 // TODO: verify correctness
@@ -458,9 +456,7 @@ walkers[Syntax.ObjectExpression] = (node, parent, state, cb) => {
 
 walkers[Syntax.ObjectPattern] = walkers[Syntax.ObjectExpression];
 
-walkers[Syntax.PrivateName] = (node, parent, state, cb) => {
-  cb(node.id, node, state);
-};
+walkers[Syntax.PrivateIdentifier] = leafNode;
 
 walkers[Syntax.Program] = (node, parent, state, cb) => {
   // if the first item in the body has multiple leading comments, move all but the last one to
@@ -495,13 +491,11 @@ walkers[Syntax.Property] = (node, parent, state, cb) => {
   }
 };
 
-walkers[Syntax.ClassPrivateProperty] = (node, parent, state, cb) => {
+walkers[Syntax.ClassProperty] = walkers[Syntax.Property];
+
+walkers[Syntax.PropertyDefinition] = (node, parent, state, cb) => {
   // move leading comments from key to property node
   moveLeadingComments(node.key, node);
-
-  // add `name` property to key, so we don't have to give this type of node special treatment
-  // when we resolve its name
-  node.key.name = node.key.id.name;
 
   if (node.value) {
     cb(node.value, node, state);
@@ -513,8 +507,6 @@ walkers[Syntax.ClassPrivateProperty] = (node, parent, state, cb) => {
     }
   }
 };
-
-walkers[Syntax.ClassProperty] = walkers[Syntax.Property];
 
 walkers[Syntax.RestElement] = (node, parent, state, cb) => {
   if (node.argument) {

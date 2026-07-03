@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-import babelParser from '@babel/parser';
+import * as babelParser from '@babel/parser';
 import _ from 'lodash';
 
 // Exported so we can use them in tests.
@@ -42,7 +42,6 @@ export const parserOptions = {
     'functionBind',
     'functionSent',
     'importMeta',
-    'importReflection',
     'jsx',
     'moduleBlocks',
     [
@@ -59,7 +58,6 @@ export const parserOptions = {
         topicToken: '^^',
       },
     ],
-    'recordAndTuple',
     'sourcePhaseImports',
     'throwExpressions',
   ],

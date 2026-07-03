@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-import babelParser from '@babel/parser';
+import * as babelParser from '@babel/parser';
 
 import { parserOptions } from '../../../lib/ast-builder.js';
 import * as astNode from '../../../lib/ast-node.js';

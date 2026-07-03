@@ -53,6 +53,8 @@ export default function test() {
   jasmine.exitOnCompletion = false;
   jasmine.loadConfig({
     helpers: ['packages/jsdoc/test/helpers/**/*.js'],
+  });
+  jasmine.env.configure({
     random: false,
     stopSpecOnExpectationFailure: false,
   });

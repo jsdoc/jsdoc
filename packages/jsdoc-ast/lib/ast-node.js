@@ -153,10 +153,6 @@ export function nodeToValue(node) {
       str = nodeToValue(node.id);
       break;
 
-    case Syntax.ClassPrivateProperty:
-      str = SCOPE.PUNC.INSTANCE + nodeToValue(node.key.id);
-      break;
-
     case Syntax.ClassProperty:
       str = nodeToValue(node.key);
       break;
@@ -285,8 +281,16 @@ export function nodeToValue(node) {
       str = JSON.stringify(tempObject);
       break;
 
-    case Syntax.PrivateName:
-      str = SCOPE.PUNC.INSTANCE + nodeToValue(node.id);
+    case Syntax.PrivateIdentifier:
+      str = SCOPE.PUNC.INSTANCE + node.name;
+      break;
+
+    case Syntax.PropertyDefinition:
+      str = node.key.name;
+
+      if (node.key.type === Syntax.PrivateIdentifier) {
+        str = SCOPE.PUNC.INSTANCE + str;
+      }
       break;
 
     case Syntax.RestElement:
@@ -416,13 +420,6 @@ export function getInfo(node) {
 
       break;
 
-    // like "#b = 1;" in: "class A { #b = 1; }"
-    case Syntax.ClassPrivateProperty:
-      info.node = node;
-      info.name = nodeToValue(info.node);
-      info.type = info.node.type;
-      break;
-
     // like "b = 1;" in: "class A { b = 1; }"
     case Syntax.ClassProperty:
       info.node = node;
@@ -541,6 +538,13 @@ export function getInfo(node) {
         info.type = info.node.type;
       }
 
+      break;
+
+    // like "#b = 1;" in: "class A { #b = 1; }"
+    case Syntax.PropertyDefinition:
+      info.node = node;
+      info.name = nodeToValue(info.node);
+      info.type = info.node.type;
       break;
 
     // like "...bar" in: function foo(...bar) {}

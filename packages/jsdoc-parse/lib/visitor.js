@@ -539,14 +539,6 @@ function makeSymbolFoundEvent(node, parser, filename) {
 
       break;
 
-    // like `#b = 1` in: class A { #b = 1; }
-    case Syntax.ClassPrivateProperty:
-      extras.finishers.push(parser.resolveEnum, makePrivatePropertyFinisher());
-
-      e = new SymbolFound(node, parser, filename, extras);
-
-      break;
-
     // like `b = 1` in: class A { b = 1; }
     case Syntax.ClassProperty:
       extras.finishers.push(parser.resolveEnum);
@@ -669,6 +661,14 @@ function makeSymbolFoundEvent(node, parser, filename) {
       if (node.kind !== 'get' && node.kind !== 'set') {
         extras.finishers.push(parser.resolveEnum);
       }
+
+      e = new SymbolFound(node, parser, filename, extras);
+
+      break;
+
+    // like `#b = 1` in: class A { #b = 1; }
+    case Syntax.PropertyDefinition:
+      extras.finishers.push(parser.resolveEnum, makePrivatePropertyFinisher());
 
       e = new SymbolFound(node, parser, filename, extras);
 

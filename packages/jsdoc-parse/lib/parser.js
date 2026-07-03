@@ -68,7 +68,7 @@ function isClassMethodFromArrowFunction(node) {
 }
 
 function isClassProperty(node) {
-  return node.type === Syntax.ClassPrivateProperty || node.type === Syntax.ClassProperty;
+  return node.type === Syntax.ClassProperty || node.type === Syntax.PropertyDefinition;
 }
 
 function isConstructor(node) {
