@@ -24,7 +24,7 @@
     "fast-glob": "^3.3.3",
     "lodash": "^4.18.1",
     "markdown-it": "^14.3.0",
-    "markdown-it-anchor": "^9.2.0"
+    "markdown-it-anchor": "^9.2.1"
   },
   "engines": {
     "node": "^22.18.0 || >=24.11.0"
