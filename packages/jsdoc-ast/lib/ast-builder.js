@@ -60,6 +60,7 @@ export const parserOptions = {
     ],
     'sourcePhaseImports',
     'throwExpressions',
+    'typescript',
   ],
   ranges: true,
 };
