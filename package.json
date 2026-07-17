@@ -20,7 +20,7 @@
     "esbuild-sass-plugin": "^3.7.0",
     "escape-string-regexp": "^5.0.0",
     "eslint": "^10.7.0",
-    "execa": "^9.6.1",
+    "execa": "^10.0.0",
     "globals": "^17.7.0",
     "hereby": "^1.15.1",
     "husky": "^9.1.7",
