@@ -375,6 +375,7 @@ export const getTags = (env) => ({
   },
   modifies: {
     canHaveType: true,
+    canHaveName: true,
     onTagged(doclet, { value }) {
       doclet.modifies ??= [];
       doclet.modifies.push(value);

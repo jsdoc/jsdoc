@@ -18,6 +18,23 @@
 var data = obj || {};
 ?>
 
+<?js if (data.name) {?>
+<dl>
+    <dt>
+        Name
+    </dt>
+    <dd>
+        <code><?js= data.name ?></code>
+    </dd>
+</dl>
+<?js } ?>
+
+<?js if (data.description) {?>
+<div class="param-desc">
+    <?js= data.description ?>
+</div>
+<?js } ?>
+
 <?js if (data.type && data.type.names) {?>
 <dl>
     <dt>
