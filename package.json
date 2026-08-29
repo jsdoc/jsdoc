@@ -32,7 +32,7 @@
     "lit": "^3.3.3",
     "lodash": "^4.18.1",
     "lodash-es": "^4.18.1",
-    "lucide": "^1.35.0",
+    "lucide": "^1.37.0",
     "mock-fs": "^5.5.0",
     "prettier": "^3.9.6",
     "sass-embedded": "^1.103.1",
