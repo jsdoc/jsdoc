@@ -130,6 +130,21 @@ function parentIsClass({ kind }) {
 function staticToInstance(doclet) {
   const parts = toParts(doclet.longname);
 
+  // Check the member's own meta information to determine if it's an ES6 class static member
+  // ES6 class static members have specific meta.code.type values
+  const memberIsES6ClassStatic =
+    doclet.meta?.code?.type === 'ClassProperty' || doclet.meta?.code?.type === 'MethodDefinition';
+
+  // If this member was originally defined with ES6 class syntax and is static, preserve it
+  if (
+    memberIsES6ClassStatic &&
+    parts.scope === SCOPE.PUNC.STATIC &&
+    doclet.scope === SCOPE.NAMES.STATIC
+  ) {
+    return;
+  }
+
+  // Convert to instance (traditional behavior for object mixins and ES6 instance members)
   parts.scope = SCOPE.PUNC.INSTANCE;
   doclet.longname = fromParts(parts);
   doclet.scope = SCOPE.NAMES.INSTANCE;
