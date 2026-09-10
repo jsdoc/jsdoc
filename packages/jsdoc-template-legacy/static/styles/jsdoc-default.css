@@ -272,8 +272,6 @@ header .signature {
 }
 .details ul {
   margin: 0;
-}
-.details ul {
   list-style-type: none;
 }
 .details li {
