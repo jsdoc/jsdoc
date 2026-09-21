@@ -47,7 +47,7 @@ describe('@jsdoc/ast/lib/ast-builder', () => {
       // TODO: more tests
       it('logs (not throws) an error when a file cannot be parsed', () => {
         function parse() {
-          instance.build('qwerty!!!!!', 'bad.js');
+          instance.build('function (', 'bad.js');
         }
 
         expect(parse).not.toThrow();
