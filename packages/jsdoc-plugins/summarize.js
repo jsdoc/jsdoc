@@ -28,10 +28,12 @@ export const handlers = {
     // If the summary is missing, grab the first sentence from the description
     // and use that.
     if (doclet && !doclet.summary && doclet.description) {
-      // The summary may end with `.$`, `. `, or `.<` (a period followed by an HTML tag).
-      doclet.summary = doclet.description.split(/\.$|\.\s|\.</)[0];
-      // Append `.` as it was removed in both cases, or is possibly missing.
-      doclet.summary += '.';
+      // The summary may end with:
+      // - `.$`
+      // - `. `
+      // - `.<` (a period followed by an HTML tag)
+      // - End of line (missing a . at the end of the sentence)
+      doclet.summary = doclet.description.split(/\.$|\.\s|\.<|\r?\n|\r/)[0];
 
       // This is an excerpt of something that is possibly HTML.
       // Balance it using a stack. Assume it was initially balanced.
@@ -66,6 +68,8 @@ export const handlers = {
       // and, finally, if the summary starts and ends with a <p> tag, remove it; let the
       // template decide whether to wrap the summary in a <p> tag
       doclet.summary = doclet.summary.replace(/^<p>(.*)<\/p>$/i, '$1');
+      // Append `.` as it was removed from the original first sentence, or is possibly missing.
+      doclet.summary += '.';
     }
   },
 };
