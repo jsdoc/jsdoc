@@ -460,5 +460,26 @@ describe('@jsdoc/name/lib/name.js', () => {
       expect(parts.name).toEqual('fadein');
       expect(parts.longname).toEqual('anim.fadein(2)');
     });
+
+    // Regression test for quadratic backtracking in the variation regex.
+    // A name ending in many '(' with no closing ')' must not stall parsing.
+    // See: CWE-693, CVSS 8.8, scan cmucx7r7s00vunr018u7k5oh2
+    it('does not exhibit quadratic backtracking on unmatched parens', () => {
+      const maliciousName = 'a'.repeat(100000) + '(';
+      const start = performance.now();
+      name.toParts(maliciousName);
+      const elapsed = performance.now() - start;
+
+      // A linear scan completes in well under 100ms.
+      // The old quadratic regex took >30s for this input size.
+      expect(elapsed).toBeLessThan(500);
+    });
+
+    it('correctly splits nested-paren variation names', () => {
+      const parts = name.toParts('foo(bar)(2)');
+
+      expect(parts.variation).toEqual('2');
+      expect(parts.name).toEqual('foo(bar)');
+    });
   });
 });
