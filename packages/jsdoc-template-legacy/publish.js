@@ -509,7 +509,10 @@ export function publish(docletStore, env) {
   // update outdir if necessary, then create outdir
   packageInfo = (find({ kind: 'package' }) || [])[0];
   if (packageInfo && packageInfo.name) {
-    outdir = path.join(outdir, packageInfo.name, packageInfo.version || '');
+    // Sanitize name and version to prevent path traversal (e.g. "../../etc")
+    const safeName = packageInfo.name.replace(/\.+/g, '.').replace(/[\\/]+/g, '-');
+    const safeVersion = (packageInfo.version || '').replace(/\.+/g, '.').replace(/[\\/]+/g, '-');
+    outdir = path.join(outdir, safeName, safeVersion);
   }
   mkdirpSync(outdir);
 
