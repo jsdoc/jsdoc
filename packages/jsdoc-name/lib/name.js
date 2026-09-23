@@ -289,10 +289,36 @@ function slice(longname, sliceChars, forcedMemberof) {
   }
 
   // Like `@name foo.bar(2)`.
-  parts = name.match(/(.+)\(([^)]+)\)$/);
+  // Use a left-bounded, non-ambiguous pattern so the leading group cannot
+  // overlap the `\(`. This avoids catastrophic backtracking on names ending
+  // in a long run of `(` with no closing `)` (CWE-693).
+  parts = name.match(/^([^()]+)\(([^)]+)\)$/);
   if (parts) {
     name = parts[1];
     variation = parts[2];
+  } else {
+    // Handle names with nested parens like `foo(bar)(2)` using a linear scan.
+    if (name.endsWith(')')) {
+      const closePos = name.length - 1;
+      let openPos = -1;
+      for (let i = closePos - 1; i >= 0; i--) {
+        if (name[i] === ')') {
+          break;
+        }
+        if (name[i] === '(') {
+          openPos = i;
+          break;
+        }
+      }
+      if (openPos > 0) {
+        const prefix = name.slice(0, openPos);
+        const suffix = name.slice(openPos + 1, closePos);
+        if (suffix.length > 0 && prefix.length > 0) {
+          name = prefix;
+          variation = suffix;
+        }
+      }
+    }
   }
 
   // Restore quoted strings.
