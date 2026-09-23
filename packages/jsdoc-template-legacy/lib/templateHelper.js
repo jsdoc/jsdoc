@@ -750,21 +750,22 @@ function buildMemberofIndex(data) {
  */
 export function getAncestors(data, doclet) {
   const ancestors = [];
+  const visited = new Set();
   let doc = doclet;
-  let previousDoc;
 
   // Build index once for all lookups
   const index = buildMemberofIndex(data);
 
   while (doc) {
-    previousDoc = doc;
-    // Use index instead of database query
-    doc = index.get(doc.memberof);
-
-    // prevent infinite loop that can be caused by duplicated module definitions
-    if (previousDoc === doc) {
+    // prevent infinite loops caused by circular @memberof references
+    // (e.g. A.memberof = B, B.memberof = A)
+    if (visited.has(doc)) {
       break;
     }
+    visited.add(doc);
+
+    // Use index instead of database query
+    doc = index.get(doc.memberof);
 
     if (doc) {
       ancestors.unshift(doc);
