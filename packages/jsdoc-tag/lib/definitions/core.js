@@ -50,6 +50,14 @@ export const getTags = (env) => ({
       }
     },
   },
+  // Notes that AI tools add to a symbol, so that the notes stay out of the code itself.
+  ai: {
+    mustHaveValue: true,
+    onTagged(doclet, { value }) {
+      doclet.ai ??= [];
+      doclet.ai.push(value);
+    },
+  },
   alias: {
     mustHaveValue: true,
     onTagged(doclet, { value }) {

@@ -207,6 +207,14 @@ export const DOCLET_SCHEMA = {
       type: STRING,
       enum: ['package', 'private', 'protected', 'public'],
     },
+    // notes that AI tools added to this symbol
+    ai: {
+      type: ARRAY,
+      minItems: 1,
+      items: {
+        type: STRING,
+      },
+    },
     alias: {
       type: STRING,
     },
