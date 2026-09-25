@@ -181,6 +181,12 @@ export const getTags = (env) => ({
       doclet.deprecated = value ?? true;
     },
   },
+  legacy: {
+    // value is optional
+    onTagged(doclet, { value }) {
+      doclet.legacy = value ?? true;
+    },
+  },
   enum: {
     canHaveType: true,
     onTagged(doclet, tag) {
