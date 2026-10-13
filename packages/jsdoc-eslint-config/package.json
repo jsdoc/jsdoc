@@ -13,7 +13,7 @@
   "dependencies": {
     "@babel/eslint-parser": "^8.0.7",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "globals": "^17.13.0"
   },
