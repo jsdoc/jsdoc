@@ -35,7 +35,7 @@
     "lucide": "^1.57.0",
     "mock-tmp": "^0.0.4",
     "prettier": "^3.9.10",
-    "sass-embedded": "^1.105.1",
+    "sass-embedded": "^1.105.2",
     "tinyglobby": "^0.2.17"
   },
   "type": "module",
