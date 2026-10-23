@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@awesome.me/webawesome": "^3.14.0",
-    "@babel/core": "^8.0.7",
+    "@babel/core": "^8.0.9",
     "@babel/eslint-parser": "^8.0.7",
     "@babel/plugin-proposal-decorators": "^8.0.2",
     "@jsdoc/core": "^0.5.10",
