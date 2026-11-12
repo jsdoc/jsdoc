@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "dependencies": {
-    "@babel/eslint-parser": "^8.0.7",
+    "@babel/eslint-parser": "^8.1.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-simple-import-sort": "^14.0.0",
