@@ -367,9 +367,11 @@ export class Parser extends EventEmitter {
       doclet = this._getDocletById(node.enclosingScope.nodeId);
 
       if (!doclet) {
-        result.memberof = LONGNAMES.ANONYMOUS + SCOPE.PUNC.INSTANCE;
+        result.memberof =
+          LONGNAMES.ANONYMOUS + (node.static === true ? SCOPE.PUNC.STATIC : SCOPE.PUNC.INSTANCE);
       } else {
-        result.memberof = doclet.longname + SCOPE.PUNC.INSTANCE;
+        result.memberof =
+          doclet.longname + (node.static === true ? SCOPE.PUNC.STATIC : SCOPE.PUNC.INSTANCE);
       }
     } else if (isConstructor(node)) {
       doclet = this._getDocletById(node.enclosingScope.nodeId);
