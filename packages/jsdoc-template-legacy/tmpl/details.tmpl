@@ -147,4 +147,13 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
         <?js }); ?></ul>
     </dd>
     <?js } ?>
+
+    <?js if (data.ai && ai.length) {?>
+    <dt class="tag-ai">AI Notes:</dt>
+    <dd class="tag-ai">
+        <ul><?js ai.forEach(function(n) { ?>
+            <li><?js= n ?></li>
+        <?js }); ?></ul>
+    </dd>
+    <?js } ?>
 </dl>
