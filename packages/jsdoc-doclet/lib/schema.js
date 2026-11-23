@@ -352,6 +352,10 @@ export const DOCLET_SCHEMA = {
         'typedef',
       ],
     },
+    // is the symbol marked as legacy?
+    legacy: {
+      type: [STRING, BOOLEAN],
+    },
     license: {
       type: STRING,
     },
