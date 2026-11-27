@@ -12,7 +12,7 @@
   "main": "index.js",
   "dependencies": {
     "@babel/eslint-parser": "^8.1.2",
-    "eslint-config-prettier": "^10.1.8",
+    "eslint-config-prettier": "^10.1.9",
     "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "globals": "^17.14.0"
